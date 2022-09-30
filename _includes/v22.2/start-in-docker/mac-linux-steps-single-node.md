@@ -9,13 +9,15 @@ Single-node clusters are not highly available or fault tolerant. They are not ap
   - `COCKROACH_USER`
   - `COCKROACH_PASSWORD`
 
-  To prevent data loss, the environment variables are ignored if the `/cockroach/cockroach-data` directory within the container is not empty. To re-initialize the default database, user, and password from the environment variable values, delete the contents of `/cockroach/cockroach-data` within the running container.
+      To prevent loss of a cluster's existing data, the environment variables are used only if the `/cockroach/cockroach-data` directory within the container is empty.
 
-- You can optionally mount a directory of initialization scripts into the `docker-entrypoint-initdb.d` directory within the container. These scripts are run after CockroachDB starts and after the database and user (if specified as environment variables) have been created. The scripts run in the alphanumeric sort order imposed by your locale. The environment variables are ignored if the `/cockroach/cockroach-data` directory within the container is not empty.
+- You can optionally mount a directory of initialization scripts into the `docker-entrypoint-initdb.d` directory within the container. These scripts are run after CockroachDB starts and after the database and user (if specified as environment variables) have been created. The scripts run in the alphanumeric sort order imposed by your locale. The init scripts are run only if the `/cockroach/cockroach-data` directory within the container is empty.
+
+During local development and testing, you can re-initialize the default database, user, and password by deleting the contents of `/cockroach/cockroach-data` within the running container and then restarting the container.
 
 This section shows how to start a single-node cluster that uses these features.
 
-### Step 1. Create Docker volumes for the node
+### Step 1. Create a Docker volume for the node
 
 Cockroach Labs recommends that you store cluster data in a Docker volume rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
 
@@ -28,18 +30,17 @@ docker volume create roach-single
 
 ### Step 2. Start the cluster
 
+{% capture  env_file_note %}{{site.data.alerts.callout_success}}Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.{{site.data.alerts.end}}{% endcapture %}
+
 1. Start the cluster node.
 
     The following command starts a single-node cluster that:
- 
-    - Stores its data in the `roach-single` volume on the Docker host, which is mounted on the `/cockroach/cockroach-data` directory within the container.
-    - If the `/cockroach/cockroach-data` directory within the container is empty, creates the specified database, user, and password automatically.
-      {{site.data.alerts.callout_success}}
-      Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.
-      {{site.data.alerts.end}}
-    - Bind-mounts the `~/init-scripts` directory on the Docker host onto the `/docker-entrypoint-initdb.d` directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.
-    - Accepts database client connections on hostname `roach-single` on port 26257.
-    - Accepts connections to the DB Console on hostname `roach-single` on port 8080.
+    <ul><li>Stores its data in the <code>roach-single</code> volume on the Docker host, which is mounted on the <code>/cockroach/cockroach-data</code> directory within the container.
+        <li>If the <code>/cockroach/cockroach-data</code> directory within the container is empty, creates the specified database, user, and password automatically.<br />{{ env_file_note }}</li>
+        <li>Bind-mounts the <code>~/init-scripts</code> directory on the Docker host onto the <code>/docker-entrypoint-initdb.d</code> directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.</li>
+        <li>Accepts database client connections on hostname <code>roach-single</code> on port 26257.</li>
+        <li>Accepts connections to the DB Console on hostname `roach-single` on port 8080.</li>
+    </ul>
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -58,7 +59,7 @@ docker volume create roach-single
     By default, a `certs` directory is created and CockroachDB starts in secure mode. To prevent this, add the `--insecure` flag after the `start-single-node` sub-command.
 
     {{site.data.alerts.callout_info}}
-    The `COCKROACH_DATABASE`, `COCKROACH_USER`, and `COCKROACH_PASSWORD` environment variables and the contents of the `/docker-entrypoint-initdb.d` directory are ignored if you use `cockroach start` rather than `cockroach start-single-node`. They are also ignored if the `/cockroach/cockroach-data` directory within the container is not empty.
+    The `COCKROACH_DATABASE`, `COCKROACH_USER`, and `COCKROACH_PASSWORD` environment variables and the contents of the `/docker-entrypoint-initdb.d` directory are ignored if you use `cockroach start` rather than `cockroach start-single-node`. They are also ignored if data exists in the `/cockroach/cockroach-data` directory within the container.
     {{site.data.alerts.end}}
 
     Docker adds a DNS entry that resolves the hostname `roach-single` to the container's IP address in Docker's default network. The following examples use this hostname.
