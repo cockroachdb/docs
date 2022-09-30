@@ -6,7 +6,6 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-
 ## Tables view
 
 The **Tables** view shows the tables in your database.
