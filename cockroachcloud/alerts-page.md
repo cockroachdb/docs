@@ -30,7 +30,7 @@ If alerts are enabled, {{ site.data.products.db }} will send alerts to [specifie
 
 **CMEK:**
 
-- Cluster Node unable to start due to CMEK key access failure.
+- Cluster node unable to start due to CMEK key access failure.
 - Encrypted backup failed due to CMEK key access failure.
 
 If you receive an alert repeatedly, you may need to [optimize your workload](../stable/make-queries-fast.html) or [scale your {{ site.data.products.db }} cluster](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
