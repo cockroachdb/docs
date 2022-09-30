@@ -64,7 +64,7 @@ See the [Security Overview page](../{{site.versions["stable"]}}/security-referen
 All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted-at-rest by your chosen infrastructre-as-a-service provider, Google Cloud Platform (GCP) or Amazon Web Services (AWS), at the infrastructure level.
 
 {{site.data.alerts.callout_info}}
-{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available for {{ site.data.products.enterprise }} customers, and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available with an Enterprise license and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
 
 As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
 {{site.data.alerts.end}}
