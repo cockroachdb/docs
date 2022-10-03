@@ -139,18 +139,6 @@
                 ]
               },
               {
-                "title": "<code>ADD COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/add-column.html"
-                ]
-              },
-              {
-                "title": "<code>ADD CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/add-constraint.html"
-                ]
-              },
-              {
                 "title": "<code>ADD REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-region.html"
@@ -175,12 +163,6 @@
                 ]
               },
               {
-                "title": "<code>ALTER COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/alter-column.html"
-                ]
-              },
-              {
                 "title": "<code>ALTER DATABASE</code>",
                 "urls": [
                   "/${VERSION}/alter-database.html"
@@ -202,12 +184,6 @@
                 "title": "<code>ALTER PARTITION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-partition.html"
-                ]
-              },
-              {
-                "title": "<code>ALTER PRIMARY KEY</code>",
-                "urls": [
-                  "/${VERSION}/alter-primary-key.html"
                 ]
               },
               {
@@ -250,6 +226,122 @@
                 "title": "<code>ALTER TABLE</code>",
                 "urls": [
                   "/${VERSION}/alter-table.html"
+                ],
+                "items": [
+                  {
+                    "title": "<code>ADD COLUMN</code>",
+                    "urls": [
+                      "/${VERSION}/add-column.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ADD CONSTRAINT</code>",
+                    "urls": [
+                      "/${VERSION}/add-constraint.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ALTER COLUMN</code>",
+                    "urls": [
+                      "/${VERSION}/alter-column.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ALTER PRIMARY KEY</code>",
+                    "urls": [
+                      "/${VERSION}/alter-primary-key.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>DROP COLUMN</code>",
+                    "urls": [
+                      "/${VERSION}/drop-column.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>DROP CONSTRAINT</code>",
+                    "urls": [
+                      "/${VERSION}/drop-constraint.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>EXPERIMENTAL_AUDIT</code>",
+                    "urls": [
+                      "/${VERSION}/experimental-audit.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>OWNER TO</code>",
+                    "urls": [
+                      "/${VERSION}/owner-to.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>PARTITION BY</code> (Enterprise)",
+                    "urls": [
+                      "/${VERSION}/partition-by.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>RENAME COLUMN</code>",
+                    "urls": [
+                      "/${VERSION}/rename-column.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>RENAME CONSTRAINT</code>",
+                    "urls": [
+                      "/${VERSION}/rename-constraint.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>RENAME TO</code>",
+                    "urls": [
+                      "/${VERSION}/rename-index.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>RESET &#123;storage parameter&#125;</code>",
+                    "urls": [
+                      "/${VERSION}/reset-storage-parameter.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SET SCHEMA</code>",
+                    "urls": [
+                      "/${VERSION}/set-schema.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SPLIT AT</code>",
+                    "urls": [
+                      "/${VERSION}/split-at.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>UNSPLIT AT</code>",
+                    "urls": [
+                      "/${VERSION}/unsplit-at.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>VALIDATE CONSTRAINT</code>",
+                    "urls": [
+                      "/${VERSION}/validate-constraint.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SET LOCALITY</code>",
+                    "urls": [
+                      "/${VERSION}/set-locality.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SET &#123;storage parameter&#125;</code>",
+                    "urls": [
+                      "/${VERSION}/set-storage-parameter.html"
+                    ]
+                  }
                 ]
               },
               {
@@ -268,12 +360,6 @@
                 "title": "<code>ALTER VIEW</code>",
                 "urls": [
                   "/${VERSION}/alter-view.html"
-                ]
-              },
-              {
-                "title": "<code>EXPERIMENTAL_AUDIT</code>",
-                "urls": [
-                  "/${VERSION}/experimental-audit.html"
                 ]
               },
               {
@@ -412,18 +498,6 @@
                 "title": "<code>DELETE</code>",
                 "urls": [
                   "/${VERSION}/delete.html"
-                ]
-              },
-              {
-                "title": "<code>DROP COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/drop-column.html"
-                ]
-              },
-              {
-                "title": "<code>DROP CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/drop-constraint.html"
                 ]
               },
               {
@@ -571,18 +645,6 @@
                 ]
               },
               {
-                "title": "<code>OWNER TO</code>",
-                "urls": [
-                  "/${VERSION}/owner-to.html"
-                ]
-              },
-              {
-                "title": "<code>PARTITION BY</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/partition-by.html"
-                ]
-              },
-              {
                 "title": "<code>PAUSE JOB</code>",
                 "urls": [
                   "/${VERSION}/pause-job.html"
@@ -613,27 +675,9 @@
                 ]
               },
               {
-                "title": "<code>RENAME COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/rename-column.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/rename-constraint.html"
-                ]
-              },
-              {
                 "title": "<code>RENAME DATABASE</code>",
                 "urls": [
                   "/${VERSION}/rename-database.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME INDEX</code>",
-                "urls": [
-                  "/${VERSION}/rename-index.html"
                 ]
               },
               {
@@ -658,12 +702,6 @@
                 "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
-                ]
-              },
-              {
-                "title": "<code>RESET &#123;storage parameter&#125;</code>",
-                "urls": [
-                  "/${VERSION}/reset-storage-parameter.html"
                 ]
               },
               {
@@ -727,27 +765,9 @@
                 ]
               },
               {
-                "title": "<code>SET &#123;storage parameter&#125;</code>",
-                "urls": [
-                  "/${VERSION}/set-storage-parameter.html"
-                ]
-              },
-              {
-                "title": "<code>SET LOCALITY</code>",
-                "urls": [
-                  "/${VERSION}/set-locality.html"
-                ]
-              },
-              {
                 "title": "<code>SET PRIMARY REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/set-primary-region.html"
-                ]
-              },
-              {
-                "title": "<code>SET SCHEMA</code>",
-                "urls": [
-                  "/${VERSION}/set-schema.html"
                 ]
               },
               {
@@ -967,12 +987,6 @@
                 ]
               },
               {
-                "title": "<code>SPLIT AT</code>",
-                "urls": [
-                  "/${VERSION}/split-at.html"
-                ]
-              },
-              {
                 "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
                 "urls": [
                   "/${VERSION}/survive-failure.html"
@@ -985,12 +999,6 @@
                 ]
               },
               {
-                "title": "<code>UNSPLIT AT</code>",
-                "urls": [
-                  "/${VERSION}/unsplit-at.html"
-                ]
-              },
-              {
                 "title": "<code>UPDATE</code>",
                 "urls": [
                   "/${VERSION}/update.html"
@@ -1000,12 +1008,6 @@
                 "title": "<code>UPSERT</code>",
                 "urls": [
                   "/${VERSION}/upsert.html"
-                ]
-              },
-              {
-                "title": "<code>VALIDATE CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/validate-constraint.html"
                 ]
               },
               {
