@@ -25,6 +25,12 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 - The {{ site.data.products.db }} Console now utilizes the same [cluster setting](../stable/cluster-settings.html) as the DB Console, `sql.index_recommendation.drop_unused_duration`, as a threshold value for dropping unused indexes.
 - Fixed a bug where [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoints could fail to create but display an error message that said they were still creating.
 
+## September 24, 2022
+
+<h3>Console changes</h3>
+
+- You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+
 ## September 16, 2022
 
 <h3>Console changes</h3>

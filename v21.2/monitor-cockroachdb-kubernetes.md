@@ -39,6 +39,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
     <section class="filter-content" markdown="1" data-scope="operator">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -49,9 +50,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -62,9 +65,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc my-release-cockroachdb prometheus=cockroachdb
@@ -75,6 +80,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that there is a Prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
+
     </section>
 
 1. Determine the latest version of [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) and run the following to download and apply the latest `bundle.yaml` definition file:
@@ -277,6 +283,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
         ~~~
 
 <section class="filter-content" markdown="1" data-scope="operator">
+
 ## Configure logging
 
 When running CockroachDB v21.1 and later, you can use the Operator to configure the CockroachDB logging system. This allows you to output logs to specified [file or network log sinks](configure-logs.html#configure-log-sinks). For more information about the logging system, see [Configure log sinks](configure-logs.html#configure-log-sinks).
@@ -342,6 +349,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 1. Create a ConfigMap named `logconfig`. Note that `namespace` is set to the Operator's default namespace (`cockroach-operator-system`):
 
+    {% include_cached copy-clipboard.html %}
     ~~~ yaml
     apiVersion: v1
     data:
@@ -374,6 +382,7 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 1. Add the `name` of the ConfigMap in `logConfigMap` to the [Operator's custom resource](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
+    {% include_cached copy-clipboard.html %}
     ~~~ yaml
     spec:
       logConfigMap: logconfig

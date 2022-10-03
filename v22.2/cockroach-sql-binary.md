@@ -35,6 +35,7 @@ curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version
 ~~~
 
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="mac">
@@ -45,6 +46,7 @@ curl https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-
 ~~~
 
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="windows">
@@ -76,12 +78,17 @@ $ cockroach-sql <flags>
 
 Execute SQL from the command line:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql -e="<sql statement>;<sql statement>" -e="<sql-statement>" <flags>
 ~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ echo "<sql statement>;<sql statement>" | cockroach-sql <flags>
 ~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql <flags> -f file-containing-statements.sql
 ~~~
