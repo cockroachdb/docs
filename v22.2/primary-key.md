@@ -13,7 +13,33 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
 
 ## Syntax
 
-`PRIMARY KEY` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
+You can define a `PRIMARY KEY` constraint at the [table level](#table-level) or at the [column level](#column-level).
+
+### Table level
+
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/primary_key_table_level.html %}
+</div>
+
+ Parameter | Description
+-----------|-------------
+ `table_name` | The name of the table you're creating.
+ `column_def` | Definitions for any other columns in the table.
+ `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+ `column_name` | The name of the column you want to use as the `PRIMARY KEY`.<br/><br/>The order in which you list columns here affects the structure of the primary index.
+ `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply.
+
+**Example**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE IF NOT EXISTS inventories (
+    product_id        INT,
+    warehouse_id      INT,
+    quantity_on_hand  INT NOT NULL,
+    PRIMARY KEY (product_id, warehouse_id)
+  );
+~~~
 
 ### Column level
 
@@ -43,31 +69,7 @@ You can [change the primary key](#changing-primary-key-columns) of an existing t
   );
 ~~~
 
-### Table level
 
-<div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/primary_key_table_level.html %}
-</div>
-
- Parameter | Description
------------|-------------
- `table_name` | The name of the table you're creating.
- `column_def` | Definitions for any other columns in the table.
- `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
- `column_name` | The name of the column you want to use as the `PRIMARY KEY`.<br/><br/>The order in which you list columns here affects the structure of the primary index.
- `table_constraints` | Any other table-level [constraints](constraints.html) you want to apply.
-
-**Example**
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE IF NOT EXISTS inventories (
-    product_id        INT,
-    warehouse_id      INT,
-    quantity_on_hand  INT NOT NULL,
-    PRIMARY KEY (product_id, warehouse_id)
-  );
-~~~
 
 ## Details
 
@@ -112,15 +114,18 @@ pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constrai
 pq: null value in column "warehouse_id" violates not-null constraint
 ~~~
 
-## Changing primary key columns
+## Change primary key columns
 
-You can change the primary key of an existing table by doing one of the following:
+You can change the primary key columns of an existing table by doing one of the following:
 
 - Issuing an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement. When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
 - Issuing an [`ALTER TABLE ... DROP CONSTRAINT ... PRIMARY KEY`](drop-constraint.html) statement to drop the primary key, followed by an [`ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) statement, in the same transaction, to add a new primary key. This replaces the existing primary key without creating a secondary index from the old primary key. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
 
 {{site.data.alerts.callout_info}}
-You can use an [`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) statement without a [`DROP CONSTRAINT ... PRIMARY KEY`](drop-constraint.html) if the primary key was not explicitly defined at [table creation](create-table.html), and the current [primary key is on `rowid`](indexes.html#creation).
+If the primary key was not explicitly defined at [table creation](create-table.html), and the current [primary key is on `rowid`](indexes.html#creation):
+
+- You can use an [`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) statement without a [`DROP CONSTRAINT ... PRIMARY KEY`](drop-constraint.html).
+- The `rowid` column, which was automatically created as the table's primary key, will be dropped.
 {{site.data.alerts.end}}
 
 ## See also
