@@ -77,7 +77,7 @@ When [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-referenc
 1. The client driver's connection pool has no defined maximum number of connections.
 1. The client application issues transactions concurrently.
 
-In this situation, each new connection uses more CPU than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each concurrent transaction is slower, and a larger quantity of concurrent transactions can accumulate, in conjunction with a larger number of concurrent connections. In this situation, it can be difficult for the client application server to recover.
+In this situation, each new connection uses more CPU on the client application server than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each concurrent transaction is slower, and a larger quantity of concurrent transactions can accumulate, in conjunction with a larger number of concurrent connections. In this situation, it can be difficult for the client application server to recover.
 
 To mitigate against this situation, Cockroach Labs recommends that you:
 
