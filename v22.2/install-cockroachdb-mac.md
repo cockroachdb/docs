@@ -57,7 +57,7 @@ If you previously installed CockroachDB via Homebrew, run <code>brew uninstall c
 
 <div id="download-the-binary" class="install-option">
   <h3>Download the binary</h3>
-  {{ arch_note_binary }}
+  {{ arch_note_binaries }}
   <ol>
     <li>
       <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host.</p>
