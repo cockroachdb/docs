@@ -37,7 +37,7 @@ You can define `UNIQUE` constraints at the [table level](#table-level) and at th
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table you're creating.
+`table_name` | The name of the table you are creating.
 `column_def` | Definitions for any other columns in the table.
 `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `column_name` | The name of the column you want to constrain.
@@ -63,7 +63,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table you're creating.
+`table_name` | The name of the table you are creating.
 `column_name` | The name of the constrained column.
 `column_type` | The constrained column's [data type](data-types.html).
 `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
