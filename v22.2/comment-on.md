@@ -133,13 +133,13 @@ To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden |                    comment
-+-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+------------------------------------------------+
-  id          | UUID      |    false    | NULL           |                       | {primary} |   false   | NULL
-  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false   | NULL
-  name        | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
-  address     | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | NULL
-  credit_card | VARCHAR   |    true     | NULL           |                       | {primary} |   false   | This column contains user payment information.
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices    | is_hidden |                    comment
+--------------+-----------+-------------+----------------+-----------------------+--------------+-----------+-------------------------------------------------
+  id          | UUID      |      f      | NULL           |                       | {users_pkey} |     f     | NULL
+  city        | VARCHAR   |      f      | NULL           |                       | {users_pkey} |     f     | NULL
+  name        | VARCHAR   |      t      | NULL           |                       | {users_pkey} |     f     | NULL
+  address     | VARCHAR   |      t      | NULL           |                       | {users_pkey} |     f     | NULL
+  credit_card | VARCHAR   |      t      | NULL           |                       | {users_pkey} |     f     | This column contains user payment information.
 (5 rows)
 ~~~
 
@@ -167,16 +167,17 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 ~~~
 
 ~~~
-  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |                             comment
--------------+----------------+------------+--------------+-------------+-----------+---------+----------+------------------------------------------------------------------
-  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false   | NULL
-  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false   | NULL
-  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false   | NULL
-  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false   | NULL
-  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
-  users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   | This index improves performance on queries that filter by name.
-  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
-  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit | visible |                             comment
+-------------+----------------+------------+--------------+-------------+-----------+---------+----------+---------+------------------------------------------------------------------
+  users      | users_name_idx |     t      |            1 | name        | ASC       |    f    |    f     |    t    | This index improves performance on queries that filter by name.
+  users      | users_name_idx |     t      |            2 | city        | ASC       |    f    |    t     |    t    | This index improves performance on queries that filter by name.
+  users      | users_name_idx |     t      |            3 | id          | ASC       |    f    |    t     |    t    | This index improves performance on queries that filter by name.
+  users      | users_pkey     |     f      |            1 | city        | ASC       |    f    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            2 | id          | ASC       |    f    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            3 | name        | N/A       |    t    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t    | NULL
+(8 rows)
 ~~~
 
 ### Remove a comment from a database

@@ -254,16 +254,16 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  table_name |           index_name           | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+--------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey                     |   false    |            1 | username    | ASC       |  false  |  false
-  users      | users_pkey                     |   false    |            2 | email       | ASC       |  false  |  false
-  users      | users_first_name_last_name_key |   false    |            1 | first_name  | ASC       |  false  |  false
-  users      | users_first_name_last_name_key |   false    |            2 | last_name   | ASC       |  false  |  false
-  users      | users_first_name_last_name_key |   false    |            3 | username    | ASC       |  false  |   true
-  users      | users_first_name_last_name_key |   false    |            4 | email       | ASC       |  false  |   true
-  users      | users_email_key                |   false    |            1 | email       | ASC       |  false  |  false
-  users      | users_email_key                |   false    |            2 | username    | ASC       |  false  |   true
+  table_name |           index_name           | non_unique | seq_in_index | column_name | direction | storing | implicit  | visible
+-------------+--------------------------------+------------+--------------+-------------+-----------+---------+-----------+---------
+  users      | users_pkey                     |    f       |            1 | username    | ASC       |   f     |    f      |   t
+  users      | users_pkey                     |    f       |            2 | email       | ASC       |   f     |    f      |   t
+  users      | users_first_name_last_name_key |    f       |            1 | first_name  | ASC       |   f     |    f      |   t
+  users      | users_first_name_last_name_key |    f       |            2 | last_name   | ASC       |   f     |    f      |   t
+  users      | users_first_name_last_name_key |    f       |            3 | username    | ASC       |   f     |    t      |   t
+  users      | users_first_name_last_name_key |    f       |            4 | email       | ASC       |   f     |    t      |   t
+  users      | users_email_key                |    f       |            1 | email       | ASC       |   f     |    f      |   t
+  users      | users_email_key                |    f       |            2 | username    | ASC       |   f     |    t      |   t
 (8 rows)
 
         table_name        |                                 create_statement
@@ -320,12 +320,12 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  table_name |   index_name    | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+-----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey      |   false    |            1 | username    | ASC       |  false  |  false
-  users      | users_pkey      |   false    |            2 | email       | ASC       |  false  |  false
-  users      | users_email_key |   false    |            1 | email       | ASC       |  false  |  false
-  users      | users_email_key |   false    |            2 | username    | ASC       |  false  |   true
+  table_name |   index_name    | non_unique | seq_in_index | column_name | direction | storing | implicit  | visible
+-------------+-----------------+------------+--------------+-------------+-----------+---------+-----------+---------
+  users      | users_pkey      |    f       |            1 | username    | ASC       |   f     |   f       |   t
+  users      | users_pkey      |    f       |            2 | email       | ASC       |   f     |   f       |   t
+  users      | users_email_key |    f       |            1 | email       | ASC       |   f     |   f       |   t
+  users      | users_email_key |    f       |            2 | username    | ASC       |   f     |   t       |   t
 (4 rows)
 ~~~
 

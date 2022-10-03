@@ -34,50 +34,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Example
 
-### Rename an index
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW INDEXES FROM users;
-~~~
-
-~~~
-  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
- ------------+------------+------------+--------------+-------------+-----------+---------+----------
-  users      | name_idx   |    true    |            1 | name        | DESC      |  false  |  false
-  users      | name_idx   |    true    |            2 | city        | ASC       |  false  |   true
-  users      | name_idx   |    true    |            3 | id          | ASC       |  false  |   true
-  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
-  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
-  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
-(8 rows)
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER INDEX users@name_idx RENAME TO users_name_idx;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW INDEXES FROM users;
-~~~
-
-~~~
-  table_name | index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
- ------------+----------------+------------+--------------+-------------+-----------+---------+----------
-  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false
-  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false
-  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false
-  users      | users_name_idx |    true    |            1 | name        | DESC      |  false  |  false
-  users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true
-  users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true
-(8 rows)
-~~~
+{% include {{ page.version.version }}/sql/rename-index.md %}
 
 ## See also
 
