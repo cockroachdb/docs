@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.
+The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
