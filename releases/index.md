@@ -62,10 +62,19 @@ The following binaries are not suitable for production environments:
             {% endif %}
         {% endfor %}
 
+        {% assign v_mac_arm = "false" %}
+        {% for r in releases %}
+            {% if r.mac_arm == "true" %}
+                {% assign v_mac_arm = "true" %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+
         {% if releases[0] %}
 ### {{ s }} Releases
 
 <section class="filter-content" data-scope="linux">
+
     <table class="release-table">
     <thead>
         <tr>
@@ -78,7 +87,7 @@ The following binaries are not suitable for production environments:
         </tr>
     </thead>
     <tbody>
-            {% for r in releases %}
+        {% for r in releases %}
         <tr {% if r.version == latest_hotfix.version %}class="latest"{% endif %}> {% comment %} Add "Latest" class to release if it's the latest release. {% endcomment %}
             <td>
                 <a href="{{ v.major_version }}.html#{{ r.version | replace: ".", "-" }}">{{ r.version }}</a> {% comment %} Add link to each release r. {% endcomment %}
@@ -115,12 +124,18 @@ The following binaries are not suitable for production environments:
 </section>
 
 <section class="filter-content" data-scope="mac">
+
+    <p>ARM 64-bit binaries are <b>experimental</b> and not yet qualified for production use. They provide support for Mac computers with <a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>.</p>
+
     <table class="release-table">
     <thead>
         <tr>
             <td>Version</td>
             <td>Date</td>
             <td>Intel 64-bit Downloads</td>
+        {% if v_mac_arm == "true" %}
+            <td>ARM 64-bit (<b>Experimental</b>) Downloads</td>
+        {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -141,12 +156,24 @@ The following binaries are not suitable for production environments:
                     {% if r.has_sql_only != "false" %}
                 <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>)</div>
                     {% endif %}
+                {% endif %}
+                {% if r.mac_arm == "true" %}
+                  {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
+            <td><span class="badge badge-gray">Withdrawn</span></td>
+                  {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
+            <td>
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-aarch64.unsigned.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-aarch64.unsigned.tgz.sha256sum">SHA256</a>)</div>
+                    {% if r.has_sql_only != "false" %}
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-aarch64.unsigned.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-aarch64.unsigned.tgz.sha256sum">SHA256</a>)</div>
+                    {% endif %}
             </td>
                 {% endif %}
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
     </table>
+
 </section>
 
 <section class="filter-content" data-scope="windows">
