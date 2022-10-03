@@ -21,8 +21,17 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
+{% capture arch_note_homebrew %}For CockroachDB v22.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)). ARM binaries are **experimental** and are not qualified for production use.
+
+For CockroachDB v21.x and below, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.{% endcapture %}
+
+{% capture arch_note_binaries %}For CockroachDB v22.x and above, download the binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)). ARM binaries are **experimental** and are not qualified for production use.
+
+For CockroachDB v21.x and below, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.{% endcapture %}
+
 <div id="use-homebrew" class="install-option">
   <h3>Use Homebrew</h3>
+  {{ arch_note_homebrew }}
   <ol>
     <li>
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
@@ -48,15 +57,11 @@ If you previously installed CockroachDB via Homebrew, run <code>brew uninstall c
 
 <div id="download-the-binary" class="install-option">
   <h3>Download the binary</h3>
+  {{ arch_note_binary }}
   <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz" class="mac-binary-step1" id="mac-binary-step1-{{page.version.version}}" data-eventcategory="mac-binary-step1">CockroachDB archive</a> for OS X and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>, and copy the binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-binary-step1-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="nv language-shell mac-binary-step1" id="mac-binary-step1-{{ page.version.version }}" data-eventcategory="mac-binary-step1">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/</code></pre></div>
-      <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
+      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host.</p>
+      <p>The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>. <p>Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
     </li>
     <li>
       <p>On macOS Catalina (10.15) and above, the first time you run a newly-downloaded version of the <code>cockroach</code> command, a dialog may appear with the message <b>"cockroach" could not be opened because the developer cannot be verified</b>. Cockroach Labs is aware of this issue. To work around this problem and allow the binary to run:</p>
