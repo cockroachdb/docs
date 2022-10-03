@@ -9,7 +9,7 @@ The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained 
 
 You should explicitly define a table's primary key in the [`CREATE TABLE`](create-table.html) statement. If you don't define a primary key at table creation time, CockroachDB will create a `rowid` column that is `NOT VISIBLE`, use the [`unique_rowid()` function](functions-and-operators.html#id-generation-functions) as its default value, and use that as the table's primary key.
 
-You can [change the primary key](#changing-primary-key-columns) of an existing table with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement, or by using [`DROP CONSTRAINT`](drop-constraint.html) and then [`ADD CONSTRAINT`](add-constraint.html) in the same transaction. You cannot fully drop the `PRIMARY KEY` constraint on a table without replacing it as it provides an intrinsic structure to the table's data.
+You can [change the primary key](#change-primary-key-columns) of an existing table with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement, or by using [`DROP CONSTRAINT`](drop-constraint.html) and then [`ADD CONSTRAINT`](add-constraint.html) in the same transaction. You cannot fully drop the `PRIMARY KEY` constraint on a table without replacing it as it provides an intrinsic structure to the table's data.
 
 ## Syntax
 
