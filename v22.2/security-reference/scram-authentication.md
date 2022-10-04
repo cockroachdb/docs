@@ -143,13 +143,17 @@ It is possible to operate a CockroachDB cluster in such a way that it never hand
 - Configure your cluster settings
 - Manage users with pre-hashed passwords
 
-### Migrate from password to SCRAM
+### Migrate existing users/roles from cleartext passwords to SCRAM-SHA-256 authentication
 
 If a cluster had previously allowed cleartext password authentication (i.e., any cluster that began on a version prior to v22.1), you must carefully migrate to SCRAM-SHA-256 authentication in the following phases:
 
 1. Instead of creating and rotating user passwords by passing cleartext passwords into SQL statements, as described [previously](#enable-scram-sha-256-authentication-for-new-users-roles), you must instead generate CockroachDB/PostgreSQL-formatted SCRAM-SHA-256 hashes and enter those directly into the client, as described in the [following section](#manage-users-with-pre-hashed-passwords).
 2. You must block clients from sending cleartext passwords to CockroachDB during authentication by [customizing your cluster's authentication configuration](#configure-your-cluster-settings-for-strict-credential-isolation) so that only the `scram-sha-256` and `cert-scram-sha-256` methods, and neither `password` nor `cert-password`, are allowed.
 3. After steps (1) and (2) are complete, you must update any previously created passwords with externally generated SCRAM-SHA-256 hashes, and continue to generate your own hashes for all user creation and password update operations.
+
+{{site.data.alerts.callout_info}}
+In CockroachDB v22.x and above, the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting is enabled by default. Because `user_login.password_encryption` also defaults to `scram-sha-256`, this means that by default, any user who still uses cleartext passwords will be migrated to SCRAM-SHA-256 authentication. Refer to [Eventual migration](#eventual-migration).
+{{site.data.alerts.end}}
 
 Note the importance of rotating passwords twice, both in steps (1) and again in (3), with different passwords.  Step (1) ensures that clients at step (2) can continue to connect after non-SCRAM logins are blocked. However, between step (1) and step (2) it is still possible for CockroachDB to receive cleartext passwords from clients, and so the passwords used at step (1) are not fully protected yet. After step (2), CockroachDB will not learn cleartext passwords from clients any more; then after step 3 it will not know cleartext passwords at all.
 
@@ -163,7 +167,7 @@ Required cluster settings:
 
 #### `server.user_login.password_encryption`
 
-Enable SCRAM for new passwords.
+Enable SCRAM for new passwords. In CockroachDB v22.2.x and above, this cluster setting defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, it defaults to `bcrypt`.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -172,7 +176,7 @@ SET CLUSTER SETTING server.user_login.password_encryption = 'scram-sha-256';
 
 #### `server.user_login.store_client_pre_hashed_passwords.enabled`
 
-Enable the CockroachDB cluster to accept pre-computed SCRAM-SCHA-256 salted password hashes, rather than accepting a cleartext password and computing the hash itself.
+Enable the CockroachDB cluster to accept pre-computed SCRAM-SCHA-256 salted password hashes, rather than accepting a cleartext password and computing the hash itself. In CockroachDB v22.2.x and above, this cluster setting is enabled by default.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
