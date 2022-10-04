@@ -20,8 +20,6 @@ Subcommand | Description
 
 ## Required privileges
 
-To alter a function, a user must have:
-
 - To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
 - To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
 - To alter the owner of a function, the new owner must have `CREATE` privilege on the schema of the function.
@@ -46,11 +44,14 @@ Parameter | Description
 
 ### Rename a function
 
+The following statement defines a function that computes the sum of two arguments:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
+
+The following statement renames the `add` function to `sum`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

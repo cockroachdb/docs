@@ -33,17 +33,18 @@ Parameter | Description
 `func_create_name` | The name of the function.
 `func_arg` | A function argument.
 `func_arg_type` | The type returned by the function.
-`func_as` | The body of the function.
-`opt_routine_body` | ???
+`opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview](user-defined-functions.html#overview).
 
-## Examples
+## Simple example
 
-### Create a function to compute the square of integers
+The following statement creates a function to compute the square of integers:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE OR REPLACE FUNCTION sq(a INT) RETURNS INT AS 'SELECT a*a' LANGUAGE SQL;
 ~~~
+
+The following statement invokes the `sq` function:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -57,15 +58,17 @@ Parameter | Description
 (1 row)
 ~~~
 
+## Examples of functions that reference tables
+
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Create a function that references a table
 
-The following statement defines a function that returns the number of rows in the `users` table.
+The following statement defines a function that returns the total number of MovR application users.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) from users' LANGUAGE SQL;
+> CREATE OR REPLACE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) from users' LANGUAGE SQL;
 ~~~
 
 {% include_cached copy-clipboard.html %}

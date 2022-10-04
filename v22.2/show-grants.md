@@ -35,7 +35,7 @@ SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
 
 Parameter    | Description
 -------------|-----------------------------------------------------------------------------------------------------
-`targets`    | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.{{site.data.alerts.end}}
+`targets`    | A comma-separated list of database, function, schema, table, or user-defined type names.<br><br>If the function name is not unique, you must provide the full function signature.<br><br>To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.
 `users`      | A comma-separated list of the [users](security-reference/authorization.html#sql-users) whose privileges or roles you want to show.
 `roles`      | A comma-separated list of the roles whose grants you want to show.
 
@@ -43,7 +43,7 @@ Parameter    | Description
 
 ### Privilege grants
 
-The `SHOW GRANTS ON [DATABASE | FUNCTION| SCHEMA | TABLE | TYPE]` statement can return the following fields, depending on the target object specified:
+The `SHOW GRANTS ON [DATABASE | FUNCTION | SCHEMA | TABLE | TYPE]` statement can return the following fields, depending on the target object specified:
 
 Field            | Description
 -----------------|-----------------------------------------------------------------------------------------------------
@@ -332,9 +332,21 @@ To list all grants for all users and roles on the current database and its table
 (1 row)
 ~~~
 
-## Show grants on user-defined functions
+### Show grants on user-defined functions
 
+To show the grants defined on the `num_users` function created in [Create a function that references a table](create-function.html#create-a-function-that-references-a-table), run:
 
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON FUNCTION num_users;
+~~~
+
+~~~
+  database_name | schema_name | function_id | function_signature | grantee | privilege_type | is_grantable
+----------------+-------------+-------------+--------------------+---------+----------------+---------------
+  movr          | public      |      100113 | num_users()        | root    | EXECUTE        |      t
+(1 row)
+~~~
 
 ### Show role memberships
 
