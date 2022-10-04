@@ -282,8 +282,27 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
 
 <section class="filter-content" markdown="1" data-scope="java">
 
+<section class="filter-content" markdown="1" data-scope="ccloud">
+
+Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.versions["stable"]}}/connect-to-the-database.html?filters=java):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach convert-url --url "<connection-string>"
+~~~
+
+~~~
+...
+# Connection URL for JDBC (Java and JVM-based languages):
+jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+~~~
+
+</section>
+{% comment %} End ccloud{% endcomment %}
+
 <section class="filter-content" markdown="1" data-scope="mac">
-In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
+
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -295,7 +314,7 @@ The code sample uses the connection string stored in the environment variable `J
 {% comment %} End mac {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="linux">
-In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -307,7 +326,7 @@ The code sample uses the connection string stored in the environment variable `J
 {% comment %} End linux {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="windows">
-In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
