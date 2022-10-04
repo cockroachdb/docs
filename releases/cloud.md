@@ -94,7 +94,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3>General changes</h3>
 
-- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
+- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
 - [Single Sign-On (SSO)](../cockroachcloud/cloud-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
 
 <h3>Console changes</h3>
