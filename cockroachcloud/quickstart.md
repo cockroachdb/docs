@@ -20,12 +20,14 @@ This page shows you how to get started with CockroachDB quickly. You'll create a
 To get started with {{ site.data.products.db }} using {{ site.data.products.dedicated }} clusters, see [Quickstart with {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
 
 </section>
+{% comment %} End serverless {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="local">
 
 Follow these steps to get started with CockroachDB using a {{ site.data.products.core }} cluster.
 
 </section>
+{% comment %} End local {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
@@ -53,6 +55,7 @@ Follow these steps to create a {{ site.data.products.serverless }} cluster using
 ## Connect to the cluster
 
 </section>
+{% comment %} End console {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="ccloud">
 
@@ -80,8 +83,10 @@ postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachl
 ~~~
 
 </section>
+{% comment %} End ccloud {% endcomment %}
 
 </section>
+{% comment %} End serverless {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
@@ -92,12 +97,14 @@ postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachl
 {% include cockroachcloud/quickstart/get-connection-string.md %}
 
 </section>
+{% comment %} End node {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="go">
 
 {% include cockroachcloud/quickstart/get-connection-string.md %}
 
 </section>
+{% comment %} End go {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -112,6 +119,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
     {{site.data.alerts.end}}
 
 </section>
+{% comment %} End python {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="java">
 
@@ -127,8 +135,13 @@ The **Connect to cluster** dialog shows information about how to connect to your
     {{site.data.alerts.end}}
 
 </section>
+{% comment %} End java {% endcomment %}
 
 </section>
+{% comment %} End console {% endcomment %}
+
+</section>
+{% comment %} End serverless {% endcomment %}
 
 ## Choose your language
 
@@ -144,42 +157,30 @@ The sample code used in this tutorial is located in the [`quickstart-code-sample
 <section class="filter-content" markdown="1" data-scope="node">
 Use the [node-postgres](https://node-postgres.com/) driver in a Node.js application.
 </section>
+{% comment %} End node {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="python">
-Use the [psycopg2](https://www.psycopg.org/) driver in a Python application.
+Use the [psycopg3](https://www.psycopg.org/) driver in a Python application.
 </section>
+{% comment %} End python {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="go">
 Use the [pgx](https://github.com/jackc/pgx) driver in a Go application.
 </section>
+{% comment %} End go {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="java">
 Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
 </section>
-
-## Configure the connection environment variable
-
-</section>
+{% comment %} End java {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-## Start CockroachDB
+<h2>Start CockroachDB</h2>
 
-1. If you haven't already, [download the latest version of CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html).
+<section class="filter-content" markdown="1" data-scope="node">
 
-1. Run the [`cockroach demo`](../{{site.versions["stable"]}}/cockroach-demo.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach demo \
-    --no-example-database
-    ~~~
-
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-
-    {{site.data.alerts.callout_info}}
-    If `cockroach demo` fails due to SSL authentication, make sure you have cleared any previously downloaded CA certificates from the directory `~/.postgresql`.
-    {{site.data.alerts.end}}
+{% include common/quickstart/start-demo.md %}
 
 1. Copy the `(sql/unix)` connection string in the SQL shell welcome text:
 
@@ -191,10 +192,65 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
     ~~~
 
     You'll use the `sql/unix` connection string to connect to the cluster later in this tutorial.
+</section>
+{% comment %} End node {% endcomment %}
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+{% include common/quickstart/start-demo.md %}
+
+1. Copy the `(sql/unix)` connection string in the SQL shell welcome text:
+
+    ~~~
+    # Connection parameters:
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ~~~
+
+    You'll use the `sql/unix` connection string to connect to the cluster later in this tutorial.
+</section>
+{% comment %} End python {% endcomment %}
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+{% include common/quickstart/start-demo.md %}
+
+1. Copy the `(sql/unix)` connection string in the SQL shell welcome text:
+
+    ~~~
+    # Connection parameters:
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ~~~
+
+    You'll use the `sql/unix` connection string to connect to the cluster later in this tutorial.
+</section>
+{% comment %} End go {% endcomment %}
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include common/quickstart/start-demo.md %}
+
+1. Copy the `(sql/jdbc)` connection string in the SQL shell welcome text:
+
+    ~~~
+    # Connection parameters:
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/jdbc) jdbc:postgresql://127.0.0.1:26257/defaultdb?password=demo76950&sslmode=require&sslrootcert=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957%2Fca.crt&user=demo
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ~~~
+
+    You'll use the `sql/jdbc` connection string to connect to the cluster later in this tutorial.
+</section>
+{% comment %} End java {% endcomment %}
 
 ## Configure the connection environment variable
 
 </section>
+{% comment %} End local {% endcomment %}
 
 
 <div class="filters clearfix">
@@ -208,18 +264,21 @@ Use the [JDBC driver](https://jdbc.postgresql.org/) in a Java application.
 {% include cockroachcloud/quickstart/database-url-environment-variable.md %}
 
 </section>
+{% comment %} End node {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="python">
 
 {% include cockroachcloud/quickstart/database-url-environment-variable.md %}
 
 </section>
+{% comment %} End python {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="go">
 
 {% include cockroachcloud/quickstart/database-url-environment-variable.md %}
 
 </section>
+{% comment %} End go {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="java">
 
@@ -233,6 +292,7 @@ export JDBC_DATABASE_URL="<jdbc-connection-string>"
 
 The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 </section>
+{% comment %} End mac {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="linux">
 In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
@@ -244,6 +304,7 @@ export JDBC_DATABASE_URL="<jdbc-connection-string>"
 
 The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 </section>
+{% comment %} End linux {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="windows">
 In a terminal set the `JDBC_DATABASE_URL` environment variable to the connection string by running the command that you copied earlier:
@@ -255,25 +316,16 @@ $env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
 
 The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
 </section>
+{% comment %} End windows {% endcomment %}
 
 {{site.data.alerts.callout_success}}
 For reference information about connecting to CockroachDB with supported client drivers, see [Connect to a CockroachDB Cluster](../../docs/stable/connect-to-the-database.html).
 {{site.data.alerts.end}}
 
 </section>
-
-
-<section class="filter-content" markdown="1" data-scope="serverless">
+{% comment %} End java {% endcomment %}
 
 ## Run the sample code
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-## Run the sample code
-
-</section>
 
 <section class="filter-content" markdown="1" data-scope="node">
 
@@ -284,7 +336,7 @@ For reference information about connecting to CockroachDB with supported client 
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
-1. Navigate to the `node` directory of the repo:
+2. Navigate to the `node` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -293,19 +345,19 @@ For reference information about connecting to CockroachDB with supported client 
 
     The code sample in this directory does the following:
       1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connection string set in the `DATABASE_URL` environment variable.
-      1. Creates a table.
-      1. Inserts some data into the table.
-      1. Reads the inserted data.
-      1. Prints the data to the terminal.
+      2. Creates a table.
+      3. Inserts some data into the table.
+      4. Reads the inserted data.
+      5. Prints the data to the terminal.
 
-1. Install the code dependencies:
+3. Install the code dependencies:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm install
     ~~~
 
-1. Run the code:
+4. Run the code:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -319,6 +371,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
 </section>
+{% comment %} End node {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="python">
 
@@ -343,18 +396,18 @@ For reference information about connecting to CockroachDB with supported client 
       1. Reads the inserted data.
       1. Prints the data to the terminal.
 
-1. Install psycopg2.
+1. Install psycopg3.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    pip install psycopg2-binary
+    pip3 install "psycopg[binary]"
     ~~~
 
 1. Run the application:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    python main.py
+    python3 main.py
     ~~~
 
     The output will look like this:
@@ -364,6 +417,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
 </section>
+{% comment %} End python {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="go">
 
@@ -412,6 +466,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
 </section>
+{% comment %} End go {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="java">
 
@@ -454,6 +509,7 @@ For reference information about connecting to CockroachDB with supported client 
     ~~~
 
 </section>
+{% comment %} End java {% endcomment %}
 
 ## Next steps
 
