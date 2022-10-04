@@ -452,7 +452,7 @@
               ]
             },
             {
-              "title": "Monitor with Datadog",
+              "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]
