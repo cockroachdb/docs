@@ -16,16 +16,16 @@ Subcommand | Description
 -----------|------------
 `OWNER TO` | Change the [owner](owner-to.html) of a function.
 `RENAME TO` | Change the name of a function.
-`SET SCHEMA` | [Set schema](set-schema.html) for a function.
+`SET SCHEMA` | [Set schema](set-schema.html) of a function.
 
 ## Required privileges
 
 To alter a function, a user must have:
 
-- [Own](security-reference/authorization.html#object-ownership) the function.
-- `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema.
-- To alter owner, the new owner must have `CREATE` privilege on the schema.
-- To set schema, must have `CREATE` privilege on the new schema.
+- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+- To alter the owner of a function, the new owner must have `CREATE` privilege on the schema of the function.
+- To change the schema of a function, a user must have `CREATE` privilege on the new schema.
 
 ## Synopsis
 
@@ -37,7 +37,7 @@ To alter a function, a user must have:
 
 Parameter | Description
 ----------|------------
-`function_with_argtypes` | The name of the function with optional function arguments to alter.
+`function_with_argtypes` | The name of the function, with optional function arguments to alter.
 `name` | The new name of the function.
 `role_spec` | The role to set as the owner of the function.
 `schema_name` | The name of the new schema.
@@ -62,7 +62,7 @@ Parameter | Description
 > SHOW CREATE FUNCTION sum;
 ~~~
 
-The schema for the function `sum` is `public`:
+The default schema for the function `sum` is `public`:
 
 ~~~
   function_name |                 create_statement
@@ -92,7 +92,7 @@ Since `sum` is a [built-in function](functions-and-operators.html#aggregate-func
     3
 ~~~
 
-If you don't, you will get an error:
+If you do not specify `public`, you will get an error when invoking a built-in function:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -1,12 +1,12 @@
 ---
 title: User-Defined Functions
-summary: A user-defined function is a named function defined at the database layer that can be called in queries and other contexts.
+summary: A user-defined function is a named function defined at the database level that can be called in queries and other contexts.
 toc: true
 key: sql-expressions.html
 docs_area: reference.sql
 ---
 
-{% include_cached new-in.html version="v22.2" %} A user-defined function (UDF) is a named function defined at the database that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements](sql-statements.html#data-manipulation-statements).
+{% include_cached new-in.html version="v22.2" %} A user-defined function (UDF) is a named function defined at the database level that can be called in queries and other contexts. CockroachDB supports invoking UDFs in `SELECT`, `FROM`, and `WHERE` clauses of [DML statements](sql-statements.html#data-manipulation-statements).
 
 ## Overview
 
@@ -17,7 +17,7 @@ The basic components of a user-defined function are a name, list of arguments, r
 - The [volatility](functions-and-operators.html#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
   - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer](cost-based-optimizer.html) from pre-evaluating the function.
   - A `STABLE` or `IMMUTABLE` function does not mutate data.
-  - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE` and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
+  - `LEAKPROOF` indicates that a function has no side effects and that it communicates nothing that depends on its arguments besides the return value (i.e., it cannot throw an error that depends on the value of its arguments). You must precede `LEAKPROOF` with `IMMUTABLE`, and only `IMMUTABLE` can be set to `LEAKPROOF`. `NOT LEAKPROOF` is allowed with any other volatility.
 - The language specifies the language of the function body. CockroachDB supports the language `SQL`.
 - The function body:
   - Can reference arguments by name or by their ordinal in the function definition with the syntax `$1`.
@@ -38,7 +38,7 @@ The following is a UDF that returns the sum of two integers:
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT a + b';
 ~~~
 
-where:
+Where:
 
 - name: `add`
 - arguments: `a` of type `INT`, `b` of type `INT`
@@ -54,7 +54,7 @@ Alternatively, you could define this function as:
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
-or
+or as:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -65,7 +65,7 @@ $$;
 
 ### Invoke a UDF
 
-You invoke the UDF like a [built-in function](functions-and-operators.html). For example:
+You invoke the UDF like a [built-in function](functions-and-operators.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -88,7 +88,7 @@ To view the `add` function definition, run:
 SHOW CREATE FUNCTION add;
 ~~~
 
-If you don't specify a schema for the function `add` when you create it, the default schema is `public`:
+If you do not specify a schema for the function `add` when you create it, the default schema is `public`:
 
 ~~~
   function_name |                 create_statement

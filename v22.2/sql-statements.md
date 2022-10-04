@@ -20,7 +20,7 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
-[`ALTER FUNCTION`](alter-function.html) | **New in 22.2:** Modify a [user-defined function](user-defined-functions.html).
+[`ALTER FUNCTION`](alter-function.html) | **New in v22.2:** Modify a [user-defined function](user-defined-functions.html).
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. [Partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) | Change the [primary key](primary-key.html) of a table.
@@ -36,7 +36,7 @@ Statement | Usage
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
-[`CREATE FUNCTION`](create-function.html) | **New in 22.2:** Create a [user-defined function](user-defined-functions.html).
+[`CREATE FUNCTION`](create-function.html) | **New in v22.2:** Create a [user-defined function](user-defined-functions.html).
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SCHEMA`](create-schema.html) | Create a user-defined schema.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
@@ -47,7 +47,7 @@ Statement | Usage
 [`DROP COLUMN`](drop-column.html) | Remove columns from a table.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
-[`DROP FUNCTION`](drop-function.html) | **New in 22.2:** Drop a [user-defined function](user-defined-functions.html) from a database.
+[`DROP FUNCTION`](drop-function.html) | **New in v22.2:** Remove a [user-defined function](user-defined-functions.html) from a database.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
 [`DROP REGION`](drop-region.html) | Drop a [region](multiregion-overview.html#database-regions) from a database. [Multi-region features](multiregion-overview.html) require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`DROP SUPER REGION`](drop-super-region.html) | Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).

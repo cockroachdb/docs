@@ -6,7 +6,7 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `DROP FUNCTION` [statement](sql-statements.html) drops one or more [user-defined functions](user-defined-functions.html) from a schema.
+The `DROP FUNCTION` [statement](sql-statements.html) removes one or more [user-defined functions](user-defined-functions.html) from a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
