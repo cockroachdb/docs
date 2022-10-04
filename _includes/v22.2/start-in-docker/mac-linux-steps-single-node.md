@@ -30,17 +30,20 @@ docker volume create roach-single
 
 ### Step 2. Start the cluster
 
-{% capture  env_file_note %}{{site.data.alerts.callout_success}}Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.{{site.data.alerts.end}}{% endcapture %}
+This section shows how to start a single-node cluster that:
+
+- Stores its data in the `roach-single` volume on the Docker host, which is mounted on the `/cockroach/cockroach-data` directory within the container.
+- If the `/cockroach/cockroach-data` directory within the container is empty, creates the specified database, user, and password automatically.
+
+    {{site.data.alerts.callout_success}}
+    Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.
+    {{site.data.alerts.end}}
+
+- Bind-mounts the `~/init-scripts` directory on the Docker host onto the `/docker-entrypoint-initdb.d` directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.</li>
+- Accepts database client connections on hostname `roach-single` on port 26257.</li>
+- Accepts connections to the DB Console on hostname `roach-single` on port 8080.</li>
 
 1. Start the cluster node.
-
-    The following command starts a single-node cluster that:
-    <ul><li>Stores its data in the <code>roach-single</code> volume on the Docker host, which is mounted on the <code>/cockroach/cockroach-data</code> directory within the container.
-        <li>If the <code>/cockroach/cockroach-data</code> directory within the container is empty, creates the specified database, user, and password automatically.<br />{{ env_file_note }}</li>
-        <li>Bind-mounts the <code>~/init-scripts</code> directory on the Docker host onto the <code>/docker-entrypoint-initdb.d</code> directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.</li>
-        <li>Accepts database client connections on hostname <code>roach-single</code> on port 26257.</li>
-        <li>Accepts connections to the DB Console on hostname `roach-single` on port 8080.</li>
-    </ul>
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -101,10 +104,10 @@ docker volume create roach-single
 
 1. To connect to the cluster interactively using the `cockroach sql` command-line interface, set `--url` cluster's SQL connection string, which is printed next to `sql:` in the cluster's startup details. You can replace the IP address with the hostname of the Docker container so that the script continues to work if the IP address changes. To run `cockroach sql` on the `roach-single` cluster:
 
-   {% include_cached copy-clipboard.html %}
-   ~~~ shell
-   docker exec -it roach-single ./cockroach sql --url="postgresql://root@roach-single:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt"
-   ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    docker exec -it roach-single ./cockroach sql --url="postgresql://root@roach-single:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt"
+    ~~~
 
 1. To connect to the cluster using DB Console in your web browser, navigate to the address printed next to `webui:` in the cluster's startup details. You can replace the IP address with the hostname of the Docker container. To connect to the `roach-single` cluster, navigate to [https://roach-single:8080/](https://roach-single:8080/) for a secure cluster or [http://roach-single:8080/](http://roach-single:8080/) for an insecure cluster.
 
