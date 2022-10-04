@@ -54,7 +54,7 @@ Alternatively, you could define this function as:
 CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
-or as:
+Or as:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

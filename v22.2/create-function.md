@@ -35,7 +35,7 @@ Parameter | Description
 `func_arg_type` | The type returned by the function.
 `opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview](user-defined-functions.html#overview).
 
-## Simple example
+## Example of a simple function
 
 The following statement creates a function to compute the square of integers:
 
