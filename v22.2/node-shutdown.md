@@ -13,14 +13,9 @@ There are two ways to handle node shutdown:
 
 - To permanently remove the node from the cluster, **decommission** the node and then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
 
-{{site.data.alerts.callout_success}}
-This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
-
-Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
-{{site.data.alerts.end}}
-
 This page describes:
 
+- How node shutdown works when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [{{ site.data.products.dedicated }} cluster](#decommissioning-and-draining-on-cockroachdb-dedicated).
 - The details of the [node shutdown sequence](#node-shutdown-sequence).
 - How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) by implementing connection retry logic and coordinating load balancer, process manager, and cluster settings.
 - How to [perform node shutdown](#perform-node-shutdown) by draining or decommissioning the node.
@@ -29,6 +24,52 @@ This page describes:
     <button class="filter-button" data-scope="drain">Drain</button>
     <button class="filter-button" data-scope="decommission">Decommission</button>
 </div>
+
+## Decommissioning and draining on Kubernetes
+
+Most of the guidance in this page is most relevant to manual deployments. In a Kubernetes deployment, you don't manually decommission or drain individual nodes. Instead, each cluster node is managed within Kubernetes.
+
+- Do not attempt to decommission a specific node that is part of a Kubernetes deployment using the advice in this article. This can lead to data loss or loss of quorum in the CockroachDB cluster, and there is generally no need to do so. If you think that you need to decommission a specific node, [contact support](https://support.cockroachlabs.com/hc/en-us) for assistance.
+- While it's possible to drain a CockroachDB node that is part of a Kubernetes deployment, there is generally no need to do so. When you upgrade, downgrade, or change the configuration of a CockroachDB deployment on Kubernetes, you apply the changes using a [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/), which applies the change to one node at a time. On a given node, Kubernetes sends a `SIGTERM` signal to the `cockroach` process. When the `cockroach` process receives this signal, it drains the node before terminating itself. Kubernetes then applies the updated deployment to the cluster node, restarts the `cockroach` process, and re-joins the cluster. Refer to [Cluster Upgrades](upgrade-cockroachdb-kubernetes.html).
+- When you scale a Kubernetes deployment of CockroachDB down, there is no need to manually decommission or drain nodes. Instead, update the value of `nodes` in the deployment specification and apply the change using a rolling update. Refer to [Cluster Scaling](scale-cockroachdb-kubernetes.html).
+- The `kubectl drain` command is used for routine maintenance of Kubernetes clusters, but this command has direct relevance to the concept of draining a CockroachDB node. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
+
+Refer to the sections about [Termination grace period on Kubernetes](#termination-grace-period-on-kubernetes) and [Client connection timeout](#client-connection), as well as the pages about [Cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [Cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
+
+### Termination grace period on Kubernetes
+
+After Kubernetes issues a termination request to the `cockroach` process on a cluster node, it waits for a maximum of the deployment's `terminationGracePeriodSeconds` before forcibly terminating the process. If `terminationGracePeriodSeconds` is too short, the `cockroach` process could be killed before it can shut down cleanly, client applications could be disrupted, and data loss can result.
+
+Cockroach Labs recommends that you:
+
+- Set `terminationGracePeriodSeconds` to no shorter than 300 seconds (5 minutes). In most cases, a value higher than 600 seconds (10 minutes) is not required.Test the value you select before rolling out the change to production clusters.
+- Set `terminationGracePeriodSeconds` to be at least 5 seconds longer than the configured [drain timeout](#server-shutdown-drain_wait), to allow node drain to complete before Kubernetes removes the Kubernetes pod for the CockroachDB node.
+- Ensure that the **sum** of all `server.shutdown.*` settings for the CockroachDB cluster do not exceed the deployment's `terminationGracePeriodSeconds`, to reduce the likelihood that a node must be terminated forcibly.
+
+  - [server.shutdown.drain_wait](#server-shutdown-drain_wait)
+  - [server.shutdown.connection_wait](#server-shutdown-connection_wait)
+  - [server.shutdown.query_wait](#server-shutdown-query_wait)
+  - [server.shutdown.lease_transfer_wait](#server-shutdown-lease_transfer_wait)
+
+  For more information about these settings, refer to [Cluster settings](#cluster-settings).
+
+### Client connection timeout
+
+Client applications that connect to CockroachDB must handle disconnections gracefully, because from the point of view of the client, cluster maintenance is always a possibility.
+
+- A client application's connection pool should have a maximum lifetime that is shorter than the Kubernetes deployment's `terminationGracePeriodSeconds` setting. Cockroach Labs recommends aligning the value for [server.shutdown.connection_wait](#server-shutdown-connection_wait) with the connection pool's maximum lifetime.
+- If a client application is connected to a cluster node that is draining, it will be disconnected, and must include the ability to try to connect again. Refer to [Connection Retry Logic](#connection-retry-loop).
+
+<a id="decommissioning-and-draining-on-cockroachdb-dedicated"></a>
+
+## Decommissioning and draining on {{ site.data.products.dedicated }}
+
+Most of the guidance in this page is most relevant to manual deployments. In a {{ site.data.products.dedicated }} cluster, you don't manually decommission or drain individual nodes. Instead, each cluster node is managed using Kubernetes. {{ site.data.products.dedicated }} clusters hav `terminationGracePeriodSeconds` set to 300 seconds (5 minutes). This setting is not configurable. Cluster settings that begin with `server.shutdown.*` are also not configurable on {{ site.data.products.dedicated }}.
+
+Client applications that connect to CockroachDB must handle disconnections gracefully, because from the point of view of the client, cluster maintenance is always a possibility.
+
+- A client application's connection pool should have a maximum lifetime that is shorter than the Kubernetes deployment's `terminationGracePeriodSeconds` setting, which is always 300 seconds (5 minutes) on {{ site.data.products.dedicated }}.
+- If a client application is connected to a cluster node that is draining, it will be disconnected, and must include the ability to try to connect again. Refer to [Connection Retry Logic](#connection-retry-loop).
 
 ## Node shutdown sequence
 
@@ -264,7 +305,7 @@ If the `cockroach` process has not terminated at the end of the grace period, a 
 
 - When using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/) to run CockroachDB as a service, set the termination grace period with [`TimeoutStopSec`](https://www.freedesktop.org/software/systemd/man/systemd.service.html#TimeoutStopSec=) setting in the service file.
 
-- When using [Kubernetes](kubernetes-overview.html) to orchestrate CockroachDB, set the termination grace period with `terminationGracePeriodSeconds` in the [StatefulSet manifest](deploy-cockroachdb-with-kubernetes.html?filters=manual#configure-the-cluster).
+- When using [Kubernetes](kubernetes-overview.html) to orchestrate CockroachDB, set the termination grace period with `terminationGracePeriodSeconds` in the [StatefulSet manifest](deploy-cockroachdb-with-kubernetes.html?filters=manual#configure-the-cluster). Refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes).
 
 To determine an appropriate termination grace period:
 
@@ -331,9 +372,7 @@ After [preparing for graceful shutdown](#prepare-for-graceful-shutdown), do the 
 </section>
 
 {{site.data.alerts.callout_success}}
-This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
-
-Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
+This guidance applies to manual deployments. In a Kubernetes deployment or a {{ site.data.products.dedicated }} cluster, terminating the `cockroach` process is handled through Kubernetes. Refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes) and [Decommissioning and draining on {{ site.data.products.dedicated }}](#decommissioning-and-draining-on-cockroachdb-dedicated).
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -789,7 +828,7 @@ The value of `is_decommissioning` will change back to `false`:
 ~~~
   id | is_live | replicas | is_decommissioning | membership | is_draining
 -----+---------+----------+--------------------+------------+--------------
-   1 |  false  |       73 |       false        |   active   |    true  
+   1 |  false  |       73 |       false        |   active   |    true
 (1 row)
 ~~~
 
