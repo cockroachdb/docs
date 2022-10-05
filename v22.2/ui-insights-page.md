@@ -28,7 +28,7 @@ The **Transaction Executions** view provides an overview of all transaction exec
 The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table.
 
 - The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
-- The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` cluster setting to always capture contention events.
+- The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html) to always capture contention events.
 {{site.data.alerts.end}}
 
 Transaction executions with the **High Contention** insight are transactions that experienced [contention](transactions.html#transaction-contention).
