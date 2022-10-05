@@ -12,6 +12,10 @@ The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
 
 - Schema changes are treated differently than other SQL queries. You can use <a href="show-jobs.html"><code>SHOW JOBS</code></a> to monitor the progress of schema changes and <a href="cancel-job.html"><code>CANCEL JOB</code></a> to cancel schema changes that are taking longer than expected.
 - In rare cases where a query is close to completion when a cancellation request is issued, the query may run to completion.
+- In addition to the `CANCEL QUERY` statement, CockroachDB also supports query cancellation by [client drivers and ORMs](install-client-drivers.html) using the PostgreSQL wire protocol (pgwire). This allows CockroachDB to stop executing queries that your application is no longer waiting for, thereby reducing load on the cluster. pgwire query cancellation differs from the `CANCEL QUERY` statement in the following ways:
+  - It is how most client drivers and ORMS implement query cancellation. For example, it is [used by PGJDBC](https://github.com/pgjdbc/pgjdbc/blob/3a54d28e0b416a84353d85e73a23180a6719435e/pgjdbc/src/main/java/org/postgresql/core/QueryExecutorBase.java#L171) to implement the [`setQueryTimeout` method](https://jdbc.postgresql.org/documentation/publicapi/org/postgresql/jdbc/PgStatement.html#setQueryTimeout-int-).
+  - The cancellation request is sent over a different network connection than is used by SQL connections.
+  - If there are too many unsuccessful cancellation attempts, CockroachDB will start rejecting pgwire cancellations.
 
 ## Required privileges
 
@@ -20,7 +24,7 @@ Members of the `admin` role (include `root`, which belongs to `admin` by default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/cancel_query.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/cancel_query.html %}
 </div>
 
 ## Parameters
@@ -64,7 +68,7 @@ In this example, we use the [`SHOW STATEMENTS`](show-statements.html) statement 
 In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
 ~~~ sql
-> CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER STATEMENTS]
+> CANCEL QUERY (WITH x AS (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
       WHERE client_address = '127.0.0.1:55212'
           AND user_name = 'demo'
           AND query = 'SELECT * FROM rides ORDER BY revenue');

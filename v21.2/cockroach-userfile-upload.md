@@ -14,7 +14,7 @@ A userfile uses storage space in the cluster, and is replicated with the rest of
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-If you would like to upload and import data from from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
+If you would like to upload and import data from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -77,7 +77,7 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
 `--echo-sql`     | Reveal the SQL statements sent implicitly by the command-line utility.
 `--url`          | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
-`--recursive`<br>`-r` | <span class="version-tag">New in v21.2:</span> Upload a directory and its contents rooted at a specified directory recursively to user-scoped file storage. For example: `cockroach userfile upload -r <location/of/file> <userfile destination/of/file>` <br><br> See [File Destination](#file-destination) for detail on forming the destination URI and this [usage example](#upload-a-directory-recursively) for working with the `--recursive` flag.
+`--recursive`<br>`-r` | **New in v21.2:** Upload a directory and its contents rooted at a specified directory recursively to user-scoped file storage. For example: `cockroach userfile upload -r <location/of/file> <userfile destination/of/file>` <br><br> See [File Destination](#file-destination) for detail on forming the destination URI and this [usage example](#upload-a-directory-recursively) for working with the `--recursive` flag.
 
 ## Examples
 
@@ -85,7 +85,7 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
 
 To upload a file to the default storage (`userfile://defaultdb.public.userfiles_$user/`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv --certs-dir=certs
 ~~~
@@ -96,7 +96,7 @@ successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data.cs
 
 Also, a file can be uploaded to the default storage if the destination is not specified:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data2.csv --certs-dir=certs
 ~~~
@@ -111,7 +111,7 @@ Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-
 
 To upload a file to a specific destination, include the destination in the command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-upload/test-data.csv --cert-dir=certs
 ~~~
@@ -124,7 +124,7 @@ Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-
 
 ### Upload a directory recursively
 
-<span class="version-tag">New in v21.2:</span> To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
+{% include_cached new-in.html version="v21.2" %} To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
 
 ~~~ shell
 cockroach userfile upload -r /Users/maxroach/movr-backup userfile:///backup-data --certs-dir=certs
@@ -156,7 +156,7 @@ See the [file destination](#file-destination) section for more detail on forming
 
 ### Upload a file to a non-default userfile URI
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
 ~~~

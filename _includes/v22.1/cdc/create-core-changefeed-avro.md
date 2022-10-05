@@ -2,7 +2,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
 1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node \
     --insecure \
@@ -14,7 +14,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
 3. Move into the extracted `confluent-<version>` directory and start Confluent:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./bin/confluent local services start
     ~~~
@@ -23,7 +23,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
 4. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url="postgresql://root@127.0.0.1:26257?sslmode=disable" --format=csv
     ~~~
@@ -34,28 +34,28 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
 5. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
 6. Create table `bar`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bar (a INT PRIMARY KEY);
     ~~~
 
 7. Insert a row into the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bar VALUES (0);
     ~~~
 
 8. Start the core changefeed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > EXPERIMENTAL CHANGEFEED FOR bar WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
@@ -67,7 +67,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
 9. In a new terminal, add another row:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure -e "INSERT INTO bar VALUES (1)"
     ~~~
@@ -82,23 +82,41 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
 11. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
 
-12. To stop `cockroach`, run:
+12. To stop `cockroach`:
 
-    {% include copy-clipboard.html %}
+    Get the process ID of the node:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21766     1   0  6:21PM ttys001    0:00.89 cockroach start-single-node --insecure --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21766
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
 
 13. To stop Confluent, move into the extracted `confluent-<version>` directory and stop Confluent:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./bin/confluent local services stop
     ~~~
 
     To terminate all Confluent processes, use:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ./bin/confluent local destroy
     ~~~

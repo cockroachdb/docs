@@ -39,8 +39,9 @@ Targets:
 
  Parameter                              | Description
 ----------------------------------------+-------------------------------------------------------------------------------------------------------------------------
-`IF NOT EXISTS`                         | <span class="version-tag">New in v21.2:</span> Use to specify that a scheduled backup should not be created if the [`label`](#label) already exists. Produces an error if the schedule label already exists, or if the `label` is not specified.
+`IF NOT EXISTS`                         | **New in v21.2:** Use to specify that a scheduled backup should not be created if the [`label`](#label) already exists. Produces an error if the schedule label already exists, or if the `label` is not specified.
 <a name="label"></a>`label`             | The name used to identify the backup schedule. This is optional and does not need to be unique. If not provided, the schedule will be assigned the name `BACKUP`.
+`targets`                               | The targets you want to back up: <ul><li>[cluster](#create-a-scheduled-backup-for-a-cluster) `[ ]`</li><li>[database](#create-a-scheduled-backup-for-a-database) `DATABASE <database_name> [, ...]`</li><li>[table](#create-a-scheduled-backup-for-a-table) `TABLE <table_pattern> [, ...]`</li></ul>
 `table_pattern`                         | The [table(s)](create-table.html) or [view(s)](views.html) you want to back up.
 `database_name`                         | The name of the [database(s)](create-database.html) you want to back up (i.e., create backups of all tables and views in the database).
 `location`                              | The URI where you want to store the backup. The backup files will be stored in year > month > day subdirectories. The location can be [cloud storage](use-cloud-storage-for-bulk-operations.html), or `nodelocal`.<br><br><b>Note:</b> If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
@@ -111,7 +112,7 @@ You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to v
 
 Core users can only use backup scheduling for full backups of clusters, databases, or tables. Full backups are taken with the `FULL BACKUP ALWAYS` clause, for example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE core_schedule_label
   FOR BACKUP INTO 's3://test/schedule-test-core?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -132,7 +133,7 @@ To use the other backup features, you need an [Enterprise license](enterprise-li
 
 This example creates a schedule for a cluster backup with revision history that's taken every day at midnight:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_label
   FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -154,7 +155,7 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, Cockro
 
 This example creates a schedule for a backup of the database `movr` with revision history that's taken every day 1 minute past midnight (`00:00:01`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_database
   FOR BACKUP DATABASE movr INTO 's3://test/schedule-database?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -176,7 +177,7 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, Cockro
 
 This example creates a schedule for a backup of the table `movr.vehicles` with revision history that's taken every hour:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_table
   FOR BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
@@ -198,7 +199,7 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, Cockro
 
 This example creates a schedule for a backup of the table `movr.vehicles` with revision history that's taken every hour, with its first run scheduled for `2020-09-15 00:00:00.00` (UTC):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE scheduled_first_run
   FOR BACKUP TABLE movr.vehicles INTO 's3://test/schedule-table?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'

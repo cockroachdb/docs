@@ -2,10 +2,7 @@
 title: Create Security Certificates using OpenSSL
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
-filter_category: security_cert
-filter_html: Use OpenSSL
-filter_sort: 2
-docs_area: 
+docs_area:
 ---
 
 To secure your CockroachDB cluster's inter-node and client-node communication, you need to provide a Certificate Authority (CA) certificate that has been used to sign keys and certificates (SSLs) for:
@@ -16,7 +13,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/security-cert.md %}
 
 ## Subcommands
 
@@ -72,7 +69,7 @@ Note the following:
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -83,7 +80,7 @@ Note the following:
 
     You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 365 days.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     # OpenSSL CA configuration file
     [ ca ]
@@ -133,18 +130,18 @@ Note the following:
 
 3. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out my-safe-directory/ca.key 2048
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 my-safe-directory/ca.key
     ~~~
 
 4. Create the CA certificate using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -158,15 +155,15 @@ Note the following:
 
 6. Reset database and index files:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -f index.txt serial.txt
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch index.txt
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo '01' > serial.txt
     ~~~
@@ -177,7 +174,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the `node.cnf` file for the first node and copy the following configuration into it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     # OpenSSL node configuration file
     [ req ]
@@ -198,18 +195,18 @@ In the following steps, replace the placeholder text in the code with the actual
 
 2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/node.key 2048
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 certs/node.key
     ~~~
 
 3. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -221,7 +218,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 4. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
@@ -237,7 +234,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 5. Verify the values in the `Subject Alternative Name` field in the certificate:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl x509 -in certs/node.crt -text | grep "X509v3 Subject Alternative Name" -A 1
     ~~~
@@ -255,7 +252,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Create the `client.cnf` file for the first user and copy the following configuration into it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     [ req ]
     prompt=no
@@ -276,18 +273,18 @@ In the following steps, replace the placeholder text in the code with the actual
 
 2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/client.<username_1>.key 2048
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 certs/client.<username_1>.key
     ~~~
 
 3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -299,7 +296,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
@@ -311,11 +308,11 @@ In the following steps, replace the placeholder text in the code with the actual
     -outdir certs/ \
     -in client.<username_1>.csr \
     -batch
-    ~~~    
+    ~~~
 
 5. Verify the values in the `CN` field in the certificate:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl x509 -in certs/client.<username_1>.crt -text | grep CN=
     ~~~
@@ -331,26 +328,26 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Start a single-node cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --certs-dir=certs --cert-principal-map=<node-domain>:node,<username_1>:root --background
     ~~~
 
 2. Connect to the cluster using a connection URL:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url='postgres://<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_1>.crt&sslkey=certs/client.<username_1>.key&sslmode=verify-full'
     ~~~
 
 3. Create a new SQL user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > create user <username_2>;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -361,7 +358,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 1. Edit the `client.cnf` file for the client and copy the following configuration into it:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     [ req ]
     prompt=no
@@ -377,18 +374,18 @@ In the following steps, replace the placeholder text in the code with the actual
 
 2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl genrsa -out certs/client.<username_2>.key 2048
     ~~~
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chmod 400 certs/client.<username_2>.key
     ~~~
 
 3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl req \
     -new \
@@ -400,7 +397,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl ca \
     -config ca.cnf \
@@ -412,11 +409,11 @@ In the following steps, replace the placeholder text in the code with the actual
     -outdir certs/ \
     -in client.<username_2>.csr \
     -batch
-    ~~~    
+    ~~~
 
 5. Verify the values in the `CN` field in the certificate:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ openssl x509 -in certs/client.<username_2>.crt -text | grep CN=
     ~~~
@@ -430,7 +427,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
 6. Connect to the SQL client using the client certificate:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url='postgres://<username_2>@<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_2>.crt&sslkey=certs/client.<username_2>.key&sslmode=verify-full'
     ~~~

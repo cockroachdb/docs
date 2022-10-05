@@ -26,6 +26,10 @@ For information on `userfile` commands, visit the following pages:
 
 The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
+{{site.data.alerts.callout_danger}}
+You cannot restore a backup of a multi-region database into a single-region database.
+{{site.data.alerts.end}}
+
 ## Examples
 
 Before you begin, connect to your cluster. For guidance on connecting to your {{ site.data.products.db }} cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html) or [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).

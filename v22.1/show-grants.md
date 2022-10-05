@@ -53,6 +53,7 @@ Field            | Description
 `type_name`      | The name of the user-defined type.
 `grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
 `privilege_type` | The name of the privilege.
+`is_grantable`   | **New in v22.1:** `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 
 ### Role grants
 
@@ -76,47 +77,47 @@ Field        |  Description
 
 To list all grants for all users and roles on the current database and its tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS;
 ~~~
 
 ~~~
-  database_name |    schema_name     |           relation_name           | grantee | privilege_type
-----------------+--------------------+-----------------------------------+---------+-----------------
-  movr          | crdb_internal      | NULL                              | admin   | ALL
-  movr          | crdb_internal      | NULL                              | root    | ALL
-  movr          | crdb_internal      | backward_dependencies             | public  | SELECT
-  movr          | crdb_internal      | builtin_functions                 | public  | SELECT
+  database_name |    schema_name     |           relation_name           | grantee | privilege_type  | is_grantable
+----------------+--------------------+-----------------------------------+---------+-----------------+--------------
+  movr          | crdb_internal      | NULL                              | admin   | ALL             | true
+  movr          | crdb_internal      | NULL                              | root    | ALL             | true
+  movr          | crdb_internal      | backward_dependencies             | public  | SELECT          | false
+  movr          | crdb_internal      | builtin_functions                 | public  | SELECT          | false
 ...
 (365 rows)
 ~~~
 
 ### Show a specific user or role's grants
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH PASSWORD roach;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON DATABASE movr TO max;
+> GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS FOR max;
 ~~~
 
 ~~~
-  database_name |    schema_name     | relation_name | grantee | privilege_type
-----------------+--------------------+---------------+---------+-----------------
-  movr          | crdb_internal      | NULL          | max     | ALL
-  movr          | information_schema | NULL          | max     | ALL
-  movr          | pg_catalog         | NULL          | max     | ALL
-  movr          | pg_extension       | NULL          | max     | ALL
-  movr          | public             | NULL          | max     | ALL
+  database_name |    schema_name     | relation_name | grantee | privilege_type  | is_grantable
+----------------+--------------------+---------------+---------+-----------------+--------------
+  movr          | crdb_internal      | NULL          | max     | ALL             | true
+  movr          | information_schema | NULL          | max     | ALL             | true
+  movr          | pg_catalog         | NULL          | max     | ALL             | true
+  movr          | pg_extension       | NULL          | max     | ALL             | true
+  movr          | public             | NULL          | max     | ALL             | true
 (5 rows)
 ~~~
 
@@ -124,227 +125,227 @@ To list all grants for all users and roles on the current database and its table
 
 **Specific database, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
-  database_name |    schema_name     | grantee | privilege_type
-----------------+--------------------+---------+-----------------
-  movr          | crdb_internal      | admin   | ALL
-  movr          | crdb_internal      | max     | ALL
-  movr          | crdb_internal      | root    | ALL
-  movr          | information_schema | admin   | ALL
-  movr          | information_schema | max     | ALL
-  movr          | information_schema | root    | ALL
-  movr          | pg_catalog         | admin   | ALL
-  movr          | pg_catalog         | max     | ALL
-  movr          | pg_catalog         | root    | ALL
-  movr          | pg_extension       | admin   | ALL
-  movr          | pg_extension       | max     | ALL
-  movr          | pg_extension       | root    | ALL
-  movr          | public             | admin   | ALL
-  movr          | public             | max     | ALL
-  movr          | public             | root    | ALL
+  database_name |    schema_name     | grantee | privilege_type  | is_grantable
+----------------+--------------------+---------+-----------------+--------------
+  movr          | crdb_internal      | admin   | ALL             | true
+  movr          | crdb_internal      | max     | ALL             | false
+  movr          | crdb_internal      | root    | ALL             | true
+  movr          | information_schema | admin   | ALL             | true
+  movr          | information_schema | max     | ALL             | false
+  movr          | information_schema | root    | ALL             | true
+  movr          | pg_catalog         | admin   | ALL             | true
+  movr          | pg_catalog         | max     | ALL             | false
+  movr          | pg_catalog         | root    | ALL             | true
+  movr          | pg_extension       | admin   | ALL             | true
+  movr          | pg_extension       | max     | ALL             | false
+  movr          | pg_extension       | root    | ALL             | true
+  movr          | public             | admin   | ALL             | true
+  movr          | public             | max     | ALL             | false
+  movr          | public             | root    | ALL             | true
 (15 rows)
 ~~~
 
 **Specific database, specific user or role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE movr FOR max;
 ~~~
 
 ~~~
-  database_name |    schema_name     | grantee | privilege_type
-----------------+--------------------+---------+-----------------
-  movr          | crdb_internal      | max     | ALL
-  movr          | information_schema | max     | ALL
-  movr          | pg_catalog         | max     | ALL
-  movr          | pg_extension       | max     | ALL
-  movr          | public             | max     | ALL
+  database_name |    schema_name     | grantee | privilege_type  | is_grantable
+----------------+--------------------+---------+-----------------+--------------
+  movr          | crdb_internal      | max     | ALL             | false
+  movr          | information_schema | max     | ALL             | false
+  movr          | pg_catalog         | max     | ALL             | false
+  movr          | pg_extension       | max     | ALL             | false
+  movr          | public             | max     | ALL             | false
 (5 rows)
 ~~~
 
 ### Show grants on tables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON TABLE users TO max;
+> GRANT ALL ON TABLE users TO max WITH GRANT OPTION;
 ~~~
 
 **Specific table, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE users;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | users      | admin   | ALL
-  movr          | public      | users      | max     | ALL
-  movr          | public      | users      | root    | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+---------------
+  movr          | public      | users      | admin   | ALL             | true
+  movr          | public      | users      | max     | ALL             | true
+  movr          | public      | users      | root    | ALL             | true
 (3 rows)
 ~~~
 
 **Specific table, specific role or user:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE users FOR max;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | users      | max     | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+---------------
+  movr          | public      | users      | max     | ALL             | true
 (1 row)
 ~~~
 
 **All tables, all users and roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE *;
 ~~~
 
 ~~~
-  database_name | schema_name |         table_name         | grantee | privilege_type
-----------------+-------------+----------------------------+---------+-----------------
-  movr          | public      | promo_codes                | admin   | ALL
-  movr          | public      | promo_codes                | root    | ALL
-  movr          | public      | rides                      | admin   | ALL
-  movr          | public      | rides                      | root    | ALL
-  movr          | public      | user_promo_codes           | admin   | ALL
-  movr          | public      | user_promo_codes           | root    | ALL
-  movr          | public      | users                      | admin   | ALL
-  movr          | public      | users                      | max     | ALL
-  movr          | public      | users                      | root    | ALL
-  movr          | public      | vehicle_location_histories | admin   | ALL
-  movr          | public      | vehicle_location_histories | root    | ALL
-  movr          | public      | vehicles                   | admin   | ALL
-  movr          | public      | vehicles                   | root    | ALL
+  database_name | schema_name |         table_name         | grantee | privilege_type  | is_grantable
+----------------+-------------+----------------------------+---------+-----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL             | true
+  movr          | public      | promo_codes                | root    | ALL             | true
+  movr          | public      | rides                      | admin   | ALL             | true
+  movr          | public      | rides                      | root    | ALL             | true
+  movr          | public      | user_promo_codes           | admin   | ALL             | true
+  movr          | public      | user_promo_codes           | root    | ALL             | true
+  movr          | public      | users                      | admin   | ALL             | true
+  movr          | public      | users                      | max     | ALL             | true
+  movr          | public      | users                      | root    | ALL             | true
+  movr          | public      | vehicle_location_histories | admin   | ALL             | true
+  movr          | public      | vehicle_location_histories | root    | ALL             | true
+  movr          | public      | vehicles                   | admin   | ALL             | true
+  movr          | public      | vehicles                   | root    | ALL             | true
 (13 rows)
 ~~~
 
 **All tables, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TABLE * FOR max;
 ~~~
 
 ~~~
-  database_name | schema_name | table_name | grantee | privilege_type
-----------------+-------------+------------+---------+-----------------
-  movr          | public      | users      | max     | ALL
+  database_name | schema_name | table_name | grantee | privilege_type  | is_grantable
+----------------+-------------+------------+---------+-----------------+---------------
+  movr          | public      | users      | max     | ALL             | true
 (1 row)
 ~~~
 
 ### Show grants on schemas
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON SCHEMA cockroach_labs TO max;
+> GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
 ~~~
 
 **Specific schema, all users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | admin   | ALL
-  movr          | cockroach_labs | max     | ALL
-  movr          | cockroach_labs | root    | ALL
+  database_name |  schema_name   | grantee | privilege_type  | is_grantable
+----------------+----------------+---------+-----------------+---------------
+  movr          | cockroach_labs | admin   | ALL             | true
+  movr          | cockroach_labs | max     | ALL             | true
+  movr          | cockroach_labs | root    | ALL             | true
 (3 rows)
 ~~~
 
 **Specific schema, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON SCHEMA cockroach_labs FOR max;
 ~~~
 
 ~~~
-  database_name |  schema_name   | grantee | privilege_type
-----------------+----------------+---------+-----------------
-  movr          | cockroach_labs | max     | ALL
+  database_name |  schema_name   | grantee | privilege_type  | is_grantable
+----------------+----------------+---------+-----------------+---------------
+  movr          | cockroach_labs | max     | ALL             | true
 (1 row)
 ~~~
 
 ### Show grants on user-defined types
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON TYPE status TO max;
+> GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
 ~~~
 
 **Specific type, all users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status;
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | admin   | ALL
-  movr          | public      | status    | max     | ALL
-  movr          | public      | status    | public  | USAGE
-  movr          | public      | status    | root    | ALL
+  database_name | schema_name | type_name | grantee | privilege_type  | is_grantable
+----------------+-------------+-----------+---------+-----------------+---------------
+  movr          | public      | status    | admin   | ALL             | true
+  movr          | public      | status    | max     | ALL             | true
+  movr          | public      | status    | public  | USAGE           | true
+  movr          | public      | status    | root    | ALL             | true
 (4 rows)
 ~~~
 
 **Specific type, specific users or roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON TYPE status FOR max;
 ~~~
 
 ~~~
-  database_name | schema_name | type_name | grantee | privilege_type
-----------------+-------------+-----------+---------+-----------------
-  movr          | public      | status    | max     | ALL
+  database_name | schema_name | type_name | grantee | privilege_type  | is_grantable
+----------------+-------------+-----------+---------+-----------------+---------------
+  movr          | public      | status    | max     | ALL             | true
 (1 row)
 ~~~
 
 ### Show role memberships
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE moderator;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT moderator TO max;
 ~~~
 
 **All members of all roles:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE;
 ~~~
@@ -359,7 +360,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Members of a specific role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE moderator;
 ~~~
@@ -373,7 +374,7 @@ To list all grants for all users and roles on the current database and its table
 
 **Roles of a specific user or role:**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON ROLE FOR max;
 ~~~

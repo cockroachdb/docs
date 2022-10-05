@@ -41,7 +41,7 @@ To define a stored computed column, use the following syntax:
 column_name <type> AS (<expr>) STORED
 ~~~
 
-<span class="version-tag">New in v21.1:</span> To define a virtual computed column, use the following syntax:
+{% include_cached new-in.html version="v21.1" %} To define a virtual computed column, use the following syntax:
 
 ~~~
 column_name <type> AS (<expr>) VIRTUAL
@@ -51,7 +51,7 @@ Parameter | Description
 ----------|------------
 `column_name` | The [name/identifier](keywords-and-identifiers.html#identifiers) of the computed column.
 `<type>` | The [data type](data-types.html) of the computed column.
-`<expr>` | The pure [scalar expression](scalar-expressions.html) used to compute column values. Any functions marked as `impure`, such as `now()` or `nextval()` cannot be used.
+`<expr>` | The immutable [scalar expression](scalar-expressions.html) used to compute column values. You cannot use any functions, such as `now()` or `nextval()`, that are not immutable.
 `STORED` | _(Required for stored computed columns)_ The computed column is stored alongside other columns.
 `VIRTUAL`| _(Required for virtual columns)_ The computed column is virtual, meaning the column data is not stored in the table's primary index.
 

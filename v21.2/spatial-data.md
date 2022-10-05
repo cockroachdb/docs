@@ -21,7 +21,7 @@ Supported [spatial](spatial-features.html) data types include:
 
 ## Compatibility
 
-Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension. CockroachDB is compatible with PostGIS Version 3.0 and up.
+Just as CockroachDB strives for [PostgreSQL compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension. CockroachDB is compatible with PostGIS Version 3.0 and up.
 
 CockroachDB does not implement the full list of PostGIS built-in functions and operators. Also, [spatial indexing works differently](spatial-indexes.html) (see the [Performance](#performance) section below). For a list of the spatial functions CockroachDB supports, see [Geospatial functions](functions-and-operators.html#spatial-functions).
 
@@ -80,7 +80,7 @@ The syntax for adding an [index](spatial-indexes.html) to a geometry column is `
 
 For example, to add an index to the `geom` column of the [sample `tornadoes` table](migrate-from-shapefiles.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 ~~~
@@ -111,7 +111,7 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 - [Start a local insecure cluster](start-a-local-cluster.html) and connect to that cluster from a [SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -122,14 +122,14 @@ CockroachDB can work with the tutorial up to Chapter 22, with the following exce
 
 Clone the data set:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/otan-cockroach/otan-scripts
 ~~~
 
 Load the SQL files into your CockroachDB cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cat otan-scripts/geospatial_sql/*.sql | cockroach sql --insecure --host=localhost --port=26257
 ~~~
@@ -140,7 +140,7 @@ The command above will take a few minutes to run.
 
 When the cluster is finished loading the data, open a SQL shell and start working through the [Introduction to PostGIS](https://postgis.net/workshops/postgis-intro/) tutorial:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure --host=localhost --port=26257
 ~~~

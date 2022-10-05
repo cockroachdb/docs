@@ -1,11 +1,10 @@
 ---
-title: Table Partitioning
-summary: Partitioning gives you row-level control of how and where your data is stored.
+title: Define Table Partitions
+summary: Partitioning is an Enterprise feature that gives you row-level control of how and where your data is stored.
 toc: true
-docs_area: deploy
 ---
 
-CockroachDB allows you to define table partitions, giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
+CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 {% include enterprise-feature.md %}
 
@@ -41,7 +40,7 @@ For more details about these flags, see the [`cockroach start`](cockroach-start.
 
 You must have a valid Enterprise license to use table partitioning features. For details about requesting and setting a trial or full Enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-The following features do not work with an **expired license**:
+Note that the following features do not work with an **expired license**:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index
@@ -88,7 +87,7 @@ The primary key required for partitioning is different from the conventional pri
 
 For instance, consider the database of a global online learning portal that has a table for students of all the courses across the world. If you want to geo-partition the table based on the countries of the students, then the primary key needs to be defined as:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
     id INT DEFAULT unique_rowid(),
@@ -101,11 +100,11 @@ For instance, consider the database of a global online learning portal that has 
 
 ##### Primary key considerations
 
-The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
+- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
 #### Partition using a secondary index
 
-The primary key discussed in the preceding section has two drawbacks:
+The primary key discussed above has two drawbacks:
 
 - It does not enforce that the identifier column is globally unique.
 - It does not provide fast lookups on the identifier.
@@ -114,13 +113,7 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
-When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
-
-#### Partition using foreign key reference
-
-If a partitioned table contains a [foreign key reference](foreign-key.html) to a non-partitioned table, the secondary index created automatically for the foreign key reference will not be partitioned. This can impact performance when querying against the partitioned table, as the data may exist in a distant node.
-
-To minimize potential latency issues, configure the non-partitioned table to be a [`GLOBAL` table](global-tables.html).
+ When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
 
 ### Replication zones
 
@@ -149,7 +142,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 1. Start 3 nodes in the US availability zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -162,7 +155,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -175,7 +168,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -190,7 +183,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 2. Initialize the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init \
     --insecure \
@@ -199,7 +192,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 3. Add 3 nodes in the German availability zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -212,7 +205,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -225,7 +218,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -240,7 +233,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 3. Add 3 nodes in the Australian availability zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -253,7 +246,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -266,7 +259,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -288,26 +281,26 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
 
 1. Open the CockroachDB SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
 2. Create the database and set it as current:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE roachlearn;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = roachlearn;
     ~~~
 
 3. Create the table with the appropriate partitions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE students (
         id INT DEFAULT unique_rowid(),
@@ -326,7 +319,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
 
     Alternatively, you can create and partition the table as separate steps:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE students (
         id INT DEFAULT unique_rowid(),
@@ -337,7 +330,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
         PRIMARY KEY (country, id));
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE students
       PARTITION BY LIST (country) (
@@ -354,7 +347,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 1. Create a replication zone for the `north_america` partition and constrain its data to the US availability zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION north_america OF TABLE students
         CONFIGURE ZONE USING constraints='[+region=us]';
@@ -362,7 +355,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 2. Create a replication zone for the `europe` partition and constrain its data to the German availability zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION europe OF TABLE students
         CONFIGURE ZONE USING constraints='[+region=de]';
@@ -370,7 +363,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 3. Create a replication zone for the `australia` partition and constrain its data to the Australian availability zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PARTITION australia OF TABLE students
         CONFIGURE ZONE USING constraints='[+region=aus]';
@@ -378,7 +371,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 4. After creating these replication zones, you can view them using the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FROM PARTITION north_america OF TABLE students;
     ~~~
@@ -399,7 +392,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
 #### Step 6. Check replica distribution
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW RANGES FROM TABLE roachlearn.students] WHERE "start_key" IS NOT NULL AND "start_key" NOT LIKE '%Prefix%';
 ~~~
@@ -432,7 +425,7 @@ We can see that, after partitioning, the replicas for `US` and `CA`-based studen
 
 To retrieve table partitions, you can use the [`SHOW PARTITIONS`](show-partitions.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW PARTITIONS FROM TABLE students;
 ~~~
@@ -467,7 +460,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 1. Start the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --insecure \
     --store=path=/mnt/1,attrs=ssd \
@@ -477,7 +470,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 2. Start the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --insecure \
     --store=path=/mnt/2,attrs=hdd \
@@ -487,7 +480,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 3. Initialize the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init \
     --insecure \
@@ -496,7 +489,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 #### Step 4. Create a table with the appropriate partitions
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students_by_range (
    id INT DEFAULT unique_rowid(),
@@ -514,13 +507,13 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION current OF TABLE students_by_range
     CONFIGURE ZONE USING constraints='[+ssd]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION graduated OF TABLE students_by_range
     CONFIGURE ZONE USING constraints='[+hdd]';
@@ -528,7 +521,7 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 #### Step 6. Check replica distribution
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGES FROM TABLE students_by_range;
 ~~~
@@ -563,7 +556,7 @@ We want to geo-partition as well as archival-partition the table. We can achieve
 
 Start a node in the US availability zone:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -576,7 +569,7 @@ $ cockroach start \
 
 Start a node in the AUS availability zone:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
@@ -589,7 +582,7 @@ $ cockroach start \
 
 Initialize the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=<address of any node>
 ~~~
@@ -600,7 +593,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 #### Step 4. Create a table with the appropriate partitions
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE students (
     id INT DEFAULT unique_rowid(),
@@ -621,25 +614,25 @@ Subpartition names must be unique within a table. In our example, even though `g
 
 To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION current_us OF TABLE students
     CONFIGURE ZONE USING constraints='[+ssd,+az=us1]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION graduated_us OF TABLE students CONFIGURE ZONE
     USING constraints='[+hdd,+az=us1]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION current_au OF TABLE students
     CONFIGURE ZONE USING constraints='[+ssd,+az=aus1]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION graduated_au OF TABLE students CONFIGURE ZONE
     USING constraints='[+hdd,+az=aus1]';
@@ -647,7 +640,7 @@ To create zone configurations and apply them to corresponding partitions, use th
 
 #### Step 6. Verify table partitions
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGES FROM TABLE students;
 ~~~
@@ -681,7 +674,7 @@ Time: 11.586626ms
 
 Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](partition-by.html) subcommand of the [`ALTER TABLE`](alter-table.html) command.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
@@ -692,7 +685,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 
 You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](partition-by.html) syntax:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
@@ -716,10 +709,13 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
+- **Logical structure of partitions:** CockroachDB uses the partitioning concept to allow users to logically subdivide a single physical table to enable independent configuration of those partitions using zone configurations. Other databases sometimes implement partitioning as the logical union of physically separate tables. This difference means that CockroachDB is able to permit inexpensive repartitioning in contrast to other databases. Consequently, CockroachDB is unable to provide the same bulk data deletion operations over table partitions that other databases achieve by physically dropping the underlying table represented by the partition.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- {% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
 
 ## See also
 

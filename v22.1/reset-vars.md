@@ -1,5 +1,5 @@
 ---
-title: RESET (session variable)
+title: RESET &#123;session variable&#125;
 summary: The SET statement resets a session variable to its default value.
 toc: true
 docs_area: reference.sql
@@ -14,7 +14,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/reset_session.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/reset_session.html %}</div>
 
 ## Parameters
 
@@ -26,12 +26,12 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 {{site.data.alerts.callout_success}}You can use <a href="set-vars.html#reset-a-variable-to-its-default-value"><code>SET .. TO DEFAULT</code></a> to reset a session variable as well.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET extra_float_digits = -10;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW extra_float_digits;
 ~~~
@@ -43,7 +43,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT random();
 ~~~
@@ -55,12 +55,12 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESET extra_float_digits;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW extra_float_digits;
 ~~~
@@ -72,7 +72,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT random();
 ~~~
@@ -86,5 +86,5 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 ## See also
 
-- [`SET` (session variable)](set-vars.html)
-- [`SHOW` (session variables)](show-vars.html)
+- [`SET {session variable}`](set-vars.html)
+- [`SHOW {session variable}`](show-vars.html)

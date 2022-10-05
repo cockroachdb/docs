@@ -96,8 +96,8 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<cluster name>` | Specifies the cluster name when connecting to [{{ site.data.products.serverless-plan }} clusters](connect-to-the-database-cockroachcloud.html#connect).
-`-c <session_variable>=<value>` | <span class="version-tag">New in v21.1:</span> Sets a [session variable](set-vars.html) for the SQL session.
+`--cluster=<cluster name>` | Specifies the cluster name when connecting to [{{ site.data.products.serverless }} clusters](connect-to-the-database-cockroachcloud.html#connect).
+`-c <session_variable>=<value>` | **New in v21.1:** Sets a [session variable](set-vars.html) for the SQL session.
 
 {{site.data.alerts.callout_info}}
 Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters) must specified as `%20`.

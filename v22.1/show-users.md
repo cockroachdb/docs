@@ -8,13 +8,13 @@ docs_area: reference.sql
 The `SHOW USERS` [statement](sql-statements.html) lists the users for all databases.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `SHOW USERS` is now an alias for [`SHOW ROLES`](show-roles.html).
+ Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW USERS` is now an alias for [`SHOW ROLES`](show-roles.html).
 {{site.data.alerts.end}}
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_users.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_users.html %}
 </div>
 
 ## Required privileges
@@ -23,7 +23,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](security-refer
 
 ## Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -40,7 +40,7 @@ The user must have the [`SELECT`](select-clause.html) [privilege](security-refer
 
 Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](cockroach-sql.html#commands):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \du
 ~~~

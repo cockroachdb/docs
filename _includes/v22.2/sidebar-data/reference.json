@@ -1,0 +1,1890 @@
+{
+    "title": "Reference",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Architecture",
+        "items": [
+          {
+            "title": "Architecture Overview",
+            "urls": [
+              "/${VERSION}/architecture/overview.html"
+            ]
+          },
+          {
+            "title": "SQL Layer",
+            "urls": [
+              "/${VERSION}/architecture/sql-layer.html"
+            ]
+          },
+          {
+            "title": "Transaction Layer",
+            "urls": [
+              "/${VERSION}/architecture/transaction-layer.html"
+            ]
+          },
+          {
+            "title": "Distribution Layer",
+            "urls": [
+              "/${VERSION}/architecture/distribution-layer.html"
+            ]
+          },
+          {
+            "title": "Replication Layer",
+            "urls": [
+              "/${VERSION}/architecture/replication-layer.html"
+            ]
+          },
+          {
+            "title": "Storage Layer",
+            "urls": [
+              "/${VERSION}/architecture/storage-layer.html"
+            ]
+          },
+          {
+            "title": "Life of a Distributed Transaction",
+            "urls": [
+              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+            ]
+          },
+          {
+            "title": "Reads and Writes Overview",
+            "urls": [
+              "/${VERSION}/architecture/reads-and-writes-overview.html"
+            ]
+          },
+          {
+            "title": "CockroachDB Cloud Architecture",
+            "urls": [
+              "/cockroachcloud/architecture.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "SQL",
+        "items": [
+          {
+            "title": "SQL Overview",
+            "urls": [
+              "/${VERSION}/sql-feature-support.html"
+            ]
+          },
+          {
+            "title": "PostgreSQL Compatibility",
+            "urls": [
+              "/${VERSION}/postgresql-compatibility.html"
+            ]
+          },
+          {
+            "title": "SQL Syntax",
+            "items": [
+              {
+                "title": "Full SQL Grammar",
+                "urls": [
+                  "/${VERSION}/sql-grammar.html"
+                ]
+              },
+              {
+                "title": "Keywords & Identifiers",
+                "urls": [
+                  "/${VERSION}/keywords-and-identifiers.html"
+                ]
+              },
+              {
+                "title": "Constants",
+                "urls": [
+                  "/${VERSION}/sql-constants.html"
+                ]
+              },
+              {
+                "title": "Selection Queries",
+                "urls": [
+                  "/${VERSION}/selection-queries.html"
+                ]
+              },
+              {
+                "title": "Table Expressions",
+                "urls": [
+                  "/${VERSION}/table-expressions.html"
+                ]
+              },
+              {
+                "title": "Common Table Expressions",
+                "urls": [
+                  "/${VERSION}/common-table-expressions.html"
+                ]
+              },
+              {
+                "title": "Scalar Expressions",
+                "urls": [
+                  "/${VERSION}/scalar-expressions.html"
+                ]
+              },
+              {
+                "title": "<code>NULL</code> Handling",
+                "urls": [
+                  "/${VERSION}/null-handling.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "SQL Statements",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/sql-statements.html"
+                ]
+              },
+              {
+                "title": "<code>ADD COLUMN</code>",
+                "urls": [
+                  "/${VERSION}/add-column.html"
+                ]
+              },
+              {
+                "title": "<code>ADD CONSTRAINT</code>",
+                "urls": [
+                  "/${VERSION}/add-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>ADD REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/add-region.html"
+                ]
+              },
+              {
+                "title": "<code>ADD SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/add-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-changefeed.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER COLUMN</code>",
+                "urls": [
+                  "/${VERSION}/alter-column.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER DATABASE</code>",
+                "urls": [
+                  "/${VERSION}/alter-database.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER DEFAULT PRIVILEGES</code>",
+                "urls": [
+                  "/${VERSION}/alter-default-privileges.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER INDEX</code>",
+                "urls": [
+                  "/${VERSION}/alter-index.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER PARTITION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-partition.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER PRIMARY KEY</code>",
+                "urls": [
+                  "/${VERSION}/alter-primary-key.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER RANGE</code>",
+                "urls": [
+                  "/${VERSION}/alter-range.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER RANGE ... RELOCATE</code>",
+                "urls": [
+                  "/${VERSION}/alter-range-relocate.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER ROLE</code>",
+                "urls": [
+                  "/${VERSION}/alter-role.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER SCHEMA</code>",
+                "urls": [
+                  "/${VERSION}/alter-schema.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER SEQUENCE</code>",
+                "urls": [
+                  "/${VERSION}/alter-sequence.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER TABLE</code>",
+                "urls": [
+                  "/${VERSION}/alter-table.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER TYPE</code>",
+                "urls": [
+                  "/${VERSION}/alter-type.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER USER</code>",
+                "urls": [
+                  "/${VERSION}/alter-user.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER VIEW</code>",
+                "urls": [
+                  "/${VERSION}/alter-view.html"
+                ]
+              },
+              {
+                "title": "<code>EXPERIMENTAL_AUDIT</code>",
+                "urls": [
+                  "/${VERSION}/experimental-audit.html"
+                ]
+              },
+              {
+                "title": "<code>BACKUP</code>",
+                "urls": [
+                  "/${VERSION}/backup.html"
+                ]
+              },
+              {
+                "title": "<code>BEGIN</code>",
+                "urls": [
+                  "/${VERSION}/begin-transaction.html"
+                ]
+              },
+              {
+                "title": "<code>CANCEL JOB</code>",
+                "urls": [
+                  "/${VERSION}/cancel-job.html"
+                ]
+              },
+              {
+                "title": "<code>CANCEL QUERY</code>",
+                "urls": [
+                  "/${VERSION}/cancel-query.html"
+                ]
+              },
+              {
+                "title": "<code>CANCEL SESSION</code>",
+                "urls": [
+                  "/${VERSION}/cancel-session.html"
+                ]
+              },
+              {
+                "title": "<code>COMMENT ON</code>",
+                "urls": [
+                  "/${VERSION}/comment-on.html"
+                ]
+              },
+              {
+                "title": "<code>COMMIT</code>",
+                "urls": [
+                  "/${VERSION}/commit-transaction.html"
+                ]
+              },
+              {
+                "title": "<code>CONFIGURE ZONE</code>",
+                "urls": [
+                  "/${VERSION}/configure-zone.html"
+                ]
+              },
+              {
+                "title": "<code>COPY FROM</code>",
+                "urls": [
+                  "/${VERSION}/copy-from.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/create-changefeed.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE DATABASE</code>",
+                "urls": [
+                  "/${VERSION}/create-database.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE INDEX</code>",
+                "urls": [
+                  "/${VERSION}/create-index.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE ROLE</code>",
+                "urls": [
+                  "/${VERSION}/create-role.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE SCHEDULE FOR BACKUP</code>",
+                "urls": [
+                  "/${VERSION}/create-schedule-for-backup.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE SCHEMA</code>",
+                "urls": [
+                  "/${VERSION}/create-schema.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE SEQUENCE</code>",
+                "urls": [
+                  "/${VERSION}/create-sequence.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE STATISTICS</code>",
+                "urls": [
+                  "/${VERSION}/create-statistics.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE TABLE</code>",
+                "urls": [
+                  "/${VERSION}/create-table.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE TABLE AS</code>",
+                "urls": [
+                  "/${VERSION}/create-table-as.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE TYPE</code>",
+                "urls": [
+                  "/${VERSION}/create-type.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE USER</code>",
+                "urls": [
+                  "/${VERSION}/create-user.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE VIEW</code>",
+                "urls": [
+                  "/${VERSION}/create-view.html"
+                ]
+              },
+              {
+                "title": "<code>DELETE</code>",
+                "urls": [
+                  "/${VERSION}/delete.html"
+                ]
+              },
+              {
+                "title": "<code>DROP COLUMN</code>",
+                "urls": [
+                  "/${VERSION}/drop-column.html"
+                ]
+              },
+              {
+                "title": "<code>DROP CONSTRAINT</code>",
+                "urls": [
+                  "/${VERSION}/drop-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>DROP DATABASE</code>",
+                "urls": [
+                  "/${VERSION}/drop-database.html"
+                ]
+              },
+              {
+                "title": "<code>DROP REGION (Enterprise)</code>",
+                "urls": [
+                  "/${VERSION}/drop-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-secondary-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP TYPE</code>",
+                "urls": [
+                  "/${VERSION}/drop-type.html"
+                ]
+              },
+              {
+                "title": "<code>DROP INDEX</code>",
+                "urls": [
+                  "/${VERSION}/drop-index.html"
+                ]
+              },
+              {
+                "title": "<code>DROP ROLE</code>",
+                "urls": [
+                  "/${VERSION}/drop-role.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SCHEDULES</code>",
+                "urls": [
+                  "/${VERSION}/drop-schedules.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SCHEMA</code>",
+                "urls": [
+                  "/${VERSION}/drop-schema.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SEQUENCE</code>",
+                "urls": [
+                  "/${VERSION}/drop-sequence.html"
+                ]
+              },
+              {
+                "title": "<code>DROP TABLE</code>",
+                "urls": [
+                  "/${VERSION}/drop-table.html"
+                ]
+              },
+              {
+                "title": "<code>DROP USER</code>",
+                "urls": [
+                  "/${VERSION}/drop-user.html"
+                ]
+              },
+              {
+                "title": "<code>DROP VIEW</code>",
+                "urls": [
+                  "/${VERSION}/drop-view.html"
+                ]
+              },
+              {
+                "title": "<code>EXPERIMENTAL CHANGEFEED FOR</code>",
+                "urls": [
+                  "/${VERSION}/changefeed-for.html"
+                ]
+              },
+              {
+                "title": "<code>EXPLAIN</code>",
+                "urls": [
+                  "/${VERSION}/explain.html"
+                ]
+              },
+              {
+                "title": "<code>EXPLAIN ANALYZE</code>",
+                "urls": [
+                  "/${VERSION}/explain-analyze.html"
+                ]
+              },
+              {
+                "title": "<code>EXPORT</code>",
+                "urls": [
+                  "/${VERSION}/export.html"
+                ]
+              },
+              {
+                "title": "<code>GRANT</code>",
+                "urls": [
+                  "/${VERSION}/grant.html"
+                ]
+              },
+              {
+                "title": "<code>IMPORT</code>",
+                "urls": [
+                  "/${VERSION}/import.html"
+                ]
+              },
+              {
+                "title": "<code>IMPORT INTO</code>",
+                "urls": [
+                  "/${VERSION}/import-into.html"
+                ]
+              },
+              {
+                "title": "<code>INSERT</code>",
+                "urls": [
+                  "/${VERSION}/insert.html"
+                ]
+              },
+              {
+                "title": "<code>JOIN</code>",
+                "urls": [
+                  "/${VERSION}/joins.html"
+                ]
+              },
+              {
+                "title": "<code>LIMIT</code>/<code>OFFSET</code>",
+                "urls": [
+                  "/${VERSION}/limit-offset.html"
+                ]
+              },
+              {
+                "title": "<code>ORDER BY</code>",
+                "urls": [
+                  "/${VERSION}/order-by.html"
+                ]
+              },
+              {
+                "title": "<code>OWNER TO</code>",
+                "urls": [
+                  "/${VERSION}/owner-to.html"
+                ]
+              },
+              {
+                "title": "<code>PARTITION BY</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/partition-by.html"
+                ]
+              },
+              {
+                "title": "<code>PAUSE JOB</code>",
+                "urls": [
+                  "/${VERSION}/pause-job.html"
+                ]
+              },
+              {
+                "title": "<code>PAUSE SCHEDULES</code>",
+                "urls": [
+                  "/${VERSION}/pause-schedules.html"
+                ]
+              },
+              {
+                "title": "<code>PLACEMENT (RESTRICTED | DEFAULT)</code>",
+                "urls": [
+                  "/${VERSION}/placement-restricted.html"
+                ]
+              },
+              {
+                "title": "<code>REASSIGN OWNED</code>",
+                "urls": [
+                  "/${VERSION}/reassign-owned.html"
+                ]
+              },
+              {
+                "title": "<code>REFRESH</code>",
+                "urls": [
+                  "/${VERSION}/refresh.html"
+                ]
+              },
+              {
+                "title": "<code>RENAME COLUMN</code>",
+                "urls": [
+                  "/${VERSION}/rename-column.html"
+                ]
+              },
+              {
+                "title": "<code>RENAME CONSTRAINT</code>",
+                "urls": [
+                  "/${VERSION}/rename-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>RENAME DATABASE</code>",
+                "urls": [
+                  "/${VERSION}/rename-database.html"
+                ]
+              },
+              {
+                "title": "<code>RENAME INDEX</code>",
+                "urls": [
+                  "/${VERSION}/rename-index.html"
+                ]
+              },
+              {
+                "title": "<code>RENAME TABLE</code>",
+                "urls": [
+                  "/${VERSION}/rename-table.html"
+                ]
+              },
+              {
+                "title": "<code>RELEASE SAVEPOINT</code>",
+                "urls": [
+                  "/${VERSION}/release-savepoint.html"
+                ]
+              },
+              {
+                "title": "<code>RESET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/reset-cluster-setting.html"
+                ]
+              },
+              {
+                "title": "<code>RESET &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/reset-vars.html"
+                ]
+              },
+              {
+                "title": "<code>RESET &#123;storage parameter&#125;</code>",
+                "urls": [
+                  "/${VERSION}/reset-storage-parameter.html"
+                ]
+              },
+              {
+                "title": "<code>RESTORE</code>",
+                "urls": [
+                  "/${VERSION}/restore.html"
+                ]
+              },
+              {
+                "title": "<code>RESUME JOB</code>",
+                "urls": [
+                  "/${VERSION}/resume-job.html"
+                ]
+              },
+              {
+                "title": "<code>RESUME SCHEDULES</code>",
+                "urls": [
+                  "/${VERSION}/resume-schedules.html"
+                ]
+              },
+              {
+                "title": "<code>REVOKE</code>",
+                "urls": [
+                  "/${VERSION}/revoke.html"
+                ]
+              },
+              {
+                "title": "<code>ROLLBACK</code>",
+                "urls": [
+                  "/${VERSION}/rollback-transaction.html"
+                ]
+              },
+              {
+                "title": "<code>SAVEPOINT</code>",
+                "urls": [
+                  "/${VERSION}/savepoint.html"
+                ]
+              },
+              {
+                "title": "<code>SELECT</code>",
+                "urls": [
+                  "/${VERSION}/select-clause.html"
+                ]
+              },
+              {
+                "title": "<code>SELECT FOR UPDATE</code>",
+                "urls": [
+                  "/${VERSION}/select-for-update.html"
+                ]
+              },
+              {
+                "title": "<code>SET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/set-cluster-setting.html"
+                ]
+              },
+              {
+                "title": "<code>SET &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/set-vars.html"
+                ]
+              },
+              {
+                "title": "<code>SET &#123;storage parameter&#125;</code>",
+                "urls": [
+                  "/${VERSION}/set-storage-parameter.html"
+                ]
+              },
+              {
+                "title": "<code>SET LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/set-locality.html"
+                ]
+              },
+              {
+                "title": "<code>SET PRIMARY REGION (Enterprise)</code>",
+                "urls": [
+                  "/${VERSION}/set-primary-region.html"
+                ]
+              },
+              {
+                "title": "<code>SET SCHEMA</code>",
+                "urls": [
+                  "/${VERSION}/set-schema.html"
+                ]
+              },
+              {
+                "title": "<code>SET SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/set-secondary-region.html"
+                ]
+              },
+              {
+                "title": "<code>SET TRANSACTION</code>",
+                "urls": [
+                  "/${VERSION}/set-transaction.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW BACKUP</code>",
+                "urls": [
+                  "/${VERSION}/show-backup.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/show-cluster-setting.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW COLUMNS</code>",
+                "urls": [
+                  "/${VERSION}/show-columns.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CONSTRAINTS</code>",
+                "urls": [
+                  "/${VERSION}/show-constraints.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CREATE</code>",
+                "urls": [
+                  "/${VERSION}/show-create.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CREATE SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/show-create-schedule.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW DATABASES</code>",
+                "urls": [
+                  "/${VERSION}/show-databases.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW DEFAULT PRIVILEGES</code>",
+                "urls": [
+                  "/${VERSION}/show-default-privileges.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW ENUMS</code>",
+                "urls": [
+                  "/${VERSION}/show-enums.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW FULL TABLE SCANS</code>",
+                "urls": [
+                  "/${VERSION}/show-full-table-scans.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW GRANTS</code>",
+                "urls": [
+                  "/${VERSION}/show-grants.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW INDEX</code>",
+                "urls": [
+                  "/${VERSION}/show-index.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW JOBS</code>",
+                "urls": [
+                  "/${VERSION}/show-jobs.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/show-locality.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/show-partitions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW RANGES</code>",
+                "urls": [
+                  "/${VERSION}/show-ranges.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW RANGE FOR ROW</code>",
+                "urls": [
+                  "/${VERSION}/show-range-for-row.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW REGIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/show-vars.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SUPER REGIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-super-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW ROLES</code>",
+                "urls": [
+                  "/${VERSION}/show-roles.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SCHEDULES</code>",
+                "urls": [
+                  "/${VERSION}/show-schedules.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SCHEMAS</code>",
+                "urls": [
+                  "/${VERSION}/show-schemas.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SEQUENCES</code>",
+                "urls": [
+                  "/${VERSION}/show-sequences.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SESSIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-sessions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW STATEMENTS</code>",
+                "urls": [
+                  "/${VERSION}/show-statements.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW STATISTICS</code>",
+                "urls": [
+                  "/${VERSION}/show-statistics.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SAVEPOINT STATUS</code>",
+                "urls": [
+                  "/${VERSION}/show-savepoint-status.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW TABLES</code>",
+                "urls": [
+                  "/${VERSION}/show-tables.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW TRACE FOR SESSION</code>",
+                "urls": [
+                  "/${VERSION}/show-trace.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW TRANSACTIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-transactions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW TYPES</code>",
+                "urls": [
+                  "/${VERSION}/show-types.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW USERS</code>",
+                "urls": [
+                  "/${VERSION}/show-users.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW ZONE CONFIGURATIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-zone-configurations.html"
+                ]
+              },
+              {
+                "title": "<code>SPLIT AT</code>",
+                "urls": [
+                  "/${VERSION}/split-at.html"
+                ]
+              },
+              {
+                "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
+                "urls": [
+                  "/${VERSION}/survive-failure.html"
+                ]
+              },
+              {
+                "title": "<code>TRUNCATE</code>",
+                "urls": [
+                  "/${VERSION}/truncate.html"
+                ]
+              },
+              {
+                "title": "<code>UNSPLIT AT</code>",
+                "urls": [
+                  "/${VERSION}/unsplit-at.html"
+                ]
+              },
+              {
+                "title": "<code>UPDATE</code>",
+                "urls": [
+                  "/${VERSION}/update.html"
+                ]
+              },
+              {
+                "title": "<code>UPSERT</code>",
+                "urls": [
+                  "/${VERSION}/upsert.html"
+                ]
+              },
+              {
+                "title": "<code>VALIDATE CONSTRAINT</code>",
+                "urls": [
+                  "/${VERSION}/validate-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>WITH &#123;storage parameter&#125;</code>",
+                "urls": [
+                  "/${VERSION}/with-storage-parameter.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Data Types",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/data-types.html"
+                ]
+              },
+              {
+                "title": "<code>ARRAY</code>",
+                "urls": [
+                  "/${VERSION}/array.html"
+                ]
+              },
+              {
+                "title": "<code>BIT</code>",
+                "urls": [
+                  "/${VERSION}/bit.html"
+                ]
+              },
+              {
+                "title": "<code>BOOL</code>",
+                "urls": [
+                  "/${VERSION}/bool.html"
+                ]
+              },
+              {
+                "title": "<code>BYTES</code>",
+                "urls": [
+                  "/${VERSION}/bytes.html"
+                ]
+              },
+              {
+                "title": "<code>COLLATE</code>",
+                "urls": [
+                  "/${VERSION}/collate.html"
+                ]
+              },
+              {
+                "title": "<code>DATE</code>",
+                "urls": [
+                  "/${VERSION}/date.html"
+                ]
+              },
+              {
+                "title": "<code>DECIMAL</code>",
+                "urls": [
+                  "/${VERSION}/decimal.html"
+                ]
+              },
+              {
+                "title": "<code>ENUM</code>",
+                "urls": [
+                  "/${VERSION}/enum.html"
+                ]
+              },
+              {
+                "title": "<code>FLOAT</code>",
+                "urls": [
+                  "/${VERSION}/float.html"
+                ]
+              },
+              {
+                "title": "<code>INET</code>",
+                "urls": [
+                  "/${VERSION}/inet.html"
+                ]
+              },
+              {
+                "title": "<code>INT</code>",
+                "urls": [
+                  "/${VERSION}/int.html"
+                ]
+              },
+              {
+                "title": "<code>INTERVAL</code>",
+                "urls": [
+                  "/${VERSION}/interval.html"
+                ]
+              },
+              {
+                "title": "<code>JSONB</code>",
+                "urls": [
+                  "/${VERSION}/jsonb.html"
+                ]
+              },
+              {
+                "title": "<code>OID</code>",
+                "urls": [
+                  "/${VERSION}/oid.html"
+                ]
+              },
+              {
+                "title": "<code>SERIAL</code>",
+                "urls": [
+                  "/${VERSION}/serial.html"
+                ]
+              },
+              {
+                "title": "<code>STRING</code>",
+                "urls": [
+                  "/${VERSION}/string.html"
+                ]
+              },
+              {
+                "title": "<code>TIME</code>",
+                "urls": [
+                  "/${VERSION}/time.html"
+                ]
+              },
+              {
+                "title": "<code>TIMESTAMP</code>",
+                "urls": [
+                  "/${VERSION}/timestamp.html"
+                ]
+              },
+              {
+                "title": "<code>UUID</code>",
+                "urls": [
+                  "/${VERSION}/uuid.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Constraints",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/constraints.html"
+                ]
+              },
+              {
+                "title": "Check",
+                "urls": [
+                  "/${VERSION}/check.html"
+                ]
+              },
+              {
+                "title": "Default Value",
+                "urls": [
+                  "/${VERSION}/default-value.html"
+                ]
+              },
+              {
+                "title": "Foreign Key",
+                "urls": [
+                  "/${VERSION}/foreign-key.html"
+                ]
+              },
+              {
+                "title": "Not Null",
+                "urls": [
+                  "/${VERSION}/not-null.html"
+                ]
+              },
+              {
+                "title": "Primary Key",
+                "urls": [
+                  "/${VERSION}/primary-key.html"
+                ]
+              },
+              {
+                "title": "Unique",
+                "urls": [
+                  "/${VERSION}/unique.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Functions and Operators",
+            "urls": [
+              "/${VERSION}/functions-and-operators.html"
+            ]
+          },
+          {
+            "title": "Window Functions",
+            "urls": [
+              "/${VERSION}/window-functions.html"
+            ]
+          },
+          {
+            "title": "Name Resolution",
+            "urls": [
+              "/${VERSION}/sql-name-resolution.html"
+            ]
+          },
+          {
+            "title": "System Catalogs",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/system-catalogs.html"
+                ]
+              },
+              {
+                "title": "<code>crdb_internal</code>",
+                "urls": [
+                  "/${VERSION}/crdb-internal.html"
+                ]
+              },
+              {
+                "title": "<code>information_schema</code>",
+                "urls": [
+                  "/${VERSION}/information-schema.html"
+                ]
+              },
+              {
+                "title": "<code>pg_catalog</code>",
+                "urls": [
+                  "/${VERSION}/pg-catalog.html"
+                ]
+              },
+              {
+                "title": "<code>pg_extension</code>",
+                "urls": [
+                  "/${VERSION}/pg-extension.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Spatial Features",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/spatial-features.html"
+                ]
+              },
+              {
+                "title": "Work with Spatial Data",
+                "urls": [
+                  "/${VERSION}/spatial-data.html"
+                ]
+              },
+              {
+                "title": "Spatial and GIS Glossary",
+                "urls": [
+                  "/${VERSION}/spatial-glossary.html"
+                ]
+              },
+              {
+                "title": "POINT",
+                "urls": [
+                  "/${VERSION}/point.html"
+                ]
+              },
+              {
+                "title": "LINESTRING",
+                "urls": [
+                  "/${VERSION}/linestring.html"
+                ]
+              },
+              {
+                "title": "POLYGON",
+                "urls": [
+                  "/${VERSION}/polygon.html"
+                ]
+              },
+              {
+                "title": "MULTIPOINT",
+                "urls": [
+                  "/${VERSION}/multipoint.html"
+                ]
+              },
+              {
+                "title": "MULTILINESTRING",
+                "urls": [
+                  "/${VERSION}/multilinestring.html"
+                ]
+              },
+              {
+                "title": "MULTIPOLYGON",
+                "urls": [
+                  "/${VERSION}/multipolygon.html"
+                ]
+              },
+              {
+                "title": "GEOMETRYCOLLECTION",
+                "urls": [
+                  "/${VERSION}/geometrycollection.html"
+                ]
+              },
+              {
+                "title": "Well Known Text (WKT)",
+                "urls": [
+                  "/${VERSION}/well-known-text.html"
+                ]
+              },
+              {
+                "title": "Well Known Binary (WKB)",
+                "urls": [
+                  "/${VERSION}/well-known-binary.html"
+                ]
+              },
+              {
+                "title": "GeoJSON",
+                "urls": [
+                  "/${VERSION}/geojson.html"
+                ]
+              },
+              {
+                "title": "SRID 4326 - longitude and latitude",
+                "urls": [
+                  "/${VERSION}/srid-4326.html"
+                ]
+              },
+              {
+                "title": "ST_Contains",
+                "urls": [
+                  "/${VERSION}/st_contains.html"
+                ]
+              },
+              {
+                "title": "ST_Within",
+                "urls": [
+                  "/${VERSION}/st_within.html"
+                ]
+              },
+              {
+                "title": "ST_Intersects",
+                "urls": [
+                  "/${VERSION}/st_intersects.html"
+                ]
+              },
+              {
+                "title": "ST_CoveredBy",
+                "urls": [
+                  "/${VERSION}/st_coveredby.html"
+                ]
+              },
+              {
+                "title": "ST_Covers",
+                "urls": [
+                  "/${VERSION}/st_covers.html"
+                ]
+              },
+              {
+                "title": "ST_Disjoint",
+                "urls": [
+                  "/${VERSION}/st_disjoint.html"
+                ]
+              },
+              {
+                "title": "ST_Equals",
+                "urls": [
+                  "/${VERSION}/st_equals.html"
+                ]
+              },
+              {
+                "title": "ST_Overlaps",
+                "urls": [
+                  "/${VERSION}/st_overlaps.html"
+                ]
+              },
+              {
+                "title": "ST_Touches",
+                "urls": [
+                  "/${VERSION}/st_touches.html"
+                ]
+              },
+              {
+                "title": "ST_ConvexHull",
+                "urls": [
+                  "/${VERSION}/st_convexhull.html"
+                ]
+              },
+              {
+                "title": "ST_Union",
+                "urls": [
+                  "/${VERSION}/st_union.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Experimental Features",
+            "urls": [
+              "/${VERSION}/experimental-features.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Cluster Settings",
+        "urls": [
+          "/${VERSION}/cluster-settings.html"
+        ]
+      },
+      {
+        "title": "Security",
+        "items": [
+          {
+            "title": "Security Overview",
+            "urls": [
+              "/${VERSION}/security-reference/security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+              }
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
+            ]
+          },
+          {
+            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
+            "urls": [
+              "/${VERSION}/security-reference/transport-layer-security.html"
+            ]
+          },
+          {
+            "title": "Customer-Managed Encryption Keys (CMEK)",
+            "urls": [
+              "/cockroachcloud/cmek.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "CLI",
+        "items": [
+          {
+            "title": "<code>cockroach</code> Commands Overview",
+            "urls": [
+              "/${VERSION}/cockroach-commands.html"
+            ]
+          },
+          {
+            "title": "Client Connection Parameters",
+            "urls": [
+              "/${VERSION}/connection-parameters.html"
+            ]
+          },
+          {
+            "title": "<code>cockroach</code> Commands",
+            "items": [
+              {
+                "title": "<code>cockroach start</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-start.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach init</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-init.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach start-single-node</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-start-single-node.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach cert</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-cert.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach sql</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-sql.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach sqlfmt</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-sqlfmt.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach node</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-node.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach nodelocal upload</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-nodelocal-upload.html"
+                ]
+              },
+              {
+               "title": "<code>cockroach auth-session</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-auth-session.html"
+               ]
+              },
+              {
+                "title": "<code>cockroach demo</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-demo.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug ballast</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-ballast.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug encryption-active-key</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-encryption-active-key.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug job-trace</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-job-trace.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug list-files</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-list-files.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug merge-logs</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-merge-logs.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug zip</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-zip.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach statement-diag</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-statement-diag.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach gen</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-gen.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach userfile upload</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-userfile-upload.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach userfile list</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-userfile-list.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach userfile get</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-userfile-get.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach userfile delete</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-userfile-delete.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach version</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-version.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach workload</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-workload.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach import</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-import.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "The <code>cockroach-sql</code> command",
+            "urls": [
+              "/${VERSION}/cockroach-sql-binary.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "DB Console",
+        "items": [
+          {
+            "title": "DB Console Overview",
+            "urls": [
+              "/${VERSION}/ui-overview.html"
+            ]
+          },
+          {
+            "title": "Cluster Overview Page",
+            "urls": [
+              "/${VERSION}/ui-cluster-overview-page.html"
+            ]
+          },
+          {
+            "title": "Metrics Dashboards",
+            "items": [
+              {
+                "title": "Overview Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-overview-dashboard.html"
+                ]
+              },
+              {
+                "title": "Hardware Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-hardware-dashboard.html"
+                ]
+              },
+              {
+                "title": "Runtime Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-runtime-dashboard.html"
+                ]
+              },
+              {
+                "title": "SQL Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-sql-dashboard.html"
+                ]
+              },
+              {
+                "title": "Storage Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-storage-dashboard.html"
+                ]
+              },
+              {
+                "title": "Replication Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-replication-dashboard.html"
+                ]
+              },
+              {
+                "title": "Distributed Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-distributed-dashboard.html"
+                ]
+              },
+              {
+                "title": "Queues Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-queues-dashboard.html"
+                ]
+              },
+              {
+                "title": "Slow Requests Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-slow-requests-dashboard.html"
+                ]
+              },
+              {
+                "title": "Changefeeds Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-cdc-dashboard.html"
+                ]
+              },
+              {
+                "title": "Overload Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-overload-dashboard.html"
+                ]
+              },
+              {
+                "title": "Custom Chart",
+                "urls": [
+                  "/${VERSION}/ui-custom-chart-debug-page.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Databases Page",
+            "urls": [
+              "/${VERSION}/ui-databases-page.html"
+            ]
+          },
+          {
+            "title": "Sessions Page",
+            "urls": [
+              "/${VERSION}/ui-sessions-page.html"
+            ]
+          },
+          {
+            "title": "Statements Page",
+            "urls": [
+              "/${VERSION}/ui-statements-page.html"
+            ]
+          },
+          {
+            "title": "Transactions Page",
+            "urls": [
+              "/${VERSION}/ui-transactions-page.html"
+            ]
+          },
+          {
+            "title": "Insights Page",
+            "urls": [
+              "/${VERSION}/ui-insights-page.html"
+            ]
+          },
+          {
+            "title": "Network Latency Page",
+            "urls": [
+              "/${VERSION}/ui-network-latency-page.html"
+            ]
+          },
+          {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
+            ]
+          },
+          {
+            "title": "Jobs Page",
+            "urls": [
+              "/${VERSION}/ui-jobs-page.html"
+            ]
+          },
+          {
+            "title": "Advanced Debug Page",
+            "urls": [
+              "/${VERSION}/ui-debug-pages.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Transaction Retry Error Reference",
+        "urls": [
+          "/${VERSION}/transaction-retry-error-reference.html"
+        ]
+      },
+      {
+        "title": "Cluster API",
+        "urls": [
+          "/api/cluster/v2.html"
+        ]
+      },
+      {
+        "title": "Cloud API",
+        "urls": [
+          "/api/cloud/v1.html"
+        ]
+      },
+      {
+        "title": "Logging",
+        "items": [
+          {
+            "title": "Logging Levels and Channels",
+            "urls": [
+              "/${VERSION}/logging.html"
+            ]
+          },
+          {
+            "title": "Log Formats",
+            "urls": [
+              "/${VERSION}/log-formats.html"
+            ]
+          },
+          {
+            "title": "Notable Event Types",
+            "urls": [
+              "/${VERSION}/eventlog.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "API Support Policy",
+        "urls": [
+          "/${VERSION}/api-support-policy.html"
+        ]
+      },
+      {
+        "title": "Diagnostics Reporting",
+        "urls": [
+          "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Benchmarking",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/performance.html"
+            ]
+          },
+          {
+            "title": "Benchmarking Instructions",
+            "urls": [
+              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+            ]
+          },
+          {
+            "title": "Serverless Performance Benchmarking",
+            "urls": [
+              "/cockroachcloud/serverless-benchmarking.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Unsupported Features in CockroachDB Serverless",
+        "urls": [
+          "/cockroachcloud/serverless-unsupported-features.html"
+        ]
+      },
+      {
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Tools Supported by Cockroach Labs",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Tools Supported by the Community",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          }
+        ]
+      }
+    ]
+  }

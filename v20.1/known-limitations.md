@@ -283,7 +283,7 @@ pq: check constraint violated
 ### Cold starts of large clusters may require manual intervention
 
 {{site.data.alerts.callout_info}}
-Resolved as of [v20.1.16](../releases/v20.1.16.html). See [#64568](https://github.com/cockroachdb/cockroach/pull/64568).
+Resolved as of [v20.1.16](../releases/v20.1.html#v20-1-16). See [#64568](https://github.com/cockroachdb/cockroach/pull/64568).
 {{site.data.alerts.end}}
 
 If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.

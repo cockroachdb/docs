@@ -3,26 +3,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
-{% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
-  <meta name="robots" content="noindex">
-  <meta name="robots" content="nofollow">
-  <meta name="robots" content="noarchive">
-  <meta name="robots" content="nocache">
+{%- capture stable_pages_names -%}{%- include_cached stable_page_names.md -%}{%- endcapture -%}
+{%- comment -%} Fetch all the names of all the stable pages to compare against the dev pages {%- endcomment -%}
+{%- if page.url contains '404' or page.sitemap == false or page.url contains site.versions["dev"] and stable_pages_names contains page.name %}
+<meta name="robots" content="noindex">
+<meta name="robots" content="nofollow">
+<meta name="robots" content="noarchive">
+<meta name="robots" content="nocache">
+{%- comment -%} Inject robots tags for all 404 pages, all pages where the sitemap is false, or all pages in dev that are also in stable {%- endcomment -%}
+{% else %}
+{%- unless page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' or page.path == "index.md" -%}
+{%- comment -%} Otherwise, inject robots tags for all pages that are not in stable, cockroachcloud, releases, advisories, or any pages in dev that are not in stable. {%- endcomment -%}
+<meta name="robots" content="noindex">
+<meta name="robots" content="nofollow">
+<meta name="robots" content="noarchive">
+<meta name="robots" content="nocache">
+{% endunless -%}
+{%- endif -%}
+{% comment %} The below if block helps prove ownership of the cockroachlabs.com/docs website for Google Search Console. {% endcomment %}
+{% if page.layout == "homepage" %}
+<meta name="google-site-verification" content="Du_z8l1I9HPqQS022xQn6UTRhDWYQRJZchcoUhYfQaM" /> {% comment %} Nick Vigilante {% endcomment %}
+<meta name="google-site-verification" content="xIjIKHNh-szz0m5JilyA4IriUmVD5DxeYBE18xSqvZY" /> {% comment %} Joe Nickdow {% endcomment %}
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
-<link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
+<link rel="stylesheet" href="{{ 'css/fonts.css' | relative_url }}">
+{% include_cached corestyles.css.html %}
+<link rel="preload" href="{{ 'css/customstyles.css' | relative_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/customstyles.css"></noscript>
 
 <script>
 var pageConfig = {
   tocNotNested: {% if page.toc_not_nested %}true{% else %}false{% endif %}
 };
 </script>
+<script>
+  function whenAvailable(name, callback, isJqueryFn = false) {
+    var interval = 500; // ms
+    var evaluation = isJqueryFn ? $()[name] : window[name];
+    window.setTimeout(function() {
+        if (evaluation) {
+            callback();
+        } else {
+            whenAvailable(name, callback, isJqueryFn);
+        }
+    }, interval);
+  }
+</script>
 
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
+
+{%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
+<script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET";;analytics.SNIPPET_VERSION="4.15.3";
+  analytics.load("Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET");
+  analytics.page();
+  }}();
+</script>
+
+{% if page.layout == "api" %}
+  <script src="{{ 'js/rapidoc-min.js' | relative_url }}"></script>
+{% endif %}
 
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
@@ -36,11 +80,15 @@ var pageConfig = {
 <link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
 
 <link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
-<script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
 
 <link rel="preload" href="{{ "/fonts/SourceSansPro-Regular.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
 <link rel="preload" href="{{ "/fonts/SourceSansPro-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
-<link rel="preload" href="{{ "/fonts/Poppins-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Poppins:wght@200;300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Poppins:wght@200;300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"></noscript>
 
 <link rel="preconnect dns-prefetch" href="https://app.convertflow.co/" >
 <link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" data-proofer-ignore>

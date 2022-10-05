@@ -1,18 +1,18 @@
 First, create a database and set it as the default database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE test;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE test;
 ~~~
 
 [This cluster is already deployed across three regions](#cluster-setup).  Therefore, to make this database a "multi-region database", you need to issue the following SQL statement that [sets the primary region](add-region.html#set-the-primary-region):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE test PRIMARY REGION "us-east";
 ~~~
@@ -23,12 +23,12 @@ Every multi-region database must have a primary region.  For more information, s
 
 Next, issue the following [`ADD REGION`](add-region.html) statements to add the remaining regions to the database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE test ADD REGION "us-west";
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE test ADD REGION "us-central";
 ~~~

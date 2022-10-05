@@ -16,7 +16,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/comment.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/comment.html %}
 </div>
 
 ## Parameters
@@ -28,7 +28,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 `table_name` | The name of the [table](create-table.html) on which you are commenting.
 `column_name` | The name of the [column](add-column.html) on which you are commenting.
 `table_index_name` | The name of the [index](indexes.html) on which you are commenting.
-`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
+`comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.  You can remove a comment by replacing the string with `NULL`.
 
 ## Examples
 
@@ -38,25 +38,25 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 To add a comment to a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE movr IS 'This database contains information about users, vehicles, and rides.';
 ~~~
 
 To view database comments, use [`SHOW DATABASES`](show-databases.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~
 
 ~~~
-  database_name |                              comment
-+---------------+-------------------------------------------------------------------+
-  defaultdb     | NULL
-  movr          | This database contains information about users, vehicles, and rides.
-  postgres      | NULL
-  system        | NULL
+  database_name | owner | primary_region | regions | survival_goal |                               comment
+----------------+-------+----------------+---------+---------------+-----------------------------------------------------------------------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | This database contains information about users, vehicles, and rides.
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
 (4 rows)
 ~~~
 
@@ -64,14 +64,14 @@ To view database comments, use [`SHOW DATABASES`](show-databases.html):
 
 To add a comment to a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.';
 ~~~
 
 To view table comments, use [`SHOW TABLES`](show-tables.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM movr WITH COMMENT;
 ~~~
@@ -90,7 +90,7 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 
  You can also view comments on a table with [`SHOW CREATE`](show-create.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE vehicles;
 ~~~
@@ -120,14 +120,14 @@ To view table comments, use [`SHOW TABLES`](show-tables.html):
 
 To add a comment to a column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
 ~~~
 
 To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users WITH COMMENT;
 ~~~
@@ -147,21 +147,21 @@ To view column comments, use [`SHOW COLUMNS`](show-columns.html):
 
 Suppose we [create an index](create-index.html) on the `name` column of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users(name);
 ~~~
 
 To add a comment to the index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON INDEX users_name_idx IS 'This index improves performance on queries that filter by name.';
 ~~~
 
 To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users WITH COMMENT;
 ~~~
@@ -169,14 +169,38 @@ To view column comments, use [`SHOW INDEXES ... WITH COMMENT`](show-index.html):
 ~~~
   table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit |                             comment
 -------------+----------------+------------+--------------+-------------+-----------+---------+----------+------------------------------------------------------------------
-  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false   | NULL
-  users      | primary        |   false    |            3 | name        | N/A       |  true   |  false   | NULL
-  users      | primary        |   false    |            4 | address     | N/A       |  true   |  false   | NULL
-  users      | primary        |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false   | NULL
+  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false   | NULL
+  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false   | NULL
+  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false   | NULL
   users      | users_name_idx |    true    |            1 | name        | ASC       |  false  |  false   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            2 | city        | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
   users      | users_name_idx |    true    |            3 | id          | ASC       |  false  |   true   | This index improves performance on queries that filter by name.
+~~~
+
+### Remove a comment from a database
+
+To remove a comment from a database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> COMMENT ON DATABASE movr IS NULL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW DATABASES WITH COMMENT;
+~~~
+
+~~~
+  database_name | owner | primary_region | regions | survival_goal | comment
+----------------+-------+----------------+---------+---------------+----------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | NULL
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
+(4 rows)
 ~~~
 
 ## See also

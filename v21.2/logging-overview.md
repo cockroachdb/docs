@@ -41,9 +41,9 @@ This allows you to group channels that log related information (e.g., operationa
 | [`USER_ADMIN`](logging.html#user_admin)             | Changes to users, roles, and authentication credentials.                                                                                                                                                                                                                                                                   |
 | [`PRIVILEGES`](logging.html#privileges)             | Changes to privileges and object ownership.                                                                                                                                                                                                                                                                                |
 | [`SENSITIVE_ACCESS`](logging.html#sensitive_access) | SQL audit events (when enabled via [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)).                                                                                                                                                                                                                       |
-| [`SQL_EXEC`](logging.html#sql_exec)                 | SQL statement executions (when enabled via the `sql.trace.log_statement_execute`) [cluster setting](cluster-settings.html) and uncaught Go panic errors during SQL statement execution.                                                                                                                                    |
+| [`SQL_EXEC`](logging.html#sql_exec)                 | SQL statement executions (when enabled via the `sql.trace.log_statement_execute` [cluster setting](cluster-settings.html)) and uncaught Go panic errors during SQL statement execution.                                                                                                                                    |
 | [`SQL_PERF`](logging.html#sql_perf)                 | SQL executions that impact performance, such as slow queries (when enabled via the `sql.log.slow_query.latency_threshold` and/or `sql.log.slow_query.experimental_full_table_scans.enabled` [cluster settings](cluster-settings.html)).                                                                                    |
-| [`TELEMETRY`](logging.html#telemetry)               | <span class="version-tag">New in v21.2:</span> Telemetry events for internal usage.                                                                                                                                                                                                                                        |
+| [`TELEMETRY`](logging.html#telemetry)               | **New in v21.2:** Telemetry events for internal usage.                                                                                                                                                                                                                                        |
 
 Logging channels are analogous to [logging facilities in Syslog](https://en.wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
 
@@ -51,18 +51,18 @@ Logging channels are analogous to [logging facilities in Syslog](https://en.wiki
 
 When using the [default logging configuration](configure-logs.html#default-logging-configuration), the events collected on each [logging channel](#logging-channels) are split into log files as follows:
 
-| Filename                                  | Description             | Channels                    |
-|-------------------------------------------+-------------------------+-----------------------------|
-| `cockroach.log`                           | General CockroachDB log | `DEV`                       |
-| `cockroach-health.log`                    | Health log              | `HEALTH`                    |
-| `cockroach-security.log` (New in v21.2)   | SQL security log        | `PRIVILEGES` + `USER_ADMIN` |
-| `cockroach-sql-audit.log`                 | SQL access audit log    | `SENSITIVE_ACCESS`          |
-| `cockroach-sql-auth.log`                  | SQL authentication log  | `SESSIONS`                  |
-| `cockroach-sql-exec.log`                  | SQL execution log       | `SQL_EXEC`                  |
-| `cockroach-sql-slow.log`                  | SQL slow query log      | `SQL_PERF`                  |
-| `cockroach-sql-schema.log` (New in v21.2) | SQL schema change log   | `SQL_SCHEMA`                |
-| `cockroach-pebble.log`                    | Pebble log              | `STORAGE`                   |
-| `cockroach-telemetry.log` (New in v21.2)  | Telemetry log           | `TELEMETRY`                 |
+| Filename                                                                  | Description             | Channels                    |
+|---------------------------------------------------------------------------+-------------------------+-----------------------------|
+| `cockroach.log`                                                           | General CockroachDB log | `DEV`                       |
+| `cockroach-health.log`                                                    | Health log              | `HEALTH`                    |
+| **New in v21.2:** `cockroach-security.log`   | SQL security log        | `PRIVILEGES` + `USER_ADMIN` |
+| `cockroach-sql-audit.log`                                                 | SQL access audit log    | `SENSITIVE_ACCESS`          |
+| `cockroach-sql-auth.log`                                                  | SQL authentication log  | `SESSIONS`                  |
+| `cockroach-sql-exec.log`                                                  | SQL execution log       | `SQL_EXEC`                  |
+| `cockroach-sql-slow.log`                                                  | SQL slow query log      | `SQL_PERF`                  |
+| **New in v21.2:** `cockroach-sql-schema.log` | SQL schema change log   | `SQL_SCHEMA`                |
+| `cockroach-pebble.log`                                                    | Pebble log              | `STORAGE`                   |
+| **New in v21.2:** `cockroach-telemetry.log`  | Telemetry log           | `TELEMETRY`                 |
 
  Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
 

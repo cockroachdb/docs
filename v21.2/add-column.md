@@ -14,7 +14,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/add_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/add_column.html %}
 </div>
 
 
@@ -43,109 +43,109 @@ The following examples use the [`bank` demo database schema](cockroach-demo.html
 
 To follow along, run [`cockroach demo bank`](cockroach-demo.html) to start a temporary, in-memory cluster with the `bank` schema and dataset preloaded:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo bank
 ~~~
 
 ### Add a single column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN active BOOL;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  id          | INT8      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary} |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey} |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey} |   false
 (4 rows)
 ~~~
 
 ### Add multiple columns
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location STRING, ADD COLUMN currency STRING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  id          | INT8      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary} |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary} |   false
-  location    | STRING    |    true     | NULL           |                       | {primary} |   false
-  currency    | STRING    |    true     | NULL           |                       | {primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey} |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey} |   false
+  location    | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
+  currency    | STRING    |    true     | NULL           |                       | {bank_pkey} |   false
 (6 rows)
 ~~~
 
 ### Add a column with a `NOT NULL` constraint and a `DEFAULT` value
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN interest DECIMAL NOT NULL DEFAULT (DECIMAL '1.3');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name | data_type | is_nullable |     column_default     | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+------------------------+-----------------------+-----------+------------
-  id          | INT8      |    false    | NULL                   |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL                   |                       | {primary} |   false
-  payload     | STRING    |    true     | NULL                   |                       | {primary} |   false
-  active      | BOOL      |    true     | NULL                   |                       | {primary} |   false
-  location    | STRING    |    true     | NULL                   |                       | {primary} |   false
-  currency    | STRING    |    true     | NULL                   |                       | {primary} |   false
-  interest    | DECIMAL   |    false    | 1.3:::DECIMAL::DECIMAL |                       | {primary} |   false
+  column_name | data_type | is_nullable |     column_default     | generation_expression |  indices    | is_hidden
+--------------+-----------+-------------+------------------------+-----------------------+-------------+------------
+  id          | INT8      |    false    | NULL                   |                       | {bank_pkey} |   false
+  balance     | INT8      |    true     | NULL                   |                       | {bank_pkey} |   false
+  payload     | STRING    |    true     | NULL                   |                       | {bank_pkey} |   false
+  active      | BOOL      |    true     | NULL                   |                       | {bank_pkey} |   false
+  location    | STRING    |    true     | NULL                   |                       | {bank_pkey} |   false
+  currency    | STRING    |    true     | NULL                   |                       | {bank_pkey} |   false
+  interest    | DECIMAL   |    false    | 1.3:::DECIMAL::DECIMAL |                       | {bank_pkey} |   false
 (7 rows)
 ~~~
 
 ### Add a column with a `UNIQUE` constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN address STRING UNIQUE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |          indices           | is_hidden
---------------+-----------+-------------+----------------+-----------------------+----------------------------+------------
-  id          | INT8      |    false    | NULL           |                       | {bank_address_key,primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary}                  |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary}                  |   false
-  location    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  currency    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {primary}                  |   false
-  address     | STRING    |    true     | NULL           |                       | {bank_address_key,primary} |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |          indices             | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+------------------------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  location    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  currency    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {bank_pkey}                  |   false
+  address     | STRING    |    true     | NULL           |                       | {bank_address_key,bank_pkey} |   false
 (8 rows)
 ~~~
 
 ###  Add a column with a `FOREIGN KEY` constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (
   id INT PRIMARY KEY,
@@ -153,68 +153,68 @@ $ cockroach demo bank
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN cust_number INT REFERENCES customers(id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |          indices           | is_hidden
---------------+-----------+-------------+----------------+-----------------------+----------------------------+------------
-  id          | INT8      |    false    | NULL           |                       | {bank_address_key,primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary}                  |   false
-  payload     | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  active      | BOOL      |    true     | NULL           |                       | {primary}                  |   false
-  location    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  currency    | STRING    |    true     | NULL           |                       | {primary}                  |   false
-  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {primary}                  |   false
-  address     | STRING    |    true     | NULL           |                       | {bank_address_key,primary} |   false
-  cust_number | INT8      |    true     | NULL           |                       | {primary}                  |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |          indices             | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+------------------------------+------------
+  id          | INT8      |    false    | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  balance     | INT8      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  payload     | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  active      | BOOL      |    true     | NULL           |                       | {bank_pkey}                  |   false
+  location    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  currency    | STRING    |    true     | NULL           |                       | {bank_pkey}                  |   false
+  interest    | DECIMAL   |    false    | 1.3:::DECIMAL  |                       | {bank_pkey}                  |   false
+  address     | STRING    |    true     | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  cust_number | INT8      |    true     | NULL           |                       | {bank_pkey}                  |   false
 
 (9 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM bank;
 ~~~
 ~~~
-  table_name |       constraint_name        | constraint_type |                      details                       | validated
--------------+------------------------------+-----------------+----------------------------------------------------+------------
-  bank       | bank_address_key             | UNIQUE          | UNIQUE (address ASC)                               |   true
-  bank       | fk_cust_number_ref_customers | FOREIGN KEY     | FOREIGN KEY (cust_number) REFERENCES customers(id) |   true
-  bank       | primary                      | PRIMARY KEY     | PRIMARY KEY (id ASC)                               |   true
+  table_name |    constraint_name    | constraint_type |                      details                       | validated
+-------------+-----------------------+-----------------+----------------------------------------------------+------------
+  bank       | bank_address_key      | UNIQUE          | UNIQUE (address ASC)                               |     t
+  bank       | bank_cust_number_fkey | FOREIGN KEY     | FOREIGN KEY (cust_number) REFERENCES customers(id) |     t
+  bank       | bank_pkey             | PRIMARY KEY     | PRIMARY KEY (id ASC)                               |     t
 (3 rows)
 ~~~
 
 ### Add a column with collation
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN more_names STRING COLLATE en;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bank;
 ~~~
 ~~~
-  column_name |     data_type     | is_nullable | column_default | generation_expression |          indices           | is_hidden
---------------+-------------------+-------------+----------------+-----------------------+----------------------------+------------
-  id          | INT8              |    false    | NULL           |                       | {bank_address_key,primary} |   false
-  balance     | INT8              |    true     | NULL           |                       | {primary}                  |   false
-  payload     | STRING            |    true     | NULL           |                       | {primary}                  |   false
-  active      | BOOL              |    true     | NULL           |                       | {primary}                  |   false
-  location    | STRING            |    true     | NULL           |                       | {primary}                  |   false
-  currency    | STRING            |    true     | NULL           |                       | {primary}                  |   false
-  interest    | DECIMAL           |    false    | 1.3:::DECIMAL  |                       | {primary}                  |   false
-  address     | STRING            |    true     | NULL           |                       | {bank_address_key,primary} |   false
-  cust_number | INT8              |    true     | NULL           |                       | {primary}                  |   false
-  more_names  | STRING COLLATE en |    true     | NULL           |                       | {primary}                  |   false
+  column_name |     data_type     | is_nullable | column_default | generation_expression |          indices             | is_hidden
+--------------+-------------------+-------------+----------------+-----------------------+------------------------------+------------
+  id          | INT8              |    false    | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  balance     | INT8              |    true     | NULL           |                       | {bank_pkey}                  |   false
+  payload     | STRING            |    true     | NULL           |                       | {bank_pkey}                  |   false
+  active      | BOOL              |    true     | NULL           |                       | {bank_pkey}                  |   false
+  location    | STRING            |    true     | NULL           |                       | {bank_pkey}                  |   false
+  currency    | STRING            |    true     | NULL           |                       | {bank_pkey}                  |   false
+  interest    | DECIMAL           |    false    | 1.3:::DECIMAL  |                       | {bank_pkey}                  |   false
+  address     | STRING            |    true     | NULL           |                       | {bank_address_key,bank_pkey} |   false
+  cust_number | INT8              |    true     | NULL           |                       | {bank_pkey}                  |   false
+  more_names  | STRING COLLATE en |    true     | NULL           |                       | {bank_pkey}                  |   false
 (10 rows)
 ~~~
 
@@ -222,12 +222,12 @@ $ cockroach demo bank
 
 #### Add a column and assign it to a new column family
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location1 STRING CREATE FAMILY f1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -246,7 +246,7 @@ $ cockroach demo bank
              |     cust_number INT8 NULL,
              |     more_names STRING COLLATE en NULL,
              |     location1 STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT bank_pkey PRIMARY KEY (id ASC),
              |     CONSTRAINT fk_cust_number_ref_customers FOREIGN KEY (cust_number) REFERENCES customers(id),
              |     UNIQUE INDEX bank_address_key (address ASC),
              |     FAMILY fam_0_id_balance_payload (id, balance, payload, active, location, currency, interest, address, cust_number, more_names),
@@ -257,12 +257,12 @@ $ cockroach demo bank
 
 #### Add a column and assign it to an existing column family
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN location2 STRING FAMILY f1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -282,7 +282,7 @@ $ cockroach demo bank
              |     more_names STRING COLLATE en NULL,
              |     location1 STRING NULL,
              |     location2 STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT bank_pkey PRIMARY KEY (id ASC),
              |     CONSTRAINT fk_cust_number_ref_customers FOREIGN KEY (cust_number) REFERENCES customers(id),
              |     UNIQUE INDEX bank_address_key (address ASC),
              |     FAMILY fam_0_id_balance_payload (id, balance, payload, active, location, currency, interest, address, cust_number, more_names),
@@ -293,12 +293,12 @@ $ cockroach demo bank
 
 #### Add a column and create a new column family if column family does not exist
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN new_name STRING CREATE IF NOT EXISTS FAMILY f2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE bank;
 ~~~
@@ -319,7 +319,7 @@ $ cockroach demo bank
              |     location1 STRING NULL,
              |     location2 STRING NULL,
              |     new_name STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     CONSTRAINT bank_pkey PRIMARY KEY (id ASC),
              |     CONSTRAINT fk_cust_number_ref_customers FOREIGN KEY (cust_number) REFERENCES customers(id),
              |     UNIQUE INDEX bank_address_key (address ASC),
              |     FAMILY fam_0_id_balance_payload (id, balance, payload, active, location, currency, interest, address, cust_number, more_names),
@@ -331,16 +331,16 @@ $ cockroach demo bank
 
 ### Add a column with an `ON UPDATE` expression
 
-<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions set the value for a column when other values in a row are updated.
+{% include_cached new-in.html version="v21.2" %} `ON UPDATE` expressions set the value for a column when other values in a row are updated.
 
 For example, suppose you add a new column to the `bank` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE bank ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance, last_updated FROM bank LIMIT 5;
 ~~~
@@ -358,12 +358,12 @@ For example, suppose you add a new column to the `bank` table:
 
 When any value in any row of the `bank` table is updated, CockroachDB re-evaluates the `ON UPDATE` expression and updates the `last_updated` column with the result.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE bank SET balance = 500 WHERE id = 0;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance, last_updated FROM bank LIMIT 5;
 ~~~

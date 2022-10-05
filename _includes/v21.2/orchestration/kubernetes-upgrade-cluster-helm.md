@@ -17,11 +17,7 @@
         - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](scale-cockroachdb-kubernetes.html?filters=helm#add-nodes) to your cluster before beginning your upgrade.
 
-{% comment %}
 1. Review the [backward-incompatible changes in v21.2](../releases/v21.2.html#v21-2-0-backward-incompatible-changes) and [deprecated features](../releases/v21.2.html#v21-2-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
-{% endcomment %}
-
-1. Review the backward-incompatible changes in v21.2 and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
 1. Decide how the upgrade will be finalized.
 

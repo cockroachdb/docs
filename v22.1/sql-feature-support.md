@@ -89,6 +89,7 @@ table tr td:nth-child(2) {
  Expression indexes | ✓ | Common Extension | [Expression indexes](expression-indexes.html)
  Prefix indexes | ✗ | Common Extension | Implement using [Expression indexes](expression-indexes.html)
  Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values
+ Hash-sharded indexes | ✓ | CockroachDB Extension | [Hash-sharded Indexes documentation](hash-sharded-indexes.html)
 
 ### Schema changes
 
@@ -110,7 +111,6 @@ table tr td:nth-child(2) {
  Adding user-defined schemas | ✓ | Standard |  [`CREATE SCHEMA` documentation](create-schema.html)
  Removing user-defined schemas | ✓ | Standard |  [`DROP SCHEMA` documentation](drop-schema.html)
  Altering user-defined schemas | ✓ | Standard |  [`ALTER SCHEMA` documentation](create-schema.html)
- Converting a database to a user-defined schema | ✓ | CockroachDB Extension |  [`CONVERT TO SCHEMA` documentation](convert-to-schema.html)
 
 ### Statements
 
@@ -135,10 +135,10 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-or-view-names)
+ Table and View references | ✓ | Standard | [Table expressions documentation](table-expressions.html#table-and-view-names)
  `AS` in table expressions | ✓ | Standard | [Aliased table expressions documentation](table-expressions.html#aliased-table-expressions)
- `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | [Functional](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/) | Standard | [`JOIN` expressions documentation](table-expressions.html#join-expressions)
- Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#subqueries-as-table-expressions), as are most [correlated subqueries](subqueries.html#correlated-subqueries).
+ `JOIN` (`INNER`, `LEFT`, `RIGHT`, `FULL`, `CROSS`) | ✓ | Standard | [`JOIN` expressions documentation](table-expressions.html#join-expressions)
+ Sub-queries as table expressions | Partial | Standard | Non-correlated subqueries are [supported](table-expressions.html#use-a-subquery), as are most [correlated subqueries](subqueries.html#correlated-subqueries).
  Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions)
  `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation)
 
@@ -170,7 +170,7 @@ table tr td:nth-child(2) {
  Roles | ✓ | Standard | [Roles documentation](security-reference/authorization.html#roles)
  Object ownership | ✓ | Common Extension | [Ownership documentation](security-reference/authorization.html#object-ownership)
  Privileges | ✓ | Standard | [Privileges documentation](security-reference/authorization.html#managing-privileges)
- Default privileges | Partial | PostgreSQL Extension | [Default privileges documentation](security-reference/authorization.html#default-privileges)
+ Default privileges | ✓ | PostgreSQL Extension | [Default privileges documentation](security-reference/authorization.html#default-privileges)
 
 ### Miscellaneous
 
@@ -187,6 +187,7 @@ table tr td:nth-child(2) {
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
- Stored procedures | ✗ | Common Extension | Execute a procedure explicitly.
+ Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
  Cursors | ✗ | Standard | Traverse a table's rows.
- Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.
+ Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
+ Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL](row-level-ttl.html).

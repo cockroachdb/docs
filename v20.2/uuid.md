@@ -7,7 +7,7 @@ toc: true
 The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a 128-bit value that is [unique across both space and time](https://www.ietf.org/rfc/rfc4122.txt).
 
 {{site.data.alerts.callout_success}}
-To auto-generate unique row IDs, we recommend using [`UUID`](uuid.html) with the `gen_random_uuid()` function as the default value. See the [example](#create-a-table-with-auto-generated-unique-row-ids) below for more details.
+To auto-generate unique row identifiers, use [`UUID`](uuid.html) with the `gen_random_uuid()` function as the default value. See the [example](#create-a-table-with-auto-generated-unique-row-ids) below for more details.
 {{site.data.alerts.end}}
 
 ## Syntax

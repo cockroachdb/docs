@@ -22,6 +22,7 @@ Command | Usage
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
+[`cockroach auth-session`](cockroach-auth-session.html) | Create and manage web sessions and authentication tokens to the HTTP interface from the command line.
 [`cockroach gen`](cockroach-gen.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
 [`cockroach version`](cockroach-version.html) | Output CockroachDB version details.
 [`cockroach debug ballast`](cockroach-debug-ballast.html) | Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
@@ -29,6 +30,7 @@ Command | Usage
 [`cockroach debug job-trace`](cockroach-debug-job-trace.html) | Generate trace payloads for an executing job from a particular node.
 [`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge multiple log files from different machines into a single stream.
+[`cockroach convert-url`](connection-parameters.html#convert-a-url-for-different-drivers) | **New in v21.2:** Convert a connection URL to a format recognized by a [supported client driver](third-party-database-tools.html#drivers).
 [`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster.
 [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) |  Upload a file to the `externalIODir` on a node's local file system.
 [`cockroach userfile upload`](cockroach-userfile-upload.html)   |  The cockroach userfile upload command uploads a file to user-scoped file storage.

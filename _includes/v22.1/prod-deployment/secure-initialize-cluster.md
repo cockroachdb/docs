@@ -1,6 +1,6 @@
 On your local machine, run the [`cockroach init`](cockroach-init.html) command to complete the node startup process and have them join together as a cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --certs-dir=certs --host=<address of any node on --join list>
 ~~~

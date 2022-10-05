@@ -1,7 +1,7 @@
 {{site.data.alerts.callout_danger}}
 The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
 
-If you are already running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
+If you are already running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](/docs/{{site.versions["stable"]}}/secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -49,16 +49,10 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
           max-sql-memory: "2Gi"
         ~~~
 
-    1. For a secure deployment, set `tls.enabled` to `true`.
-
-        {% include_cached copy-clipboard.html %}
-        ~~~ yaml
-        tls:
-          enabled: true
-        ~~~
+        The Helm chart defaults to a secure deployment by automatically setting `tls.enabled` to `true`.
 
         {{site.data.alerts.callout_info}}
-        By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Secure the Cluster](secure-cockroachdb-kubernetes.html?filters=helm).
+        By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Certificate management](/docs/{{site.versions["stable"]}}/secure-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
         {{site.data.alerts.end}}
 
 1. Install the CockroachDB Helm chart, specifying your custom values file.
@@ -67,6 +61,10 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
 
     {{site.data.alerts.callout_info}}
     This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_danger}}
+    To allow the CockroachDB pods to deploy successfully, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
@@ -106,5 +104,5 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     ~~~
 
 {{site.data.alerts.callout_success}}
-The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to logs for a pod, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
 {{site.data.alerts.end}}

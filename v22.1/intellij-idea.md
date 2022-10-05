@@ -23,7 +23,7 @@ The level of support in this document was tested as of the following versions:
 This feature should also work with other JetBrains IDEs, such as PyCharm, but Cockroach Labs has not yet tested its integration.
 {{site.data.alerts.end}}
 
-### Warnings & Errors
+### Warnings and errors
 
 Users can expect to encounter the following behaviors when using CockroachDB within IntelliJ IDEA.
 
@@ -32,7 +32,7 @@ Users can expect to encounter the following behaviors when using CockroachDB wit
 
 #### Warnings
 
-##### [XXUUU] ERROR: could not decorrelate subquery...
+##### [XXUUU] ERROR: could not decorrelate subquery
 
 <img src="{{ 'images/v2.1/intellij/XX000_error_could_not_decorrelate_subquery.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
@@ -40,7 +40,7 @@ Displays once per load of schema.
 
 <hr/>
 
-##### [42883] ERROR: unknown function: pg_function_is_visible() Failed to retrieve...
+##### [42883] ERROR: unknown function: pg_function_is_visible() Failed to retrieve
 
 <img src="{{ 'images/v2.1/intellij/42883_error_pg_function_is_visible.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 
@@ -56,7 +56,7 @@ Requires setting **Introspect using JDBC metadata** ([details below](#set-cockro
 
 <hr/>
 
-## Set CockroachDB as a Data Source in IntelliJ
+## Set CockroachDB as a data source in IntelliJ
 
 1. Launch the **Database** tool window. (**View** > **Tool Windows** > **Database**) <img src="{{ 'images/v2.1/intellij/01_database_tool_window.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
 1. Add a PostgreSQL data source. (**New (+)** > **Data Source** > **PostgreSQL**)<img src="{{ 'images/v2.1/intellij/02_postgresql_data_source.png' | relative_url }}" alt="DBeaver - Select CockroachDB" style="border:1px solid #eee;max-width:100%" />
@@ -79,7 +79,7 @@ Requires setting **Introspect using JDBC metadata** ([details below](#set-cockro
 
 You can now use IntelliJ's [database tool window](https://www.jetbrains.com/help/idea/working-with-the-database-tool-window.html) to interact with your CockroachDB cluster.
 
-## Report Issues with IntelliJ IDEA & CockroachDB
+## Report issues with IntelliJ IDEA & CockroachDB
 
 If you encounter issues other than those outlined above, please [file an issue on the `cockroachdb/cockroach` GitHub repo](https://github.com/cockroachdb/cockroach/issues/new?template=bug_report.md), including the following details about the environment where you encountered the issue:
 
@@ -89,7 +89,7 @@ If you encounter issues other than those outlined above, please [file an issue o
 - Steps to reproduce the behavior
 - If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](logging-use-cases.html#sql_exec).
 
-## See Also
+## See also
 
 + [Client connection parameters](connection-parameters.html)
 + [Third-Party Database Tools](third-party-database-tools.html)

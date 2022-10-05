@@ -32,7 +32,7 @@ If the primary key in your existing table does not meet the requirements, you ca
 **alter_index_partition_by_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_index_partition_by.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_index_partition_by.html %}
 </div>
 
 ## Parameters
@@ -53,7 +53,6 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-
 {% include {{page.version.version}}/sql/querying-partitions.md %}
 
 ## Examples
@@ -62,7 +61,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 Suppose we have a table called `students_by_list`, and secondary index on the table called `name_idx`, in a global online learning portal, and the primary key of the table is defined as `(country, id)`. We can define partitions on the table and index by list:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students_by_list PARTITION BY LIST (country) (
     PARTITION north_america VALUES IN ('CA','US'),
@@ -71,7 +70,7 @@ Suppose we have a table called `students_by_list`, and secondary index on the ta
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX students_by_list@name_idx PARTITION BY LIST (country) (
     PARTITION north_america VALUES IN ('CA','US'),
@@ -84,7 +83,7 @@ Suppose we have a table called `students_by_list`, and secondary index on the ta
 
 Suppose we have another table called `students_by_range`, also with a secondary index called `name_idx`, and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the table and index by range:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
@@ -92,7 +91,7 @@ Suppose we have another table called `students_by_range`, also with a secondary 
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2017-08-15'),
@@ -104,7 +103,7 @@ Suppose we have another table called `students_by_range`, also with a secondary 
 
 Suppose we have an yet another table named `students`, again with a secondary index called `name_idx`, and the primary key is defined as `(country, expected_graduation_date, id)`. We can define partitions and subpartitions on the table and index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students PARTITION BY LIST (country) (
     PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date) (
@@ -118,7 +117,7 @@ Suppose we have an yet another table named `students`, again with a secondary in
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX students@name_idx PARTITION BY LIST (country) (
     PARTITION australia VALUES IN ('AU','NZ') PARTITION BY RANGE (expected_graduation_date) (
@@ -134,7 +133,7 @@ Suppose we have an yet another table named `students`, again with a secondary in
 
 ### Repartition a table or secondary index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students_by_range PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
@@ -142,7 +141,7 @@ Suppose we have an yet another table named `students`, again with a secondary in
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX students_by_range@name_idx PARTITION BY RANGE (expected_graduation_date) (
     PARTITION graduated VALUES FROM (MINVALUE) TO ('2018-08-15'),
@@ -152,12 +151,12 @@ Suppose we have an yet another table named `students`, again with a secondary in
 
 ### Unpartition a table or secondary index
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE students PARTITION BY NOTHING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX students@name_idx PARTITION BY NOTHING;
 ~~~

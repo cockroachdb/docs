@@ -20,7 +20,7 @@ In order to add a region with `ADD REGION`, you must first set a primary databas
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_add_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database_add_region.html %}
 </div>
 
 ## Parameters
@@ -47,7 +47,7 @@ Suppose you have a database `foo` in your cluster, and you want to make it a mul
 
 To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](set-primary-region.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo SET PRIMARY REGION "us-east1";
 ~~~
@@ -65,7 +65,7 @@ Given a cluster with multiple regions, any databases in that cluster that have n
 
 To add more regions to a database that already has at least one region, use an `ADD REGION` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER database foo ADD region "us-west1";
 ~~~
@@ -74,7 +74,7 @@ ALTER database foo ADD region "us-west1";
 ALTER DATABASE ADD REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER database foo ADD region "europe-west1";
 ~~~
@@ -87,7 +87,7 @@ ALTER DATABASE ADD REGION
 
 To view the regions associated with a multi-region database, use a [`SHOW REGIONS FROM DATABASE`](show-regions.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~
@@ -105,7 +105,7 @@ SHOW REGIONS FROM DATABASE foo;
 
 To [drop a region](drop-region.html) from a multi-region database, use a [`DROP REGION`](drop-region.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo DROP REGION "us-west1";
 ~~~
@@ -114,7 +114,7 @@ ALTER DATABASE foo DROP REGION "us-west1";
 ALTER DATABASE DROP REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~
@@ -132,5 +132,8 @@ SHOW REGIONS FROM DATABASE foo;
 - [`SET PRIMARY REGION`](set-primary-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
+- [`ADD SUPER REGION`](add-super-region.html)
+- [`DROP SUPER REGION`](drop-super-region.html)
+- [`SHOW SUPER REGIONS`](show-super-regions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [SQL Statements](sql-statements.html)

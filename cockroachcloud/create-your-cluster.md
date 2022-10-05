@@ -2,13 +2,10 @@
 title: Create a CockroachDB Dedicated Cluster
 summary: Learn how to create your CockroachDB Dedicated cluster.
 toc: true
-filter_category: create_cluster_cloud
-filter_html: CockroachDB Dedicated
-filter_sort: 2
 docs_area: deploy
 ---
 
-{% include filter-tabs.md %}
+{% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
 This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
@@ -42,7 +39,7 @@ In the **Regions & nodes** section, select a region. For optimal performance, se
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
 {{site.data.alerts.callout_info}}
-Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
+Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 {{site.data.alerts.end}}
 
 **Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
@@ -59,10 +56,10 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 
 In the **Regions & nodes** section, select the number of nodes.
 
-- For single-region application development and testing, you may create a 1-node cluster.
-- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
+- For single-region application development and testing, you may create a 1 node cluster.
+- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
-- See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
+- See [Plan a CockroachDB Cloud cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
@@ -87,7 +84,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    You can choose up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    We recommending choosing up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
@@ -98,9 +95,9 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
 
-To change the hardware configuration after the cluster is created, see [Manage a CockroachDB Dedicated Cluster](cluster-management.html).
+To change the hardware configuration after the cluster is created, see [Manage a {{ site.data.products.dedicated }} Cluster](cluster-management.html).
 
-See [Example](#example) for further guidance.
+See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
 ## Step 6. Name the cluster
 
@@ -151,31 +148,6 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
 1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes.
-
-## Example
-
-Let's say we want to create a cluster to connect with an application with a requirement of 2000 TPS that is running on the Google Cloud Platform in the `us-east1` region.
-
-Suppose the raw data amount we expect to store without replication is 500 GB.
-At 40% Compression, we can expect a savings of 200 GB. Then the amount of data we need to store is 300 GB.
-
-Let's consider a storage buffer of 50% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
-
-With the default replication factor of 3, the total amount of data stored is (3 * 450 GB) = 1350 GB.
-
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). One way to reach a 1350 GB storage capacity is 3 nodes with 480 GiB per node, which gives us a capacity of (3*480 GiB) = 1440 GiB.
-
-Let's see how many vCPUs we need to meet our performance requirement of 2000 TPS. We know that 2 vCPU nodes are not recommended for production, so the first compute power we should check is 3 nodes with 4 vCPUs per node. We can calculate that this configuration would have (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, 4 vCPU nodes can meet our performance requirements.
-
-Thus our final configuration is as follows:
-
-Component | Selection
-----------|----------
-Cloud provider | GCP
-Region | us-east1
-Number of nodes | 3
-Compute | 4 vCPU
-Storage | 480 GiB
 
 ## What's next
 

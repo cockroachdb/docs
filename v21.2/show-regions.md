@@ -10,7 +10,7 @@ docs_area: reference.sql
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_regions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_regions.html %}
 </div>
 
 ## Required privileges
@@ -55,7 +55,7 @@ Field | Description
 
 After cluster startup, you can view all of the cluster regions available in the cluster with `SHOW REGIONS FROM CLUSTER`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~
@@ -75,7 +75,7 @@ SHOW REGIONS FROM CLUSTER;
 
 [Add an available region](add-region.html) as the primary region for the `movr` database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr PRIMARY REGION "us-east";
 ~~~
@@ -90,7 +90,7 @@ Only [cluster regions](multiregion-overview.html#cluster-regions) (i.e., regions
 
 Then, add more regions to the database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD REGION "us-west";
 ~~~
@@ -99,7 +99,7 @@ ALTER DATABASE movr ADD REGION "us-west";
 ALTER DATABASE ADD REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE movr ADD REGION "us-central";
 ~~~
@@ -110,7 +110,7 @@ ALTER DATABASE ADD REGION
 
 To view the regions associated with the database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE movr;
 ~~~
@@ -126,7 +126,7 @@ SHOW REGIONS FROM DATABASE movr;
 
 With `movr` set as the current database, the following statement returns the same results:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE;
 ~~~
@@ -144,21 +144,21 @@ SHOW REGIONS FROM DATABASE;
 
 Create another database in the cluster with a primary region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE cockroachlabs PRIMARY REGION "us-east";
 ~~~
 
 Then, add another region to the database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE cockroachlabs ADD REGION "us-west";
 ~~~
 
 To show the regions in use by all the databases in a cluster, use `SHOW REGIONS`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS;
 ~~~
@@ -174,7 +174,7 @@ SHOW REGIONS;
 
 To show the region information for each database in the cluster, use `SHOW REGIONS FROM ALL DATABASES`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM ALL DATABASES;
 ~~~

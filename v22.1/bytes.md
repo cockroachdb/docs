@@ -29,7 +29,7 @@ is otherwise expected.
 
 ## Size
 
-The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
+The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.  
 
 {{site.data.alerts.callout_success}}
 If your application requires large binary input in single queries, you can store the blobs somewhere your client can access them (using a cloud storage service, for example), and then reference their addresses from a statement.
@@ -97,7 +97,7 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 `STRING` treats all of its data as characters, or more specifically, Unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example, let's take a complex Unicode character such as ☃ ([the snowman emoji](https://emojipedia.org/snowman/)):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT length('☃'::string);
 ~~~

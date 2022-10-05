@@ -3,13 +3,10 @@ title: Deploy CockroachDB On-Premises
 summary: Learn how to manually deploy a secure, multi-node CockroachDB cluster on multiple machines.
 toc: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2
-filter_category: deploy_crdb_op
-filter_html: Secure
-filter_sort: 1
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/deploy-crdb-op.md %}
 
 This tutorial shows you how to manually deploy a secure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 
@@ -60,7 +57,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 1. On your local machine, run the [`cockroach gen haproxy`](cockroach-gen.html) command with the `--host` flag set to the address of any node and security flags pointing to the CA cert and the client cert and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach gen haproxy \
     --certs-dir=certs \
@@ -71,7 +68,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 2. Upload the `haproxy.cfg` file to the machine where you want to run HAProxy:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ scp haproxy.cfg <username>@<haproxy address>:~/
   ~~~
@@ -80,14 +77,14 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 4. Install HAProxy:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ apt-get install haproxy
   ~~~
 
 5. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ haproxy -f haproxy.cfg
   ~~~

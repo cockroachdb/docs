@@ -45,7 +45,7 @@ These endpoints are also available through the [Cluster API](cluster-api.html) u
 
 If a node is down, the `http://<host>:<http-port>/health` endpoint returns a `Connection refused` error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health
 ~~~
@@ -68,7 +68,7 @@ The `/health` endpoint does not returns details about the node such as its priva
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is in the [wait phase of the node shutdown sequence](node-shutdown.html#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of client connections and leases, and is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+- The node is in the [wait phase of the node shutdown sequence](node-shutdown.html#draining). This causes load balancers and connection managers to reroute traffic to other nodes before the node is drained of SQL client connections and leases, and is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
 
     {{site.data.alerts.callout_success}}
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
@@ -76,15 +76,18 @@ The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `50
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/health?ready=1
 ~~~
 
 ~~~
 {
-  "error": "node is not ready",
-  "code": 14
+  "error": "node is not healthy",
+  "code": 14,
+  "message": "node is not healthy",
+  "details": [
+  ]
 }
 ~~~
 
@@ -119,7 +122,7 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 Every node of a CockroachDB cluster exports granular time series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus.html), an open source tool for storing, aggregating, and querying time series data, but the format is **easy-to-parse** and can be processed to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl http://localhost:8080/_status/vars
 ~~~
@@ -140,55 +143,190 @@ replicas_quiescent{store="1"} 20
 ...
 ~~~
 
-{{site.data.alerts.callout_info}}In addition to using the exported time series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to Alert On](#events-to-alert-on) for more details.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+In addition to using the exported time-series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to alert on](#events-to-alert-on) for more details.
+{{site.data.alerts.end}}
 
-## Events to alert on
+## Alerting tools
 
-Active monitoring helps you spot problems early, but it is also essential to create alerting rules that promptly send notifications when there are events that require investigation or intervention. This section identifies the most important events to create alerting rules for, with the [Prometheus endpoint](#prometheus-endpoint) metrics to use for detecting the events.
+In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-{{site.data.alerts.callout_success}}If you use Prometheus for monitoring, you can also use our pre-defined <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">alerting rules</a> with Alertmanager. See <a href="monitor-cockroachdb-with-prometheus.html">Monitor CockroachDB with Prometheus</a> for guidance.{{site.data.alerts.end}}
+This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus' Alertmanager.
 
-### Node is down
+### Alertmanager
 
-- **Rule:** Send an alert when a node has been down for 5 minutes or more.
+If you have configured [Prometheus](monitor-cockroachdb-with-prometheus.html) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Prometheus' Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
+
+#### Prometheus alerting rules endpoint
+
+{% include_cached new-in.html version="v22.1" %} Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Prometheus' Alertmanager.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ curl http://localhost:8080/api/v2/rules/
+~~~
+
+~~~
+rules/alerts:
+    rules:
+        - alert: UnavailableRanges
+          expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
+          for: 10m0s
+          annotations:
+            {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} unavailable ranges{% endraw %}
+        - alert: TrippedReplicaCircuitBreakers
+          expr: (sum by(instance, cluster) (kv_replica_circuit_breaker_num_tripped_replicas)) > 0
+          for: 10m0s
+          annotations:
+            {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} tripped per-Replica circuit breakers{% endraw %}
+...
+~~~
+
+#### Working with Alertmanager rules
+
+To add a rule from the `api/v2/rules/` rules endpoint, create or edit your `alerts.rules.yml` file and copy the rule definition for the event you want to alert on. For example, to add a rule to alert you when unavailable ranges are detected, copy the following from the rules endpoint into your `alerts.rules.yml` file:
+
+{% include_cached copy-clipboard.html %}
+~~~
+- alert: UnavailableRanges
+  expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
+  for: 10m0s
+  annotations:
+    {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} unavailable ranges{% endraw %}
+~~~
+
+If you already followed the steps from [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html), you should already have a `alerts.rules.yml` file. If you are creating a new `alerts.rules.yml` file, be sure that it begins with the following three lines:
+
+{% include_cached copy-clipboard.html %}
+~~~
+groups:
+- name: rules/alerts.rules
+  rules:
+~~~
+
+Place your desired rule(s) underneath the `rules:` header. For example, the following shows an `alerts.rules.yml` file with the unavailable ranges rule defined:
+
+{% include_cached copy-clipboard.html %}
+~~~
+groups:
+- name: rules/alerts.rules
+  rules:
+  - alert: UnavailableRanges
+    expr: (sum by(instance, cluster) (ranges_unavailable)) > 0
+    for: 10m0s
+    annotations:
+      {% raw %}summary: Instance {{ $labels.instance }} has {{ $value }} unavailable ranges{% endraw %}
+~~~
+
+Once you have created or edited your `alerts.rules.yml` file, reference it in your `prometheus.yml` configuration file with the following:
+
+{% include_cached copy-clipboard.html %}
+~~~
+rule_files:
+- "rules/alerts.rules.yml"
+~~~
+
+If you already followed the steps from [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html), this reference is already present in your `prometheus.yml` file.
+
+Start Prometheus and Alertmanager to begin watching for events to alert on. You can view imported rules on your Prometheus server's web interface at `http://<host>:<http-port>/rules`. Use the "State" column to verify that the rules were imported correctly.
+
+### Events to alert on
+
+{{site.data.alerts.callout_info}}
+Currently, not all events listed have corresponding alert rule definitions available from the `api/v2/rules/` endpoint. Many events not yet available in this manner are defined in the <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>. For more details, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
+{{site.data.alerts.end}}
+
+#### Node is down
+
+- **Rule:** Send an alert when a node has been down for 15 minutes or more.
 
 - **How to detect:** If a node is down, its `_status/vars` endpoint will return a `Connection refused` error. Otherwise, the `liveness_livenodes` metric will be the total number of live nodes in the cluster.
 
-### Node is restarting too frequently
+- **Rule definition:** Use the `InstanceDead` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
 
-- **Rule:** Send an alert if a node has restarted more than 5 times in 10 minutes.
+#### Node is restarting too frequently
+
+- **Rule:** Send an alert if a node has restarted more than once in the last 10 minutes.
 
 - **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
-### Node is running low on disk space
+- **Rule definition:** Use the `InstanceFlapping` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+
+#### Node is running low on disk space
 
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.
 
-### Node is not executing SQL
+- **Rule definition:** Use the `StoreDiskLow` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+
+#### Node is not executing SQL
 
 - **Rule:** Send an alert when a node is not executing SQL despite having connections.
 
 - **How to detect:** The `sql_conns` metric in the node's `_status/vars` output will be greater than `0` while the `sql_query_count` metric will be `0`. You can also break this down by statement type using `sql_select_count`, `sql_insert_count`, `sql_update_count`, and `sql_delete_count`.
 
-### CA certificate expires soon
+#### CA certificate expires soon
 
 - **Rule:** Send an alert when the CA certificate on a node will expire in less than a year.
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_ca` metric in the node's `_status/vars` output.
 
-### Node certificate expires soon
+- **Rule definition:** Use the `CACertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+
+#### Node certificate expires soon
 
 - **Rule:** Send an alert when a node's certificate will expire in less than a year.
 
 - **How to detect:** Calculate this using the `security_certificate_expiration_node` metric in the node's `_status/vars` output.
 
-### Changefeed is experiencing high latency
+- **Rule definition:** Use the `NodeCertificateExpiresSoon` alert from our <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">pre-defined alerting rules</a>.
+
+#### Changefeed is experiencing high latency
 
 - **Rule:** Send an alert when the latency of any changefeed running on any node is higher than the set threshold, which depends on the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable set in the cluster.
 
 - **How to detect:** Calculate this using a threshold, where the threshold is less than the value of the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) variable. For example, `changefeed.max_behind_nanos > [some threshold]`.
+
+#### Unavailable ranges
+
+- **Rule:** Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
+
+- **How to detect:** Calculate this using the `ranges_unavailable` metric in the node's `_status/vars` output.
+
+- **Rule definition:** Use the `UnavailableRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### Tripped replica circuit breakers
+
+- **Rule:** Send an alert when a replica stops serving traffic due to other replicas being offline for too long.
+
+- **How to detect:** Calculate this using the `kv_replica_circuit_breaker_num_tripped_replicas` metric in the node's `_status/vars` output.
+
+- **Rule definition:** Use the `TrippedReplicaCircuitBreakers` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### Under-replicated ranges
+
+- **Rule:** Send an alert when the number of ranges with replication below the [replication factor](configure-replication-zones.html#num_replicas) is non-zero for too long.
+
+- **How to detect:** Calculate this using the `ranges_underreplicated` metric in the node's `_status/vars` output.
+
+- **Rule definition:** Use the `UnderreplicatedRanges` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### Requests stuck in Raft
+
+- **Rule:** Send an alert when requests are taking a very long time in replication.
+
+- **How to detect:** Calculate this using the `requests_slow_raft` metric in the node's `_status/vars` output.
+
+- **Rule definition:** Use the `RequestsStuckInRaft` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
+
+#### High open file descriptor count
+
+- **Rule:** Send an alert when a cluster is getting close to the [open file descriptor limit](recommended-production-settings.html#file-descriptors-limit).
+
+- **How to detect:** Calculate this using the `sys_fd_softlimit` metric in the node's `_status/vars` output.
+
+- **Rule definition:** Use the `HighOpenFDCount` alerting rule from your cluster's [`api/v2/rules/` metrics endpoint](#alertmanager).
 
 ## See also
 

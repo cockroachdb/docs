@@ -47,7 +47,7 @@ You will need to write an [`IMPORT TABLE`][import] statement that matches the sc
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -93,7 +93,7 @@ The `delimiter` option is used to set the Unicode character that marks where eac
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -113,7 +113,7 @@ The `comment` option determines which Unicode character marks the rows in the da
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -133,7 +133,7 @@ The `skip` option determines the number of header rows to skip when importing a 
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -153,7 +153,7 @@ Example usage:
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -173,7 +173,7 @@ The `nullif` option defines which string should be converted to `NULL`.
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -198,7 +198,7 @@ The `compress` option defines which decompression codec should be used on the CS
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees (
     emp_no INT PRIMARY KEY,
@@ -217,7 +217,7 @@ Example usage:
 - [`IMPORT`][import]
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from MySQL][mysql]
-- [Migrate from Postgres][postgres]
+- [Migrate from PostgreSQL][postgres]
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

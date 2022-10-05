@@ -2,7 +2,7 @@
 title: ALTER PRIMARY KEY
 summary: Use the ALTER PRIMARY KEY statement to change the primary key of a table.
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
 The `ALTER PRIMARY KEY` [statement](sql-statements.html) is a subcommand of [`ALTER TABLE`](alter-table.html) that can be used to change the [primary key](primary-key.html) of a table.
@@ -34,7 +34,7 @@ To change an existing primary key without creating a secondary index from that p
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_primary_key.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_primary_key.html %}
 </div>
 
 ## Parameters
@@ -43,7 +43,7 @@ To change an existing primary key without creating a secondary index from that p
 -----------|-------------
  `table_name` | The name of the table with the primary key that you want to modify.
  `index_params` | The name of the column(s) that you want to use for the primary key. These columns replace the current primary key column(s).
- `USING HASH WITH BUCKET COUNT` | Creates a [hash-sharded index](hash-sharded-indexes.html) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
+ `USING HASH WITH BUCKET_COUNT` | Creates a [hash-sharded index](hash-sharded-indexes.html) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
  `opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
 ## Required privileges
@@ -60,7 +60,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 Suppose that you are storing the data for users of your application in a table called `users`, defined by the following `CREATE TABLE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
   name STRING PRIMARY KEY,
@@ -72,17 +72,17 @@ The primary key of this table is on the `name` column. This is a poor choice, as
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD COLUMN id UUID NOT NULL DEFAULT gen_random_uuid();
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER PRIMARY KEY USING COLUMNS (id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

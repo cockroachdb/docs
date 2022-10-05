@@ -1,6 +1,6 @@
 In this example, create a table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE x (
     a INT NULL,
@@ -12,12 +12,12 @@ In this example, create a table:
 
 Then, insert a row of data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO x VALUES (6);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM x;
 ~~~
@@ -33,14 +33,14 @@ Then, insert a row of data:
 
 Now add another virtual computed column to the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE x ADD COLUMN d INT AS (a // 2) VIRTUAL;
 ~~~
 
 The `d` column is added to the table and computed from the `a` column divided by 2.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM x;
 ~~~

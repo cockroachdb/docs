@@ -23,13 +23,59 @@ jobs:
 
           files=(${{ steps.changed_files.outputs.all_modified_files }})
           pr_num=${{ github.event.pull_request.number }}
+
+          function generateMainFiles() {
+            html_file=${1%.md}.html
+            file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$1</a></li>"
+            output+="$file"
+          }
+
+          function generateIncludes() {
+            output+="<li>$1:</li><ul>"
+            OLDIFS=$IFS
+            IFS='/'
+            read -ra path <<< "$1"
+            IFS=$OLDIFS
+            if [[ $1 == _includes* ]]
+            then
+              major_version=${path[1]}
+            elif $1 == v* || $1 == cockroachcloud*
+            then
+              major_version=${path[0]}
+            fi
+            file_name=${path[-1]}
+            mainRefs=($(grep -irl /${file_name} ${major_version} | sed -e 's/^\.\///g'))
+            includeRefs=($(grep -irl /${file_name} _includes/${major_version} | sed -e 's/^\.\///g'))
+            if [[ ${#mainRefs[@]} > 0 ]]
+            then
+              for ref in ${mainRefs[@]}; do
+                generateMainFiles ${ref}
+              done
+            fi
+            if [[ ${#includeRefs[@]} > 0 ]]
+            then
+              for ref in ${includeRefs[@]}; do
+                if [[ "$2" == *"$ref"* ]]
+                then
+                  output+="<li>$ref (Error: Circular reference found. Your build will fail.)</li>"
+                else
+                  chain=$2:${ref}
+                  generateIncludes ${ref} ${chain}
+                fi
+              done
+            fi
+            if [[ ${#includeRefs[@]} == 0 && ${#mainRefs[@]} == 0 ]]
+            then
+              output+="<li>Warning: include not used in any ${major_version} file or include</li>"
+            fi
+            output+="</ul>"
+          }
+
           for file in ${files[@]}; do
             # only create links for Markdown files that are not includes
             if [[ $file == *.md ]] && [[ $file != _* ]]
             then
-              html_file=${file%.md}.html
-              file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$file</a></li>"
-              output+="$file"
+              generateMainFiles ${file}
             elif [[ $file == *.md ]] && [[ $file == _includes/releases/* ]]
             then
               OLDIFS=$IFS
@@ -37,24 +83,11 @@ jobs:
               read -ra path <<< "$file"
               IFS=$OLDIFS
               major_version=${path[-2]}
-              file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li>"
-              [[ " ${output[*]} " != *"releases/${major_version}.md"* ]] && output+="$file"
-            elif [[ $file == _includes/v* && $file != *sidebar* ]] || [[ $file == _includes/cockroachcloud* && $file != *sidebar* ]]
+              file="<li>${file}:<ul><li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li></ul></li>"
+              output+="$file"
+            elif [[ $file == _includes/v* || $file == _includes/cockroachcloud* || $file == images/* ]] && [[ $file != *.json ]] && [[ $file != *.gitignore* ]]
             then
-              output+="<li>${file}:</li><ul>"
-              OLDIFS=$IFS
-              IFS='/'
-              read -ra path <<< "$file"
-              IFS=$OLDIFS
-              major_version=${path[1]}
-              file_name=${path[-1]}
-              refs=($(grep -irl ${file_name} ${major_version}))
-              for ref in ${refs[@]}; do
-                html_file=${ref%.md}.html
-                file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$ref</a></li>"
-                output+="$file"
-              done
-              output+="</ul>"
+              generateIncludes $file
             else
               output+="<li>$file</li>"
             fi

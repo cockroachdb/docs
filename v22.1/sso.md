@@ -1,16 +1,18 @@
 ---
-title: Single Sign-on (Enterprise)
-summary: Implement single sign-on (SSO) for DB Console access.
+title: Single Sign-on for DB Console
+summary: Overview of requirements and management procedures for single sign-on (SSO) for DB Console.
 toc: true
 docs_area: manage
 ---
 
-Single sign-on (SSO) allows a CockroachDB user to access the DB Console in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#db-console-access) will display an OAuth login button in addition to the password access option.
+Single sign-on (SSO) allows a CockroachDB user to access the [DB Console](ui-overview.html) in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#db-console-access) will display an OAuth login button in addition to the password access option.
 
 CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/), an authentication layer built on top of OAuth 2.0.
 
 {{site.data.alerts.callout_info}}
-SSO authentication is an [Enterprise-only](enterprise-licensing.html) feature.
+SSO for DB Console is available to {{ site.data.products.db }} customers.
+
+On {{ site.data.products.core }} clusters, SSO for DB Console requires an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## Requirements
@@ -73,72 +75,72 @@ These steps demonstrate how to enable SSO authentication for the DB Console on a
 
 1. Open a SQL shell to the cluster on node 1:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --certs-dir=certs --host=localhost:26257
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
 1. Specify the client ID and client secret you obtained earlier:
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.client_id = '\<client id\>';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.client_id = '\<client id\>';
 	~~~
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.client_secret = '\<client secret\>';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.client_secret = '\<client secret\>';
 	~~~
 
 1. Specify the OAuth issuer identifier:
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.provider_url = 'https://accounts.google.com';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.provider_url = 'https://accounts.google.com';
 	~~~
 
 1. Specify the callback URL to redirect the user to the CockroachDB cluster:
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.redirect_url = 'https://localhost:8080/oidc/v1/callback';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.redirect_url = 'https://localhost:8080/oidc/v1/callback';
 	~~~
 
 1. Specify the following values to obtain an OIDC identifier that will be mapped to a SQL user.
 
 	Request the `openid` and `email` scopes from the Access Token:
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.scopes = 'openid email';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.scopes = 'openid email';
 	~~~
 
 	Specify the `email` field from the ID Token:
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.claim_json_key = 'email';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.claim_json_key = 'email';
 	~~~
 
 	Use a regular expression that will extract a username from `email` that you can match to a SQL user. For example, `'^([^@]+)@cockroachlabs\.com$'` extracts the characters that precede `@cockroachlabs.com` in the email address.
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.principal_regex = '^([^@]+)@cockroachlabs.com$';
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.principal_regex = '^([^@]+)@cockroachlabs.com$';
 	~~~
 
 1. [Create a SQL user](create-user.html#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `maxroach@cockroachlabs.com` will need the SQL username `maxroach`:
 
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE USER maxroach;
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE USER maxroach;
     ~~~
 
 1. Finally, enable OIDC authentication:
 
-	{% include copy-clipboard.html %}
-	~~~ sql
-	> SET CLUSTER SETTING server.oidc_authentication.enabled = true;
+	{% include_cached copy-clipboard.html %}
+	~~~sql
+	SET CLUSTER SETTING server.oidc_authentication.enabled = true;
 	~~~
 
 	When the user [accesses the DB Console](ui-overview.html#db-console-access), they will be able to log in with their Google account.

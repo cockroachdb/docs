@@ -45,6 +45,12 @@ For more technical details, see [How online schema changes are possible in Cockr
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, [see below](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
+## Best practices for online schema changes
+
+### Schema changes in multi-region clusters
+
+{% include {{ page.version.version }}/performance/lease-preference-system-database.md %}
+
 ## Examples
 
 {{site.data.alerts.callout_success}}
@@ -57,7 +63,7 @@ As noted in [Limitations](#limitations), you cannot run schema changes inside tr
 
 However, as of version v2.1, you can run schema changes inside the same transaction as a [`CREATE TABLE`][create-table] statement. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
   SAVEPOINT cockroach_restart;
@@ -101,7 +107,7 @@ As of v19.1, some schema changes can be used in combination in a single `ALTER T
 
 You can check on the status of the schema change jobs on your system at any time using the [`SHOW JOBS`][show-jobs] statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW JOBS] WHERE job_type = 'SCHEMA CHANGE';
 ~~~
@@ -151,7 +157,7 @@ The following statements fail due to [limited support for schema changes within 
 
 #### Create an index and then run a select against that index inside a transaction
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo (id INT PRIMARY KEY, name VARCHAR);
   BEGIN;
@@ -174,7 +180,7 @@ ROLLBACK
 
 #### Add a column and then add a constraint against that column inside a transaction
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo ();
   BEGIN;
@@ -197,7 +203,7 @@ ROLLBACK
 
 #### Add a column and then select against that column inside a transaction
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo ();
   BEGIN;
@@ -218,7 +224,7 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 ROLLBACK
 ~~~
 
-### `ALTER TYPE` schema changes cannot be cancelled.
+### `ALTER TYPE` schema changes cannot be cancelled
 
 You can only [cancel](cancel-job.html) [`ALTER TYPE`](alter-type.html) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
 

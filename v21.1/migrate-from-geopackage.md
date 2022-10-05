@@ -24,14 +24,14 @@ To follow along with the example below, you will need the following prerequisite
 
 First, download the zip file containing the spring location data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 wget https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
 ~~~
 
 Next, unzip the file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 unzip gpkg_env_mn_springs_inventory.zip
 ~~~
@@ -40,7 +40,7 @@ unzip gpkg_env_mn_springs_inventory.zip
 
 To load the GeoPackage into CockroachDB, we must first convert it to SQL using the `ogr2ogr` tool.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ogr2ogr -f PGDUMP springs.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF env_mn_springs_inventory.gpkg
 ~~~
@@ -59,7 +59,7 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 
 For local testing, you can [start a local file server](use-a-local-file-server-for-bulk-operations.html).  The following command will start a local file server listening on port 3000:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 python3 -m http.server 3000
 ~~~
@@ -68,12 +68,12 @@ python3 -m http.server 3000
 
 Next, create a database to hold the natural spring location data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE DATABASE springs;
 USE springs;
@@ -81,9 +81,9 @@ USE springs;
 
 ## Step 5. Import the SQL
 
-Since the file is being served from a local server and is formatted as Postgres-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](import.html#import-a-postgres-database-dump) statement:
+Since the file is being served from a local server and is formatted as Postgres-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](import.html#import-a-postgresql-database-dump) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 ~~~

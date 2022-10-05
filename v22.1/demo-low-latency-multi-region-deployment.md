@@ -67,7 +67,7 @@ To determine which nodes are in which regions, you will need to refer to two (2)
 
 Here is the output of `\demo ls` from the SQL shell.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \demo ls
 ~~~
@@ -143,14 +143,14 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. In the SQL shell, create the `movr` database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE movr;
     ~~~
 
 1. Open a second terminal and run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
         docker run -it --rm cockroachdb/movr:20.11.1 \
             --app-name "movr-load" \
@@ -185,7 +185,7 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. In the same terminal window, run the following command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
         --app-name "movr-us-east" \
@@ -206,7 +206,7 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. Open a third terminal and run the following command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
         --app-name "movr-us-west" \
@@ -226,7 +226,7 @@ Follow these steps to start 3 instances of MovR. Each instance is pointed at a n
 
 1. Open a fourth terminal and run the following command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -it --rm cockroachdb/movr:20.11.1 \
        --app-name "movr-eu-west" \
@@ -283,19 +283,12 @@ The following `ALTER` statements will take some seconds to run, since the cluste
 
 Back in the SQL shell, switch to the `movr` database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 USE movr;
 ~~~
 
-Execute the following statements. They will tell CockroachDB about the database's regions. This information is necessary so that CockroachDB can later move data around to optimize access to particular data from particular regions. For more information about how this works at a high level, see [Database Regions](multiregion-overview.html#database-regions).
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE movr PRIMARY REGION "us-east1";
-ALTER DATABASE movr ADD REGION "europe-west1";
-ALTER DATABASE movr ADD REGION "us-west1";
-~~~
+{% include {{page.version.version}}/sql/multiregion-movr-add-regions.md %}
 
 ### Configure table localities
 

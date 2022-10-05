@@ -1,6 +1,6 @@
 ---
-title: Migrate from a CockroachDB Serverless (beta) to CockroachDB Dedicated Cluster
-summary: Learn how to migrate data from a CockroachDB Serverless (beta) cluster into a CockroachDB Dedicated cluster.
+title: Migrate from a CockroachDB Serverless to CockroachDB Dedicated Cluster
+summary: Learn how to migrate data from a CockroachDB Serverless cluster into a CockroachDB Dedicated cluster.
 toc: true
 redirect_from: migrate-from-free-to-dedicated.html
 docs_area: migrate
@@ -112,7 +112,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
         skip = '1';
     ~~~
 
-    Notice that we used the [`skip` option](../{{site.versions["stable"]}}/import.html#skip-first-n-lines) in the above command. This is because the first line of the CSV file we created in [Step 1](#step-1-export-data-to-a-local-csv-file) is the header row, not actual data to import. For more information about the options available for `IMPORT ... CSV`, see [Import options](../{{site.versions["stable"]}}/import.html#import-options).
+    Notice that we used the [`skip` option](../v21.2/import.html#skip-first-n-lines) in the above command. This is because the first line of the CSV file we created in [Step 1](#step-1-export-data-to-a-local-csv-file) is the header row, not actual data to import. For more information about the options available for `IMPORT ... CSV`, see [Import options](../{{site.versions["stable"]}}/import.html#import-options).
 
     ~~~
             job_id       |  status   | fraction_completed | rows | index_entries | bytes

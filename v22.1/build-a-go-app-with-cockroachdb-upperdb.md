@@ -3,13 +3,10 @@ title: Build a Go App with CockroachDB and upper/db
 summary: Learn how to use CockroachDB from a simple Go application with the upper/db data access layer.
 toc: true
 twitter: false
-filter_category: crud_go
-filter_html: Use <strong>upper/db</strong>
-filter_sort: 4
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple Go application with CockroachDB and the [upper/db](https://upper.io/) data access layer.
 
@@ -27,7 +24,7 @@ This tutorial shows you how build a simple Go application with CockroachDB and t
 
 Create a certificate and key for the `maxroach` user by running the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
@@ -46,7 +43,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 - Updates the rows in the `accounts` table within an explicit [transaction](transactions.html).
 - Prints the rows in the `accounts` table to the terminal once more.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/upperdb-basic-sample/main.go %}
 ~~~
@@ -83,7 +80,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 - Updates the rows in the `accounts` table within an explicit [transaction](transactions.html).
 - Prints the rows in the `accounts` table to the terminal once more.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% include {{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go %}
 ~~~
@@ -102,14 +99,14 @@ To clone a version of the code below that connects to insecure clusters, run the
 
 Change to the directory where you cloned the repo and get the dependencies with `go mod init`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go mod init hello-world-go-upperdb
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run main.go
 ~~~

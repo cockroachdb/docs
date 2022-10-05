@@ -6,7 +6,7 @@ redirect_from: multi-region-overview.html
 docs_area: develop
 ---
 
-This tutorial walks you through developing and deploying a global application built on CockroachDB, using Flask, SQLAlchemy, {{ site.data.products.db }}, and [Google Cloud](https://cloud.google.com/) services.
+This tutorial guides you through developing and deploying a global application built on CockroachDB, using Flask, SQLAlchemy, {{ site.data.products.db }}, and [Google Cloud](https://cloud.google.com/) services.
 
 The following sections make up the tutorial:
 
@@ -20,4 +20,4 @@ Throughout the tutorial, we reference the source code for an example web applica
 
 The repo's [README](https://github.com/cockroachlabs/movr-flask/blob/master/README.md) also includes instructions on debugging and deploying the application using Google Cloud services. Those instructions are reproduced in [Set Up a Virtual Environment for Developing Global Applications](movr-flask-setup.html) and [Deploy a Global Application](movr-flask-deployment.html).
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->

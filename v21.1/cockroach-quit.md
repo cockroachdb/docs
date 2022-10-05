@@ -87,7 +87,7 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 
     If the node is running in the background and you are not using a process manager, send a kill signal to the `cockroach` process, for example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill cockroach
     ~~~
@@ -96,7 +96,7 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 
 3. Verify that the `cockroach` process has stopped:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ps aux | grep cockroach
     ~~~
@@ -117,7 +117,7 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 
 3. Run the `cockroach quit` command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --certs-dir=certs --host=<address of node to stop>
     ~~~
@@ -128,7 +128,7 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 
 2. Run the `cockroach quit` command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach quit --insecure --host=<address of node to stop>
     ~~~

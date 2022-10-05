@@ -54,12 +54,6 @@
             ]
           },
           {
-            "title": "Admission Control",
-            "urls": [
-              "/${VERSION}/architecture/admission-control.html"
-            ]
-          },
-          {
             "title": "CockroachDB Cloud Architecture",
             "urls": [
               "/cockroachcloud/architecture.html"
@@ -157,9 +151,27 @@
                 ]
               },
               {
-                "title": "<code>ADD REGION (Enterprise)</code>",
+                "title": "<code>ADD REGION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/add-region.html"
+                ]
+              },
+              {
+                "title": "<code>ADD SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/add-super-region.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER BACKUP</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-backup.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-changefeed.html"
                 ]
               },
               {
@@ -205,6 +217,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER RANGE ... RELOCATE</code>",
+                "urls": [
+                  "/${VERSION}/alter-range-relocate.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER ROLE</code>",
                 "urls": [
                   "/${VERSION}/alter-role.html"
@@ -220,6 +238,12 @@
                 "title": "<code>ALTER SEQUENCE</code>",
                 "urls": [
                   "/${VERSION}/alter-sequence.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/alter-super-region.html"
                 ]
               },
               {
@@ -298,12 +322,6 @@
                 "title": "<code>CONFIGURE ZONE</code>",
                 "urls": [
                   "/${VERSION}/configure-zone.html"
-                ]
-              },
-              {
-                "title": "<code>CONVERT TO SCHEMA</code>",
-                "urls": [
-                  "/${VERSION}/convert-to-schema.html"
                 ]
               },
               {
@@ -418,6 +436,12 @@
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/drop-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SUPER REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-super-region.html"
                 ]
               },
               {
@@ -619,15 +643,21 @@
                 ]
               },
               {
-                "title": "<code>RESET</code> &lt;session variable&gt;",
+                "title": "<code>RESET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/reset-cluster-setting.html"
+                ]
+              },
+              {
+                "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
                 ]
               },
               {
-                "title": "<code>RESET CLUSTER SETTING</code>",
+                "title": "<code>RESET &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/reset-cluster-setting.html"
+                  "/${VERSION}/reset-storage-parameter.html"
                 ]
               },
               {
@@ -679,15 +709,21 @@
                 ]
               },
               {
-                "title": "<code>SET</code> &lt;session variable&gt;",
+                "title": "<code>SET CLUSTER SETTING</code>",
+                "urls": [
+                  "/${VERSION}/set-cluster-setting.html"
+                ]
+              },
+              {
+                "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-vars.html"
                 ]
               },
               {
-                "title": "<code>SET CLUSTER SETTING</code>",
+                "title": "<code>SET &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/set-cluster-setting.html"
+                  "/${VERSION}/set-storage-parameter.html"
                 ]
               },
               {
@@ -712,12 +748,6 @@
                 "title": "<code>SET TRANSACTION</code>",
                 "urls": [
                   "/${VERSION}/set-transaction.html"
-                ]
-              },
-              {
-                "title": "<code>SHOW</code> &lt;session variables&gt;",
-                "urls": [
-                  "/${VERSION}/show-vars.html"
                 ]
               },
               {
@@ -826,6 +856,18 @@
                 "title": "<code>SHOW REGIONS</code>",
                 "urls": [
                   "/${VERSION}/show-regions.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW &#123;session variable&#125;</code>",
+                "urls": [
+                  "/${VERSION}/show-vars.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW SUPER REGIONS</code>",
+                "urls": [
+                  "/${VERSION}/show-super-regions.html"
                 ]
               },
               {
@@ -953,6 +995,12 @@
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
                 ]
+              },
+              {
+                "title": "<code>WITH &#123;storage parameter&#125;</code>",
+                "urls": [
+                  "/${VERSION}/with-storage-parameter.html"
+                ]
               }
             ]
           },
@@ -1041,6 +1089,12 @@
                 "title": "<code>JSONB</code>",
                 "urls": [
                   "/${VERSION}/jsonb.html"
+                ]
+              },
+              {
+                "title": "<code>OID</code>",
+                "urls": [
+                  "/${VERSION}/oid.html"
                 ]
               },
               {
@@ -1185,7 +1239,7 @@
                 ]
               },
               {
-                "title": "Working with Spatial Data",
+                "title": "Work with Spatial Data",
                 "urls": [
                   "/${VERSION}/spatial-data.html"
                 ]
@@ -1357,6 +1411,12 @@
             "title": "Authentication",
             "urls": [
               "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+              }
             ]
           },
           {
@@ -1370,34 +1430,17 @@
             "urls": [
               "/${VERSION}/security-reference/encryption.html"
             ]
-          }
-        ]
-      },
-      {
-        "title": "Performance Optimization",
-        "items": [
+          },
           {
-            "title": "Indexes",
+            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
             "urls": [
-              "/${VERSION}/indexes.html"
+              "/${VERSION}/security-reference/transport-layer-security.html"
             ]
           },
           {
-            "title": "Cost-Based Optimizer",
+            "title": "Customer-Managed Encryption Keys (CMEK)",
             "urls": [
-              "/${VERSION}/cost-based-optimizer.html"
-            ]
-          },
-          {
-            "title": "Vectorized Execution Engine",
-            "urls": [
-              "/${VERSION}/vectorized-execution.html"
-            ]
-          },
-          {
-            "title": "Load-Based Splitting",
-            "urls": [
-              "/${VERSION}/load-based-splitting.html"
+              "/cockroachcloud/cmek.html"
             ]
           }
         ]
@@ -1467,6 +1510,12 @@
                 "urls": [
                   "/${VERSION}/cockroach-nodelocal-upload.html"
                 ]
+              },
+              {
+               "title": "<code>cockroach auth-session</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-auth-session.html"
+               ]
               },
               {
                 "title": "<code>cockroach demo</code>",
@@ -1565,6 +1614,12 @@
                 ]
               }
             ]
+          },
+          {
+            "title": "The <code>cockroach-sql</code> command",
+            "urls": [
+              "/${VERSION}/cockroach-sql-binary.html"
+            ]
           }
         ]
       },
@@ -1623,6 +1678,24 @@
                 ]
               },
               {
+                "title": "Distributed Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-distributed-dashboard.html"
+                ]
+              },
+              {
+                "title": "Queues Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-queues-dashboard.html"
+                ]
+              },
+              {
+                "title": "Slow Requests Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-slow-requests-dashboard.html"
+                ]
+              },
+              {
                 "title": "Changefeeds Dashboard",
                 "urls": [
                   "/${VERSION}/ui-cdc-dashboard.html"
@@ -1670,6 +1743,12 @@
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
+            ]
+          },
+          {
+            "title": "Hot Ranges Page",
+            "urls": [
+              "/${VERSION}/ui-hot-ranges-page.html"
             ]
           },
           {
@@ -1728,6 +1807,12 @@
         ]
       },
       {
+        "title": "API Support Policy",
+        "urls": [
+          "/${VERSION}/api-support-policy.html"
+        ]
+      },
+      {
         "title": "Diagnostics Reporting",
         "urls": [
           "/${VERSION}/diagnostics-reporting.html"
@@ -1758,6 +1843,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Unsupported Features in CockroachDB Serverless",
+        "urls": [
+          "/cockroachcloud/serverless-unsupported-features.html"
         ]
       },
       {

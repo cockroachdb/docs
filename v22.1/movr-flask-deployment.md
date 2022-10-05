@@ -3,12 +3,12 @@ title: Deploy a Global, Serverless Application
 summary: This page includes instructions for deploying a multi-region web application using CockroachDB Cloud and Google Cloud services.
 toc: true
 redirect_from: multi-region-deployment.html
-docs_area: 
+docs_area:
 ---
 
-This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
-{% include {{ page.version.version }}/misc/movr-live-demo.md %}
+<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
 ## Before you begin
 
@@ -120,17 +120,17 @@ We do not recommend deploying insecure web applications on public networks.
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud init
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud auth login
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud auth application-default login
     ~~~
@@ -169,7 +169,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 1. Build and run the Docker image locally.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker build -t gcr.io/<gcp_project>/movr-app:v1 .
     ~~~
@@ -178,7 +178,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 1. Push the Docker image to the Google Cloud project's container registry.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker push gcr.io/<gcp_project>/movr-app:v1
     ~~~
@@ -235,7 +235,7 @@ Some time after you have deployed your application, you will likely need to push
 
 ## See also
 
-- [MovR (live demo)](https://movr.cloud)
+<!-- [MovR (live demo)](https://movr.cloud)-->
 - [{{ site.data.products.db }} documentation](../cockroachcloud/quickstart.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)

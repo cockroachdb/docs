@@ -78,6 +78,10 @@ $(function() {
     $('body').removeClass('menu_open');
   });
 
+  $('#mobile-toc-toggler').on('click', function() {
+    $('#toc').toggleClass('d-none');
+  });
+
   $(window).resize(function(e) {
     _viewport_width = window.innerWidth;
 
@@ -420,7 +424,7 @@ $(function() {
     }
 
     return this.hostname && this.hostname !== location.hostname;
-  }).addClass('external').attr("target","_blank");
+  }).addClass('external').attr("target","_blank").addClass('external').attr("rel","noopener");
 });
 
 

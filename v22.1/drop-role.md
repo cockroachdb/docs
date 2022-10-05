@@ -10,7 +10,7 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles.
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
- <code>DROP ROLE</code> is no longer an Enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `DROP ROLE` is now an alias for [`DROP USER`](drop-user.html).
+ <code>DROP ROLE</code> is no longer an Enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `DROP ROLE` is now an alias for [`DROP USER`](drop-user.html).
 {{site.data.alerts.end}}
 
 ## Considerations
@@ -25,7 +25,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/drop_role.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_role.html %}</div>
 
 ## Parameters
 
@@ -37,7 +37,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
 In this example, first check a role's privileges. Then, revoke the role's privileges and remove the role.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON documents FOR dev_ops;
 ~~~
@@ -49,14 +49,14 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 +------------+--------+-----------+---------+------------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE INSERT ON documents FROM dev_ops;
 ~~~
 
 {{site.data.alerts.callout_info}}All of a role's privileges must be revoked before the role can be dropped.{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP ROLE dev_ops;
 ~~~

@@ -46,7 +46,7 @@ To use this pattern, you tell CockroachDB to set the [table locality](multiregio
 
 Next, create a [`GLOBAL` table](multiregion-overview.html#global-tables) by issuing the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE postal_codes (
   id INT PRIMARY KEY,
@@ -56,7 +56,7 @@ CREATE TABLE postal_codes (
 
 Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE postal_codes SET LOCALITY GLOBAL;
 ~~~

@@ -5,13 +5,10 @@ toc: true
 toc_not_nested: true
 secure: true
 redirect_from: orchestrate-cockroachdb-with-kubernetes.html
-filter_category: crdb_single_kubernetes
-filter_html: Secure
-filter_sort: 1
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crdb-single-kubernetes.md %}
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
@@ -85,25 +82,25 @@ To delete the Kubernetes cluster:
 
 - Hosted GKE:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters delete cockroachdb --region {region-name}
     ~~~
 - Hosted EKS:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
-    ~~~   
+    ~~~
 - Manual GCE:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~
 - Manual AWS:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cluster/kube-down.sh
     ~~~

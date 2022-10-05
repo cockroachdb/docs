@@ -21,7 +21,7 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
-<div id="use-homebrew" class="install-option">
+<!-- <div id="use-homebrew" class="install-option">
   <h3>Use Homebrew</h3>
   <ol>
     <li>
@@ -44,7 +44,7 @@ Use one of the options below to install CockroachDB.
 {{site.data.alerts.callout_info}}
 If you previously installed CockroachDB via Homebrew, run <code>brew uninstall cockroach</code> before installing the new version. If you installed using a different method, you may need to remove the binary before installing via Homebrew.
 {{site.data.alerts.end}}
-</div>
+</div> -->
 
 <div id="download-the-binary" class="install-option">
   <h3>Download the binary</h3>
@@ -57,6 +57,16 @@ If you previously installed CockroachDB via Homebrew, run <code>brew uninstall c
       </div>
       <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="nv language-shell mac-binary-step1" id="mac-binary-step1-{{ page.version.version }}" data-eventcategory="mac-binary-step1">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/</code></pre></div>
       <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
+    </li>
+    <li>
+      <p>On macOS Catalina (10.15) and above, the first time you run a newly-downloaded version of the <code>cockroach</code> command, a dialog may appear with the message <b>"cockroach" could not be opened because the developer cannot be verified</b>. Cockroach Labs is aware of this issue. To work around this problem and allow the binary to run:</p>
+      <ol><li>Click <b>Cancel</b>. Do not click <b>Move To Trash</b>. In the terminal, the command exits with an error.</li>
+          <li>Open <b>System Preferences</b>, then click <b>Security & Privacy</b>.</li>
+          <li>Click <b>General</b>.</li>
+          <li>The message <b>"cockroach" was blocked from use because it is not from an identified developer</b> displays. Click <b>Allow Anyway</b>.</li>
+          <li>Run the <code>cockroach</code> command again.</li>
+          <li>The message <b>macOS cannot verify the developer of “cockroach”. Are you sure you want to open it?</b> appears. Click <b>Open</b>. The command runs as expected.</li>
+      </ol>
     </li>
     <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
     <p>If you plan to use CockroachDB's <a href="spatial-features.html">spatial features</a>, you must complete the following steps. Otherwise, your installation is now complete.</p>

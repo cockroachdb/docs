@@ -26,7 +26,7 @@ When a gateway node in a cluster receives a request to read a key with a suffici
 CockroachDB provides the following types of follower reads:
 
 - _Exact staleness reads_: These are historical reads as of a static, user-provided timestamp. Most often, this is the timestamp value returned by the `follower_read_timestamp()` convenience [function](functions-and-operators.html). For more information, see [Exact staleness reads](#exact-staleness-reads).
-- <span class="version-tag">New in v21.2:</span> _Bounded staleness reads_: These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures. For more information, see [Bounded staleness reads](#bounded-staleness-reads).
+- {% include_cached new-in.html version="v21.2" %} _Bounded staleness reads_: These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures. For more information, see [Bounded staleness reads](#bounded-staleness-reads).
 
 ## Exact staleness reads
 
@@ -47,12 +47,12 @@ You should **not** use follower reads when your application cannot tolerate read
 
 A _bounded staleness read_ is a historical read that uses a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. They also help increase system availability, since they provide the ability to serve reads from local replicas even in the presence of network partitions or other failures that prevent the SQL gateway from communicating with the leaseholder. For more information about when to use bounded staleness reads, see [When to use bounded staleness reads](#when-to-use-bounded-staleness-reads).
 
-To get a bounded staleness read, use one of the following builtin functions:
+To get a bounded staleness read, use one of the following built-in functions:
 
 Name | Description
 ---- | -----------
-`with_min_timestamp(TIMESTAMPTZ, [nearest_only])` | <span class="version-tag">New in v21.2:</span> Defines a minimum [timestamp](timestamp.html) at which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
-`with_max_staleness(INTERVAL, [nearest_only])` | <span class="version-tag">New in v21.2:</span> Defines a maximum staleness interval with which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
+`with_min_timestamp(TIMESTAMPTZ, [nearest_only])` | **New in v21.2:** Defines a minimum [timestamp](timestamp.html) at which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
+`with_max_staleness(INTERVAL, [nearest_only])` | **New in v21.2:** Defines a maximum staleness interval with which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 
 For examples showing how to use these functions to get bounded staleness reads, see [Run queries that use bounded staleness follower reads](#run-queries-that-use-bounded-staleness-follower-reads).
 
@@ -180,7 +180,7 @@ To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explici
   <li>Execute the <code>SET SESSION CHARACTERISTICS AS TRANSACTION AS OF SYSTEM TIME follower_read_timestamp()</code> <a href="set-vars.html#special-syntax-cases">SQL statement</a>. This has the same effect as setting the session variable as shown above.</li>
 </ul>
 
-<span class="version-tag">New in v21.2:</span> You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role](alter-role.html#set-default-session-variable-values-for-a-role).
+{% include_cached new-in.html version="v21.2" %} You can set `default_transaction_use_follower_reads` on a per-role basis; for instructions, see [Set default session variable values for a role](alter-role.html#set-default-session-variable-values-for-a-role).
 {{site.data.alerts.end}}
 
 ## Limitations

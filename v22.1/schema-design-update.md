@@ -11,8 +11,7 @@ This page provides an overview on changing and removing the objects in a databas
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
+- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
 - [Review the database schema objects](schema-design-overview.html).
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).
@@ -76,21 +75,21 @@ The `ALTER TABLE` statement has subcommands for all of these changes:
 
 Create a new `.sql` file for the changes that you plan to make to the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch update_users_table.sql
 ~~~
 
 Open `update_users_table.sql` in a text editor, and add the `ALTER TABLE` statement for adding the `username` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users ADD COLUMN username STRING;
 ~~~
 
 Under that first `ALTER TABLE` statement, add another `ALTER TABLE` statement for changing the primary key columns to `username` and `email`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (username, email);
 ~~~
@@ -99,7 +98,7 @@ In order to add a column to an existing table's primary key index, the column mu
 
 Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand](alter-column.html) to set the `NOT NULL` constraint on the `email` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users
   ADD COLUMN username STRING NOT NULL,
@@ -108,7 +107,7 @@ ALTER TABLE IF EXISTS movr.max_schema.users
 
 The file should now look something like this:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users
   ADD COLUMN username STRING NOT NULL,
@@ -121,14 +120,14 @@ The remaining changes that you want to make will require `ALTER TABLE` statement
 
 Create a new `.sql` file for the remaining `ALTER TABLE` statements, to be executed by `root`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch update_users_owner.sql
 ~~~
 
 Add the following statements to the file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users SET SCHEMA abbey_schema;
 
@@ -137,7 +136,7 @@ ALTER TABLE IF EXISTS movr.abbey_schema.users OWNER TO abbey;
 
 To execute the statements in the `update_users_table.sql` file as `max`, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -148,7 +147,7 @@ $ cockroach sql \
 
 To execute the statements in the `update_users_owner.sql` file as `root`, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -161,7 +160,7 @@ The `users` table should now have a new column, a different primary key, a diffe
 
 You can verify with some `SHOW` statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -245,7 +244,7 @@ To drop columns and column constraints from a table, use the `DROP COLUMN` and `
 
 Suppose that you want to drop an index that isn't being used very much. In particular, you want to drop the index on `first_name` and `last_name` from the `users` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -257,8 +256,8 @@ $ cockroach sql \
 ~~~
   table_name |           index_name           | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+--------------------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary                        |   false    |            1 | username    | ASC       |  false  |  false
-  users      | primary                        |   false    |            2 | email       | ASC       |  false  |  false
+  users      | users_pkey                     |   false    |            1 | username    | ASC       |  false  |  false
+  users      | users_pkey                     |   false    |            2 | email       | ASC       |  false  |  false
   users      | users_first_name_last_name_key |   false    |            1 | first_name  | ASC       |  false  |  false
   users      | users_first_name_last_name_key |   false    |            2 | last_name   | ASC       |  false  |  false
   users      | users_first_name_last_name_key |   false    |            3 | username    | ASC       |  false  |   true
@@ -286,7 +285,7 @@ Note that `users_first_name_last_name_key` is a `UNIQUE` index, which means that
 
 Create a new file, and add the `DROP` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ touch drop_unique_users_idx.sql
 ~~~
@@ -295,14 +294,14 @@ $ touch drop_unique_users_idx.sql
 After creation, the notation for referring to indexes in CockroachDB is `[table_name]@[index_name]`.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 DROP INDEX movr.abbey_schema.users@users_first_name_last_name_key CASCADE;
 ~~~
 
 To drop the index, execute the file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -311,7 +310,7 @@ $ cockroach sql \
 -f drop_unique_users_idx.sql
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir={certs-directory} \
@@ -323,8 +322,8 @@ $ cockroach sql \
 ~~~
   table_name |   index_name    | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+-----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary         |   false    |            1 | username    | ASC       |  false  |  false
-  users      | primary         |   false    |            2 | email       | ASC       |  false  |  false
+  users      | users_pkey      |   false    |            1 | username    | ASC       |  false  |  false
+  users      | users_pkey      |   false    |            2 | email       | ASC       |  false  |  false
   users      | users_email_key |   false    |            1 | email       | ASC       |  false  |  false
   users      | users_email_key |   false    |            2 | username    | ASC       |  false  |   true
 (4 rows)
@@ -332,10 +331,10 @@ $ cockroach sql \
 
 ## What's next?
 
-- Read about [Online Schema Changes in CockroachDB](online-schema-changes.html).
-- [Write data](insert-data.html)
-- [Read data](query-data.html)
+- [Online Schema Changes](online-schema-changes.html)
+- [Write Data](insert-data.html)
+- [Read Data](query-data.html)
 
 You might also be interested in the following pages:
 
-- [Cockroach Commands](cockroach-commands.html)
+- [`cockroach` Commands Overview](cockroach-commands.html)

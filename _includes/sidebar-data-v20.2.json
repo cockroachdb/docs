@@ -416,36 +416,6 @@
                 ]
               },
               {
-                "title": "Hello World",
-                "items": [
-                  {
-                    "title": "Go",
-                    "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html",
-                      "/${VERSION}/hello-world-go-gorm.html"
-                    ]
-                  },
-                  {
-                    "title": "Java",
-                    "urls": [
-                      "/${VERSION}/hello-world-java-jdbc.html"
-                    ]
-                  },
-                  {
-                    "title": "JavaScript (Node.js)",
-                    "urls": [
-                      "/${VERSION}/hello-world-node-postgres.html"
-                    ]
-                  },
-                  {
-                    "title": "Python",
-                    "urls": [
-                      "/${VERSION}/hello-world-python-sqlalchemy.html"
-                    ]
-                  }
-                ]
-              },
-              {
                 "title": "Simple CRUD",
                 "items": [
                   {
@@ -491,27 +461,9 @@
                     ]
                   },
                   {
-                    "title": "C++",
-                    "urls": [
-                      "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
                     "title": "C# (.NET)",
                     "urls": [
                       "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Clojure",
-                    "urls": [
-                      "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "PHP",
-                    "urls": [
-                      "/${VERSION}/build-a-php-app-with-cockroachdb.html"
                     ]
                   },
                   {
@@ -2589,6 +2541,12 @@
                 ]
               },
               {
+               "title": "<code>cockroach auth-session</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-auth-session.html"
+               ]
+              },
+              {
                 "title": "<code>cockroach dump</code>",
                 "urls": [
                   "/${VERSION}/cockroach-dump.html"
@@ -2853,13 +2811,6 @@
         ]
       },
       {% include_cached sidebar-releases.json %}
-    ]
-  },
-  {
-    "title": "SQL Playground",
-    "is_top_level": true,
-    "urls": [
-      "/${VERSION}/sql-playground.html"
     ]
   }
 ]

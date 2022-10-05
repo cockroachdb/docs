@@ -17,7 +17,7 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_sequence.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_sequence.html %}
 </div>
 
 ## Parameters
@@ -50,12 +50,12 @@ table td:first-child {
 
 In this example, we're going to change the increment value of a sequence from its current state (i.e., `1`) to `2`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE customer_seq;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE customer_seq;
 ~~~
@@ -67,7 +67,7 @@ In this example, we're going to change the increment value of a sequence from it
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE customer_seq INCREMENT 2;
 ~~~
@@ -83,12 +83,12 @@ In this example, we're going to change the increment value of a sequence from it
 
 In this example, we will change the name of sequence.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -100,12 +100,12 @@ In this example, we will change the name of sequence.
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE even_numbers RENAME TO even_sequence;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -121,7 +121,7 @@ In this example, we will change the name of sequence.
 
 In this example, we will move the sequence we renamed in the first example (`even_sequence`) from `defaultdb` (i.e., the default database) to a different database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES FROM defaultdb;
 ~~~
@@ -133,17 +133,17 @@ In this example, we will move the sequence we renamed in the first example (`eve
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE mydb;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE even_sequence RENAME TO mydb.even_sequence;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES FROM defaultdb;
 ~~~
@@ -154,7 +154,7 @@ In this example, we will move the sequence we renamed in the first example (`eve
 (0 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES FROM mydb;
 ~~~
@@ -170,12 +170,12 @@ In this example, we will move the sequence we renamed in the first example (`eve
 
 Suppose you [create a sequence](create-sequence.html) that you would like to add to a new schema called `cockroach_labs`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -189,7 +189,7 @@ Suppose you [create a sequence](create-sequence.html) that you would like to add
 
 By default, [unqualified sequences](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.even_numbers;
 ~~~
@@ -203,19 +203,19 @@ By default, [unqualified sequences](sql-name-resolution.html#lookup-with-unquali
 
 If the new schema does not already exist, [create it](create-schema.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the sequence's schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER SEQUENCE even_numbers SET SCHEMA cockroach_labs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE public.even_numbers;
 ~~~
@@ -225,7 +225,7 @@ ERROR: relation "public.even_numbers" does not exist
 SQLSTATE: 42P01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SEQUENCES;
 ~~~
@@ -237,7 +237,7 @@ SQLSTATE: 42P01
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE cockroach_labs.even_numbers;
 ~~~

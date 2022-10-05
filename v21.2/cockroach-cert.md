@@ -3,9 +3,6 @@ title: cockroach cert
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 key: create-security-certificates.html
-filter_category: security_cert
-filter_html: Use cockroach cert
-filter_sort: 1
 docs_area: reference.cli
 ---
 
@@ -17,7 +14,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/security-cert.md %}
 
 {{site.data.alerts.callout_success}}For details about when and how to change security certificates without restarting nodes, see <a href="rotate-certificates.html">Rotate Security Certificates</a>.{{site.data.alerts.end}}
 
@@ -40,7 +37,7 @@ Subcommand | Usage
 
 ## Certificate directory
 
-When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a walkthrough of this process, see [Manual Deployment](manual-deployment.html).
+When using `cockroach cert` to create node and client certificates, you will need access to a local copy of the CA certificate and key. It is therefore recommended to create all certificates and keys in one place and then distribute node and client certificates and keys appropriately. For the CA key, be sure to store it somewhere safe and keep a backup; if you lose it, you will not be able to add new nodes or clients to your cluster. For a tutorial of this process, see [Manual Deployment](manual-deployment.html).
 
 ## Required keys and certificates
 
@@ -81,16 +78,16 @@ To reduce the likelihood of a malicious user or process accessing a certificate 
 - The user that the CockroachDB process runs as.
 - The system `root` user (not to be confused with the [CockroachDB `root` user](security-reference/authorization.html#root-user)) and the group that the CockroachDB process runs in.
 
-For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
+For example, if running the CockroachDB process as a system user named `cockroach`, we can use the `id cockroach` command to list each group the `cockroach` user is a member of:
 
 ```shell
 id cockroach
 uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
 ```
 
-In the output, we can see that the system user `cockroach` is also in the `cockroach` group (with the group id or gid of 1000).
+In the output, we can see that the system user `cockroach` is in the `cockroach` group (with the group ID or gid `1000`).
 
-If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB is running in the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`.
+If the key file is owned by the system `root` user (who has user ID `0`), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB user is a member of the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`. Notice that the `others` group has no permissions (the `0` of `740`). Only the `cockroach` user, a member of the `cockroach` group, or the system `root` user has permission to read the key.
 
 ```shell
 sudo chgrp cockroach ui.key
@@ -178,12 +175,12 @@ Flag | Description
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir my-safe-directory
     ~~~
@@ -192,14 +189,14 @@ Flag | Description
 
 2. Generate the CA certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -213,7 +210,7 @@ Flag | Description
 
 1. Generate the certificate and key for the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node1.example.com \
@@ -223,7 +220,7 @@ Flag | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -237,13 +234,13 @@ Flag | Description
 
 2. Upload certificates to the first node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node1 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -254,7 +251,7 @@ Flag | Description
 
 3. Delete the local copy of the first node's certificate and key:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm certs/node.crt certs/node.key
     ~~~
@@ -263,7 +260,7 @@ Flag | Description
 
 4. Create the certificate and key for the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-node \
     node2.example.com \
@@ -272,7 +269,7 @@ Flag | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ ls -l certs
     ~~~
@@ -286,13 +283,13 @@ Flag | Description
 
 5. Upload certificates to the second node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Create the certs directory:
     $ ssh <username>@<node2 address> "mkdir certs"
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     # Upload the CA certificate and node certificate and key:
     $ scp certs/ca.crt \
@@ -305,7 +302,7 @@ Flag | Description
 
 ### Create the certificate and key pair for a client
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client \
 maxroach \
@@ -313,7 +310,7 @@ maxroach \
 --ca-key=my-safe-directory/ca.key
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ls -l certs
 ~~~
@@ -329,7 +326,7 @@ total 40
 
 ### List certificates and keys
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert list \
 --certs-dir=certs

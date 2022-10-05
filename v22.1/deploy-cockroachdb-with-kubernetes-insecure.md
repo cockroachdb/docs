@@ -4,13 +4,10 @@ summary: Deploy an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
 redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
-filter_category: crdb_single_kubernetes
-filter_html: Insecure
-filter_sort: 2
-docs_area: 
+docs_area:
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crdb-single-kubernetes.md %}
 
 This page shows you how to start and stop a 3-node CockroachDB insecure test cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
@@ -86,6 +83,7 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
@@ -109,9 +107,11 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     prometheusrule "prometheus-cockroachdb-rules" deleted
     servicemonitor "cockroachdb" deleted
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm uninstall my-release
@@ -120,9 +120,10 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     ~~~
     release "my-release" deleted
     ~~~
+
     </section>
 
-### Stop Kubernetes:
+### Stop Kubernetes
 
 To delete the Kubernetes cluster:
 
@@ -137,7 +138,7 @@ To delete the Kubernetes cluster:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
-    ~~~    
+    ~~~
 - Manual GCE:
 
     {% include_cached copy-clipboard.html %}

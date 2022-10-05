@@ -5,19 +5,43 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `UPSERT` [statement](sql-statements.html) is semantically equivalent to [`INSERT ON CONFLICT`](insert.html#on-conflict-clause), but the two may have slightly different [performance characteristics](#considerations). It inserts rows in cases where specified values do not violate uniqueness constraints, and it updates rows in cases where values do violate uniqueness constraints.
+The `UPSERT` [statement](sql-statements.html) inserts rows in cases where specified values do not violate uniqueness constraints and updates rows in cases where values do violate uniqueness constraints. `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns.
 
-To learn more about how to perform and when to use an upsert in CockroachDB, PostgreSQL, and MySQL, see [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/) .
+## `UPSERT` vs. `INSERT ON CONFLICT`
+
+Assuming that columns `a` and `b` are the primary key, the following `UPSERT` and [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements are equivalent:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> INSERT INTO t (a, b, c)
+    VALUES (1, 2, 3)
+    ON CONFLICT (a, b)
+    DO UPDATE SET c = excluded.c;
+~~~
+
+If your statement considers uniqueness for columns other than primary key columns, you must use `INSERT ON CONFLICT`. For an example, see the [Upsert that fails (conflict on non-primary key)](#upsert-that-fails-conflict-on-non-primary-key).
+
+{% include {{page.version.version}}/sql/insert-vs-upsert.md %}
+
+To learn more about how to perform and when to use an upsert in CockroachDB, PostgreSQL, and MySQL, see [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/).
 
 ## Considerations
 
-- `UPSERT` considers uniqueness only for [Primary Key](primary-key.html) columns. `INSERT ON CONFLICT` is more flexible and can be used to consider uniqueness for other columns. For more details, see [How `UPSERT` transforms into `INSERT ON CONFLICT`](#how-upsert-transforms-into-insert-on-conflict) below.
+- An `UPSERT` statement affecting a proper subset of columns behaves differently depending on whether or not you specify the target columns in the statement.
 
-- When inserting/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading. This may be particularly useful if you are using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store).
+    - If you specify target columns (e.g., `UPSERT INTO accounts (id, name) VALUES (2, 'b2');`), the values of columns that do not have new values in the `UPSERT` statement will not be updated.
+    - If you do not specify the target columns (e.g., `UPSERT INTO accounts VALUES (2, 'b2');`), the value of columns that do not have new values in the `UPSERT` statement will be updated to their default values.
+
+    For examples, see [Upsert a proper subset of columns](#upsert-a-proper-subset-of-columns).
 
 - A single [multi-row `UPSERT`](#upsert-multiple-rows) statement is faster than multiple single-row `UPSERT` statements. Whenever possible, use multi-row `UPSERT` instead of multiple single-row `UPSERT` statements.
 
-- If the input data contains duplicates, see [Import data containing duplicate rows using `DISTINCT ON`](#import-data-containing-duplicate-rows-using-distinct-on) below.
+- If the input data contains duplicates, see [Import data containing duplicate rows using `DISTINCT ON`](#import-data-containing-duplicate-rows-using-distinct-on).
 
 ## Required privileges
 
@@ -26,7 +50,7 @@ The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](security-ref
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/upsert.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/upsert.html %}
 </div>
 
 ## Parameters
@@ -45,12 +69,12 @@ Parameter | Description
 
 `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns. For example, assuming that columns `a` and `b` are the primary key, the following `UPSERT` and `INSERT ON CONFLICT` statements are equivalent:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO t (a, b, c) VALUES (1, 2, 3);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t (a, b, c)
     VALUES (1, 2, 3)
@@ -66,7 +90,7 @@ Parameter | Description
 
 In this example, the `id` column is the primary key. Because the inserted `id` value does not conflict with the `id` value of any existing row, the `UPSERT` statement inserts a new row into the table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -80,12 +104,12 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 6325.20);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -104,7 +128,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 In this example, the `UPSERT` statement inserts multiple rows into the table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -119,12 +143,12 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 +----+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (4, 1970.4), (5, 2532.9), (6, 4473.0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -146,7 +170,7 @@ In this example, the `UPSERT` statement inserts multiple rows into the table.
 
 In this example, the `id` column is the primary key. Because the inserted `id` value is not unique, the `UPSERT` statement updates the row with the new `balance`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -164,12 +188,12 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +----+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO accounts (id, balance) VALUES (3, 7500.83);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -189,9 +213,9 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 
 ### Upsert that fails (conflict on non-primary key)
 
-`UPSERT` will not update rows when the uniquness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE` constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
+`UPSERT` will not update rows when the uniqueness conflict is on columns not in the primary key. In this example, the `a` column is the primary key, but the `b` column also has the [`UNIQUE` constraint](unique.html). Because the inserted `b` value is not unique, the `UPSERT` fails.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
@@ -206,7 +230,7 @@ In this example, the `id` column is the primary key. Because the inserted `id` v
 +---+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPSERT INTO unique_test VALUES (4, 1);
 ~~~
@@ -217,12 +241,12 @@ pq: duplicate key value (b)=(1) violates unique constraint "unique_test_b_key"
 
 In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) statement to specify the `b` column as the column with the `UNIQUE` constraint.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO unique_test VALUES (4, 1) ON CONFLICT (b) DO UPDATE SET a = excluded.a;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM unique_test;
 ~~~
@@ -237,6 +261,77 @@ In such a case, you would need to use the [`INSERT ON CONFLICT`](insert.html) st
 +---+---+
 ~~~
 
+### Upsert a proper subset of columns
+
+~~~ sql
+> CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    name STRING,
+    balance DECIMAL(10, 2) DEFAULT 0
+);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> INSERT INTO accounts (id, name, balance) VALUES
+    (1, 'a1', 10000.5),
+    (2, 'b1', 20000.75),
+    (3, 'c1',  6325.2);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM accounts;
+~~~
+
+~~~
++----+------+----------+
+| id | name | balance  |
++----+------+----------+
+|  1 |   a1 | 10000.50 |
+|  2 |   b1 | 20000.75 |
+|  3 |   c1 |  6325.20 |
++----+------+----------+
+~~~
+
+Upserting a proper subset of columns without specifying the column names will write the default values of the unspecified columns when there is a conflict on the primary key. The account with `id` of `1` has a balance of `0` (the column's default value) after the `UPSERT`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> UPSERT INTO accounts VALUES (1, 'a2');
+
+> SELECT * FROM accounts;
+~~~
+
+~~~
++----+------+----------+
+| id | name | balance  |
++----+------+----------+
+|  1 |   a2 |     0.00 |
+|  2 |   b1 | 20000.75 |
+|  3 |   c1 |  6325.20 |
++----+------+----------+
+~~~
+
+If the target column names are included in the `UPSERT`, then the subset of columns without values will not change when there is a conflict on the primary key. The `balance` of the account with `id` of `2` is unchanged after the `UPSERT`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> UPSERT INTO accounts (id, name) VALUES (2, 'b2');
+
+> SELECT * FROM accounts;
+~~~
+
+~~~
++----+------+----------+
+| id | name | balance  |
++----+------+----------+
+|  1 |   a2 |     0.00 |
+|  2 |   b2 | 20000.75 |
+|  3 |   c1 |  6325.20 |
++----+------+----------+
+~~~
+
 ### Import data containing duplicate rows using `DISTINCT ON`
 
 If the input data to insert/update contains duplicate rows, you must
@@ -245,7 +340,7 @@ ensure there is only one row for each value of the primary key.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     -- the following data contains duplicates on the conflict column "id":
@@ -259,7 +354,7 @@ The `DISTINCT ON` clause does not guarantee which of the duplicates is
 considered. To force the selection of a particular duplicate, use an
 `ORDER BY` clause:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH
     -- the following data contains duplicates on the conflict column "id":

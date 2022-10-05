@@ -48,7 +48,7 @@ Check the **Use SSL** checkbox as shown, and fill in the text areas as follows:
 - **Root certificate**: Use the `ca.crt` file you generated for your secure cluster.
 - **SSL certificate**: Use a client certificate generated from your cluster's root certificate.  For the root user, this will be named `client.root.crt`.  For additional security, you may want to create a new database user and client certificate just for use with DBeaver.
 - **SSL certificate key**: Because DBeaver is a Java application, you will need to transform your key file to the `*.pk8` format using an [OpenSSL command](https://wiki.openssl.org/index.php/Command_Line_Utilities#pkcs8_.2F_pkcs5) like the one shown below.  Once you have created the file, enter its location here.  In this example, the filename is `client.root.pk8`.
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ console
     $ openssl pkcs8 -topk8 -inform PEM -outform DER -in client.root.key -out client.root.pk8 -nocrypt
     ~~~

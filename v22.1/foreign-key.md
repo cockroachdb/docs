@@ -12,9 +12,11 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`, or be `NULL`.
 - Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
 
-To learn more about the basics of foreign keys, watch the video below:
+To learn more about the basics of foreign keys, watch the following video:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="foreign-key-video__container">
+  <iframe src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 {{site.data.alerts.callout_success}}
 To read more about how foreign keys work, see our [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/) blog post.
@@ -29,6 +31,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a virtual [computed column](computed-columns.html), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
+- A foreign key column can reference the [`crdb_region` column](set-locality.html#crdb_region) in [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
 **Referenced Columns**
 
@@ -55,7 +58,7 @@ A `NOT NULL` constraint cannot be added to existing tables.
 
 ### Composite foreign key matching
 
-By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as Postgres). `MATCH FULL` is available if specified. You can specify both `MATCH FULL` and `MATCH SIMPLE`.
+By default, composite foreign keys are matched using the `MATCH SIMPLE` algorithm (which is the same default as PostgreSQL). `MATCH FULL` is available if specified. You can specify both `MATCH FULL` and `MATCH SIMPLE`.
 
 All composite key matches defined prior to version 19.1 use the `MATCH SIMPLE` comparison method. If you had a composite foreign key constraint and have just upgraded to version 19.1, then please check that `MATCH SIMPLE` works for your schema and consider replacing that foreign key constraint with a `MATCH FULL` one.
 
@@ -132,7 +135,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Column level
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/foreign_key_column_level.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/foreign_key_column_level.html %}</div>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -147,7 +150,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
@@ -162,7 +165,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Table level
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/foreign_key_table_level.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/foreign_key_table_level.html %}</div>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -176,7 +179,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 **Example**
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE packages (
     customer INT,
@@ -198,14 +201,14 @@ In this example, we'll create a table with a foreign key constraint with the def
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (id INT PRIMARY KEY, email STRING UNIQUE);
 ~~~
 
 Next, create the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
@@ -217,12 +220,12 @@ Next, create the referencing table:
 
 Let's insert a record into each table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers VALUES (1001, 'a@co.tld'), (1234, 'info@cockroachlabs.com');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1002, 29.99);
 ~~~
@@ -234,12 +237,12 @@ The second record insertion returns an error because the customer `1002` doesn't
 
 Let's insert a record into the referencing table and try to update the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1001, 29.99);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers SET id = 1002 WHERE id = 1001;
 ~~~
@@ -249,12 +252,12 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 
 The update to the referenced table returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON UPDATE NO ACTION`). However, `id = 1234` is not referenced and can be updated:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers SET id = 1111 WHERE id = 1234;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -268,7 +271,7 @@ The update to the referenced table returns an error because `id = 1001` is refer
 
 Now let's try to delete a referenced row:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers WHERE id = 1001;
 ~~~
@@ -278,12 +281,12 @@ pq: foreign key violation: value(s) [1001] in columns [id] referenced in table "
 
 Similarly, the deletion returns an error because `id = 1001` is referenced and the default [foreign key action](#foreign-key-actions) is enabled (`ON DELETE NO ACTION`). However, `id = 1111` is not referenced and can be deleted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers WHERE id = 1111;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers;
 ~~~
@@ -300,7 +303,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_2 (
     id INT PRIMARY KEY
@@ -309,7 +312,7 @@ First, create the referenced table:
 
 Then, create the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_2 (
     id INT PRIMARY KEY,
@@ -319,26 +322,26 @@ Then, create the referencing table:
 
 Insert a few records into the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_2 VALUES (1), (2), (3);
 ~~~
 
 Insert some records into the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_2 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
 Now, let's update an `id` in the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_2 SET id = 23 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_2;
 ~~~
@@ -351,7 +354,7 @@ Now, let's update an `id` in the referenced table:
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_2;
 ~~~
@@ -369,12 +372,12 @@ When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated t
 
 Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_2 WHERE id = 23;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_2;
 ~~~
@@ -388,7 +391,7 @@ Similarly, a deletion will cascade. Let's delete `id = 23` from `customers_2`:
 
 Let's check to make sure the rows in `orders_2` where `customers_id = 23` were also deleted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_2;
 ~~~
@@ -406,7 +409,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_3 (
     id INT PRIMARY KEY
@@ -415,7 +418,7 @@ First, create the referenced table:
 
 Then, create the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_3 (
     id INT PRIMARY KEY,
@@ -425,19 +428,19 @@ Then, create the referencing table:
 
 Insert a few records into the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_3 VALUES (1), (2), (3);
 ~~~
 
 Insert some records into the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_3 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_3;
 ~~~
@@ -453,12 +456,12 @@ Insert some records into the referencing table:
 
 Now, let's update an `id` in the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_3 SET id = 23 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_3;
 ~~~
@@ -471,7 +474,7 @@ Now, let's update an `id` in the referenced table:
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_3;
 ~~~
@@ -489,12 +492,12 @@ When `id = 1` was updated to `id = 23` in `customers_3`, the referencing `custom
 
 Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's delete `id = 2` from `customers_3`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_3 WHERE id = 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_3;
 ~~~
@@ -508,7 +511,7 @@ Similarly, a deletion will set the referencing `customer_id` to `NULL`. Let's de
 
 Let's check to make sure the row in `orders_3` where `customers_id = 2` was updated to `NULL`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_3;
 ~~~
@@ -528,7 +531,7 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
 First, create the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_4 (
     id INT PRIMARY KEY
@@ -537,7 +540,7 @@ First, create the referenced table:
 
 Then, create the referencing table with the `DEFAULT` value for `customer_id` set to `9999`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_4 (
     id INT PRIMARY KEY,
@@ -547,20 +550,20 @@ Then, create the referencing table with the `DEFAULT` value for `customer_id` se
 
 Insert a few records into the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_4 VALUES (1), (2), (3), (9999);
 ~~~
 
 Insert some records into the referencing table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_4 VALUES (100,1), (101,2), (102,3), (103,1);
 ~~~
 
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_4;
 ~~~
@@ -576,12 +579,12 @@ Insert some records into the referencing table:
 
 Now, let's update an `id` in the referenced table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_4 SET id = 23 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_4;
 ~~~
@@ -595,7 +598,7 @@ Now, let's update an `id` in the referenced table:
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_4;
 ~~~
@@ -613,12 +616,12 @@ When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `custom
 
 Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. Let's delete `id = 2` from `customers_4`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_4 WHERE id = 2;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers_4;
 ~~~
@@ -633,7 +636,7 @@ Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` va
 
 Let's check to make sure the corresponding `customer_id` value to `id = 101`, was updated to the `DEFAULT` value (i.e., `9999`) in `orders_4`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_4;
 ~~~
@@ -651,21 +654,21 @@ If the default value for the `customer_id` column is not set, and the column doe
 
 For example, let's create a new `customers_5` table and insert some values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers_5 (
     id INT PRIMARY KEY
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers_5 VALUES (1), (2), (3), (4);
 ~~~
 
 Then we can create a new `orders_5` table that references the `customers_5` table, but with no default value specified for the `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders_5 (
     id INT PRIMARY KEY,
@@ -673,24 +676,24 @@ Then we can create a new `orders_5` table that references the `customers_5` tabl
   );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders_5 VALUES (200,1), (201,2), (202,3), (203,4);
 ~~~
 
 Deleting and updating values in the `customers_5` table sets the referenced values in `orders_5` to `NULL`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM customers_5 WHERE id = 3;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE customers_5 SET id = 0 WHERE id = 1;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM orders_5;
 ~~~
@@ -710,7 +713,7 @@ Deleting and updating values in the `customers_5` table sets the referenced valu
 
 For example, if you create the following tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE customers (
     id INT PRIMARY KEY,
@@ -719,7 +722,7 @@ For example, if you create the following tables:
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
     id INT PRIMARY KEY,
@@ -730,7 +733,7 @@ For example, if you create the following tables:
 
 You can create a table with a column that references columns in both the `customers` and `orders` tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE shipments (
     tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -746,17 +749,17 @@ Inserts into the `shipments` table must fulfill both foreign key constraints on 
 
 Let's insert a record into each table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
 ~~~
@@ -765,7 +768,7 @@ The last statement succeeds because `1001` matches a unique `id` value in the `c
 
 For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
 ~~~
@@ -778,12 +781,12 @@ DETAIL: Key (customer_id)=(2000) is not present in table "customers".
 
 CockroachDB allows you to add multiple foreign key constraints on the same column, that reference the same column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM shipments;
 ~~~
@@ -794,7 +797,7 @@ CockroachDB allows you to add multiple foreign key constraints on the same colum
   shipments  | fk_customers    | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id)                   |   true
   shipments  | fk_customers_2  | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE |   true
   shipments  | fk_orders       | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES orders(customer_id)             |   true
-  shipments  | primary         | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
+  shipments  | shipments_pkey  | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
 (4 rows)
 ~~~
 
@@ -802,7 +805,7 @@ There are now two foreign key constraints on `customer_id` that reference the `c
 
 In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DELETE FROM orders WHERE customer_id = 1001;
 ~~~
@@ -819,14 +822,14 @@ The examples in this section show how composite foreign key matching works for b
 
 First, let's create some tables. `parent` is a table with a composite key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE parent (x INT, y INT,  z INT, UNIQUE (x, y, z));
 ~~~
 
 `full_test` has a foreign key on `parent` that uses the `MATCH FULL` algorithm:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE full_test (
     x INT,
@@ -838,7 +841,7 @@ First, let's create some tables. `parent` is a table with a composite key:
 
 `simple_test` has a foreign key on `parent` that uses the `MATCH SIMPLE` algorithm (the default):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE simple_test (
     x INT,
@@ -850,7 +853,7 @@ First, let's create some tables. `parent` is a table with a composite key:
 
 Next, we populate `parent` with some values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT
     INTO parent

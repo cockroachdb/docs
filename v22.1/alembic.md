@@ -5,9 +5,9 @@ toc: true
 docs_area: develop
 ---
 
-This page walks you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
+This page guides you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
 
-For a detailed tutorial about using Alembic, see the [the Alembic documentation site](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
+For a detailed tutorial about using Alembic, see [the Alembic documentation site](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
 
 For information about specific migration tasks, see Alembic's [Cookbook](https://alembic.sqlalchemy.org/en/latest/cookbook.html).
 
@@ -207,15 +207,20 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
     (2 rows)
     ~~~
 
-1. Run the app to insert, update, and delete rows of data:
-
-    {{site.data.alerts.callout_info}}
-    By default, the app uses the `dbinit.sql` file to initialize the database. Make sure that you use the `--no-init` flag when running the app with Alembic.
-    {{site.data.alerts.end}}
+1. In a different terminal, set the `DATABASE_URL` environment variable to the connection string for your cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ python main.py 'cockroachdb://demo:demo72529@127.0.0.1:26257/bank?sslmode=require' --no-init
+    $ export DATABASE_URL=cockroachdb://demo:demo72529@127.0.0.1:26257/bank?sslmode=require
+    ~~~
+
+    The sample app reads in `DATABASE_URL` as the connection string to the database.
+
+1. Run the app to insert, update, and delete rows of data:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ python main.py
     ~~~
 
     ~~~

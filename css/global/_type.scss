@@ -29,7 +29,7 @@
 }
 
 @mixin headline-4--avenir { //
-  @include avenir_r(17px);
+  @include sourcesanspro_r(17px);
   line-height: 30px;
 }
 
@@ -113,7 +113,7 @@
 }
 
 @mixin button-text--heavy {
-  @include avenir_h(12px);
+  @include sourcesanspro_b(12px);
   line-height: 15px;
   letter-spacing: 1.5px;
 }
@@ -182,7 +182,7 @@
   @include source_code_r(15px);
   line-height: 24px;
   border-radius: 3px;
-  padding: 2px 8px;
+  padding: 2px 2px;
 }
 
 

@@ -3,16 +3,18 @@ message: Prefer '%s' over '%s'
 ignorecase: false
 level: warning
 swap:
-  cockroachdb: CockroachDB
-  CockroachCloud: {{ site.data.products.db }}
-  CockroachCloud Serverless: {{ site.data.products.serverless }}
-  CockroachCloud Dedicated: {{ site.data.products.dedicated }}
-  Enterprise: Enterprise
+  builtin: built-in
+  builtins: built-ins
+  '[^\/\-\.]cockroachdb[^\/\-\.]': CockroachDB
+  'CockroachCloud Serverless': "{{ site.data.products.serverless }}"
+  'CockroachCloud Dedicated': "{{ site.data.products.dedicated }}"
+  'CockroachDB Serverless': "{{ site.data.products.serverless }}"
+  'CockroachDB Dedicated': "{{ site.data.products.dedicated }}"
+  CockroachCloud: "{{ site.data.products.db }}"
   raft: Raft
   Raft Group: Raft group
   Admin UI: DB Console
   admin ui: DB Console
-  web UI: DB Console
   web UI: DB Console
   ui: UI
   Distribution Layer: distribution layer
@@ -32,3 +34,6 @@ swap:
   Not Null constraint: "`NOT NULL` constraint"
   Primary Key constraint: "`PRIMARY KEY` constraint"
   Unique constraint: "`UNIQUE` constraint"
+  Postgres: PostgreSQL
+  Geo-Partition: geo-partition
+  multiregion: multi-region

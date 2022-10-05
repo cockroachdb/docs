@@ -1,4 +1,4 @@
-<div class="footer py-5">
+<div class="footer py-5" data-nosnippet>
   <div class="container">
     <div class="row">
       <div class="col-6 col-sm-3 col-lg-2">
@@ -105,22 +105,24 @@
           <form id="footer-mktoForm_1083" class="mkto-install-form mkto-footer-form"></form>
             <p class="js-ty-mktoForm_1083" style="display: none;">Thanks!</p>
             <script>
-                const MktoForms21083 = MktoForms2;
-                MktoForms21083.loadForm('//go.cockroachlabs.com', '350-QIN-827', 1083, function (form) {
-                    const form_mktoForm_1083 = $('#footer-mktoForm_1083');
-                    form.render(form_mktoForm_1083)
-                    form.onSuccess(function (values, followUpUrl) {
-                        form.getFormElem().hide();
-                        document.querySelector('.js-ty-mktoForm_1083').style.display = 'block';
-                        return false;
-                    });
-                    // Move button next to input
-                    MktoForms21083.whenReady(function (form) {
-                        $('#footer-mktoForm_1083 input').css('width', '');
-                        $('#footer-mktoForm_1083 .mktoButtonWrap').css('margin-left', '');
-                        $('#footer-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
-                        $('#footer-mktoForm_1083 .mktoButtonRow').insertAfter('#footer-mktoForm_1083 #Email');
-                    });
+                whenAvailable("MktoForms2", function() {
+                  const MktoForms21083 = MktoForms2;
+                  MktoForms21083.loadForm('//go.cockroachlabs.com', '350-QIN-827', 1083, function (form) {
+                      const form_mktoForm_1083 = $('#footer-mktoForm_1083');
+                      form.render(form_mktoForm_1083)
+                      form.onSuccess(function (values, followUpUrl) {
+                          form.getFormElem().hide();
+                          document.querySelector('.js-ty-mktoForm_1083').style.display = 'block';
+                          return false;
+                      });
+                      // Move button next to input
+                      MktoForms21083.whenReady(function (form) {
+                          $('#footer-mktoForm_1083 input').css('width', '');
+                          $('#footer-mktoForm_1083 .mktoButtonWrap').css('margin-left', '');
+                          $('#footer-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
+                          $('#footer-mktoForm_1083 .mktoButtonRow').insertAfter('#footer-mktoForm_1083 #Email');
+                      });
+                  });
                 });
             </script>
         </div>
@@ -128,5 +130,4 @@
     </div>
   </div>
 </div>
-
 {% include newsletter-popout.html %}

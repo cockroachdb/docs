@@ -1,5 +1,5 @@
 ---
-title: Authentication
+title: SQL Authentication
 summary: An overview of Cluster Authentication Configuration capabilities and interface syntax
 toc: true
 docs_area: reference.security
@@ -66,7 +66,7 @@ Each rule definition contains up to 6 values.
 
 ## Default behavior
 
-### CockroachDB Serverless
+### {{ site.data.products.serverless }}
 
 The default authentication configuration for {{ site.data.products.serverless }} clusters is equivalent to the following configuration:
 
@@ -77,7 +77,7 @@ The default authentication configuration for {{ site.data.products.serverless }}
 
 This is convenient for quick usage and experimentation, but is not suitable for clusters containing valuable data. It is a best practice to [configure SQL authentication for hardened {{ site.data.products.serverless }} cluster security](config-secure-hba.html).
 
-### CockroachDB Dedicated
+### {{ site.data.products.dedicated }}
 
 {{ site.data.products.dedicated }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page walks you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell](cockroach-sql.html).
+This page guides you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell](cockroach-sql.html).
 
 For detailed information about using Liquibase, see the [Liquibase documentation site](https://docs.liquibase.com/home.html).
 
@@ -28,26 +28,26 @@ To install the Liquibase binary on your machine:
 
 1. Make a new directory for your Liquibase installation:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir liquibase-4.2.0-bin
     ~~~
 
 1. Extract the Liquibase download to the new directory:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ tar -xvf liquibase-4.2.0.tar.gz -C liquibase-4.2.0-bin
     ~~~
 
 1. Append the full path of the `liquibase` binary (now located in the `liquibase-4.2.0-bin` folder) to your machine's `PATH` environment variable:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo "export PATH=$PATH:/full-path/liquibase-4.2.0-bin" >> ~/.bash_profile
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ source ~/.bash_profile
     ~~~
@@ -58,7 +58,7 @@ To install the Liquibase binary on your machine:
 
 1. To verify that the installation was successful, run the following command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ liquibase --version
     ~~~
@@ -94,13 +94,15 @@ The Liquibase command-line tool uses the PostgreSQL JDBC driver to connect to Co
 
 To install the driver for Liquibase:
 
-1. Download the JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
+1. Download the latest JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
 1. Place the driver in the `lib` directory of the Liquibase binary. For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp ~/Downloads/postgresql-42.2.9.jar liquibase-4.2.0-bin/lib/
+    $ cp ~/Downloads/postgresql-{version}.jar liquibase-4.2.0-bin/lib/
     ~~~
+
+Where `{version}` is the latest stable version.
 
 {{site.data.alerts.callout_success}}
 If you are using Liquibase in the context of a separate Java application, we recommend that you use a dependency management tool, like [Maven](https://docs.liquibase.com/tools-integrations/maven/home.html), to download the driver.
@@ -110,9 +112,9 @@ If you are using Liquibase in the context of a separate Java application, we rec
 
 When you [started a secure CockroachDB cluster](secure-a-cluster.html), you should have created a user `max`. You should have also given this user the [`admin` role](security-reference/authorization.html#admin-role), which grants all privileges to all databases on the cluster. In this tutorial, Liquibase runs schema changes as the `max` user.
 
-To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`](cockroach-cert.html#synopsis) to generate the certificates:
+To authenticate connection requests to CockroachDB from the Liquibase client, you need to generate some certificates for `max`. Use [`cockroach cert`](cockroach-cert.html) to generate the certificates:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach cert create-client max --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
 ~~~
@@ -127,16 +129,15 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
 1. Create a file named `changelog-main.xml`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch changelog-main.xml
     ~~~
 
 1. Add the following to the blank `changelog-main.xml` file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ xml
-    <?xml version="1.0" encoding="UTF-8"?>
     <databaseChangeLog
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -160,14 +161,14 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
 1. In the same directory, create the SQL file specified by the first changeset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch create.sql
     ~~~
 
 1. Add the following [`CREATE TABLE`](create-table.html) statement to the `create.sql` file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     create table account
     (
@@ -182,7 +183,7 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
 
 1. Now let's use the [XML format](https://docs.liquibase.com/concepts/basic/xml-format.html) to define the second changeset. Directly after the first `changeSet` element in `changelog-main.xml`, add the following:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ xml
     <changeSet id="2" author="max" runInTransaction="false">
         <insert tableName="account">
@@ -232,14 +233,14 @@ To configure Liquibase properties:
 
 1. In the same directory as `changelog-main.xml`, create a `liquibase.properties` file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch liquibase.properties
     ~~~
 
 1. Add the following property definitions to the file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ yml
     changeLogFile: changelog-main.xml
     driver: org.postgresql.Driver
@@ -255,7 +256,7 @@ To configure Liquibase properties:
 
 To run Liquibase from the command line, execute the following command from the directory containing your `liquibase.properties` and `changelog-main.xml` files:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ liquibase update
 ~~~
@@ -288,12 +289,12 @@ When the changelog is first executed, Liquibase also creates a table called [`da
 
 To see the completed changesets, open a new terminal, start the [built-in SQL shell](cockroach-sql.html), and query the `databasechangelog` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.databasechangelog;
 ~~~
@@ -308,7 +309,7 @@ $ cockroach sql --certs-dir=certs
 
 You can also query the `account` table directly to see the latest changes reflected in the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.account;
 ~~~
@@ -333,7 +334,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Create a SQL file to add a new UUID-typed column to the table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch add_uuid.sql
     ~~~
@@ -344,7 +345,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Add the following SQL statement to `add_uuid.sql`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     /* Add new UUID-typed column */
     ALTER TABLE account ADD COLUMN unique_id UUID NOT NULL DEFAULT gen_random_uuid();
@@ -362,14 +363,14 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. Now create a SQL file to update the primary key for the table with the new column:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ touch update_pk.sql
     ~~~
 
 1. Add the following SQL statement to `update_pk.sql`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~
     /* Change primary key */
     ALTER TABLE account ALTER PRIMARY KEY USING COLUMNS (unique_id);
@@ -387,7 +388,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 1. To update the table, run `liquibase update` again:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ liquibase update
     ~~~
@@ -418,12 +419,12 @@ Suppose that you want to change the primary key of the `accounts` table from a s
 
 To see the completed changesets, open a new terminal, start the [built-in SQL shell](cockroach-sql.html), and query the `databasechangelog` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.databasechangelog;
 ~~~
@@ -440,7 +441,7 @@ $ cockroach sql --certs-dir=certs
 
 You can also query the `account` table directly to see the latest changes reflected in the table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bank.account;
 ~~~
@@ -455,7 +456,7 @@ You can also query the `account` table directly to see the latest changes reflec
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE bank.account;
 ~~~

@@ -26,12 +26,12 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bool (a INT PRIMARY KEY, b BOOL, c BOOLEAN);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM bool;
 ~~~
@@ -47,12 +47,12 @@ A `BOOL` value is 1 byte in width, but the total storage size is likely to be la
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO bool VALUES (12345, true, CAST(0 AS BOOL));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM bool;
 ~~~

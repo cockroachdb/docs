@@ -4,13 +4,11 @@ summary: Learn how NULL values are handled in CockroachDB SQL.
 toc: true
 ---
 
-This page summarizes how `NULL` values are handled in CockroachDB
-SQL. Each topic is demonstrated via the [built-in SQL
-client](cockroach-sql.html).
+`NULL` is the term used to represent a missing value. A `NULL` value in a table is a value in a field that appears to be blank. A field with a `NULL` value is a field with no value.
 
-{{site.data.alerts.callout_info}}
-When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string ("").
-{{site.data.alerts.end}}
+This page summarizes how `NULL` values are handled in CockroachDB SQL. Each topic is demonstrated via the [built-in SQL client](cockroach-sql.html).
+
+When using the built-in client, `NULL` values are displayed using the word `NULL`. This distinguishes them from a character field that contains an empty string (`""`).
 
 ## NULLs and simple comparisons
 
@@ -19,12 +17,12 @@ Any simple comparison between a value and `NULL` results in
 
 This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t1(
   a INT,
@@ -33,42 +31,42 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(1, 0, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(2, 0, 1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(3, 1, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(4, 1, 1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(5, NULL, 0);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(6, NULL, 1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t1 VALUES(7, NULL, NULL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1;
 ~~~
@@ -87,7 +85,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 +---+------+------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE b < 10;
 ~~~
@@ -103,7 +101,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 +---+---+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE NOT b > 10;
 ~~~
@@ -119,7 +117,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 +---+---+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE b < 10 OR c = 1;
 ~~~
@@ -136,7 +134,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 +---+------+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE b < 10 AND c = 1;
 ~~~
@@ -150,7 +148,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 +---+---+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE NOT (b < 10 AND c = 1);
 ~~~
@@ -165,7 +163,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 +---+------+---+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE NOT (c = 1 AND b < 10);
 ~~~
@@ -182,7 +180,7 @@ This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 
 Use the `IS NULL` or `IS NOT NULL` clauses when checking for `NULL` values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 WHERE b IS NULL AND c IS NOT NULL;
 ~~~
@@ -217,41 +215,41 @@ the second operand is `NULL`.
  `FALSE AND TRUE`  | `FALSE`
  `FALSE AND NULL`  | `FALSE`
  `TRUE AND FALSE`  | `FALSE`
- `TRUE AND TRUE`   | `TRUE`  
- `TRUE AND NULL`   | `NULL`  
+ `TRUE AND TRUE`   | `TRUE`
+ `TRUE AND NULL`   | `NULL`
  `NULL AND FALSE`  | `FALSE`
- `NULL AND TRUE`   | `NULL`  
- `NULL AND NULL`   | `NULL`  
+ `NULL AND TRUE`   | `NULL`
+ `NULL AND NULL`   | `NULL`
 
 | Expression      | Result |
 ------------------|---------
  `FALSE OR FALSE` | `FALSE`
- `FALSE OR TRUE`  | `TRUE`  
- `FALSE OR NULL`  | `NULL`  
- `TRUE OR FALSE`  | `TRUE`  
- `TRUE OR TRUE`   | `TRUE`  
- `TRUE OR NULL`   | `TRUE`  
- `NULL OR FALSE`  | `NULL`  
- `NULL OR TRUE`   | `TRUE`  
- `NULL OR NULL`   | `NULL`  
+ `FALSE OR TRUE`  | `TRUE`
+ `FALSE OR NULL`  | `NULL`
+ `TRUE OR FALSE`  | `TRUE`
+ `TRUE OR TRUE`   | `TRUE`
+ `TRUE OR NULL`   | `TRUE`
+ `NULL OR FALSE`  | `NULL`
+ `NULL OR TRUE`   | `TRUE`
+ `NULL OR NULL`   | `NULL`
 
 | Expression      | Result  |
 ------------------|---------
- `FALSE IS FALSE` | `TRUE`  
+ `FALSE IS FALSE` | `TRUE`
  `FALSE IS TRUE`  | `FALSE`
  `FALSE IS NULL`  | `FALSE`
  `TRUE IS FALSE`  | `FALSE`
- `TRUE IS TRUE`   | `TRUE`  
+ `TRUE IS TRUE`   | `TRUE`
  `TRUE IS NULL`   | `FALSE`
  `NULL IS FALSE`  | `FALSE`
  `NULL IS TRUE`   | `FALSE`
- `NULL IS NULL`   | `TRUE`  
+ `NULL IS NULL`   | `TRUE`
 
 ## NULLs and arithmetic
 
 Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT a, b, c, b*0, b*c, b+c FROM t1;
 ~~~
@@ -274,7 +272,7 @@ Arithmetic operations involving a `NULL` value will yield a `NULL` result.
 
 Aggregate [functions](functions-and-operators.html) are those that operate on a set of rows and return a single value. The example data has been repeated here to make it easier to understand the results.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1;
 ~~~
@@ -293,7 +291,7 @@ Aggregate [functions](functions-and-operators.html) are those that operate on a 
 +---+------+------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), MIN(b), MAX(b) FROM t1;
 ~~~
@@ -319,7 +317,7 @@ Note the following:
 
 `NULL` values are considered distinct from other values and are included in the list of distinct values from a column.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT DISTINCT b FROM t1;
 ~~~
@@ -336,7 +334,7 @@ Note the following:
 
 However, counting the number of distinct values excludes `NULL`s, which is consistent with the `COUNT()` function.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(DISTINCT b) FROM t1;
 ~~~
@@ -355,7 +353,7 @@ In some cases, you may want to include `NULL` values in arithmetic or aggregate 
 
 For example, let's say you want to calculate the average value of column `b` as being the `SUM()` of all numbers in `b` divided by the total number of rows, regardless of whether `b`'s value is `NULL`. In this case, you would use `AVG(IFNULL(b, 0))`, where `IFNULL(b, 0)` substitutes a value of zero (0) for `NULL`s during the calculation.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*), COUNT(b), SUM(b), AVG(b), AVG(IFNULL(b, 0)), MIN(b), MAX(b) FROM t1;
 ~~~
@@ -372,7 +370,7 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 `NULL` values are considered as part of a `UNION` [set operation](selection-queries.html#set-operations).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT b FROM t1 UNION SELECT b FROM t1;
 ~~~
@@ -392,9 +390,9 @@ For example, let's say you want to calculate the average value of column `b` as 
 
 When [sorting a column](order-by.html) containing `NULL` values, CockroachDB sorts `NULL` values first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
 
-Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause are not implemented in CockroachDB, so you cannot change where `NULL` values appear in the sort order.
+CockroachDB supports `NULLS FIRST` and `NULLS LAST` in [`ORDER BY`](order-by.html) clauses. However, in some cases the support is syntax-only&mdash;an error is returned if `NULLS FIRST` or `NULLS LAST` specification doesn't "match" the internal structure of the used index. If the index is ascending, the error is returned for `NULLS LAST`; if the index is descending, the error is returned for `NULLS FIRST`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 ORDER BY b ASC;
 ~~~
@@ -413,7 +411,7 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 +---+------+------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t1 ORDER BY b DESC;
 ~~~
@@ -436,27 +434,27 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 `NULL` values are not considered unique. Therefore, if a table has a Unique constraint on one or more columns that are optional (nullable), it is possible to insert multiple rows with `NULL` values in those columns, as shown in the example below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE t2(a INT, b INT UNIQUE);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t2 VALUES(1, 1);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t2 VALUES(2, NULL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO t2 VALUES(3, NULL);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM t2;
 ~~~
@@ -475,22 +473,22 @@ Note that the `NULLS FIRST` and `NULLS LAST` options of the `ORDER BY` clause ar
 
 A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is considered to pass, allowing for concise expressions like `discount < price` without worrying about adding `OR discount IS NULL` clauses. When non-null validation is desired, the usual `NOT NULL` constraint can be used along side a Check constraint.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE products (id STRING PRIMARY KEY, price INT NOT NULL CHECK (price > 0), discount INT, CHECK (discount <= price));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO products (id, price) VALUES ('ncc-1701-d', 100);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO products (id, price, discount) VALUES ('ncc-1701-a', 100, 50);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM products;
 ~~~
@@ -504,7 +502,7 @@ A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is consid
 +----------+-------+----------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO products (id, price) VALUES ('ncc-1701-b', -5);
 ~~~
@@ -513,7 +511,7 @@ A [`CHECK` constraint](check.html) expression that evaluates to `NULL` is consid
 failed to satisfy CHECK constraint (price > 0)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO products (id, price, discount) VALUES ('ncc-1701-b', 100, 150);
 ~~~
@@ -524,7 +522,7 @@ failed to satisfy CHECK constraint (discount <= price)
 
 ## NULLs and concatenation with other types
 
-<span class="version-tag">New in v21.1</span> Concatenation between a non-`NULL` value and a `NULL` value results in a `NULL` value.
+{% include_cached new-in.html version="v21.1" %} Concatenation between a non-`NULL` value and a `NULL` value results in a `NULL` value.
 
 {{site.data.alerts.callout_info}}
 In CockroachDB v20.2 and earlier, for all values other than [`STRING`](string.html), concatenation between a non-`NULL` value and a `NULL` value results in an [`ARRAY`](array.html) of the non-`NULL` value's type. To return an `ARRAY` of a specific type from a `NULL` concatenation in CockroachDB v21.1 and later, [cast](data-types.html#data-type-conversions-and-casts) the `NULL` value to an `ARRAY`.
@@ -532,7 +530,7 @@ In CockroachDB v20.2 and earlier, for all values other than [`STRING`](string.ht
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT NULL || 1;
 ~~~
@@ -544,7 +542,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT NULL || `item`;
 ~~~

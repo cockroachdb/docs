@@ -4,13 +4,10 @@ summary: Learn how to use CockroachDB from a simple Java application with the Hi
 toc: true
 twitter: false
 referral_id: docs_java_hibernate
-filter_category: crud_java
-filter_html: Use <strong>Hibernate</strong>
-filter_sort: 2
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-java.md %}
 
 This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
 
@@ -24,17 +21,26 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{ page.version.version }}/setup/sample-setup-parameters.md %}
 
-## Step 2. Create a database
+## Step 2. Get the sample code
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+Clone the `example-app-java-hibernate` repo to your machine:
 
-## Step 3. Run the Java code
+{% include_cached copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/example-app-java-hibernate/
+~~~
 
-The sample code in this tutorial ([`Sample.java`](#code-contents))uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
+{{site.data.alerts.callout_info}}
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
+{{site.data.alerts.end}}
 
-1. Creates an `accounts` table in the `bank` database as specified by the `Account` mapping class.
+## Step 3. Run the code
+
+The sample code in this tutorial ([`Sample.java`](#code-contents)) uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
+
+1. Creates an `accounts` table as specified by the `Account` mapping class.
 1. Inserts rows into the table with the `addAccounts()` method.
 1. Transfers money from one account to another with the `transferFunds()` method.
 1. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
@@ -51,55 +57,29 @@ The contents of `Sample.java`:
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
 
-### Get the code
-
-Clone the `example-app-java-hibernate` repo to your machine:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/example-app-java-hibernate/
-~~~
-
-{{site.data.alerts.callout_info}}
-The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
-{{site.data.alerts.end}}
-
-### Update the connection parameters
-
-Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ xml
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:{port}/bank?ssl=true&amp;sslmode=require</property>
-    ~~~
-
-    Where `{port}` is the port number on which the CockroachDB demo cluster is listening.
-
-1. Set the `hibernate.connection.username` property to the username you created earlier.
-
-1. Set the `hibernate.connection.password` property to the user's password.
-
-</section>
-
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. Modify the `hibernate.connection.url` property with the information from the connection string you copied [earlier](#set-up-your-cluster-connection) host, cluster and database name, and path to the SSL certificate:
+### Update the connection configuration
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ xml
-  <property name="hibernate.connection.url">jdbc:postgresql://{globalhost}:26257/{cluster_name}.bank?sslmode=verify-full&amp;sslrootcert={path to the CA certificate}</property>
-  ~~~
-  {% include {{page.version.version}}/app/cc-free-tier-params.md %}
+Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.url`, `hibernate.connection.username`, and `hibernate.connection.password` properties, using the connection information that you obtained from the {{ site.data.products.cloud }} Console:
+
+{% include_cached copy-clipboard.html %}
+~~~ xml
+<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?options=--cluster%3D{routing-id}&amp;sslmode=verify-full</property>
+<property name="hibernate.connection.username">{username}</property>
+<property name="hibernate.connection.password">{password}</property>
+~~~
 
 </section>
 
 ### Run the code
 
-Compile and run the code using `gradlew`, which will also download the dependencies.
+Compile and run the code using `gradlew`, which will also download the dependencies:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cd example-app-java-hibernate
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -134,34 +114,6 @@ APP: getAccountBalance(1) --> 900.00
 APP: getAccountBalance(2) --> 350.00
 ~~~
 
-To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir={certs_dir}
-~~~
-
-Where:
-- `{certs_dir}` is the path to the directory containing the certificates and keys you generated earlier.
-
-To check the account balances, issue the following statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT id, balance FROM accounts;
-~~~
-
-~~~
-id |  balance
------+------------
- 1 |    900.00
- 2 |    350.00
- 3 | 314159.00
-(3 rows)
-~~~
-
-</section>
-
 ## Recommended Practices
 
 ### Generate PKCS8 keys for client authentication
@@ -178,19 +130,19 @@ id |  balance
 
 If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html). It bypasses the [SQL layer](architecture/sql-layer.html) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from Postgres, see [Migrate from Postgres](migrate-from-postgres.html).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
 For more information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
-### Use `rewriteBatchedInserts` for increased speed
+### Use `reWriteBatchedInserts` for increased speed
 
-We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the Postgres wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor) from the PGJDBC documentation.
 

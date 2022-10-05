@@ -29,6 +29,7 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [Storage Dashboard](ui-storage-dashboard.html) has metrics about storage capacity and file descriptors.
 - [Replication Dashboard](ui-replication-dashboard.html) has metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 - [Changefeeds Dashboard](ui-cdc-dashboard.html) has metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
+- {% include_cached new-in.html version="v21.2" %} [Overload Dashboard](ui-overload-dashboard.html) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). 
 
 ### Databases
 
@@ -63,6 +64,17 @@ You can access the DB Console from every node at `http://<host>:<http-port>`, or
 - If you are running a [secure cluster](#cluster-security), use `https` instead of `http`.
 
 For guidance on accessing the DB Console in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
+
+### Proxy DB Console
+
+If your CockroachDB cluster is behind a load balancer, you may wish to proxy your DB Console connection to a different node in the cluster from the node you first connect to. This is useful in deployments where a third-party load balancer otherwise determines which CockroachDB node you connect to in DB Console, or where web management access is limited to a subset of CockroachDB instances in a cluster.
+
+You can accomplish this using one of these methods:
+
+- Once connected to DB Console, use the **Web server** dropdown menu from the [**Advanced Debug**](ui-debug-pages.html#license-and-node-information) page to select a different node to proxy to.
+- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`. 
+
+## DB Console security considerations
 
 Access to DB Console is a function of cluster security and the role of the accessing user.
 

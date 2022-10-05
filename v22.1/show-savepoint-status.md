@@ -14,7 +14,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_savepoint_status.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_savepoint_status.html %}
 </div>
 
 ## Response
@@ -30,7 +30,7 @@ Field | Description
 
 First, open a [transaction](transactions.html) using [`BEGIN`](begin-transaction.html), and create a [nested transaction](transactions.html#nested-transactions) using a [savepoint](savepoint.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 SAVEPOINT foo;
@@ -38,7 +38,7 @@ SAVEPOINT foo;
 
 Next, use the `SHOW SAVEPOINT STATUS` statement to list the active savepoints in the current nested transaction.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW SAVEPOINT STATUS;
 ~~~
@@ -54,7 +54,7 @@ Currently, there is only one savepoint.
 
 We can commit this nested transaction by issuing the [`RELEASE SAVEPOINT`](release-savepoint.html) statement.  Then, we clear the connection for the next transaction by issuing a [`COMMIT`](commit-transaction.html) statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RELEASE SAVEPOINT foo;
 COMMIT;

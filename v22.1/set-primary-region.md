@@ -22,7 +22,7 @@ To remove existing, manually-configured zones from a database (and unblock `SET 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_database_primary_region.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_database_primary_region.html %}
 </div>
 
 ## Parameters
@@ -51,7 +51,7 @@ Suppose you have a database `foo` in your cluster, and you want to make it a mul
 
 To add the first region to the database, or to set an already-added region as the primary region, use a `SET PRIMARY REGION` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo SET PRIMARY REGION "us-east1";
 ~~~
@@ -69,7 +69,7 @@ Given a cluster with multiple regions, any databases in that cluster that have n
 
 To add more regions to the database, use an [`ADD REGION`](add-region.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER database foo ADD region "europe-west1";
 ~~~
@@ -80,7 +80,7 @@ ALTER DATABASE ADD REGION
 
 To view the database's regions, and to see which region is the primary region, use a [`SHOW REGIONS FROM DATABASE`](show-regions.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~
@@ -99,7 +99,7 @@ To change the primary region to another region in the database, use a `SET PRIMA
 
 You can only change an existing primary region to a region that has already been added to the database. If you try to change the primary region to a region that is not already associated with a database, CockroachDB will return an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo SET PRIMARY REGION "us-west1";
 ~~~
@@ -110,7 +110,7 @@ SQLSTATE: 42602
 HINT: you must add the region to the database before setting it as primary region, using ALTER DATABASE foo ADD REGION "us-west1"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER database foo ADD region "us-west1";
 ~~~
@@ -119,7 +119,7 @@ ALTER database foo ADD region "us-west1";
 ALTER DATABASE ADD REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo SET PRIMARY REGION "us-west1";
 ~~~
@@ -128,7 +128,7 @@ ALTER DATABASE foo SET PRIMARY REGION "us-west1";
 ALTER DATABASE PRIMARY REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~
@@ -146,7 +146,7 @@ SHOW REGIONS FROM DATABASE foo;
 
 To drop a region from a multi-region database, use a [`DROP REGION`](drop-region.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo DROP REGION "us-west1";
 ~~~
@@ -155,7 +155,7 @@ ALTER DATABASE foo DROP REGION "us-west1";
 ALTER DATABASE DROP REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~
@@ -174,7 +174,7 @@ You can only drop the primary region from a multi-region database if it's the la
 
 If you try to drop the primary region when there is more than one region, CockroachDB will return an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo DROP REGION "us-east1";
 ~~~
@@ -185,7 +185,7 @@ SQLSTATE: 42P12
 HINT: You must designate another region as the primary region using ALTER DATABASE foo PRIMARY REGION <region name> or remove all other regions before attempting to drop region "us-east1"
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo DROP REGION "europe-west1";
 ~~~
@@ -194,7 +194,7 @@ ALTER DATABASE foo DROP REGION "europe-west1";
 ALTER DATABASE DROP REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~
@@ -206,7 +206,7 @@ SHOW REGIONS FROM DATABASE foo;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo DROP REGION "us-east1";
 ~~~
@@ -215,7 +215,7 @@ ALTER DATABASE foo DROP REGION "us-east1";
 ALTER DATABASE DROP REGION
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM DATABASE foo;
 ~~~

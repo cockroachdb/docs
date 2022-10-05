@@ -259,7 +259,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
 `privilege_type` | Name of the [privilege](security-reference/authorization.html#managing-privileges).
-`is_grantable` | Always `NULL` (unsupported by CockroachDB).
+`is_grantable` | **New in v22.1:** `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### schema_privileges
@@ -306,7 +306,7 @@ Column | Description
 
 ### session_variables
 
- `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW (session settings)`](show-vars.html) statement.
+ `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW {session variable}`](show-vars.html) statement.
 
 For a list of the session variables, see [supported variables](show-vars.html#supported-variables).
 
@@ -320,7 +320,7 @@ Column | Description
 `table_schema` | Name of the schema that contains the constrained table.
 `table_name` | Name of the table.
 `non_unique` | `NO` if the index was created with the `UNIQUE` constraint; `YES` if the index was not created with `UNIQUE`.
-`index_schema` | Name of the database that contains the index.
+`index_schema` | Name of the schema that contains the index.
 `index_name` | Name of the index.
 `seq_in_index` | Ordinal position of the column within the index (begins at 1).
 `column_name` | Name of the column being indexed.
@@ -358,7 +358,7 @@ Column | Description
 `table_schema` | Name of the schema that the grant applies to.
 `table_name` | Name of the table that the grant applies to.
 `privilege_type` | Type of [privilege](security-reference/authorization.html#managing-privileges): `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, or `TRIGGER`.
-`is_grantable` | Always `NULL` (unsupported by CockroachDB).
+`is_grantable` | **New in v22.1:** `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### tables
@@ -494,7 +494,7 @@ Unless specified otherwise, queries to `information_schema` assume the [current 
 
 For example, to retrieve all columns from the `table_constraints` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.information_schema.table_constraints;
 ~~~
@@ -502,17 +502,17 @@ For example, to retrieve all columns from the `table_constraints` table:
 ~~~
   constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
 ---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
-  movr               | public            | primary                      | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | users_pkey                   | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
   movr               | public            | 3426283741_53_1_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
   movr               | public            | 3426283741_53_2_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
+  movr               | public            | vehicles_pkey                | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
 ...
 (25 rows)
 ~~~
 
 And to retrieve specific columns from the `table_constraints` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~

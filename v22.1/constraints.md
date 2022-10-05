@@ -29,13 +29,13 @@ How you add constraints depends on the number of columns you want to constrain, 
 
 - **One column of a new table** has its constraints defined after the column's data type. For example, this statement applies the `PRIMARY KEY` constraint to `foo.a`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE foo (a INT PRIMARY KEY);
     ~~~
 - **Multiple columns of a new table** have their constraints defined after the table's columns. For example, this statement applies the `PRIMARY KEY` constraint to `foo`'s columns `a` and `b`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bar (a INT, b INT, PRIMARY KEY (a,b));
     ~~~
@@ -47,14 +47,14 @@ How you add constraints depends on the number of columns you want to constrain, 
 - **Existing tables** can have the following constraints added:
   - `CHECK`, `FOREIGN KEY`, and `UNIQUE` constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`](add-constraint.html). For example, this statement adds the `UNIQUE` constraint to `baz.id`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE baz ADD CONSTRAINT id_unique UNIQUE (id);
     ~~~
 
-  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-column.html#set-or-change-a-default-value). For example, this statement adds the Default Value constraint to `baz.bool`:
+  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-column.html#set-or-change-a-default-value). For example, this statement adds the [`DEFAULT` value constraint](default-value.html) to `baz.bool`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE baz ALTER COLUMN bool SET DEFAULT true;
     ~~~
@@ -73,12 +73,12 @@ The order in which you list constraints is not important because constraints are
 
 You can name constraints applied to new tables using the `CONSTRAINT` clause before defining the constraint:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE foo (a INT CONSTRAINT another_name PRIMARY KEY);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE bar (a INT, b INT, CONSTRAINT yet_another_name PRIMARY KEY (a,b));
 ~~~

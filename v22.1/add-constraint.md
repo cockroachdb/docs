@@ -22,7 +22,7 @@ The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/add_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/add_constraint.html %}
 </div>
 
 ## Required privileges
@@ -43,12 +43,12 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`
 
- When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the old primary index without creating a secondary index.
+When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html), the existing primary key index becomes a secondary index. The secondary index created by `ALTER PRIMARY KEY` takes up node memory and can slow down write performance to a cluster. If you do not have queries that filter on the primary key that you are replacing, you can use `ADD CONSTRAINT` to replace the existing primary index without creating a secondary index.
 
-`ADD CONSTRAINT ... PRIMARY KEY` can be used to add a primary key to an existing table if one of the following is true:
+You can use `ADD CONSTRAINT ... PRIMARY KEY` to add a primary key to an existing table if one of the following is true:
 
-  - No primary key was explicitly defined at [table creation](create-table.html). In this case, the table is created with a default [primary key on `rowid`](indexes.html#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
-  - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint) below.
+- No primary key was explicitly defined at [table creation](create-table.html). In this case, the table is created with a default [primary key on `rowid`](indexes.html#creation). Using `ADD CONSTRAINT ... PRIMARY KEY` drops the default primary key and replaces it with a new primary key.
+- A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT ... PRIMARY KEY` statement, in the same transaction. For an example, see [Drop and add the primary key constraint](#drop-and-add-a-primary-key-constraint).
 
 {{site.data.alerts.callout_info}}
 `ALTER TABLE ... ADD PRIMARY KEY` is an alias for `ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`.
@@ -62,7 +62,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's values be distinct from one another (except for `NULL` values).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
@@ -71,7 +71,7 @@ Adding the [`UNIQUE` constraint](unique.html) requires that all of a column's va
 
 Adding the [`CHECK` constraint](check.html) requires that all of a column's values evaluate to `TRUE` for a Boolean expression.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE rides ADD CONSTRAINT check_revenue_positive CHECK (revenue >= 0);
 ~~~
@@ -82,7 +82,7 @@ In the process of adding the constraint CockroachDB will run a background job to
 
 You can add check constraints to columns that were created earlier in the transaction. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users ADD COLUMN is_owner STRING;
@@ -110,7 +110,7 @@ To add a foreign key constraint, use the steps shown below.
 
 Given two tables, `users` and `vehicles`, without foreign key constraints:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE users;
 ~~~
@@ -124,13 +124,12 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | )
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE vehicles;
 ~~~
@@ -147,8 +146,7 @@ Given two tables, `users` and `vehicles`, without foreign key constraints:
              |     status VARCHAR NULL,
              |     current_location VARCHAR NULL,
              |     ext JSONB NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             |     CONSTRAINT vehicles_pkey PRIMARY KEY (city ASC, id ASC),
              | )
 (1 row)
 ~~~
@@ -161,7 +159,7 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 `CASCADE` does not list the objects it drops or updates, so it should be used with caution.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
@@ -174,7 +172,7 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 
 Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -188,22 +186,21 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
              |     name VARCHAR NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
              | )
 (1 row)
 ~~~
 
 First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
 ~~~
 
-Then, in the same transaction, [`DROP`](drop-constraint.html) the old `"primary"` constraint and `ADD` the new one:
+Then, in the same transaction, [`DROP`](drop-constraint.html) the existing `"primary"` constraint and `ADD` the new one:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users DROP CONSTRAINT "primary";
@@ -215,7 +212,7 @@ Then, in the same transaction, [`DROP`](drop-constraint.html) the old `"primary"
 NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -229,8 +226,7 @@ NOTICE: primary key changes are finalized asynchronously; further schema changes
              |     name VARCHAR NOT NULL,
              |     address VARCHAR NULL,
              |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, name ASC, id ASC),
              | )
 (1 row)
 ~~~
@@ -251,19 +247,19 @@ To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables wo
 
 First, add a column and its unique constraint. We'll use `email` since that is something that should be unique per user.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE users ADD COLUMN email STRING;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
 ~~~
 
 Next, issue the [`SHOW INDEXES`](show-index.html) statement. You will see that [the implicit region column](set-locality.html#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables) is now indexed:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW INDEXES FROM users;
 ~~~
@@ -271,13 +267,13 @@ SHOW INDEXES FROM users;
 ~~~
   table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
 -------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | primary           |   false    |            1 | region      | ASC       |  false  |   true
-  users      | primary           |   false    |            2 | id          | ASC       |  false  |  false
-  users      | primary           |   false    |            3 | city        | N/A       |  true   |  false
-  users      | primary           |   false    |            4 | name        | N/A       |  true   |  false
-  users      | primary           |   false    |            5 | address     | N/A       |  true   |  false
-  users      | primary           |   false    |            6 | credit_card | N/A       |  true   |  false
-  users      | primary           |   false    |            7 | email       | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            1 | region      | ASC       |  false  |   true
+  users      | users_pkey        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey        |   false    |            3 | city        | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            4 | name        | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            5 | address     | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            6 | credit_card | N/A       |  true   |  false
+  users      | users_pkey        |   false    |            7 | email       | N/A       |  true   |  false
   users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |   true
   users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
   users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true
@@ -289,7 +285,7 @@ SHOW INDEXES FROM users;
 
 Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW PARTITIONS FROM TABLE users;
 ~~~
@@ -311,9 +307,9 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 
 ### Using `DEFAULT gen_random_uuid()` in `REGIONAL BY ROW` tables
 
-To auto-generate unique row IDs in `REGIONAL BY ROW` tables, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE users (
         id UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -321,17 +317,16 @@ To auto-generate unique row IDs in `REGIONAL BY ROW` tables, use the [`UUID`](uu
         name STRING NULL,
         address STRING NULL,
         credit_card STRING NULL,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        FAMILY "primary" (id, city, name, address, credit_card)
+        CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
 );
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users;
 ~~~
@@ -372,24 +367,24 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. Start [`cockroach demo`](cockroach-demo.html) as follows:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach demo --geo-partitioned-replicas
     ~~~
 
 1. Create a multi-region database and an `employees` table. There are three indexes in the table, all `UNIQUE` and all partitioned by the `crdb_region` column. The table schema guarantees that both `id` and `email` are globally unique, while `desk_id` is only unique per region. The indexes on `id` and `email` are implicitly partitioned, while the index on `(crdb_region, desk_id)` is explicitly partitioned. `UNIQUE` indexes can only directly enforce uniqueness on all columns in the index, including partitioning columns, so each of these indexes enforce uniqueness for `id`, `email`, and `desk_id` per region, respectively.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1";
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     USE multi_region_test_db;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE TABLE employee (
       id INT PRIMARY KEY,
@@ -401,7 +396,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. In the statement below, we add a new user with the required `id`, `email`, and `desk_id` columns. CockroachDB needs to do additional work to enforce global uniqueness for the `id` and `email` columns, which are implicitly partitioned. This additional work is in the form of "uniqueness checks" that the optimizer adds as part of mutation queries.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN INSERT INTO employee VALUES (1, 'joe@example.com', 1);
     ~~~
@@ -466,7 +461,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. The statement below updates the user's `email` column. Because the unique index on the `email` column is implicitly partitioned, the optimizer must perform a uniqueness check.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN UPDATE employee SET email = 'joe1@exaple.com' WHERE id = 1;
     ~~~
@@ -527,7 +522,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
 1. If we only update the user's `desk_id` as shown below, no uniqueness checks are needed, since the index on that column is explicitly partitioned (it's really `(crdb_region, desk_id)`).
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN UPDATE employee SET desk_id = 2 WHERE id = 1;
     ~~~

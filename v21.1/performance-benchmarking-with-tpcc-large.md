@@ -92,13 +92,13 @@ CockroachDB requires TCP communication on two ports:
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -107,7 +107,7 @@ CockroachDB requires TCP communication on two ports:
 
 3. Run the [`cockroach start`](cockroach-start.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start \
     --insecure \
@@ -126,7 +126,7 @@ CockroachDB requires TCP communication on two ports:
 
 5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
@@ -139,14 +139,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 2. Launch the [built-in SQL shell](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
 3. Adjust some [cluster settings](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
     SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
@@ -159,26 +159,26 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 4. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to the following value:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER RANGE default CONFIGURE ZONE USING gc.ttlseconds = 600;
     ~~~
 
 5. Enable the trial license you requested earlier:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<your organization>';
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
 6. Exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -191,13 +191,13 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar -xz
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -206,7 +206,7 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 1. Import the TPC-C dataset:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload fixtures import tpcc \
     --partitions=81 \
@@ -244,34 +244,34 @@ Before running the benchmark, it's important to allocate partitions to workload 
 
 2. Upload the `addrs` file to the 5 VMs with the `workload` binary:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 1 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 2 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 3 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 4 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp addrs <username>@<workload instance 5 address>:.
     ~~~
 
 3. SSH to each VM with `workload` and allocate partitions:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc --partitions=81 \
     --warehouses=140000 \
@@ -282,7 +282,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions 81 \
@@ -294,7 +294,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -306,7 +306,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -318,7 +318,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $(cat addrs)
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     ulimit -n 500000 && cockroach workload run tpcc \
     --partitions=81 \
@@ -338,7 +338,7 @@ Once the allocations finish, run TPC-C for 30 minutes on each VM with `workload`
 It is critical to run the benchmark from the workload nodes in parallel, so start them as simultaneously as possible.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -350,7 +350,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -362,7 +362,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -374,7 +374,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partitions=81 \
@@ -386,7 +386,7 @@ ulimit -n 500000 && cockroach workload run tpcc \
 $(cat addrs)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ulimit -n 500000 && cockroach workload run tpcc \
 --partition=81 \
@@ -402,27 +402,27 @@ $(cat addrs)
 
 1. Collect the result files from each VM with `workload`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 1 address>:workload1.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 2 address>:workload2.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 3 address>:workload3.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 4 address>:workload4.histogram.ndjson .
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp <username>@<workload instance 5 address>:workload5.histogram.ndjson .
     ~~~
@@ -433,22 +433,22 @@ $(cat addrs)
     The commands below assume you're uploading to the VM with the `workload1.histogram.ndjson` file.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload2.histogram.ndjson <username>@<workload instance 2 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload3.histogram.ndjson <username>@<workload instance 3 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload4.histogram.ndjson <username>@<workload instance 4 address>:.
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ scp workload5.histogram.ndjson <username>@<workload instance 5 address>:.
     ~~~
@@ -457,7 +457,7 @@ $(cat addrs)
 
 4. Run the `workload debug tpcc-merge-results` command to synthesize the results:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach workload debug tpcc-merge-results \
     --warehouses=140000 \

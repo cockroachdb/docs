@@ -11,7 +11,7 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_databases.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_databases.html %}
 </div>
 
 ## Required privileges
@@ -22,7 +22,7 @@ The user must be granted the `CONNECT` [privilege](security-reference/authorizat
 
 ### Show databases
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
@@ -40,7 +40,7 @@ The user must be granted the `CONNECT` [privilege](security-reference/authorizat
 
 Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](cockroach-sql.html#commands) to list all databases:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > \l
 ~~~
@@ -60,14 +60,14 @@ Alternatively, within the built-in SQL shell, you can use the `\l` [shell comman
 
 You can use [`COMMENT ON`](comment-on.html) to add comments on a database.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
 ~~~
 
 To view a database's comments:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES WITH COMMENT;
 ~~~
@@ -87,19 +87,7 @@ For more information, see [`COMMENT ON`](comment-on.html).
 
 ## Preloaded databases
 
-New clusters and existing clusters [upgraded](upgrade-cockroach-version.html) to v2.1 or later will include three auto-generated databases, with the following purposes:
-
-- The empty `defaultdb` database is used if a client does not specify a database in the [connection parameters](connection-parameters.html).
-
-- The `movr` database contains data about users, vehicles, and rides for the vehicle-sharing app [MovR](movr.html).
-
-- An empty database called `postgres` is provided for compatibility with Postgres client applications that require it.
-
-- The `startrek` database contains quotes from episodes.
-
-- The `system` database contains CockroachDB metadata and is read-only.
-
-The `postgres` and `defaultdb` databases can be [deleted](drop-database.html) if they are not needed.
+{% include {{ page.version.version }}/sql/preloaded-databases.md %}
 
 ## See also
 

@@ -206,15 +206,20 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
     (2 rows)
     ~~~
 
-1. Run the app to insert, update, and delete rows of data:
-
-    {{site.data.alerts.callout_info}}
-    By default, the app uses the `dbinit.sql` file to initialize the database. Make sure that you use the `--no-init` flag when running the app with Alembic.
-    {{site.data.alerts.end}}
+1. In a different terminal, set the `DATABASE_URL` environment variable to the connection string for your cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ python main.py 'cockroachdb://root:admin@127.0.0.1:50040?sslmode=require' --no-init
+    $ export DATABASE_URL=cockroachdb://demo:demo72529@127.0.0.1:26257/bank?sslmode=require
+    ~~~
+
+    The sample app reads in `DATABASE_URL` as the connection string to the database.
+
+1. Run the app to insert, update, and delete rows of data:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ python main.py
     ~~~
 
     ~~~

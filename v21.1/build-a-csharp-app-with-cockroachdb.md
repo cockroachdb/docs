@@ -112,14 +112,14 @@ connStringBuilder.SslMode = SslMode.Require;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
 connStringBuilder.Database = "{cluster-name}.bank";
-connStringBuilder.RootCertificate = "~/.postgres/root.crt";
+connStringBuilder.RootCertificate = "~/.postgresql/root.crt";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
 
 Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{host-name}` is the name of the {{ site.data.products.serverless-plan }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `{host-name}` is the name of the {{ site.data.products.serverless }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - `{cluster_name}` is the name of your cluster.
 
 </section>

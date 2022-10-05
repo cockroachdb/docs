@@ -53,14 +53,14 @@ This example assumes you are running a [local unsecured cluster](start-a-local-c
 
 First, connect to the running cluster (call this Terminal 1):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 Next, create a table and insert some rows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
@@ -68,7 +68,7 @@ INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 
 Next, we'll start a [transaction](transactions.html) and lock the row we want to operate on:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SELECT * FROM kv WHERE k = 1 FOR UPDATE;
@@ -85,14 +85,14 @@ Hit enter twice in the [SQL client](cockroach-sql.html) to send the input so far
 
 Now open another terminal and connect to the database from a second client (call this Terminal 2):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach sql --insecure
 ~~~
 
 From Terminal 2, start a transaction and try to lock the same row for updates that is already being accessed by the transaction we opened in Terminal 1:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SELECT * FROM kv WHERE k = 1 FOR UPDATE;
@@ -102,7 +102,7 @@ Hit enter twice to send the input so far to be evaluated. Because Terminal 1 has
 
 Back in Terminal 1, update the row and commit the transaction:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE kv SET v = v + 5 WHERE k = 1;
 ~~~
@@ -111,7 +111,7 @@ UPDATE kv SET v = v + 5 WHERE k = 1;
 UPDATE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~
@@ -131,7 +131,7 @@ Now that the transaction in Terminal 1 has committed, the transaction in Termina
 
 The transaction in Terminal 2 can now receive input, so update the row in question again:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE kv SET v = v + 5 WHERE k = 1;
 ~~~
@@ -142,7 +142,7 @@ UPDATE 1
 
 Finally, commit the transaction in Terminal 2:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 ~~~

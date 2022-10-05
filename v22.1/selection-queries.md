@@ -14,15 +14,15 @@ ordering](order-by.html) or [row limit](limit-offset.html).
 
 Selection queries can occur:
 
-- At the top level of a query like other [SQL statements](sql-statements.html).
-- Between parentheses as a [subquery](table-expressions.html#subqueries-as-table-expressions).
-- As [operand to other statements](#using-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html) or [`ALTER ... SPLIT AT`](split-at.html).
+- At the top level of a query, like other [SQL statements](sql-statements.html).
+- Between parentheses as a [subquery](table-expressions.html#use-a-subquery).
+- As [operand to other statements](#use-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](insert.html), [`UPSERT`](upsert.html),  [`CREATE TABLE AS`](create-table-as.html), or [`ALTER ... SPLIT AT`](split-at.html).
 
 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/select.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select.html %}
 </div>
 
 ## Parameters
@@ -32,32 +32,32 @@ Parameter | Description
 `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 `select_clause` | A valid [selection clause](#selection-clauses), either simple or using [set operations](#set-operations).
 `sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](order-by.html) for details.
-`limit_clause` | An optional `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for details.
-`offset_clause` | An optional `OFFSET` clause. See [Limiting Query Results](limit-offset.html) for details.
+`limit_clause` | An optional `LIMIT` clause. See [Limit Query Results](limit-offset.html) for details.
+`offset_clause` | An optional `OFFSET` clause. See [Limit Query Results](limit-offset.html) for details.
 `for_locking_clause` |  The `FOR UPDATE` locking clause is used to order transactions by controlling concurrent access to one or more rows of a table.  For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
 
-The optional `LIMIT` and `OFFSET` clauses can appear in any order, but must appear after `ORDER BY`, if also present.
+The optional `LIMIT` and `OFFSET` clauses can appear in any order, but if also present, must appear **after** `ORDER BY`.
 
-{{site.data.alerts.callout_info}}Because the <code>WITH</code>, <code>ORDER BY</code>, <code>LIMIT</code> and <code>OFFSET</code> sub-clauses are all optional, any simple <a href="#selection-clauses">selection clause</a> is also a valid selection query.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Because the <code>WITH</code>, <code>ORDER BY</code>, <code>LIMIT</code>, and <code>OFFSET</code> sub-clauses are all optional, any simple <a href="#selection-clauses">selection clause</a> is also a valid selection query.{{site.data.alerts.end}}
 
 ## Selection clauses
 
-Selection clauses are the main component of a selection query. They
-define tabular data. There are four specific syntax forms collectively named selection clauses:
+A _selection clause_ is the main component of a selection query. A selection clause
+defines tabular data. There are four specific syntax forms:
 
 Form | Usage
 -----|--------
 [`SELECT`](#select-clause) | Load or compute tabular data from various sources. This is the most common selection clause.
 [`VALUES`](#values-clause) | List tabular data by the client.
 [`TABLE`](#table-clause) | Load tabular data from the database.
-[Set Operations](#set-operations) | Combine tabular data from two or more selection clauses.
+[Set operations](#set-operations) | Combine tabular data from two or more selection clauses.
 
 {{site.data.alerts.callout_info}}To perform joins or other relational operations over selection clauses, use a <a href="table-expressions.html">table expression</a> and <a href="#composability">convert it back</a> into a selection clause with <a href="#table-clause"><code>TABLE</code></a> or <a href="#select-clause"><code>SELECT</code></a>.{{site.data.alerts.end}}
 
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/select_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/select_clause.html %}
 </div>
 
 ### `VALUES` clause
@@ -65,21 +65,19 @@ Form | Usage
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/values_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/values_clause.html %}
 </div>
 
 A `VALUES` clause defines tabular data defined by the expressions
 listed within parentheses. Each parenthesis group defines a single row
 in the resulting table.
 
-The columns of the resulting table data have automatically generated
-names. [These names can be modified with
-`AS`](table-expressions.html#aliased-table-expressions) when the
-`VALUES` clause is used as a sub-query.
+The columns of the resulting table data have automatically generated names. When the `VALUES` clause is used as a [subquery](subqueries.html),
+you can modify these names with [`AS`](table-expressions.html#aliased-table-expressions).
 
 #### Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > VALUES (1, 2, 3), (4, 5, 6);
 ~~~
@@ -98,39 +96,38 @@ names. [These names can be modified with
 #### Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/table_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/table_clause.html %}
 </div>
 
 A `TABLE` clause reads tabular data from a specified table. The
 columns of the resulting table data are named after the schema of the
 table.
 
-In general, `TABLE x` is equivalent to `SELECT * FROM x`, but it is
-shorter to type.
+`TABLE x` is equivalent to `SELECT * FROM x`.
 
-{{site.data.alerts.callout_info}}Any <a href="table-expressions.html">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just <a href="table-expressions.html#table-or-view-names">simple table or view names</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}Any <a href="table-expressions.html">table expression</a> between parentheses is a valid operand for <code>TABLE</code>, not just <a href="table-expressions.html#table-and-view-names">simple table or view names</a>.{{site.data.alerts.end}}
 
 #### Example
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE employee_copy AS TABLE employee;
 ~~~
 
 This statement copies the content from table `employee` into a new
-table. However, note that the `TABLE` clause does not preserve the indexing,
+table. However, the `TABLE` clause does not preserve the indexing,
 foreign key, or constraint and default information from the schema of the
 table it reads from, so in this example, the new table `employee_copy`
 will likely have a simpler schema than `employee`.
 
 Other examples:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TABLE employee;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO employee_copy TABLE employee;
 ~~~
@@ -149,24 +146,24 @@ set operations or as main component in a selection query.
 ### Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/set_operation.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/set_operation.html %}
 </div>
 
 ### Set operators
 
 SQL lets you compare the results of multiple [selection clauses](#selection-clauses). You can think of each of the set operators as representing a Boolean operator:
 
-- `UNION` = OR
-- `INTERSECT` = AND
-- `EXCEPT` = NOT
+- `UNION` = `OR`
+- `INTERSECT` = `AND`
+- `EXCEPT` = `NOT`
 
-By default, each of these comparisons displays only one copy of each value (similar to `SELECT DISTINCT`). However, each function also lets you add an `ALL` to the clause to display duplicate values.
+By default, each of these comparisons displays only one copy of each value (similar to `SELECT DISTINCT`). However, to display duplicate values, you can add an `ALL` to the clause.
 
-### Union: Combine two queries
+### `UNION`: Combine two queries
 
 `UNION` combines the results of two queries into one result.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -189,7 +186,7 @@ WHERE state_opened IN ('AZ', 'NY');
 
 To show duplicate rows, you can use `ALL`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -212,11 +209,11 @@ WHERE state_opened IN ('AZ', 'NY');
 +-----------------+
 ~~~
 
-### Intersect: Retrieve intersection of two queries
+### `INTERSECT`: Retrieve intersection of two queries
 
-`INTERSECT` finds only values that are present in both query operands.
+`INTERSECT` selects only values that are present in both query operands.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM accounts
@@ -234,11 +231,11 @@ FROM mortgages;
 +-----------------+
 ~~~
 
-### Except: Exclude one query's results from another
+### `EXCEPT`: Exclude one query's results from another
 
-`EXCEPT` finds values that are present in the first query operand but not the second.
+`EXCEPT` selects values that are present in the first query operand but not the second.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT name
 FROM mortgages
@@ -256,13 +253,13 @@ FROM accounts;
 +------------------+
 ~~~
 
-## Ordering results
+## Order results
 
-The following sections provide examples. For more details, see [Ordering Query Results](order-by.html).
+The following sections provide examples. For more details, see [`ORDER BY`](order-by.html).
 
 ### Order retrieved rows by one column
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -288,7 +285,7 @@ ORDER BY balance DESC;
 
 Columns are sorted in the order you list them in `sortby_list`. For example, `ORDER BY a, b` sorts the rows by column `a` and then sorts rows with the same `a` value by their column `b` values.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT *
 FROM accounts
@@ -310,11 +307,11 @@ ORDER BY balance DESC, name ASC;
 +----+--------------------+---------+----------+--------------+
 ~~~
 
-## Limiting row count
+## Limit row count
 
 You can reduce the number of results with `LIMIT`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, name
 FROM accounts
@@ -340,16 +337,16 @@ For an example showing how to use it, see  [`SELECT FOR UPDATE`](select-for-upda
 
 ## Composability
 
-[Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions](table-expressions.html) are defined in the context of the `FROM` sub-clause of [`SELECT`](select-clause.html). Nevertheless, they can be integrated with one another to form more complex queries or statements.
+[Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions](table-expressions.html) are defined in the context of the `FROM` sub-clause of [`SELECT`](select-clause.html). Nevertheless, you can integrate them with one another to form more complex queries or statements.
 
-### Using any selection clause as a selection query
+### Use a selection clause as a selection query
 
-Any [selection clause](#selection-clauses) can be used as a
+You can use a [selection clause](#selection-clauses) as a
 selection query with no change.
 
 For example, the construct [`SELECT * FROM accounts`](select-clause.html) is a selection clause. It is also a valid selection query, and thus can be used as a stand-alone statement by appending a semicolon:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM accounts;
 ~~~
@@ -367,7 +364,7 @@ For example, the construct [`SELECT * FROM accounts`](select-clause.html) is a s
 Likewise, the construct [`VALUES (1), (2), (3)`](#values-clause) is also a selection
 clause and thus can also be used as a selection query on its own:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > VALUES (1), (2), (3);
 ~~~
@@ -382,45 +379,45 @@ clause and thus can also be used as a selection query on its own:
 (3 rows)
 ~~~
 
-### Using any table expression as selection clause
+### Use a table expression as selection clause
 
-Any [table expression](table-expressions.html) can be used as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
+You can use a [table expression](table-expressions.html) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
 
-For example, the [simple table name](table-expressions.html#table-or-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](selection-queries.html#table-clause) and [`SELECT * FROM accounts`](select-clause.html) are valid selection clauses.
+For example, the [simple table name](table-expressions.html#table-and-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](selection-queries.html#table-clause) and [`SELECT * FROM accounts`](select-clause.html) are valid selection clauses.
 
 Likewise, the [SQL join expression](joins.html) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > TABLE (customers c JOIN orders o ON c.id = o.customer_id);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
 ~~~
 
-### Using any selection query as table expression
+### Use a selection query as table expression
 
-Any selection query (or [selection clause](#selection-clauses)) can be used as a [table
+You can use a selection query (or [selection clause](#selection-clauses)) as a [table
 expression](table-expressions.html) by enclosing it between parentheses, which forms a
-[subquery](table-expressions.html#subqueries-as-table-expressions).
+[subquery](table-expressions.html#use-a-subquery).
 
 For example, the following construct is a selection query, but is not a valid table expression:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM customers ORDER BY name LIMIT 5
 ~~~
 
 To make it valid as operand to `FROM` or another table expression, you can enclose it between parentheses as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id FROM (SELECT * FROM customers ORDER BY name LIMIT 5);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT o.id
     FROM orders o
@@ -428,7 +425,7 @@ To make it valid as operand to `FROM` or another table expression, you can enclo
 	  ON o.customer_id = c.id;
 ~~~
 
-### Using selection queries with other statements
+### Use selection queries with other statements
 
 Selection queries are also valid as operand in contexts that require tabular data.
 
@@ -449,4 +446,4 @@ For example:
 - [`SELECT FOR UPDATE`](select-for-update.html)
 - [Table Expressions](table-expressions.html)
 - [Ordering Query Results](order-by.html)
-- [Limiting Query Results](limit-offset.html)
+- [Limit Query Results](limit-offset.html)

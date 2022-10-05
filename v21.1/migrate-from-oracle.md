@@ -18,7 +18,7 @@ To illustrate this process, we use the following sample data and tools:
 
 Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility.html), export the schema:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ expdp user/password directory=datapump dumpfile=oracle_example.dmp content=metadata_only logfile=example.log
 ~~~
@@ -29,7 +29,7 @@ The schema is stored in an Oracle-specific format (e.g., `oracle_example.dmp`).
 
 Using [Oracle's Data Pump Import utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility.html), load the exported DMP file to convert it to a SQL file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ impdp user/password directory=datapump dumpfile=oracle_example.dmp sqlfile=example_sql.sql TRANSFORM=SEGMENT_ATTRIBUTES:N:table PARTITION_OPTIONS=MERGE
 ~~~
@@ -75,12 +75,12 @@ In the example SQL script, `|` is used as a delimiter. Choose a delimiter that w
 
 To extract the data, we ran the script for each table in SQL*Plus:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 $ sqlplus user/password
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > @spool CUSTOMERS
   @spool ADDRESSES
@@ -99,7 +99,7 @@ A data list file (`.lst`) with leading and trailing spaces is created for each t
 
 Exit SQL*Plus:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXIT
 ~~~
@@ -126,7 +126,7 @@ for lstfile in sys.argv[1:]:
         writer.writerow(map(string.strip, rec))
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 fix-example.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
 ~~~
@@ -154,7 +154,7 @@ The following options are available to [`IMPORT ... CSV`](import.html):
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
 - [Comment syntax](migrate-from-csv.html#comment-syntax)
 - [Skip header rows](migrate-from-csv.html#skip-header-rows)
-- <span class="version-tag">New in v21.1:</span> [Row limit](migrate-from-csv.html#row-limit)
+- {% include_cached new-in.html version="v21.1" %} [Row limit](migrate-from-csv.html#row-limit)
 - [Null strings](migrate-from-csv.html#null-strings)
 - [File compression](migrate-from-csv.html#file-compression)
 
@@ -164,7 +164,7 @@ For usage examples, see [Migrate from CSV - Configuration Options](migrate-from-
 
 Compress the CSV files for a faster import:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ gzip CUSTOMERS.csv ADDRESSES.csv CARD_DETAILS.csv WAREHOUSES.csv ORDER_ITEMS.csv ORDERS.csv INVENTORIES.csv PRODUCT_INFORMATION.csv LOGON.csv PRODUCT_DESCRIPTIONS.csv ORDERENTRY_METADATA.csv
 ~~~
@@ -258,7 +258,7 @@ The Oracle privileges for [users](create-user.html) and [roles](create-role.html
 
 For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
         customer_id       DECIMAL
@@ -304,7 +304,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 
 Then add the [computed columns](computed-columns.html), [constraints](add-constraint.html), and [function-based indexes](create-index.html). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > UPDATE CUSTOMERS SET credit_limit = 50000 WHERE credit_limit > 50000;
   ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_CREDIT_LIMIT_MAX CHECK (credit_limit <= 50000);

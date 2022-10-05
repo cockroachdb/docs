@@ -102,6 +102,16 @@ SET CLUSTER SETTING sql.stats.histogram_collection.enabled = false;
 
 When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are never collected, either as part of automatic statistics collection or by manually invoking [`CREATE STATISTICS`](create-statistics.html).
 
+## Control whether the optimizer creates a plan with a full scan
+
+Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may determine that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and find that a statement plan is not using the secondary index, then it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
+
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+
+If you disable full scans, you can set the `large_full_scan_rows` session variable to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
+
+If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+
 ## Locality optimized search in multi-region clusters
 
 In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
@@ -139,6 +149,11 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
+The optimizer can use cached plans if they are: 
+
+- Prepared statements.
+- Non-prepared statements using identical constant values.
+
 ## Join reordering
 
 For a query involving multiple joins, the cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan, which can lead to significantly better performance in some cases.
@@ -151,6 +166,8 @@ To change this setting, which is controlled by the `reorder_joins_limit` [sessio
 ~~~ sql
 > SET reorder_joins_limit = 0;
 ~~~
+
+To disable this feature, set the variable to `0`. You can configure the default `reorder_joins_limit` session setting with the [cluster setting](cluster-settings.html) `sql.defaults.reorder_joins_limit`, which has a default value of `8`.
 
 {{site.data.alerts.callout_danger}}
 We strongly recommend not setting this value higher than 8 to avoid performance degradation. If set too high, the cost of generating and costing execution plans can end up dominating the total execution time of the query.
@@ -244,7 +261,7 @@ EXPLAIN SELECT * FROM abc WHERE a = 10 AND b = 20;
 
 ### Prevent zigzag joins
 
-<span class="version-tag">New in v21.2</span>
+{% include_cached new-in.html version="v21.2" %}
 
 The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag join for the specified table. Apply the hint in the same way as other existing [index hints](table-expressions.html#force-index-selection). For example:
 
@@ -265,10 +282,10 @@ SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 ## See also
 
 - [`JOIN` expressions](joins.html)
-- [`SET (session variable)`](set-vars.html)
+- [`SET {session variable}`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)
-- [`SHOW (session variable)`](show-vars.html)
+- [`SHOW {session variable}`](show-vars.html)
 - [`CREATE STATISTICS`](create-statistics.html)
 - [`SHOW STATISTICS`](show-statistics.html)
 - [`EXPLAIN`](explain.html)

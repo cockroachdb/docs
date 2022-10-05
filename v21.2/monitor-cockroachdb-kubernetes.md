@@ -39,6 +39,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
     <section class="filter-content" markdown="1" data-scope="operator">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -49,9 +50,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
@@ -62,9 +65,11 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc my-release-cockroachdb prometheus=cockroachdb
@@ -75,33 +80,35 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     ~~~
 
     This ensures that there is a Prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
+
     </section>
 
-1. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml):
+1. Determine the latest version of [CoreOS's Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) and run the following to download and apply the latest `bundle.yaml` definition file:
 
     {{site.data.alerts.callout_info}}
-    We recommend checking for the latest Prometheus Operator [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) and specifying this version in the following command.
+    Be sure to specify the latest [CoreOS Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/releases/) version in the following command, in place of this example's use of version `v0.58.0`.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.47.1/bundle.yaml
+    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.58.0/bundle.yaml \
+    --server-side
     ~~~
 
     ~~~
-    customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created
-    customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created
-    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator configured
-    clusterrole.rbac.authorization.k8s.io/prometheus-operator configured
-    deployment.apps/prometheus-operator created
-    serviceaccount/prometheus-operator configured
-    service/prometheus-operator created
+    customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com serverside-applied
+    customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com serverside-applied
+    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator serverside-applied
+    clusterrole.rbac.authorization.k8s.io/prometheus-operator serverside-applied
+    deployment.apps/prometheus-operator serverside-applied
+    serviceaccount/prometheus-operator serverside-applied
+    service/prometheus-operator serverside-applied
     ~~~
 
 1. Confirm that the `prometheus-operator` has started:
@@ -274,3 +281,149 @@ Active monitoring helps you spot problems early, but it is also essential to sen
           - alert: TestAlertManager
             expr: vector(1)
         ~~~
+
+<section class="filter-content" markdown="1" data-scope="operator">
+
+## Configure logging
+
+When running CockroachDB v21.1 and later, you can use the Operator to configure the CockroachDB logging system. This allows you to output logs to specified [file or network log sinks](configure-logs.html#configure-log-sinks). For more information about the logging system, see [Configure log sinks](configure-logs.html#configure-log-sinks).
+
+{{site.data.alerts.callout_info}}
+By default, Kubernetes deployments running CockroachDB v20.2 or earlier output all logs to `stderr`.
+{{site.data.alerts.end}}
+
+The logging configuration is defined in a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) object, using the key `logging.yaml`. For example:
+
+~~~ yaml
+apiVersion: v1
+data:
+  logging.yaml: |
+    sinks:
+      file-groups:
+        dev:
+          channels: DEV
+          filter: WARNING
+      fluent-servers:
+        ops:
+          channels: [OPS, HEALTH, SQL_SCHEMA]
+          address: 127.0.0.1:5170
+          net: tcp
+          redact: true
+        security:
+          channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
+          address: 127.0.0.1:5170
+          net: tcp
+          auditable: true
+kind: ConfigMap
+metadata:
+  name: logconfig
+  namespace: cockroach-operator-system
+~~~
+
+The above configuration overrides the [default logging configuration](configure-logs.html#default-logging-configuration) and reflects our recommended Kubernetes logging configuration:
+
+- Save [`DEV`](logging.html#dev) channel logs to disk for troubleshooting.
+- Send operational- and security-related logs to a [network collector](logging-use-cases.html#network-logging).
+
+The ConfigMap `name` is specified in the `logConfigMap` object of the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+
+~~~ yaml
+spec:
+  logConfigMap: logconfig
+~~~
+
+By default, the Operator also modifies the [default logging configuration](configure-logs.html#default-logging-configuration) with the following:
+
+~~~ yaml
+sinks:
+  stderr:
+    channels: OPS
+      redact: true
+~~~
+
+This outputs logging events in the [`OPS`](logging.html#ops) channel to a `cockroach-stderr.log` file.
+
+### Example: Creating a troubleshooting log file on pods
+
+In this example, CockroachDB has already been deployed on a Kubernetes cluster. We override the [default logging configuration](configure-logs.html#default-logging-configuration) to output [`DEV`](logging.html#dev) logs to a `cockroach-dev.log` file.
+
+1. Create a ConfigMap named `logconfig`. Note that `namespace` is set to the Operator's default namespace (`cockroach-operator-system`):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ yaml
+    apiVersion: v1
+    data:
+      logging.yaml: |
+        sinks:
+          file-groups:
+            dev:
+              channels: DEV
+              filter: WARNING
+    kind: ConfigMap
+    metadata:
+      name: logconfig
+      namespace: cockroach-operator-system
+    ~~~
+
+    For simplicity, also name the YAML file `logconfig.yaml`.
+
+    This configuration outputs `DEV` logs with severity [`WARNING`](logging.html#logging-levels-severities) to a `cockroach-dev.log` file on each pod.
+
+1. Apply the ConfigMap to the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    kubectl apply -f log.yaml
+    ~~~
+
+    ~~~
+    configmap/logconfig created
+    ~~~
+
+1. Add the `name` of the ConfigMap in `logConfigMap` to the [Operator's custom resource](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ yaml
+    spec:
+      logConfigMap: logconfig
+    ~~~
+
+1. Apply the new settings to the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl apply -f example.yaml
+    ~~~
+
+    The changes will be rolled out to each pod.
+
+1. See the log files on a pod:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec cockroachdb-2 -- ls cockroach-data/logs
+    ~~~
+
+    ~~~
+    cockroach-dev.cockroachdb-2.unknownuser.2022-05-02T19_03_03Z.000001.log
+    cockroach-dev.log
+    cockroach-health.cockroachdb-2.unknownuser.2022-05-02T18_53_01Z.000001.log
+    cockroach-health.log
+    cockroach-pebble.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
+    cockroach-pebble.log
+    cockroach-stderr.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
+    cockroach-stderr.cockroachdb-2.unknownuser.2022-05-02T19_03_03Z.000001.log
+    cockroach-stderr.cockroachdb-2.unknownuser.2022-05-02T20_04_03Z.000001.log
+    cockroach-stderr.log
+    cockroach.cockroachdb-2.unknownuser.2022-05-02T18_52_48Z.000001.log
+    cockroach.log
+    ...
+    ~~~
+
+1. View a log file:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec cockroachdb-2 -- cat cockroach-data/logs/cockroach-dev.log
+    ~~~  
+</section>

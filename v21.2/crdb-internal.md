@@ -362,7 +362,7 @@ FROM  crdb_internal.index_usage_statistics AS us
 JOIN crdb_internal.table_indexes ti
 ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
 WHERE last_read < NOW() - INTERVAL '1 WEEK'
-ORDER BY total_access desc;
+ORDER BY total_reads desc;
 ~~~
 
 ##### Which indexes are infrequently used? Are there any unused indexes?
@@ -381,7 +381,7 @@ WHERE total_reads = 0;
 Column | Type | Description
 ------------|-----|------------
 `aggregated_ts` | `TIMESTAMPTZ NOT NULL` | The time that statistics aggregation started.
-`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g. query type, database name, etc.)
+`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g., query type, database name, etc.)
 `transaction_fingerprint_id` | `BYTES NOT NULL` | Uniquely identifies a transaction statistics. The transaction fingerprint ID that this statement statistic belongs to.
 `plan_hash` | `BYTES NOT NULL` | Uniquely identifies a query plan that was executed by the current statement. The query plan can be retrieved from the `sampled_plan` column.
 `app_name` | `STRING NOT NULL`| The name of the application that executed the statement.
@@ -416,7 +416,7 @@ Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
-<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g. when performing a large sort where not all of the tuples fit in memory.
+<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
 <code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
@@ -438,7 +438,7 @@ Field | Type | Description
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the first 60 characters of query text, statement statistics, and sample plan for DDL and DML statements for the [`movr`](movr.html) demo database:
+the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`](movr.html) demo database:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

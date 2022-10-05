@@ -2,20 +2,20 @@
 title: Reads and Writes in CockroachDB
 summary: Learn how reads and writes are affected by the replicated and distributed nature of data in CockroachDB.
 toc: true
-docs_area: reference.architecture 
+docs_area: reference.architecture
 ---
 
-This page explains how reads and writes are affected by the replicated and distributed nature of data in CockroachDB. It starts by summarizing some important [CockroachDB architectural concepts](overview.html) and then walks you through a few simple read and write scenarios.
+This page explains how reads and writes are affected by the replicated and distributed nature of data in CockroachDB. It starts by summarizing how CockroachDB executes queries and then guides you through a few simple read and write scenarios.
 
 {{site.data.alerts.callout_info}}
 For a more detailed information about how transactions work in CockroachDB, see the [Transaction Layer](transaction-layer.html) documentation.
 {{site.data.alerts.end}}
 
-## Important concepts
-
 {% include {{ page.version.version }}/misc/basic-terms.md %}
 
-As mentioned above, when a query is executed, the cluster routes the request to the leaseholder for the range containing the relevant data. If the query touches multiple ranges, the request goes to multiple leaseholders. For a read request, only the leaseholder of the relevant range retrieves the data. For a write request, the Raft consensus protocol dictates that a majority of the replicas of the relevant range must agree before the write is committed.
+## Query execution
+
+When CockroachDB executes a query, the cluster routes the request to the leaseholder for the range containing the relevant data. If the query touches multiple ranges, the request goes to multiple leaseholders. For a read request, only the leaseholder of the relevant range retrieves the data. For a write request, the Raft consensus protocol dictates that a majority of the replicas of the relevant range must agree before the write is committed.
 
 Let's consider how these mechanics play out in some hypothetical queries.
 

@@ -11,7 +11,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_index.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_index.html %}</div>
 
 ## Required privileges
 
@@ -38,14 +38,18 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ### Remove an index with no dependencies
 
+{{site.data.alerts.callout_danger}}
+{% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+{{site.data.alerts.end}}
+
 Suppose you create an index on the `name` and `city` columns of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON users (name, city);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
@@ -66,12 +70,12 @@ Suppose you create an index on the `name` and `city` columns of the `users` tabl
 
 You can drop this index with the `DROP INDEX` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX users@users_name_city_idx;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES FROM users;
 ~~~
@@ -95,12 +99,12 @@ You can drop this index with the `DROP INDEX` statement:
 
 Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` columns of the `users` table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS from users;
 ~~~
@@ -121,7 +125,7 @@ Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` c
 
 If no index exists on `id` and `name`, CockroachDB automatically creates an index:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES from users;
 ~~~
@@ -139,7 +143,7 @@ If no index exists on `id` and `name`, CockroachDB automatically creates an inde
 
 The `UNIQUE` constraint is dependent on the `id_name_unique` index, so you cannot drop the index with a simple `DROP INDEX` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX id_name_unique;
 ~~~
@@ -152,12 +156,12 @@ HINT: use CASCADE if you really want to drop it.
 
 To drop an index and its dependent objects, you can use `CASCADE`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP INDEX id_name_unique CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEXES from users;
 ~~~
@@ -173,7 +177,7 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS from users;
 ~~~

@@ -1,0 +1,18 @@
+name: Vale Linting
+on: [pull_request]
+
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Vale
+      uses: errata-ai/vale-action@v2.0.1
+      with:
+        config: https://raw.githubusercontent.com/cockroachdb/docs/${{github.sha}}/.vale.ini
+        files: __onlyModified
+        onlyAnnotateModifiedLines: true
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

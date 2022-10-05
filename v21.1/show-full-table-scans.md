@@ -4,7 +4,7 @@ summary: The SHOW FULL TABLE SCANS statement lists recent queries that used a fu
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `SHOW FULL TABLE SCANS` [statement](sql-statements.html) lists recent queries for which CockroachDB performed a full table scan during query execution.
+{% include_cached new-in.html version="v21.1" %} The `SHOW FULL TABLE SCANS` [statement](sql-statements.html) lists recent queries for which CockroachDB performed a full table scan during query execution.
 
 Limiting the number of queries that require full table scans can help you optimize query execution performance. For more information on query performance optimization, see [Optimize Statement Performance](make-queries-fast.html) and [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html).
 
@@ -22,14 +22,14 @@ The [`admin` role](authorization.html#admin-role) is required to run `SHOW FULL 
 
 To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the sample [`movr` dataset](movr.html) preloaded:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo
 ~~~
 
 Now, suppose that you want to query the `rides` table for all rides that cost above 90 (i.e., `WHERE revenue > 90`):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE revenue > 90;
 ~~~
@@ -48,7 +48,7 @@ Now, suppose that you want to query the `rides` table for all rides that cost ab
 
 This `SELECT` statement requires a full table scan at execution. As a result, the query will show up in the `SHOW FULL TABLE SCANS` output, with all of the other queries that performed full table scans:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW FULL TABLE SCANS] WHERE query LIKE 'SELECT * FROM rides WHERE revenue > %';
 ~~~
@@ -62,14 +62,14 @@ This `SELECT` statement requires a full table scan at execution. As a result, th
 
 To limit the number of rows scanned by `SELECT` queries that filter on the `revenue` column, you can add a secondary index to the `rides` table, on the `revenue` column:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX ON rides (revenue);
 ~~~
 
 Now, if you execute a similar query, the query will not perform a full table scan.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM rides WHERE revenue < 10;
 ~~~
@@ -83,7 +83,7 @@ Now, if you execute a similar query, the query will not perform a full table sca
 (32 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW FULL TABLE SCANS] WHERE query LIKE 'SELECT * FROM rides WHERE revenue < %';
 ~~~

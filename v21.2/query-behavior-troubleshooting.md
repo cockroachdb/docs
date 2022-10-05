@@ -31,7 +31,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 1. Start Jaeger:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   docker run -d --name jaeger -p 16686:16686 jaegertracing/all-in-one:1.17
   ~~~
@@ -98,29 +98,29 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 ## Single hot node
 
-A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+A *hot node* is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access) and check the following:
 
--   Replication dashboard > Average queries per store graph.
-
--   Overview Dashboard > Service Latency graph
-
--   Hardware Dashboard > CPU percent graph
-
--   SQL Dashboard > SQL Connections graph
-
--   Hardware Dashboard > Disk IOPS in Progress graph
+- Click **Metrics** and navigate to the following graphs. Hover over each graph to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+  - [**Replication** dashboard](ui-replication-dashboard.html) > **Average Queries per Store** graph
+  - [**Overview** dashboard](ui-overview-dashboard.html) > **Service Latency** graph
+  - [**Hardware** dashboard](ui-hardware-dashboard.html) > **CPU Percent** graph
+  - [**SQL** dashboard](ui-sql-dashboard.html) > **SQL Connections** graph
+  - [**Hardware** dashboard](ui-hardware-dashboard.html) > **Disk IOPS in Progress** graph
+- Open the [**Hot Ranges** page](ui-hot-ranges-page.html) and check for ranges with significantly higher QPS on any nodes.
 
 **Solution:**
 
--   If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to distribute the table across multiple nodes.
+- If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to distribute the table across multiple nodes.
 
--   If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
+- If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 
--   Check load balancer settings.
+- Check load balancer settings.
 
--   Check for [transaction contention](performance-best-practices-overview.html#transaction-contention).
+- Check for [transaction contention](performance-best-practices-overview.html#transaction-contention).
 
--   If you have a monotonically increasing index column or Primary Key, then your index or Primary Key should be redesigned. See [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
+- If you have a monotonically increasing index column or Primary Key, then your index or Primary Key should be redesigned. For more information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices).
+
+- If a range has significantly higher QPS on a node, there may be a hot spot on the range that needs to be reduced. For more information, see [Hot spots](performance-best-practices-overview.html#hot-spots).
 
 ## INSERT/UPDATE statements are slow
 
@@ -164,7 +164,7 @@ To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
 
 From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT crdb_internal.set_vmodule('exec_log=2');
 ~~~

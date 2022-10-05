@@ -143,7 +143,7 @@ After completing these steps, nodes will not yet be live. They will complete the
     $ useradd cockroach
     ~~~
 
-7. Change the ownership of `Cockroach` directory to the user `cockroach`:
+7. Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell

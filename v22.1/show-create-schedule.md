@@ -39,7 +39,7 @@ Field | Description
 
 Use the schedule `id` for a particular schedule to view its `CREATE` statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE SCHEDULE 702856921622544385;
 ~~~
@@ -55,7 +55,7 @@ To list all the currently active schedules, use [`SHOW SCHEDULES`](show-schedule
 
 ### Show the `CREATE SCHEDULE` statement for all schedules
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CREATE ALL SCHEDULES;
 ~~~

@@ -4,7 +4,7 @@ summary: The SET LOCALITY statement changes the locality of a table.
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
+{% include_cached new-in.html version="v21.1" %} The `ALTER TABLE .. SET LOCALITY` [statement](sql-statements.html) changes the [table locality](multiregion-overview.html#table-locality) of a [table](create-table.html) in a [multi-region database](multiregion-overview.html).
 
 While CockroachDB is processing an `ALTER TABLE .. SET LOCALITY` statement that enables or disables `REGIONAL BY ROW` on a table within a database, any [`ADD REGION`](add-region.html) and [`DROP REGION`](drop-region.html) statements on that database will fail.
 
@@ -44,14 +44,14 @@ The user must be a member of the [`admin`](authorization.html#roles) or [owner](
 
 To optimize read and write access to the data in a table from the primary region, use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
 ~~~
 
 To optimize read and write access to the data in a table from the `us-east-1` region, use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN "us-east-1";
 ~~~
@@ -72,7 +72,7 @@ Before setting the locality to `REGIONAL BY ROW` on a table targeted by a change
 
 To make an existing table a _regional by row_ table, use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 ~~~
@@ -81,14 +81,14 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 
 Every row in a regional by row table has a hidden `crdb_region` column that represents the row's home region. To see a row's region, issue a statement like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT crdb_region, id FROM {table};
 ~~~
 
 <a name="update-a-rows-home-region"></a> To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
@@ -99,7 +99,7 @@ To add a new row to a regional by row table, you must choose one of the followin
 
 - Set the home region explicitly using an [`INSERT`](insert.html) statement like the following:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     INSERT INTO {table} (crdb_region, ...) VALUES ('us-east-1', ...);
     ~~~
@@ -114,7 +114,7 @@ For more information about how this table locality works, see [Regional by row t
 
 Note that you can use a name other than `crdb_region` for the hidden column by using the following statements:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE foo SET LOCALITY REGIONAL BY ROW AS bar;
 SELECT bar, id FROM foo;
@@ -123,7 +123,7 @@ INSERT INTO foo (bar, ...) VALUES ('us-east-1', ...);
 
 In fact, you can specify any column definition you like for the `REGIONAL BY ROW AS` column, as long as the column is of type `crdb_internal_region` and is not nullable. For example, you could modify the [movr schema](movr.html#the-movr-database) to have a region column generated as:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
   CASE
@@ -142,7 +142,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 To optimize read access to the data in a table from any region (that is, globally), use the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY GLOBAL;
 ~~~

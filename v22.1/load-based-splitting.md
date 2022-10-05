@@ -11,7 +11,7 @@ To optimize your cluster's performance, CockroachDB can split frequently accesse
 
 Load-based splitting is enabled by default. To enable and disable load-based splitting, set the `kv.range_split.by_load_enabled` [cluster setting](cluster-settings.html). For example, to disable load-based splitting, execute:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.range_split.by_load_enabled = false;
 ~~~
@@ -28,7 +28,7 @@ You might want to disable load-based splitting when troubleshooting range-relate
 
 To control the load-based splitting threshold, set the `kv.range_split.load_qps_threshold` [cluster setting](cluster-settings.html) to the queries-per-second (QPS) at which you want to consider splitting a range (defaults to `2500`). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING kv.range_split.load_qps_threshold = 2000;
 ~~~
@@ -61,7 +61,7 @@ In both of these examples, the split would only occur if the balance factor and 
 
 ## Why load-based splitting works
 
-CockroachDB creates a relatively even distribution of leaseholders throughout your cluster. ([Leaseholders](architecture/replication-layer.html#leases) are a single replica of a range that both serve reads and coordinate writes operations.)
+CockroachDB creates a relatively even distribution of leaseholders throughout your cluster. ([Leaseholders](architecture/replication-layer.html#leases) are a single replica of a range that both serve reads and coordinate write operations.)
 
 However, without load-based splitting this distribution is created without considering the load present on any set of keys. This means that even with an equitable distribution of leases throughout the cluster, some leases will generate more traffic for the node that houses them than others. Because each node can only provide so much throughput, a single node can become a bottleneck for providing access to a subset of data in your cluster.
 

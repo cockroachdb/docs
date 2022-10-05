@@ -109,7 +109,7 @@
       	      ]
       	    },
       	    {
-      	      "title": "Migrate from Postgres",
+      	      "title": "Migrate from PostgreSQL",
       	      "urls": [
       		      "/{{site.versions["stable"]}}/migrate-from-postgres.html"
       	      ]
@@ -200,6 +200,12 @@
               "title": "Transactions Page",
               "urls": [
                 "/cockroachcloud/transactions-page.html"
+              ]
+            },
+            {
+              "title": "Databases Page",
+              "urls": [
+                "/cockroachcloud/databases-page.html"
               ]
             }
           ]

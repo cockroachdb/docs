@@ -3,15 +3,12 @@ title: Performance Benchmarking with TPC-C
 summary: Learn how to run the TPC-C benchmark against CockroachDB
 toc: true
 toc_not_nested: true
-filter_category: perf_bench_tpc-c
-filter_html: Local (Multi-Region)
-filter_sort: 2
 docs_area: reference.benchmarking
 ---
 
 This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](performance.html#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/perf-bench-tpc-c.md %}
 
 | Workload                 | Cluster size                                                | Warehouses | Data size |
 |--------------------------+-------------------------------------------------------------+------------+-----------|
@@ -33,7 +30,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
 
 In the terminal, use the [`cockroach demo`](cockroach-demo.html) command to start a simulated multi-region cluster with 9 nodes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo --global --nodes 9 --no-example-database --insecure
 ~~~
@@ -46,7 +43,7 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
 In a second terminal window (call it terminal 2), use [`cockroach workload`](cockroach-workload.html) to load the initial schema and data:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload init tpcc \
 --warehouses=10 \
@@ -162,7 +159,7 @@ You will also see some audit checks and latency statistics for each individual q
 
 When you're done with your test cluster, switch back to terminal 1 where [`cockroach demo`](cockroach-demo.html) is still running and issue `\q` at the SQL prompt to gracefully shut down the demo cluster.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 \q
 ~~~

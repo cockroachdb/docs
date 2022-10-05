@@ -37,7 +37,7 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgres-database)
+- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgresql-database)
 - [`mysqldump`](migrate-from-mysql.html#step-1-dump-the-mysql-database)
 
 ## Flags
@@ -57,7 +57,7 @@ $ cockroach import --help
 
 To import a database from a local file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
 ~~~
@@ -70,7 +70,7 @@ successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
 
 To import a table from a local file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
 ~~~
@@ -83,7 +83,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
  To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import db pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --ignore-unsupported-statements=true --log-ignored-statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log'
 ~~~
@@ -96,7 +96,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
  To limit the number of rows imported from a dump file:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --row-limit='50'
 ~~~
@@ -110,5 +110,5 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
-- [Migrate from Postgres](migrate-from-postgres.html)
+- [Migrate from PostgreSQL](migrate-from-postgres.html)
 - [Migrate from MySQL](migrate-from-mysql.html)

@@ -14,7 +14,7 @@ Replication zones give you the power to control what data goes where in your Coc
 - Indexes ([Enterprise-only](enterprise-licensing.html))
 - All data in the cluster, including internal system data ([via the default replication zone](#view-the-default-replication-zone))
 
-For each of the above objects you can control:
+For each of these objects you can control:
 
 - How many copies of each range to spread through the cluster.
 - Which constraints are applied to which data, e.g., "table X's data can only be stored in the German availability zones".
@@ -30,7 +30,7 @@ To configure replication zones, a user must be a member of the [`admin` role](se
 
 ## Overview
 
-Every [range](architecture/overview.html#glossary) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
+Every [range](architecture/overview.html#architecture-range) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
 
 When a cluster starts, there are two categories of replication zone:
 
@@ -80,7 +80,7 @@ Use the [`CONFIGURE ZONE`](configure-zone.html) statement to [add](#create-a-rep
 
 Use the [`ALTER ... CONFIGURE ZONE`](configure-zone.html) [statement](sql-statements.html) to set a replication zone:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE t CONFIGURE ZONE USING range_min_bytes = 0, range_max_bytes = 90000, gc.ttlseconds = 89999, num_replicas = 5, constraints = '[-region=west]';
 ~~~
@@ -97,9 +97,11 @@ The location of replicas, both when they are first added and when they are rebal
 
 When starting a node with the [`cockroach start`](cockroach-start.html) command, you can assign the following types of descriptive attributes:
 
+{% capture locality_case_sensitive_example %}<code>--locality datacenter=us-east-1 --locality datacenter=datacenter=US-EAST-1</code>{% endcapture %}
+
 Attribute Type | Description
 ---------------|------------
-**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](cockroach-start.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,az=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,az=us-east-1`<br>`--locality=region=east,az=us-east-2`<br>`--locality=region=west,az=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](topology-follow-the-workload.html) for more details.
+**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](cockroach-start.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,az=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,az=us-east-1`<br>`--locality=region=east,az=us-east-2`<br>`--locality=region=west,az=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](topology-follow-the-workload.html) for more details.<br /><br />**Note**: Repeating an exact locality value has no effect, but locality values are case-sensitive. For example, from the point of view of CockroachDB, the following values result in two separate localities:<br /><br />{{locality_case_sensitive_example}}<br /><br />This type of configuration error can lead to issues that are difficult to diagnose.
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
@@ -299,21 +301,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create the database for the West Coast application:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE west_app_db;
     ~~~
 
 4. Configure a replication zone for the database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE west_app_db
     CONFIGURE ZONE USING constraints = '{"+region=us-west1": 2, "+region=us-central1": 1}', num_replicas = 3;
@@ -325,7 +327,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 5. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE west_app_db;
     ~~~
@@ -390,21 +392,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create the database for application 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE app1_db;
     ~~~
 
 4. Configure a replication zone for the database used by application 1:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE app1_db CONFIGURE ZONE USING num_replicas = 5;
     ~~~
@@ -415,7 +417,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 5. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE app1_db;
     ~~~
@@ -437,21 +439,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 6. Still in the SQL client, create a database for application 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE app2_db;
     ~~~
 
 7. Configure a replication zone for the database used by application 2:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+az=us-2]';
     ~~~
 
 8. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR DATABASE app2_db;
     ~~~
@@ -515,33 +517,33 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Create a database and table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE db;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE db.important_table;
     ~~~
 
 4. Configure a replication zone for the table that must be replicated more strictly:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE db.important_table CONFIGURE ZONE USING num_replicas = 5, constraints = '[+ssd]'
     ~~~
 
 5. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR TABLE db.important_table;
     ~~~
@@ -576,7 +578,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     ~~~ shell
     $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
-    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>   
+    --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-3 \
@@ -599,21 +601,21 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 2. On any node, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure
     ~~~
 
 3. Configure the default replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
 4. View the replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE default;
     ~~~
@@ -634,12 +636,12 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 5. Configure the `meta` replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE meta;
     ~~~
@@ -660,12 +662,12 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 6. Configure the `timeseries` replication zone:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE timeseries CONFIGURE ZONE USING num_replicas = 3;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ZONE CONFIGURATION FOR RANGE timeseries;
     ~~~

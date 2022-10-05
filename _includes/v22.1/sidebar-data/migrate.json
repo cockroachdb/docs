@@ -9,75 +9,74 @@
       ]
     },
     {
+      "title": "Migrations Page",
+      "urls": [
+        "/cockroachcloud/migrations-page.html"
+      ]
+    },
+    {
+      "title": "Migrate Data to CockroachDB",
+      "items": [
+        {
+          "title": "Migrate data using AWS DMS",
+          "urls": [
+            "/${VERSION}/aws-dms.html"
+          ]
+        },
+        {
+          "title": "Migrate from CSV",
+          "urls": [
+            "/${VERSION}/migrate-from-csv.html"
+          ]
+        },
+        {
+          "title": "Migrate from Avro",
+          "urls": [
+            "/${VERSION}/migrate-from-avro.html"
+          ]
+        },
+        {
+          "title": "Migrate from Shapefiles",
+          "urls": [
+            "/${VERSION}/migrate-from-shapefiles.html"
+          ]
+        },
+        {
+          "title": "Migrate from OpenStreetMap",
+          "urls": [
+            "/${VERSION}/migrate-from-openstreetmap.html"
+          ]
+        },
+        {
+          "title": "Migrate from GeoJSON",
+          "urls": [
+            "/${VERSION}/migrate-from-geojson.html"
+          ]
+        },
+        {
+          "title": "Migrate from GeoPackage",
+          "urls": [
+            "/${VERSION}/migrate-from-geopackage.html"
+          ]
+        },
+        {
+          "title": "Import Performance Best Practices",
+          "urls": [
+            "/${VERSION}/import-performance-best-practices.html"
+          ]
+        }
+      ]
+    },
+    {
       "title": "Migrate from Serverless to Dedicated",
       "urls": [
         "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
       ]
     },
     {
-      "title": "Migrate from Oracle",
-      "urls": [
-        "/${VERSION}/migrate-from-oracle.html"
-      ]
-    },
-    {
-      "title": "Migrate from Postgres",
-      "urls": [
-        "/${VERSION}/migrate-from-postgres.html"
-      ]
-    },
-    {
-      "title": "Migrate from MySQL",
-      "urls": [
-        "/${VERSION}/migrate-from-mysql.html"
-      ]
-    },
-    {
-      "title": "Migrate from CSV",
-      "urls": [
-        "/${VERSION}/migrate-from-csv.html"
-      ]
-    },
-    {
-      "title": "Migrate from Avro",
-      "urls": [
-        "/${VERSION}/migrate-from-avro.html"
-      ]
-    },
-    {
-      "title": "Migrate from Shapefiles",
-      "urls": [
-        "/${VERSION}/migrate-from-shapefiles.html"
-      ]
-    },
-    {
-      "title": "Migrate from OpenStreetMap",
-      "urls": [
-        "/${VERSION}/migrate-from-openstreetmap.html"
-      ]
-    },
-    {
-      "title": "Migrate from GeoJSON",
-      "urls": [
-        "/${VERSION}/migrate-from-geojson.html"
-      ]
-    },
-    {
-      "title": "Migrate from GeoPackage",
-      "urls": [
-        "/${VERSION}/migrate-from-geopackage.html"
-      ]
-    },
-    {
       "title": "Export Spatial Data",
       "urls": [
         "/${VERSION}/export-spatial-data.html"
-      ]
-    },
-    {
-      "title": "Import Performance Best Practices",
-      "urls": [
-        "/${VERSION}/import-performance-best-practices.html"
       ]
     }
   ]

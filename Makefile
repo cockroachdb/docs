@@ -41,13 +41,20 @@ extra-config := $(if $(JEKYLLCONFIG),$(comma)$(JEKYLLCONFIG))
 
 jekyll-action := build
 
+GITHOOKSDIR := .git/hooks
+GITHOOKS := $(subst githooks/,$(GITHOOKSDIR)/,$(wildcard githooks/*))
+$(GITHOOKSDIR)/%: githooks/%
+	@rm -f $@
+	@mkdir -p $(dir $@)
+	@ln -s ../../$(basename $<) $(dir $@)
+
 .PHONY: cockroachdb-build
 cockroachdb-build: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: cockroachdb
 cockroachdb: jekyll-action := serve --port 4000
-cockroachdb: bootstrap
+cockroachdb: bootstrap $(GITHOOKS)
 	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
@@ -63,16 +70,21 @@ no-remote-cache: bootstrap
 profile: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
 
+
 .PHONY: test
 test:
-	go get -u github.com/cockroachdb/htmltest
 	# Docker must be running locally for this to work.
 	./netlify/local
 	htmltest
 
+.PHONY: linkcheck
+linkcheck: cockroachdb-build
+	htmltest -s
+
 vendor:
 	gem install bundler
 	bundle install
+	go install github.com/wjdp/htmltest@master
 
 bootstrap: Gemfile | vendor
 	touch $@
@@ -80,7 +92,7 @@ bootstrap: Gemfile | vendor
 clean:
 	rm -rf vendor
 	rm -rf _site
-	rm -rf .jekyll-cache/Jekyll/Cache/RemoteInclude
+	rm -rf .jekyll-cache
 
 clean-site:
 	rm -rf _site

@@ -23,7 +23,7 @@ For information about removing other constraints, see [Constraints: Remove Const
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/drop_constraint.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_constraint.html %}</div>
 
 ## Required privileges
 
@@ -46,7 +46,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ### Drop a foreign key constraint
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM vehicles;
 ~~~
@@ -55,16 +55,16 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
   table_name |  constraint_name  | constraint_type |                         details                         | validated
 -------------+-------------------+-----------------+---------------------------------------------------------+------------
   vehicles   | fk_city_ref_users | FOREIGN KEY     | FOREIGN KEY (city, owner_id) REFERENCES users(city, id) |   true
-  vehicles   | primary           | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC)                          |   true
+  vehicles   | vehicles_pkey     | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC)                          |   true
 (2 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE vehicles DROP CONSTRAINT fk_city_ref_users;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CONSTRAINTS FROM vehicles;
 ~~~
@@ -72,7 +72,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ~~~
   table_name | constraint_name | constraint_type |            details             | validated
 -------------+-----------------+-----------------+--------------------------------+------------
-  vehicles   | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+  vehicles   | vehicles_pkey   | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
 (1 row)
 ~~~
 
@@ -82,7 +82,7 @@ When you change a primary key with [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-p
 
 Suppose that you want to add `name` to the composite primary key of the `users` table.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~
@@ -104,14 +104,14 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 
 First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
 ~~~
 
 Then, in the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](add-constraint.html) the new one:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > BEGIN;
 > ALTER TABLE users DROP CONSTRAINT "primary";
@@ -123,7 +123,7 @@ Then, in the same transaction, `DROP` the old `"primary"` constraint and [`ADD`]
 NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE TABLE users;
 ~~~

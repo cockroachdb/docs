@@ -24,7 +24,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/export.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/export.html %}</div>
 
 {{site.data.alerts.callout_info}}
 The `EXPORT` statement cannot be used within a [transaction](transactions.html).
@@ -33,6 +33,8 @@ The `EXPORT` statement cannot be used within a [transaction](transactions.html).
 ## Required privileges
 
  The user must have the `SELECT` [privilege](security-reference/authorization.html#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](import.html#source-privileges).
+
+ {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
 ## Parameters
 
@@ -208,6 +210,19 @@ filename                                                   | rows | bytes
 export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 (1 row)
 ~~~
+
+### Export tabular data with an S3 storage class
+
+{% include_cached new-in.html version="v22.1" %} To associate your export objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+{% include {{ page.version.version }}/misc/storage-classes.md %}
 
 </section>
 

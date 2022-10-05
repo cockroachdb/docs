@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {% include common/experimental-warning.md %}
 
@@ -41,9 +41,9 @@ Field | Description
 `start_key` | The start key for the range.
 `end_key` | The end key for the range.
 `range_id` | The range ID.
-`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#glossary).
+`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#architecture-leaseholder).
 `lease_holder_locality` | The [locality](cockroach-start.html#locality) of the leaseholder.
-`replicas` | The nodes that contain the range [replicas](architecture/overview.html#glossary).
+`replicas` | The nodes that contain the range [replicas](architecture/overview.html#architecture-replica).
 `replica_localities` | The [locality](cockroach-start.html#locality) of the range.
 
 ## Examples
@@ -54,7 +54,7 @@ Field | Description
 
 To show information about a row in a table, you must know the values of the columns in the row's primary key:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -76,7 +76,7 @@ To show information about a row in a table, you must know the values of the colu
 (11 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, id FROM vehicles LIMIT 5;
 ~~~
@@ -92,7 +92,7 @@ To show information about a row in a table, you must know the values of the colu
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM TABLE vehicles FOR ROW (
     'boston',
@@ -111,7 +111,7 @@ To show information about a row in a table, you must know the values of the colu
 
 To show information about a row in a secondary index, you must know the values of the indexed columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW INDEX FROM vehicles;
 ~~~
@@ -133,7 +133,7 @@ To show information about a row in a secondary index, you must know the values o
 (11 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT city, owner_id, id FROM vehicles@vehicles_auto_index_fk_city_ref_users LIMIT 5;
 ~~~
@@ -149,7 +149,7 @@ To show information about a row in a secondary index, you must know the values o
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW RANGE FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users FOR ROW (
     'boston',

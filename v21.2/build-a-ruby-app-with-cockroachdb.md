@@ -4,25 +4,18 @@ summary: Learn how to use CockroachDB from a simple Ruby application with the pg
 toc: true
 twitter: false
 referral_id: docs_ruby_pg
-filter_category: crud_ruby
-filter_html: Use <strong>pg</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-ruby.md %}
 
 This tutorial shows you how build a simple Ruby application with CockroachDB and the [Ruby pg driver](https://deveiate.org/code/pg/PG/Connection.html).
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{ page.version.version }}/setup/sample-setup-certs.md %}
 
-## Step 2. Create a database
-
-{% include {{page.version.version}}/app/create-a-database.md %}
-
-## Step 3. Get the code
+## Step 2. Get the code
 
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
 
@@ -33,86 +26,82 @@ git clone https://github.com/cockroachlabs/hello-world-ruby-pg
 
 The code connects as the user you created and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+## Step 3. Configure the dependencies
 
-Check out the `cockroachcloud` branch:
+1. Install `libpq` for your platform.
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-git checkout cockroachcloud
-~~~
+    For example, to install `libpq` on macOS with Homebrew, run the following command:
 
-</section>
-
-## Step 4. Configure the dependencies
-
-1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
     {% include_cached copy-clipboard.html %}
     ~~~shell
     brew install libpq
     ~~~
-1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
+
+1. Configure `bundle` to use `libpq`.
+
+    For example, if you installed `libpq` on macOS with Homebrew, run the following command from the `hello-world-ruby-pg` directory:
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
+    bundle config --local build.pg --with-opt-dir="{libpq-path}"
     ~~~
-    Set `--with-opt-dir` to the location of `libpq` on your OS.
 
-## Step 5. Install the dependencies
+    Where `{libpq-path}` is the full path to the `libpq` installation on your machine (e.g., `/usr/local/opt/libpq`).
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-bundle install
-~~~
+1. Install the dependencies:
 
-## Step 6. Update the connection parameters
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    bundle install
+    ~~~
 
-Update the connection parameters to connect to your cluster.
+## Step 4. Run the code
 
-<section class="filter-content" markdown="1" data-scope="local">
+1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/master/main.rb|# BEGIN connect|# END connect %}
-~~~
+    <section class="filter-content" markdown="1" data-scope="local">
 
-Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
 
-</section>
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+    </section>
 
-{% include_cached copy-clipboard.html %}
-~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
-~~~
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="{connection-string}"
+    ~~~
 
-</section>
+    Where `{connection-string}` is the connection string you obtained from the {{ site.data.products.db }} Console.
 
-## Step 7. Run the Ruby code
+    </section>
 
-Run the code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-ruby main.rb
-~~~
+1. Run the code to create a table and insert some rows:
 
-The output should be:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ruby main.rb
+    ~~~
 
-~~~
-------------------------------------------------
-print_balances(): Balances as of '2021-02-23 11:56:54 -0800':
-{"id"=>"1", "balance"=>"1000"}
-{"id"=>"2", "balance"=>"250"}
-------------------------------------------------
-transfer_funds(): Trying to transfer 100 from account 1 to account 2
-------------------------------------------------
-print_balances(): Balances as of '2021-02-23 11:56:55 -0800':
-{"id"=>"1", "balance"=>"900"}
-{"id"=>"2", "balance"=>"350"}
-~~~
+    The output should look similar to the following:
+
+    ~~~
+    ------------------------------------------------
+    print_balances(): Balances as of '2021-02-23 11:56:54 -0800':
+    {"id"=>"1", "balance"=>"1000"}
+    {"id"=>"2", "balance"=>"250"}
+    ------------------------------------------------
+    transfer_funds(): Trying to transfer 100 from account 1 to account 2
+    ------------------------------------------------
+    print_balances(): Balances as of '2021-02-23 11:56:55 -0800':
+    {"id"=>"1", "balance"=>"900"}
+    {"id"=>"2", "balance"=>"350"}
+    ~~~
 
 ## What's next?
 

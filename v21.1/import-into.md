@@ -135,7 +135,7 @@ Before using `IMPORT INTO`, you should have:
 - `random()`
 - `gen_random_uuid()`
 - `unique_rowid()`
-- <span class="version-tag"> New in v21.1: </span>`nextval()`
+- {% include_cached new-in.html version="v21.1" %} `nextval()`
 
 ### Available storage
 
@@ -194,7 +194,7 @@ As of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefore, we reco
 
 First, create the new table with the necessary columns and data types:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -207,7 +207,7 @@ CREATE TABLE users (
 
 Next, use `IMPORT INTO` to import the data into the new table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO users (id, city, name, address, credit_card)
      CSV DATA (
@@ -217,7 +217,7 @@ IMPORT INTO users (id, city, name, address, credit_card)
 
 ### Import into an existing table from a CSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -231,7 +231,7 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 ### Import into an existing table from multiple CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -248,7 +248,7 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     AVRO DATA (
@@ -260,7 +260,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Import into an existing table from a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (
@@ -286,7 +286,7 @@ Note that as of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefor
 
 First, create the new table with the necessary columns and data types:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -299,7 +299,7 @@ CREATE TABLE users (
 
 Next, use `IMPORT INTO` to import the data into the new table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO users (id, city, name, address, credit_card)
      CSV DATA (
@@ -309,7 +309,7 @@ IMPORT INTO users (id, city, name, address, credit_card)
 
 ### Import into an existing table from a CSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -323,7 +323,7 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 ### Import into an existing table from multiple CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -341,7 +341,7 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     AVRO DATA (
@@ -353,7 +353,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Import into an existing table from a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (
@@ -381,7 +381,7 @@ Note that as of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefor
 
 First, create the new table with the necessary columns and data types:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE users (
         id UUID PRIMARY KEY,
@@ -394,7 +394,7 @@ CREATE TABLE users (
 
 Next, use `IMPORT INTO` to import the data into the new table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT INTO users (id, city, name, address, credit_card)
      CSV DATA (
@@ -404,7 +404,7 @@ IMPORT INTO users (id, city, name, address, credit_card)
 
 ### Import into an existing table from a CSV file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -418,7 +418,7 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 ### Import into an existing table from multiple CSV files
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
@@ -435,7 +435,7 @@ The column order in your `IMPORT` statement must match the column order in the C
 
 To specify the table schema in-line:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     AVRO DATA (
@@ -447,7 +447,7 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ### Import into an existing table from a delimited data file
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (
@@ -469,7 +469,7 @@ For more information about importing data from Avro, including examples, see [Mi
 - Imported rows must not conflict with existing rows in the table or any unique secondary indexes.
 - `IMPORT INTO` works for only a single existing table, and the table must not be [interleaved](interleave-in-parent.html).
 - `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~

@@ -5,6 +5,10 @@ toc: true
 docs_area: migrate
 ---
 
+{{site.data.alerts.callout_danger}}
+The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from MySQL to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
+{{site.data.alerts.end}}
+
 This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
 
 The examples below use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
@@ -27,7 +31,7 @@ The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT array_position(ARRAY[4,1,3,2],1);
 ~~~
@@ -41,7 +45,7 @@ Example usage:
 
 While MYSQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
 ~~~
@@ -57,7 +61,7 @@ There are several ways to dump data from MySQL to be imported into CockroachDB:
 
 Most users will want to import their entire MySQL database all at once, as shown below in [Import a full database dump](#import-a-full-database-dump).  To dump the entire database, run the [`mysqldump`][mysqldump] command shown below:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ mysqldump -uroot employees > /tmp/employees-full.sql
 ~~~
@@ -68,7 +72,7 @@ If you only want to import one table from a database dump, see [Import a table f
 
 To dump the `employees` table from a MySQL database also named `employees`, run the [`mysqldump`][mysqldump] command shown below.  You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ mysqldump -uroot employees employees > employees.sql
 ~~~
@@ -102,7 +106,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 
 The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including `CREATE TABLE` and [foreign key constraints](foreign-key.html)) from the full database dump.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
@@ -122,7 +126,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 
 [`IMPORT`][import] can import one table's data from a full database dump.  It reads the data and applies any `CREATE TABLE` statements from the dump file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
@@ -142,7 +146,7 @@ The examples below assume you [dumped one table](#dump-one-table-at-a-time).
 
 The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as shown below.  It reads the table data and any `CREATE TABLE` statements from the dump file.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
@@ -158,7 +162,7 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 
 If you need to specify the table's columns for some reason, you can use an [`IMPORT TABLE`][import] statement like the one below, which will import data but ignore any `CREATE TABLE` statements in the dump file, instead relying on the columns you specify.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
@@ -186,7 +190,7 @@ The following options are available to `IMPORT ... MYSQLDUMP`:
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
 ~~~
@@ -203,7 +207,7 @@ For example, if you get the error message `pq: there is no unique constraint mat
 
 Example usage:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT MYSQLDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
 ~~~
@@ -215,8 +219,8 @@ Example usage:
 - [`IMPORT`](import.html)
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV][csv]
-- [Migrate from Postgres][postgres]
-- [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
+- [Migrate from PostgreSQL][postgres]
+- [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [Back up Data](take-full-and-incremental-backups.html)
 - [Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)

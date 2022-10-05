@@ -55,12 +55,14 @@ If you used a {{ site.data.products.dedicated }} trial code while [creating a cl
 Your credit card will be charged after the trial ends.
 {{site.data.alerts.end}}
 
-{% comment %}
-## View credits balance
+## View Credits balance
 
-If your organization has an annual contract with {{ site.data.products.db }}, the **Overview** tab of the **Billing** page will display your contract amount and the renewal date. Under the **Spend** section, you can also see how many credits your organization has used out of your total contract amount.
+If your organization has an annual contract with {{ site.data.products.db }}, the **Overview** tab of the **Billing** page will display the amount of available {{ site.data.products.db }} Credits you have remaining and the average number of Credits your organization consumes per day. At the end of each billing period, invoice payments will be deducted from your organization's Credits.
+
+Under the **Credits** section, you can see more information about each of your organization's contracts. Contracts are listed in the order in which they will be used.
+
+Under the **Spend over time** section, you can see a table of each of your organization's clusters and the costs they have accrued.
 
 ## View invoices
 
 You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period.
-{% endcomment %}

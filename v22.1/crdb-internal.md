@@ -29,6 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
+[`cluster_locks`](#cluster_locks)  | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
@@ -49,7 +50,6 @@ Table name | Description| Use in production
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.| ✗
 `index_columns` | Contains information about [indexed](indexes.html) columns in your cluster.| ✗
 [`index_usage_statistics`](#index_usage_statistics) | Contains statistics about the primary and secondary indexes used in statements.| ✓
-`interleaved` | Contains information about [interleaved objects](interleave-in-parent.html) in your cluster.| ✗
 `invalid_objects` | Contains information about invalid objects in your cluster.| ✗
 `jobs` | Contains information about [jobs](show-jobs.html) running on your cluster.| ✗
 `kv_node_liveness` | Contains information about [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues).| ✗
@@ -58,7 +58,7 @@ Table name | Description| Use in production
 `leases` | Contains information about [leases](architecture/replication-layer.html#leases) in your cluster.| ✗
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
-`node_contention_events` | Contains information about contention on the gateway node of your cluster.| ✗
+`node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
@@ -82,9 +82,9 @@ Table name | Description| Use in production
 `table_indexes` | Contains information about table indexes in your cluster.| ✗
 `table_row_statistics` | Contains row count statistics for tables in the current database.| ✗
 `tables` | Contains information about tables in your cluster.| ✗
-[`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics](ui-transactions-page.html#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
+[`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction contention events. | ✓
+[`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics](ui-transactions-page.html#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics, call `SELECT crdb_internal.reset_sql_stats()`.| ✓
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.| ✗
-
 
 ## List `crdb_internal` tables
 
@@ -96,18 +96,18 @@ To list the `crdb_internal` tables for the [current database](sql-name-resolutio
 ~~~
 
 ~~~
-   schema_name  |         table_name          | type  | owner | estimated_row_count | locality
-----------------+-----------------------------+-------+-------+---------------------+-----------
-  crdb_internal | active_range_feeds          | table | NULL  |                NULL | NULL
-  crdb_internal | backward_dependencies       | table | NULL  |                NULL | NULL
-  crdb_internal | builtin_functions           | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_contended_indexes   | view  | NULL  |                NULL | NULL
-  crdb_internal | cluster_contended_keys      | view  | NULL  |                NULL | NULL
-  crdb_internal | cluster_contended_tables    | view  | NULL  |                NULL | NULL
-  crdb_internal | cluster_contention_events   | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_database_privileges | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_distsql_flows       | table | NULL  |                NULL | NULL
-  crdb_internal | cluster_inflight_traces     | table | NULL  |                NULL | NULL
+   schema_name  |         table_name              | type  | owner | estimated_row_count | locality
+----------------+---------------------------------+-------+-------+---------------------+-----------
+  crdb_internal | active_range_feeds              | table | NULL  |                NULL | NULL
+  crdb_internal | backward_dependencies           | table | NULL  |                NULL | NULL
+  crdb_internal | builtin_functions               | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_contended_indexes       | view  | NULL  |                NULL | NULL
+  crdb_internal | cluster_contended_keys          | view  | NULL  |                NULL | NULL
+  crdb_internal | cluster_contended_tables        | view  | NULL  |                NULL | NULL
+  crdb_internal | cluster_contention_events       | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_database_privileges     | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_distsql_flows           | table | NULL  |                NULL | NULL
+  crdb_internal | cluster_inflight_traces         | table | NULL  |                NULL | NULL
   ...
 ~~~
 
@@ -155,10 +155,9 @@ Column | Type | Description
 `index_name` | `STRING` | The name of the index experiencing contention.
 `num_contention_events` | `INT8` | The number of contention events.
 
-#### Example
+#### View all indexes that have experienced contention
 
-##### View all indexes that have experienced contention
-
+{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM movr.crdb_internal.cluster_contended_indexes;
 ~~~
@@ -180,23 +179,35 @@ Column | Type | Description
 `key` | `BYTES` | The key experiencing contention.
 `num_contention_events` | `INT8` | The number of contention events.
 
-#### Example
+#### View all keys that have experienced contention
 
-##### View all keys that have experienced contention
-
+{% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM movr.crdb_internal.cluster_contended_keys;
+SELECT table_name, index_name, key, num_contention_events FROM movr.crdb_internal.cluster_contended_keys where database_name = 'movr';
 ~~~
 
 ~~~
-  database_name | schema_name | table_name |              index_name               |                                                          key                                                           | num_contention_events
-----------------+-------------+------------+---------------------------------------+------------------------------------------------------------------------------------------------------------------------+------------------------
-  movr          | public      | vehicles   | vehicles_auto_index_fk_city_ref_users | /54/2/"amsterdam"/"\xb5~g\x0e,\x12@\x00\x80\x00\x00\x00\x00\x00\"\x9e"/"n\xe7\xc4\xc8P|J\xfc\x80\xc8\xe5\xf7X\xe2,="/0 |                     1
-  movr          | public      | vehicles   | rides_auto_index_fk_city_ref_users    | /54/2/"amsterdam"/"\xb5~g\x0e,\x12@\x00\x80\x00\x00\x00\x00\x00\"\x9e"/"n\xe7\xc4\xc8P|J\xfc\x80\xc8\xe5\xf7X\xe2,="/0 |                     1
-  movr          | public      | vehicles   | vehicles_auto_index_fk_city_ref_users | /54/2/"seattle"/"Cm\t\xec\xcf\xf0E\u008f\xab\x97\xfa+\x02\x03p"/"\xef/ӎ\xe9RGǄa\xee萖\x94\x16"/0                      |                     1
-  movr          | public      | vehicles   | rides_auto_index_fk_city_ref_users    | /54/2/"seattle"/"Cm\t\xec\xcf\xf0E\u008f\xab\x97\xfa+\x02\x03p"/"\xef/ӎ\xe9RGǄa\xee萖\x94\x16"/0                      |                     1
-  system        | public      | jobs       | primary                               | /15/1/717080975699410945/0                                                                                             |                     6
-  system        | public      | jobs       | primary                               | /15/1/717080975812100097/0                                                                                             |                     6
+  table_name |              index_name               |                                                             key                                                             | num_contention_events
+-------------+---------------------------------------+-----------------------------------------------------------------------------------------------------------------------------+------------------------
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"amsterdam"/"\xe2\xc2\xdcJ$\xf3A\xa2\x98\xad.\xe6<Y\x05\xef"/"\x98\x05\xe1B\x82sE\x13\xba\xfe+,k\xd3\xc6\xd3"/0      |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"seattle"/"v\xd4J%\x90\x1bF\v\x97\x02v\xc7\xee\xa9\xc7R"/"s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7"/0   |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"seattle"/"7\xfe\x953~\x94F\x95\xacàP\x8e_A\x18"/"\xccέ\xa0\xcaoAژ\x81\xab\xe9\xb6'ɐ"/0                              |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"rome"/"oAņ\xd8\xcdE\xfb\xb6\xb7\x8e9\xb4\xae\xc1,"/"ڲ@\x1f\x1d\x05LɌ\xba\xb9\x97\x84\x9e\x98\x1d"/0                 |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"paris"/"^\xefĦ\xed\vFI\x89\xe7\xfe\xbd\x8em\xe0\xb8"/"F%\xffZ\xe8\x93N\xfc\xa6\x17\xc0S\xb6\x86\xdd\xec"/0          |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"new york"/"\xfd\x81\xc0UK\x9cEE\xa7\x14b\xdb\x02\xad\x80\xe8"/"a\xc0q\x82\x8e)@\x89\xa2\x9c\xcc\xdb\x01\x1d\x8e_"/0 |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"new york"/"\xe9\xf9<\x99\\\x18K\xa2\x8d\xd2a\xa1d\x937\n"/"ͮ\x18\xd4\xe9\xb3A\xf3\xb5\x9c\x177\x8c\xf6\x0e\xc5"/0    |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"new york"/"\x0f\x05\x9b\x1a[\xda@\x13\x83v\xfb\x8b\xdf4\"\xbd"/"N\xe0>\x1e\xf4gLݷ95\xfc0\x95\xea["/0                |                     1
+  vehicles   | vehicles_auto_index_fk_city_ref_users | /107/2/"los angeles"/"h\xc8\xfa\xc5J\xf8A7\xbe\x98\xa3\x94\x8e\xf4\x991"/",\u007fh)\"\x92G̞\xde\xeb\x973\xdfK\xb4"/0         |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"amsterdam"/"\xe2\xc2\xdcJ$\xf3A\xa2\x98\xad.\xe6<Y\x05\xef"/"\x98\x05\xe1B\x82sE\x13\xba\xfe+,k\xd3\xc6\xd3"/0      |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"seattle"/"v\xd4J%\x90\x1bF\v\x97\x02v\xc7\xee\xa9\xc7R"/"s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7"/0   |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"seattle"/"7\xfe\x953~\x94F\x95\xacàP\x8e_A\x18"/"\xccέ\xa0\xcaoAژ\x81\xab\xe9\xb6'ɐ"/0                              |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"rome"/"oAņ\xd8\xcdE\xfb\xb6\xb7\x8e9\xb4\xae\xc1,"/"ڲ@\x1f\x1d\x05LɌ\xba\xb9\x97\x84\x9e\x98\x1d"/0                 |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"paris"/"^\xefĦ\xed\vFI\x89\xe7\xfe\xbd\x8em\xe0\xb8"/"F%\xffZ\xe8\x93N\xfc\xa6\x17\xc0S\xb6\x86\xdd\xec"/0          |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"new york"/"\xfd\x81\xc0UK\x9cEE\xa7\x14b\xdb\x02\xad\x80\xe8"/"a\xc0q\x82\x8e)@\x89\xa2\x9c\xcc\xdb\x01\x1d\x8e_"/0 |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"new york"/"\xe9\xf9<\x99\\\x18K\xa2\x8d\xd2a\xa1d\x937\n"/"ͮ\x18\xd4\xe9\xb3A\xf3\xb5\x9c\x177\x8c\xf6\x0e\xc5"/0    |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"new york"/"\x0f\x05\x9b\x1a[\xda@\x13\x83v\xfb\x8b\xdf4\"\xbd"/"N\xe0>\x1e\xf4gLݷ95\xfc0\x95\xea["/0                |                     1
+  vehicles   | rides_auto_index_fk_city_ref_users    | /107/2/"los angeles"/"h\xc8\xfa\xc5J\xf8A7\xbe\x98\xa3\x94\x8e\xf4\x991"/",\u007fh)\"\x92G̞\xde\xeb\x973\xdfK\xb4"/0         |                     1
+(18 rows)             6
 ~~~
 
 ### `cluster_contended_tables`
@@ -208,9 +219,7 @@ Column | Type | Description
 `table_name` | `STRING` | The name of the table experiencing contention.
 `num_contention_events` | `INT8` | The number of contention events.
 
-#### Example
-
-##### View all tables that have experienced contention
+#### View all tables that have experienced contention
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -219,7 +228,8 @@ Column | Type | Description
 ~~~
   database_name | schema_name | table_name | num_contention_events
 ----------------+-------------+------------+------------------------
-  system        | public      | jobs       |                     4
+  movr          | public      | vehicles   |                     9
+(1 row)
 ~~~
 
 ### `cluster_contention_events`
@@ -234,20 +244,423 @@ Column | Type | Description
 `txn_id` | `UUID` | Unique transaction identifier.
 `count` | `INT8` | The number of contention events.
 
-#### Example
+#### View all contention events
 
-##### View all contention events
-
+{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.cluster_contention_events;
 ~~~
 ~~~
-  table_id | index_id | num_contention_events | cumulative_contention_time |                                                                          key                                                                           |                txn_id                | count
------------+----------+-----------------------+----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+--------
-        15 |        1 |                     3 | 00:00:00.013012            | \x97\x89\xfd\t\xf4}\xe3\xf5\xc0\x80\x01\x88                                                                                                            | 621bf72d-a5e6-439e-9eee-1646271cef1e |     1
-        15 |        1 |                     3 | 00:00:00.013012            | \x97\x89\xfd\t\xf4}\xe3\xfb\x8c\x00\x01\x88                                                                                                            | e2e5cdd7-3112-4b78-ba15-7ce856ed55b2 |     1
-        15 |        1 |                     3 | 00:00:00.013012            | \x97\x89\xfd\t\xf4\x7f`=\x80\x80\x01\x88                                                                                                               | 58a722f6-b7d8-4d1d-aefc-98394f85d283 |     1
-        15 |        4 |                     1 | 00:00:00.003049            | \x97\x8c\x12&@\xdbFF\xedE\x19\x9f\x89\xb3@JS&\xe3\x00\x01\x12running\x00\x01\x14\xf9a\xb0\xe9\xef\xf9\t\x87\xcd\xd8\xfd\t\xf4}\xe3\xf5\xc0\x80\x01\x88 | 621bf72d-a5e6-439e-9eee-1646271cef1e |     1
+  table_id | index_id | num_contention_events | cumulative_contention_time |                                                                               key                                                                               |                txn_id                | count
+-----------+----------+-----------------------+----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------+--------
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12amsterdam\x00\x01\x12\xe2\xc2\xdcJ$\xf3A\xa2\x98\xad.\xe6<Y\x05\xef\x00\x01\x12\x98\x05\xe1B\x82sE\x13\xba\xfe+,k\xd3\xc6\xd3\x00\x01\x88           | 2701fe08-44bf-44ca-a2f7-6d2c9b652f9f |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12los angeles\x00\x01\x12h\xc8\xfa\xc5J\xf8A7\xbe\x98\xa3\x94\x8e\xf4\x991\x00\x01\x12,\x7fh)"\x92G\xcc\x9e\xde\xeb\x973\xdfK\xb4\x00\x01\x88         | 2595e2d5-84b1-47a6-acc3-e6fdab47da41 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12new york\x00\x01\x12\x0f\x05\x9b\x1a[\xda@\x13\x83v\xfb\x8b\xdf4"\xbd\x00\x01\x12N\xe0>\x1e\xf4gL\xdd\xb795\xfc0\x95\xea[\x00\x01\x88               | 58b59e88-87b8-45eb-bc9b-34e6a6b53a2c |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12new york\x00\x01\x12\xe9\xf9<\x99\\\x18K\xa2\x8d\xd2a\xa1d\x937\n\x00\x01\x12\xcd\xae\x18\xd4\xe9\xb3A\xf3\xb5\x9c\x177\x8c\xf6\x0e\xc5\x00\x01\x88 | 9af8a934-7ffa-4715-b802-f532f15bea9c |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12new york\x00\x01\x12\xfd\x81\xc0UK\x9cEE\xa7\x14b\xdb\x02\xad\x80\xe8\x00\x01\x12a\xc0q\x82\x8e)@\x89\xa2\x9c\xcc\xdb\x01\x1d\x8e_\x00\x01\x88      | af7ee3f2-23b8-46ef-bef7-a11b1be73443 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12paris\x00\x01\x12^\xef\xc4\xa6\xed\x0bFI\x89\xe7\xfe\xbd\x8em\xe0\xb8\x00\x01\x12F%\xffZ\xe8\x93N\xfc\xa6\x17\xc0S\xb6\x86\xdd\xec\x00\x01\x88      | 594bec92-af85-4a8d-bb4d-cc17d5bbd905 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12rome\x00\x01\x12oA\xc5\x86\xd8\xcdE\xfb\xb6\xb7\x8e9\xb4\xae\xc1,\x00\x01\x12\xda\xb2@\x1f\x1d\x05L\xc9\x8c\xba\xb9\x97\x84\x9e\x98\x1d\x00\x01\x88 | 815dcf03-7a0a-4c3a-98df-be7d84c1fd13 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x127\xfe\x953~\x94F\x95\xac\xc3\xa0P\x8e_A\x18\x00\x01\x12\xcc\xce\xad\xa0\xcaoA\xda\x98\x81\xab\xe9\xb6\'\xc9\x90\x00\x01\x88      | 5d382859-e88d-497a-830b-613fd20ef304 |     1
+       107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x12v\xd4J%\x90\x1bF\x0b\x97\x02v\xc7\xee\xa9\xc7R\x00\x01\x12s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7\x00\x01\x88      | e83df970-a01a-470f-914d-f5615eeec620 |     1
+(9 rows)
+~~~
+
+### `cluster_locks`
+
+The `crdb_internal.cluster_locks` schema contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
+
+For more information, see the following sections.
+
+- [Cluster locks columns](#cluster-locks-columns)
+- [Cluster locks - basic example](#cluster-locks-basic-example)
+- [Cluster locks - intermediate example](#cluster-locks-intermediate-example)
+- [Blocked vs. blocking transactions](#blocked-vs-blocking-transactions)
+- [Client sessions holding locks](#client-sessions-holding-locks)
+- [Count locks held by sessions](#count-locks-held-by-sessions)
+- [Count queries waiting on locks](#count-queries-waiting-on-locks)
+
+#### Cluster locks columns
+
+The `crdb_internal.cluster_locks` table has the following columns that describe each lock:
+
+| Column            | Type                          | Description                                                                                                                                                                   |
+|-------------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `range_id`        | [`INT`](int.html)             | The ID of the [range](architecture/overview.html#architecture-range) that stores the key the lock is being acquired on.                                                       |
+| `table_id`        | [`INT`](int.html)             | The ID of the [table](create-table.html) that includes the key the lock is being acquired on.                                                                                 |
+| `database_name`   | [`STRING`](string.html)       | The name of the [database](create-database.html) that includes the key the lock is being acquired on.                                                                         |
+| `schema_name`     | [`STRING`](string.html)       | The name of the [schema](create-schema.html) that includes the key this lock is being acquired on.                                                                            |
+| `table_name`      | [`STRING`](string.html)       | The name of the [table](create-table.html) that includes the key this lock is being acquired on.                                                                              |
+| `index_name`      | [`STRING`](string.html)       | The name of the [index](indexes.html) that includes the key this lock is being acquired on.                                                                                   |
+| `lock_key`        | [`BYTES`](bytes.html)         | The actual key that this lock is being acquired on.                                                                                                                           |
+| `lock_key_pretty` | [`STRING`](string.html)       | A string representation of the key this lock is being acquired on.                                                                                                            |
+| `txn_id`          | [`UUID`](uuid.html)           | The ID of the [transaction](transactions.html) that is acquiring this lock.                                                                                                   |
+| `ts`              | [`TIMESTAMP`](timestamp.html) | The [timestamp](timestamp.html) at which this lock was acquired.                                                                                                              |
+| `lock_strength`   | [`STRING`](string.html)       | The strength of this lock. Allowed values: `"Exclusive"` or `"None"` (read-only requests don't need an exclusive lock).                                                                                                         |
+| `durability`      | [`STRING`](string.html)       | Whether the lock is one of: `Replicated` or `Unreplicated`. For more information about lock replication, see [types of locking](architecture/transaction-layer.html#writing). |
+| `granted`         | [`BOOLEAN`](bool.html)        | Whether this lock has been granted to the [transaction](transactions.html) requesting it.                                                                                     |
+| `contended`       | [`BOOLEAN`](bool.html)        | Whether multiple [transactions](transactions.html) are trying to acquire a lock on this key.                                                                                  |
+| `duration`        | [`INTERVAL`](interval.html)   | The length of time this lock has been held for.                                                                                                                               |
+
+{{site.data.alerts.callout_success}}
+You can see the types and default values of columns in this and other tables using [`SHOW COLUMNS FROM {table}`](show-columns.html).
+{{site.data.alerts.end}}
+
+#### Cluster locks - basic example
+
+In this example, we'll use the [`SELECT FOR UPDATE`](select-for-update.html) statement to order two transactions by controlling concurrent access to a table. Then, we will look at the data in `cluster_locks` to see the locks being held by these transactions on the objects they are accessing.
+
+{% include {{page.version.version}}/sql/select-for-update-example-partial.md %}
+
+Now that we have two transactions both trying to update the `kv` table, let's query the data in `crdb_internal.cluster_locks`. We should see two locks:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT database_name, table_name, txn_id, ts, lock_key_pretty, lock_strength, granted, contended FROM crdb_internal.cluster_locks WHERE table_name = 'kv';
+~~~
+
+~~~
+  database_name | table_name |                txn_id                |             ts             | lock_key_pretty  | lock_strength | granted | contended
+----------------+------------+--------------------------------------+----------------------------+------------------+---------------+---------+------------
+  defaultdb     | kv         | d11a08c4-a3a2-4bdb-bf10-8d2373426faf | 2022-07-27 18:57:06.808046 | /Table/107/1/1/0 | Exclusive     |  true   |   true
+  defaultdb     | kv         | 34ebadb6-99f1-4547-b487-4b322506b7fe | 2022-07-27 18:57:13.173556 | /Table/107/1/1/0 | Exclusive     |  false  |   true
+(2 rows)
+~~~
+
+As expected, there are two locks. This is the case because:
+
+- The transaction with the [`SELECT FOR UPDATE`](select-for-update.html) query in Terminal 1 asked for an `Exclusive` lock on a row in the `defaultdb.kv` table, as shown in the `lock_strength` column. We can see that it was able to get that lock, since the `granted` column is `true`.
+- The transaction in Terminal 2 is also trying to lock the same row in the `kv` table with a `lock_strength` of `Exclusive`. However, the value of the `granted` column is `false`, which means it could not get the exclusive lock yet, and is waiting on the lock from the query in Terminal 1 to be released before it can proceed.
+
+Further, both transactions show the `contended` column as `true`, since these transactions are both trying to update rows in the `defaultdb.kv` table at the same time.
+
+The following more complex query shows additional information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks. Note that joining with `cluster_queries` will only show queries currently in progress.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    sessions.session_id,
+    sessions.client_address,
+    sessions.application_name,
+    locks.txn_id,
+    queries.query_id AS waiting_query_id,
+    queries.query AS waiting_query,
+    locks.lock_key_pretty,
+    locks.ts,
+    locks.database_name,
+    locks.schema_name,
+    locks.table_name,
+    locks.lock_strength,
+    locks.granted,
+    locks.contended
+FROM
+    crdb_internal.cluster_locks AS locks
+    JOIN crdb_internal.cluster_sessions AS sessions ON
+            locks.txn_id::STRING = sessions.kv_txn
+    LEFT JOIN crdb_internal.cluster_queries AS queries ON
+            locks.txn_id = queries.txn_id
+~~~
+
+~~~
+              session_id            | client_address  | application_name |                txn_id                |         waiting_query_id         |              waiting_query              | lock_key_pretty  |             ts             | database_name | schema_name | table_name | lock_strength | granted | contended
+-----------------------------------+-----------------+------------------+--------------------------------------+----------------------------------+-----------------------------------------+------------------+----------------------------+---------------+-------------+------------+---------------+---------+------------
+  17056bb535ead9a00000000000000001 | 127.0.0.1:51093 | $ cockroach sql  | ca692f0a-deca-4d4a-9a15-86f25c3b837f | NULL                             | NULL                                    | /Table/107/1/1/0 | 2022-07-26 15:48:08.294631 | defaultdb     | public      | kv         | Exclusive     |  true   |   true
+  17056bb7e47a6ec00000000000000003 | 127.0.0.1:51094 | $ cockroach sql  | 771fe98f-9e39-4ce4-90da-8ecb06d2a856 | 17056bbd362852780000000000000003 | SELECT * FROM kv WHERE k = 1 FOR UPDATE | /Table/107/1/1/0 | 2022-07-26 15:48:18.145594 | defaultdb     | public      | kv         | Exclusive     |  false  |   true
+(2 rows)
+~~~
+
+The output is similar to querying `cluster_locks` alone, except you can see the text of the SQL queries whose transactions are waiting on other transactions to finish, with additional information about the clients that initiated those transactions.
+
+{{site.data.alerts.callout_info}}
+Locks are held by transactions, not queries. A lock can be acquired by a transaction as a result of a query, but CockroachDB does not track which query in a transaction caused that transaction to acquire a lock.
+{{site.data.alerts.end}}
+
+#### Cluster locks - intermediate example
+
+This example assumes you have a cluster in the state it was left in by [the previous example](#cluster-locks-basic-example).
+
+In this example you will run a workload on the cluster with multiple concurrent transactions using the [bank workload](cockroach-workload.html#run-the-bank-workload). With a sufficiently high concurrency setting, the bank workload will frequently attempt to update multiple accounts at the same time. This will create plenty of locks to view in the `crdb_internal.cluster_locks` table.
+
+First, initialize the workload:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
+~~~
+
+Next, run it at a high concurrency setting:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
+~~~
+
+While the workload is running, issue the following query to view a subset of the locks being requested.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    database_name,
+    table_name,
+    txn_id,
+    ts,
+    lock_key_pretty,
+    lock_strength,
+    granted,
+    contended
+FROM
+    crdb_internal.cluster_locks
+WHERE table_name = 'bank'
+LIMIT
+    10
+~~~
+
+~~~
+  database_name | table_name |                txn_id                |             ts             |  lock_key_pretty   | lock_strength | granted | contended
+----------------+------------+--------------------------------------+----------------------------+--------------------+---------------+---------+------------
+  bank          | bank       | 7f0e262f-78e6-4a52-ad4e-d3cd5a851c82 | 2022-07-27 18:59:09.358877 | /Table/110/1/82/0  | Exclusive     |  true   |   false
+  bank          | bank       | c5bdc305-5940-43e1-8017-95260b4a1a39 | 2022-07-27 18:59:06.071559 | /Table/110/1/110/0 | Exclusive     |  true   |   true
+  bank          | bank       | ec872809-06b6-4320-b416-88b37c656f28 | 2022-07-27 18:59:05.843786 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | 7f4cd00d-2765-4b8d-b2e3-96e1c20e515e | 2022-07-27 18:59:06.345931 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | d6683639-a529-43b1-89ce-e7f0aa268426 | 2022-07-27 18:59:06.800857 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | ffbeb239-9fba-4cd8-8f20-ccebe3a069cd | 2022-07-27 18:59:07.485126 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | 7f64b1f5-e70e-4257-9d5b-5a26e48001cf | 2022-07-27 18:59:07.77492  | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | 3e4ca7d5-77ef-474b-8ffa-4eeeffa0d190 | 2022-07-27 18:59:08.888788 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | 57d984d7-54a9-4c7f-893d-a8c67e748bbe | 2022-07-27 18:59:05.117683 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+  bank          | bank       | 3c06319f-31c3-43ba-8323-9807e2c6de04 | 2022-07-27 18:59:05.117683 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+(10 rows)
+~~~
+
+As in the [basic example](#cluster-locks-basic-example), you can see that some transactions that wanted locks on the `bank` table are having to wait (`granted` is `false`), usually because they are trying to operate on the same rows as one or more other transactions (`contended` is `true`).
+
+The following more complex query shows additional information about lockholders, sessions, and waiting queries. This may be useful on a busy cluster for figuring out which transactions from which clients are trying to grab locks. Note that joining with `cluster_queries` will only show queries currently in progress.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    sessions.session_id,
+    sessions.client_address,
+    sessions.application_name,
+    locks.txn_id,
+    queries.query_id AS waiting_query_id,
+    queries.query AS waiting_query,
+    locks.lock_key_pretty,
+    locks.ts,
+    locks.database_name,
+    locks.schema_name,
+    locks.table_name,
+    locks.lock_strength,
+    locks.granted,
+    locks.contended
+FROM
+    crdb_internal.cluster_locks AS locks
+    JOIN crdb_internal.cluster_sessions AS sessions ON
+            locks.txn_id::STRING = sessions.kv_txn
+    LEFT JOIN crdb_internal.cluster_queries AS queries ON
+            locks.txn_id = queries.txn_id
+WHERE
+    locks.table_name = 'bank'
+LIMIT
+    10
+~~~
+
+~~~
+             session_id            | client_address  | application_name |                txn_id                |         waiting_query_id         |                                                    waiting_query                                                     |  lock_key_pretty   |             ts             | database_name | schema_name | table_name | lock_strength | granted | contended
+-----------------------------------+-----------------+------------------+--------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------+---------------+-------------+------------+---------------+---------+------------
+  17056cb7396db5900000000000000001 | 127.0.0.1:51220 | bank             | 3bee08fd-636e-4d41-b28d-104bd0a4235b | 17056cded0850d800000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 725 WHEN 412 THEN balance + 725 END WHERE id IN (351, 412) | /Table/110/1/351/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb7396db5900000000000000001 | 127.0.0.1:51220 | bank             | 3bee08fd-636e-4d41-b28d-104bd0a4235b | 17056cded0850d800000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 725 WHEN 412 THEN balance + 725 END WHERE id IN (351, 412) | /Table/110/1/412/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb73972ab180000000000000001 | 127.0.0.1:51221 | bank             | 5c27678d-3acb-4d9d-8b98-774c5a10f933 | 17056ce6f3db1d080000000000000001 | UPDATE bank SET balance = CASE id WHEN 627 THEN balance - 794 WHEN 867 THEN balance + 794 END WHERE id IN (627, 867) | /Table/110/1/627/0 | 2022-07-26 16:09:36.945352 | bank          | public      | bank       | Exclusive     |  true   |   false
+  17056cb73972ab180000000000000001 | 127.0.0.1:51221 | bank             | 5c27678d-3acb-4d9d-8b98-774c5a10f933 | 17056ce6f3db1d080000000000000001 | UPDATE bank SET balance = CASE id WHEN 627 THEN balance - 794 WHEN 867 THEN balance + 794 END WHERE id IN (627, 867) | /Table/110/1/867/0 | 2022-07-26 16:09:36.945352 | bank          | public      | bank       | Exclusive     |  true   |   false
+  17056cb739738da80000000000000001 | 127.0.0.1:51222 | bank             | 1768cc1d-0929-490b-86bd-f39b9f78cc84 | 17056cdc278d47580000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 412 WHEN 412 THEN balance + 412 END WHERE id IN (351, 412) | /Table/110/1/351/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb739738da80000000000000001 | 127.0.0.1:51222 | bank             | 1768cc1d-0929-490b-86bd-f39b9f78cc84 | 17056cdc278d47580000000000000001 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 412 WHEN 412 THEN balance + 412 END WHERE id IN (351, 412) | /Table/110/1/412/0 | 2022-07-26 16:09:31.215922 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb739737e080000000000000001 | 127.0.0.1:51223 | bank             | bf6ab816-67b7-4125-bf88-3d5c36986885 | 17056ce55b0065580000000000000001 | UPDATE bank SET balance = CASE id WHEN 137 THEN balance - 500 WHEN 895 THEN balance + 500 END WHERE id IN (137, 895) | /Table/110/1/137/0 | 2022-07-26 16:09:25.957139 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb739772b700000000000000001 | 127.0.0.1:51226 | bank             | a9cff324-00bd-4e33-afc6-ff3341988c7e | 17056cd1cb394ab00000000000000001 | UPDATE bank SET balance = CASE id WHEN 498 THEN balance - 584 WHEN 690 THEN balance + 584 END WHERE id IN (498, 690) | /Table/110/1/690/0 | 2022-07-26 16:09:30.318277 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb7397b03d00000000000000001 | 127.0.0.1:51225 | bank             | 5a591e0d-ba25-424f-aa13-502a7044355b | 17056cdb5243ea200000000000000001 | UPDATE bank SET balance = CASE id WHEN 110 THEN balance - 641 WHEN 895 THEN balance + 641 END WHERE id IN (110, 895) | /Table/110/1/110/0 | 2022-07-26 16:09:02.283466 | bank          | public      | bank       | Exclusive     |  false  |   true
+  17056cb7397bdaa80000000000000001 | 127.0.0.1:51227 | bank             | 40a7f865-c6a6-40e2-8956-01f3f52b19f2 | 17056ccea1c21de00000000000000001 | UPDATE bank SET balance = CASE id WHEN 895 THEN balance - 506 WHEN 786 THEN balance + 506 END WHERE id IN (895, 786) | /Table/110/1/786/0 | 2022-07-26 16:08:19.842191 | bank          | public      | bank       | Exclusive     |  false  |   true
+(10 rows)
+~~~
+
+The output is similar to querying `cluster_locks` alone, except you can see the text of the SQL queries whose transactions are waiting on other transactions to finish, with additional information about the clients that initiated those transactions.
+
+{{site.data.alerts.callout_info}}
+Locks are held by transactions, not queries. A lock can be acquired by a transaction as a result of a query within that transaction, but CockroachDB does not track which query in a transaction caused that transaction to acquire a lock.
+{{site.data.alerts.end}}
+
+#### Blocked vs. blocking transactions
+
+Run the query below to display a list of pairs of [transactions](transactions.html) that are holding and waiting on locks for the same [keys](architecture/overview.html#architecture-range).
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    lh.database_name,
+    lh.table_name,
+    lh.range_id,
+    lh.lock_key_pretty,
+    lh.txn_id AS lock_holder,
+    lw.txn_id AS lock_waiter,
+    q.query AS waiting_query,
+    lw.duration AS wait_duration
+FROM
+    crdb_internal.cluster_locks AS lh
+    JOIN crdb_internal.cluster_locks AS lw ON
+            lh.lock_key = lw.lock_key
+    JOIN crdb_internal.cluster_queries AS q ON
+            lw.txn_id = q.txn_id
+WHERE
+    lh.granted = true
+    AND lh.txn_id IS DISTINCT FROM lw.txn_id
+    AND lh.table_name = 'bank'
+LIMIT
+    10
+~~~
+
+~~~
+  database_name | table_name | range_id |  lock_key_pretty   |             lock_holder              |             lock_waiter              |                                                    waiting_query                                                     |  wait_duration
+----------------+------------+----------+--------------------+--------------------------------------+--------------------------------------+----------------------------------------------------------------------------------------------------------------------+------------------
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | ea5a95cc-923c-4262-b0f7-81014fd19ee1 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 39 WHEN 412 THEN balance + 39 END WHERE id IN (351, 412)   | 00:00:01.236359
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | d4a80a8b-ede9-48ea-a7e1-375255f5aabe | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 551 WHEN 412 THEN balance + 551 END WHERE id IN (351, 412) | 00:00:01.268718
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 5406a762-1975-4346-ab7d-f32a4ff06469 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 395 WHEN 412 THEN balance + 395 END WHERE id IN (351, 412) | 00:00:01.265879
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | be93bcc1-921e-4b8a-9253-98f0848eef2c | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 725 WHEN 412 THEN balance + 725 END WHERE id IN (351, 412) | 00:00:01.273119
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | a513d77f-9773-48c4-b888-1abbecba12ad | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 317 WHEN 412 THEN balance + 317 END WHERE id IN (351, 412) | 00:00:01.269164
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 56d14710-d40f-4bd3-a3f6-f8cc34996bad | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 758 WHEN 412 THEN balance + 758 END WHERE id IN (351, 412) | 00:00:01.271509
+  bank          | bank       |       48 | /Table/110/1/839/0 | 1dd5d45e-98dd-4645-a1c2-9d1656a7c1e2 | 19ecea86-219d-4979-a7ed-04c6fa81e6db | UPDATE bank SET balance = CASE id WHEN 839 THEN balance - 830 WHEN 758 THEN balance + 830 END WHERE id IN (839, 758) | 00:00:00.775891
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 1a7ce7a8-6145-4d71-a05a-6a22e641a3d5 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 711 WHEN 412 THEN balance + 711 END WHERE id IN (351, 412) | 00:00:01.268693
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 9c9da2b9-a468-45b6-af7f-88f0ade5c9f9 | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 642 WHEN 412 THEN balance + 642 END WHERE id IN (351, 412) | 00:00:01.267889
+  bank          | bank       |       50 | /Table/110/1/412/0 | 89d8f3a6-463b-4119-89e9-c797680f35bb | 997183e4-f1c7-46eb-882b-5b4cf76ff1ab | UPDATE bank SET balance = CASE id WHEN 351 THEN balance - 296 WHEN 412 THEN balance + 296 END WHERE id IN (351, 412) | 00:00:01.269917
+(10 rows)
+~~~
+
+#### Client sessions holding locks
+
+Run the query below to display a list of [sessions](show-sessions.html) that are holding and waiting on locks for the same [keys](architecture/overview.html#architecture-range).
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    l.database_name,
+    l.table_name,
+    l.range_id,
+    l.lock_key_pretty,
+    l.txn_id,
+    l.granted,
+    s.node_id,
+    s.user_name,
+    s.client_address
+FROM
+    crdb_internal.cluster_locks AS l
+    JOIN crdb_internal.cluster_transactions AS t ON
+            l.txn_id = t.id
+    JOIN crdb_internal.cluster_sessions AS s ON
+            t.session_id = s.session_id
+WHERE
+    l.granted = true AND l.table_name = 'bank';
+~~~
+
+~~~
+  database_name | table_name | range_id |  lock_key_pretty   |                txn_id                | granted | node_id | user_name | client_address
+----------------+------------+----------+--------------------+--------------------------------------+---------+---------+-----------+------------------
+  bank          | bank       |       54 | /Table/110/1/140/0 | 7aa534d6-c6df-4a98-9ef5-33ddb7c20618 |  true   |       1 | root      | 127.0.0.1:51398
+  bank          | bank       |       53 | /Table/110/1/786/0 | 92490011-e63b-4157-b7e5-6bd17ac6e94c |  true   |       1 | root      | 127.0.0.1:51400
+  bank          | bank       |       50 | /Table/110/1/457/0 | 2e815ed3-4178-4eff-a5c5-b04fd6e76d50 |  true   |       1 | root      | 127.0.0.1:51412
+  bank          | bank       |       54 | /Table/110/1/137/0 | fd735721-d8a0-4157-b370-00f132bb6263 |  true   |       1 | root      | 127.0.0.1:51425
+  bank          | bank       |       54 | /Table/110/1/110/0 | e7acec14-dbf9-4cd9-9ae6-43adac826810 |  true   |       1 | root      | 127.0.0.1:51443
+  bank          | bank       |       49 | /Table/110/1/351/0 | 2ff62140-62d8-46e7-9c4a-c3f778519549 |  true   |       1 | root      | 127.0.0.1:51427
+  bank          | bank       |       50 | /Table/110/1/412/0 | 2ff62140-62d8-46e7-9c4a-c3f778519549 |  true   |       1 | root      | 127.0.0.1:51427
+  bank          | bank       |       48 | /Table/110/1/895/0 | bd676999-37f5-42b4-9278-7b3de5451abe |  true   |       1 | root      | 127.0.0.1:51439
+  bank          | bank       |       65 | /Table/110/1/60/0  | 51aacef3-370e-4760-8e8f-60e6e9db4a19 |  true   |       1 | root      | 127.0.0.1:51461
+  bank          | bank       |       54 | /Table/110/1/134/0 | 51aacef3-370e-4760-8e8f-60e6e9db4a19 |  true   |       1 | root      | 127.0.0.1:51461
+  bank          | bank       |       49 | /Table/110/1/316/0 | 5bffc2fa-43f1-4b76-acfa-2d1d4e09c793 |  true   |       1 | root      | 127.0.0.1:51472
+  bank          | bank       |       47 | /Table/110/1/504/0 | 5bffc2fa-43f1-4b76-acfa-2d1d4e09c793 |  true   |       1 | root      | 127.0.0.1:51472
+(12 rows)
+~~~
+
+#### Count locks held by sessions
+
+Run the query below to show a list of lock counts being held by different [sessions](show-sessions.html).
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    l.database_name,
+    l.table_name,
+    s.user_name,
+    s.client_address,
+    s.session_id,
+    count(lock_key_pretty) AS lock_count
+FROM
+    crdb_internal.cluster_locks AS l
+    JOIN crdb_internal.cluster_transactions AS t ON
+            l.txn_id = t.id
+    JOIN crdb_internal.cluster_sessions AS s ON
+            t.session_id = s.session_id
+WHERE
+    l.granted = true AND l.table_name = 'bank'
+GROUP BY
+    l.database_name,
+    l.table_name,
+    s.user_name,
+    s.client_address,
+    s.session_id
+~~~
+
+~~~
+  database_name | table_name | user_name | client_address  |            session_id            | lock_count
+----------------+------------+-----------+-----------------+----------------------------------+-------------
+  bank          | bank       | root      | 127.0.0.1:51403 | 17056d4b2f62aeb80000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51405 | 17056d4b2f6cc8a80000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51421 | 17056d4b2f8acc400000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51425 | 17056d4b2f96ab500000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51492 | 17056d4b3019be000000000000000001 |          1
+  bank          | bank       | root      | 127.0.0.1:51485 | 17056d4b3026f8b80000000000000001 |          2
+(6 rows)
+~~~
+
+#### Count queries waiting on locks
+
+Run the query below to show a list of [keys](architecture/overview.html#architecture-range) ordered by how many transactions are waiting on the locks on those keys.
+
+This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+    l.database_name,
+    l.table_name,
+    l.range_id,
+    l.lock_key_pretty,
+    count(*) AS waiter_count,
+    max(duration) AS longest_wait_duration
+FROM
+    crdb_internal.cluster_locks AS l
+WHERE
+    l.granted = false AND l.table_name = 'bank'
+GROUP BY
+    l.database_name,
+    l.table_name,
+    l.range_id,
+    l.lock_key_pretty
+ORDER BY
+    waiter_count DESC, longest_wait_duration DESC
+LIMIT
+    30
+~~~
+
+~~~
+  database_name | table_name | range_id |  lock_key_pretty   | waiter_count | longest_wait_duration
+----------------+------------+----------+--------------------+--------------+------------------------
+  bank          | bank       |       48 | /Table/110/1/895/0 |           81 | 00:00:02.91943
+  bank          | bank       |       54 | /Table/110/1/110/0 |           69 | 00:00:02.074832
+  bank          | bank       |       53 | /Table/110/1/786/0 |           41 | 00:01:16.871542
+  bank          | bank       |       54 | /Table/110/1/137/0 |           10 | 00:01:49.082237
+  bank          | bank       |       55 | /Table/110/1/690/0 |            2 | 00:00:44.526906
+  bank          | bank       |       50 | /Table/110/1/498/0 |            2 | 00:00:43.473285
+(6 rows)
 ~~~
 
 ### `cluster_queries`
@@ -266,19 +679,17 @@ Column | Type | Description
 `distributed` | `BOOLEAN` | Whether the query is executing in a distributed cluster.
 `phase` | `STRING` | The phase that the query is in.
 
-
-#### Example
-
-##### View all active queries
+#### View all active queries for the `movr` application
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM crdb_internal.cluster_queries;
+SELECT * FROM crdb_internal.cluster_queries where application_name = 'movr';
 ~~~
 ~~~
-              query_id             |                txn_id                | node_id |            session_id            | user_name |           start            |                    query                    | client_address  | application_name | distributed |   phase
------------------------------------+--------------------------------------+---------+----------------------------------+-----------+----------------------------+---------------------------------------------+-----------------+------------------+-------------+------------
-  16bed963d5b663a80000000000000001 | 7e36e3ed-128c-4b20-930e-695aa8266630 |       1 | 16bed77359b325f80000000000000001 | demo      | 2021-12-08 17:58:57.219848 | SELECT * FROM crdb_internal.cluster_queries | 127.0.0.1:56206 | $ cockroach demo |    false    | executing
+              query_id             |                txn_id                | node_id |            session_id            | user_name |           start            |                                                          query                                                           | client_address  | application_name | distributed |   phase
+-----------------------------------+--------------------------------------+---------+----------------------------------+-----------+----------------------------+--------------------------------------------------------------------------------------------------------------------------+-----------------+------------------+-------------+------------
+  16f762fea4cb17180000000000000001 | 7d55d442-6ae6-4062-ba3b-90656e9a6544 |       1 | 16f762c2af917e800000000000000001 | root      | 2022-06-10 22:30:33.907888 | UPSERT INTO vehicle_location_histories VALUES ('amsterdam', '69db0184-4192-4355-99b0-2e2abe7212c2', now(), 109.0, -45.0) | 127.0.0.1:49198 | movr             |    false    | executing
+(1 row)
 ~~~
 
 ### `cluster_sessions`
@@ -298,18 +709,17 @@ Column | Type | Description
 `alloc_bytes` | `INT8` | The number of bytes allocated by the session.
 `max_alloc_bytes` | `INT8` | The maximum number of bytes allocated by the session.
 
-#### Example
-
-##### View all open SQL sessions
+#### View all open SQL sessions for the `movr` application
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM crdb_internal.cluster_sessions;
+SELECT * FROM crdb_internal.cluster_sessions where application_name = 'movr';
 ~~~
 ~~~
-  node_id |            session_id            | user_name | client_address  | application_name |                active_queries                | last_active_query |       session_start        |    oldest_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
-----------+----------------------------------+-----------+-----------------+------------------+----------------------------------------------+-------------------+----------------------------+---------------------------+--------------------------------------+-------------+------------------
-        1 | 16bed77359b325f80000000000000001 | demo      | 127.0.0.1:56206 | $ cockroach demo | SELECT * FROM crdb_internal.cluster_sessions | SHOW database     | 2021-12-08 17:23:24.835429 | 2021-12-08 18:01:54.23473 | 37da8b13-c476-4014-863b-527baa3120f9 |       10240 |        11519280
+  node_id |            session_id            | user_name | client_address  | application_name |                       active_queries                       |               last_active_query               |       session_start       |     oldest_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
+----------+----------------------------------+-----------+-----------------+------------------+------------------------------------------------------------+-----------------------------------------------+---------------------------+----------------------------+--------------------------------------+-------------+------------------
+        1 | 16f762c2af917e800000000000000001 | root      | 127.0.0.1:49198 | movr             | SELECT city, id FROM vehicles WHERE city = 'washington dc' | SELECT city, id FROM vehicles WHERE city = $1 | 2022-06-10 22:26:16.39059 | 2022-06-10 22:28:00.646594 | 7883cbe3-7cf3-4155-a1a8-82d1211c9ffa |      133120 |          163840
+(1 row)
 ~~~
 
 ### `cluster_transactions`
@@ -326,18 +736,17 @@ Column | Type | Description
 `num_retries` | `INT8` | The number of times the transaction was retried.
 `num_auto_retries` | `INT8` | The number of times the transaction was automatically retried.
 
-#### Examples
-
-##### View all active transactions
+#### View all active transactions for the `movr` application
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT * FROM crdb_internal.cluster_transactions;
+SELECT * FROM crdb_internal.cluster_transactions where application_name = 'movr';
 ~~~
 ~~~
-                   id                  | node_id |            session_id            |           start            |                                                                                                  txn_string                                                                                                   | application_name | num_stmts | num_retries | num_auto_retries
----------------------------------------+---------+----------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+-----------+-------------+-------------------
-  d00d38d9-d1dd-4e15-a4d7-16d5b241d13a |       1 | 16bed77359b325f80000000000000001 | 2021-12-08 18:03:21.154766 | "sql txn" meta={id=d00d38d9 key=/Min pri=0.01545423 epo=0 ts=1638986601.154752000,0 min=1638986601.154752000,0 seq=0} lock=false stat=PENDING rts=1638986601.154752000,0 wto=false gul=1638986601.654752000,0 | $ cockroach demo |         1 |           0 |                0
+                   id                  | node_id |            session_id            |           start            |                                                                                                                                            txn_string                                                                                                                                            | application_name | num_stmts | num_retries | num_auto_retries
+---------------------------------------+---------+----------------------------------+----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------+-----------+-------------+-------------------
+  9cfb2bbe-e1d8-4650-95d5-7a3fd052c6a7 |       1 | 16f762c2af917e800000000000000001 | 2022-06-10 22:26:20.370946 | "sql txn" meta={id=9cfb2bbe key=/Table/109/1/"rome"/"\xbf\x92\xe2<̯D\v\x94M\x83b0\x1b-\x82"/2022-06-10T22:26:20.370935Z/0 pri=0.00109794 epo=0 ts=1654899980.370940000,0 min=1654899980.370940000,0 seq=1} lock=true stat=PENDING rts=1654899980.370940000,0 wto=false gul=1654899980.870940000,0 | movr             |         1 |           0 |                0
+(1 row)
 ~~~
 
 ### `index_usage_statistics`
@@ -351,9 +760,51 @@ Column | Type | Description
 `total_reads` | `INT8` | Number of times an index was selected for a read.
 `last_read` | `TIMESTAMPTZ` | Time of last read.
 
-#### Examples
+You can reset the index usages statistics by invoking the function `crdb_internal.reset_index_usage_stats()`. For example:
 
-##### Are there any indexes that have become stale and are no longer needed? Which indexes haven't been used during the past week?
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT crdb_internal.reset_index_usage_stats();
+~~~
+
+~~~
+  crdb_internal.reset_index_usage_stats
+-----------------------------------------
+                  true
+(1 row)
+~~~
+
+#### View index statistics by table and index name
+
+To view index usage statistics by table and index name, join with `table_indexes`:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SELECT  ti.descriptor_name as table_name, ti.index_name, total_reads
+FROM  crdb_internal.index_usage_statistics AS us
+JOIN crdb_internal.table_indexes ti
+ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
+ORDER BY total_reads desc;
+~~~
+
+~~~
+          table_name         |                  index_name                   | total_reads
+-----------------------------+-----------------------------------------------+--------------
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |      412266
+  rides                      | rides_pkey                                    |      216137
+  users                      | users_pkey                                    |       25709
+  vehicles                   | vehicles_pkey                                 |       17185
+  promo_codes                | promo_codes_pkey                              |        4274
+  user_promo_codes           | user_promo_codes_pkey                         |        2138
+  rides                      | rides_auto_index_fk_city_ref_users            |           1
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1
+  vehicle_location_histories | vehicle_location_histories_pkey               |           1
+(9 rows)
+~~~
+
+#### Determine which indexes haven't been used in the past week
+
+To determine if there are indexes that have become stale and are no longer needed, show which indexes haven't been used during the past week with the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -362,10 +813,12 @@ FROM  crdb_internal.index_usage_statistics AS us
 JOIN crdb_internal.table_indexes ti
 ON us.index_id = ti.index_id AND us.table_id = ti.descriptor_id
 WHERE last_read < NOW() - INTERVAL '1 WEEK'
-ORDER BY total_access desc;
+ORDER BY total_reads desc;
 ~~~
 
-##### Which indexes are infrequently used? Are there any unused indexes?
+#### Determine which indexes are no longer used
+
+View which indexes are no longer used with the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -381,7 +834,7 @@ WHERE total_reads = 0;
 Column | Type | Description
 ------------|-----|------------
 `aggregated_ts` | `TIMESTAMPTZ NOT NULL` | The time that statistics aggregation started.
-`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g. query type, database name, etc.)
+`fingerprint_id` | `BYTES NOT NULL` | Unique identifier of the statement statistics. This is constructed using the statement fingerprint text, and statement metadata (e.g., query type, database name, etc.)
 `transaction_fingerprint_id` | `BYTES NOT NULL` | Uniquely identifies a transaction statistics. The transaction fingerprint ID that this statement statistic belongs to.
 `plan_hash` | `BYTES NOT NULL` | Uniquely identifies a query plan that was executed by the current statement. The query plan can be retrieved from the `sampled_plan` column.
 `app_name` | `STRING NOT NULL`| The name of the application that executed the statement.
@@ -401,14 +854,14 @@ Field | Type | Description
 `implicitTxn` | `BOOLEAN` | Whether the statement executed in an implicit transaction.
 `query` | `STRING` | The statement string.
 `querySummary` | `STRING` | The statement string summary.
-`stmtTyp` | `SQLType` | The type of statement: `TypeDDL`, `TypeDML`, `TypeDCL`, or `TypeTCL`.
+`stmtTyp` | `STRING` | The type of SQL statement: `"TypeDDL"`, `"TypeDML"`, `"TypeDCL"`, or `"TypeTCL"`. These types map to the CockroachDB statement types [data definition language (DDL)](sql-statements.html#data-definition-statements), [data manipulation language (DML)](sql-statements.html#data-manipulation-statements), [data control language (DCL)](sql-statements.html#data-control-statements), and [transaction control language (TCL)](sql-statements.html#transaction-control-statements).
 `vec` | `BOOLEAN` | Whether the statement executed in the vectorized query engine.
 
 #### `statistics` column
 
-The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Details](ui-statements-page.html#statement-details-page) pages display information from `statistics`.
+The [DB Console](ui-overview.html) [Statements](ui-statements-page.html) and [Statement Fingerprint](ui-statements-page.html#statement-fingerprint-page) pages display information from `statistics`.
 
-The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#execution-stats) are collected using sampling. CockroachDB probablistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
+The `statistics` column contains a JSONB object with `statistics` and `execution_statistics` subobjects. [`statistics`](ui-statements-page.html#statement-statistics) are always populated and are updated each time a new statement of that statement fingerprint is executed. [`execution_statistics`](ui-statements-page.html#charts) are collected using sampling. CockroachDB probabilistically runs a query with tracing enabled to collect fine-grained statistics of the query execution.
 
 The `NumericStat` type tracks two running values: the running mean `mean` and the running sum of squared differences `sqDiff` from the mean. You can use these statistics along with the total number of values to compute the variance using Welford's method. CockroachDB computes the variance and displays it along with `mean` in the [Statements table](ui-statements-page.html#statements-table).
 
@@ -416,7 +869,7 @@ Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
-<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g. when performing a large sort where not all of the tuples fit in memory.
+<code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
 <code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.
 <code>execution_statistics -> networkMsgs -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of messages sent over the network.
@@ -429,6 +882,7 @@ Field | Type | Description
 <code>statistics -> numRows -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows returned or observed.
 <code>statistics -> ovhLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The difference between `svcLat` and the sum of `parseLat+planLat+runLat` latencies.
 <code>statistics -> parseLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the SQL string into an abstract syntax tree (AST).
+<code>statistics -> planGists | `String` | **New in v22.1:** A sequence of bytes representing the flattened tree of operators and various operator specific metadata of the statement plan.
 <code>statistics -> planLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time to transform the AST into a logical query plan.
 <code>statistics -> rowsRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows read from disk.
 <code>statistics -> rowsWritten -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of rows written to disk.
@@ -438,7 +892,7 @@ Field | Type | Description
 #### View historical statement statistics and the sampled logical plan per fingerprint
 
 This example command shows how to query the two most important JSON columns: `metadata` and `statistics`. It displays
-the first 60 characters of query text, statement statistics, and sample plan for DDL and DML statements for the [`movr`](movr.html) demo database:
+the first 60 characters of query text, statement statistics, and sampled plan for DDL and DML statements for the [`movr`](movr.html) demo database:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -577,6 +1031,203 @@ WHERE metadata @> '{"db":"movr"}' AND (metadata @> '{"stmtTyp":"TypeDDL"}' OR me
                                                                |                |            |               |          |                      |                 |                    |                        |                    |                      | }
 
 ~~~
+
+#### Detect suboptimal and regressed plans
+
+{% include_cached new-in.html version="v22.1" %} Historical plans are stored in plan gists in `statistics->'statistics'->'planGists'`. To detect suboptimal and regressed plans over time you can compare plans for the same query by extracting them from the plan gists.
+
+Suppose you wanted to compare plans of the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+  name, count(rides.id) AS sum
+FROM
+  users JOIN rides ON users.id = rides.rider_id
+WHERE
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+GROUP BY
+  name
+ORDER BY
+  sum DESC
+LIMIT
+  10;
+~~~
+
+To decode plan gists, use the `crdb_internal.decode_plan_gist` function, as shown in the following query. The example shows the performance impact of adding an [index on the `start_time` column in the `rides` table](apply-statement-performance-rules.html#rule-2-use-the-right-index). The first row of the output shows the improved performance (reduced number of rows read and latency) after the index was added. The second row shows the query, which performs a full scan on the `rides` table, before the index was added.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT
+substring(metadata ->> 'query',1,60) AS statement_text,
+  string_agg(  crdb_internal.decode_plan_gist(statistics->'statistics'->'planGists'->>0), '
+  ') AS plan,
+  max(aggregated_ts) as timestamp_interval,
+  max(statistics -> 'statistics' -> 'rowsRead' -> 'mean') AS num_rows_read_mean,
+  max(statistics -> 'statistics' -> 'runLat' -> 'mean') AS runtime_latency_mean,
+  statistics->'statistics'->'planGists'->>0 as plan_id
+FROM movr.crdb_internal.statement_statistics
+WHERE substring(metadata ->> 'query',1,35)='SELECT name, count(rides.id) AS sum'
+group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
+~~~
+
+~~~
+                         statement_text                        |                        plan                         |   timestamp_interval   | num_rows_read_mean | runtime_latency_mean |                     plan_id
+---------------------------------------------------------------+-----------------------------------------------------+------------------------+--------------------+----------------------+---------------------------------------------------
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 |              24786 |             0.028525 | AgHYAQgAiAECAAAB1AEEAAUAAAAJAAICAAAFAgsCGAYE
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • scan                                |                        |                    |                      |
+                                                               |           │     table: rides@rides_start_time_idx   |                        |                    |                      |
+                                                               |           │     spans: 1 span                       |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+  SELECT name, count(rides.id) AS sum FROM users JOIN rides ON | • top-k                                             | 2022-04-12 22:00:00+00 | 1.375E+5           |             0.279083 | AgHYAQIAiAEAAAADAdQBBAAFAAAACQACAgAABQILAhgGBA==
+                                                               |   │ order                                           |                        |                    |                      |
+                                                               |   │                                                 |                        |                    |                      |
+                                                               |   └── • group (hash)                                |                        |                    |                      |
+                                                               |       │ group by: rider_id                          |                        |                    |                      |
+                                                               |       │                                             |                        |                    |                      |
+                                                               |       └── • hash join                               |                        |                    |                      |
+                                                               |           │ equality: (rider_id) = (id)             |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           ├── • filter                              |                        |                    |                      |
+                                                               |           │   │                                     |                        |                    |                      |
+                                                               |           │   └── • scan                            |                        |                    |                      |
+                                                               |           │         table: rides@rides_pkey         |                        |                    |                      |
+                                                               |           │         spans: FULL SCAN                |                        |                    |                      |
+                                                               |           │                                         |                        |                    |                      |
+                                                               |           └── • scan                                |                        |                    |                      |
+                                                               |                 table: users@users_city_id_name_key |                        |                    |                      |
+                                                               |                 spans: FULL SCAN                    |                        |                    |                      |
+(2 rows)
+~~~
+
+### `transaction_contention_events`
+
+{% include_cached new-in.html version="v22.1" %} Contains one row for each transaction contention event.
+
+Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
+
+Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
+
+The `sql.contention.event_store.duration_threshold` [cluster setting](cluster-settings.html) specifies the minimum contention duration to cause the contention events to be collected into the `crdb_internal.transaction_contention_events` table. The default value is `0`. If contention event collection is overwhelming the CPU or memory you can raise this value to reduce the load.
+
+Column | Type | Description
+------------|-----|------------
+`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction contention event was collected.
+`blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
+`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
+`waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
+`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
+`contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
+`contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
+
+#### Example
+
+The following example shows how to join the `transaction_contention_events` table with `transaction_statistics` and `statement_statistics` tables to extract blocking and waiting transaction information.
+
+1. Display contention table removing in-progress transactions.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT
+      collection_ts,
+      blocking_txn_id,
+      encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+      waiting_txn_id,
+      encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id
+    FROM
+      crdb_internal.transaction_contention_events
+    WHERE
+      encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000';
+    ~~~
+
+    ~~~
+              collection_ts         |           blocking_txn_id            | blocking_txn_fingerprint_id |            waiting_txn_id            | waiting_txn_fingerprint_id
+    --------------------------------+--------------------------------------+-----------------------------+--------------------------------------+-----------------------------
+      2022-04-11 23:41:56.951687+00 | 921e3d5b-22ab-4a94-a7a4-407e143cfa73 | 79ac4a19cff03b60            | 74ac5efa-a1e4-4c24-a648-58b82a192f9d | b7a98a63d6932458
+      2022-04-12 22:55:55.968825+00 | 25c75267-c091-44d4-8c33-8f5247409da5 | f07b4a806f8b7a2e            | 5397acb0-69f3-4c5c-b7a3-75d51180df44 | b7a98a63d6932458
+    (2 rows)
+    ~~~
+
+1. Display counts for each blocking and waiting transaction fingerprint pair.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT
+      encode(hce.blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+      encode(hce.waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+      count(*) AS contention_count
+    FROM
+      crdb_internal.transaction_contention_events hce
+    WHERE
+      encode(blocking_txn_fingerprint_id, 'hex') != '0000000000000000' AND encode(waiting_txn_fingerprint_id, 'hex') != '0000000000000000'
+    GROUP BY
+      hce.blocking_txn_fingerprint_id, hce.waiting_txn_fingerprint_id
+    ORDER BY
+      contention_count
+    DESC;
+    ~~~
+
+    ~~~
+      blocking_txn_fingerprint_id | waiting_txn_fingerprint_id | contention_count
+    ------------------------------+----------------------------+-------------------
+      79ac4a19cff03b60            | b7a98a63d6932458           |                1
+      f07b4a806f8b7a2e            | b7a98a63d6932458           |                1
+    (3 rows)
+    ~~~
+
+1. Join to show blocking statements text.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT DISTINCT
+      hce.blocking_statement,
+      substring(ss2.metadata ->> 'query', 1, 60) AS waiting_statement,
+      hce.contention_count
+    FROM (SELECT
+            blocking_txn_fingerprint_id,
+            waiting_txn_fingerprint_id,
+            contention_count,
+            substring(ss.metadata ->> 'query', 1, 60) AS blocking_statement
+          FROM (SELECT
+                  encode(blocking_txn_fingerprint_id, 'hex') as blocking_txn_fingerprint_id,
+                  encode(waiting_txn_fingerprint_id, 'hex') as waiting_txn_fingerprint_id,
+                  count(*) AS contention_count
+                FROM
+                  crdb_internal.transaction_contention_events
+                GROUP BY
+                  blocking_txn_fingerprint_id, waiting_txn_fingerprint_id
+                ),
+              crdb_internal.statement_statistics ss
+          WHERE
+            blocking_txn_fingerprint_id = encode(ss.transaction_fingerprint_id, 'hex')) hce,
+          crdb_internal.statement_statistics ss2
+    WHERE
+      hce.blocking_txn_fingerprint_id != '0000000000000000' AND
+      hce.waiting_txn_fingerprint_id != '0000000000000000' AND
+      hce.waiting_txn_fingerprint_id = encode(ss2.transaction_fingerprint_id, 'hex')
+    ORDER BY
+      contention_count
+    DESC;
+    ~~~
+
+    ~~~
+                       blocking_statement                   |                      waiting_statement                       | contention_count
+    --------------------------------------------------------+--------------------------------------------------------------+-------------------
+      CREATE UNIQUE INDEX ON users (city, id, name)         | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
+      CREATE INDEX ON rides (start_time) STORING (rider_id) | SELECT status, payload, progress, crdb_internal.sql_liveness |                1
+    (2 rows)
+    ~~~
 
 ### `transaction_statistics`
 

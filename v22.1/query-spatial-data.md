@@ -13,7 +13,7 @@ This page has instructions for querying spatial data imported into CockroachDB. 
 
 - [Start a local insecure cluster](start-a-local-cluster.html) and connect to that cluster from a [SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach sql --insecure --host=localhost --port=26257
     ~~~
@@ -34,7 +34,7 @@ According to the wiki page linked above, there were 152 tornadoes confirmed betw
 
 We can try to verify this number against the NWS's tornado data set with the following query:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT COUNT(*) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND mo = 5 AND dy >= 02 AND dy <= 08;
 ~~~
@@ -50,7 +50,7 @@ It might be interesting to look into why these numbers are different!
 
 Next, let's get a list of starting points for all of the tornadoes in the outbreak that started in Oklahoma:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT ST_AsText(geom) FROM "1950-2018-torn-initpoint" WHERE yr = 1999 AND st = 'OK' AND mo = 5 AND dy > 02 AND dy <= 08;
 ~~~

@@ -32,7 +32,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 -----------|-------------
  `table_name` | The name of the table with the column you want to drop.
  `name` | The name of the column you want to drop.<br><br>When a column with a `CHECK` constraint is dropped, the `CHECK` constraint is also dropped.
- `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well. `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference.<br><br>`CASCADE` does not list the objects it drops, so should be used cautiously.<br><br> `CASCADE` is not required to drop an indexed column, or a column that is referenced by an index. By default, `DROP COLUMN` drops any indexes [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
+ `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well. `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference.<br><br>`CASCADE` does not list the objects it drops, so should be used cautiously.<br><br> `CASCADE` is not required to drop an indexed column, or a column that is referenced by an index. By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
  `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it.
 
 ## Viewing schema changes
@@ -47,7 +47,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 If you no longer want a column in a table, you can drop it.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -65,7 +65,7 @@ If you no longer want a column in a table, you can drop it.
 
 If there is data in the table, the `sql_safe_updates` [session variable](set-vars.html) must be set to `false`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users DROP COLUMN credit_card;
 ~~~
@@ -75,17 +75,17 @@ ERROR: rejected (sql_safe_updates = true): ALTER TABLE DROP COLUMN will remove a
 SQLSTATE: 01000
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET sql_safe_updates = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE users DROP COLUMN credit_card;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM users;
 ~~~
@@ -104,12 +104,12 @@ SQLSTATE: 01000
 
 If the column has dependent objects, such as [views](views.html), CockroachDB will not drop the column by default. However, if you want to be sure of the behavior you can include the `RESTRICT` clause.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE VIEW expensive_rides AS SELECT id, city FROM rides WHERE revenue > 90;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE rides DROP COLUMN revenue RESTRICT;
 ~~~
@@ -128,7 +128,7 @@ If you want to drop the column and all of its dependent options, include the `CA
 <code>CASCADE</code> does not list objects it drops, so should be used cautiously.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE expensive_rides;
 ~~~
@@ -140,12 +140,12 @@ If you want to drop the column and all of its dependent options, include the `CA
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE rides DROP COLUMN revenue CASCADE;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CREATE expensive_rides;
 ~~~
@@ -159,12 +159,12 @@ SQLSTATE: 42P01
 
  `DROP COLUMN` drops a column and any indexes on the column being dropped.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX start_end_idx ON rides(start_time, end_time);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW INDEXES FROM rides] WHERE index_name='start_end_idx';
 ~~~
@@ -179,7 +179,7 @@ SQLSTATE: 42P01
 (4 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE rides DROP COLUMN start_time;
 ~~~
@@ -190,7 +190,7 @@ HINT: The reclamation delay can be customized in the zone configuration for the 
 ALTER TABLE
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM [SHOW INDEXES FROM rides] WHERE index_name='start_end_idx';
 ~~~

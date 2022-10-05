@@ -5,7 +5,7 @@ toc: true
 redirect_from: multi-region-database.html
 ---
 
-This page walks you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
 
 ## Before you begin
 
@@ -49,7 +49,7 @@ Here is the [`CREATE DATABASE`](create-database.html) statement for the `movr` d
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START database |-- END database %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START database ||-- END database %}
 ~~~
 
 Note that `movr` has the following [database regions](multiregion-overview.html#database-regions), which correspond to regions in Google Cloud:
@@ -76,14 +76,14 @@ Here is the `CREATE TABLE` statement for the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START users |-- END users %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START users ||-- END users %}
 ~~~
 
 ## The `vehicles` table
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START vehicles |-- END vehicles %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START vehicles ||-- END vehicles %}
 ~~~
 
 Note that the `vehicles` table has a [foreign key constraint](foreign-key.html) on the `users` table, for the `city` and `owner_id` columns. This guarantees that a vehicle is registered to a particular user (i.e., an "owner") in the city where that user is registered.
@@ -92,7 +92,7 @@ Note that the `vehicles` table has a [foreign key constraint](foreign-key.html) 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql |-- START rides |-- END rides %}
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/dbinit.sql ||-- START rides ||-- END rides %}
 ~~~
 
 Note that, like the `vehicles` table, the `rides` table has foreign key constraints. These constraints are on the `users` and the `vehicles` tables.

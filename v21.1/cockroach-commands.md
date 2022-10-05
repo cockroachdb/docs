@@ -21,6 +21,7 @@ Command | Usage
 [`cockroach sql`](cockroach-sql.html) | Use the built-in SQL client.
 [`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
 [`cockroach node`](cockroach-node.html) | List node IDs, show their status, decommission nodes for removal, or recommission nodes.
+[`cockroach auth-session`](cockroach-auth-session.html) | Create and manage web sessions and authentication tokens to the HTTP interface from the command line.
 [`cockroach dump`](cockroach-dump.html) | **Deprecated.** Use one of the following instead:<ul><li>To back up your data, take a [full backup](take-full-and-incremental-backups.html).</li><li>To export your data in plaintext format, use [`EXPORT`](export.html).</li><li>To view table schema in plaintext, use [`SHOW CREATE TABLE`](show-create.html).</li></ul>
 [`cockroach demo`](cockroach-demo.html) | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
 [`cockroach gen`](cockroach-gen.html) | Generate manpages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
@@ -35,7 +36,7 @@ Command | Usage
 [`cockroach userfile list`](cockroach-userfile-list.html)       |  List the files stored in the user-scoped file storage.
 [`cockroach userfile delete`](cockroach-userfile-delete.html)   |  Deletes the files stored in the user-scoped file storage.
 [`cockroach userfile get`](cockroach-userfile-get.html)         |  Fetch a file from the user-scoped file storage.
-[`cockroach import`](cockroach-import.html)   |  <span class="version-tag">New in v21.1:</span> Import a table or database from a local dump file into a running cluster. `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
+[`cockroach import`](cockroach-import.html)   |  **New in v21.1:** Import a table or database from a local dump file into a running cluster. `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
 
 ## Environment variables
 

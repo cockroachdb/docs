@@ -6,14 +6,14 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: deploy
 ---
 
-This page provides an overview of CockroachDB multi-region features.
+This page provides an overview of CockroachDB multi-region capabilities.
 
 ## Overview
 
-CockroachDB multi-region capabilities make it easier to run global applications. To take advantage of these capabilities, you should understand the following concepts:
+CockroachDB multi-region capabilities make it easier to run global applications. To use these capabilities effectively, you should understand the following concepts:
 
 - [_Cluster region_](#cluster-regions) is a geographic region that you specify at node start time.
-- [_Database region_](#database-regions) is a geographic region that a given database operates within. You must choose a database region from the list of available cluster regions.
+- [_Database region_](#database-regions) is a geographic region in which a database operates. You must choose a database region from the list of available cluster regions.
 - [_Survival goal_](#survival-goals) dictates how many simultaneous failure(s) a database can survive.
 - [_Table locality_](#table-locality) determines how CockroachDB optimizes access to a table's data.
 
@@ -38,14 +38,14 @@ You define a cluster region at the node level using the `region` key and the zon
 
 For example, the following command adds `us-east-1` to the list of cluster regions and `us-east-1b` to the list of zones:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
 ~~~
 
 To show all of a cluster's regions, execute the following SQL statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW REGIONS FROM CLUSTER;
 ~~~
@@ -66,6 +66,40 @@ To show all of a database's regions, execute the [`SHOW REGIONS FROM DATABASE` s
 If the default survival goals and table localities meet your needs, there is nothing else you need to do once you have set a database's primary region.
 {{site.data.alerts.end}}
 
+## Super regions
+
+{% include common/experimental-warning.md %}
+
+{% include_cached new-in.html version="v22.1" %} Super regions allow you to define a set of [database regions](#database-regions) such that the following [schema objects](schema-design-overview.html#database-schema-objects) will have all of their replicas stored _only_ in regions that are members of the super region:
+
+- [Regional tables](#regional-tables) whose home region is a member of the super region.
+- Any row of a [regional by row table](#regional-by-row-tables) whose [home region](set-locality.html#crdb_region) is a member of the super region.
+
+The primary use case for super regions is data domiciling. As mentioned above, data from [regional](#regional-tables) and [regional by row](#regional-by-row-tables) tables will be stored only in regions that are members of the super region. Further, if the super region contains 3 or more regions and if you use [`REGION` survival goals](#survive-region-failures), the data domiciled in the super region will remain available if you lose a region.
+
+{% include {{page.version.version}}/sql/super-region-considerations.md %}
+
+<a name="enable-super-regions"></a>
+
+For more information about how to enable and use super regions, see:
+
+- [`ADD SUPER REGION`](add-super-region.html)
+- [`DROP SUPER REGION`](drop-super-region.html)
+- [`ALTER SUPER REGION`](alter-super-region.html)
+- [`SHOW SUPER REGIONS`](show-super-regions.html)
+
+Note that super regions take a different approach to data domiciling than [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html). Specifically, super regions make it so that all [replicas](architecture/overview.html#architecture-replica) (both voting and [non-voting](architecture/replication-layer.html#non-voting-replicas)) are placed within the super region, whereas `PLACEMENT RESTRICTED` makes it so that there are no non-voting replicas.
+
+For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Data Domiciling with CockroachDB](data-domiciling.html).
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/sql/super-regions-for-domiciling-with-region-survivability.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Super regions rely on the underlying [replication zone system](configure-replication-zones.html), which was historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Configure Replication Zones](https://www.cockroachlabs.com/docs/v21.2/configure-replication-zones#types-of-constraints).
+{{site.data.alerts.end}}
+
 ## Survival goals
 
 A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.
@@ -77,7 +111,7 @@ The following survival goals are available:
 
 The zone failure survival goal is the default. You can configure a database to survive region failures at the cost of slower write performance (due to network hops) using the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE <db> SURVIVE REGION FAILURE;
 ~~~
@@ -103,7 +137,9 @@ If your application has performance or availability needs that are different tha
 
 The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region becomes unavailable. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
 
-You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html). This increases the [replication factor](configure-replication-zones.html#num_replicas) of all data in the database from 3 (the default) to 5; this is how CockroachDB is able to provide the resiliency characteristics while maintaining a local quorum in the leaseholder's region for good performance.
+You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html).
+
+Setting this goal on a database in a cluster with 3 [cluster regions](#cluster-regions) will automatically increase the [replication factor](configure-replication-zones.html#num_replicas) of the [ranges](architecture/glossary.html#architecture-range) underlying the database from 3 (the default) to 5. This ensures that there will be 5 replicas of each range spread across the 3 regions (2+2+1=5). This is how CockroachDB is able to provide region level resiliency while maintaining good read performance in the leaseholder's region. For writes, CockroachDB will need to coordinate across 2 of the 3 regions, so you will pay additional write latency in exchange for the increased resiliency.
 
 {{site.data.alerts.callout_info}}
 To survive region failures, you must add at least 3 [database regions](#database-regions).
@@ -148,6 +184,12 @@ The features listed in this section make working with multi-region clusters easi
 This behavior also applies to [GIN indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+
+Regional by row tables can take advantage of [hash-sharded indexes](hash-sharded-indexes.html) provided the `crdb_region` column is not part of the columns in the hash-sharded index.
+
+## Schema changes in multi-region clusters
+
+{% include {{ page.version.version }}/performance/lease-preference-system-database.md %}
 
 ## Next steps
 

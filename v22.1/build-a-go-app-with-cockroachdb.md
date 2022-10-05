@@ -4,19 +4,16 @@ summary: Learn how to use CockroachDB from a simple Go application with the Go p
 toc: true
 twitter: false
 referral_id: docs_go_pgx
-filter_category: crud_go
-filter_html: Use <strong>pgx</strong>
-filter_sort: 1
 docs_area: get_started
 ---
 
-{% include filter-tabs.md %}
+{% include {{ page.version.version }}/filter-tabs/crud-go.md %}
 
 This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
 
 ## Step 1. Start CockroachDB
 
-{% include {{ page.version.version }}/app/sample-setup.md %}
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -55,7 +52,14 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
 ## Step 3. Initialize the database
 
-{% include {{ page.version.version }}/app/init-bank-sample.md %}
+1. Navigate to the `example-app-go-pgx` directory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cd example-app-go-pgx
+    ~~~
+
+{% include {{ page.version.version }}/setup/init-bank-sample.md %}
 
 ## Step 4. Run the code
 
@@ -72,34 +76,6 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
     ~~~ shell
     $ go run main.go
     ~~~
-
-    The program will prompt you for a connection string to the database:
-
-    ~~~
-    Enter a connection string:
-    ~~~
-
-1. Enter the connection string to your running cluster.
-
-    <section class="filter-content" markdown="1" data-scope="local">
-
-    {{site.data.alerts.callout_success}}
-    `postgresql://root@localhost:26257?sslmode=disable` should be the `sql` connection URL provided in the `cockroach` welcome text.
-    {{site.data.alerts.end}}
-
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-    {{site.data.alerts.callout_success}}
-    Use the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_info}}
-    You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
-    {{site.data.alerts.end}}
-
-    </section>
 
     The output should look similar to the following:
 
@@ -130,28 +106,6 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
     - Reads values from the table.
     - Updates values in the table.
     - Deletes values from the table.
-
-1. To verify that the SQL statements were executed, run the following query from inside the SQL shell:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > USE bank;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > SELECT id, balance FROM accounts;
-    ~~~
-
-    The output should look similar to the following:
-
-    ~~~
-                       id                  | balance
-    ---------------------------------------+----------
-      3a936990-a0c9-45bf-bc24-92e10d91dca9 |     300
-      c6ae8917-d24e-4115-b719-f663dbfb9ffb |     400
-    (2 rows)
-    ~~~
 
 ## What's next?
 

@@ -1,6 +1,6 @@
 ---
 title: Serializable Transactions
-summary: Walk through a demonstration of the importance of SERIALIZABLE isolation for data correctness
+summary: Follow a demonstration of the importance of SERIALIZABLE isolation for data correctness
 toc: true
 toc_not_nested: true
 docs_area: deploy
@@ -11,7 +11,7 @@ In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation,
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
 1. You'll start by reviewing the scenario and its schema.
-2. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on Postgres, which defaults to `READ COMMITTED`.
+2. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on PostgreSQL, which defaults to `READ COMMITTED`.
 3. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
 
 {{site.data.alerts.callout_info}}
@@ -25,7 +25,7 @@ For a deeper discussion of transaction isolation and the write skew anomaly, see
 - A hospital has an application for doctors to manage their on-call shifts.
 - The hospital has a rule that at least one doctor must be on call at any one time.
 - Two doctors are on-call for a particular shift, and both of them try to request leave for the shift at approximately the same time.
-- In Postgres, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
+- In PostgreSQL, with the default `READ COMMITTED` isolation level, the [write skew](#write-skew) anomaly results in both doctors successfully booking leave and the hospital having no doctors on call for that particular shift.
 - In CockroachDB, with the `SERIALIZABLE` isolation level, write skew is prevented, one doctor is allowed to book leave and the other is left on-call, and lives are saved.
 
 #### Write skew
@@ -36,32 +36,32 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 <img src="{{ 'images/v22.1/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
 
-## Step 1. Set up the scenario on Postgres
+## Step 1. Set up the scenario on PostgreSQL
 
-1. If you haven't already, install Postgres locally. On Mac, you can use [Homebrew](https://brew.sh/):
+1. If you haven't already, install PostgreSQL locally. On Mac, you can use [Homebrew](https://brew.sh/):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ brew install postgres
     ~~~
 
-1. [Start Postgres](https://www.postgresql.org/docs/10/static/server-start.html):
+1. [Start PostgreSQL](https://www.postgresql.org/docs/10/static/server-start.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ postgres -D /usr/local/var/postgres &
     ~~~
 
-1. Open a SQL connection to Postgres:
+1. Open a SQL connection to PostgreSQL:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ psql
     ~~~
 
 1. Create the `doctors` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE doctors (
         id INT PRIMARY KEY,
@@ -71,7 +71,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 1. Create the `schedules` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE schedules (
         day DATE,
@@ -83,7 +83,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 1. Add two doctors to the `doctors` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO doctors VALUES
         (1, 'Abe'),
@@ -92,7 +92,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 1. Insert one week's worth of data into the `schedules` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO schedules VALUES
         ('2018-10-01', 1, true),
@@ -113,7 +113,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 1. Confirm that at least one doctor is on call each day of the week:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT day, count(*) AS doctors_on_call FROM schedules
       WHERE on_call = true
@@ -134,18 +134,18 @@ When write skew happens, a transaction reads something, makes a decision based o
     (7 rows)
     ~~~
 
-## Step 2. Run the scenario on Postgres
+## Step 2. Run the scenario on PostgreSQL
 
 1. Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application. The application starts a transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
 1. The application checks to make sure at least one other doctor is on call for the requested date:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT count(*) FROM schedules
       WHERE on_call = true
@@ -162,21 +162,21 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 1. Around the same time, doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. In a new terminal, start a second SQL session:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ psql
     ~~~
 
 1. The application starts a transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
 1. The application checks to make sure at least one other doctor is on call for the requested date:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT count(*) FROM schedules
       WHERE on_call = true
@@ -193,7 +193,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 1. In the terminal for doctor 1, since the previous check confirmed that another doctor is on call for 10/5/18, the application tries to update doctor 1's schedule:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE schedules SET on_call = false
       WHERE day = '2018-10-05'
@@ -202,7 +202,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 2. In the terminal for doctor 2, since the previous check confirmed the same thing, the application tries to update doctor 2's schedule:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE schedules SET on_call = false
       WHERE day = '2018-10-05'
@@ -211,25 +211,25 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 3. In the terminal for doctor 1, the application commits the transaction, despite the fact that the previous check (the `SELECT` query) is no longer true:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
 4. In the terminal for doctor 2, the application commits the transaction, despite the fact that the previous check (the `SELECT` query) is no longer true:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
-## Step 3. Check data correctness on Postgres
+## Step 3. Check data correctness on PostgreSQL
 
 So what just happened? Each transaction started by reading a value that, before the end of the transaction, became incorrect. Despite that fact, each transaction was allowed to commit. This is known as write skew, and the result is that 0 doctors are scheduled to be on call on 10/5/18.  
 
 To check this, in either terminal, run:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM schedules WHERE day = '2018-10-05';
 ~~~
@@ -242,9 +242,9 @@ To check this, in either terminal, run:
 (2 rows)
 ~~~
 
-Again, this anomaly is the result of Postgres' default isolation level of `READ COMMITTED`, but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
+Again, this anomaly is the result of PostgreSQL's default isolation level of `READ COMMITTED`, but note that this would happen with any isolation level except `SERIALIZABLE` and some implementations of `REPEATABLE READ`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TRANSACTION_ISOLATION;
 ~~~
@@ -256,9 +256,9 @@ Again, this anomaly is the result of Postgres' default isolation level of `READ 
 (1 row)
 ~~~
 
-Exit each SQL shell with `\q` and then stop the Postgres server:
+Exit each SQL shell with `\q` and then stop the PostgreSQL server:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pkill -9 postgres
 ~~~
@@ -271,7 +271,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a one-node CockroachDB cluster in insecure mode:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node \
     --insecure \
@@ -282,14 +282,14 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost
     ~~~
 
 1. Create the `doctors` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE doctors (
         id INT PRIMARY KEY,
@@ -299,7 +299,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Create the `schedules` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE schedules (
         day DATE,
@@ -311,7 +311,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Add two doctors to the `doctors` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO doctors VALUES
         (1, 'Abe'),
@@ -320,7 +320,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Insert one week's worth of data into the `schedules` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO schedules VALUES
         ('2018-10-01', 1, true),
@@ -341,7 +341,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Confirm that at least one doctor is on call each day of the week:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT day, count(*) AS on_call FROM schedules
       WHERE on_call = true
@@ -366,14 +366,14 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application. The application starts a transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
 1. The application checks to make sure at least one other doctor is on call for the requested date:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT count(*) FROM schedules
       WHERE on_call = true
@@ -392,21 +392,21 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Around the same time, doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. In a new terminal, start a second SQL session:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost
     ~~~
 
 1. The application starts a transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
 1. The application checks to make sure at least one other doctor is on call for the requested date:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT count(*) FROM schedules
       WHERE on_call = true
@@ -425,7 +425,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. In the terminal for doctor 1, since the previous check confirmed that another doctor is on call for 10/5/18, the application tries to update doctor 1's schedule:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE schedules SET on_call = false
       WHERE day = '2018-10-05'
@@ -434,7 +434,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. In the terminal for doctor 2, since the previous check confirmed the same thing, the application tries to update doctor 2's schedule:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > UPDATE schedules SET on_call = false
       WHERE day = '2018-10-05'
@@ -443,7 +443,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. In the terminal for doctor 1, the application tries to commit the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
@@ -460,7 +460,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. In the terminal for doctor 2, the application tries to commit the transaction:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
@@ -471,7 +471,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. In either terminal, confirm that one doctor is still on call for 10/5/18:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM schedules WHERE day = '2018-10-05';
     ~~~
@@ -486,7 +486,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Again, the write skew anomaly was prevented by CockroachDB using the `SERIALIZABLE` isolation level:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TRANSACTION_ISOLATION;
     ~~~
@@ -500,7 +500,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Exit the SQL shell in each terminal:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
@@ -508,14 +508,32 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
 
 1. Exit each SQL shell with `\q` and then stop the node:
 
-    {% include copy-clipboard.html %}
+    Get the process ID of the node:
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach quit --insecure --host=localhost
+    ps -ef | grep cockroach | grep -v grep
+    ~~~
+
+    ~~~
+      501 21691     1   0  6:19PM ttys001    0:01.15 cockroach start-single-node --insecure --store=serializable-demo --listen-addr=localhost
+    ~~~
+
+    Gracefully shut down the node, specifying its process ID:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    kill -TERM 21691
+    ~~~
+
+    ~~~
+    initiating graceful shutdown of server
+    server drained and shutdown completed
     ~~~
 
     If you do not plan to restart the cluster, you may want to remove the node's data store:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ rm -rf serializable-demo
     ~~~

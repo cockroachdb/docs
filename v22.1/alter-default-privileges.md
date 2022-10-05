@@ -3,7 +3,7 @@ title: ALTER DEFAULT PRIVILEGES
 summary: The ALTER DEFAULT PRIVILEGES statement alters the default privileges for roles in the current database.
 keywords: reflection
 toc: true
-docs_area: reference.sql 
+docs_area: reference.sql
 ---
 
  The `ALTER DEFAULT PRIVILEGES` [statement](sql-statements.html) changes the [default privileges](security-reference/authorization.html#default-privileges) on objects created by [users/roles](security-reference/authorization.html#roles) in the current database.
@@ -21,7 +21,7 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/alter_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/alter_default_privileges.html %}
 </div>
 
 ### Parameters
@@ -32,7 +32,7 @@ Parameter | Description
 `FOR ALL ROLES` | Alter the default privileges on objects created by all users/roles.
 `GRANT ...` | Grant a default privilege or list of privileges on all objects of the specified type to a role/user, or a list of roles/users.
 `REVOKE ...` | Revoke a default privilege or list of privileges on all objects of the specified type from a role/user, or a list of roles/users.
-`IN SCHEMA qualifiable_schema_name` | This clause is a no-op. The syntax is supported for compatibility with PostgreSQL.
+`IN SCHEMA qualifiable_schema_name` | **New in v22.1:** If specified, the default privileges are altered for objects created in that schema. If an object has default privileges specified at the database and at the schema level, the union of the default privileges is taken.
 
 {{site.data.alerts.callout_info}}
 If you do not specify a `FOR ...` clause, CockroachDB alters the default privileges on objects created by the current user.
@@ -49,22 +49,22 @@ If you do not specify a `FOR ...` clause, CockroachDB alters the default privile
 
 Run the following statements as a member of the `admin` role, with `ALL` privileges:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE ROLE cockroachlabs WITH LOGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT CREATE ON DATABASE defaultdb TO cockroachlabs;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER max WITH LOGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ROLE cockroachlabs;
 ~~~
@@ -82,7 +82,7 @@ Run the following statements as a member of the `admin` role, with `ALL` privile
 
 In the same database, run the following statements as the `cockroachlabs` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES FOR ROLE cockroachlabs GRANT SELECT ON TABLES TO max;
 ~~~
@@ -91,7 +91,7 @@ In the same database, run the following statements as the `cockroachlabs` user:
 Because `cockroachlabs` is the current user, the previous statement is equivalent to `ALTER DEFAULT PRIVILEGES GRANT SELECT ON TABLES TO max;`.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -108,7 +108,7 @@ Because `cockroachlabs` is the current user, the previous statement is equivalen
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE albums (
         id UUID PRIMARY KEY,
@@ -120,7 +120,7 @@ Because `cockroachlabs` is the current user, the previous statement is equivalen
 
 In the same database, run the following statements as the `max` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE albums;
 ~~~
@@ -130,7 +130,7 @@ ERROR: user max does not have DROP privilege on relation albums
 SQLSTATE: 42501
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM albums;
 ~~~
@@ -149,7 +149,7 @@ Because `max` has default `SELECT` privileges on all tables created by `cockroac
 
 To see this, run the following statements as a member of the `admin` role, with `ALL` privileges:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER max;
 ~~~
@@ -159,7 +159,7 @@ ERROR: cannot drop role/user max: grants still exist on defaultdb.public.albums
 SQLSTATE: 2BP01
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER cockroachlabs;
 ~~~
@@ -173,7 +173,7 @@ SQLSTATE: 2BP01
 
 Run the following statements as the `cockroachlabs` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -190,12 +190,12 @@ Run the following statements as the `cockroachlabs` user:
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES FOR ROLE cockroachlabs REVOKE SELECT ON TABLES FROM max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES;
 ~~~
@@ -211,7 +211,7 @@ Run the following statements as the `cockroachlabs` user:
 (5 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE tracks (
         id UUID PRIMARY KEY,
@@ -223,7 +223,7 @@ Run the following statements as the `cockroachlabs` user:
 
 In the same database, run the following statements as the `max` user:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE albums;
 ~~~
@@ -233,7 +233,7 @@ ERROR: user max does not have DROP privilege on relation albums
 SQLSTATE: 42501
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM albums;
 ~~~
@@ -250,12 +250,12 @@ SQLSTATE: 42501
 
 `max` still has `SELECT` privileges on `albums` because when `cockroachlabs` created `albums`, `max` was granted default `SELECT` privileges on all tables created by `cockroachlabs`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE SELECT ON TABLE albums FROM max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE tracks;
 ~~~
@@ -265,7 +265,7 @@ ERROR: user max does not have DROP privilege on relation tracks
 SQLSTATE: 42501
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM tracks;
 ~~~
@@ -279,12 +279,12 @@ SQLSTATE: 42501
 
 Because `max` has no default privileges, the user can now be dropped:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER max;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -302,12 +302,12 @@ Because `max` has no default privileges, the user can now be dropped:
 
 Run the following statements as a member of the `admin` role, with `ALL` privileges:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DEFAULT PRIVILEGES FOR ALL ROLES GRANT SELECT ON TABLES TO public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
 ~~~
@@ -322,7 +322,7 @@ Run the following statements as a member of the `admin` role, with `ALL` privile
 
 In the same database, run the following statements as any two different users:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE discographies (
         id UUID PRIMARY KEY,
@@ -335,7 +335,7 @@ In the same database, run the following statements as any two different users:
 [`CREATE TABLE`](create-table.html) requires the `CREATE` privilege on the database.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM discographies;
 ~~~

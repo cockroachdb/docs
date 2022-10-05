@@ -47,12 +47,12 @@ To reduce the interval for storage of time-series data:
 
   For example, to change the storage interval for time-series data at 10s resolution to 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '120h0m0s';
   ~~~
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ sql
   > SHOW CLUSTER SETTING timeseries.storage.resolution_10s.ttl;
   ~~~
@@ -76,12 +76,12 @@ Disabling time-series storage is recommended only if you exclusively use a third
 
 To disable the storage of time-series data entirely, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.enabled = false;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW CLUSTER SETTING timeseries.storage.enabled;
 ~~~
@@ -95,12 +95,12 @@ To disable the storage of time-series data entirely, run the following command:
 
 If you want all existing time-series data to be deleted, also change both the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster settings:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '0s';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_30m.ttl = '0s';
 ~~~
@@ -109,7 +109,7 @@ If you want all existing time-series data to be deleted, also change both the `t
 
 When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up.
 
-<span class="version-tag">New in v21.2</span> To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
+{% include_cached new-in.html version="v21.2" %} To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
 
 For more information about troubleshooting disk usage issues, see [storage issues](cluster-setup-troubleshooting.html#disks-filling-up).
 

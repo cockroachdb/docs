@@ -103,7 +103,7 @@ For each initial node of your cluster, complete the following steps:
     $ useradd cockroach
     ~~~
 
-6. Change the ownership of `Cockroach` directory to the user `cockroach`:
+6. Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell

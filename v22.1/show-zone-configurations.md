@@ -10,7 +10,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_zone.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_zone.html %}
 </div>
 
 ## Required privileges
@@ -21,7 +21,7 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 
 Parameter | Description
 ----------|------------
-`zone_name` | The name of the system [range](architecture/overview.html#glossary) for which to show [replication zone configurations](configure-replication-zones.html).
+`zone_name` | The name of the system [range](architecture/overview.html#architecture-range) for which to show [replication zone configurations](configure-replication-zones.html).
 `database_name` | The name of the [database](create-database.html) for which to show [replication zone configurations](configure-replication-zones.html).
 `table_name` | The name of the [table](create-table.html) for which to show [replication zone configurations](configure-replication-zones.html).
 `partition_name` | The name of the [partition](partitioning.html) for which to show [replication zone configurations](configure-replication-zones.html).
@@ -53,7 +53,7 @@ You can also use [`SHOW CREATE TABLE`](show-create.html) to view zone configurat
 
 To control replication for a specific table,  use the `ALTER INDEX ... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
 ~~~
@@ -62,7 +62,7 @@ To control replication for a specific table,  use the `ALTER INDEX ... CONFIGURE
 CONFIGURE ZONE 1
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATION FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~
