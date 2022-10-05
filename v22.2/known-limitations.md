@@ -595,3 +595,11 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+
+### User-defined functions
+
+<!--
+{% include {{ page.version.version }}/known-limitations/udf-changefeed-expression.md %}
+-->
+
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}

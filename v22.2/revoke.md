@@ -24,6 +24,7 @@ Parameter                   | Description
 `ALL`<br>`ALL PRIVILEGES`   | Revoke all [privileges](#supported-privileges).
 `targets`                   | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To revoke privileges on all tables in a database or schema, you can use `REVOKE ... ON TABLE *`. For an example, see [Revoke privileges on all tables in a database or schema](#revoke-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
 `name_list`                 | A comma-separated list of [users and roles](security-reference/authorization.html#users-and-roles).
+`target_functions`          | A comma-separated list of [user-defined functions](create-function.html).
 `target_types`              | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`      |  Revoke privileges on all tables in a schema or list of schemas.

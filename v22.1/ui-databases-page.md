@@ -15,4 +15,8 @@ The **Databases** page of the DB Console provides details of the following:
 
 To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
 
+{% include {{ page.version.version }}/ui/databases.md %}
+
 {% include common/ui/databases-page.md %}
+
+{% include {{ page.version.version }}/ui/index-details.md %}

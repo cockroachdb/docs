@@ -1,7 +1,6 @@
 - Stored procedures and functions.
 - Triggers.
 - Events.
-- User-defined functions (UDFs).
 - `FULLTEXT` functions and indexes.
 - Drop primary key.
 

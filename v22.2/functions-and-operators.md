@@ -30,8 +30,7 @@ Leakproof | The function does not depend on configuration settings and is guaran
 
 ## Conditional and function-like operators
 
-The following table lists the operators that look like built-in
-functions but have special evaluation rules:
+The following table lists the operators that look like built-in functions but have special evaluation rules:
 
  Operator | Description
 ----------|-------------
@@ -45,6 +44,10 @@ functions but have special evaluation rules:
  `IFNULL(...)` | Alias for `COALESCE` restricted to two operands
  `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions)
  `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructors)
+
+## User-defined functions
+
+{% include_cached new-in.html version="v22.2" %}  In addition to the built-in functions described in the following sections, CockroachDB supports user-defined functions. For details, see [User-Defined Functions](user-defined-functions.html).
 
 ## Built-in functions
 
