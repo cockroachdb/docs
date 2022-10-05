@@ -109,14 +109,16 @@ The [`EXPLAIN`](explain.html#success-responses) command provides index recommend
 
 - Drop unused indexes whenever possible.
 
-    To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
+  - In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT * FROM crdb_internal.index_usage_statistics;
-    ~~~
+  - To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
 
-    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM crdb_internal.index_usage_statistics;
+        ~~~
+
+        To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
