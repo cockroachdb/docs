@@ -24,9 +24,20 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
 
-The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table. The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
+{{site.data.alerts.callout_info}}
+The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table.
+
+- The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
+- The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` cluster setting to always capture contention events.
+{{site.data.alerts.end}}
 
 Transaction executions with the **High Contention** insight are transactions that experienced [contention](transactions.html#transaction-contention).
+
+The following screenshot shows the execution of a transaction flagged with **High Contention**:
+
+<img src="{{ 'images/v22.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+
+To view [details of the execution](#transaction-execution-details), click an execution ID in the **Latest Transaction Execution ID** column.
 
 - **Latest Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
@@ -37,24 +48,18 @@ Transaction executions with the **High Contention** insight are transactions tha
 - **Contention Time**: The amount of time the transaction execution spent waiting in contention.
 - **Application Name**: The name specified by the [`application_name` session setting](show-vars.html#supported-variables).
 
-The following screenshot shows the execution of a transaction flagged with **High Contention**:
-
-<img src="{{ 'images/v22.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
-
-To view details of the execution, click an execution ID in the **Latest Transaction Execution ID** column.
-
 #### Transaction execution details
 
-The transaction execution details view provides more details on a transaction execution insight. Additional information includes:
-
-- **Start Time (UTC)**: The time the transaction execution started.
-- **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
+The transaction execution details view provides more details on a transaction execution insight.
 
 The following screenshot shows the execution details of the transaction execution in the preceding section:
 
 <img src="{{ 'images/v22.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
 The **Insights** column shows the name of the insight, in this case **High Contention**; the **Details** column provides details on the insight.
+
+- **Start Time (UTC)**: The time the transaction execution started.
+- **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
 
 ##### Transaction with ID {transaction ID} waited on
 
@@ -64,7 +69,7 @@ This section provides details of the transaction executions that block the trans
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
 - **Transaction Execution**: The queries attempted in the transaction.
 - **Contention Start Time (UTC)**: The timestamp at which contention was detected for the transaction.
-- **Contention Time**: The time transactions with this execution id was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
+- **Contention Time**: The time transactions with this execution ID was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
 - **Schema Name**: The name of the contended schema.
 - **Database Name**: The name of the contended database.
 - **Table Name**: The name of the contended table.
@@ -76,7 +81,19 @@ The **Statement Executions** view provides an overview of all statement executio
 
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Workload Insights > Statement Executions**.
 
-The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table. The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
+{{site.data.alerts.callout_info}}
+The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table.
+
+- The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
+- The default tracing behavior enables captures a small percent of transactions so not all contention events will be recorded. When investigating query latency, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html) to always capture contention events.
+
+{{site.data.alerts.end}}
+
+The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
+
+<img src="{{ 'images/v22.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+
+To view [details of the execution](#statement-execution-details), click an execution ID in the **Statement Execution ID** column.
 
 - **Statement Execution ID**: The execution ID of the latest execution with the statement fingerprint.
 - **Statement Fingerprint ID**: The statement fingerprint ID of the latest statement execution.
@@ -101,15 +118,15 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 - **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
 - **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
 
-The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
-
-<img src="{{ 'images/v22.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
-
-To view details of the execution, click an execution ID in the **Statement Execution ID** column.
-
 #### Statement execution details
 
-The statement execution details view provides more details on a statement execution insight. Additional information includes:
+The statement execution details view provides more details on a statement execution insight.
+
+The following screenshot shows the execution details of the statement execution in the preceding section:
+
+<img src="{{ 'images/v22.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+
+The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button. Click the **Create Index** button to perform a query to mitigate the cause of the insight, in this case to create an index on the ride `start_time` that stores the `rider_id`.
 
 - **Start Time**: The timestamp when the statement execution started.
 - **End Time**: The timestamp when the statement execution ended.
@@ -122,14 +139,6 @@ The statement execution details view provides more details on a statement execut
 - **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
 - **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
 - **Statement Fingerprint ID**: The fingerprint ID of the statement fingerprint for the statement execution.
-
-The following screenshot shows the execution details of the statement execution in the preceding section:
-
-<img src="{{ 'images/v22.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
-
-The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button.
-
-Click the **Create Index** button to perform a query to mitigate the cause of the insight, in this case to create an index on the ride `start_time` that stores the `rider_id`.
 
 ## Schema Insights view
 
