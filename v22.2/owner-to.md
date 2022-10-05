@@ -5,12 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-`OWNER TO` is a subcommand of [`ALTER DATABASE`](alter-database.html), [`ALTER TABLE`](alter-table.html), [`ALTER SCHEMA`](alter-schema.html), and [`ALTER TYPE`](alter-type.html), and is used to change the owner of an object in a cluster.
+`OWNER TO` is a subcommand of [`ALTER DATABASE`](alter-database.html), [`ALTER FUNCTION`](alter-function.html), [`ALTER TABLE`](alter-table.html), [`ALTER SCHEMA`](alter-schema.html), and [`ALTER TYPE`](alter-type.html), and is used to change the owner of an object in a cluster.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-This page documents `ALTER DATABASE ... OWNER TO` and `ALTER TABLE ... OWNER TO`. For details on the `ALTER SCHEMA ... OWNER TO` and `ALTER TYPE ... OWNER TO`, see the [`ALTER SCHEMA`](alter-schema.html) and [`ALTER TYPE`](alter-type.html) pages.
+This page documents `ALTER DATABASE ... OWNER TO` and `ALTER TABLE ... OWNER TO`. For details on the `ALTER FUNCTION ... OWNER TO`, `ALTER SCHEMA ... OWNER TO`, and `ALTER TYPE ... OWNER TO`, see the [`ALTER FUNCTION`](alter-function.html), [`ALTER SCHEMA`](alter-schema.html), and [`ALTER TYPE`](alter-type.html) pages.
 {{site.data.alerts.end}}
 
 ## Required privileges

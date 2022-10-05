@@ -3,11 +3,12 @@ Privilege | Levels
 `ALL` | Database, Schema, Table, Type
 `CREATE` | Database, Schema, Table
 `DROP` | Database, Table
-`GRANT` | Database, Schema, Table, Type
+`EXECUTE` | Function
+`GRANT` | Database, Function, Schema, Table, Type
 `CONNECT` | Database
 `SELECT` | Table
 `INSERT` | Table
 `DELETE` | Table
 `UPDATE` | Table
-`USAGE`  | Schema, Type
+`USAGE`  | Function, Schema, Type
 `ZONECONFIG` | Database, Table
