@@ -35,7 +35,7 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
     <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
 {% else %}
     <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz"><button id="mac-intel" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
-    <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-11.0-aarch64.unsigned.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br/>(<b>Experimental</b>)</button></a>
+    <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-11.0-aarch64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br/>(<b>Experimental</b>)</button></a>
 {% endif %}
     <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows</button></a>
     <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.version }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
@@ -55,7 +55,7 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
     <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
 {% else %}
     <a href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin-10.9-amd64.tgz"><button id="mac" class="filter-button" data-scope="mac-intel" data-eventcategory="mac-binary-release-notes">Mac Intel</button></a>
-    <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin-11.0-aarch64.unsigned.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br/>(<b>Experimental</b>)</button></a>
+    <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.darwin-11.0-aarch64.tgz"><button id="mac-arm" class="filter-button" data-scope="mac-arm" data-eventcategory="mac-binary-release-notes">Mac ARM<br/>(<b>Experimental</b>)</button></a>
 {% endif %}
     <a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ release.version }}.windows-6.2-amd64.zip"><button id="windows" class="filter-button" data-scope="windows" data-eventcategory="windows-binary-release-notes">Windows</button></a>
     <a target="_blank" rel="noopener" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ release.version }}"><button id="source" class="filter-button" data-scope="source" data-eventcategory="source-release-notes">Source</button></a
