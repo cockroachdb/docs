@@ -3,7 +3,7 @@ layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {%- assign stable_pages_names = site.pages | where_exp: "stable_pages", "stable_pages.url contains site.versions['stable']" | map: "name" -%}
+  {%- assign stable_pages_names = site.pages | where_exp: "stable_pages", "stable_pages.url contains site.versions['stable']" | where_exp: "stable_pages", "stable_pages.name != 'index.md'" | map: "name" -%}
   {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
   {%- for page in site.pages -%}
     {%- if page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
