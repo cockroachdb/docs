@@ -201,6 +201,12 @@
               "urls": [
                 "/cockroachcloud/transactions-page.html"
               ]
+            },
+            {
+              "title": "Databases Page",
+              "urls": [
+                "/cockroachcloud/databases-page.html"
+              ]
             }
           ]
         },

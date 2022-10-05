@@ -81,6 +81,7 @@ Transaction contention occurs when transactions issued from multiple clients at 
 
 #### Indicators that your application is experiencing transaction contention
 
+* In the [**Transaction Executions** view](ui-insights-page.html) on the **Insights** page, transaction executions display the **High Contention** insight.
 * Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 * The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) is showing spikes over time.
 <img src="{{ 'images/v22.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
@@ -102,7 +103,7 @@ Full table scans often result in poor statement performance.
     ~~~ sql
     SHOW FULL TABLE SCANS;
     ~~~
-* The following query against the `CRDB_INTERNAL.node_statement_statistics` table returns results:
+* The following query against the `crdb_internal.node_statement_statistics` table returns results:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -143,34 +144,37 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 #### Fix slow writes
 
-[Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
+[Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, do one of the following:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
-FROM crdb_internal.index_usage_statistics AS us
-JOIN crdb_internal.table_indexes ti
-ON us.index_id = ti.index_id
-AND us.table_id = ti.descriptor_id
-ORDER BY total_reads ASC;
-~~~
+- In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
+- Run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
-~~~
-              table_name     |                  index_name                   | total_reads |           last_read
------------------------------+-----------------------------------------------+-------------+--------------------------------
-  vehicle_location_histories | vehicle_location_histories_pkey               |           1 | 2021-09-28 22:59:03.324398+00
-  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
-  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
-  user_promo_codes           | user_promo_codes_pkey                         |         456 | 2021-09-29 00:01:17.063418+00
-  promo_codes                | promo_codes_pkey                              |         910 | 2021-09-29 00:01:17.062319+00
-  vehicles                   | vehicles_pkey                                 |        3591 | 2021-09-29 00:01:18.261658+00
-  users                      | users_pkey                                    |        5401 | 2021-09-29 00:01:18.260198+00
-  rides                      | rides_pkey                                    |       45658 | 2021-09-29 00:01:18.258208+00
-  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
-(9 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
+    FROM crdb_internal.index_usage_statistics AS us
+    JOIN crdb_internal.table_indexes ti
+    ON us.index_id = ti.index_id
+    AND us.table_id = ti.descriptor_id
+    ORDER BY total_reads ASC;
+    ~~~
 
-Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
+    ~~~
+                  table_name     |                  index_name                   | total_reads |           last_read
+    -----------------------------+-----------------------------------------------+-------------+--------------------------------
+      vehicle_location_histories | vehicle_location_histories_pkey               |           1 | 2021-09-28 22:59:03.324398+00
+      rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
+      rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
+      user_promo_codes           | user_promo_codes_pkey                         |         456 | 2021-09-29 00:01:17.063418+00
+      promo_codes                | promo_codes_pkey                              |         910 | 2021-09-29 00:01:17.062319+00
+      vehicles                   | vehicles_pkey                                 |        3591 | 2021-09-29 00:01:18.261658+00
+      users                      | users_pkey                                    |        5401 | 2021-09-29 00:01:18.260198+00
+      rides                      | rides_pkey                                    |       45658 | 2021-09-29 00:01:18.258208+00
+      vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
+    (9 rows)
+    ~~~
+
+    Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and can be dropped.
 
 ### Too many MVCC values
 

@@ -51,6 +51,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
@@ -59,9 +60,11 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~
     statefulset "cockroachdb" scaled
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset my-release-cockroachdb --replicas=4
@@ -70,6 +73,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
     ~~~
     statefulset "my-release-cockroachdb" scaled
     ~~~
+
     </section>
 
 2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:

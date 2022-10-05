@@ -270,6 +270,8 @@ karan
 karthik
 keepalive
 keepalives
+keyspace
+keyspaces
 kenji
 kenjiro
 kerberos

@@ -287,11 +287,15 @@ v22.1.3,v22.1,2022-07-11,false,False,Production,False,go1.17,2ca74540cc1603ff810
 v22.1.4,v22.1,2022-07-19,false,False,Production,False,go1.17,3c6c8933f578a7fd140e24a603d6ec64c6b7a834,cockroachdb/cockroach,true,false
 v22.1.5,v22.1,2022-07-28,false,False,Production,False,go1.17,a30a663cbd9323d34d50f343dd038af64671e25f,cockroachdb/cockroach,true,false
 v21.2.14,v21.2,2022-08-01,false,False,Production,False,go1.16,8f4dc943d39780a07dff855151eb3ac217064bbe,cockroachdb/cockroach,false,false
-v22.1.6,v22.1,2022-08-23,false,False,Production,False,go1.17,760a8253ae6478d69da0330133e3efec8e950e4e,cockroachdb/cockroach,true,false
+v22.1.6,v22.1,2022-08-23,false,False,Production,False,go1.17,760a8253ae6478d69da0330133e3efec8e950e4e,cockroachdb/cockroach,false,false
 v22.2.0-alpha.1,v22.2,2022-08-30,false,False,Testing,False,go1.17,3688055c09cd32f1186624a1ccc3fe35e5a0cffd,cockroachdb/cockroach-unstable,true,true
 v21.2.15,v21.2,2022-08-29,false,False,Production,False,go1.16,2326e63d4a9ad62b19056f90f938a00482cbf56a,cockroachdb/cockroach,false,false
 v22.2.0-alpha.2,v22.2,2022-09-06,false,False,Testing,False,go1.17,d676dcb809083388a3a280a7f9d5c8230b1682e6,cockroachdb/cockroach-unstable,true,true
 v22.2.0-alpha.3,v22.2,2022-09-12,false,False,Testing,False,go1.17,bcc1682b3a433f46cfb85bb38fe2d2f456019422,cockroachdb/cockroach-unstable,true,true
 v21.1.21,v21.1,2022-09-15,false,False,Production,False,go1.17,dd345173f3ef06b031cf470c67ae14dd0503a091,cockroachdb/cockroach,false,false
-v22.1.7,v22.1,2022-09-15,false,False,Production,False,go1.17,a346e7a,cockroachdb/cockroach,true,false
+v22.1.7,v22.1,2022-09-15,false,False,Production,False,go1.17,a346e7a,cockroachdb/cockroach,false,false
 v22.2.0-alpha.4,v22.2,2022-09-22,false,False,Testing,False,go1.17,aac413cd4ca62f3392029b42219ebb2788979fb8,cockroachdb/cockroach-unstable,true,true
+v22.2.0-beta.1,v22.2,2022-09-26,false,False,Testing,False,go1.17,a33d71dcd904c771d1297323d8d206b8b59d40bf,cockroachdb/cockroach-unstable,true,true
+v22.1.8,v22.1,2022-09-29,false,False,Production,False,go1.17,bdcab67f778617515597f1012f37f14f622b15a0,cockroachdb/cockroach,false,false
+v21.2.16,v21.2,2022-09-29,false,False,Production,False,go1.17,5c5501092e833d2a10d1351f8b4f4b2dc83e95a8,cockroachdb/cockroach,false,false
+v22.2.0-beta.2,v22.2,2022-10-03,false,False,Testing,False,go1.17,860584a59dee73d7a66ce882c668cef6eb2556f7,cockroachdb/cockroach-unstable,true,true

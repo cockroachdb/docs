@@ -95,4 +95,7 @@ To add a region to a super region, alter the super region as shown above to be a
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`ALTER DATABASE`](alter-database.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`ALTER DATABASE ... SET SECONDARY REGION`](set-secondary-region.html)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](drop-secondary-region.html)
 - [SQL Statements](sql-statements.html)

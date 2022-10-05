@@ -171,12 +171,12 @@ SQLSTATE: 42P01
 ~~~
 
 ~~~
-  table_name |  index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+---------------+------------+--------------+-------------+-----------+---------+-----------
-  rides      | start_end_idx |    true    |            1 | start_time  | ASC       |  false  |  false
-  rides      | start_end_idx |    true    |            2 | end_time    | ASC       |  false  |  false
-  rides      | start_end_idx |    true    |            3 | city        | ASC       |  false  |   true
-  rides      | start_end_idx |    true    |            4 | id          | ASC       |  false  |   true
+  table_name |  index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+---------------+------------+--------------+-------------+-----------+---------+----------+----------
+  rides      | start_end_idx |     t      |            1 | start_time  | ASC       |    f    |    f     |    t
+  rides      | start_end_idx |     t      |            2 | end_time    | ASC       |    f    |    f     |    t
+  rides      | start_end_idx |     t      |            3 | city        | ASC       |    f    |    t     |    t
+  rides      | start_end_idx |     t      |            4 | id          | ASC       |    f    |    t     |    t
 (4 rows)
 ~~~
 

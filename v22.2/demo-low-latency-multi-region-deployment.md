@@ -323,5 +323,8 @@ The small demo cluster used in this example is essentially in a state of overloa
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
 - [Install CockroachDB](install-cockroachdb.html)
