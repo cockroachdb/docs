@@ -69,7 +69,6 @@ The following statements can use the declarative schema changer, and are enabled
 - [`ADD COLUMN`](add-column.html)
 - [`ALTER PRIMARY KEY`](alter-primary-key.html)
 - [`COMMENT ON`](comment-on.html)
-- [`CREATE INDEX`](create-index.html)
 - [`DROP COLUMN`](drop-column.html)
 - [`DROP DATABASE`](drop-database.html)
 - [`DROP OWNED BY`](drop-owned-by.html)
