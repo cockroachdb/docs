@@ -208,7 +208,11 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
     rm /usr/local/bin/cockroach_old
     ~~~
 
+    <div class="filter-content" markdown="1" data-scope="linux">
+
     If you leave versioned binaries on your servers, you do not need to do anything.
+
+    </div>
 
 1. After the node has rejoined the cluster, ensure that the node is ready to accept a SQL connection.
 
