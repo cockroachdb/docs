@@ -18,10 +18,20 @@ Subcommand | Description
 [`RENAME TO`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement in the index.
+[`VISIBLE`](#index-visibility) | Make an index visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index).
+[`NOT VISIBLE`](#index-visibility) | Make an index not visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index).
 
 ## Index visibility
 
-Use `VISIBLE` or `NOT VISIBLE` to set whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If `NOT VISIBLE`, the index will not be used in queries unless specifically selected with [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+Use the `VISIBLE` and `NOT VISIBLE` subcommands to set the visibility of an index. This determines whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). 
+
+By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes).
+
+{{site.data.alerts.callout_info}}
+`UNIQUE` and `PRIMARY KEY` [constraints](constraints.html) are still enforced on indexes that are not visible.
+{{site.data.alerts.end}}
+
+This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
 
 ## View schema changes
 
