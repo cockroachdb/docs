@@ -22,7 +22,7 @@ This will return the following output after validating that the backup files are
 
 The output will return `file_bytes` along with the columns you receive from `SHOW BACKUP` without `check_files`. The `file_bytes` column indicates the estimated bytes in external storage for a particular table object. For more detail on the output columns, see the `SHOW BACKUP` [Response](show-backup.html#response) table.
 
-If `SHOW BACKUP ... check_files` cannot read from a file, it will return an error message with the file path: 
+If `SHOW BACKUP ... check_files` cannot read from a file, it will return an error message similar to the following: 
 
 ~~~
 ERROR: The following files are missing from the backup:
