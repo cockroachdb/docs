@@ -25,7 +25,7 @@ Subcommand | Description
 
 Use the `VISIBLE` and `NOT VISIBLE` subcommands to set the visibility of an index. This determines whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). 
 
-By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes).
+By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes).
 
 {{site.data.alerts.callout_info}}
 `UNIQUE` and `PRIMARY KEY` [constraints](constraints.html) are still enforced on indexes that are not visible.
