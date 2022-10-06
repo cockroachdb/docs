@@ -148,8 +148,6 @@ To finalize the schema, click **Finalize Schema** when viewing the **Summary Rep
 
 1. In the **Create Schema** tab, name the new database and select a user to own the database. Optionally click **Download SQL export** to download your schema file. This is useful for migrating your database to a different cluster. Then click **Finalize** to create the new database.
 
-1. In the **Move Data** tab, click **Done!**.
-
 {{site.data.alerts.callout_success}}
 After finalizing the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application). 
 {{site.data.alerts.end}}
