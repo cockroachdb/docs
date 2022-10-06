@@ -18,6 +18,25 @@ Get future release notes emailed to you:
 As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
 {{site.data.alerts.end}}
 
+## October 3, 2022
+
+<h3> Bug fixes </h3>
+
+- The {{ site.data.products.db }} Console now utilizes the same [cluster setting](../stable/cluster-settings.html) as the DB Console, `sql.index_recommendation.drop_unused_duration`, as a threshold value for dropping unused indexes.
+- Fixed a bug where [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoints could fail to create but display an error message that said they were still creating.
+
+## September 24, 2022
+
+<h3>Console changes</h3>
+
+- You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+
+## September 16, 2022
+
+<h3>Console changes</h3>
+
+- A tool to [estimate your monthly cost](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) based on your workload is now available for {{ site.data.products.serverless }} clusters.
+
 ## September 8, 2022
 
 <h3> Console changes </h3>
@@ -167,7 +186,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
     GCP                              | AWS
     ---------------------------------|------------
-    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    California (`us-west2`)              | Mumbai (`ap-south-1`)
     Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
     South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
 

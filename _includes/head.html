@@ -20,6 +20,11 @@
 <meta name="robots" content="nocache">
 {% endunless -%}
 {%- endif -%}
+{% comment %} The below if block helps prove ownership of the cockroachlabs.com/docs website for Google Search Console. {% endcomment %}
+{% if page.layout == "homepage" %}
+<meta name="google-site-verification" content="Du_z8l1I9HPqQS022xQn6UTRhDWYQRJZchcoUhYfQaM" /> {% comment %} Nick Vigilante {% endcomment %}
+<meta name="google-site-verification" content="xIjIKHNh-szz0m5JilyA4IriUmVD5DxeYBE18xSqvZY" /> {% comment %} Joe Nickdow {% endcomment %}
+{% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
@@ -50,6 +55,36 @@ var pageConfig = {
 </script>
 
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
+
+{%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
+<script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET";;analytics.SNIPPET_VERSION="4.15.3";
+  analytics.load("Mz68FzJ2r4poMQ4bQTniyvZF9yF0ycET", {
+    user: {
+      cookie: {
+        key: "crl_brand_ajs_user_id",
+        oldKey: "crl_brand_ajs_user",
+      },
+      localStorage: {
+        key: "crl_brand_ajs_user_traits",
+      },
+    },
+    group: {
+      cookie: {
+        key: "crl_brand_ajs_group_id",
+      },
+      localStorage: {
+        key: "crl_brand_ajs_group_properties",
+      }
+    }
+  });
+  analytics.page();
+  }}();
+</script>
+
+{% if page.layout == "api" %}
+  <script src="{{ 'js/rapidoc-min.js' | relative_url }}"></script>
+{% endif %}
 
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>

@@ -24,7 +24,7 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_backup.html %}
 </div>
 
 ## Parameters
@@ -57,15 +57,15 @@ Field | Description
 `parent_schema_name` | The name of the parent schema.
 `object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `object_type` | The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
-`backup_type` |  The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
+`backup_type` | The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
 `end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup objects, in bytes. Note that `size_bytes` indicates the logical size of the table objects, which is computed as the sum of the size of each key value pair. See `file_bytes` in this table for more detail.
 `rows` | Number of rows in tables that are part of the backup.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` |  Whether the backup is of a full cluster or not.
-`path` |  The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 <span class="version-tag">New in v22.2:</span> `file_bytes` | (With the `check_files` option only) The estimated bytes in external storage for a particular table object. This is the physical bytes that a given table object is taking up. For example, when the files are written to disk in storage they could be compressed. If you total all file bytes, the result is the physical bytes in your storage location. Note that for smaller tables the byte size in `file_bytes` may be larger than `size_bytes` because of the overhead required to create an SST file.
+`path` | The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 
 See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
 

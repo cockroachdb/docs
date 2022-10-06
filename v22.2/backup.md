@@ -173,7 +173,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{% include {{ page.version.version }}/misc/auth-intro-examples.md %}
 
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.

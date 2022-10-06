@@ -191,3 +191,4 @@ table tr td:nth-child(2) {
  Cursors | ✗ | Standard | Traverse a table's rows.
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL](row-level-ttl.html).
+ User-defined functions | Partial | Standard | [User-Defined Functions documentation](user-defined-functions.html)

@@ -23,11 +23,45 @@ To send the secret key when making an API call, add the secret key to the `Autho
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
   --url 'https://cockroachlabs.cloud/api/v1/clusters' \
   --header 'Authorization: Bearer {secret_key}'
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
+
+{% include_cached copy-clipboard.html %}
+~~~ text
+Authorization: Bearer {secret_key}
+~~~
+
+</section>
+
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
+
+## Set the API version
+
+The `Cc-Version` HTTP header specifies the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to version `2022-03-31` (the initial release of the Cloud API). The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime).
+
+If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --header 'Cc-Version: {version}'
 ~~~
 </section>
 
@@ -35,10 +69,11 @@ curl --request GET \
 {% include_cached copy-clipboard.html %}
 ~~~ text
 Authorization: Bearer {secret_key}
+Cc-Version: {version}
 ~~~
 </section>
 
-Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys) and `{version}` is the version of the Cloud API.
 
 ## Create a new cluster
 
@@ -50,6 +85,7 @@ To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The s
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
@@ -57,9 +93,11 @@ curl --request POST \
   --header 'Authorization: Bearer {secret_key}' \
   --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
 ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
+
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
@@ -75,6 +113,7 @@ curl --request POST \
   }
 }
 ~~~
+
 </section>
 
 Where:
@@ -92,6 +131,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
@@ -99,9 +139,11 @@ curl --request POST \
   --header 'Authorization: Bearer {secret_key}' \
   --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
 ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
+
 {% include_cached copy-clipboard.html %}
 ~~~ JSON
 {
@@ -117,6 +159,7 @@ curl --request POST \
   }
 }
 ~~~
+
 </section>
 
 If the request was successful, the API will return information about the newly created cluster.
@@ -291,6 +334,7 @@ To set the maximum spend limit for a Serverless cluster, send a `PUT` request to
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request PUT \
@@ -298,15 +342,18 @@ curl --request PUT \
   --header 'Authorization: Bearer {secret_key}' \
   --data '{"spendLimit": {spend_limit}}'
 ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
+
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
   "spendLimit": {spend_limit}
 }
 ~~~
+
 </section>
 
 Where:

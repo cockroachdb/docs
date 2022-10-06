@@ -29,8 +29,9 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
-[`cluster_locks`](#cluster_locks)  | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
+[`cluster_locks`](#cluster_locks) | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
+`cluster_execution_insights` | Contains information about SQL statement executions on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.| ✗
 [`cluster_queries`](#cluster_queries) | Contains information about queries running on your cluster.| ✓
@@ -38,6 +39,7 @@ Table name | Description| Use in production
 `cluster_settings` | Contains information about [cluster settings](cluster-settings.html).| ✗
 [`cluster_transactions`](#cluster_transactions) | Contains information about transactions running on your cluster.| ✓
 `create_statements` | Contains information about tables and indexes in your database.| ✗
+`create_function_statements` | <a name="create_function_statements"></a> Contains information about [user-defined functions](user-defined-functions.html) in your database.| ✗
 `create_type_statements` | <a name="create_type_statements"></a> Contains information about [user-defined types](enum.html) in your database.| ✗
 `cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.| ✗
 `databases` | Contains information about the databases in your cluster.| ✗
@@ -59,6 +61,7 @@ Table name | Description| Use in production
 `lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.| ✗
 `node_build_info` | Contains information about nodes in your cluster.| ✗
 `node_contention_events`| Contains information about contention on the gateway node of your cluster.| ✗
+`node_execution_insights` | Contains information about SQL statement executions on the gateway node of your cluster.| ✗
 `node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.| ✗
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.| ✗
 `node_metrics` | Contains metrics for nodes in your cluster.| ✗
@@ -704,7 +707,7 @@ Column | Type | Description
 `active_queries` | `STRING` | The SQL queries active in the session.
 `last_active_query` | `STRING` | The most recently completed SQL query in the session.
 `session_start` | `TIMESTAMP` | The timestamp at which the session started.
-`oldest_query_start` | `TIMESTAMP` | The timestamp at which the oldest currently active SQL query in the session started.
+`active_query_start` | `TIMESTAMP` | The timestamp at which the currently active SQL query in the session started.
 `kv_txn` | `STRING` | The ID of the current key-value transaction for the session.
 `alloc_bytes` | `INT8` | The number of bytes allocated by the session.
 `max_alloc_bytes` | `INT8` | The maximum number of bytes allocated by the session.
@@ -716,7 +719,7 @@ Column | Type | Description
 SELECT * FROM crdb_internal.cluster_sessions where application_name = 'movr';
 ~~~
 ~~~
-  node_id |            session_id            | user_name | client_address  | application_name |                       active_queries                       |               last_active_query               |       session_start       |     oldest_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
+  node_id |            session_id            | user_name | client_address  | application_name |                       active_queries                       |               last_active_query               |       session_start       |     active_query_start     |                kv_txn                | alloc_bytes | max_alloc_bytes
 ----------+----------------------------------+-----------+-----------------+------------------+------------------------------------------------------------+-----------------------------------------------+---------------------------+----------------------------+--------------------------------------+-------------+------------------
         1 | 16f762c2af917e800000000000000001 | root      | 127.0.0.1:49198 | movr             | SELECT city, id FROM vehicles WHERE city = 'washington dc' | SELECT city, id FROM vehicles WHERE city = $1 | 2022-06-10 22:26:16.39059 | 2022-06-10 22:28:00.646594 | 7883cbe3-7cf3-4155-a1a8-82d1211c9ffa |      133120 |          163840
 (1 row)
@@ -842,6 +845,7 @@ Column | Type | Description
 `statistics` | `JSONB NOT NULL` | Statistics for the statement. See [`statistics` column](#statistics-column).
 `sampled_plan` | `JSONB NOT NULL` | The sampled query plan of the current statement statistics. This column is unfilled if there is no sampled query plan.
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
+`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations](ui-insights-page.html#schema-insights-view) of the format `{type} : {sql query}`.
 
 #### `metadata` column
 

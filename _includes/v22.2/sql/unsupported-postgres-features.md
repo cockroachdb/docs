@@ -1,7 +1,6 @@
 - Stored procedures and functions.
 - Triggers.
 - Events.
-- User-defined functions (UDFs).
 - `FULLTEXT` functions and indexes.
 - Drop primary key.
 
@@ -12,3 +11,4 @@
 - Column-level privileges.
 - XA syntax.
 - Creating a database from a template.
+- [Dropping a single partition from a table](partitioning.html#known-limitations).

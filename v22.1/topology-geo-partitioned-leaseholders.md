@@ -2,6 +2,7 @@
 title: Geo-Partitioned Leaseholders Topology
 summary: Common cluster topology patterns with setup examples and performance considerations.
 toc: true
+sitemap: false
 docs_area: deploy
 ---
 

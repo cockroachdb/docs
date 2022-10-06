@@ -34,9 +34,11 @@ $ kubectl create \
     ~~~
 
 {% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl create \

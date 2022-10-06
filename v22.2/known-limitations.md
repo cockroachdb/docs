@@ -406,6 +406,10 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/19464)
 
+### Dropping a single partition
+
+{% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
+
 ### Adding a column with sequence-based `DEFAULT` values
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
@@ -591,3 +595,11 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+
+### User-defined functions
+
+<!--
+{% include {{ page.version.version }}/known-limitations/udf-changefeed-expression.md %}
+-->
+
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}

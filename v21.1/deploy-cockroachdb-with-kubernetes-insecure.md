@@ -85,6 +85,7 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
@@ -108,9 +109,11 @@ To shut down the CockroachDB cluster, delete the resources you created, includin
     prometheusrule "prometheus-cockroachdb-rules" deleted
     servicemonitor "cockroachdb" deleted
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm uninstall my-release

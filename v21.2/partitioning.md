@@ -1,11 +1,10 @@
 ---
-title: Table Partitioning
-summary: Partitioning gives you row-level control of how and where your data is stored.
+title: Define Table Partitions
+summary: Partitioning is an Enterprise feature that gives you row-level control of how and where your data is stored.
 toc: true
-docs_area: deploy
 ---
 
-CockroachDB allows you to define table partitions, giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
+CockroachDB allows you to define table partitions, thus giving you row-level control of how and where your data is stored. Partitioning enables you to reduce latencies and costs and can assist in meeting regulatory requirements for your data.
 
 {% include enterprise-feature.md %}
 
@@ -41,7 +40,7 @@ For more details about these flags, see the [`cockroach start`](cockroach-start.
 
 You must have a valid Enterprise license to use table partitioning features. For details about requesting and setting a trial or full Enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
-The following features do not work with an **expired license**:
+Note that the following features do not work with an **expired license**:
 
 - Creating new table partitions or adding new zone configurations for partitions
 - Changing the partitioning scheme on any table or index
@@ -101,11 +100,11 @@ For instance, consider the database of a global online learning portal that has 
 
 ##### Primary key considerations
 
-The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
+- The order in which the columns are defined in the primary key is important. The partitions and subpartitions need to follow that order. In the example of the online learning portal, if you define the primary key as `(country, expected_graduation_date, id)`, the primary partition is by `country`, and then subpartition is by `expected_graduation_date`. You cannot skip `country` and partition by `expected_graduation_date`.
 
 #### Partition using a secondary index
 
-The primary key discussed in the preceding section has two drawbacks:
+The primary key discussed above has two drawbacks:
 
 - It does not enforce that the identifier column is globally unique.
 - It does not provide fast lookups on the identifier.
@@ -114,13 +113,7 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
-When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
-
-#### Partition using foreign key reference
-
-If a partitioned table contains a [foreign key reference](foreign-key.html) to a non-partitioned table, the secondary index created automatically for the foreign key reference will not be partitioned. This can impact performance when querying against the partitioned table, as the data may exist in a distant node.
-
-To minimize potential latency issues, configure the non-partitioned table to be a [`GLOBAL` table](global-tables.html).
+ When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
 
 ### Replication zones
 
@@ -716,10 +709,13 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
+- **Logical structure of partitions:** CockroachDB uses the partitioning concept to allow users to logically subdivide a single physical table to enable independent configuration of those partitions using zone configurations. Other databases sometimes implement partitioning as the logical union of physically separate tables. This difference means that CockroachDB is able to permit inexpensive repartitioning in contrast to other databases. Consequently, CockroachDB is unable to provide the same bulk data deletion operations over table partitions that other databases achieve by physically dropping the underlying table represented by the partition.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- {% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
 
 ## See also
 

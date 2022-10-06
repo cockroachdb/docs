@@ -9,7 +9,9 @@ docs_area: reference.cli
 This page explains the `cockroach start` [command](cockroach-commands.html), which you use to start a new multi-node cluster or add nodes to an existing cluster.
 
 {{site.data.alerts.callout_success}}
-If you need a simple single-node backend for app development, use [`cockroach start-single-node`](cockroach-start-single-node.html) instead. For quick SQL testing, consider using [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with immediate access to an interactive SQL shell.
+If you need a simple single-node backend for app development, use [`cockroach start-single-node`](cockroach-start-single-node.html) instead, and follow the best practices for local testing described in [Test Your Application](local-testing.html).
+
+For quick SQL testing, consider using [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with immediate access to an interactive SQL shell.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -103,28 +105,82 @@ Flag | Description
 
 ### Locality
 
-The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,zone=paris`), and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
+The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality should include a `region` key-value if you are using CockroachDB's [Multi-region SQL capabilities](multiregion-overview.html).
+
+Depending on your deployment you can also specify country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu-west-1,zone=eu-west-1a`), and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
 
 - Specifying a region with a `region` tier is required in order to enable CockroachDB's [multi-region capabilities](multiregion-overview.html).
 
-- CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. Locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
+- CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. Locality can also be used to influence the location of data replicas in various ways using high-level [multi-region SQL capabilities](multiregion-overview.html) or low-level [replication zones](configure-replication-zones.html#replication-constraints).
 
 - When there is high latency between nodes (e.g., cross-availability zone deployments), CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](topology-follow-the-workload.html). In a deployment across more than 3 availability zones, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of availability zones.
 
-- Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) Enterprise features.        
+- Locality is also a prerequisite for using the [Multi-region SQL abstractions](multiregion-overview.html), [table partitioning](partitioning.html), and [**Node Map**](enable-node-map.html) {{site.data.products.enterprise}} features.
+
+<a name="locality-example"></a>
 
 #### Example
 
+The following shell commands use the `--locality` flag to start 9 nodes to run across 3 regions: `us-east-1`, `us-west-1`, and `europe-west-1`. Each region's nodes are further spread across different availability zones within that region.
+
+{{site.data.alerts.callout_info}}
+This example follows the conventions required to use CockroachDB's [multi-region capabilities](multiregion-overview.html).
+{{site.data.alerts.end}}
+
+Nodes in `us-east-1`:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-# Locality flag for nodes in US East availability zone:
---locality=region=us,zone=us-east
-
-# Locality flag for nodes in US Central availability zone:
---locality=region=us,zone=us-central
-
-# Locality flag for nodes in US West availability zone:
---locality=region=us,zone=us-west
+cockroach start --locality=region=us-east-1,zone=us-east-1a # ... other required flags go here
 ~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-east-1,zone=us-east-1c # ... other required flags go here
+~~~
+
+Nodes in `us-west-1`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-west-1,zone=us-west-1a # ... other required flags go here
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-west-1,zone=us-west-1b # ... other required flags go here
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-west-1,zone=us-west-1c # ... other required flags go here
+~~~
+
+Nodes in `europe-west-1`:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=europe-west-1,zone=europe-west-1a # ... other required flags go here
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=europe-west-1,zone=europe-west-1b # ... other required flags go here
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=europe-west-1,zone=europe-west-1c # ... other required flags go here
+~~~
+
+For another multi-region example, see [Start a multi-region cluster](#start-a-multi-region-cluster).
+
+For more information about how to use CockroachDB's multi-region capabilities, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
 ### Storage
 
@@ -256,9 +312,11 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -288,27 +346,95 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 Then run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --certs-dir=certs \
 --host=<address of any node>
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
 --host=<address of any node>
 ~~~
+
 </div>
+
+### Start a multi-region cluster
+
+In this example we will start a multi-node [local cluster](start-a-local-cluster.html) with a multi-region setup that uses the same regions (passed to the [`--locality`](#locality) flag) as the [multi-region MovR demo application](demo-low-latency-multi-region-deployment.html).
+
+First, start a node in the `us-east1` region:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-east1,zone=us-east-1a --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+Next, start a node in the `us-west1` region:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=us-west1,zone=us-west-1a --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+Next, start a node in the `europe-west1` region:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach start --locality=region=europe-west1,zone=europe-west-1a --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+Next, initialize the cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach init --insecure --host=localhost --port=26257
+~~~
+
+Next, connect to the cluster using [`cockroach sql`](cockroach-sql.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach sql --host=localhost --port=26257 --insecure
+~~~
+
+Finally, issue the [`SHOW REGIONS`](show-regions.html) statement to verify that the list of regions is expected.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW REGIONS;
+~~~
+
+~~~
+     region    | zones | database_names | primary_region_of
+---------------+-------+----------------+--------------------
+  europe-west1 | {}    | {}             | {}
+  us-east1     | {}    | {}             | {}
+  us-west1     | {}    | {}             | {}
+(3 rows)
+~~~
+
+For more information about running CockroachDB multi-region, see the [Multi-region Capabilities Overview](multiregion-overview.html).
+
+For a more advanced example showing how to run a simulated workload on a multi-region CockroachDB cluster on your local machine, see [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
+
+{{site.data.alerts.callout_info}}
+For more information about the `--locality` flag, see [Locality](#locality).
+{{site.data.alerts.end}}
 
 ### Start a multi-node cluster across private networks
 
@@ -366,6 +492,7 @@ $ cockroach init \
 To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the same addresses you used when [starting the cluster](#start-a-multi-node-cluster):
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -375,9 +502,11 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -387,6 +516,7 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 ### Create a table with node locality information

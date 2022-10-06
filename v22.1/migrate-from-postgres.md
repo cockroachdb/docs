@@ -6,8 +6,8 @@ keywords: copy
 docs_area: migrate
 ---
 
-{{site.data.alerts.callout_success}}
-We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from PostgreSQL to CockroachDB.
+{{site.data.alerts.callout_danger}}
+The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from PostgreSQL to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
 {{site.data.alerts.end}}
 
 This page has instructions for migrating data from PostgreSQL to CockroachDB using [`IMPORT`][import]'s support for reading [`pg_dump`][pgdump] files.

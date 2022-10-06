@@ -2,6 +2,7 @@
 title: Duplicate Indexes Topology
 summary: Guidance on using the duplicate indexes topology in a multi-region deployment.
 toc: true
+sitemap: false
 docs_area: deploy
 ---
 

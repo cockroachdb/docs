@@ -42,7 +42,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul>
       <li>The statement plan produced by <a href="explain.html"><code>EXPLAIN</code></a> or <a href="explain-analyze.html"><code>EXPLAIN ANALYZE</code></a> indicates that the statement uses a full table scan.</li>
       <li>Querying the <code>crdb_internal.node_statement_statistics</code> table indicates that you have full table scans in some statement's plans.</li>
-      <li>Viewing the statement plan on the <a href="ui-statements-page.html#statement-fingerprint-page">Statement Fingerprint page</a> of the DB Console indicates that the plan contains full table scans.</li>
+      <li>Viewing the statement plan on the <a href="ui-statements-page.html#statement-fingerprint-page">Statement Fingerprint page</a> in the DB Console indicates that the plan contains full table scans.</li>
       <li>Running the <a href="show-full-table-scans.html"><code>SHOW FULL TABLE SCANS</code></a> statement returns results.</li>
       <li>The <a href="ui-sql-dashboard.html#full-table-index-scans">Full Table/Index Scans graph</a> in the DB Console is showing spikes over time.</li>
     </ul>
@@ -53,7 +53,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
   <tr>
     <td><ul>
       <li>The <a href="ui-hardware-dashboard.html">Hardware metrics dashboard</a> in the DB Console shows high resource usage per node.</li>
-      <li>The Problem Ranges report on the <a href="ui-debug-pages.html">Advanced Debug page</a> of the DB Console indicates a high number of queries per second on a subset of ranges or nodes.</li>
+      <li>The Problem Ranges report on the <a href="ui-debug-pages.html">Advanced Debug page</a> in the DB Console indicates a high number of queries per second on a subset of ranges or nodes.</li>
     </ul>
     </td>
     <td><ul><li>You have resource contention.</li></ul></td>
@@ -63,6 +63,11 @@ This section describes how to use CockroachDB commands and dashboards to identif
     <td><ul><li>The <a href="ui-overview-dashboard.html#">Overview dashboard</a> in the DB Console shows high service latency and QPS for <code>INSERT</code> and <code>UPDATE</code> statements.</li></ul></td>
     <td><ul><li>Your tables have long write times.</li></ul></td>
     <td><ul><li><a href="#slow-writes">Remove unnecessary indexes.</a></li></ul></td>
+  </tr>
+  <tr>
+    <td><ul><li>You experience high latency on queries that cannot be explained by high contention or a suboptimal query plan. You might also see high CPU on one or more nodes.</li></ul></td>
+    <td><ul><li>You may be scanning over large numbers of <a href="architecture/storage-layer.html#mvcc">MVCC versions</a>. This is similar to how a full table scan can be slow.</li></ul></td>
+    <td><ul><li><a href="#too-many-mvcc-values">Configure CockroachDB to purge unneeded MVCC values.</a></li></ul></td>
   </tr>
 </table>
 
@@ -76,9 +81,10 @@ Transaction contention occurs when transactions issued from multiple clients at 
 
 #### Indicators that your application is experiencing transaction contention
 
+* In the [**Transaction Executions** view](ui-insights-page.html) on the **Insights** page, transaction executions display the **High Contention** insight.
 * Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 * The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) is showing spikes over time.
-<img src="{{ 'images/v22.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
 * The [Transaction Restarts graph](ui-sql-dashboard.html) is showing spikes in retries over time.
 
 #### Fix transaction contention problems
@@ -97,7 +103,7 @@ Full table scans often result in poor statement performance.
     ~~~ sql
     SHOW FULL TABLE SCANS;
     ~~~
-* The following query against the `CRDB_INTERNAL.node_statement_statistics` table returns results:
+* The following query against the `crdb_internal.node_statement_statistics` table returns results:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -105,7 +111,7 @@ Full table scans often result in poor statement performance.
     FROM crdb_internal.node_statement_statistics
     WHERE full_scan = true;
     ~~~
-* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-fingerprint-page) of the DB Console indicates that the plan contains full table scans.
+* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-fingerprint-page) in the DB Console indicates that the plan contains full table scans.
 * The statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
 * The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
 
@@ -122,7 +128,7 @@ Also see [Table scans best practices](performance-best-practices-overview.html#t
 #### Indicators that your tables are using suboptimal primary keys
 
 * The [Hardware metrics dashboard](ui-hardware-dashboard.html) in the DB Console shows high resource usage per node.
-* The Problem Ranges report on the [Advanced Debug page](ui-debug-pages.html) of the DB Console indicates a high number of queries per second on a subset of ranges or nodes.
+* The Problem Ranges report on the [Advanced Debug page](ui-debug-pages.html) in the DB Console indicates a high number of queries per second on a subset of ranges or nodes.
 
 #### Fix suboptimal primary keys
 
@@ -138,34 +144,53 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 #### Fix slow writes
 
-[Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
+[Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, do one of the following:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
-FROM crdb_internal.index_usage_statistics AS us
-JOIN crdb_internal.table_indexes ti
-ON us.index_id = ti.index_id
-AND us.table_id = ti.descriptor_id
-ORDER BY total_reads ASC;
-~~~
+- In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
+- Run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
-~~~
-              table_name     |                  index_name                   | total_reads |           last_read
------------------------------+-----------------------------------------------+-------------+--------------------------------
-  vehicle_location_histories | vehicle_location_histories_pkey               |           1 | 2021-09-28 22:59:03.324398+00
-  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
-  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
-  user_promo_codes           | user_promo_codes_pkey                         |         456 | 2021-09-29 00:01:17.063418+00
-  promo_codes                | promo_codes_pkey                              |         910 | 2021-09-29 00:01:17.062319+00
-  vehicles                   | vehicles_pkey                                 |        3591 | 2021-09-29 00:01:18.261658+00
-  users                      | users_pkey                                    |        5401 | 2021-09-29 00:01:18.260198+00
-  rides                      | rides_pkey                                    |       45658 | 2021-09-29 00:01:18.258208+00
-  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
-(9 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
+    FROM crdb_internal.index_usage_statistics AS us
+    JOIN crdb_internal.table_indexes ti
+    ON us.index_id = ti.index_id
+    AND us.table_id = ti.descriptor_id
+    ORDER BY total_reads ASC;
+    ~~~
 
-Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
+    ~~~
+                  table_name     |                  index_name                   | total_reads |           last_read
+    -----------------------------+-----------------------------------------------+-------------+--------------------------------
+      vehicle_location_histories | vehicle_location_histories_pkey               |           1 | 2021-09-28 22:59:03.324398+00
+      rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
+      rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
+      user_promo_codes           | user_promo_codes_pkey                         |         456 | 2021-09-29 00:01:17.063418+00
+      promo_codes                | promo_codes_pkey                              |         910 | 2021-09-29 00:01:17.062319+00
+      vehicles                   | vehicles_pkey                                 |        3591 | 2021-09-29 00:01:18.261658+00
+      users                      | users_pkey                                    |        5401 | 2021-09-29 00:01:18.260198+00
+      rides                      | rides_pkey                                    |       45658 | 2021-09-29 00:01:18.258208+00
+      vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
+    (9 rows)
+    ~~~
+
+    Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and can be dropped.
+
+### Too many MVCC values
+
+#### Indicators that your tables have too many MVCC values
+
+In the [Databases](ui-databases-page.html#tables-view) page in the DB Console, the Tables view shows the percentage of live data for each table. For example:
+
+<img src="{{ 'images/v22.2/ui_databases_live_data.png' | relative_url }}" alt="Table live data" style="border:1px solid #eee;max-width:100%" />
+
+In this example, at `37.3%` the `vehicles` table would be considered to have a low percentage of live data. In the worst cases, the percentage can be `0%`.
+
+A low percentage of live data can cause statements to scan more data ([MVCC values](architecture/storage-layer.html#mvcc)) than required, which can reduce performance.
+
+#### Configure CockroachDB to purge MVCC values
+
+Reduce the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) zone configuration of the table as much as possible.
 
 ## See also
 

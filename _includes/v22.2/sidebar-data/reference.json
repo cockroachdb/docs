@@ -122,6 +122,12 @@
                 ]
               },
               {
+                "title": "User-Defined Functions",
+                "urls": [
+                  "/${VERSION}/user-defined-functions.html"
+                ]
+              },
+              {
                 "title": "<code>NULL</code> Handling",
                 "urls": [
                   "/${VERSION}/null-handling.html"
@@ -190,6 +196,12 @@
                 "title": "<code>ALTER DEFAULT PRIVILEGES</code>",
                 "urls": [
                   "/${VERSION}/alter-default-privileges.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/alter-function.html"
                 ]
               },
               {
@@ -343,6 +355,12 @@
                 ]
               },
               {
+                "title": "<code>CREATE FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/create-function.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE INDEX</code>",
                 "urls": [
                   "/${VERSION}/create-index.html"
@@ -433,9 +451,21 @@
                 ]
               },
               {
+                "title": "<code>DROP FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/drop-function.html"
+                ]
+              },
+              {
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/drop-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-secondary-region.html"
                 ]
               },
               {
@@ -742,6 +772,12 @@
                 "title": "<code>SET SCHEMA</code>",
                 "urls": [
                   "/${VERSION}/set-schema.html"
+                ]
+              },
+              {
+                "title": "<code>SET SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/set-secondary-region.html"
                 ]
               },
               {
@@ -1678,6 +1714,24 @@
                 ]
               },
               {
+                "title": "Distributed Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-distributed-dashboard.html"
+                ]
+              },
+              {
+                "title": "Queues Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-queues-dashboard.html"
+                ]
+              },
+              {
+                "title": "Slow Requests Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-slow-requests-dashboard.html"
+                ]
+              },
+              {
                 "title": "Changefeeds Dashboard",
                 "urls": [
                   "/${VERSION}/ui-cdc-dashboard.html"
@@ -1719,6 +1773,12 @@
             "title": "Transactions Page",
             "urls": [
               "/${VERSION}/ui-transactions-page.html"
+            ]
+          },
+          {
+            "title": "Insights Page",
+            "urls": [
+              "/${VERSION}/ui-insights-page.html"
             ]
           },
           {
