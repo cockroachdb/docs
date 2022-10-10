@@ -27,11 +27,14 @@ Use the `VISIBLE` and `NOT VISIBLE` subcommands to set the visibility of an inde
 
 By default, indexes are visible. If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes).
 
-{{site.data.alerts.callout_info}}
-`UNIQUE` and `PRIMARY KEY` [constraints](constraints.html) are still enforced on indexes that are not visible.
-{{site.data.alerts.end}}
-
 This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](#set-an-index-to-be-not-visible).
+
+### Index visibility considerations
+
+- Primary indexes must be visible.
+- Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html).
+- Indexes that are not visible are still used for foreign key cascades.
+- When defining a [unique constraint](unique.html), the `NOT VISIBLE` syntax cannot be used to make the corresponding index not visible. Instead, use `ALTER INDEX` after creating the unique constraint.
 
 ## View schema changes
 
