@@ -41,6 +41,10 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 - [Npgsql](https://blog.ervits.com/2020/03/exploring-cockroachdb-with-jupyter.html)
 
+### Python
+
+- [Piccolo ORM](https://github.com/piccolo-orm/piccolo)
+
 ### R
 
 - [RPostgres](https://blog.ervits.com/2020/02/exploring-cockroachdb-with-r-and.html)
