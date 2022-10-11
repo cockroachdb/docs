@@ -1092,7 +1092,7 @@ To allow your reader to select from two or more versions of on-page content, use
   - Reference material where the Enterprise and non-Enterprise versions of a feature differ.
   - Demonstrating how to connect from an example application in each supported programming language (like Python, C++, Java, etc).
 
-To add tabs to your copy, you first define the tabset, then declare each tab's content:
+To add tabs to your copy, you first define the tabset for use later on the page, then you declare each tab's content within each tab.
 
 To define the tabset:
 
@@ -1103,7 +1103,9 @@ To define the tabset:
 </div>
 ```
 
-This example declares two tabs. Then, when ready to define the content within each tab:
+This example defines two tabs (named `macOS` and `Windows`) and defines a unique `data-scope` for each (`macos-install-steps` and `windows-install-steps` respectively).
+
+Then, to declare the content within each tab:
   
 ```
 <section class="filter-content" markdown="1" data-scope="macos-install-steps">
@@ -1121,6 +1123,10 @@ This example declares two tabs. Then, when ready to define the content within ea
 ## This section outside of tabs
 
 ```
+
+Now the user can freely switch between the `macOS` and `Windows` tabs as needed. 
+
+Tip: Do your tabs share a lot of common content betwen them? Tabs are often a great place to make use of [include files](#include-files)!
 
 #### Linking into tabbed content
 
