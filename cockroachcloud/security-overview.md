@@ -73,10 +73,15 @@ The following table summarizes the {{ site.data.products.db }} security features
   <td>Role-based access control</td>
  </tr>
  <tr>
-   <td rowspan="2"><a href="network-authorization.html">Network Authorization</a></td>
+   <td rowspan="3"><a href="network-authorization.html">Network Authorization</a></td>
    <td>&nbsp;</td>
    <td>✓</td>
    <td>IP allowlisting</td>
+ </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td>✓</td>
+  <td><a href="private-clusters.html">Private Clusters (Preview)</a></a> whose clusters nodes have no public IP addresses </td>
  </tr>
  <tr>
   <td>&nbsp;</td>
