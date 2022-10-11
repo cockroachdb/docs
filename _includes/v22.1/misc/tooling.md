@@ -77,6 +77,11 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 |-----+------------------------+----------------+----------|
 | [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Beta | [Migrate your database to CockroachDB with AWS DMS](aws-dms.html)
 
+## Provisioning tools
+| Tool | Latest tested version | Support level | Documentation |
+|------+-----------------------+---------------+---------------|
+| [Terraform](https://terraform.io/) | 1.3.2 | Beta | [Terraform provider for CockroachDB Cloud](https://github.com/cockroachdb/terraform-provider-cockroach#get-started) |
+
 ## Other tools
 
 | Tool | Latest tested version | Support level | Tutorial |
