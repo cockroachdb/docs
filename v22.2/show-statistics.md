@@ -23,12 +23,19 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 Parameter      | Description
 ---------------+---------------
 `table_name`   | The name of the table to view statistics for.
+`opt_with_options` | Control the behavior of `SHOW STATISTICS` with [these options](#options).
+
+### Options
+
+|   Option   | Value |                                                Description                                                |
+|------------|-------|-----------------------------------------------------------------------------------------------------------|
+| `FORECAST` | N/A   | [Display forecasted statistics](#display-forecasted-statistics) along with the existing table statistics. |
 
 ## Output
 
 | Column | Description |
 |-----------|-------------|
-| `statistics_name` | The name of the statistics. If `__auto__`, the statistics were created automatically. |
+| `statistics_name` | The name of the statistics. If `__auto__`, the statistics were created automatically. If `__forecast__`, the statistics are [forecasted](#display-forecasted-statistics). |
 | `column_names` | The name of the columns on which the statistics were created. |
 | `created` | The timestamp when the statistics were created. |
 | `row_count` | The number of rows for which the statistics were computed. |
@@ -67,14 +74,15 @@ Parameter      | Description
 (13 rows)
 ~~~
 
-### Show forecast statistics
+### Display forecasted statistics
 
-The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected.
+The `WITH FORECAST` option calculates and displays forecasted statistics along with the existing table statistics. The forecast is a simple regression model that predicts how the statistics have changed since they were last collected. Forecasts that closely match the historical statistics are used by the [cost-based optimizer](cost-based-optimizer.html).
 
 CockroachDB generates forecasted statistics when the following conditions are met:
 
-- There need to be at least 3 historical statistics collections.
-- The historical statistics need to closely fit a linear pattern.
+- There have been at least 3 historical statistics collections.
+- The historical statistics closely fit a linear pattern.
+- The column's [data type](data-types.html) allows a rate of change to be determined between two values (for example, `DATE`, `TIME`/`TIMETZ`, `TIMESTAMP`/`TIMESTAMPTZ`, `INT`, `FLOAT`, and `DECIMAL`).
 
 The following example shows 3 historical statistics collections and the subsequent forecast:
 
