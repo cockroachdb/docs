@@ -67,7 +67,7 @@ In such cases, we recommend that you use the [`sql_stats_automatic_collection_en
 
 #### Configure non-default statistics retention
 
-By default, when CockroachDB refreshes statistics for a column, it deletes the old statistics for the column.
+By default, when CockroachDB refreshes statistics for a column, it deletes the old statistics for the column (while leaving the most recent 4-5 historical statistics).
 
 When CockroachDB refreshes multi-column statistics, it also deletes the statistics for any "non-default" columns that were deleted or removed from an index, and are therefore no longer part of a multi-column statistic. CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting](cluster-settings), which defaults to a 24-hour retention period.
 
