@@ -1762,6 +1762,12 @@
                 ]
               },
               {
+                "title": "TTL Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-ttl-dashboard.html"
+                ]
+              },
+              {
                 "title": "Custom Chart",
                 "urls": [
                   "/${VERSION}/ui-custom-chart-debug-page.html"

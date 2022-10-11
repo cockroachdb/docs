@@ -52,15 +52,15 @@ SHOW CREATE TABLE ttl_test;
 ~~~
 
 ~~~
-  table_name |                                                                                           create_statement
--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  table_name |                                                                                         create_statement
+-------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   ttl_test   | CREATE TABLE public.ttl_test (
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
              |     description STRING NULL,
              |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
              |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
              |     CONSTRAINT ttl_test_pkey PRIMARY KEY (id ASC)
-             | ) WITH (ttl = 'on', ttl_automatic_column = 'on', ttl_expire_after = '3 mons':::INTERVAL)
+             | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@hourly')
 (1 row)
 ~~~
 
@@ -96,3 +96,4 @@ SHOW CREATE TABLE ttl_test;
 - [`RESTORE`](restore.html)
 - [`SET` (storage parameter)](set-storage-parameter.html)
 - [`WITH` (storage parameter)](with-storage-parameter.html)
+- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)
