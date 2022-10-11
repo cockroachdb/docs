@@ -1088,9 +1088,9 @@ Include files have the following technical limitations:
 ### Tabs
   
 To allow your reader to select from two or more versions of on-page content, use a tabset. This might be appropriate for:
-  - install procedurals with different steps for the different supported platforms
-  - reference material where the Enterprise and non-Enterprise versions of a feature differ
-  - demonstrating how to connect from an example application in each supported programming language.
+  - Install procedurals with different steps for the different supported platforms (like macOS, Windows, Linux).
+  - Reference material where the Enterprise and non-Enterprise versions of a feature differ.
+  - Demonstrating how to connect from an example application in each supported programming language (like Python, C++, Java, etc).
 
 To add tabs to your copy, you first define the tabset, then declare each tab's content:
 
@@ -1098,33 +1098,33 @@ To define the tabset:
 
 ```
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-log-export">AWS CloudWatch</button>
-  <button class="filter-button" data-scope="gcp-log-export">GCP Cloud Logging</button>
+  <button class="filter-button" data-scope="macos-install-steps">macOS</button>
+  <button class="filter-button" data-scope="windows-install-steps">Windows</button>
 </div>
 ```
 
 This example declares two tabs. Then, when ready to define the content within each tab:
   
 ```
-<section class="filter-content" markdown="1" data-scope="aws-log-export">
+<section class="filter-content" markdown="1" data-scope="macos-install-steps">
 
-1. To configure log export to AWS CloudWatch, start by following this step right here!
+1. To install CockroachDB on macOS, first you need to ...
 ...
 </section>
 
-<section class="filter-content" markdown="1" data-scope="gcp-log-export">
+<section class="filter-content" markdown="1" data-scope="windows-install-steps">
 
-1. To configure log export to GCP Cloud Logging, start by following this step right here!
+1. To install CockroachDB on Windows, first you need to ...
 ...
 </section>
 
-## This content outside of tabs
+## This section outside of tabs
 
 ```
 
 #### Linking into tabbed content
 
-To link to content that is contained within a tab, you must add the `filter` component to your link, in one of the following fashions:
+To link to content that is contained within a tab, add the `filter` component to your link, specifying the `data-scope` you provided in your tabset definition. You can do this in the following two ways:
 
 - To link to the top of a target page, with a specific tab selected:
 
@@ -1132,7 +1132,7 @@ To link to content that is contained within a tab, you must add the `filter` com
   [Core changefeeds](create-and-configure-changefeeds.html?filters=core)
   ```
 
-  This takes us to the top of `create-and-configure-changefeeds.html` and ensures the tab matching `data-scope: core` is selected.
+  This takes us to the top of `create-and-configure-changefeeds.html` and ensures the tab matching `data-scope: core` is selected. See [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/stable/create-and-configure-changefeeds.html?filters=core) to see this in action.
  
 - For linking to a header contained within a tabset:
 
@@ -1140,7 +1140,7 @@ To link to content that is contained within a tab, you must add the `filter` com
   [Create with column families](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families)
   ```
   
-  This takes us directly to the `create-a-core-changefeed-on-a-table-with-column-families` header, within the `data-scope: core` tab.
+  This takes us directly to the `create-a-core-changefeed-on-a-table-with-column-families` header, within the `data-scope: core` tab. See [Create a Core changefeed on a table with column families](https://www.cockroachlabs.com/docs/stable/changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families) to see this in action.
 
 Considerations:
 
