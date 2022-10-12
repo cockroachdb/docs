@@ -75,7 +75,7 @@ Yes, as long as Enterprise Authentication is enabled for your {{ site.data.produ
 
 The primary flow is to initiate {{ site.data.products.db }} SSO through the Cockroach Cloud Console.
 
-If you need to initiate SSO integration from the IdP, contact your account team for assistance
+If you need to initiate SSO integration from the IdP, contact your account team for assistance.
 
 ### What default role is assigned to users when auto-provisioning is enabled in a {{ site.data.products.db }} organization?
 
