@@ -26,7 +26,8 @@
 <meta name="google-site-verification" content="xIjIKHNh-szz0m5JilyA4IriUmVD5DxeYBE18xSqvZY" /> {% comment %} Joe Nickdow {% endcomment %}
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
-<link rel="canonical" href="{{ page.canonical | absolute_url }}">
+{%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
+<link rel="canonical" href="{{ page.canonical | absolute_url | replace: dev_path, "/dev/" }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
