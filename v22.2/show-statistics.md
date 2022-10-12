@@ -82,7 +82,6 @@ CockroachDB generates forecasted statistics when the following conditions are me
 
 - There have been at least 3 historical statistics collections.
 - The historical statistics closely fit a linear pattern.
-- The column's [data type](data-types.html) allows a rate of change to be determined between two values (for example, `DATE`, `TIME`/`TIMETZ`, `TIMESTAMP`/`TIMESTAMPTZ`, `INT`, `FLOAT`, and `DECIMAL`).
 
 The following example shows 3 historical statistics collections and the subsequent forecast:
 
