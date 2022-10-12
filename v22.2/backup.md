@@ -56,7 +56,7 @@ The following details the legacy privilege model that CockroachDB supports in v2
 
 See the [Required privileges](#required-privileges) section for the updated privilege model.
 
-### Destination privileges
+## Destination privileges
 
 {% include {{ page.version.version }}/backups/destination-privileges.md %}
 

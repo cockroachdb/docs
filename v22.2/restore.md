@@ -57,7 +57,7 @@ The following details the existing privilege model that CockroachDB supports in 
 
 See the [Required privileges](#required-privileges) section for the updated privilege model.
 
-### Source privileges
+## Source privileges
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
