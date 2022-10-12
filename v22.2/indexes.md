@@ -58,7 +58,9 @@ Indexes create a trade-off: they greatly improve the speed of queries, but may s
 
 To maximize your indexes' performance, Cockroach Labs recommends following the [secondary index best practices](schema-design-indexes.html#best-practices).
 
-To observe the impact of an index without affecting a production workload, you can [create an index](create-index.html) using the `NOT VISIBLE` clause. The index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
+To observe the impact of an index without affecting a production workload, you can [create an index](create-index.html) using the `NOT VISIBLE` clause. The index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible). 
+
+Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
 
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
