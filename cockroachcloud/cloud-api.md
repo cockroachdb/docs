@@ -390,6 +390,46 @@ Where:
 
 If the `DELETE` request was successful the client will not receive a response payload.
 
+<a id="cloud-audit-logs"></a>
+
+## Export {{ site.data.products.db }} audit logs
+
+{% include feature-phases/preview-opt-in.md %}
+
+To export audit logs for activities and events related to your {{ site.data.products.db }} organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?StartingFrom={timestamp},SortOrder={sort_order},limit={limit}' \
+  --header 'Authorization: Bearer {secret_key}'
+~~~
+
+Where:
+
+  - `{timestamp}` indicates the first log entry to fetch. If unspecified, `{timestamp}` is set to the beginning of time if `{sort_order}` is `ascending`, or the current time if `{sort_order}` is `descending`.
+  - `{sort_order}` is either `ascending` (the default) or `descending`.
+  - `{limit}` indicates roughly how many entries to return. It is expected that slightly more results will be returned, because if any entries exist for a timestamp, all entries for that timestamp are always fetched. It defaults to `200`.
+
+A request that includes no parameters exports roughly 200 entries are returned in ascending order, starting from the first entry for your {{ site.data.products.db }} organization.
+
+If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and a `next_starting_from` field.
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{
+  "entries": [
+    "{entry_array}"
+  ],
+  "NextStartingFrom": "{timestamp}"
+}
+~~~
+
+Where:
+
+  - `{entry_array}` is a structured JSON array of audit log entries.
+  - `{timestamp}` indicates the timestamp to send to export the next batch of results.
+
 ## List all clusters in an organization
 
 To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to list an organization's clusters.
@@ -514,7 +554,7 @@ Where:
   {{site.data.alerts.callout_info}}
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
-  
+
 If the request was successful, the client will receive a list of SQL users.
 
 ~~~ json

@@ -84,6 +84,12 @@
       	      "urls": [
       		      "/cockroachcloud/sql-audit-logging.html"
       	      ]
+      	    },
+						{
+      	      "title": "Export Cloud Audit Logs",
+      	      "urls": [
+      		      "/cockroachcloud/cloud-audit-logs.html"
+      	      ]
       	    }
       	  ]
       	},
