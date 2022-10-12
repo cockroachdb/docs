@@ -21,8 +21,12 @@ To use the other backup features, you need an [Enterprise license](enterprise-li
 
 ### Existing required privileges
 
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+
 - Only members of the [`admin` role](security-reference/authorization.html#default-roles) can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
+
+See the [previous section](#required-privileges) for the updated privilege model.
 
 ### Destination privileges
 

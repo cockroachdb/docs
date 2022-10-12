@@ -49,8 +49,12 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ### Existing required privileges
 
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
+
+See the [previous section](#required-privileges) for the updated privilege model.
 
 ### Destination privileges
 
