@@ -14,9 +14,9 @@ Application | The name specified by the [`application_name`](show-vars.html#supp
 
 To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the [**Statement Execution** details page](#statement-execution-details-page).
 
-## Statement Execution details page
+## Statement execution details page
 
-The Statement Execution details page provides the following details on the statement execution.
+The statement execution details page provides the following details on the statement execution.
 
 - **Start Time (UTC)**: The timestamp when the execution started.
 - **Elapsed Time**: The time elapsed since the execution started.

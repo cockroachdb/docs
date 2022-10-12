@@ -265,21 +265,21 @@ SHOW INDEXES FROM users;
 ~~~
 
 ~~~
-  table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey        |   false    |            1 | region      | ASC       |  false  |   true
-  users      | users_pkey        |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey        |   false    |            3 | city        | N/A       |  true   |  false
-  users      | users_pkey        |   false    |            4 | name        | N/A       |  true   |  false
-  users      | users_pkey        |   false    |            5 | address     | N/A       |  true   |  false
-  users      | users_pkey        |   false    |            6 | credit_card | N/A       |  true   |  false
-  users      | users_pkey        |   false    |            7 | email       | N/A       |  true   |  false
-  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |   true
-  users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
-  users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true
-  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |   true
-  users      | users_city_idx    |    true    |            2 | city        | ASC       |  false  |  false
-  users      | users_city_idx    |    true    |            3 | id          | ASC       |  false  |   true
+  table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit| visible
+-------------+-------------------+------------+--------------+-------------+-----------+---------+---------+--------
+  users      | users_pkey        |     f      |            1 | region      | ASC       |   f     |   t     |   t
+  users      | users_pkey        |     f      |            2 | id          | ASC       |   f     |   f     |   t
+  users      | users_pkey        |     f      |            3 | city        | N/A       |   t     |   f     |   t
+  users      | users_pkey        |     f      |            4 | name        | N/A       |   t     |   f     |   t
+  users      | users_pkey        |     f      |            5 | address     | N/A       |   t     |   f     |   t
+  users      | users_pkey        |     f      |            6 | credit_card | N/A       |   t     |   f     |   t
+  users      | users_pkey        |     f      |            7 | email       | N/A       |   t     |   f     |   t
+  users      | user_email_unique |     f      |            1 | region      | ASC       |   f     |   t     |   t
+  users      | user_email_unique |     f      |            2 | email       | ASC       |   f     |   f     |   t
+  users      | user_email_unique |     f      |            3 | id          | ASC       |   f     |   t     |   t
+  users      | users_city_idx    |     t      |            1 | region      | ASC       |   f     |   t     |   t
+  users      | users_city_idx    |     t      |            2 | city        | ASC       |   f     |   f     |   t
+  users      | users_city_idx    |     t      |            3 | id          | ASC       |   f     |   t     |   t
 (13 rows)
 ~~~
 

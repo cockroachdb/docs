@@ -19,6 +19,8 @@ Subcommand | Description
 [`ADD REGION`](add-region.html) |  Add a region to a [multi-region database](multiregion-overview.html).
 [`DROP REGION`](drop-region.html) |  Drop a region from a [multi-region database](multiregion-overview.html).
 [`SET PRIMARY REGION`](set-primary-region.html) |  Set the primary region of a [multi-region database](multiregion-overview.html).
+[`SET SECONDARY REGION`](set-secondary-region.html) |  Set the [secondary region of a multi-region database](multiregion-overview.html#secondary-regions) for failover purposes.
+[`DROP SECONDARY REGION`](drop-secondary-region.html) | Drop a [secondary region](multiregion-overview.html#secondary-regions) from a [multi-region database](multiregion-overview.html).
 [`ADD SUPER REGION`](add-super-region.html) | Add a super region made up of a set of [database regions](multiregion-overview.html#super-regions) such that data from [regional tables](regional-tables.html) will be stored in only those regions.
 [`DROP SUPER REGION`](drop-super-region.html) | Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
 [`ALTER SUPER REGION`](alter-super-region.html) | Alter an existing [super region](multiregion-overview.html#super-regions) to include a different set of regions. A super region is made up of a set of regions added with [`ADD REGION`](add-region.html) such that data from [regional tables](regional-tables.html) will be stored in only those regions.

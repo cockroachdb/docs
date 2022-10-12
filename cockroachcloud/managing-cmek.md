@@ -69,7 +69,7 @@ Follow the instructions that correspond to your cluster's deployment environment
 
 Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#step-3-provision-iam-and-kms-in-your-cloud).
 
-See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
+See the [API specification](../api/cloud/v1.html).
 
 1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
@@ -146,7 +146,7 @@ See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_Enable
 
 An API call displays information about your cluster's use of CMEK: 
 
-See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_GetCMEKClusterInfo).
+See the [API specification](../api/cloud/v1.html).
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -162,7 +162,7 @@ curl --request GET \
 The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
 <!-- TODO update when available
-See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_EnableCMEK).
+See the [API specification](../api/cloud/v1.html).
 -->
 
 To rotate the CMEK keys for one or more cluster regions:
@@ -354,7 +354,7 @@ Your cluster will continue to operate with the encryption keys it has provisione
 
 1. Update your cluster with the the Cloud API as follows:
 
-    See the [API specification](../api/cloud/v1.html#operation/CockroachCloud_UpdateCMEKStatus).
+    See the [API specification](../api/cloud/v1.html).
 
     {% include_cached copy-clipboard.html %}
     ```shell

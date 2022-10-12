@@ -8,82 +8,131 @@ docs_area: get_started
 
 This tutorial shows you how build a simple Rust application with CockroachDB and the [Rust-Postgres driver](https://github.com/sfackler/rust-postgres).
 
-We have tested the Rust-Postgres driver enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
-
 ## Before you begin
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+You must have Rust and Cargo installed. For instructions on installing Rust and Cargo, see the [Cargo documentation](https://doc.rust-lang.org/cargo/getting-started/installation.html).
 
-## Step 1. Specify the Rust-Postgres driver as a dependency
+## Step 1. Start CockroachDB
 
-Update your `Cargo.toml` file to specify a dependency on the Rust-Postgres driver, as described in the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>official documentation</a>.
+{% include {{ page.version.version }}/setup/sample-setup.md %}
 
-Additionally, include the <a href="https://crates.io/crates/openssl" data-proofer-ignore>OpenSSL bindings</a> and <a href="https://crates.io/crates/postgres-openssl/" data-proofer-ignore>Rust-Postgres OpenSSL</a> crates as dependencies.
 
-## Step 2. Create the `maxroach` users and `bank` database
+## Step 2. Get the code
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
-
-## Step 4. Run the Rust code
-
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
-
-### Get the code
-
-Clone the [`example-app-rust-postgres`](https://github.com/cockroachdb/example-app-rust-postgres) GitHub repo:
+Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachdb/example-app-rust-postgres
 ~~~
 
-### Basic statements
+The project has the following structure:
 
-First, run `basic-sample.rs` to connect as the `maxroach` user and execute some basic SQL statements, inserting rows and reading and printing the rows:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/main/basic-sample.rs %}
+~~~
+├── Cargo.toml
+├── LICENSE
+├── README.md
+└── src
+    └── main.rs
 ~~~
 
-### Transaction (with retry logic)
+The `Cargo.toml` file is the configuration file for the example, and sets the dependencies for the project.
 
-Next, run `txn-sample.rs` to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
+{% include_cached copy-clipboard.html %}
+~~~ toml
+{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/Cargo.toml %}
+~~~
+
+The `main` function is the entry point for the application, with the code for connecting to the cluster, creating the `accounts` table, creating accounts in that table, and transferring money between two accounts.
+
+The `execute_txn` function wraps database operations in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the function will retry committing the transaction, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
 
 {{site.data.alerts.callout_info}}
 CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
-~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/main/txn-sample.rs %}
+~~~ rust
+{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN execute_txn || END execute_txn %}
 ~~~
 
-After running the code, use the [built-in SQL client](cockroach-sql.html) to verify that funds were transferred from one account to another:
+The `transfer_funds` function calls `execute_txn` to perform the actual transfer of funds from one account to the other.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
+~~~ rust
+{% remote_include https://raw.githubusercontent.com/cockroachdb/example-app-rust-postgres/use-uuids/src/main.rs || BEGIN transfer_funds || END transfer_funds %}
 ~~~
 
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |     900 |
-|  2 |     350 |
-+----+---------+
-(2 rows)
-~~~
+## Step 3. Run the code
+
+1. In a terminal go to the `example-app-rust-postgres` directory.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd example-app-rust-postgres
+    ~~~
+
+1. Set the `DATABASE_URL` environment variable to the connection string to your {{ site.data.products.db }} cluster:
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+    1. Edit the connection string you copied earlier and replace `sslmode=verify-full` with `sslmode=require`.
+
+        {{site.data.alerts.callout_danger}}
+        You **must** change the `sslmode` in your connection string to `sslmode=require`, as the Rust `postgres` driver does not recognize `sslmode=verify-full`. This example uses `postgres-openssl`, which will perform host verification when the `sslmode=require` option is set, so `require` is functionally equivalent to `verify-full`.
+        {{site.data.alerts.end}}
+
+        For example:
+
+        ~~~
+        postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/bank?options=--cluster%3Ddim-dog-147&sslmode=require
+        ~~~
+
+    
+    2. Set the `DATABASE_URL` environment variable to the modified connection string.
+    
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        $ export DATABASE_URL="{connection-string}"
+        ~~~
+
+        Where `{connection-string}` is the modified connection string.
+
+    </section>
+
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+
+2. Run the code to create a table and insert some rows:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cargo run
+    ~~~
+
+    The output should look similar to the following:
+
+    ~~~
+      Compiling bank v0.1.0 (/Users/maxroach/go/src/github.com/cockroachdb/example-app-rust-postgres)
+        Finished dev [unoptimized + debuginfo] target(s) in 8.00s
+         Running `target/debug/bank`
+    Creating accounts table if it doesn't already exist.
+    Deleted existing accounts.
+    Balances before transfer:
+    account id: 8e88f765-b532-4071-a23d-1b33729d01cb  balance: $250
+    account id: c6de70e2-78e0-484b-ae5b-6ac2aa43d9ec  balance: $1000
+    Final balances:
+    account id: 8e88f765-b532-4071-a23d-1b33729d01cb  balance: $350
+    account id: c6de70e2-78e0-484b-ae5b-6ac2aa43d9ec  balance: $900
+    ~~~
 
 ## What's next?
 

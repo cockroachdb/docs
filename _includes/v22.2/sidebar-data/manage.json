@@ -156,6 +156,12 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Backup Validation",
+          "urls": [
+            "/${VERSION}/backup-validation.html"
+          ]
         }
       ]
     },
@@ -391,6 +397,12 @@
               "title": "Transactions Page",
               "urls": [
                 "/cockroachcloud/transactions-page.html"
+              ]
+            },
+            {
+              "title": "Databases Page",
+              "urls": [
+                "/cockroachcloud/databases-page.html"
               ]
             },
             {

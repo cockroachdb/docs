@@ -1,6 +1,6 @@
 extends: existence
 message: Use the Oxford comma in a list of three or more items
 link: https://github.com/cockroachdb/docs/blob/master/STYLE.md#capitalization-and-punctuation
-level: warning
+level: suggestion
 tokens:
   - '(?:[^,]+,){1,}\s\w+\sand'

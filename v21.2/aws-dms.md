@@ -23,9 +23,9 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v21.2.15 or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running v21.2.16 or later.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
-    - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema.
+    - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
     All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-test-and-update-your-schema).
@@ -101,7 +101,7 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.3. Table mappings
 
 {{site.data.alerts.callout_info}}
-When specifying a range of tables to migrate, the following aspects of the source and target database schema **must** match:
+When specifying a range of tables to migrate, the following aspects of the source and target database schema **must** match unless you use [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html):
 
 - Column names must be identical.
 - Column types must be compatible.
@@ -155,7 +155,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
 ~~~
 
-- **Drop tables on target** is not supported on v22.1 and earlier, and will error on import.
+- **Drop tables on target** is not supported on v22.1 and earlier, and will error on initial load.
 
 - On v21.2.0 to v21.2.15, a migration may fail if there is an odd number of `"` characters in a row. AWS DMS will return an error message like the following: `[TARGET_LOAD ]D: Command failed to load data with exit error code 0.`. This is resolved in [v22.1.7 and later](../releases/v22.1.html).
 

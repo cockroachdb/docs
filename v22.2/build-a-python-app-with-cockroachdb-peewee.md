@@ -2,6 +2,7 @@
 title: Build a Python App with CockroachDB and peewee
 summary: Learn how to use CockroachDB from a simple Python application with the peewee driver.
 toc: false
+sitemap: false
 twitter: false
 docs_area: get_started
 ---

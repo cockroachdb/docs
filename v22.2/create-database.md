@@ -110,7 +110,7 @@ For this example, let's use a [demo cluster](cockroach-demo.html), with the [`--
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach211 demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --no-example-database
+cockroach demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --no-example-database
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -165,6 +165,29 @@ Use the following command to specify regions and survival goals at database crea
 (3 rows)
 ~~~
 
+## Create a multi-region database with a secondary region
+
+{% include enterprise-feature.md %}
+
+You can add a [secondary region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html) for failover purposes. If the [primary region](set-primary-region.html) fails, the secondary region becomes the new primary region.
+
+To add a secondary region during database creation, use the following steps:
+
+1. Start a `cockroach demo` cluster as described in the example [Create a multi-region database](#create-a-multi-region-database).
+
+2. Issue a `CREATE DATABASE` statement like the following.  It is the same as in the [Create a multi-region database](#create-a-multi-region-database) example, except that it adds a `SECONDARY REGION {region}` clause:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1", "us-west1" SURVIVE REGION FAILURE SECONDARY REGION "us-west1";
+~~~
+
+~~~
+CREATE DATABASE
+~~~
+
+For more information about secondary regions, see [Secondary regions](multiregion-overview.html#secondary-regions).
+
 ## See also
 
 - [`SHOW DATABASES`](show-databases.html)
@@ -174,3 +197,7 @@ Use the following command to specify regions and survival goals at database crea
 - [`DROP DATABASE`](drop-database.html)
 - [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
+- [Multiregion overview](multiregion-overview.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions).
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
