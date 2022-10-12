@@ -1,7 +1,7 @@
 When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, additional features are available to help with testing and development.
 
 {{site.data.alerts.callout_danger}}
-Single-node clusters are not highly available or fault tolerant. They are not appropriate for production use.
+Single-node clusters are not highly available or fault-tolerant. They are not appropriate for production use.
 {{site.data.alerts.end}}
 
 - You can optionally set the following [Docker environment variables](https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables--e---env---env-file) to create a database and user automatically and to set a password for the user.
@@ -39,9 +39,11 @@ This section shows how to start a single-node cluster that:
     Instead of specifying each value directly by using the `-e` or `--env` flag, you can store them in a file on the Docker host. Use one key-value pair per line and set the `--env-file` flag to the file's path.
     {{site.data.alerts.end}}
 
-- Bind-mounts the `~/init-scripts` directory on the Docker host onto the `/docker-entrypoint-initdb.d` directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.</li>
-- Accepts database client connections on hostname `roach-single` on port 26257.</li>
-- Accepts connections to the DB Console on hostname `roach-single` on port 8080.</li>
+- Bind-mounts the `~/init-scripts` directory on the Docker host onto the `/docker-entrypoint-initdb.d` directory within the container. Initialization scripts stored in this directory are run after CockroachDB starts and the default database, user, and password are initialized.
+- Accepts database client connections on hostname `roach-single` on port 26257.
+- Accepts connections to the DB Console on hostname `roach-single` on port 8080.
+
+The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and this cannot be changed for single-node cluster running in a container. The `--listen-address` option is ignored.
 
 1. Start the cluster node.
 
@@ -52,14 +54,13 @@ This section shows how to start a single-node cluster that:
               --env COCKROACH_USER={USER_NAME} \
               --env COCKROACH_PASSWORD={PASSWORD} \
               --name=roach-single \
-              --hostname=roach-single \
               -p 26257:26257 -p 8080:8080 \
               -v "roach-single:/cockroach/cockroach-data" \
               -v "~/init-scripts:/docker-entrypoint-initdb.d" \
               cockroachdb/cockroach:latest start-single-node
     ~~~
 
-    By default, a `certs` directory is created and CockroachDB starts in secure mode. To prevent this, add the `--insecure` flag after the `start-single-node` sub-command.
+    By default, a `certs` directory is created and CockroachDB starts in secure mode.
 
     {{site.data.alerts.callout_info}}
     The `COCKROACH_DATABASE`, `COCKROACH_USER`, and `COCKROACH_PASSWORD` environment variables and the contents of the `/docker-entrypoint-initdb.d` directory are ignored if you use `cockroach start` rather than `cockroach start-single-node`. They are also ignored if data exists in the `/cockroach/cockroach-data` directory within the container.
