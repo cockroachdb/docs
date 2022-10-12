@@ -15,7 +15,7 @@ We recommend reading the [Changefeed Messages](changefeed-messages.html) page fo
 
 The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds see the following pages:
 
-- [Changefeed Expressions](changefeed-expressions.html)
+- [Change Data Capture Transformations](cdc-transformations.html)
 - [Changefeeds on Tables with Column Families](changefeeds-on-tables-with-column-families.html)
 - [Export Data with Changefeeds](export-data-with-changefeeds.html)
 
@@ -39,7 +39,7 @@ Parameter | Description
 
 ### Changefeed expression parameters
 
-The [Changefeed Expressions](changefeed-expressions.html) page provides detail on the functionality, syntax, and use cases for changefeeds created with expressions. 
+The [Change Data Capture Transformations](cdc-transformations.html) page provides detail on the functionality, syntax, and use cases for changefeeds created with transformations. 
 
 Parameter | Description
 ----------|------------
