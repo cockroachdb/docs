@@ -1,7 +1,7 @@
 {{site.data.alerts.callout_info}}
 Starting in v22.2, CockroachDB introduces a new backup privilege model that provides finer control over a user's privilege to take backups. 
 
-There is continued support for the [legacy privilege model](#legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `BACKUP` privilege to a user or role depending on the type of backup:
