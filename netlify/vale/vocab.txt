@@ -79,6 +79,7 @@ changeset
 changesets
 checkpointing
 checksummed
+checksumming
 chu
 cleartext
 CLI

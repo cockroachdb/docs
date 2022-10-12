@@ -27,6 +27,10 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. _(Optional)_ Select a region in the **Regions** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
+{{site.data.alerts.callout_info}}
+You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+{{site.data.alerts.end}}
+
 ## Step 3. Enter a spend limit
 
 Every cluster starts with 10M RUs of free [burst capacity](architecture.html#cockroachdb-cloud-terms) each month and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.

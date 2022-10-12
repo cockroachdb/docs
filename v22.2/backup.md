@@ -22,7 +22,7 @@ You can also backup:
 
     `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
-Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
+Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention. You can check that backups in external storage are valid by using a [backup validation](backup-validation.html) command.
 
 To view the contents of an backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 

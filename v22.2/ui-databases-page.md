@@ -20,6 +20,4 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 {% include {{ page.version.version }}/ui/databases.md %}
 
-{% include common/ui/databases-page.md %}
-
 {% include {{ page.version.version }}/ui/index-details.md %}

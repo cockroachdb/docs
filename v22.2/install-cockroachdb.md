@@ -2,6 +2,7 @@
 title: Install CockroachDB
 summary: Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes.
 toc: false
+sitemap: false
 feedback: false
 docs_area: deploy
 ---
