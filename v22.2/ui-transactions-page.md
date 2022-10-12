@@ -57,7 +57,7 @@ The **Statements** tab is selected. Click the **Transactions** tab and the **Act
 Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
-The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'paris'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
+The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'los angeles'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
 
 <img src="{{ 'images/v22.2/transaction-execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 

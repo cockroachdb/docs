@@ -26,6 +26,4 @@ To view this page, click **Databases** in the left-hand navigation of the {{ sit
 
 {% include {{version_prefix}}ui/databases.md %}
 
-{% include common/ui/databases-page.md %}
-
 {% include {{version_prefix}}ui/index-details.md %}

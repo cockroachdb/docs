@@ -24,9 +24,11 @@
 {% if page.layout == "homepage" %}
 <meta name="google-site-verification" content="Du_z8l1I9HPqQS022xQn6UTRhDWYQRJZchcoUhYfQaM" /> {% comment %} Nick Vigilante {% endcomment %}
 <meta name="google-site-verification" content="xIjIKHNh-szz0m5JilyA4IriUmVD5DxeYBE18xSqvZY" /> {% comment %} Joe Nickdow {% endcomment %}
+<meta name="google-site-verification" content="tJzwad6zE43z3_4uoZ8Jx4iquB66Kpt5zcK6yxNXg_A" /> {% comment %} Dan Kelly {% endcomment %}
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
-<link rel="canonical" href="{{ page.canonical | absolute_url }}">
+{%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
+<link rel="canonical" href="{{ page.canonical | absolute_url | replace: dev_path, "/dev/" }}">
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}

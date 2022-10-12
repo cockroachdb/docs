@@ -156,6 +156,12 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Backup Validation",
+          "urls": [
+            "/${VERSION}/backup-validation.html"
+          ]
         }
       ]
     },
