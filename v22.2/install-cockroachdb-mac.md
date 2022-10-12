@@ -17,17 +17,13 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
+{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>). ARM binaries are not qualified for production use.</p><p>For CockroachDB v22.1.x and below, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+
+{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>). ARM binaries are not qualified for production use.</p><p>For CockroachDB v22.1.x and below, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+
 <h2>Install options</h2>
 
 Use one of the options below to install CockroachDB.
-
-{% capture arch_note_homebrew %}For CockroachDB v22.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)). ARM binaries are **experimental** and are not qualified for production use.
-
-For CockroachDB v21.x and below, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.{% endcapture %}
-
-{% capture arch_note_binaries %}For CockroachDB v22.x and above, download the binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)). ARM binaries are **experimental** and are not qualified for production use.
-
-For CockroachDB v21.x and below, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.{% endcapture %}
 
 <div id="use-homebrew" class="install-option">
   <h3>Use Homebrew</h3>
