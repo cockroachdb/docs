@@ -1,7 +1,7 @@
 {{site.data.alerts.callout_info}}
-From v22.2, CockroachDB supports a backup privilege model that provides finer control over a user's privilege to take backups. We recommend implementing this privilege model for backups. 
+Starting in v22.2, CockroachDB introduces a new backup privilege model that provides finer control over a user's privilege to take backups. 
 
-There is continued support for the [existing privilege model](#existing-required-privileges) in v22.2. However, this will be removed in a future release.
+There is continued support for the [legacy privilege model](#legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `BACKUP` privilege to a user or role depending on the type of backup:
@@ -18,6 +18,6 @@ The listed privileges do not cascade to objects lower in the schema tree. For ex
 You can grant the `BACKUP` privilege to a user or role **without** the `SELECT` privilege on a table. The user or role will implicitly be able to read or restore data from any backups they produce.
 {{site.data.alerts.end}}
 
-Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `BACKUP` without the need to grant a specific `BACKUP` privilege. However, we recommend using the `BACKUP` privilege model to create users or roles and grant them `BACKUP` privileges as necessary for stronger access control.
+Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all three types of backups (cluster, database, and table) without the need to grant a specific `BACKUP` privilege. However, we recommend using the `BACKUP` privilege model to create users or roles and grant them `BACKUP` privileges as necessary for stronger access control.
 
 See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
