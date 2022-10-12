@@ -38,20 +38,24 @@ There is continued support for the [existing privilege model](#existing-required
 
 Restore | Privilege
 -------+-----------
-Cluster | Grant a user the system level `RESTORE` privilege.
-Database | Grant a user the system level `RESTORE` privilege to restore databases onto the cluster.
-Table | Grant a user the database level `RESTORE` privilege to restore schema objects into the database.
+Cluster | Grant a user the system level `RESTORE` privilege. For example, `GRANT SYSTEM RESTORE TO user;`.
+Database | Grant a user the system level `RESTORE` privilege to restore databases onto the cluster. For example, `GRANT SYSTEM RESTORE TO user;`.
+Table | Grant a user the database level `RESTORE` privilege to restore schema objects into the database. For example, `GRANT RESTORE ON DATABASE nonadmin TO user;`.
 
-The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges).
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role). 
 
-Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege. However, we recommend using the `RESTORE` privilege model, which provides stronger access control.
+Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all levels of `RESTORE` without the need to grant a specific `RESTORE` privilege.  However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
 
 See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ### Existing required privileges
 
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+
 - [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other restores, the user must have [write access](security-reference/authorization.html#managing-privileges) (`CREATE` or `INSERT`) on all objects affected.
+
+See the [previous section](#required-privileges) for the updated privilege model.
 
 ### Source privileges
 
