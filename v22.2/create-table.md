@@ -109,7 +109,7 @@ Parameter | Description
 `opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
 `opt_locality` |  Specify a [locality](multiregion-overview.html#table-locality) for the table. In order to set a locality, the table must belong to a [multi-region database](multiregion-overview.html).<br><br>Note that multi-region features require an [Enterprise license](enterprise-licensing.html).
 `opt_where_clause` | An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
-`opt_index_visible` | An optional `VISIBLE` or `NOT VISIBLE` clause that indicates whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If `NOT VISIBLE`, the index will not be used in queries unless specifically selected with an [index hint](indexes.html#selection). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
+`opt_index_visible` | An optional `VISIBLE` or `NOT VISIBLE` clause that indicates whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).<br><br>Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
 `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
@@ -123,7 +123,7 @@ CockroachDB supports the following column qualifications:
 - [`DEFAULT` expressions](default-value.html)
 - [`ON UPDATE` expressions](#on-update-expressions)
 - [Identity columns](#identity-columns) (sequence-populated columns)
-- `NOT VISIBLE`
+- [`NOT VISIBLE`](#not-visible-property)
 
 ### `ON UPDATE` expressions
 
@@ -162,7 +162,7 @@ For an example of an identity column, see [Create a table with an identity colum
 
 ### `NOT VISIBLE` property
 
-The `NOT VISIBLE` property specifies a column will not be returned when using `*` in a [`SELECT` clause](select-clause.html). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column](show-create.html#show-the-create-table-statement-for-a-table-with-a-hidden-column).
+The `NOT VISIBLE` property of a column specifies that a column will not be returned when using `*` in a [`SELECT` clause](select-clause.html). You can apply the `NOT VISIBLE` property only to individual columns. For an example, refer to [Show the `CREATE TABLE` statement for a table with a hidden column](show-create.html#show-the-create-table-statement-for-a-table-with-a-hidden-column).
 
 ## Create a table like an existing table
 
