@@ -19,16 +19,16 @@ To use the other backup features, you need an [Enterprise license](enterprise-li
 
 {% include {{ page.version.version }}/backups/updated-backup-privileges.md %}
 
-### Existing required privileges
+## Required privileges using the legacy privilege model
 
-The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+The following details the legacy privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
 
-- Only members of the [`admin` role](security-reference/authorization.html#default-roles) can run `CREATE SCHEDULE FOR BACKUP`. By default, the `root` user belongs to the `admin` role.
-- `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
+- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
 
-See the [previous section](#required-privileges) for the updated privilege model.
+See the [Required privileges](#required-privileges) section for the updated privilege model.
 
-### Destination privileges
+## Destination privileges
 
 {% include {{ page.version.version }}/backups/destination-privileges.md %}
 
