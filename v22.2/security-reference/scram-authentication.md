@@ -73,7 +73,7 @@ This section details how to use SCRAM authentication rather than cleartext passw
 
 ### Enable SCRAM-SHA-256 authentication for new users/roles
 
-In CockroachDB v22.2.x and above, passwords are encrypted using SCRAM-SHA-256 by default, and the `server.user_login.password_encryption` [cluster setting](../cluster-settings.html) defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, the setting defaults to `bcrypt`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.
+In CockroachDB v22.2.x and above, passwords are encrypted using SCRAM-SHA-256 by default, and the `server.user_login.password_encryption` [cluster setting](/docs/{{ page.version.version }}/cluster-settings.html) defaults to `scram-sha-256`. In CockroachDB v22.1.x and below, the setting defaults to `bcrypt`. When this setting is set to `scram-sha-256`, passwords created with the following SQL statements will be managed and authenticated according to SCRAM-SHA-256.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -113,7 +113,7 @@ It is possible to automatically convert the records for previously created users
 To convert existing users to SCRAM-SHA-256, enable the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting. When this setting is enabled, the conversion occurs the first time a client app connects with the previously defined password. During that first connection, the previous mechanism will be used to establish the connection, and then CockroachDB will re-encode the password using the SCRAM algorithm. Subsequent connections will then use the SCRAM handshake for authentication.
 
 {{site.data.alerts.callout_info}}
-In CockroachDB v22.2.x and above, the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` [cluster setting](cluster-settings.html) is enabled by default. Because `user_login.password_encryption` also defaults to `scram-sha-256`, this means that by default, any user who still uses cleartext passwords will be migrated to SCRAM-SHA-256 authentication. To prevent this automatic migration, set `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` to `false` before upgrading to CockroachDB v22.2.x.
+In CockroachDB v22.2.x and above, the `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` [cluster setting](/docs/{{ page.version.version }}/cluster-settings.html) is enabled by default. Because `user_login.password_encryption` also defaults to `scram-sha-256`, this means that by default, any user who still uses cleartext passwords will be migrated to SCRAM-SHA-256 authentication. To prevent this automatic migration, set `server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` to `false` before upgrading to CockroachDB v22.2.x.
 {{site.data.alerts.end}}
 
 To enable the cluster setting:
