@@ -81,6 +81,10 @@ test:
 linkcheck: cockroachdb-build
 	htmltest -s
 
+.PHONY: vale
+vale:
+	git status --porcelain | cut -c 4-
+
 vendor:
 	gem install bundler
 	bundle install
