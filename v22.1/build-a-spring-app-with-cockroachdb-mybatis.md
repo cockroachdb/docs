@@ -103,6 +103,7 @@ To run the application:
 
 1. Open and edit the `src/main/resources/application.yml` file so that the `url` field specifies the full [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and user certificates in the connection parameters. For example:
 
+      {% include_cached copy-clipboard.html %}
       ~~~ yml
       ...
       datasource:
