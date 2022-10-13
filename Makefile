@@ -83,7 +83,7 @@ linkcheck: cockroachdb-build
 
 .PHONY: vale
 vale:
-	git status --porcelain | cut -c 4-
+	vale $(subst $(\n), $( ), $(shell git status --porcelain | cut -c 4- | egrep "\.md"))
 
 vendor:
 	gem install bundler
