@@ -46,7 +46,7 @@ For guidance on defining tables, see [Tables](schema-design-table.html).
 
 ### Indexes
 
-An _index_ is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column. Each index belongs to a single table.
+An _index_ is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to find data more efficiently in a table, given the values of a particular column. Each index belongs to a single table.
 
 The two main types of indexes are the primary index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
 
