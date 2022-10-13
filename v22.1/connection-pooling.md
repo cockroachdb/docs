@@ -70,6 +70,7 @@ Using the connection pool formula above:
 
 The connection pool size should be 40.
 
+{% include_cached copy-clipboard.html %}
 ~~~ java
 HikariConfig config = new HikariConfig();
 config.setJdbcUrl("jdbc:postgresql://localhost:26257/bank");
