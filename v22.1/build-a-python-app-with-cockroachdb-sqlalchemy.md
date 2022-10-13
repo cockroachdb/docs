@@ -186,6 +186,7 @@ If you see an error message like `transaction is too large to complete; try spli
 
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/python/sqlalchemy/sqlalchemy-large-txns.py %}
 ~~~
