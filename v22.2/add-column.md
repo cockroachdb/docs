@@ -11,6 +11,12 @@ docs_area: reference.sql
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
+This is a new sentence.
+
+Bababa testtest
+test test test test test test this should fail repetition asdflkmakl;m4w3;lraksfmdl;xcvkn;4uitnu3warksfljdfndlasjkfnlakjwrnalfkjsndkljn
+sdfkankjadnjk
+
 ## Synopsis
 
 <div>
