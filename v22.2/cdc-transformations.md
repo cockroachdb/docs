@@ -119,7 +119,7 @@ CREATE CHANGEFEED INTO "scheme://sink-URI" WITH updated, schema_change_policy = 
 
 ### Filter delete messages
 
-To remove the [delete messages](changefeed-messages.html#delete-messages) from a changefeed stream, use the [`cdc_is_delete()`](#changefeed-functions) function:
+To remove the [delete messages](changefeed-messages.html#delete-messages) from a changefeed stream, use the [`cdc_is_delete()`](#cdc-transformation-function-support) function:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -267,7 +267,7 @@ FROM dogs;
 This statement does the following:
 
 - Selects the `event_timestamp` of the event and casts to an `INT`.
-- Sets the `type` of change as `delete` or `create` using the [`cdc_is_delete()` function](#changefeed-functions).
+- Sets the `type` of change as `delete` or `create` using the [`cdc_is_delete()` function](#cdc-transformation-function-support).
 - Uses [`jsonb_build_object()`](functions-and-operators.html) to construct the desired data field.
 
 For the remaining tables, you use the same statement structure to create changefeeds that will send messages to the Kafka endpoint: 
@@ -308,7 +308,7 @@ Similarly, if you have a status column in your outbox table tracking its lifecyc
 CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT status FROM outbox WHERE cdc_prev()->'status' IS NULL;
 ~~~
 
-Since all non-primary key columns will be `NULL` in the [`cdc_prev()`](#changefeed-functions) output for an insert message, insert messages will be sent. Updates will not send, as long as the status was not previously `NULL`.
+Since all non-primary key columns will be `NULL` in the [`cdc_prev()`](#cdc-transformation-function-support) output for an insert message, insert messages will be sent. Updates will not send, as long as the status was not previously `NULL`.
 
 ## See also
 
