@@ -7,7 +7,7 @@ docs_area: stream
 
 {% include feature-phases/preview.md %}
 
-{% include_cached new-in.html version="v22.1" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).  
+{% include_cached new-in.html version="v22.2" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).  
 
 You can use CDC transformations to do the following:
 
@@ -53,19 +53,42 @@ The following are not permitted in a changefeed expression:
 - Sub-select queries
 - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows).
 
-## Changefeed functions
+## CDC transformation function support
 
-{{site.data.alerts.callout_info}}
-The following functions are in preview and **subject to change** with continued development.
-{{site.data.alerts.end}}
+You can use the following functions in CDC transformation queries:
 
-You can use any function from the [Functions and Operators page](functions-and-operators.html) unless it is marked as ["Volatile"](functions-and-operators.html#function-volatility) or is listed in [Limitations](#limitations). The following functions are changefeed specific:
+- "Immutable" as marked on the [Functions and Operators page](functions-and-operators.html).
+- Changefeed functions:
 
-Function                  | Description
---------------------------+----------------------
-`cdc_is_delete() `        | Returns `true` if the event is a deletion event.
-`cdc_prev()`              | Returns a JSON representation of a row's previous state. 
-`cdc_updated_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ. For example, if the table is undergoing [schema changes](online-schema-changes.html).
+    {{site.data.alerts.callout_info}}
+    Changefeed functions are in preview and **subject to change** with continued development.
+    {{site.data.alerts.end}}
+
+    Function                  | Description
+    --------------------------+----------------------
+    `cdc_is_delete() `        | Returns `true` if the event is a deletion event.
+    `cdc_prev()`              | Returns a JSON representation of a row's previous state. 
+    `cdc_updated_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ. For example, if the table is undergoing [schema changes](online-schema-changes.html).
+
+- The following "Stable" functions:
+  - `jsonb_build_array()`
+  - `jsonb_build_object()`
+  - `to_json()`
+  - `to_jsonb()`
+  - `row_to_json()`
+  - `overlaps()`
+  - `pg_collation_for()`
+  - `pg_typeof()`
+  - `quote_literal()`
+  - `quote_nullable()`
+
+### Unsupported functions
+
+You can **not** use the following functions with CDC transformations:
+
+- Functions marked as "Volatile" on the [Functions and Operators page](functions-and-operators.html).
+- Functions listed in [Limitations](#limitations) on this page.
+- Functions marked as "Stable" on the [Functions and Operators page](functions-and-operators.html), **except** for those listed previously.
 
 ## Examples
 
@@ -77,48 +100,50 @@ See [`CREATE CHANGEFEED`](create-changefeed.html) for examples on using the foun
 
 To only emit data from specific columns in a table, you can use `SELECT {columns}` to define the table's columns.
 
-As an example, you can create a changefeed watching specific rows in the following table:
+As an example, using the `users` table from the [`movr` database](movr.html#the-movr-database), you can create a changefeed that will emit messages including only the `name` and `city` column data:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE TABLE office_dogs (
-   id INT PRIMARY KEY,
-   name STRING,
-   owner STRING,
-   dog_breed STRING,
-   age INT8
- );
+CREATE CHANGEFEED INTO "scheme://sink-URI" WITH updated, schema_change_policy = 'stop' AS SELECT name, city FROM users;
 ~~~
-
-With this statement, you can create a changefeed that will emit messages including only the `name` and `owner` column data:
-
-~~~ sql
-CREATE CHANGEFEED INTO "scheme://sink-URI" WITH updated, schema_change_policy = 'stop' AS SELECT name, owner;
 ~~~
-
-~~~
-{"after":{"office_dogs":{"owner":{"string":"Ashley"},"name":{"string":"Roach"}}},"updated":{"string":"1662044737959974465.0000000000"}}
-{"after":{"office_dogs":{"owner":{"string":"Lauren"},"name":{"string":"Petee"}}},"updated":{"string":"1662044737959974465.0000000000"}}
-{"after":{"office_dogs":{"name":{"string":"Roach"},"owner":{"string":"Ashley"}}},"updated":{"string":"1662044737959974465.0000000000"}}
-{"updated":{"string":"1662044737959974465.0000000000"},"after":{"office_dogs":{"name":{"string":"Patch"},"owner":{"string":"Sammy"}}}}
-{"after":{"office_dogs":{"name":{"string":"Patch"},"owner":{"string":"Sammy"}}},"updated":{"string":"1662044737959974465.0000000000"}}
-{"after":{"office_dogs":{"name":{"string":"Max"},"owner":{"string":"Taylor"}}},"updated":{"string":"1662044737959974465.0000000000"}}
-{"after":{"office_dogs":{"owner":{"string":"Taylor"},"name":{"string":"Max"}}},"updated":{"string":"1662044737959974465.0000000000"}}
+{"record":{"users":{"name":{"string":"Steven Lara"},"city":{"string":"los angeles"}}}}
+{"record":{"users":{"city":{"string":"los angeles"},"name":{"string":"Carl Russell"}}}}
+{"record":{"users":{"name":{"string":"Brett Porter"},"city":{"string":"boston"}}}}
+{"record":{"users":{"name":{"string":"Vanessa Rivera"},"city":{"string":"los angeles"}}}}
+{"record":{"users":{"name":{"string":"Tony Henderson"},"city":{"string":"los angeles"}}}}
+{"record":{"users":{"city":{"string":"boston"},"name":{"string":"Emily Hill"}}}}
+{"record":{"users":{"name":{"string":"Dustin Kramer"},"city":{"string":"boston"}}}}
+{"record":{"users":{"name":{"string":"Dawn Roman"},"city":{"string":"boston"}}}}
 ~~~
 
 ### Filter delete messages
 
 To remove the [delete messages](changefeed-messages.html#delete-messages) from a changefeed stream, use the [`cdc_is_delete()`](#changefeed-functions) function:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO sink WITH schema_change_policy = 'stop' AS SELECT * FROM table WHERE NOT cdc_is_delete();
 ~~~
 
 Filtering delete messages from your changefeed is helpful for certain outbox table use cases. See [Transformations and the outbox pattern](#transformations-and-the-outbox-pattern) for further detail.
 
+### Geofilter a changefeed
+
+When you are working with a [`REGIONAL BY ROW` table](set-locality.html#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED INTO sink WITH schema_change_policy = 'stop' AS SELECT * FROM table WHERE crdb_region = 'europe-west2';
+~~~
+
+For more detail on targeting `REGIONAL BY ROW` tables with changefeeds, see [Changefeeds in Multi-Region Deployments](changefeeds-in-multi-region-deployments.html).
+
 ### Stabilize the changefeed message schema
 
 As changefeed messages emit from the database, message formats can vary as tables experience [schema changes](changefeed-messages.html#schema-changes). You can select columns with typecasting to prevent message fields from changing during a changefeed's lifecycle: 
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO sink WITH schema_change_policy = 'stop' AS SELECT id::int, name::varchar, admin::bool FROM users;
 ~~~
@@ -131,12 +156,14 @@ In this example, the expression uses the `ride_id` column's [`UUID`](uuid.html) 
 
 Therefore, the first changefeed created:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql 
 CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT * FROM movr.vehicle_location_histories WHERE left(ride_id::string, 1) IN ('0','1','2','3');
 ~~~
 
 The final changefeed created:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql 
 CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT * FROM movr.vehicle_location_histories WHERE left(ride_id::string, 1) IN ('c','d','e','f');
 ~~~
@@ -149,6 +176,7 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 First, find the start time. Use the [`cluster_logical_timestamp()`](functions-and-operators.html#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT cluster_logical_timestamp() - 3600000000000;
 ~~~
@@ -161,12 +189,14 @@ SELECT cluster_logical_timestamp() - 3600000000000;
 
 Next, run the changefeed without a sink and pass the start time to the `cursor` option:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
 ~~~
 
 To find changes within a time period, use `cursor` with the [`end_time`](create-changefeed.html#end-time) option:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
 ~~~
@@ -175,6 +205,7 @@ CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='166394
 
 In the event that an incident downstream has affected some rows, you may need a way to recover or evaluate the specific rows. Create a new changefeed that only watches for the affected row(s):
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT * FROM movr.vehicle_location_histories WHERE ride_id = 'ff9df988-ebda-4066-b0fc-ecbc45f8d12b';
 ~~~
@@ -195,6 +226,7 @@ You can adapt your [changefeed messages](changefeed-messages.html) by filtering 
 
 In this example, the expression adds a `summary` field to the changefeed message:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED WITH schema_change_policy = 'stop' AS SELECT *, owner_id::string || ' takes passengers by ' || type || '. They are currently ' || status AS summary FROM vehicles;
 ~~~
@@ -222,6 +254,7 @@ To achieve this, you create changefeeds directly on the tables and transform the
 
 For the previous JSON example:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 cdc_updated_timestamp()::int AS event_timestamp,
@@ -239,6 +272,7 @@ This statement does the following:
 
 For the remaining tables, you use the same statement structure to create changefeeds that will send messages to the Kafka endpoint: 
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 cdc_updated_timestamp()::int AS event_timestamp,
@@ -248,6 +282,7 @@ jsonb_build_object('email', email, 'admin', admin) AS data
 FROM users;
 ~~~
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 cdc_updated_timestamp()::int AS event_timestamp,
@@ -261,12 +296,14 @@ For a different usage of the outbox pattern, you may still want an events table 
 
 For example, when you delete a message in your outbox table after processing it (or with [row-level TTL](row-level-ttl.html)). You can filter the [delete messages](#filter-delete-messages) from your changefeed:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO ‘kafka://endpoint?topic_name=events’ AS SELECT * FROM outbox WHERE NOT cdc_is_delete();
 ~~~
 
 Similarly, if you have a status column in your outbox table tracking its lifecycle, you can filter out updates as well so that only the initial insert sends a message:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT status FROM outbox WHERE cdc_prev()->'status' IS NULL;
 ~~~
