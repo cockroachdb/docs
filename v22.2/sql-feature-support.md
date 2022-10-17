@@ -192,3 +192,4 @@ table tr td:nth-child(2) {
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL](row-level-ttl.html).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation](user-defined-functions.html)
+ `CREATE EXTENSION "uuid-ossp"` | ✓ | Common Extension | Provides access to several additional [UUID generation functions](functions-and-operators.html#id-generation-functions). Note that these UUID functions are available without typing `CREATE EXTENSION "uuid-ossp"`. CockroachDB does not have full support for `CREATE EXTENSION`. [GitHub issue tracking `CREATE EXTENSION` support](https://github.com/cockroachdb/cockroach/issues/74777).
