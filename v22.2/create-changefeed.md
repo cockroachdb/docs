@@ -37,7 +37,7 @@ Parameter | Description
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).
 `option` / `value` | For a list of available options and their values, see [Options](#options).
 
-### Changefeed expression parameters
+### CDC transformation parameters
 
 The [Change Data Capture Transformations](cdc-transformations.html) page provides detail on the functionality, syntax, and use cases for changefeeds created with transformations. 
 

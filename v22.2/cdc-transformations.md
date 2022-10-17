@@ -38,20 +38,11 @@ Parameter        | Description
 `table`            | Define the table to which the columns belong.
 `predicate`        | Apply optional filters with a `WHERE` clause.
 
-For a SQL diagram of the changefeed expression syntax, see the [`CREATE CHANGEFEED`](create-changefeed.html#synopsis) page.
+For a SQL diagram of the CDC transformation syntax, see the [`CREATE CHANGEFEED`](create-changefeed.html#synopsis) page.
 
 ## Limitations
 
-- It is necessary to pass the [`schema_change_policy='stop'`](create-changefeed.html#schema-policy) option in the changefeed creation statement when using the expression format. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/85143).
-- You can only apply CDC transformations on a single table in each statement.
-- Some stable functions, notably functions that return MVCC timestamps, are overridden to return the MVCC timestamp of the event.
-- You cannot [alter](alter-changefeed.html) a changefeed that uses an expression.
-
-The following are not permitted in a changefeed expression:
-
-- [Volatile functions](functions-and-operators.html#function-volatility)
-- Sub-select queries
-- [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows).
+{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
 
 ## CDC transformation function support
 
@@ -152,7 +143,7 @@ CREATE CHANGEFEED INTO sink WITH schema_change_policy = 'stop' AS SELECT id::int
 
 CDC transformations allow you to emit changefeed messages from the same table to different endpoints. As a result, you can use transformations to load balance messages across changefeed sinks without the need for an intermediate system.
 
-In this example, the expression uses the `ride_id` column's [`UUID`](uuid.html) to shard the messages. The [`left()`](functions-and-operators.html#string-and-byte-functions) function filters the first character from the `ride_id` column and finds the specified initial characters. The example shards successfully by running a changefeed on the same table and dividing the 16 possible beginning `UUID` characters through to `f`. 
+In this example, the transformation uses the `ride_id` column's [`UUID`](uuid.html) to shard the messages. The [`left()`](functions-and-operators.html#string-and-byte-functions) function filters the first character from the `ride_id` column and finds the specified initial characters. The example shards successfully by running a changefeed on the same table and dividing the 16 possible beginning `UUID` characters through to `f`. 
 
 Therefore, the first changefeed created:
 
@@ -224,7 +215,7 @@ The changefeed will return messages for the specified rows:
 
 You can adapt your [changefeed messages](changefeed-messages.html) by filtering the columns, but it is also possible to build message fields with SQL expressions. 
 
-In this example, the expression adds a `summary` field to the changefeed message:
+In this example, the transformation adds a `summary` field to the changefeed message:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
