@@ -128,12 +128,12 @@ release_info:
     start_time: 2022-10-17 12:37:18.611072 +0000 UTC
     version: v22.1.9
   v22.2:
-    build_time: 2022-10-10 00:00:00 (go1.17)
+    build_time: 2022-10-17 00:00:00 (go1.18)
     crdb_branch_name: release-22.2
     docker_image: cockroachdb/cockroach-unstable
-    name: v22.2.0-beta.3
-    start_time: 2022-10-06 09:08:55.333151 +0000 UTC
-    version: v22.2.0-beta.3
+    name: v22.2.0-beta.4
+    start_time: 2022-10-14 13:21:43.376394 +0000 UTC
+    version: v22.2.0-beta.4
 sass:
   sass_dir: css
   style: compressed
