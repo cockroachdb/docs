@@ -21,6 +21,10 @@ The [examples](#examples) on this page provide the foundational syntax of the `C
 
 ## Required privileges
 
+{% include {{ page.version.version }}/cdc/privilege-model.md %}
+
+### Legacy privilege model
+
 To create a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`](create-user.html#create-a-user-that-can-control-changefeeds) parameter set.
 
 ## Synopsis
