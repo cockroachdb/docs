@@ -13,4 +13,4 @@ Want to contribute to the docs? See [CONTRIBUTING](CONTRIBUTING.md) for details 
 ## Resources
 
 - [Code of conduct](CODE_OF_CONDUCT.md)
-- [Contributing](CONTRIBUTING.md)
+- [Contributing](CONTRIBUTING.md) 
