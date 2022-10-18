@@ -133,7 +133,7 @@ Name | Help
 `range.removes` | Number of range removals
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
-`range.snapshots.preemptive-applied` | Number of applied pre-emptive snapshots
+`range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
 `range.splits` | Number of range splits
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
