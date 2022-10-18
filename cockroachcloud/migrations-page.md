@@ -13,7 +13,7 @@ docs_area: migrate
 The **Migrations** page on the {{ site.data.products.db }} Console features a **Schema Conversion Tool** that helps you:
 
 - Convert a schema from a PostgreSQL database for use with CockroachDB.
-- Create a new database that uses the converted schema.
+- Create a new database that uses the converted schema. You specify the target database and database owner when [finalizing the schema](#finalize-the-schema).
 
 {{site.data.alerts.callout_info}}
 On the **Migrations** page, a *migration* refers to converting a schema for use with CockroachDB and creating a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).

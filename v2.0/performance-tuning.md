@@ -37,7 +37,7 @@ Your schema and data will be based on the fictional peer-to-peer vehicle-sharing
 
 A few notes about the schema:
 
-- There are just three self-explanatory tables: In essence, `users` represents the people registered for the service, `vehicles` represents the pool of vehicles for the service, and `rides` represents when and where users have participated.   
+- There are just three self-explanatory tables: In essence, `users` represents the people registered for the service, `vehicles` represents the pool of vehicles for the service, and `rides` represents when and where users have participated.
 - Each table has a composite primary key, with `city` being first in the key. Although not necessary initially in the single-region deployment, once you scale the cluster to multiple regions, these compound primary keys will enable you to [geo-partition data at the row level](partitioning.html#partition-using-primary-key) by `city`. As such, this tutorial demonstrates a schema designed for future scaling.
 - The [`IMPORT`](import.html) feature you'll use to import the data does not support foreign keys, so you'll import the data without [foreign key constraints](foreign-key.html). However, the import will create the secondary indexes required to add the foreign keys later.
 - The `rides` table contains both `city` and the seemingly redundant `vehicle_city`. This redundancy is necessary because, while it is not possible to apply more than one foreign key constraint to a single column, you will need to apply two foreign key constraints to the `rides` table, and each will require city as part of the constraint. The duplicate `vehicle_city`, which is kept in sync with `city` via a [`CHECK` constraint](check.html), lets you overcome [this limitation](https://github.com/cockroachdb/cockroach/issues/23580).
@@ -145,7 +145,7 @@ The **tag** feature will let you easily apply the rule to your instances.
 
 You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, with an extra instance for running a client application workload.
 
-1. [Create 3 instances](https://cloud.google.com/compute/docs/instances/create-start-instance) for your CockroachDB nodes. While creating each instance:  
+1. [Create 3 instances](https://cloud.google.com/compute/docs/instances/create-start-instance) for your CockroachDB nodes. While creating each instance:
     - Select the `us-east1-b` [zone](https://cloud.google.com/compute/docs/regions-zones/).
     - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
     - Use the Ubuntu 16.04 OS image.
@@ -264,7 +264,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     (1 row)
 
     Time: 3.409449563s
-    ~~~    
+    ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -1105,7 +1105,7 @@ This approach reduced the query time from 4356.70ms (query with subquery) to 160
 
 #### Bulk inserting into an existing table
 
-Moving on to writes, let's imagine that you have a batch of 100 new users to insert into the `users` table. The most obvious approach is to insert each row using 100 separate [`INSERT`](insert.html) statements:  
+Moving on to writes, let's imagine that you have a batch of 100 new users to insert into the `users` table. The most obvious approach is to insert each row using 100 separate [`INSERT`](insert.html) statements:
 
 {{site.data.alerts.callout_info}}
 For the purpose of demonstration, the command below inserts the same user 100 times, each time with a different unique ID. Note also that you're now adding the `--cumulative` flag to print the total time across all 100 inserts.
@@ -1546,7 +1546,7 @@ For contrast, imagine we are now a Movr administrator in Seattle, and we want to
     35.9096717834
     ~~~
 
-Because the leaseholder for `vehicles` is in the same zone as the client request, this query took just 35.90ms compared to the similar query in New York that took 96.25ms.  
+Because the leaseholder for `vehicles` is in the same zone as the client request, this query took just 35.90ms compared to the similar query in New York that took 96.25ms.
 
 #### Writes
 
@@ -1777,7 +1777,7 @@ For this service, the most effective technique for improving read and write late
     Washington DC | `zone=us-east1-b`
     Seattle | `zone=us-west1-a`
     San Francisco | `zone=us-west2-a`
-    Los Angelese | `zone=us-west2-a`
+    Los Angeles | `zone=us-west2-a`
 
     {{site.data.alerts.callout_info}}
     Since our nodes are located in 3 specific GCE zones, we're only going to use the `zone=` portion of node locality. If we were using multiple zones per regions, we would likely use the `region=` portion of the node locality instead.

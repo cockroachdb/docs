@@ -84,6 +84,11 @@ To test bulk operations like [`IMPORT`](import.html), [`BACKUP`](backup.html), o
 
 For more details, see [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html).
 
+## Use Docker-specific testing and development tools
+
+When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, some additional features are available to help with testing and development. Refer to [Start a local cluster in Docker (Linux)](start-a-local-cluster-in-docker-linux.html) and [Start a local cluster in Docker (macOS)](start-a-local-cluster-in-docker-mac.html).
+
+
 ## See also
 
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
