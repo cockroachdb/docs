@@ -392,11 +392,11 @@ If the `DELETE` request was successful the client will not receive a response pa
 
 <a id="cloud-audit-logs"></a>
 
-## Export {{ site.data.products.db }} audit logs
+## Export {{ site.data.products.db }} Organization audit logs
 
 {% include feature-phases/preview-opt-in.md %}
 
-To export audit logs for activities and events related to your {{ site.data.products.db }} organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).
+To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -407,13 +407,13 @@ curl --request GET \
 
 Where:
 
-  - `{timestamp}` indicates the first log entry to fetch. If unspecified, `{timestamp}` is set to the beginning of time if `{sort_order}` is `ascending`, or the current time if `{sort_order}` is `descending`.
+  - `{timestamp}` is an [RFC3339 timestamp](https://www.ietf.org/rfc/rfc3339.txt) that indicates the first log entry to fetch. If unspecified, defaults to the time when the Cloud organization was created if `{sort_order}` is `ascending`, or the current time if `{sort_order}` is `descending`.
   - `{sort_order}` is either `ascending` (the default) or `descending`.
-  - `{limit}` indicates roughly how many entries to return. It is expected that slightly more results will be returned, because if any entries exist for a timestamp, all entries for that timestamp are always fetched. It defaults to `200`.
+  - `{limit}` indicates roughly how many entries to return. If any entries would be returned for a timestamp, all entries for that timestamp are always returned. Defaults to `200`.
 
-A request that includes no parameters exports roughly 200 entries are returned in ascending order, starting from the first entry for your {{ site.data.products.db }} organization.
+A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
 
-If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and a `next_starting_from` field.
+If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and a `next_starting_from` field. If the results are returned in descending order (latest to earliest), then `next_starting_from` is not returned. If the results are returned in ascending order, `next_starting_from` is always returned.
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
