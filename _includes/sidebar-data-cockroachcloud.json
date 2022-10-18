@@ -86,9 +86,9 @@
       	      ]
       	    },
 						{
-      	      "title": "Export Cloud Audit Logs",
+      	      "title": "Export Cloud Organization Audit Logs",
       	      "urls": [
-      		      "/cockroachcloud/cloud-audit-logs.html"
+      		      "/cockroachcloud/cloud-org-audit-logs.html"
       	      ]
       	    }
       	  ]

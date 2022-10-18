@@ -1,21 +1,21 @@
 ---
-title: Export CockroachDB Cloud audit logs
-summary: Learn about exporting Cockroach Cloud audit logs.
+title: Export CockroachDB Cloud organization audit logs
+summary: Learn about exporting Cockroach Cloud organization audit logs.
 toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user logs in to {{ site.data.products.db }}. Any user who is an admin of the organization can export these audit logs using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).
+{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user who is an admin of the organization can export these audit logs using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).
 
 {% include feature-phases/preview-opt-in.md %}
 
-After your organization is enrolled in the preview, you can begin exporting {{ site.data.products.db }} audit logs.
+After your organization is enrolled in the preview, you can begin exporting audit logs for {{ site.data.products.db }} organization.
 
-This page provides some examples of exporting {{ site.data.products.db }} audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs).
+This page provides some examples of exporting {{ site.data.products.db }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs).
 
 ## Export audit logs in ascending order
 
-This example requests audit logs without defining the starting timestamp, sort order, or limit. By default, the first 200 audit logs for your {{ site.data.products.db }} organization are returned in ascending order.
+This example requests audit logs without defining the starting timestamp, sort order, or limit. By default, the earliest 200 audit logs for your {{ site.data.products.db }} organization are returned in ascending order, starting from when the organization was created.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -68,6 +68,10 @@ The response is truncated for readability.
 }
 ~~~
 
+{{site.data.alerts.callout_info}}
+If you get an error, verify that the feature is enabled for your {{ site.data.products.db }} organization.
+{{site.data.alerts.end}}
+
 To export the next batch of entries, send a second request and set `StartingFrom` to the value of `next_starting_from`, `2022-10-09T02:40:35.054818Z`.
 
 {% include_cached copy-clipboard.html %}
@@ -88,11 +92,11 @@ curl --request GET \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
-To request the next batch of entries in the same direction, send a second request with the same values for `SortOrder` and `limit` and set `StartingFrom` to the value of `next_starting_from`.
+To request the next batch of entries in the same direction, send a second request with the same values for `SortOrder` and `limit` and set `StartingFrom` to the value of `next_starting_from`. When there are no more results to fetch (because you have reached when your {{ site.data.products.db }} organization was created), no `next_starting_from` field is returned.
 
 ## Events adjacent to a specific timestamp
 
-This example shows how to retrieve the 200 events on each side of a given timestamp by invoking the API multiple times with the same timestamp and a different sort order. The sort order determines whether the specified timestamp is at the beginning or end of the list. These examples use the default value for `limit`.
+This example shows how to retrieve the 200 events on each side of a given timestamp by invoking the API twice, with the same timestamp and a different sort order for each request. The sort order determines whether the specified timestamp is at the beginning or end of the list. These examples use the default value for `limit`.
 
 First, retrieve roughly 200 entries for the specified timestamp and later.
 
