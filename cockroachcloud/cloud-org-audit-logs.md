@@ -88,7 +88,7 @@ This example requests the 300 most recent audit logs, starting from the current 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?sortOrder=DESC,limit=300' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?sortOrder=DESC&limit=300' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
