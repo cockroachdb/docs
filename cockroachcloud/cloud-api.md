@@ -401,7 +401,7 @@ To export audit logs for activities and events related to your Cloud organizatio
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom={timestamp},sortOrder={sort_order},limit={limit}' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom={timestamp}&sortOrder={sort_order}&limit={limit}' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
