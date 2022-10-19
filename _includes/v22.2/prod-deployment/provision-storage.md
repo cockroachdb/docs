@@ -1,1 +1,1 @@
-**150 GiB per vCPU**
+**250-320 GiB per vCPU**
