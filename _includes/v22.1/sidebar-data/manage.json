@@ -243,6 +243,12 @@
               ]
             },
             {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
+              ]
+            },
+            {
               "title": "Manage Console Access",
               "urls": [
                  "/cockroachcloud/console-access-management.html"
