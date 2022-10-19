@@ -227,9 +227,9 @@ RESET CLUSTER SETTING server.time_until_store_dead;
 
 When [draining manually](#drain-a-node-manually) with `cockroach node drain`, all [drain phases](#draining) must be completed within the duration of `--drain-wait` (`10m` by default) or the drain will stop. This can be observed with an `ERROR: drain timeout` message in the terminal output. To continue the drain, re-initiate the command.
 
-{{site.data.alerts.callout_info}}
 A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
-{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.2" %} CockroachDB automatically increases the verbosity of logging when it detects a stall in the range lease transfer stage of `node drain`. Messages logged during such a stall include the time an attempt occurred, the total duration stalled waiting for the transfer attempt to complete, and the lease that is being transferred.
 
 `--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
 
