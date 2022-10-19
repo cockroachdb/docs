@@ -23,3 +23,5 @@
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
+
+    {% include {{ page.version.version }}/cdc/cdc-cloud-rangefeed.md %}

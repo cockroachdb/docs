@@ -203,6 +203,8 @@ For example:
 
 ## Examples
 
+Before running any of the examples in this section it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a {{ site.data.products.serverless }} or {{ site.data.products.dedicated }} cluster, this cluster setting is enabled by default.
+
 The following examples show the syntax for managing changefeeds and starting changefeeds to specific sinks. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations see the [Changefeed Sinks](changefeed-sinks.html) page.
 
 ### Create a changefeed connected to Kafka
