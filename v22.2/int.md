@@ -51,6 +51,8 @@ If your application needs to use an integer size that is different than the Cock
 If your application requires arbitrary precision numbers, use the [`DECIMAL`](decimal.html) data type.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## Examples
 
 {% include_cached copy-clipboard.html %}

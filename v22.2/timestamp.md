@@ -54,6 +54,8 @@ To express a `TIMESTAMPTZ` value with time zone offset from UTC, use the followi
 
 By default, CockroachDB interprets truncated dates (e.g., `12-16-06`) as `MM-DD-YY`. To change the input string format of truncated dates, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html).
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## Size
 
 A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
