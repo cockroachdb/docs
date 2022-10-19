@@ -413,7 +413,7 @@ Where:
 
 A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
 
-If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and a `next_starting_from` field. If the results are returned in descending order (latest to earliest), then `next_starting_from` is not returned. If the results are returned in ascending order, `next_starting_from` is always returned.
+If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and a `next_starting_from` field. If the results are returned in descending order (latest to earliest), then `next_starting_from` is not returned when it reaches the time when the  {{ site.data.products.db }} organization was created. If the results are returned in ascending order, `next_starting_from` is always returned.
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
