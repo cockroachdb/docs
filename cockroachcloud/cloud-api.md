@@ -390,6 +390,52 @@ Where:
 
 If the `DELETE` request was successful the client will not receive a response payload.
 
+<a id="cloud-audit-logs"></a>
+
+## Export Cloud Organization audit logs
+
+{% include feature-phases/preview-opt-in.md %}
+
+To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom={timestamp}&sortOrder={sort_order}&limit={limit}' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --header 'Cc-Version: {api_version}'
+~~~
+
+Where:
+
+  - `{timestamp}` is an [RFC3339 timestamp](https://www.ietf.org/rfc/rfc3339.txt) that indicates the first log entry to fetch. If unspecified, defaults to the time when the Cloud organization was created if `{sort_order}` is `ASC`, or the current time if `{sort_order}` is `DESC`.
+  - `{sort_order}` is either `ASC` (the default) or `DESC`.
+  - `{limit}` indicates roughly how many entries to return. If any entries would be returned for a timestamp, all entries for that timestamp are always returned. Defaults to `200`.
+  - `{api_version}` is the [Cloud API version](#set-the-api-version).
+
+A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
+
+If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
+
+- If `{sort_order}` is `ASC`, `next_starting_from` is always returned.
+- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the {{ site.data.products.db }} organization was created).
+
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{
+  "entries": [
+    "{entry_array}"
+  ],
+  "next_starting_from": "{timestamp}"
+}
+~~~
+
+Where:
+
+  - `{entry_array}` is a structured JSON array of audit log entries.
+  - `{timestamp}` indicates the timestamp to send to export the next batch of results.
+
 ## List all clusters in an organization
 
 To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](console-access-management.html#service-accounts) to list an organization's clusters.
@@ -514,7 +560,7 @@ Where:
   {{site.data.alerts.callout_info}}
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
-  
+
 If the request was successful, the client will receive a list of SQL users.
 
 ~~~ json
