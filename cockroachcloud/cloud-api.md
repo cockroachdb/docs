@@ -392,7 +392,7 @@ If the `DELETE` request was successful the client will not receive a response pa
 
 <a id="cloud-audit-logs"></a>
 
-## Export {{ site.data.products.db }} Organization audit logs
+## Export Cloud Organization audit logs
 
 {% include feature-phases/preview-opt-in.md %}
 
