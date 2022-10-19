@@ -72,12 +72,12 @@ The response is truncated for readability.
 If you get an error, verify that the feature is enabled for your {{ site.data.products.db }} organization.
 {{site.data.alerts.end}}
 
-To export the next batch of entries, send a second request and set `StartingFrom` to the value of `next_starting_from`, `2022-10-09T02:40:35.054818Z`.
+To export the next batch of entries, send a second request and set `startingFrom` to the value of `next_starting_from`, `2022-10-09T02:40:35.054818Z`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?StartingFrom=2022-10-09T02:40:35.054818Z' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom=2022-10-09T02:40:35.054818Z' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
@@ -88,11 +88,11 @@ This example requests the 300 most recent audit logs, starting from the current 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?SortOrder=descending,limit=300' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?sortOrder=DESC,limit=300' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
-To request the next batch of entries in the same direction, send a second request with the same values for `SortOrder` and `limit` and set `StartingFrom` to the value of `next_starting_from`. When there are no more results to fetch (because you have reached when your {{ site.data.products.db }} organization was created), no `next_starting_from` field is returned.
+To request the next batch of entries in the same direction, send a second request with the same values for `sortOrder` and `limit` and set `startingFrom` to the value of `next_starting_from`. When there are no more results to fetch (because you have reached when your {{ site.data.products.db }} organization was created), no `next_starting_from` field is returned.
 
 ## Events adjacent to a specific timestamp
 
@@ -103,7 +103,7 @@ First, retrieve roughly 200 entries for the specified timestamp and later.
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?StartingFrom=2022-10-09T02:40:00.262143Z&SortOrder=ascending' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom=2022-10-09T02:40:00.262143Z&sortOrder=ASC' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
@@ -112,7 +112,7 @@ Next, retrieve roughly 200 less recent entries for the specified timestamp and e
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?StartingFrom=2022-10-09T02:40:00.262143Z&SortOrder=descending' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom=2022-10-09T02:40:00.262143Z&sortOrder=DESC' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 

@@ -401,19 +401,23 @@ To export audit logs for activities and events related to your Cloud organizatio
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?StartingFrom={timestamp},SortOrder={sort_order},limit={limit}' \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?startingFrom={timestamp},sortOrder={sort_order},limit={limit}' \
   --header 'Authorization: Bearer {secret_key}'
 ~~~
 
 Where:
 
-  - `{timestamp}` is an [RFC3339 timestamp](https://www.ietf.org/rfc/rfc3339.txt) that indicates the first log entry to fetch. If unspecified, defaults to the time when the Cloud organization was created if `{sort_order}` is `ascending`, or the current time if `{sort_order}` is `descending`.
-  - `{sort_order}` is either `ascending` (the default) or `descending`.
+  - `{timestamp}` is an [RFC3339 timestamp](https://www.ietf.org/rfc/rfc3339.txt) that indicates the first log entry to fetch. If unspecified, defaults to the time when the Cloud organization was created if `{sort_order}` is `ASC`, or the current time if `{sort_order}` is `DESC`.
+  - `{sort_order}` is either `ASC` (the default) or `DESC`.
   - `{limit}` indicates roughly how many entries to return. If any entries would be returned for a timestamp, all entries for that timestamp are always returned. Defaults to `200`.
 
 A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
 
-If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and a `next_starting_from` field. If the results are returned in descending order (latest to earliest), then `next_starting_from` is not returned when it reaches the time when the  {{ site.data.products.db }} organization was created. If the results are returned in ascending order, `next_starting_from` is always returned.
+If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
+
+- If `{sort_order}` is `ASC`, next_starting_from` is always returned.
+- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the {{ site.data.products.db }} organization was created).
+
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
@@ -421,7 +425,7 @@ If the request was successful, the client will receive a JSON array consisting o
   "entries": [
     "{entry_array}"
   ],
-  "NextStartingFrom": "{timestamp}"
+  "next_starting_from": "{timestamp}"
 }
 ~~~
 
