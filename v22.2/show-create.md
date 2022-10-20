@@ -1,15 +1,15 @@
 ---
 title: SHOW CREATE
-summary: The SHOW CREATE statement shows the CREATE statement for an existing database, table, view, or sequence.
+summary: The SHOW CREATE statement shows the CREATE statement for an existing database, function, table, view, or sequence.
 toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [database](create-database.html), [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).
+The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [database](create-database.html), [function](create-function.html), [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).
 
 ## Required privileges
 
-The user must have any [privilege](security-reference/authorization.html#managing-privileges) on the target database, table, view, or sequence.
+The user must have any [privilege](security-reference/authorization.html#managing-privileges) on the target database, function, table, view, or sequence.
 
 ## Synopsis
 
@@ -21,10 +21,10 @@ The user must have any [privilege](security-reference/authorization.html#managin
 
 Parameter | Description
 ----------|------------
-`object_name` | The name of the database, table, view, or sequence for which to show the `CREATE` statement.
-`ALL TABLES` |  Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
-`ALL SCHEMAS` |  Show the `CREATE` statements for all [schemas](create-schema.html) in the current database.
-`ALL TYPES` |  Show the `CREATE` statements for all [types](create-type.html) in the current database.
+`object_name` | The name of the database, function, table, view, or sequence for which to show the `CREATE` statement.
+`ALL TABLES` | Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
+`ALL SCHEMAS` | Show the `CREATE` statements for all [schemas](create-schema.html) in the current database.
+`ALL TYPES` | Show the `CREATE` statements for all [types](create-type.html) in the current database.
 
 ## Response
 
@@ -32,7 +32,8 @@ Field | Description
 ------|------------
 `table_name` | The name of the table, view, or sequence.
 `database_name` | The name of the database.
-`create_statement` | The `CREATE` statement for the database, table, view, or sequence.
+`function_name` | The name of the function.
+`create_statement` | The `CREATE` statement for the database, function, table, view, or sequence.
 
 ## Example
 
@@ -313,6 +314,35 @@ All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in
 (1 row)
 ~~~
 
+### Show the `CREATE FUNCTION` statement for a function
+
+The following statement defines a function to return the number of rows in the `users` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) from users' LANGUAGE SQL;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE FUNCTION num_users;
+~~~
+
+~~~
+  function_name |              create_statement
+----------------+----------------------------------------------
+  num_users     | CREATE FUNCTION public.num_users()
+                |     RETURNS INT8
+                |     VOLATILE
+                |     NOT LEAKPROOF
+                |     CALLED ON NULL INPUT
+                |     LANGUAGE SQL
+                |     AS $$
+                |     SELECT count(*) FROM movr.public.users;
+                | $$
+(1 row)
+~~~
+
 ### Show the statements needed to recreate all tables, views, and sequences in the current database
 
 To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
@@ -478,6 +508,7 @@ The `SHOW CREATE DATABASE` output includes the database regions.
 
 ## See also
 
+- [`CREATE FUNCTION`](create-function.html)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE VIEW`](create-view.html)
 - [`CREATE TABLE`](create-sequence.html)

@@ -6,23 +6,21 @@ layout: null
 / /docs/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!
-/docs/releases/ /docs/releases/index.html 301!
-/docs/advisories/ /docs/advisories/index.html 301!
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
 # Pages undergoing maintenance
-/docs/stable/migrate-from-postgres.html /docs/stable/migration-overview.html 301
-/docs/v22.2/migrate-from-postgres.html /docs/v22.2/migration-overview.html 301
-/docs/v22.1/migrate-from-postgres.html /docs/v22.1/migration-overview.html 301
-/docs/v21.2/migrate-from-postgres.html /docs/v21.2/migration-overview.html 301
-/docs/stable/migrate-from-mysql.html /docs/stable/migration-overview.html 301
-/docs/v22.2/migrate-from-mysql.html /docs/v22.2/migration-overview.html 301
-/docs/v22.1/migrate-from-mysql.html /docs/v22.1/migration-overview.html 301
-/docs/v21.2/migrate-from-mysql.html /docs/v21.2/migration-overview.html 301
-/docs/stable/migrate-from-oracle.html /docs/stable/migration-overview.html 301
-/docs/v22.2/migrate-from-oracle.html /docs/v22.2/migration-overview.html 301
-/docs/v22.1/migrate-from-oracle.html /docs/v22.1/migration-overview.html 301
-/docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 301
+/docs/stable/migrate-from-postgres.html /docs/stable/migration-overview.html 302
+/docs/v22.2/migrate-from-postgres.html /docs/v22.2/migration-overview.html 302
+/docs/v22.1/migrate-from-postgres.html /docs/v22.1/migration-overview.html 302
+/docs/v21.2/migrate-from-postgres.html /docs/v21.2/migration-overview.html 302
+/docs/stable/migrate-from-mysql.html /docs/stable/migration-overview.html 302
+/docs/v22.2/migrate-from-mysql.html /docs/v22.2/migration-overview.html 302
+/docs/v22.1/migrate-from-mysql.html /docs/v22.1/migration-overview.html 302
+/docs/v21.2/migrate-from-mysql.html /docs/v21.2/migration-overview.html 302
+/docs/stable/migrate-from-oracle.html /docs/stable/migration-overview.html 302
+/docs/v22.2/migrate-from-oracle.html /docs/v22.2/migration-overview.html 302
+/docs/v22.1/migrate-from-oracle.html /docs/v22.1/migration-overview.html 302
+/docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 302
 
 # Renamed pages
 /docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
@@ -317,7 +315,7 @@ layout: null
 /docs/v20.2/start-a-local-cluster-in-docker.html /docs/v20.2/start-a-local-cluster-in-docker-mac.html 301
 /docs/v21.1/start-a-local-cluster-in-docker.html /docs/v21.1/start-a-local-cluster-in-docker-mac.html 301
 /docs/stable/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-mac.html 301
-/docs/*/general-troubleshooting.html /docs/*/common-errors.html 301
+/docs/:version/general-troubleshooting.html /docs/:version/common-errors.html 301
 /docs/v2.1/show-create-view.html /docs/v2.1/show-create.html 301
 /docs/v19.1/show-create-view.html /docs/v19.1/show-create.html 301
 /docs/v19.2/show-create-view.html /docs/v19.2/show-create.html 301
@@ -339,13 +337,13 @@ layout: null
 /docs/v20.2/show-create-sequence.html /docs/v20.2/show-create.html 301
 /docs/v21.1/show-create-sequence.html /docs/v21.1/show-create.html 301
 /docs/stable/show-create-sequence.html /docs/stable/show-create.html 301
-/docs/*/sql-optimizer.html /docs/*/cost-based-optimizer.html 301
-/docs/*/show-all.html /docs/*/show-vars.html 301
-/docs/*/show-transaction.html /docs/*/show-vars.html 301
-/docs/*/show-time-zone.html /docs/*/show-vars.html 301
-/docs/*/set-application-name.html /docs/*/set-vars.html 301
-/docs/*/set-database.html /docs/*/set-vars.html 301
-/docs/*/set-time-zone.html /docs/*/set-vars.html 301
+/docs/:version/sql-optimizer.html /docs/:version/cost-based-optimizer.html 301
+/docs/:version/show-all.html /docs/:version/show-vars.html 301
+/docs/:version/show-transaction.html /docs/:version/show-vars.html 301
+/docs/:version/show-time-zone.html /docs/:version/show-vars.html 301
+/docs/:version/set-application-name.html /docs/:version/set-vars.html 301
+/docs/:version/set-database.html /docs/:version/set-vars.html 301
+/docs/:version/set-time-zone.html /docs/:version/set-vars.html 301
 /docs/v2.0/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.0/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/v2.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/v19.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
@@ -458,7 +456,7 @@ layout: null
 /docs/stable/open-source.html /docs/stable/frequently-asked-questions.html 301
 /docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
 /docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
-/docs/*/detailed-sql-support.html /docs/*/sql-feature-support.html 301
+/docs/:version/detailed-sql-support.html /docs/:version/sql-feature-support.html 301
 /docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
 /docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
 /docs/stable/collatedstring.html /docs/stable/collate.html 301
@@ -544,4 +542,3 @@ layout: null
 {% endfor -%}
 
 /docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
-

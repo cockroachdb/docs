@@ -18,6 +18,13 @@ Get future release notes emailed to you:
 As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
 {{site.data.alerts.end}}
 
+## October 3, 2022
+
+<h3> Bug fixes </h3>
+
+- The {{ site.data.products.db }} Console now utilizes the same [cluster setting](../stable/cluster-settings.html) as the DB Console, `sql.index_recommendation.drop_unused_duration`, as a threshold value for dropping unused indexes.
+- Fixed a bug where [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoints could fail to create but display an error message that said they were still creating.
+
 ## September 24, 2022
 
 <h3>Console changes</h3>
@@ -87,7 +94,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3>General changes</h3>
 
-- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
+- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
 - [Single Sign-On (SSO)](../cockroachcloud/cloud-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
 
 <h3>Console changes</h3>
@@ -179,7 +186,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
     GCP                              | AWS
     ---------------------------------|------------
-    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    California (`us-west2`)              | Mumbai (`ap-south-1`)
     Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
     South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
 

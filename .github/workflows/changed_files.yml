@@ -8,13 +8,13 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.5.0
         with:
           fetch-depth: 2
 
       - name: Get changed files
         id: changed_files
-        uses: tj-actions/changed-files@v4.2
+        uses: tj-actions/changed-files@v32.1.0
 
       - name: Format list of changed files
         id: format
@@ -93,10 +93,10 @@ jobs:
             fi
           done;
           body="${output[@]}"
-          echo ::set-output name=body::$body
+          echo "body=$body" >> $GITHUB_ENV
 
       - name: Find Comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2.0.0
         id: find-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -104,10 +104,10 @@ jobs:
           body-includes: Files changed
 
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2.0.0
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           edit-mode: replace
           body: |
-            <h3>Files changed:</h3><ul>${{ steps.format.outputs.body }}</ul>
+            <h3>Files changed:</h3><ul>${{ env.body }}</ul>

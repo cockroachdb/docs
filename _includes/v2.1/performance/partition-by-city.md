@@ -154,7 +154,7 @@ For this service, the most effective technique for improving read and write late
     Washington DC | `zone=us-east1-b`
     Seattle | `zone=us-west1-a`
     San Francisco | `zone=us-west2-a`
-    Los Angelese | `zone=us-west2-a`
+    Los Angeles | `zone=us-west2-a`
 
     {{site.data.alerts.callout_info}}
     Since our nodes are located in 3 specific GCE zones, we're only going to use the `zone=` portion of node locality. If we were using multiple zones per regions, we would likely use the `region=` portion of the node locality instead.

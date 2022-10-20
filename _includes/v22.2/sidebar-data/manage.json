@@ -156,6 +156,12 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Backup Validation",
+          "urls": [
+            "/${VERSION}/backup-validation.html"
+          ]
         }
       ]
     },
@@ -246,6 +252,12 @@
               "title": "SQL Audit Logging",
               "urls": [
                 "/cockroachcloud/sql-audit-logging.html"
+              ]
+            },
+            {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
               ]
             },
             {
@@ -452,7 +464,7 @@
               ]
             },
             {
-              "title": "Monitor with Datadog",
+              "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]

@@ -84,9 +84,15 @@
       	      "urls": [
       		      "/cockroachcloud/sql-audit-logging.html"
       	      ]
-      	    }
-      	  ]
-      	},
+      	    },
+            {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
+              ]
+            }
+          ]
+        },
       	{
       	  "title": "Migrate Data",
       	  "items": [

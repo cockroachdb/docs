@@ -109,14 +109,16 @@ The [`EXPLAIN`](explain.html#success-responses) command provides index recommend
 
 - Drop unused indexes whenever possible.
 
-    To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
+  - In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT * FROM crdb_internal.index_usage_statistics;
-    ~~~
+  - To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) table.
 
-    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM crdb_internal.index_usage_statistics;
+        ~~~
+
+        To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](performance-recipes.html#fix-slow-writes).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -231,17 +233,17 @@ To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index
 ~~~
 
 ~~~
-  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
--------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
-  vehicles   | type_available_idx |    true    |            1 | type          | ASC       |  false  |  false
-  vehicles   | type_available_idx |    true    |            2 | available     | ASC       |  false  |  false
-  vehicles   | type_available_idx |    true    |            3 | last_location | N/A       |  true   |  false
-  vehicles   | type_available_idx |    true    |            4 | id            | ASC       |  false  |   true
-  vehicles   | vehicles_pkey      |   false    |            1 | id            | ASC       |  false  |  false
-  vehicles   | vehicles_pkey      |   false    |            2 | type          | N/A       |  true   |  false
-  vehicles   | vehicles_pkey      |   false    |            3 | creation_time | N/A       |  true   |  false
-  vehicles   | vehicles_pkey      |   false    |            4 | available     | N/A       |  true   |  false
-  vehicles   | vehicles_pkey      |   false    |            5 | last_location | N/A       |  true   |  false
+  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
+-------------+--------------------+------------+--------------+---------------+-----------+---------+----------+----------
+  vehicles   | type_available_idx |     t      |            1 | type          | ASC       |    f    |    f     |    t
+  vehicles   | type_available_idx |     t      |            2 | available     | ASC       |    f    |    f     |    t
+  vehicles   | type_available_idx |     t      |            3 | last_location | N/A       |    t    |    f     |    t
+  vehicles   | type_available_idx |     t      |            4 | id            | ASC       |    f    |    t     |    t
+  vehicles   | vehicles_pkey      |     f      |            1 | id            | ASC       |    f    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            2 | type          | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            3 | creation_time | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            4 | available     | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            5 | last_location | N/A       |    t    |    f     |    t
 (9 rows)
 ~~~
 

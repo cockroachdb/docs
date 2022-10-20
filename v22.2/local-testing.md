@@ -1,11 +1,11 @@
 ---
-title: Test Your Application
+title: Test Your Application Locally
 summary: Best practices for locally testing an application built on CockroachDB
 toc: true
 docs_area: develop
 ---
 
-This page documents best practices for unit testing applications built on CockroachDB.
+This page documents best practices for unit testing applications built on CockroachDB in a local environment.
 
 If you are deploying a self-hosted cluster, see the [Production Checklist](recommended-production-settings.html) for information about preparing your cluster for production.
 
@@ -83,6 +83,11 @@ For more information about logging, see [Configure logs](configure-logs.html).
 To test bulk operations like [`IMPORT`](import.html), [`BACKUP`](backup.html), or [`RESTORE`](restore.html), we recommend using a local file server.
 
 For more details, see [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html).
+
+## Use Docker-specific testing and development tools
+
+When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, some additional features are available to help with testing and development. Refer to [Start a local cluster in Docker (Linux)](start-a-local-cluster-in-docker-linux.html) and [Start a local cluster in Docker (macOS)](start-a-local-cluster-in-docker-mac.html).
+
 
 ## See also
 

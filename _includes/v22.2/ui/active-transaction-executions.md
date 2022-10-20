@@ -18,15 +18,14 @@ Application | The name specified by the [`application_name`](show-vars.html#supp
 
 To view details of an active transaction execution, click an execution ID in the **Transaction Execution ID** column to open the [**Transaction Execution** details page](#transaction-execution-details-page).
 
-## Transaction Execution details page
+## Transaction execution details page
 
-The Transaction Execution details page provides the following details on the transaction execution.
+The transaction execution details page provides the following details on the transaction execution.
 
 - **Start Time (UTC)**: The timestamp when the execution started.
 - **Elapsed Time**: The time elapsed since the transaction started.
 - **Status**: The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 - **Priority**: The [priority](transactions.html#transaction-priorities) of the transaction.
-- **Full Scan**: Whether the execution performed a full scan of the table.
 - **Internal Retries**: The number of retries of statements in the transaction.
 - **Last Retry Reason**: The [reason](transaction-retry-error-reference.html) for the last statement retry.
 - **Number of Statements**: The number of statements in the transaction.
