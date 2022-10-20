@@ -139,9 +139,13 @@ Name | Help
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
 `range.splits` | Number of range splits
+`rangekeybytes` | Number of bytes taken up by range keys (e.g. MVCC range tombstones)
+`rangekeycount` | Count of all range keys (e.g. MVCC range tombstones)
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
+`rangevalbytes` | Number of bytes taken up by range key values (e.g. MVCC range tombstones)
+`rangevalcount` | Count of all range key values (e.g. MVCC range tombstones)
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
