@@ -1800,6 +1800,12 @@
             ]
           },
           {
+            "title": "Schedules Page",
+            "urls": [
+              "/${VERSION}/ui-schedules-page.html"
+            ]
+          },
+          {
             "title": "Advanced Debug Page",
             "urls": [
               "/${VERSION}/ui-debug-pages.html"
