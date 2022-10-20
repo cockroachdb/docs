@@ -57,6 +57,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 ## Visualization tools
 
+- [Adminer](https://www.adminer.org/)
 - [Beekeeper Studio](https://www.beekeeperstudio.io/db/cockroachdb-client/)
 - [DbVisualizer](https://www.cdata.com/kb/tech/cockroachdb-jdbc-dbv.rst)
 - [Navicat for PostgreSQL](https://www.navicat.com/en/products/navicat-for-postgresql)/[Navicat Premium](https://www.navicat.com/en/products/navicat-premium)
