@@ -7,6 +7,10 @@ docs_area: reference.sql
 
 The `UPSERT` [statement](sql-statements.html) inserts rows in cases where specified values do not violate uniqueness constraints and updates rows in cases where values do violate uniqueness constraints. `UPSERT` considers uniqueness only for [primary key](primary-key.html) columns.
 
+{{site.data.alerts.callout_success}}
+To read more about upserts, see our [Upsert in SQL: What is an Upsert, and When Should You Use One?](https://www.cockroachlabs.com/blog/sql-upsert/) blog post.
+{{site.data.alerts.end}}
+
 ## `UPSERT` vs. `INSERT ON CONFLICT`
 
 Assuming that columns `a` and `b` are the primary key, the following `UPSERT` and [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements are equivalent:
