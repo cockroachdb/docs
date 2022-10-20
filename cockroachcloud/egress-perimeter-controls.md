@@ -42,15 +42,119 @@ The Cloud API provides a real-time status for if the rule enablement is in progr
 
 ## How to use Egress Perimeter Controls
 
-### Step 1. Create a 
+### Step 1. Create a new dedicated cluster with Egress Perimeter Controls enabled
+
+This is a new feature as of 22.2.0, so create a new cluster of at least that version.
 
 !!!contains raw source, disregard sloppy copy
 Customer creates a dedicated cluster (in advanced tier i.e. it should be private). At this point all egress traffic is allowed out to external resources by the way of backups, import/export, CDC and log export.
 
-When customer is ready to migrate data from another database or write fresh data to the cluster (especially if it is production), a user with Org Admin role invokes a new API [what endpoint and body?] to convert it to DENY-ALL mode such that no egress traffic is allowed to external resources. This is likely just a temporary thing to set the stage for next step.
 
-The Org Admin then configures egress rules for the cluster to define the egress perimeter policy using another set of APIs (as documented in the RFC), based on what external resources may be required by the application team for their own managed backups, CDC, export/import etc.
 
-If the customer enables CMEK, Log export to cloudwatch/cloud logging or Metrics export to Datadog, then we'll automatically add egress rules to relevant external resources in those cases, and the customer won't have to take a separate action.
+### Step 2. Use the API to deny all egress
 
-to convert it to DENY-ALL mode such that no egress traffic is allowed to external resources.
+Create a maximally secure base state for your cluster by adding a rule to deny all (non-essential) egress.
+"to convert it to DENY-ALL mode"
+
+{{site.data.alerts.callout_info}}
+External traffic destined to CRL managed resources will always, regardless of traffic policy.
+{{site.data.alerts.end}}
+
+
+1. use that API!!!
+{% include_cached copy-clipboard.html %}
+~~~shell
+API CALL!
+~~~
+
+~~~txt
+API RESPONSE!
+~~~
+
+1. use that API!!!
+{% include_cached copy-clipboard.html %}
+~~~shell
+API CALL!
+~~~
+
+"When customer is ready to migrate data from another database or write fresh data to the cluster (especially if it is production), a user with Org Admin role invokes a new API [what endpoint and body?] to convert it to DENY-ALL mode such that no egress traffic is allowed to external resources. This is likely just a temporary thing to set the stage for next step.""
+
+
+### Step 3. Add additional rules to allow egress to specific targets
+
+1. use that API!!!
+{% include_cached copy-clipboard.html %}
+~~~shell
+API CALL!
+~~~
+
+~~~txt
+API RESPONSE!
+~~~
+
+1. use that API!!!
+{% include_cached copy-clipboard.html %}
+~~~shell
+API CALL!
+~~~
+
+~~~txt
+API RESPONSE!
+~~~
+"The Org Admin then configures egress rules for the cluster to define the egress perimeter policy using another set of APIs (as documented in the RFC), based on what external resources may be required by the application team for their own managed backups, CDC, export/import etc.
+
+If the customer enables CMEK, Log export to cloudwatch/cloud logging or Metrics export to Datadog, then we'll automatically add egress rules to relevant external resources in those cases, and the customer won't have to take a separate action."
+
+## Appendix: Egress Rule Syntax
+
+name: a descriptive partial identifier for an egress rule. The name, cluster id pair uniquely identify a rule. The name should also serve as documentation for the rule's purpose.
+
+type: can be either CIDR or FQDN. This field is not strictly required as we can rely on regex matching on the host field to determine rule type. Serves to facilitate filtering on the front end and code structure in the backend.
+
+crl_managed: a boolean value specifying if the egress rule is managed by CC operators or customers. Immutable after creation.
+
+host: the destination that is allowed for outgoing connections. Can be either a CIDR range or a fully qualified domain name.
+
+ports: the ports allowed for outgoing connections to a specific host.
+
+paths: the URL paths allowed for outgoing connections to a specific host, port pair.
+
+description: a longer description meant to detail the purpose of the egress rule.
+
+
+Below is an example of a list of egress rules in json format (UUID fields are ignored).
+
+{% include_cached copy-clipboard.html %}
+~~~json
+[
+	{
+		"type": "CIDR",
+		"name": "kafka stream",
+		"crl_managed": false,
+		"host": "182.34.62.99/32", # replace with your target CIDR range
+		"ports": [443],
+		"paths": [],
+		"description": ""
+	},
+	{
+		"type": "FQDN",
+		"name": "backups",
+		"crl_managed": false,
+		"host": "storage.googleapis.com",
+		"ports": [443, 80],
+		"paths": [
+			"/customer-self-manged-backups-bucket/*" # replace with your target storage path
+		],
+		"description": ""
+	},
+	{
+		"type": "FQDN",
+		"name": "crl-managed-telemetry",
+		"crl_managed": true,
+		"host": "register.cockroachdb.com",
+		"ports": [443],
+		"paths": [],
+		"description": "telemetry data from this CRDB cluster is sent to a CRL owned service"
+	}
+]
+~~~
