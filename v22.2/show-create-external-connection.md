@@ -16,7 +16,9 @@ You can also use the following SQL statements to work with external connections:
 
 ## Required privileges
 
-Users must have the [`admin` role](security-reference/authorization.html#admin-role) to run a `SHOW CREATE EXTERNAL CONNECTION` statement.
+Without the `admin` role, users can only view the external connections that they own. Users own external connections that they have created with `CREATE EXTERNAL CONNECTION`.
+
+Users with the [`admin` role](security-reference/authorization.html#admin-role) can view all external connections with `SHOW CREATE EXTERNAL CONNECTION`.
 
 ## Synopsis
 

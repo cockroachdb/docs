@@ -16,7 +16,7 @@ You can also use the following SQL statements to work with external connections:
 
 ## Required privileges
 
-Users must have the [`admin` role](security-reference/authorization.html#admin-role) to drop an external connection.
+Users must have `DROP` privilege or be a member of the [`admin` role](security-reference/authorization.html#admin-role) to drop an external connection.
 
 ## Synopsis
 

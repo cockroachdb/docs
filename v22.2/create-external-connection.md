@@ -46,7 +46,7 @@ GRANT USAGE ON EXTERNAL CONNECTION backup_bucket TO user;
 
 Parameter | Description
 ----------+-------------
-`connection_name` | The name of the external connection to pass in operation statements.
+`connection_name` | The name that represents the external connection.
 `connection_URI` | The storage/sink URI that the external connection will reference.
 
 ## Supported external storage and sinks
