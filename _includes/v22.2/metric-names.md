@@ -12,6 +12,7 @@ Name | Help
 `changefeed.running` | Number of currently running changefeeds, including sinkless
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
+`cluster.preserve-downgrade-option.last-updated` | Unix timestamp of last updated time for cluster.preserve_downgrade_option
 `compactor.compactingnanos` | Number of nanoseconds spent compacting ranges
 `compactor.compactions.failure` | Number of failed compaction requests sent to the storage engine
 `compactor.compactions.success` | Number of successful compaction requests sent to the storage engine
