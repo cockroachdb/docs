@@ -1,3 +1,4 @@
-version,release_date,withdrawn,latest
-2022_09_20,2022-09-20,false,true
-2022_03_31,2022-03-31,false,false
+spec,version,release_date,withdrawn,private-preview,latest
+ccapi_spec_2022_09_20,2022-09-20,2022-09-20,false,false,true
+private-preview/audit_logs/openapi,audit-logs,2022-10-18,false,true,false
+ccapi_spec_2022_03_31,2022-03-31,2022-03-31,false,false,false
