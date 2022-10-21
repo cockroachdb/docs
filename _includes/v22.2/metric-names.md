@@ -142,6 +142,8 @@ Name | Help
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
+`rebalancing.readbytespersecond` | Average number of bytes written recently per second
+`rebalancing.writebytespersecond` | Average number of bytes read recently per second
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
