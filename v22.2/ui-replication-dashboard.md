@@ -129,13 +129,13 @@ Metric | Description
 
 When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](architecture/replication-layer.html#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
 
-- In the node view, the graph shows the total number of `ReplicaUnavailableError` events logged since the `cockroach` process started, for the selected node.
+- In the node view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for the selected node.
 
-- In the cluster view, the graph shows the total number of `ReplicaUnavailableError` events logged since the `cockroach` process started, for each node in the cluster.
+- In the cluster view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for each node in the cluster.
 
 Metric | Description
 -------|------------
-`{node}` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
+`{node}` | The rate of `ReplicaUnavailableError` events that have occurred per aggregated interval of time on that node since the `cockroach` process started.
 
 ## Other graphs
 
