@@ -456,31 +456,33 @@ See the [reference documentation](log-formats.html#format-json-fluent-compact) f
 
 A database operator can configure CockroachDB to buffer log messages for a configurable time period or collected message size before writing them to the [log sink](configure-logs.html#configure-log-sinks). This is especially useful for writing log messages to network log sinks, such as [Fluentd-compatible servers](configure-logs.html#output-to-fluentd-compatible-network-collectors) or [HTTP servers](configure-logs.html#output-to-http-network-collectors), where high-traffic or high-contention scenarios can result in log message write latency.
 
-For example, the following logging configuration enables log buffering on the [Fluentd](configure-logs.html#output-to-fluentd-compatible-network-collectors) and [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destinations, and configures specific log buffering behavior for each:
+{% include_cached new-in.html version="v22.2" %} Log buffering is enabled by default on the [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destinations, but you may wish to adjust the buffering configuration for these log sinks based on your needs.
+
+For example, the following logging configuration adjusts the default log buffering behavior for both a [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and an [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destination:
 
 ~~~ yaml
 fluent-defaults:
   buffering:
-    flush-trigger-size: 25KB
+    flush-trigger-size: 2MiB
 http-defaults:
   buffering:
-    max-staleness: 20s
+    max-staleness: 10s
     max-in-flight: 10
 sinks:
   fluent-servers:
     health:
       channels: HEALTH
       buffering:
-        flush-trigger-size: 5KB  # Override flush-trigger-size for HEALTH channel only
+        flush-trigger-size: 100KB  # Override flush-trigger-size for HEALTH channel only
   http-servers:
     health:
       channels: HEALTH
       buffering:
-        max-staleness: 5s  # Override max-staleness for HEALTH channel only
-        max-in-flight: 25 # Override max-in-flight for HEALTH channel only
+        max-staleness: 2s  # Override max-staleness for HEALTH channel only
+        max-in-flight: 20 # Override max-in-flight for HEALTH channel only
 ~~~
 
-Together, this configuration ensures that log messages to the Fluentd log sink target are buffered for up to `25KB` in accumulated size, and log messages to the HTTP server log sink target are buffered for up to `20s` duration (with a limit of `10` concurrent flushes permitted), before being written to the log sink. Further, each long sink target is configured with an overridden value for these settings specific to log messages in the `HEALTH` [log channel](logging-overview.html#logging-channels), which are flushed more aggressively in both cases.
+Together, this configuration ensures that log messages to the Fluentd log sink target are buffered for up to `2MiB` in accumulated size, and log messages to the HTTP server log sink target are buffered for up to `10s` duration (with a limit of `10` concurrent flushes permitted), before being written to the log sink. Further, each long sink target is configured with an overridden value for these settings specific to log messages in the `HEALTH` [log channel](logging-overview.html#logging-channels), which are flushed more aggressively in both cases.
 
 See [Log buffering](configure-logs.html#log-buffering) for more information.
 
