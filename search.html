@@ -137,7 +137,7 @@ docs_area: search
           hit =>
             `<div class="search-item">
           <div class="search-title">
-            <a href="${hit.url.replace("/{{ site.versions["stable"] }}/", "/stable/").replace("/{{ site.versions["dev"] }}/", "/dev/")}">${hit.title}</a>
+            <a href="${hit.url}">${hit.title}</a>
           </div>
           <div class="search-snippet">${showResult(hit._highlightResult)}</div>
           <div class="search-link">${hit.doc_type}</div>
