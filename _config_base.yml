@@ -138,4 +138,3 @@ sass:
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
-url: https://www.cockroachlabs.com
