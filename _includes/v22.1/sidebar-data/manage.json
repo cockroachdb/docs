@@ -150,6 +150,12 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Restoring Backups Across Versions",
+          "urls": [
+            "/${VERSION}/restoring-backups-across-versions.html"
+          ]
         }
       ]
     },
