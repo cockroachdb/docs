@@ -484,7 +484,7 @@ sinks:
 
 Together, this configuration ensures that log messages to the Fluentd log sink target are buffered for up to `2MiB` in accumulated size, and log messages to the HTTP server log sink target are buffered for up to `10s` duration (with a limit of up to `75MiB` accumulated message size in the buffer before messages begin being dropped), before being written to the log sink. Further, each long sink target is configured with an overridden value for these settings specific to log messages in the `HEALTH` [log channel](logging-overview.html#logging-channels), which are flushed more aggressively in both cases.
 
-See [Log buffering](configure-logs.html#log-buffering) for more information.
+See [Log buffering](configure-logs.html#log-buffering-for-network-sinks) for more information.
 
 ## See also
 
