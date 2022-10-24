@@ -97,13 +97,22 @@
             // This condition makes it possible to use external
             // urls in the sidebar.
             if (!/^https?:/.test(url)) {
-              url = sidebar.baseUrl + url;
+              url = '{{ site.url }}' + sidebar.baseUrl + url;
             }
             return url;
           });
 
           // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
-          const activePathname = location.pathname.slice(-5) === '.html' ? location.pathname : location.pathname + '.html';
+          var activePathname
+          if (!/^https?:/.test(location.pathname)) {
+            activePathname = '{{ site.url }}' + location.pathname
+          }
+          else {
+            activePathname = location.pathname
+          }
+          if (location.pathname.slice(-5) !== '.html') {
+            activePathname += '.html'
+          }
 
           const active = (urls.indexOf(activePathname) !== -1);
           if (active) {
