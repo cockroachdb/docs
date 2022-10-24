@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.cli
 ---
 
-{% assign release = site.data.releases | where_exp: "release", "release.major_version == page.version.version" | last %}
-
 The `cockroach-sql` command is a client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run `cockroach-sql` as described below.
 
 {{site.data.alerts.callout_info}}
@@ -42,7 +40,7 @@ If you don't have an existing `cockroach` binary in `/usr/local/bin` this will c
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ r.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
+curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
 ~~~
 
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.

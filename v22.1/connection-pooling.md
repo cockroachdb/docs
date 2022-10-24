@@ -25,6 +25,10 @@ Each time an application reads or writes data, it will request one of the connec
 
 Connection pooling can be a enabled as a feature of the driver, a separate library used in conjunction with a driver, a feature of an application server, or a proxy server that acts as a gateway to the database server.
 
+{{site.data.alerts.callout_success}}
+To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
+{{site.data.alerts.end}}
+
 ## Sizing connection pools
 
 Idle connections in CockrochDB do not consume many resources compared to PostgreSQL. Cockroach Labs estimates the memory overhead of idle connections in CockrochDB is 20 kB to 30 kB per connection.

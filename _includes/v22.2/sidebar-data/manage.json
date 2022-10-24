@@ -255,6 +255,12 @@
               ]
             },
             {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
+              ]
+            },
+            {
               "title": "Manage Console Access",
               "urls": [
                  "/cockroachcloud/console-access-management.html"
@@ -458,7 +464,7 @@
               ]
             },
             {
-              "title": "Monitor with Datadog",
+              "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]

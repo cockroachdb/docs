@@ -424,7 +424,7 @@ $(function() {
     }
 
     return this.hostname && this.hostname !== location.hostname;
-  }).addClass('external').attr("target","_blank").addClass('external').attr("rel","noopener");
+  }).addClass('external').attr("target","_blank").attr("rel","noopener");
 });
 
 
