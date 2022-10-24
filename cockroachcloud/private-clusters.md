@@ -35,6 +35,11 @@ When you create a private cluster:
 
 Egress traffic from a private cluster will always appear to come from the static IP addresses that comprise the cluster's NAT gateway. To determine the NAT gateway's IP addresses, you can initiate an egress operation such as an [`EXPORT`](/docs/stable/export.html) or [`BACKUP`](/docs/stable/backup.html) operation on the cluster and observe the source addresses of the resulting connections to your infrastructure. Cockroach Labs recommends that you allow connections to your infrastructure only from those IP addresses.
 
+## What's next?
+- [Security Overview](security-overview.html)
+- [Network Authorization](network-authorization.html)
+{% comment %}- [Egress Perimeter Controls](egress-perimeter-controls.html){% endcomment %}
+
 ## Limitations
 
 - An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB](/docs/stable/migration-overview.html).
