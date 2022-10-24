@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.cli
 ---
 
-{% assign release = site.data.releases | where_exp: "release", "release.major_version == page.version.version" | last %}
-
 {% include_cached new-in.html version="v22.1" %}
 
 The `cockroach-sql` command is a client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run `cockroach-sql` as described below.
