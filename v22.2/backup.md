@@ -26,6 +26,8 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 
 To view the contents of an backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 
+{% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
 ## Considerations
