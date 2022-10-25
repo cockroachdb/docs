@@ -259,6 +259,8 @@ The ordering of regions and how region matching is determined is a known limitat
 
 For more on multi-region databases, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## Viewing and controlling restore jobs
 
 After CockroachDB successfully initiates a restore, it registers the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).

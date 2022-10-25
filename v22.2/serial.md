@@ -37,6 +37,8 @@ These modes can be configured with the [session variable](set-vars.html) `serial
 The particular choice of `DEFAULT` expression when clients use the `SERIAL` keyword is subject to change in future versions of CockroachDB. Applications that wish to use `unique_rowid()` specifically must use the full explicit syntax `INT DEFAULT unique_rowid()` and avoid `SERIAL` altogether.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Generated values for modes `rowid` and `virtual_sequence`
 
 In both modes `rowid` and `virtual_sequence`, a value is automatically generated using the `unique_rowid()` function. The difference between `rowid` and `virtual_sequence` is that the latter setting also creates a virtual (pseudo) sequence in the database. However, in both cases the `unique_rowid()` function is ultimately used to generate new values. This function produces a 64-bit integer (i.e., [`INT8`](int.html)) from the current timestamp and ID of the node executing the [`INSERT`](insert.html) or [`UPSERT`](upsert.html) operation. This behavior is statistically likely to be globally unique except in extreme cases (see [this FAQ entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for more details).

@@ -81,6 +81,8 @@ CockroachDB automatically retries individual statements (implicit transactions) 
 
 You can change the results buffer size for all new sessions using the `sql.defaults.results_buffer.size` [cluster setting](cluster-settings.html), or for a specific session using the `results_buffer_size` [session variable](set-vars.html). Decreasing the buffer size can increase the number of transaction retry errors a client receives, whereas increasing the buffer size can increase the delay until the client receives the first result row.
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 #### Individual statements
 
 Individual statements are treated as implicit transactions, and so they fall
@@ -387,6 +389,8 @@ apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE
 {{site.data.alerts.callout_info}}
 Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
 {{site.data.alerts.end}}
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## See also
 
