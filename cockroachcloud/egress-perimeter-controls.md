@@ -6,7 +6,6 @@ toc_not_nested: true
 docs_area: security 
 ---
 
-!!!contains raw source, disregard sloppy copy
 This page describes the reasons to use Egress Perimeter Controls for enhanced security in {{ site.data.products.dedicated }} clusters, and gives an overview of the user-flows involved.
 
 ## Why use Egress Perimeter Cntrols
@@ -24,57 +23,38 @@ Operators of {{ site.data.products.dedicated }} clusters can remove this risk by
 
 Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["stable"]}}/security-reference/security-overview.html).
 
-<!-- hmm, how to message about the compliance advantage... down the road, can connect to PCI info and stuff, but is it premature? maybe some vaguer messaging-->
-<!-- query!!! does this let you set specific types of data as allowed for different destinations? are there permissions you can delegate for different egress routes or what? the quote is a bit ambiguos but suggests that yeah you can; presumably this will be clear when you see the API...: -->
-<!-- "So an admin could specify which cloud bucket(s) are allowed for backup/restore purposes, or which kafka cluster(s) are allowed for CDC purposes, and so on. And security/risk teams can also get a list of external resources accessible at a given point for their auditing / compliance purposes. This is another network security differentiator in the world of DBaaS. Only Cloud Spanner (and probably AlloyDB) allows for something of this nature using VPC Service Controls, but that is kludgy to setup & maintain and it’s not cloud-agnostic."" -->
 
 {{site.data.alerts.callout_info}}
-External traffic destined to CRL managed resources will always, regardless of traffic policy.
+Regardless of user-specific Egress Perimiter Control policy, egress is allowed to services managed by Cockroach Labs and essential to your cluster's functionality.
 {{site.data.alerts.end}}
 
-!!!contains raw source, disregard sloppy copy
-Each egress rule builds upon any of the existing ones, and could be configured for a destination CIDR range or for a FQDN (Fully-qualified domain name) assigned to the external resource. Additionally, you could configure path based filtering to a resource by specifying particular endpoints off of its base URL. One thing to note is that in addition to the egress rules you manage, CockroachDB dedicated comes with some default rules to enable seamless cluster operations and help comply with the service SLA.
-
 The Cloud API provides a real-time status for if the rule enablement is in progress or is complete.
-
 
 ## Using Egress Perimeter Controls with the Cloud Console API
 
 ### Prerequisites
 
-You will need a Cockroach Cloud account with billing enabled, as Egress Perimeter Controls are only available for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} clusters cost money to run.
+- You will need a Cockroach Cloud account with billing enabled, as Egress Perimeter Controls are only available for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} clusters cost money to run.
 
-{{site.data.alerts.callout_danger}}
-Be aware that {{ site.data.products.dedicated }} clusters cost money to run. The steps described here cannot be performed without cost. (need better messaging, but i feel this is worth calling out... this isn't a tutorial you can follow along just for the learns without paying for it!!!)
-{{site.data.alerts.end}}
-
-You will need an API key with permissions to `edit` clusters in your org. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
+- You will need an API key with permissions to `edit` clusters in your org. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
 
 {{site.data.alerts.callout_danger}}
 The operations descrubed here require an API key with very powerful permissions, to modify dedicated clusters, including adding potentially malicious egress rules, which could allow the very attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form. This includes ensuring that nobody can see or photograph the screen of your computer. Delete the API key when the operations are completed.
 {{site.data.alerts.end}}
 
-!!!{
+### Step 1. Verify your cluster is ready for Egress Perimeter Controls
 
-note to self
-the docs say "Service accounts are used by applications accessing the Cloud API to manage CockroachDB Cloud clusters within the organization. Service accounts are not for human users."
-But it seems like API keys can only be issued to service accounts, so if a human needs to use the API (before SSO is available, which it will be soon but isn't yet), they need to use service accounts. these docs point you in that direction: https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api.html
-
-}
-
-### Step 1. Create a new dedicated cluster with Egress Perimeter Controls enabled
-
-
-1. [Create a new {{ site.data.products.dedicated }} cluster](create-your-cluster.html).
+1. Inspect your cluster in the [clusters page](https://cockroachlabs.cloud/clusters) in the {{ site.data.products.db }} console.
 
 {{site.data.alerts.callout_success}}
-This is a new feature as of 22.2.0, so create a new cluster of at least that version.
+This feature is only available on {{ site.data.products.dedicated }} clusters created after 10/26/2022.
+
+Find your cluster's **Created** date. If your cluster was created before 10/26/2022, you must first [create a new {{ site.data.products.dedicated }} cluster](create-your-cluster.html) and configure its Egress Perimeter Controls, then migrate your data.
 {{site.data.alerts.end}}
 
 1. Find your cluster's universally unique identifier (UUID). To do this, click on the name of your cluster from the [clusters page](https://cockroachlabs.cloud/clusters) in the console. The UUID will appear in the URL of the overview page for that specific cluster, in the format:
 
 `https://cockroachlabs.cloud/cluster/{ your cluster's UUID }/overview`
-
 
 ### Step 2. Initialize the shell with your API key and cluster id
 
@@ -86,47 +66,48 @@ CC_API_KEY={ your API key }
 CLUSTER_ID={ your cluster UUID }
 ~~~
 
-1. Inspect your cluster.
-
-
+1. Inspect your cluster with the API
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request GET \
-  --url 'https://management-staging.crdb.io/api/v1/clusters/{ your cluster ID }' \
-  --header "Authorization: Bearer { your API key }"
+  --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID" \
+  --header "Authorization: Bearer $CC_API_KEY"
 ~~~
 
 ~~~json
 {
-  "id": "6b96d1f9-879c-4b9a-a7ce-9745f9122b9a",
-  "name": "zesty-collie",
-  "cockroach_version": "v22.1.9",
-  "plan": "SERVERLESS",
+  "id": "508db376-fe5b-4068-99b5-e1dc5cb4983e",
+  "name": "docs-rule-123",
+  "cockroach_version": "latest-v22.2-build(sha256:b3c7a63977eb8112fd43f1a1607b0e3a385ee4bed2145e6c0b9007351952e418)",
+  "plan": "DEDICATED",
   "cloud_provider": "AWS",
-  "account_id": "",
+  "account_id": "006333311807",
   "state": "CREATED",
-  "creator_id": "8462b6a7-6768-482b-a093-4ec299af615b",
+  "creator_id": "b7d7bedc-b8f3-4a98-bd2c-4ba2bf9adbe1",
   "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
   "config": {
-    "serverless": {
-      "spend_limit": 0,
-      "routing_id": "zesty-collie-214"
+    "dedicated": {
+      "machine_type": "m5.large",
+      "num_virtual_cpus": 2,
+      "storage_gib": 15,
+      "memory_gib": 8,
+      "disk_iops": 225
     }
   },
   "regions": [
     {
       "name": "us-west-2",
-      "sql_dns": "serverless-us-w-2.aws-us-west-2.crdb.io",
-      "ui_dns": "",
+      "sql_dns": "docs-test-egress-6qnx.aws-us-west-2.crdb.io",
+      "ui_dns": "admin-docs-test-egress-6qnx.aws-us-west-2.crdb.io",
       "internal_dns": "",
-      "node_count": 0
+      "node_count": 1
     }
   ],
-  "created_at": "2022-09-28T18:25:02.506449Z",
-  "updated_at": "2022-09-28T18:25:03.178651Z",
+  "created_at": "2022-10-25T00:53:58.552063Z",
+  "updated_at": "2022-10-25T01:11:59.399995Z",
   "deleted_at": null
-}%
+}
 ~~~
 
 
@@ -136,7 +117,41 @@ POST /api/v1/clusters/{cluster_id}/networking/egress-traffic-policy
 - enable/disable egress rule management
 
 
-### Step 3. Customize your allowed destinations 
+{% include_cached copy-clipboard.html %}
+~~~shell
+	curl --request POST \
+	  --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-traffic-policy" \
+	  --header "Authorization: Bearer $CC_API_KEY"
+~~~
+
+~~~txt
+???
+~~~
+
+### Step 4. Customize your allowed destinations 
+
+Rules can be based on fully qualified domain name (FQDN) or CIDR range. Let's add one rule of each type.
+
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+
+~~~
+
+~~~txt
+
+~~~
+
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+
+~~~
+
+~~~txt
+
+~~~
+
 
 ### Check current egress rules/allowed destinations
 
@@ -241,23 +256,41 @@ API RESPONSE!
 
 
 
+## Troubleshooting
+
+can fail at validation (sync) or, watch status and can go to failed
+
+
+validation gap:
+if you allow, e.g. google.com, validator allows it, but it won't get `www.google.com` so it's not the rule you want
+
+
+
 ## Appendix: Egress Rule Syntax
 
-name: a descriptive partial identifier for an egress rule. The name, cluster id pair uniquely identify a rule. The name should also serve as documentation for the rule's purpose.
+*name*: a descriptive partial identifier for an egress rule. The name, cluster id pair uniquely identify a rule. The name should also serve as documentation for the rule's purpose.
 
-type: can be either CIDR or FQDN. This field is not strictly required as we can rely on regex matching on the host field to determine rule type. Serves to facilitate filtering on the front end and code structure in the backend.
+*type*: can be either CIDR or FQDN. This field is not strictly required as we can rely on regex matching on the host field to determine rule type. Serves to facilitate filtering on the front end and code structure in the backend.
 
-crl_managed: a boolean value specifying if the egress rule is managed by CC operators or customers. Immutable after creation.
+*crl_managed*: a boolean value specifying if the egress rule is managed by CC operators or customers. Immutable after creation.
 
-host: the destination that is allowed for outgoing connections. Can be either a CIDR range or a fully qualified domain name.
+*host*: the destination that is allowed for outgoing connections. Can be either a CIDR range or a fully qualified domain name.
 
-ports: the ports allowed for outgoing connections to a specific host.
+*ports*: the ports allowed for outgoing connections to a specific host.
 
-paths: the URL paths allowed for outgoing connections to a specific host, port pair.
+*paths*: the URL paths allowed for outgoing connections to a specific host, port pair.
 
-description: a longer description meant to detail the purpose of the egress rule.
+*description*: a longer description meant to detail the purpose of the egress rule.
 
+*state*: desribes the state of the egress rule. Valid states include
+PENDING_CREATION, CREATION_FAILED, ACTIVE, PENDING_UPDATE, UPDATE_FAILED,
+PENDING_DELETION, DELETION_FAILED, INCONSISTENT.
 
+Note: if a rule fails to be updated, the rule state will be set to
+`DELETION_FAILED`. It is unknown whether a rule in this state is not enforced,
+partially enforced, or fully enforced. For example, it could be that the rule
+is enforced in one cluster region but not another. Deletion failures are always
+due to internal errors and result in a notification to engineers.
 Below is an example of a list of egress rules in json format (UUID fields are ignored).
 
 {% include_cached copy-clipboard.html %}
