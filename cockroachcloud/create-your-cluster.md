@@ -71,7 +71,7 @@ Currently, you can add a maximum of 150 nodes to your cluster. For larger config
 
 ## Step 5. Select the hardware per node
 
-{% capture cap_per_vcpu %}{% include_cached {{ page.version.version }}/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached ../v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
 
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
 
