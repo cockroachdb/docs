@@ -633,7 +633,7 @@ $ cockroach start --sql-addr=:26257 --listen-addr=:26258 --join=node1:26258,node
 
 Note the use of port `26258` (the value for `listen-addr`, not `sql-addr`) in the `--join` flag. Also, if your environment requires the use of the `--advertise-addr` flag, you should probably also use the `--advertise-sql-addr` flag when using a separate SQL address.
 
-Clusters using this configuration with client certificate authentication may also wish to use [split client CA certificates](https://www.cockroachlabs.com/docs/v20.1/create-security-certificates-custom-ca.html#split-ca-certificates).
+Clusters using this configuration with client certificate authentication may also wish to use [split client CA certificates](../v20.1/create-security-certificates-custom-ca.html#split-ca-certificates).
 
 ## See also
 

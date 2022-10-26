@@ -96,7 +96,7 @@ Two changes that are particularly important to note:
 - As of v21.1, CockroachDB always uses the [Pebble storage engine](https://github.com/cockroachdb/pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag on the `cockroach start` command. RocksDB can no longer be used as the storage engine.
     - If your cluster currently uses RocksDB as the storage engine, before you upgrade to v21.1, restart each of your nodes, removing `--storage-engine=rocksdb` from the `cockroach start` command. You can follow the same rolling process described in [step 4](#step-4-perform-the-rolling-upgrade) below, but do not change the binary; just remove the `--storage-engine=rocksdb` flag and restart.
 
-- [Interleaving data](interleave-in-parent.html) was deprecated in v20.2, disabled by default in v21.1, and removed from CockroachDB in v21.2. For migration steps, see the [interleave deprecation](../v21.1/interleave-in-parent.html#deprecation) notice.
+- [Interleaving data](interleave-in-parent.html) was deprecated in v20.2, disabled by default in v21.1, and removed from CockroachDB in v21.2. For migration steps, see the [interleave deprecation](interleave-in-parent.html#deprecation) notice.
     - If your cluster includes interleaved data and you perform backups, first make sure you are running [v20.2.10+](../v20.2/upgrade-cockroach-version.html); then update your `BACKUP` commands to use the [`INCLUDE_DEPRECATED_INTERLEAVES` option](backup.html#include-deprecated-interleaves); and only then return to this page and upgrade to v21.1. Note that the `INCLUDE_DEPRECATED_INTERLEAVES` option is a no-op in v20.2.10, but this sequence is the only way to prevent backups including interleaved data from failing on v21.1.
 
 ## Step 3. Decide how the upgrade will be finalized
@@ -287,7 +287,7 @@ Once you are satisfied with the new version:
 
     {{site.data.alerts.callout_info}}
     This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
-    {{site.data.alerts.end}}    
+    {{site.data.alerts.end}}
 
 1. Check the cluster version to confirm that the finalize step has completed:
 

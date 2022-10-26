@@ -89,21 +89,21 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v19.2 to v20.1, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../v20.1/alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](../v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
+- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
 
-- **Additional authentication methods:** After finalization, it will be possible to set the `server.host_based_authentication.configuration` [cluster setting](../v20.1/cluster-settings.html) to `trust` or `reject` to unconditionally allow or deny matching connection attempts.
+- **Additional authentication methods:** After finalization, it will be possible to set the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) to `trust` or `reject` to unconditionally allow or deny matching connection attempts.
 
-- **Password for the `root` user**: After finalization, it will be possible to use [`ALTER USER root WITH PASSWORD`](../v20.1/alter-user.html) to set a password for the `root` user.
+- **Password for the `root` user**: After finalization, it will be possible to use [`ALTER USER root WITH PASSWORD`](alter-user.html) to set a password for the `root` user.
 
-- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](../v20.1/foreign-key.html#rules-for-creating-foreign-keys).
+- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](foreign-key.html#rules-for-creating-foreign-keys).
 
-- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes](../v20.1/create-index.html#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
+- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes](create-index.html#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
 
 - **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles](create-user.html#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
 
 - **Nested transactions:** After finalization, it will be possible to create [nested transactions](transactions.html#nested-transactions) using [`SAVEPOINT`s](savepoint.html).
 
-- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](../v20.1/time.html#timetz) data type to store a time of day with a time zone offset from UTC.
+- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](time.html#timetz) data type to store a time of day with a time zone offset from UTC.
 
 - **`TIME`/`TIMETZ` and `INTERVAL` precision:** After finalization, it will be possible to specify precision levels from 0 (seconds) to 6 (microseconds) for [`TIME`/`TIMETZ`](time.html#precision) and [`INTERVAL`](interval.html#precision) values.
 
@@ -120,9 +120,9 @@ Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not
 {{site.data.alerts.callout_success}}
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
-  
+
 1. Drain and stop the node using one of the following methods:
-    
+
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
     Verify that the process has stopped:
@@ -199,7 +199,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     </div>
 
 1. Start the node to have it rejoin the cluster.
-    
+
     {{site.data.alerts.callout_danger}}
     For maximum availability, do not wait more than a few minutes before restarting the node with the new binary. See [this open issue](https://github.com/cockroachdb/cockroach/issues/37906) for context.
     {{site.data.alerts.end}}
@@ -221,7 +221,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     $ systemctl start <systemd config filename>
     ~~~
 
-1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [Admin UI](admin-ui-cluster-overview-page.html#node-status). 
+1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [Admin UI](admin-ui-cluster-overview-page.html#node-status).
 
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
