@@ -1,10 +1,12 @@
 ---
-title: Egress Perimeter Controls for CockroachDB dedicated
+title: Egress Perimeter Controls for CockroachDB dedicated (Preview)
 summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a dedicated cluster
 toc: true
 toc_not_nested: true
 docs_area: security 
 ---
+
+{% include feature-phases/preview-opt-in.md %}
 
 This page describes the reasons to use Egress Perimeter Controls for enhanced security in {{ site.data.products.dedicated }} clusters, and gives an overview of the user-flows involved.
 
@@ -19,7 +21,7 @@ This page describes the reasons to use Egress Perimeter Controls for enhanced se
 
 By default, clusters can access external resources via the internet without restriction. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats) steals data by sending backups, changefeeds, data, or logs to a source that they control. 
 
-Operators of {{ site.data.products.dedicated }} clusters can remove this risk by using Egress Perimiter Controls. This feature enables [admins](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) to restrict egress to a specified external destinations. This adds a strong layer of protection against malicious data exfiltration. Along with other measures such as private clusters, this is an important component in an overall strategy for maximizing network security.
+Operators of {{ site.data.products.dedicated }} clusters can remove this risk by using Egress Perimiter Controls. This feature enables [admins](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) to restrict egress to a specified external destinations. This adds a strong layer of protection against malicious data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), this is an important component in an overall strategy for maximizing network security.
 
 Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["stable"]}}/security-reference/security-overview.html).
 
@@ -247,9 +249,8 @@ The following steps will create one rule of each type, FQDN and CIDR.
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-egress-rules-allowed-destinations) to confirm that the new rules have been created.
+    Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
     {{site.data.alerts.end}}
-
 
 ### Check the status of a rule
 
@@ -294,7 +295,7 @@ curl --request GET \
 A `DELETE` request to the rule's path tells the API to delete the rule.
 
 {{site.data.alerts.callout_danger}}
-Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-egress-rules-allowed-destinations) to confirm that the deletion is complete.
+Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
