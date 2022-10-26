@@ -1,6 +1,6 @@
 ---
 title: Egress Perimeter Controls for CockroachDB dedicated (Preview)
-summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a dedicated cluster
+summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a {{ site.data.products.dedicated }} cluster.
 toc: true
 toc_not_nested: true
 docs_area: security 
@@ -8,7 +8,7 @@ docs_area: security
 
 {% include feature-phases/preview-opt-in.md %}
 
-This page describes the reasons to use Egress Perimeter Controls for enhanced security in {{ site.data.products.dedicated }} clusters, and gives an overview of the user-flows involved.
+This page describes how Egress Perimeter Controls can enhance the security of {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
 ## Why use Egress Perimeter Controls
 
@@ -19,38 +19,38 @@ This page describes the reasons to use Egress Perimeter Controls for enhanced se
 - Exporting data
 - Exporting logs
 
-By default, clusters can access external resources via the internet without restriction. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats) steals data by sending backups, changefeeds, data, or logs to a source that they control. 
+By default, clusters can access external resources via the internet without restriction. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control. 
 
-Operators of {{ site.data.products.dedicated }} clusters can remove this risk by using Egress Perimiter Controls. This feature enables [admins](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) to restrict egress to a specified external destinations. This adds a strong layer of protection against malicious data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), this is an important component in an overall strategy for maximizing network security.
+Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable [admins](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
 Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["stable"]}}/security-reference/security-overview.html).
 
 
 {{site.data.alerts.callout_info}}
-Regardless of user-specific Egress Perimiter Control policy, egress is allowed to services managed by Cockroach Labs and essential to your cluster's functionality.
+Regardless of user-specific Egress Perimiter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality.
 {{site.data.alerts.end}}
 
-The Cloud API provides a real-time status for if the rule enablement is in progress or is complete.
+The [Cloud API](cloud-api.html) provides a real-time status for if the rule enablement is in progress or is complete.
 
 ## Using Egress Perimeter Controls with the Cloud Console API
 
 ### Prerequisites
 
-- You will need a Cockroach Cloud account with billing enabled, as Egress Perimeter Controls are only available for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} clusters cost money to run.
+- You need a Cockroach Cloud account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} clusters cost money to run.
 
-- Egress Perimeter Controls are currently only enabled for [Private Clusters](private-clusters.html).
+- Egress Perimeter Controls require your cluster to be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
 
-- You will need an API key with permissions to `edit` clusters in your org. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
+- An API key with permissions to `edit` clusters in your org is required. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
 
 {{site.data.alerts.callout_danger}}
-The operations descrubed here require an API key with very powerful permissions, to modify dedicated clusters, including adding potentially malicious egress rules, which could allow the very attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form. This includes ensuring that nobody can see or photograph the screen of your computer. Delete the API key when the operations are completed.
+The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen. Delete the API key when the operations are completed.
 {{site.data.alerts.end}}
 
 ### Initialize your shell with your API key and Cluster id
 
 1. Inspect your cluster in the [clusters page](https://cockroachlabs.cloud/clusters) in the {{ site.data.products.db }} console.
 
-1. Find your cluster's universally unique identifier (UUID). To do this, click on the name of your cluster from the [clusters page](https://cockroachlabs.cloud/clusters) in the console. The UUID will appear in the URL of the overview page for that specific cluster, in the format:
+1. Find your cluster's universally unique identifier (UUID). To do this, select your cluster from the [clusters page](https://cockroachlabs.cloud/clusters) in the console. The UUID will appear in the URL of the overview page for that specific cluster, in the format:
 
 `https://cockroachlabs.cloud/cluster/{ your cluster's UUID }/overview`
 
@@ -62,7 +62,7 @@ The operations descrubed here require an API key with very powerful permissions,
     CLUSTER_ID={ your cluster UUID }
     ~~~
 
-1. Inspect your cluster with the API
+1. Inspect your cluster with the Cloud API:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -107,13 +107,13 @@ The operations descrubed here require an API key with very powerful permissions,
     ~~~
 
 
-### Change your cluster's egress traffic policy to deny-by-default
+### Use a deny-by-default egress traffic policy
 
 {{site.data.alerts.callout_info}}
 External traffic destined to CRL-managed resources will always be allowed regardless of user-specified egress policy.
 {{site.data.alerts.end}}
 
-1. Make a POST request ordering the API to update your cluster's egress policy.
+1. Make a `POST` request ordering the API to update your cluster's egress policy.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -136,12 +136,12 @@ External traffic destined to CRL-managed resources will always be allowed regard
       --header "Authorization: Bearer $CC_API_KEY"
     ~~~
 
-### Create egress rules to allowed destinations 
+### Create an egress rule to allow a destination
 
 An egress rule is created with the following attributes:
 
 - `name`: A name for the rule
-- `type`: Whether the destination will be specified as a fully qualified domain name (FQDN), or as a range of IP addresses specified in CIDR notation. Value is `"FQDN"` or `"CIDR"`.
+- `type`: Whether the destination will be specified as a fully-qualified domain name (FQDN), or as a range of IP addresses specified in CIDR notation. Value is `"FQDN"` or `"CIDR"`.
 - `destination`: Either a fully qualified domain name, for example `www.cockroachlabs.com`, or a CIDR range, for example, `123.45.67.890/32`.
 - `ports`: An array of allowed ports, for example [44,8080]
     {{site.data.alerts.callout_danger}}
@@ -150,7 +150,7 @@ An egress rule is created with the following attributes:
 - `paths`: An array of allowed destination paths.
 - `description`:
 
-The following steps will create one rule of each type, FQDN and CIDR.
+The following steps create one FQDN rule and one CIDR rule.
 
 1. First, create a YAML manifest for a FQDN-based rule. This example, adds egress to a Google Cloud Platform (GCP) storage bucket.
 
@@ -180,7 +180,7 @@ The following steps will create one rule of each type, FQDN and CIDR.
     description: 'egress for Kafka'    
     ~~~
 
-1. Use ruby (or another technique), to compile human-editable YAML into API-parsable JSON:
+1. Use Ruby (or another technique), to compile human-editable YAML into API-parsable JSON:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -188,10 +188,10 @@ The following steps will create one rule of each type, FQDN and CIDR.
     ruby -ryaml -rjson -e 'puts(YAML.load(ARGF.read).to_json)' < egress-rule2.yml > egress-rule2.json
     ~~~
 
-1. Use the shell utility JQ to inspect the JSON payload:
+1. Use the shell utility `jq` to inspect the JSON payload:
     
     {{site.data.alerts.callout_info}}
-    On a Mac, install JQ with `brew install jq`
+    On macOS, you can install `jq` from Homebrew: `brew install jq`
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
@@ -227,7 +227,7 @@ The following steps will create one rule of each type, FQDN and CIDR.
     }
     ~~~
 
-1. Make the POST request to create each new rule.
+1. Make a `POST` request to create each rule from the JSON payload.
     
     [API spec]
 
@@ -249,13 +249,13 @@ The following steps will create one rule of each type, FQDN and CIDR.
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
+    Your cluster's firewall behavior is not updated instantly when you submit the API request. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
     {{site.data.alerts.end}}
 
 ### Check the status of a rule
 
 {{site.data.alerts.callout_info}}
-Consult the glossary of [rule statuses](#rule-statuses).
+Refer to the list of [rule statuses](#rule-statuses).
 {{site.data.alerts.end}}
 
 [API spec]
@@ -290,9 +290,9 @@ curl --request GET \
 
 ~~~
 
-### Removing a rule
+### Remove a rule
 
-A `DELETE` request to the rule's path tells the API to delete the rule.
+To delete a rule, make `DELETE` request to the rule's path.
 
 {{site.data.alerts.callout_danger}}
 Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.

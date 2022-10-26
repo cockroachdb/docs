@@ -8,7 +8,7 @@ docs_area: manage
 To prevent denial-of-service and brute force password attacks, {{ site.data.products.dedicated }} requires you to authorize networks that can access your cluster by [allowlisting the public IP addresses](#ip-allowlisting) for your application. Optionally, you can [set up Virtual Private Cloud (VPC) peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) for your cluster for enhanced network security and lower network latency.
 
 {{site.data.alerts.callout_success}}
-For additional cluster security, you can learn more about [Private Clusters (Preview)](private-clusters.html). A private cluster's nodes have no public IP addresses.
+[Private Clusters (Preview)](private-clusters.html), whose nodes have no public IP addresses, provide additional cluster security.
 {{site.data.alerts.end}}
 
 ## IP allowlisting
