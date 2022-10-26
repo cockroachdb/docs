@@ -322,14 +322,6 @@ The API display the following statuses for a rule, when you [inspect an egress r
 - `DELETION_FAILED`: A rule update or a rule removal has failed. The behavior of the cluster's network firewall may still reflect the previous state of the rule. This is a rare occurrence and does indicate that you should [contact the Cockroach Labs Support Team](https://support.cockroachlabs.com) immediately, rather than attempting to retry rule creation, to avoid leaving your cluster's firewall in an unknown state.
 - `INCONSISTENT`: This indicates that a rule cannot apply consistently across all of the regions or compute resources to which it is meant to apply. This is a rare occurrence and does indicate that you should [contact the Cockroach Labs Support Team](https://support.cockroachlabs.com) immediately, rather than attempting to retry rule creation, to avoid leaving your cluster's firewall in an unknown state.
 
-
-## Troubleshooting
-
-The process 
-
-can fail at validation (sync) or, watch status and can go to failed
-
-validation gap:
-if you allow, e.g. google.com, validator allows it, but it won't get `www.google.com` so it's not the rule you want
-
-
+{{site.data.alerts.callout_danger}}
+Generally, any kind of `FAILED` state, or an `INCONSISTENT` state, is a rare occurrence but can potentially leave the cluster in an unknown state. You should [contact the Cockroach Labs Support Team](https://support.cockroachlabs.com) immediately, rather than attempting to retry rule creation, to avoid leaving your cluster's firewall in an unknown state.
+{{site.data.alerts.end}}
