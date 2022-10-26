@@ -447,8 +447,6 @@ CockroachDB memory usage has the following components:
 - **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the allocation specified with `--cache`. The size of CGo allocated memory is usually very close to the configured `--cache` size.
 - **Overhead**: The RSS (resident set size) minus Go/CGo allocated memory.
 
-If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
-
 **Solution:** To determine Go and CGo allocated memory:
 
 1. [Access the DB Console](ui-overview.html#db-console-access).
