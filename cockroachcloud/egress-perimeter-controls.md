@@ -140,7 +140,7 @@ External traffic destined to CRL-managed resources will always be allowed regard
 
 An egress rule is created with the following attributes:
 
-- `name`: A name for the rule
+- `name`: A name for the rule.
 - `type`: Whether the destination will be specified as a fully-qualified domain name (FQDN), or as a range of IP addresses specified in CIDR notation. Value is `"FQDN"` or `"CIDR"`.
 - `destination`: Either a fully qualified domain name, for example `www.cockroachlabs.com`, or a CIDR range, for example, `123.45.67.890/32`.
 - `ports`: An array of allowed ports, for example [44,8080]
