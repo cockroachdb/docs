@@ -70,6 +70,14 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 
 <h3 id="{{ release.version | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>
 
+{% if release.docker_arm == "true" %}
+<p><a href="https://docs.docker.com/build/building/multi-platform/">Multi-platform images</a> include support for both Intel and ARM. CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use. Multi-platform images do not take up additional space on your Docker host.</p>
+<p>To download the Docker image (multi-platform):</p>
+{% else %}
+<p>To download the Docker image (Intel-only):
+{% endif %}
+</p>
+
 {% include_cached copy-clipboard.html %}
 ~~~shell
 $ docker pull {{ release.docker_image }}:{{ release.version }}
