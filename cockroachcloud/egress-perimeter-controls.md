@@ -30,11 +30,8 @@ Further reading: [review how CockroachDB products differs in advanced security f
 Regardless of user-specific Egress Perimiter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality.
 {{site.data.alerts.end}}
 
-The [Cloud API](cloud-api.html) provides a real-time status for if the rule enablement is in progress or is complete.
 
-## Using Egress Perimeter Controls with the Cloud Console API
-
-### Prerequisites
+## Prerequisites to using Egress Perimeter Controls with the Cloud Console API
 
 - You need a Cockroach Cloud account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} clusters cost money to run.
 
@@ -46,13 +43,13 @@ The [Cloud API](cloud-api.html) provides a real-time status for if the rule enab
 The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen. Delete the API key when the operations are completed.
 {{site.data.alerts.end}}
 
-### Initialize your shell with your API key and Cluster id
+## Initialize your shell with your API key and Cluster id
 
 1. Inspect your cluster in the [clusters page](https://cockroachlabs.cloud/clusters) in the {{ site.data.products.db }} console.
 
 1. Find your cluster's universally unique identifier (UUID). To do this, select your cluster from the [clusters page](https://cockroachlabs.cloud/clusters) in the console. The UUID will appear in the URL of the overview page for that specific cluster, in the format:
 
-`https://cockroachlabs.cloud/cluster/{ your cluster's UUID }/overview`
+    `https://cockroachlabs.cloud/cluster/{ your cluster's UUID }/overview`
 
 1. Save your API key and cluster UUID as environment variables.
 
@@ -107,7 +104,7 @@ The operations described in this page require an API key with very broad permiss
     ~~~
 
 
-### Use a deny-by-default egress traffic policy
+## Use a deny-by-default egress traffic policy
 
 {{site.data.alerts.callout_info}}
 External traffic destined to CRL-managed resources will always be allowed regardless of user-specified egress policy.
@@ -129,21 +126,21 @@ External traffic destined to CRL-managed resources will always be allowed regard
 
 1. Check your cluster's status and confirm the update is complete before proceeding.
 
- {% include_cached copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request GET \
       --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID" \
       --header "Authorization: Bearer $CC_API_KEY"
     ~~~
 
-### Create an egress rule to allow a destination
+## Create an egress rule to allow a destination
 
 An egress rule is created with the following attributes:
 
 - `name`: A name for the rule.
 - `type`: Whether the destination will be specified as a fully-qualified domain name (FQDN), or as a range of IP addresses specified in CIDR notation. Value is `"FQDN"` or `"CIDR"`.
 - `destination`: Either a fully qualified domain name, for example `www.cockroachlabs.com`, or a CIDR range, for example, `123.45.67.890/32`.
-- `ports`: An array of allowed ports, for example [44,8080]
+- `ports`: An array of allowed ports, for example `[44,8080]`.
     {{site.data.alerts.callout_danger}}
     By default, all ports are allowed.
     {{site.data.alerts.end}}
@@ -252,7 +249,7 @@ The following steps create one FQDN rule and one CIDR rule.
     Your cluster's firewall behavior is not updated instantly when you submit the API request. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
     {{site.data.alerts.end}}
 
-### Check the status of a rule
+## Check the status of a rule
 
 {{site.data.alerts.callout_info}}
 Refer to the list of [rule statuses](#rule-statuses).
@@ -271,7 +268,7 @@ curl --request GET \
 
 ~~~
 
-### Check a cluster's egress rules/allowed destinations
+## Check a cluster's egress rules/allowed destinations
 
 [API spec]
 
@@ -290,7 +287,7 @@ curl --request GET \
 
 ~~~
 
-### Remove a rule
+## Remove a rule
 
 To delete a rule, make `DELETE` request to the rule's path.
 
