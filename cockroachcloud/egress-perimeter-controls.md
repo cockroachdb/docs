@@ -69,38 +69,41 @@ The operations described in this page require an API key with very broad permiss
     ~~~
 
     ~~~json
-    {
-      "id": "f0d06734-55ba-42e2-b606-2c1f58e6b9eb",
-      "name": "able-quetzal",
-      "cockroach_version": "v22.1.8",
-      "plan": "DEDICATED",
-      "cloud_provider": "AWS",
-      "account_id": "1234567",
-      "state": "CREATED",
-      "creator_id": "b7d7bedc-b8f3-4a98-bd2c-4ba2bf9adbe1",
-      "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
-      "config": {
-        "dedicated": {
-          "machine_type": "m5.large",
-          "num_virtual_cpus": 2,
-          "storage_gib": 15,
-          "memory_gib": 8,
-          "disk_iops": 225
-        }
-      },
-      "regions": [
-        {
-          "name": "us-west-2",
-          "sql_dns": "able-quetzal-6qpd.aws-us-west-2.crdb.io",
-          "ui_dns": "admin-able-quetzal-6qpd.aws-us-west-2.crdb.io",
-          "internal_dns": "",
-          "node_count": 1
-        }
-      ],
-      "created_at": "2022-10-25T16:44:05.068910Z",
-      "updated_at": "2022-10-25T17:01:27.566551Z",
-      "deleted_at": null
+curl --request GET \
+--header "Authorization: Bearer $CC_API_KEY" \
+--url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID"
+{
+  "id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+  "name": "docstest",
+  "cockroach_version": "latest-v22.2-build(sha256:e42c4de8577556132120a9ab07efc1a2a96779c028ebab99223d862d9792428b)",
+  "plan": "DEDICATED",
+  "cloud_provider": "AWS",
+  "account_id": "1234567890",
+  "state": "CREATED",
+  "creator_id": "b7d7bedc-b8f3-4a98-bd2c-4ba2bf9adbe1",
+  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
+  "config": {
+    "dedicated": {
+      "machine_type": "m5.large",
+      "num_virtual_cpus": 2,
+      "storage_gib": 15,
+      "memory_gib": 8,
+      "disk_iops": 225
     }
+  },
+  "regions": [
+    {
+      "name": "us-west-2",
+      "sql_dns": "docstest-donotdelete-6qsh.aws-us-west-2.crdb.io",
+      "ui_dns": "admin-docstest-donotdelete-6qsh.aws-us-west-2.crdb.io",
+      "internal_dns": "",
+      "node_count": 1
+    }
+  ],
+  "created_at": "2022-10-27T18:03:47.862079Z",
+  "updated_at": "2022-10-27T18:24:58.111198Z",
+  "deleted_at": null
+}
     ~~~
 
 
@@ -114,10 +117,11 @@ Essential external traffic destined to resources managed by Cockroach Labs will 
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    curl --request POST \
-    --header "Authorization: Bearer $CC_API_KEY" \
-    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-traffic-policy" \
-    --data '{"allow_all":false}'
+curl --request POST \
+--header "Authorization: Bearer $CC_API_KEY" \
+--header 'Cc-Version: 2022-09-20' \
+--url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy" \
+--data '{"allow_all":false}'
     ~~~
 
     ~~~txt
@@ -233,16 +237,53 @@ The following steps create one FQDN rule and one CIDR rule.
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
     --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
-    --data "@egress-rule1"
+    --data "@egress-rule1.json"
 
     curl --request POST \
     --header "Authorization: Bearer $CC_API_KEY" \
     --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules" \
-    --data "@egress-rule2"
+    --data "@egress-rule2.json"
     ~~~
 
     ~~~json
-
+    {
+      "Rule": {
+        "id": "564a25da-b99c-4e08-9ec3-483c0f1bc620",
+        "cluster_id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+        "name": "roach-buckets",
+        "type": "FQDN",
+        "state": "PENDING_CREATION",
+        "crl_managed": false,
+        "destination": "storage.googleapis.com",
+        "ports": [
+          443,
+          80
+        ],
+        "paths": [
+          "/customer-manged-bucket-1/*",
+          "/customer-manged-bucket-2/*"
+        ],
+        "description": "egress for GCP storage buckets",
+        "created_at": "2022-10-27T19:35:51.435571Z"
+      }
+    }
+    {
+      "Rule": {
+        "id": "aa4f37d7-9aa4-456d-8df7-225d5c91c120",
+        "cluster_id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+        "name": "roach-kafka",
+        "type": "CIDR",
+        "state": "PENDING_CREATION",
+        "crl_managed": false,
+        "destination": "123.34.62.123/32",
+        "ports": [
+          443
+        ],
+        "paths": [],
+        "description": "egress for Kafka",
+        "created_at": "2022-10-27T19:36:25.670162Z"
+      }
+    }%
     ~~~
 
     {{site.data.alerts.callout_danger}}
@@ -260,12 +301,31 @@ Refer to the list of [rule statuses](#rule-statuses).
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules' \
-  --header "Authorization: Bearer $CC_API_KEY"
+--header "Authorization: Bearer $CC_API_KEY" \
+--header  'Cc-Version: 2022-09-20' \
+--url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
+
+
+
 ~~~
 
 ~~~txt
-
+{
+  "rule": {
+    "id": "aa4f37d7-9aa4-456d-8df7-225d5c91c120",
+    "cluster_id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+    "name": "roach-kafka",
+    "type": "CIDR",
+    "state": "ACTIVE",
+    "crl_managed": false,
+    "destination": "123.34.62.123/32",
+    "ports": [
+      443
+    ],
+    "paths": [],
+    "description": "egress for Kafka",
+    "created_at": "2022-10-27T19:36:25.670162Z"
+  }
 ~~~
 
 ## Check a cluster's egress rules/allowed destinations
@@ -279,12 +339,52 @@ Consult the glossary of [rule statuses](#rule-statuses).
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request GET \
-  --url 'https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules' \
-  --header "Authorization: Bearer $CC_API_KEY"
+--header "Authorization: Bearer $CC_API_KEY" \
+--header  'Cc-Version: 2022-09-20' \
+--url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules"
+  
 ~~~
 
 ~~~txt
-
+{
+  "rules": [
+    {
+      "id": "564a25da-b99c-4e08-9ec3-483c0f1bc620",
+      "cluster_id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+      "name": "roach-buckets",
+      "type": "FQDN",
+      "state": "ACTIVE",
+      "crl_managed": false,
+      "destination": "storage.googleapis.com",
+      "ports": [
+        443,
+        80
+      ],
+      "paths": [
+        "/customer-manged-bucket-1/*",
+        "/customer-manged-bucket-2/*"
+      ],
+      "description": "egress for GCP storage buckets",
+      "created_at": "2022-10-27T19:35:51.435571Z"
+    },
+    {
+      "id": "aa4f37d7-9aa4-456d-8df7-225d5c91c120",
+      "cluster_id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+      "name": "roach-kafka",
+      "type": "CIDR",
+      "state": "ACTIVE",
+      "crl_managed": false,
+      "destination": "123.34.62.123/32",
+      "ports": [
+        443
+      ],
+      "paths": [],
+      "description": "egress for Kafka",
+      "created_at": "2022-10-27T19:36:25.670162Z"
+    }
+  ],
+  "pagination": null
+}
 ~~~
 
 ## Remove a rule
@@ -292,20 +392,36 @@ curl --request GET \
 To delete a rule, make `DELETE` request to the rule's path.
 
 {{site.data.alerts.callout_danger}}
-Your cluster's firewall behavior is not updated instantly when you submit the API request. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.
+Your cluster's firewall behavior is enforced asynchronously after the API response. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request DELETE \
-  --url 'https://cockroachlabs.cloud/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID' \
-  --header "Authorization: Bearer $CC_API_KEY"
+--header "Authorization: Bearer $CC_API_KEY" \
+--header  'Cc-Version: 2022-09-20' \
+--url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
 ~~~
 
 ~~~txt
-API RESPONSE!
+{
+  "Rule": {
+    "id": "aa4f37d7-9aa4-456d-8df7-225d5c91c120",
+    "cluster_id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+    "name": "roach-kafka",
+    "type": "CIDR",
+    "state": "PENDING_DELETION",
+    "crl_managed": false,
+    "destination": "123.34.62.123/32",
+    "ports": [
+      443
+    ],
+    "paths": [],
+    "description": "egress for Kafka",
+    "created_at": "2022-10-27T19:36:25.670162Z"
+  }
+}
 ~~~
-
 
 ## Rule statuses
 
