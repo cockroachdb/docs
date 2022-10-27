@@ -246,7 +246,7 @@ The following steps create one FQDN rule and one CIDR rule.
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    Your cluster's firewall behavior is not updated instantly when you submit the API request. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
+    Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
     {{site.data.alerts.end}}
 
 ## Check the status of a rule
