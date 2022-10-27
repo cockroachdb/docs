@@ -33,11 +33,11 @@ Regardless of user-specific Egress Perimiter Control policy, egress is always pe
 
 ## Prerequisites to using Egress Perimeter Controls with the Cloud Console API
 
-- You need a Cockroach Cloud account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} clusters cost money to run.
+- You need a Cockroach Cloud account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} have a non-zero operating cost that must be billed.
 
 - Egress Perimeter Controls require your cluster to be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
 
-- An API key with permissions to `edit` clusters in your org is required. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
+- An API key with `admin` privilege on clusters in your org is required. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
 
 {{site.data.alerts.callout_danger}}
 The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen. Delete the API key when the operations are completed.
@@ -107,7 +107,7 @@ The operations described in this page require an API key with very broad permiss
 ## Use a deny-by-default egress traffic policy
 
 {{site.data.alerts.callout_info}}
-External traffic destined to CRL-managed resources will always be allowed regardless of user-specified egress policy.
+Essential external traffic destined to resources managed by Cockroach Labs will always be allowed regardless of user-specified egress policy.
 {{site.data.alerts.end}}
 
 1. Make a `POST` request ordering the API to update your cluster's egress policy.
@@ -309,13 +309,13 @@ API RESPONSE!
 
 ## Rule statuses
 
-The API display the following statuses for a rule, when you [inspect an egress rule] or [list a cluster's egress rules]:
+The API displays the following statuses for a rule, when you [inspect an egress rule] or [list a cluster's egress rules]:
 
-- `ACTIVE`: The rule has been successfully implemented in your cluster's network firewall and egress is currently allowed to the specified destination.
+- `ACTIVE`: The rule has been successfully enforced in your cluster's network firewall and egress is currently allowed to the specified destination.
 - `PENDING_CREATION`: Implementation of a new rule is in process. The behavior of the cluster's network firewall may not yet reflect the new rule, so egress may not yet be allowed to the selected destination.
 - `CREATION_FAILED`: Something went wrong in the process of implementing a rule. This is a rare occurrence and does indicate that you should [contact the Cockroach Labs Support Team](https://support.cockroachlabs.com) immediately, rather than attempting to retry rule creation, to avoid leaving your cluster's firewall in an unknown state.
-- `PENDING_UPDATE`: An `PATCH` request to update a rule is in process. The behavior may not yet be implemented in your cluster's firewall.
-- `PENDING_DELETION`: The rule-removal is being implemented. The behavior of the cluster's network firewall may still reflect the target rule, so egress may still be allowed to the destination.
+- `PENDING_UPDATE`: An `PATCH` request to update a rule is in process. The behavior may not yet be enforced in your cluster's firewall.
+- `PENDING_DELETION`: The rule-removal is being enforced. The behavior of the cluster's network firewall may still reflect the target rule, so egress may still be allowed to the destination.
 - `DELETION_FAILED`: A rule update or a rule removal has failed. The behavior of the cluster's network firewall may still reflect the previous state of the rule. This is a rare occurrence and does indicate that you should [contact the Cockroach Labs Support Team](https://support.cockroachlabs.com) immediately, rather than attempting to retry rule creation, to avoid leaving your cluster's firewall in an unknown state.
 - `INCONSISTENT`: This indicates that a rule cannot apply consistently across all of the regions or compute resources to which it is meant to apply. This is a rare occurrence and does indicate that you should [contact the Cockroach Labs Support Team](https://support.cockroachlabs.com) immediately, rather than attempting to retry rule creation, to avoid leaving your cluster's firewall in an unknown state.
 
