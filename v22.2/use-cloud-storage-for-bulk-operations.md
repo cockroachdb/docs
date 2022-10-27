@@ -323,7 +323,7 @@ CockroachDB supports assume role authentication on clusters running v22.2. Authe
 
 {% include_cached new-in.html version="v22.2" %} To limit the control access to your Google Cloud Storage buckets, you can create service accounts for users to assume. Service accounts do not necessarily have an association to a particular user. The service account contains permissions that define the operations a user can complete. A service account can then assume another service account to undertake a CockroachDB backup, restore, import, etc. As a result, a service account with limited privileges only has access to the roles of the assumed service account, rather than having unlimited access to a GCS bucket (for example).
 
-The access is also limited by short-lived credentials that are generated per call. The service account that is being assumed will issue the request for the credentials.
+The access is also limited by the generated [short-lived credentials](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct). The service account/role that is assuming another role, will issue the request for the short-lived credentials. If there are multiple roles in the [chain](#role-chaining), then each role defined in the chain will issue the request for credentials for the next role in the chain. 
 
 The [following section](#set-up-assume-role-authentication) demonstrates setting up assume role authentication between two service accounts A and B. You can also chain an arbitrary number of roles, see the [Role chaining](#role-chaining) section for additional detail.
 
