@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+{% include cockroachcloud/ccloud/backup-types.md %}
+
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
