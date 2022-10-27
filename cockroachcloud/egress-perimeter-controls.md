@@ -75,7 +75,7 @@ The operations described in this page require an API key with very broad permiss
       "cockroach_version": "v22.1.8",
       "plan": "DEDICATED",
       "cloud_provider": "AWS",
-      "account_id": "000906112402",
+      "account_id": "1234567",
       "state": "CREATED",
       "creator_id": "b7d7bedc-b8f3-4a98-bd2c-4ba2bf9adbe1",
       "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
