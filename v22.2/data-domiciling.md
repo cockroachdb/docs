@@ -183,6 +183,8 @@ The restricted replica placement settings should start to apply immediately.
 [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) does not affect the replica placement for [global tables](global-tables.html), which are designed to provide fast, up-to-date reads from all [database regions](multiregion-overview.html#database-regions).
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Step 5. Verify updated replica placement
 
 Now that you have restricted the placement of non-voting replicas for all [regional tables](regional-tables.html), you can run another [replication report](query-replication-reports.html) to see the effects:

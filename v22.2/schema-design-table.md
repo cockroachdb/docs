@@ -225,6 +225,8 @@ Here are some best practices to follow when selecting primary key columns:
 
     Randomly generating `UUID` values ensures that the primary key values will be unique and well-distributed across a cluster. For an example, see [below](#primary-key-examples).
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 #### Primary key examples
 
 To follow a [primary key best practice](#primary-key-best-practices), the `CREATE TABLE` statements in `max_init.sql` for the `users` and `vehicles` tables need to explicitly define a primary key.

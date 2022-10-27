@@ -6,6 +6,8 @@ toc_not_nested: true
 secure: true
 ---
 
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 {{site.data.alerts.callout_info}}
 This article assumes you have already [deployed CockroachDB securely on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html). However, it's possible to configure these settings before starting CockroachDB on Kubernetes.
 {{site.data.alerts.end}}
@@ -1104,8 +1106,6 @@ To enable the Operator to automatically remove persistent volumes when [scaling 
 {{site.data.alerts.callout_danger}}
 This workflow is unsupported and should be enabled at your own risk.
 {{site.data.alerts.end}}
-
-{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
 1. Download the Operator manifest:
 

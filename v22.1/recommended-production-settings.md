@@ -99,7 +99,7 @@ Under-provisioning RAM results in reduced performance (due to reduced caching an
 
 We recommend provisioning volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- The maximum recommended storage capacity per node is 2.5 TiB, regardless of the number of vCPUs.
+- The maximum recommended storage capacity per node is 10 TiB, regardless of the number of vCPUs.
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
 
