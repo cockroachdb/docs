@@ -307,7 +307,7 @@ curl --request GET \
   }
 ~~~
 
-## Check a cluster's egress rules/allowed destinations
+## Check a cluster's egress rules and allowed destinations
 
 
 {{site.data.alerts.callout_info}}
