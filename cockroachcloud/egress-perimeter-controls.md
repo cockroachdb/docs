@@ -271,7 +271,7 @@ The following steps create one FQDN rule and one CIDR rule.
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the new rules have been created.
+    Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-egress-rules-for-a-cluster) to confirm that the new rules have been created.
     {{site.data.alerts.end}}
 
 ## Check the status of a rule
@@ -307,8 +307,7 @@ curl --request GET \
   }
 ~~~
 
-## Check a cluster's egress rules and allowed destinations
-
+## Check egress rules for a cluster
 
 {{site.data.alerts.callout_info}}
 Consult the glossary of [rule statuses](#rule-statuses).
@@ -370,7 +369,7 @@ curl --request GET \
 To delete a rule, make `DELETE` request to the rule's path.
 
 {{site.data.alerts.callout_danger}}
-Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.
+Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-egress-rules-for-a-cluster) to confirm that the deletion is complete.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
