@@ -19,7 +19,7 @@ This page describes how Egress Perimeter Controls can enhance the security of {{
 - Exporting data
 - Exporting logs
 
-By default, clusters can access external resources via the internet without restriction. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control. 
+By default, clusters can access external resources via the internet without restriction, and even [private clusters](private-clusters.html) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control. 
 
 Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable [admins](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
@@ -113,7 +113,7 @@ curl --request GET \
 Essential external traffic destined to resources managed by Cockroach Labs will always be allowed regardless of user-specified egress policy.
 {{site.data.alerts.end}}
 
-1. Make a `POST` request ordering the API to update your cluster's egress policy.
+1. Make a `POST` request ordering the API to update your cluster's egress policy from default allow-all to deny-all. This is needed before you can add egress rules to allowed external destinations.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -153,7 +153,7 @@ An egress rule is created with the following attributes:
 
 The following steps create one FQDN rule and one CIDR rule.
 
-1. First, create a YAML manifest for a FQDN-based rule. This example, adds egress to a Google Cloud Platform (GCP) storage bucket.
+1. First, create a YAML manifest for a FQDN-based rule. This example adds egress to a couple of Google Cloud Platform (GCP) storage buckets.
 
     {% include_cached copy-clipboard.html %}
     ~~~yaml
@@ -168,7 +168,7 @@ The following steps create one FQDN rule and one CIDR rule.
     description: 'egress for GCP storage buckets'
     ~~~
 
-1. Next, create a YAML manifest for a CIDR-based rule.
+1. Next, create a YAML manifest for a CIDR-based rule. This example adds egress to a self-managed Kafka cluster.
 
     {% include_cached copy-clipboard.html %}
     ~~~yaml
@@ -392,7 +392,7 @@ curl --request GET \
 To delete a rule, make `DELETE` request to the rule's path.
 
 {{site.data.alerts.callout_danger}}
-Your cluster's firewall behavior is enforced asynchronously after the API response. After, submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.
+Your cluster's firewall behavior is enforced asynchronously after the API response. After submitting the request, [check your egress rules](#check-a-clusters-egress-rules-allowed-destinations) to confirm that the deletion is complete.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
