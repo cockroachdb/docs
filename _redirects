@@ -6,6 +6,8 @@ layout: null
 / /docs/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!
+/docs/releases/ /docs/releases/index.html 301
+/docs/advisories/ /docs/advisories/index.html 301
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
 # Pages undergoing maintenance
