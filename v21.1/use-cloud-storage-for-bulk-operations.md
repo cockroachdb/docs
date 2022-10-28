@@ -24,14 +24,14 @@ URLs for the files you want to import must use the format shown below. For examp
 [scheme]://[host]/[path]?[parameters]
 ~~~
 
-Location                                                    | Scheme      | Host                                             | Parameters                                                                 
+Location                                                    | Scheme      | Host                                             | Parameters
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` <br><br>For more information, see [Authentication — Amazon S3](#authentication).                               
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` <br><br>For more information, see [Authentication — Amazon S3](#authentication).
 Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
 Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` <br><br>**Deprecation notice:** In v21.1, we suggest you do not use the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), as the default behavior will be changing in v21.2. For more information, see [Authentication - Google Cloud Storage](#authentication).
-HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication — HTTP](#authentication).      
+HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication — HTTP](#authentication).
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
-S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning:** Unlike Amazon S3, Google Cloud Storage, and Azure Storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).   
+S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning:** Unlike Amazon S3, Google Cloud Storage, and Azure Storage options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
 
 {{site.data.alerts.callout_success}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -53,11 +53,11 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`EXPORT`](export.html), or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
-Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`                                                     
+Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`
+Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -70,12 +70,12 @@ Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits
 
 Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
-Google Cloud | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`                                                     
-HTTP         | `http://localhost:8080/employees.sql`                                            
+Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`
+Google Cloud | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`
+HTTP         | `http://localhost:8080/employees.sql`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -215,7 +215,7 @@ BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_N
 
 <section class="filter-content" markdown="1" data-scope="http">
 
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](https://www.cockroachlabs.com/docs/stable/cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 
 If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#flags-external-io-disable-http).
 
