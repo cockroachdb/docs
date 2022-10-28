@@ -49,11 +49,10 @@
       "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
-        "/advisories/"
         {% for x in site.data.advisories %}
           "/advisories/{{ x.advisory }}.html",
         {% endfor %}
-        "/advisories/index.html"
+        "/advisories/"
       ]
     }
   ]
