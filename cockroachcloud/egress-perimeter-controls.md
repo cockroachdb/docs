@@ -14,26 +14,24 @@ This page describes how Egress Perimeter Controls can enhance the security of {{
 
 {{ site.data.products.dedicated }} clusters must access external resources for many purposes:
 
-- Managing backups as part of a disaster recovery plan
+- Managing [backups](../{{site.versions["stable"]}}/backup-and-restore-overview.html) as part of a disaster recovery plan
 - Using [Change data capture (CDC) changefeeds](../{{site.versions["stable"]}}/change-data-capture-overview.html)
-- Exporting data
-- Exporting logs
+- [Exporting data](../{{site.versions["stable"]}}/export.html)
+- [Exporting logs](export-logs.html)
 
 By default, clusters can access external resources via the internet without restriction, and even [private clusters](private-clusters.html) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control. 
 
-Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable [admins](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
+Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable cluster administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
 Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["stable"]}}/security-reference/security-overview.html).
 
-
 {{site.data.alerts.callout_info}}
-Regardless of user-specific Egress Perimiter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality.
+Regardless of user-specific Egress Perimeter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality and ongoing operations.
 {{site.data.alerts.end}}
-
 
 ## Prerequisites to using Egress Perimeter Controls with the Cloud Console API
 
-- You need a Cockroach Cloud account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} have a non-zero operating cost that must be billed.
+- You need a {{ site.data.products.db }} account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} have a non-zero operating cost that must be billed.
 
 - Egress Perimeter Controls require your cluster to be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
 
@@ -64,48 +62,45 @@ The operations described in this page require an API key with very broad permiss
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request GET \
-      --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID" \
-      --header "Authorization: Bearer $CC_API_KEY"
+    --header "Authorization: Bearer $CC_API_KEY" \
+    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID"
     ~~~
 
     ~~~json
-curl --request GET \
---header "Authorization: Bearer $CC_API_KEY" \
---url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID"
-{
-  "id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
-  "name": "docstest",
-  "cockroach_version": "latest-v22.2-build(sha256:e42c4de8577556132120a9ab07efc1a2a96779c028ebab99223d862d9792428b)",
-  "plan": "DEDICATED",
-  "cloud_provider": "AWS",
-  "account_id": "1234567890",
-  "state": "CREATED",
-  "creator_id": "b7d7bedc-b8f3-4a98-bd2c-4ba2bf9adbe1",
-  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
-  "config": {
-    "dedicated": {
-      "machine_type": "m5.large",
-      "num_virtual_cpus": 2,
-      "storage_gib": 15,
-      "memory_gib": 8,
-      "disk_iops": 225
-    }
-  },
-  "regions": [
+    
     {
-      "name": "us-west-2",
-      "sql_dns": "docstest-donotdelete-6qsh.aws-us-west-2.crdb.io",
-      "ui_dns": "admin-docstest-donotdelete-6qsh.aws-us-west-2.crdb.io",
-      "internal_dns": "",
-      "node_count": 1
+      "id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
+      "name": "docstest",
+      "cockroach_version": "latest-v22.2-build(sha256:e42c4de8577556132120a9ab07efc1a2a96779c028ebab99223d862d9792428b)",
+      "plan": "DEDICATED",
+      "cloud_provider": "AWS",
+      "account_id": "1234567890",
+      "state": "CREATED",
+      "creator_id": "b7d7bedc-b8f3-4a98-bd2c-4ba2bf9adbe1",
+      "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
+      "config": {
+        "dedicated": {
+          "machine_type": "m5.large",
+          "num_virtual_cpus": 2,
+          "storage_gib": 15,
+          "memory_gib": 8,
+          "disk_iops": 225
+        }
+      },
+      "regions": [
+        {
+          "name": "us-west-2",
+          "sql_dns": "docstest-6qsh.aws-us-west-2.crdb.io",
+          "ui_dns": "admin-docstest-6qsh.aws-us-west-2.crdb.io",
+          "internal_dns": "",
+          "node_count": 1
+        }
+      ],
+      "created_at": "2022-10-27T18:03:47.862079Z",
+      "updated_at": "2022-10-27T18:24:58.111198Z",
+      "deleted_at": null
     }
-  ],
-  "created_at": "2022-10-27T18:03:47.862079Z",
-  "updated_at": "2022-10-27T18:24:58.111198Z",
-  "deleted_at": null
-}
     ~~~
-
 
 ## Use a deny-by-default egress traffic policy
 
@@ -117,24 +112,15 @@ Essential external traffic destined to resources managed by Cockroach Labs will 
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-curl --request POST \
---header "Authorization: Bearer $CC_API_KEY" \
---header 'Cc-Version: 2022-09-20' \
---url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy" \
---data '{"allow_all":false}'
+    curl --request POST \
+    --header "Authorization: Bearer $CC_API_KEY" \
+    --header 'Cc-Version: 2022-09-20' \
+    --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/egress-traffic-policy" \
+    --data '{"allow_all":false}'
     ~~~
 
     ~~~txt
-    ???
-    ~~~
-
-1. Check your cluster's status and confirm the update is complete before proceeding.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~shell
-    curl --request GET \
-      --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID" \
-      --header "Authorization: Bearer $CC_API_KEY"
+    {}
     ~~~
 
 ## Create an egress rule to allow a destination
@@ -148,8 +134,8 @@ An egress rule is created with the following attributes:
     {{site.data.alerts.callout_danger}}
     By default, all ports are allowed.
     {{site.data.alerts.end}}
-- `paths`: An array of allowed destination paths.
-- `description`:
+- `paths`: An array of allowed destination paths, for example `[ "/docsrule/secretdocsdata/*", "/specialdata/superimportant/*" ]`.
+- `description`: The intended purpose of egress to the destination.
 
 The following steps create one FQDN rule and one CIDR rule.
 
@@ -229,8 +215,6 @@ The following steps create one FQDN rule and one CIDR rule.
     ~~~
 
 1. Make a `POST` request to create each rule from the JSON payload.
-    
-    [API spec]
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -283,7 +267,7 @@ The following steps create one FQDN rule and one CIDR rule.
         "description": "egress for Kafka",
         "created_at": "2022-10-27T19:36:25.670162Z"
       }
-    }%
+    }
     ~~~
 
     {{site.data.alerts.callout_danger}}
@@ -296,17 +280,12 @@ The following steps create one FQDN rule and one CIDR rule.
 Refer to the list of [rule statuses](#rule-statuses).
 {{site.data.alerts.end}}
 
-[API spec]
-
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
 --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules/$RULE_ID"
-
-
-
 ~~~
 
 ~~~txt
@@ -330,7 +309,6 @@ curl --request GET \
 
 ## Check a cluster's egress rules/allowed destinations
 
-[API spec]
 
 {{site.data.alerts.callout_info}}
 Consult the glossary of [rule statuses](#rule-statuses).
