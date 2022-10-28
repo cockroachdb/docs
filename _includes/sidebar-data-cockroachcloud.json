@@ -85,6 +85,12 @@
       		      "/cockroachcloud/private-clusters.html"
       	      ]
       	    },
+            {
+              "title": "Egress Perimeter Controls (Preview)",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
       	    {
       	      "title": "SQL Audit Logging",
       	      "urls": [
