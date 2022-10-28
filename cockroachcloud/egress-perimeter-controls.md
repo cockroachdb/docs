@@ -40,7 +40,7 @@ Regardless of user-specific Egress Perimiter Control policy, egress is always pe
 - An API key with `admin` privilege on clusters in your org is required. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
 
 {{site.data.alerts.callout_danger}}
-The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen. Delete the API key when the operations are completed.
+The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
 {{site.data.alerts.end}}
 
 ## Initialize your shell with your API key and Cluster id
