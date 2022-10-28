@@ -12,7 +12,9 @@
     {
       "title": "All Releases",
       "urls": [
-        "/releases/index.html"
+        "/releases/index.html",
+        "/releases/",
+        "/releases"
       ]
     },
     {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
@@ -48,6 +50,8 @@
       "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
+        "/advisories/",
+        "/advisories",
         {% for x in site.data.advisories %}
           "/advisories/{{ x.advisory }}.html",
         {% endfor %}
