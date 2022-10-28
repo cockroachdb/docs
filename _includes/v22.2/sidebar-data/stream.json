@@ -41,6 +41,12 @@
       "title": "Work with Changefeeds",
       "items": [
         {
+          "title": "Change Data Capture Transformations",
+          "urls": [
+            "/${VERSION}/cdc-transformations.html"
+          ]
+        },
+        {
           "title": "Changefeeds on Tables with Column Families",
           "urls": [
             "/${VERSION}/changefeeds-on-tables-with-column-families.html"
