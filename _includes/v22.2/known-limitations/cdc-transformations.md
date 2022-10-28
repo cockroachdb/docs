@@ -1,5 +1,3 @@
-The following list of limitations are more immediately important before running a changefeed with a transformation:
-
 - It is necessary to pass the [`schema_change_policy='stop'`](create-changefeed.html#schema-policy) option in the changefeed creation statement when using the {% if page.name == "cdc-transformations.md" %} CDC transformations {% else %} [CDC transformations](cdc-transformations.html){% endif %} format.
 - You can only apply CDC transformations on a single table in each statement.
 - Some [stable functions](https://www.cockroachlabs.com/docs/stable/functions-and-operators.html#built-in-functions), notably functions that return MVCC timestamps, are overridden to return the MVCC timestamp of the event.
