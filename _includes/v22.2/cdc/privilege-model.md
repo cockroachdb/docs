@@ -22,4 +22,6 @@ You can add `CHANGEFEED` to the user or role's [default privileges](security-ref
 ALTER DEFAULT PRIVILEGES GRANT CHANGEFEED ON TABLES TO user;
 ~~~
 
+{{site.data.alerts.callout_info}}
 Users with the `CONTROLCHANGEFEED` role option must have `SELECT` on each table, even if they are also granted the `CHANGEFEED` privilege.
+{{site.data.alerts.end}}
