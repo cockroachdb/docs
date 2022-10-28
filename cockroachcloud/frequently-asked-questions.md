@@ -80,7 +80,7 @@ See the [Security Overview page](../{{site.versions["stable"]}}/security-referen
 
 ### Who has access to my cluster data?
 
-The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions).
+The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions/).
 
 ## Cluster maintenance
 
@@ -150,10 +150,10 @@ Response times are under 10ms for public access but typically much lower. Additi
 
 ### Where can I find the Support Policy and Service Level Agreement (SLA) for {{ site.data.products.dedicated }}?
 
-The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions):
+The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions/):
 
-- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
-- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
+- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy/)
+- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/)
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 

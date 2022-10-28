@@ -36,8 +36,15 @@ Example 2:
 {% assign ul = ns | minus: 1 %}
 <div class="filters clearfix">
     {% for x in (0..ul) %}
-    {% assign url = "/" | append: include.page_folder | append: "/" | append: page_names[x] %}
-    <a href="/docs{{ url }}"><button class="filter-button{% if url == page.url %} current{% endif %}">{{ tab_names[x] }}</button></a>
+      {% if page_names[x] contains "http://" or page_names[x] contains "https://" %} {% comment %} Add support for external URLs {% endcomment %}
+        {% assign external = "true"}
+        {% assign url = page_names[x] %}
+        {% assign baseurl = page_names[x] %}
+      {% else %}
+        {% assign url = "/" | append: include.page_folder | append: "/" | append: page_names[x] %}
+        {% assign baseurl = "/docs" | append: url %}
+      {% endif %}
+    <a{% if external == "true" %} class="external" target="_blank" rel="noopener"{% endif %} href="{{ baseurl }}"><button class="filter-button{% if url == page.url %} current{% endif %}">{{ tab_names[x] }}</button></a>
     {% endfor %}
 </div>
 {% endif %}

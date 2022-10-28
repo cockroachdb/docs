@@ -208,11 +208,23 @@ layout: null
 /docs/v21.1/stop-a-node.html /docs/v21.1/cockroach-quit.html 301
 /docs/stable/stop-a-node.html /docs/stable/cockroach-quit.html 301
 /docs/v21.1/topology-geo-partitioned-replicas.html /docs/v21.1/regional-tables.html 301
+/docs/v21.2/topology-geo-partitioned-replicas.html /docs/v21.2/regional-tables.html 301
+/docs/v22.1/topology-geo-partitioned-replicas.html /docs/v22.1/regional-tables.html 301
+/docs/v22.2/topology-geo-partitioned-replicas.html /docs/v22.2/regional-tables.html 301
 /docs/stable/topology-geo-partitioned-replicas.html /docs/stable/regional-tables.html 301
+/docs/dev/topology-geo-partitioned-replicas.html /docs/dev/regional-tables.html 301
 /docs/v21.1/topology-geo-partitioned-leaseholders.html /docs/v21.1/regional-tables.html 301
+/docs/v21.2/topology-geo-partitioned-leaseholders.html /docs/v21.2/regional-tables.html 301
+/docs/v22.1/topology-geo-partitioned-leaseholders.html /docs/v22.1/regional-tables.html 301
+/docs/v22.2/topology-geo-partitioned-leaseholders.html /docs/v22.2/regional-tables.html 301
 /docs/stable/topology-geo-partitioned-leaseholders.html /docs/stable/regional-tables.html 301
+/docs/dev/topology-geo-partitioned-leaseholders.html /docs/dev/regional-tables.html 301
 /docs/v21.1/topology-duplicate-indexes.html /docs/v21.1/global-tables.html 301
+/docs/v21.2/topology-duplicate-indexes.html /docs/v21.2/global-tables.html 301
+/docs/v22.1/topology-duplicate-indexes.html /docs/v22.1/global-tables.html 301
+/docs/v22.2/topology-duplicate-indexes.html /docs/v22.2/global-tables.html 301
 /docs/stable/topology-duplicate-indexes.html /docs/stable/global-tables.html 301
+/docs/dev/topology-duplicate-indexes.html /docs/dev/global-tables.html 301
 /docs/v21.1/debug-and-error-logs.html /docs/v21.1/logging-overview.html 301
 /docs/stable/debug-and-error-logs.html /docs/stable/logging-overview.html 301
 /docs/v20.2/admin-ui-statements-page.html /docs/v20.2/ui-statements-page.html 301
@@ -352,6 +364,16 @@ layout: null
 /docs/v20.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/cockroachcloud/connect-to-a-free-cluster.html /docs/cockroachcloud/connect-to-a-serverless-cluster.html 301
+/docs/cockroachcloud/create-a-free-cluster.html /docs/cockroachcloud/create-a-serverless-cluster.html 301
+/docs/cockroachcloud/planning-your-serverless-cluster.html /docs/cockroachcloud/learn-about-pricing.html 301
+/docs/cockroachcloud/migrate-from-free-to-dedicated.html /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
+/docs/cockroachcloud/free-faqs.html /docs/cockroachcloud/serverless-faqs.html 301
+/docs/cockroachcloud/connect-to-a-free-cluster /docs/cockroachcloud/connect-to-a-serverless-cluster.html 301
+/docs/cockroachcloud/create-a-free-cluster /docs/cockroachcloud/create-a-serverless-cluster.html 301
+/docs/cockroachcloud/planning-your-serverless-cluster /docs/cockroachcloud/learn-about-pricing.html 301
+/docs/cockroachcloud/migrate-from-free-to-dedicated /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
+/docs/cockroachcloud/free-faqs /docs/cockroachcloud/serverless-faqs.html 301
 
 # Removed pages
 /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
@@ -456,10 +478,10 @@ layout: null
 /docs/stable/open-source.html /docs/stable/frequently-asked-questions.html 301
 /docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
 /docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
+/docs/:version/detailed-sql-support /docs/:version/sql-feature-support.html 301
 /docs/:version/detailed-sql-support.html /docs/:version/sql-feature-support.html 301
-/docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
-/docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
-/docs/stable/collatedstring.html /docs/stable/collate.html 301
+/docs/:version/collatedstring /docs/:version/collate.html 301
+/docs/:version/collatedstring.html /docs/:version/collate.html 301
 /docs/v21.1/performance-tuning.html /docs/v21.1/make-queries-fast.html 301
 /docs/stable/performance-tuning.html /docs/stable/make-queries-fast.html 301
 /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html /docs/cockroachcloud/connect-to-your-cluster.html 301
@@ -483,6 +505,7 @@ layout: null
 /docs/v22.1/convert-to-schema.html /docs/v22.1/alter-database.html 301
 /docs/stable/convert-to-schema.html /docs/stable/alter-database.html 301
 /docs/v22.1/use-changefeeds.html /docs/v22.1/changefeed-messages.html 301
+/docs/:version/build-a-python-app-with-cockroachdb-peewee.html https://docs.peewee-orm.com/en/latest/peewee/playhouse.html 301
 
 #CockroachDB Cloud release notes
 
@@ -507,7 +530,10 @@ layout: null
 /docs/releases/cockroachcloud-12062021.html /docs/releases/cloud.html 301
 /docs/releases/cockroachcloud-12112020.html /docs/releases/cloud.html 301
 
-#CockroachDB Self-Hosted release notes
+# CockroachDB Self-Hosted release notes
+#
+# These should never be removed. These redirects exist to help with the per-version
+# release note implementation.
 
 {% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
@@ -535,10 +561,15 @@ layout: null
 /docs/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-linux.html 301
 /docs/orchestrate-cockroachdb-with-kubernetes.html /docs/stable/orchestrate-cockroachdb-with-kubernetes.html 301
 /docs/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html 301
+
+# FAQs
+/docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
+
 {% endif %}
+
+# The below redirect is required in order to properly render /dev and /stable pages.
+# Make sure you know what you're doing prior to removing it.
 
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
-
-/docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
