@@ -39,7 +39,7 @@ Parameter | Description
 
 ### CDC transformation parameters
 
-The [Change Data Capture Transformations](cdc-transformations.html) page provides detail on the functionality, syntax, and use cases for changefeeds created with transformations. 
+Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Transformations](cdc-transformations.html) page for detail on the functionality, syntax, and use cases for changefeeds created with transformations.
 
 Parameter | Description
 ----------|------------

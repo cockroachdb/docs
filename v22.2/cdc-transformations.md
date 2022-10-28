@@ -23,8 +23,8 @@ See the [Examples](#examples) section for further use cases.
 
 There are two possible components to CDC transformations:
 
-- _Projections_ will select the columns that you want to emit data from. 
-- _Predicates_ will restrict the selected column change data based on the filters you apply.
+- _Projections_ select the columns that you want to emit data from. 
+- _Predicates_ restrict the resulting column change data based on the filters you apply.
 
 ~~~ sql
 CREATE CHANGEFEED [INTO sink] [WITH options] AS SELECT projection FROM table [WHERE predicate];
@@ -48,7 +48,7 @@ For a SQL diagram of the CDC transformation syntax, see the [`CREATE CHANGEFEED`
 
 You can use the following functions in CDC transformation queries:
 
-- "Immutable" as marked on the [Functions and Operators page](functions-and-operators.html).
+- Functions marked as "Immutable" on the [Functions and Operators page](functions-and-operators.html).
 - Changefeed functions:
 
     {{site.data.alerts.callout_info}}
@@ -59,7 +59,7 @@ You can use the following functions in CDC transformation queries:
     --------------------------+----------------------
     `cdc_is_delete() `        | Returns `true` if the event is a deletion event.
     `cdc_prev()`              | Returns a JSON representation of a row's previous state. 
-    `cdc_updated_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ. For example, if the table is undergoing [schema changes](online-schema-changes.html).
+    `cdc_updated_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ, such as when the table is undergoing [schema changes](online-schema-changes.html).
 
 - The following "Stable" functions:
   - `jsonb_build_array()`
@@ -78,7 +78,7 @@ You can use the following functions in CDC transformation queries:
 You can **not** use the following functions with CDC transformations:
 
 - Functions marked as "Volatile" on the [Functions and Operators page](functions-and-operators.html).
-- Functions listed in [Limitations](#limitations) on this page.
+- Functions listed in the [Limitations](#limitations) section on this page.
 - Functions marked as "Stable" on the [Functions and Operators page](functions-and-operators.html), **except** for those listed previously.
 
 ## Examples
@@ -132,7 +132,7 @@ For more detail on targeting `REGIONAL BY ROW` tables with changefeeds, see [Cha
 
 ### Stabilize the changefeed message schema
 
-As changefeed messages emit from the database, message formats can vary as tables experience [schema changes](changefeed-messages.html#schema-changes). You can select columns with typecasting to prevent message fields from changing during a changefeed's lifecycle: 
+As changefeed messages emit from the database, message formats can vary as tables experience [schema changes](changefeed-messages.html#schema-changes). You can select columns with [typecasting](data-types.html#data-type-conversions-and-casts) to prevent message fields from changing during a changefeed's lifecycle: 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -161,7 +161,7 @@ CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS S
 
 ### View recent changes to a row
 
-You can use CDC transformations as a tool for debugging or investigation from the SQL shell. 
+You can use CDC transformations as a tool for debugging or investigating issues from the SQL shell. 
 
 For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`](create-changefeed.html#cursor-option) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell. 
 
