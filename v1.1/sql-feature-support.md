@@ -155,7 +155,7 @@ table tr td:nth-child(2) {
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| Column families | ✓ | CockroachDB Extension | [Column Families documentation](https://www.cockroachlabs.com/docs/column-families.html) |
+| Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html) |
 | Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html) |
 | Parallel Statement Execution | ✓ | CockroachDB Extension | [Parallel Statement Execution documentation](parallel-statement-execution.html) |
 | Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
