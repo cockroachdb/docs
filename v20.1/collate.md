@@ -2,6 +2,7 @@
 title: COLLATE
 summary: The COLLATE feature lets you sort strings according to language- and country-specific rules.
 toc: true
+redirect_from: collatedstring.html
 ---
 
 The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations.
