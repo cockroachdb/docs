@@ -352,6 +352,16 @@ layout: null
 /docs/v20.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
+/docs/cockroachcloud/connect-to-a-free-cluster.html /docs/cockroachcloud/connect-to-a-serverless-cluster.html 301
+/docs/cockroachcloud/create-a-free-cluster.html /docs/cockroachcloud/create-a-serverless-cluster.html 301
+/docs/cockroachcloud/planning-your-serverless-cluster.html /docs/cockroachcloud/learn-about-pricing.html 301
+/docs/cockroachcloud/migrate-from-free-to-dedicated.html /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
+/docs/cockroachcloud/free-faqs.html /docs/cockroachcloud/serverless-faqs.html 301
+/docs/cockroachcloud/connect-to-a-free-cluster /docs/cockroachcloud/connect-to-a-serverless-cluster.html 301
+/docs/cockroachcloud/create-a-free-cluster /docs/cockroachcloud/create-a-serverless-cluster.html 301
+/docs/cockroachcloud/planning-your-serverless-cluster /docs/cockroachcloud/learn-about-pricing.html 301
+/docs/cockroachcloud/migrate-from-free-to-dedicated /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
+/docs/cockroachcloud/free-faqs /docs/cockroachcloud/serverless-faqs.html 301
 
 # Removed pages
 /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301
@@ -456,10 +466,10 @@ layout: null
 /docs/stable/open-source.html /docs/stable/frequently-asked-questions.html 301
 /docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
 /docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
+/docs/:version/detailed-sql-support /docs/:version/sql-feature-support.html 301
 /docs/:version/detailed-sql-support.html /docs/:version/sql-feature-support.html 301
-/docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
-/docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
-/docs/stable/collatedstring.html /docs/stable/collate.html 301
+/docs/:version/collatedstring /docs/:version/collate.html 301
+/docs/:version/collatedstring.html /docs/:version/collate.html 301
 /docs/v21.1/performance-tuning.html /docs/v21.1/make-queries-fast.html 301
 /docs/stable/performance-tuning.html /docs/stable/make-queries-fast.html 301
 /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html /docs/cockroachcloud/connect-to-your-cluster.html 301
@@ -483,6 +493,7 @@ layout: null
 /docs/v22.1/convert-to-schema.html /docs/v22.1/alter-database.html 301
 /docs/stable/convert-to-schema.html /docs/stable/alter-database.html 301
 /docs/v22.1/use-changefeeds.html /docs/v22.1/changefeed-messages.html 301
+/docs/:version/build-a-python-app-with-cockroachdb-peewee.html https://docs.peewee-orm.com/en/latest/peewee/playhouse.html 301
 
 #CockroachDB Cloud release notes
 

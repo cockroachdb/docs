@@ -132,7 +132,7 @@ If you want to run on another cloud or on-premises, use this [basic network test
     CURRENT   NAME                                                  CLUSTER                                               AUTHINFO                                              NAMESPACE
     *         gke_cockroach-shared_us-east1-b_cockroachdb1          gke_cockroach-shared_us-east1-b_cockroachdb1          gke_cockroach-shared_us-east1-b_cockroachdb1
               gke_cockroach-shared_us-west1-a_cockroachdb2          gke_cockroach-shared_us-west1-a_cockroachdb2          gke_cockroach-shared_us-west1-a_cockroachdb2
-              gke_cockroach-shared_us-central1-a_cockroachdb3       gke_cockroach-shared_us-central1-a_cockroachdb3       gke_cockroach-shared_us-central1-a_cockroachdb3                        
+              gke_cockroach-shared_us-central1-a_cockroachdb3       gke_cockroach-shared_us-central1-a_cockroachdb3       gke_cockroach-shared_us-central1-a_cockroachdb3
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -530,7 +530,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
     NAMESPACE    NAME            READY     STATUS    RESTARTS   AGE
     us-east1-b   cockroachdb-0   1/1       Running   0          14m
     us-east1-b   cockroachdb-1   1/1       Running   0          14m
-    us-east1-b   cockroachdb-2   1/1       Running   0          14m    
+    us-east1-b   cockroachdb-2   1/1       Running   0          14m
     ~~~
 
     {% include_cached copy-clipboard.html %}
@@ -555,7 +555,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
     us-west1-a   cockroachdb-0   1/1       Running   0          14m
     us-west1-a   cockroachdb-1   1/1       Running   0          14m
     us-west1-a   cockroachdb-2   1/1       Running   0          14m
-    ~~~    
+    ~~~
 
     If you notice that only one of the Kubernetes clusters' pods are marked as `READY`, you likely also need to configure a network firewall rule that will allow the pods in the different clusters to talk to each other. You can run the following command to create a firewall rule allowing traffic on port 26257 (the port used by CockroachDB for inter-node traffic) within your private GCE network. It will not allow any traffic in from outside your private network:
 
@@ -668,7 +668,7 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
     generic cockroachdb.node \
     --from-file=certs
     --context <cluster-context> \
-    --namespace <cluster-namespace>    
+    --namespace <cluster-namespace>
     ~~~
 
 1. Repeat the previous 2 steps for your 2 remaining regions. You may need to delete the local `node.crt` and `node.key` in your `certs` directory before generating a new node certificate and key pair.
@@ -1057,7 +1057,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
     Therefore, in order to upgrade to {{ page.version.version }}, you must be on a production release of {{ previous_version }}.
 
-    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to {{ page.version.version }} from a production release earlier than {{ previous_version }}, or from a testing release (alpha/beta), first [upgrade to a production release of {{ previous_version }}](../{{ previous_version }}/deploy-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to {{ page.version.version }}.
 
@@ -1319,6 +1319,6 @@ If you stop Kubernetes without first deleting the persistent volumes, they will 
 
 ## See also
 
-- [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes.html)
+- [Kubernetes Single-Cluster Deployment](deploy-cockroachdb-with-kubernetes.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
