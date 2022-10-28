@@ -208,11 +208,23 @@ layout: null
 /docs/v21.1/stop-a-node.html /docs/v21.1/cockroach-quit.html 301
 /docs/stable/stop-a-node.html /docs/stable/cockroach-quit.html 301
 /docs/v21.1/topology-geo-partitioned-replicas.html /docs/v21.1/regional-tables.html 301
+/docs/v21.2/topology-geo-partitioned-replicas.html /docs/v21.2/regional-tables.html 301
+/docs/v22.1/topology-geo-partitioned-replicas.html /docs/v22.1/regional-tables.html 301
+/docs/v22.2/topology-geo-partitioned-replicas.html /docs/v22.2/regional-tables.html 301
 /docs/stable/topology-geo-partitioned-replicas.html /docs/stable/regional-tables.html 301
+/docs/dev/topology-geo-partitioned-replicas.html /docs/dev/regional-tables.html 301
 /docs/v21.1/topology-geo-partitioned-leaseholders.html /docs/v21.1/regional-tables.html 301
+/docs/v21.2/topology-geo-partitioned-leaseholders.html /docs/v21.2/regional-tables.html 301
+/docs/v22.1/topology-geo-partitioned-leaseholders.html /docs/v22.1/regional-tables.html 301
+/docs/v22.2/topology-geo-partitioned-leaseholders.html /docs/v22.2/regional-tables.html 301
 /docs/stable/topology-geo-partitioned-leaseholders.html /docs/stable/regional-tables.html 301
+/docs/dev/topology-geo-partitioned-leaseholders.html /docs/dev/regional-tables.html 301
 /docs/v21.1/topology-duplicate-indexes.html /docs/v21.1/global-tables.html 301
+/docs/v21.2/topology-duplicate-indexes.html /docs/v21.2/global-tables.html 301
+/docs/v22.1/topology-duplicate-indexes.html /docs/v22.1/global-tables.html 301
+/docs/v22.2/topology-duplicate-indexes.html /docs/v22.2/global-tables.html 301
 /docs/stable/topology-duplicate-indexes.html /docs/stable/global-tables.html 301
+/docs/dev/topology-duplicate-indexes.html /docs/dev/global-tables.html 301
 /docs/v21.1/debug-and-error-logs.html /docs/v21.1/logging-overview.html 301
 /docs/stable/debug-and-error-logs.html /docs/stable/logging-overview.html 301
 /docs/v20.2/admin-ui-statements-page.html /docs/v20.2/ui-statements-page.html 301
@@ -518,7 +530,10 @@ layout: null
 /docs/releases/cockroachcloud-12062021.html /docs/releases/cloud.html 301
 /docs/releases/cockroachcloud-12112020.html /docs/releases/cloud.html 301
 
-#CockroachDB Self-Hosted release notes
+# CockroachDB Self-Hosted release notes
+#
+# These should never be removed. These redirects exist to help with the per-version
+# release note implementation.
 
 {% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
@@ -546,10 +561,15 @@ layout: null
 /docs/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-linux.html 301
 /docs/orchestrate-cockroachdb-with-kubernetes.html /docs/stable/orchestrate-cockroachdb-with-kubernetes.html 301
 /docs/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html 301
+
+# FAQs
+/docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
+
 {% endif %}
+
+# The below redirect is required in order to properly render /dev and /stable pages.
+# Make sure you know what you're doing prior to removing it.
 
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
-
-/docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
