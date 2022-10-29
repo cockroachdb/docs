@@ -2,7 +2,6 @@
 title: Orchestrate CockroachDB with Kubernetes
 summary: How to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
-canonical: /stable/deploy-cockroachdb-with-kubernetes.html
 ---
 
 This page shows you how to orchestrate the deployment and management of an insecure 3-node CockroachDB cluster with [Kubernetes](http://kubernetes.io/), using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature.

@@ -4,7 +4,6 @@ summary: How to orchestrate the deployment, management, and monitoring of a secu
 toc: true
 toc_not_nested: true
 secure: true
-canonical: /stable/deploy-cockroachdb-with-kubernetes.html
 ---
 
 <div class="filters filters-big clearfix">
@@ -142,7 +141,7 @@ To delete the Kubernetes cluster:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
-    ~~~
+    ~~~   
 
 {{site.data.alerts.callout_danger}}
 If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.

@@ -16,7 +16,7 @@ Tables with the Regional Table Locality Pattern can survive zone or region failu
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Regional tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Regional tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ## Prerequisites

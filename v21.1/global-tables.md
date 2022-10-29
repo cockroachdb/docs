@@ -19,7 +19,7 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-`GLOBAL` tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+`GLOBAL` tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ## Prerequisites

@@ -27,7 +27,7 @@ In a multi-region deployment, the geo-partitioned replicas topology is a good ch
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -61,7 +61,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 A geo-partitioned table does not require a secondary index. However, if the table does have one or more secondary indexes, each index must be partitioned as well. This means that the indexes must start with the column identifying geography, like the table itself, which impacts the queries they'll be useful for. If you cannot partition all secondary indexes on a table you want to geo-partition, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern instead.
 {{site.data.alerts.end}}
 
-1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
 
@@ -163,7 +163,7 @@ However, if an entire region fails, the partitions in that region become unavail
 
 ## Tutorial
 
-For a step-by-step demonstration of how this pattern gets you low-latency reads and writes in a broadly distributed cluster, see the [Geo-Partitioning tutorial](demo-geo-partitioning.html).
+For a step-by-step demonstration of how this pattern gets you low-latency reads and writes in a broadly distributed cluster, see the [Geo-Partitioning tutorial](demo-geo-partitioning.html).  
 
 ## See also
 

@@ -16,7 +16,7 @@ In general, this pattern is suited well for immutable/reference tables that are 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xde_Oz-dJxM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 {{site.data.alerts.callout_success}}
-**See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/guides/banking-guide-to-the-cloud/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.
+**See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/case-studies/top-u-s-financial-software-company-turns-to-cockroachdb-to-improve-its-application-login-experience/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -32,12 +32,12 @@ In general, this pattern is suited well for immutable/reference tables that are 
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Pinning secondary indexes requires an [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Pinning secondary indexes requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
 
-Using this pattern, you tell CockroachDB to put the leaseholder for the table itself (also called the primary index) in one region, create 2 secondary indexes on the table, and tell CockroachDB to put the leaseholder for each secondary index in one of the other regions. This means that reads will access the local leaseholder (either for the table itself or for one of the secondary indexes). Writes, however, will still leave the region to get consensus for the table and its secondary indexes.
+Using this pattern, you tell CockroachDB to put the leaseholder for the table itself (also called the primary index) in one region, create 2 secondary indexes on the table, and tell CockroachDB to put the leaseholder for each secondary index in one of the other regions. This means that reads will access the local leaseholder (either for the table itself or for one of the secondary indexes). Writes, however, will still leave the region to get consensus for the table and its secondary indexes.  
 
 <img src="{{ 'images/v20.1/topology-patterns/topology_duplicate_indexes1.png' | relative_url }}" alt="Duplicate Indexes topology" style="max-width:100%" />
 
@@ -53,7 +53,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 );
 ~~~
 
-1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
 
@@ -184,7 +184,7 @@ Because this pattern balances the replicas for the table and its secondary index
 
 ## Tutorial
 
-For a step-by-step demonstration of how this pattern gets you low-latency reads in a broadly distributed cluster, see the [Low Latency Multi-Region Deployment](demo-low-latency-multi-region-deployment.html) tutorial.
+For a step-by-step demonstration of how this pattern gets you low-latency reads in a broadly distributed cluster, see the [Low Latency Multi-Region Deployment](demo-low-latency-multi-region-deployment.html) tutorial.  
 
 ## See also
 

@@ -4,7 +4,6 @@ summary: How to orchestrate the deployment, management, and monitoring of a secu
 toc: true
 toc_not_nested: true
 secure: true
-canonical: /stable/deploy-cockroachdb-with-kubernetes.html
 ---
 
 <div class="filters filters-big clearfix">
@@ -165,7 +164,7 @@ Note that when running on Amazon EKS, certificates signed by Kubernetes' built-i
                             cockroachdb-public.default.svc.cluster.local
              IP Addresses:  127.0.0.1
     Events:  <none>
-    ~~~
+    ~~~    
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
@@ -402,7 +401,7 @@ To shut down the CockroachDB cluster:
     default.node.cockroachdb-1        Opaque                                2         5h
     default.node.cockroachdb-2        Opaque                                2         5h
     default.node.cockroachdb-3        Opaque                                2         5h
-    prometheus-operator-token-bpdv8   kubernetes.io/service-account-token   3         3h
+    prometheus-operator-token-bpdv8   kubernetes.io/service-account-token   3         3h    
     ~~~
     </section>
 
@@ -435,7 +434,7 @@ To shut down the CockroachDB cluster:
     secret "default.node.cockroachdb-1" deleted
     secret "default.node.cockroachdb-2" deleted
     secret "default.node.cockroachdb-3" deleted
-    ~~~
+    ~~~        
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
@@ -466,7 +465,7 @@ To shut down the CockroachDB cluster:
         {% include copy-clipboard.html %}
         ~~~ shell
         $ eksctl delete cluster --name cockroachdb
-        ~~~
+        ~~~   
     - Manual GCE:
 
         {% include copy-clipboard.html %}

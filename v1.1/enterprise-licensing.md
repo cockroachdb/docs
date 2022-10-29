@@ -13,14 +13,14 @@ This page shows you how to obtain and set trial and enterprise license keys for 
 
 Type | Description
 -------------|------------
-**Trial License** | A trial license enables you to try out CockroachDB enterprise features for 30 days for free.
+**Trial License** | A trial license enables you to try out CockroachDB enterprise features for 30 days for free. 
 **Enterprise License** | A paid enterprise license enables you to use CockroachDB enterprise features for longer periods (one year or more).
 
 ## Obtain a Trial or Enterprise License Key
 
-To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license key via email within a few minutes.
+To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/pricing/start-trial/) and receive your trial license key via email within a few minutes.
 
-To upgrade to an enterprise license, [contact Sales](mailto:sales@cockroachlabs.com).
+To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 
 ## Set the Trial or Enterprise License Key
 
@@ -33,7 +33,7 @@ $ cockroach sql --insecure
 
 {% include copy-clipboard.html %}
 ~~~ sql
->  SET CLUSTER SETTING cluster.organization = 'Acme Company';
+>  SET CLUSTER SETTING cluster.organization = 'Acme Company'; 
 ~~~
 
 {% include copy-clipboard.html %}
@@ -85,7 +85,7 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 After your license expires, the enterprise features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
 
-To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) the new license.
+To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](enterprise-licensing.html#set-the-trial-or-enterprise-license-key) the new license. 
 
 ## See Also
 

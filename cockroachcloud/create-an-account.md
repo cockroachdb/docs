@@ -26,7 +26,7 @@ To register a new account, navigate to the [{{ site.data.products.db }} registra
 <section class="filter-content" markdown="1" data-scope="github">
 
 1. Click **Sign up with...** for your chosen SSO Provider.
-1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize {{ site.data.products.db }} by Cockroach Labs**
 
 {{site.data.alerts.callout_info}}
@@ -42,7 +42,7 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 
     This can be [changed](#change-your-organization-name) later.
 
-1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Click **Get Started**.
 
     A confirmation email will be sent. Click **Verify email** in the email to confirm your account.

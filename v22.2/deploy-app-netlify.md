@@ -9,7 +9,7 @@ docs_area: get_started
 
 This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a {{ site.data.products.serverless }} cluster.
 
-The sample app used in this tutorial simulates [a gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/). The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The sample app used in this tutorial simulates [a gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app). The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 The source code for the completed app is available on GitHub at [https://github.com/cockroachdb/cockroachdb-typescript](https://github.com/cockroachdb/cockroachdb-typescript).
 

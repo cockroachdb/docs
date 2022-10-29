@@ -2,6 +2,7 @@
 title: Connect to a CockroachDB Serverless Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
+redirect_from: connect-to-a-free-cluster.html
 docs_area: deploy
 ---
 

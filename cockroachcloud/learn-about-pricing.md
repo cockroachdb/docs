@@ -3,6 +3,7 @@ title: Learn About CockroachDB Serverless Pricing
 summary: Understand CockroachDB Serverless pricing and Request Units.
 toc: true
 docs_area: deploy
+redirect_from: planning-your-serverless-cluster.html
 ---
 
 This page describes how charges accumulate in {{ site.data.products.serverless }}.

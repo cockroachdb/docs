@@ -160,9 +160,9 @@ Add 6 more nodes, 3 in the `us-west1` region and 3 in the `us-west2` region, wit
 
 ## Step 3. Enable a trial enterprise license
 
-The table partitioning feature requires an [enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+The table partitioning feature requires an [enterprise license](https://www.cockroachlabs.com/get-cockroachdb/).
 
-1. [Request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/). You should receive your trial license via email within a few minutes.
+1. [Request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/). You should receive your trial license via email within a few minutes.
 
 2. Enable your trial license:
 
@@ -237,7 +237,7 @@ At this point, the data for the three MovR tables (`users`, `rides`, and `vehicl
 +-----------+---------+----------+---------------+--------------+---------------------------------------+----------+---------------------------------------------------------------------------------------------------------------------------+
   NULL      | NULL    |       26 |      0.123054 |            2 | region=us-east1,datacenter=us-east1-b | {2,5,7}  | {"region=us-east1,datacenter=us-east1-b","region=us-west1,datacenter=us-west1-b","region=us-west2,datacenter=us-west2-a"}
 (1 row)
-~~~
+~~~    
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -474,7 +474,7 @@ WHERE "start_key" NOT LIKE '%Prefix%';
   /"los angeles"   | /"los angeles"/PrefixEnd   |       75 |      0.000158 |            8 | region=us-west2,datacenter=us-west2-b | {7,8,9}  | {"region=us-west2,datacenter=us-west2-a","region=us-west2,datacenter=us-west2-b","region=us-west2,datacenter=us-west2-c"}
   /"san francisco" | /"san francisco"/PrefixEnd |       73 |      0.000307 |            8 | region=us-west2,datacenter=us-west2-b | {7,8,9}  | {"region=us-west2,datacenter=us-west2-a","region=us-west2,datacenter=us-west2-b","region=us-west2,datacenter=us-west2-c"}
 (6 rows)
-~~~
+~~~    
 
 {{site.data.alerts.callout_info}}
 The `WHERE` clause in this query excludes the empty ranges between the city ranges. These empty ranges use the default replication zone configuration, not the zone configuration you set for the cities.

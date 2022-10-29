@@ -28,7 +28,7 @@ In a multi-region deployment, the geo-partitioned [leaseholders](architecture/re
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -58,7 +58,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 > CREATE INDEX users_last_name_index ON users (city, last_name);
 ~~~
 
-1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
 
@@ -162,7 +162,7 @@ For example, in the animation below:
 
 ### Resiliency
 
-Because this pattern balances the replicas for each partition across regions, one entire region can fail without interrupting access to any partitions. In this case, if any range loses its leaseholder in the region-wide outage, CockroachDB makes one of the range's other replicas the leaseholder:
+Because this pattern balances the replicas for each partition across regions, one entire region can fail without interrupting access to any partitions. In this case, if any range loses its leaseholder in the region-wide outage, CockroachDB makes one of the range's other replicas the leaseholder:  
 
 <img src="{{ 'images/v19.1/topology-patterns/topology_geo-partitioned_leaseholders_resiliency1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 

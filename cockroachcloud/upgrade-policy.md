@@ -41,7 +41,7 @@ If you see problems after the upgrade has been finalized, it will not be possibl
 
 As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on {{ site.data.products.db }}. A CockroachDB version reaches EOS when it is two major versions behind the latest version. For example, when CockroachDB v21.2 was released, CockroachDB v20.2 reached EOS.
 
-Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
+Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
 
 If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. A Console Admin can [upgrade your cluster](upgrade-to-v21.2.html) directly from the {{ site.data.products.db }} Console.
 

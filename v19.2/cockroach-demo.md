@@ -9,7 +9,7 @@ The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-m
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 
 
-<span class="version-tag">New in v19.2:</span> Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) that expires after an hour.
+<span class="version-tag">New in v19.2:</span> Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour.
 
 ## Synopsis
 
