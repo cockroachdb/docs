@@ -2,7 +2,6 @@
 title: Orchestration
 summary: Learn how to run CockroachDB with popular open-source orchestration systems.
 toc: false
-canonical: /stable/kubernetes-overview.html
 ---
 
 Orchestration systems automate the deployment, scaling, and management of containerized applications.

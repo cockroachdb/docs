@@ -208,7 +208,7 @@ Now imagine the tables in the `startrek` database have changed and you want to r
 
 Next, you'll use the enterprise `BACKUP` feature to create a backup of the `startrek` database on S3.
 
-1. If you requested and enabled a trial enterprise license in the [Geo-Partitioning](geo-partitioning.html) module, skip to step 2. Otherwise, [request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and then enable your license:
+1. If you requested and enabled a trial enterprise license in the [Geo-Partitioning](geo-partitioning.html) module, skip to step 2. Otherwise, [request a trial enterprise license](https://www.cockroachlabs.com/get-cockroachdb/) and then enable your license:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -11,15 +11,15 @@ product_caps:
   # Left
   - identifier: product-capabilities
     name: Elastic Scale
-    url: https://www.cockroachlabs.com/product/scale/
+    url: https://www.cockroachlabs.com/product/scale
     weight: 100
   - name: Built-in Survivability
-    url: https://www.cockroachlabs.com/product/resilience/
+    url: https://www.cockroachlabs.com/product/resilience
     # Right
   - name: Global Data
-    url: https://www.cockroachlabs.com/product/geo-partitioning/
+    url: https://www.cockroachlabs.com/product/geo-partitioning
   - name: Familiar, Consistent SQL
-    url: https://www.cockroachlabs.com/product/sql/
+    url: https://www.cockroachlabs.com/product/sql
 
 solutions:
   - identifier: solutions
@@ -138,7 +138,7 @@ company_items:
   - name: Partners
     url: https://www.cockroachlabs.com/partners/
   - name: Work at Cockroach Labs
-    url: https://www.cockroachlabs.com/careers/
+    url: https://www.cockroachlabs.com/careers
 # End New Serverless Nav
 
 main_right:

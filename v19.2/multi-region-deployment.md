@@ -2,7 +2,6 @@
 title: Deploy a Multi-Region Web Application
 summary: This page includes instructions for deploying a multi-region web application using CockroachCloud and Google Cloud services.
 toc: true
-canonical: /stable/movr-flask-deployment.html
 ---
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
@@ -141,7 +140,7 @@ To serve a secure web application, you also need a public domain name!
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ shell  
     $ gcloud config set compute/zone europe-west1-b && \
       gcloud container clusters create movr-europe-west
     ~~~

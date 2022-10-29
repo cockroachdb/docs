@@ -28,12 +28,12 @@ This pattern is compatible with all of the other multi-region patterns except [G
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
 
-Using this pattern, you configure your application to use the [follower reads](follower-reads.html) feature by adding an `AS OF SYSTEM TIME` clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.
+Using this pattern, you configure your application to use the [follower reads](follower-reads.html) feature by adding an `AS OF SYSTEM TIME` clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.  
 
 ### Steps
 
@@ -56,7 +56,7 @@ Insert some data:
 > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
 ~~~
 
-1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. Configure your app to use `AS OF SYSTEM TIME follower_read_timestamp()` whenever reading from the table:
 

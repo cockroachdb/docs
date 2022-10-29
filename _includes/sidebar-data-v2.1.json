@@ -446,6 +446,12 @@
 		]
 	      },
 	      {
+		"title": "Import Data",
+		"urls": [
+		  "/${VERSION}/import-data.html"
+		]
+	      },
+	      {
 		"title": "Back up and Restore Data",
 		"urls": [
 		  "/${VERSION}/backup-and-restore.html"
