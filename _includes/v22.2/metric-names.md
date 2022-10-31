@@ -90,6 +90,8 @@ Name | Help
 `queue.replicagc.processingnanos` | Nanoseconds spent processing replicas in the replica GC queue
 `queue.replicagc.removereplica` | Number of replica removals attempted by the replica gc queue
 `queue.replicate.addreplica` | Number of replica additions attempted by the replicate queue
+`queue.replicate.addreplica.error` | Number of failed replica additions processed by the replicate queue
+`queue.replicate.addreplica.success` | Number of successful replica additions processed by the replicate queue
 `queue.replicate.pending` | Number of pending replicas in the replicate queue
 `queue.replicate.process.failure` | Number of replicas which failed processing in the replicate queue
 `queue.replicate.process.success` | Number of replicas successfully processed by the replicate queue
@@ -97,7 +99,17 @@ Name | Help
 `queue.replicate.purgatory` | Number of replicas in the replicate queue's purgatory, awaiting allocation options
 `queue.replicate.rebalancereplica` | Number of replica rebalancer-initiated additions attempted by the replicate queue
 `queue.replicate.removedeadreplica` | Number of dead replica removals attempted by the replicate queue (typically in response to a node outage)
+`queue.replicate.removedeadreplica.error` | Number of failed dead replica removals processed by the replicate queue
+`queue.replicate.removedeadreplica.success` | Number of successful dead replica removals processed by the replicate queue
+`queue.replicate.removedecommissioningreplica.error` | Number of failed decommissioning replica removals processed by the replicate queue
+`queue.replicate.removedecommissioningreplica.success` | Number of successful decommissioning replica removals processed by the replicate queue
 `queue.replicate.removereplica` | Number of replica removals attempted by the replicate queue (typically in response to a rebalancer-initiated addition)
+`queue.replicate.removereplica.error` | Number of failed replica removals processed by the replicate queue
+`queue.replicate.removereplica.success` | Number of successful replica removals processed by the replicate queue
+`queue.replicate.replacedeadreplica.error` | Number of failed dead replica replacements processed by the replicate queue
+`queue.replicate.replacedeadreplica.success` | Number of successful dead replica replacements processed by the replicate queue
+`queue.replicate.replacedecommissioningreplica.error` | Number of failed decommissioning replica replacements processed by the replicate queue
+`queue.replicate.replacedecommissioningreplica.success` | Number of successful decommissioning replica replacements processed by the replicate queue
 `queue.replicate.transferlease` | Number of range lease transfers attempted by the replicate queue
 `queue.split.pending` | Number of pending replicas in the split queue
 `queue.split.process.failure` | Number of replicas which failed processing in the split queue
@@ -137,7 +149,19 @@ Name | Help
 `range.snapshots.normal-applied` | Number of applied snapshots
 `range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
+`range.snapshots.rebalancing.rcvd-bytes` | Number of rebalancing snapshot bytes received
+`range.snapshots.rebalancing.sent-bytes` | Number of rebalancing snapshot bytes sent
+`range.snapshots.recovery.rcvd-bytes` | Number of recovery snapshot bytes received
+`range.snapshots.recovery.sent-bytes` | Number of recovery snapshot bytes sent
+`range.snapshots.recv-in-progress` | Number of non-empty snapshots being received
+`range.snapshots.recv-queue` | Number of snapshots queued to receive
+`range.snapshots.recv-total-in-progress` | Number of total snapshots being received
+`range.snapshots.send-in-progress` | Number of non-empty snapshots being sent
+`range.snapshots.send-queue` | Number of snapshots queued to send
+`range.snapshots.send-total-in-progress` | Number of total snapshots being sent
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
+`range.snapshots.unknown.rcvd-bytes` | Number of unknown snapshot bytes received
+`range.snapshots.unknown.sent-bytes` | Number of unknown snapshot bytes sent
 `range.splits` | Number of range splits
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target

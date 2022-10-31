@@ -95,17 +95,30 @@ Applied (Learner) | The number of snapshots applied to nodes per second that wer
 Applied (Preemptive) | The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node was about to be added to a Raft group). This metric was used in pre-v19.2 releases and will be removed in future releases.
 Reserved | The number of slots reserved per second for incoming snapshots that will be sent to a node.
 
-## Snapshots Data Received
+## Snapshot Data Received
 
-<img src="{{ 'images/v22.2/ui_replica_snapshots_data.png' | relative_url }}" alt="DB Console Replica Snapshots Data Received" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/ui_replica_snapshots_data.png' | relative_url }}" alt="DB Console Replica Snapshot Data Received" style="border:1px solid #eee;max-width:100%" />
 
-The **Snapshots Data Received** graph shows the rate of data received in bytes by each node via [Raft snapshot transfers](architecture/replication-layer.html#snapshots).
+The **Snapshot Data Received** graph shows the rate of data received in bytes by each node via [Raft snapshot transfers](architecture/replication-layer.html#snapshots). Data is split into recovery and rebalancing snapshot data received: recovery includes all upreplication due to decommissioning or node failure, and rebalancing includes all other snapshot data received.
+
+On hovering over the graph, the value for the following metrics are displayed:
+
+Metric | Description
+-------|------------
+`{node}-recovery` | The rate of recovery snapshot data received (e.g., from node decommissioning or node failure) in bytes per node, as tracked by the `range.snapshots.recovery.rcvd-bytes` metric.
+`{node}-rebalancing` | The rate of rebalancing snapshot data received (e.g., from all other snapshot data received) in bytes per node, as tracked by the `range.snapshots.rebalancing.rcvd-bytes` metric.
+
+## Receiver Snapshots Queued
+
+<img src="{{ 'images/v22.2/ui_replica_snapshots_queued.png' | relative_url }}" alt="DB Console Replica Receiever Snapshots Queued" style="border:1px solid #eee;max-width:100%" />
+
+The **Receiver Snapshots Queued** graph shows the number of [Raft snapshot transfers](architecture/replication-layer.html#snapshots) queued to be applied on a receiving node, which can only accept one snapshot at a time per store.
 
 On hovering over the graph, the value for the following metric is displayed:
 
 Metric | Description
 -------|------------
-`{node}` | The rate of snapshot data received in bytes per node.
+`{node}` | The number of queued snapshot transfers waiting to be applied per node, as tracked by the `range.snapshots.recv-queue` metric.
 
 ## Circuit Breaker Tripped Replicas
 
@@ -136,6 +149,60 @@ When individual ranges become temporarily unavailable, requests to those ranges 
 Metric | Description
 -------|------------
 `{node}` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
+
+## Replicate Queue Actions: Successes
+
+<img src="{{ 'images/v22.2/ui_replica_queue_actions_successes.png' | relative_url }}" alt="DB Console Replicate Queue Actions: Successes" style="border:1px solid #eee;max-width:100%" />
+
+The **Replicate Queue Actions: Successes** graph shows the rate of various successful replication queue actions per second.
+
+- In the node view, the graph shows the rate of successful replication queue actions for the selected node.
+
+- In the cluster view, the graph shows the average rate of successful replication queue actions across the cluster.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+Metric | Description
+-------|------------
+Replicas Added / Sec | The number of successful replica additions processed by the replicate queue, as tracked by the `queue.replicate.addreplica.success` metric.
+Replicas Removed / Sec | The number of successful replica removals processed by the replicate queue, as tracked by the `queue.replicate.removereplica.success` metric.
+Dead Replicas Replaced / Sec | The number of successful dead replica replacements processed by the replicate queue, as tracked by the `queue.replicate.replacedeadreplica.success` metric.
+Dead Replicas Removed / Sec | The number of successful dead replica removals processed by the replicate queue, as tracked by the `queue.replicate.removedeadreplica.success` metric.
+Decommissioning Replicas Replaced / Sec | The number of successful decommissioning replica replacements processed by the replicate queue, as tracked by the `queue.replicate.replacedecommissioningreplica.success` metric.
+Decommissioning Replicas Removed / Sec | The number of successful decommissioning replica removals processed by the replicate queue, as tracked by the `queue.replicate.removedecommissioningreplica.success` metric.
+
+## Replicate Queue Actions: Failures
+
+<img src="{{ 'images/v22.2/ui_replica_queue_actions_failure.png' | relative_url }}" alt="DB Console Replicate Queue Actions: Failures" style="border:1px solid #eee;max-width:100%" />
+
+The **Replicate Queue Actions: Failures** graph shows the rate of various failed replication queue actions per second.
+
+- In the node view, the graph shows the rate of failed replication queue actions for the selected node.
+
+- In the cluster view, the graph shows the average rate of failed replication queue actions across the cluster.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+Metric | Description
+-------|------------
+Replicas Added Errors / Sec | The number of failed replica additions processed by the replicate queue, as tracked by the `queue.replicate.addreplica.error` metric.
+Replicas Removed Errors / Sec | The number of failed replica removals processed by the replicate queue, as tracked by the `queue.replicate.removereplica.error` metric.
+Dead Replicas Replaced Errors / Sec | The number of failed dead replica replacements processed by the replicate queue, as tracked by the `queue.replicate.replacedeadreplica.error` metric.
+Dead Replicas Removed Errors / Sec | The number of failed dead replica removals processed by the replicate queue, as tracked by the `queue.replicate.removedeadreplica.error` metric.
+Decommissioning Replicas Replaced Errors / Sec | The number of failed decommissioning replica replacements processed by the replicate queue, as tracked by the `queue.replicate.replacedecommissioningreplica.error` metric.
+Decommissioning Replicas Removed Errors / Sec | The number of failed decommissioning replica removals processed by the replicate queue, as tracked by the `queue.replicate.removedecommissioningreplica.error` metric.
+
+## Decommissioning Errors
+
+<img src="{{ 'images/v22.2/ui_replica_decom_errors.png' | relative_url }}" alt="DB Console Replica Decommissioning Errors" style="border:1px solid #eee;max-width:100%" />
+
+The **Decommissioning Errors** graph shows the rate of decommissioning replica replacement failures experienced by the replication queue, by node.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+Metric | Description
+-------|------------
+`{node} - Replaced Errors / Sec` | The number of failed decommissioning replica replacements processed by the replicate queue by node, as tracked by the `queue.replicate.replacedecommissioningreplica.error` metric.
 
 ## Other graphs
 
