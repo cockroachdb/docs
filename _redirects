@@ -459,6 +459,9 @@ layout: null
 /docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
 /docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
 /docs/:version/detailed-sql-support.html /docs/:version/sql-feature-support.html 301
+/docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
+/docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
+/docs/stable/collatedstring.html /docs/stable/collate.html 301
 /docs/v21.1/performance-tuning.html /docs/v21.1/make-queries-fast.html 301
 /docs/stable/performance-tuning.html /docs/stable/make-queries-fast.html 301
 /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html /docs/cockroachcloud/connect-to-your-cluster.html 301
