@@ -459,9 +459,6 @@ layout: null
 /docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
 /docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
 /docs/:version/detailed-sql-support.html /docs/:version/sql-feature-support.html 301
-/docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
-/docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
-/docs/stable/collatedstring.html /docs/stable/collate.html 301
 /docs/v21.1/performance-tuning.html /docs/v21.1/make-queries-fast.html 301
 /docs/stable/performance-tuning.html /docs/stable/make-queries-fast.html 301
 /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html /docs/cockroachcloud/connect-to-your-cluster.html 301
@@ -509,7 +506,10 @@ layout: null
 /docs/releases/cockroachcloud-12062021.html /docs/releases/cloud.html 301
 /docs/releases/cockroachcloud-12112020.html /docs/releases/cloud.html 301
 
-#CockroachDB Self-Hosted release notes
+# CockroachDB Self-Hosted release notes
+#
+# These should never be removed. These redirects exist to help with the per-version
+# release note implementation.
 
 {% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
@@ -537,10 +537,16 @@ layout: null
 /docs/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-linux.html 301
 /docs/orchestrate-cockroachdb-with-kubernetes.html /docs/stable/orchestrate-cockroachdb-with-kubernetes.html 301
 /docs/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html 301
+
+
 {% endif %}
+
+# The below redirect is required in order to properly render /dev and /stable pages.
+# Make sure you know what you're doing prior to removing it.
 
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
 
+# FAQs
 /docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
