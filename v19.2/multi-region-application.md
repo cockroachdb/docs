@@ -2,6 +2,7 @@
 title: Develop a Multi-Region Web Application
 summary: This page includes instructions for building a multi-region web application on CockroachDB, using Flask and SQLAlchemy.
 toc: true
+canonical: /stable/movr-flask-application.html
 ---
 
 This page walks you through developing a multi-region application. It is the fourth section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
