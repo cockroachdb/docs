@@ -55,7 +55,8 @@
 
 {% include_cached footer.html %}
 
-{% include sidebar.js.html %}
+    <script src="{{ 'js/sidebar.js' | relative_url}}" defer></script>
+    <script src="{{ 'js/searchInputRendering.js' | relative_url }}" async></script>
     <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
     <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}" defer></script>
     <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}" defer></script>
