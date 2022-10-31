@@ -11,6 +11,11 @@ layout: null
 /docs/advisories/advisories.html /docs/advisories/index.html 301
 
 # Pages undergoing maintenance
+# comment
+#
+#comment with no space
+#
+# mixed comments to see if this breaks
 /docs/stable/migrate-from-postgres.html /docs/stable/migration-overview.html 302
 /docs/v22.2/migrate-from-postgres.html /docs/v22.2/migration-overview.html 302
 /docs/v22.1/migrate-from-postgres.html /docs/v22.1/migration-overview.html 302
