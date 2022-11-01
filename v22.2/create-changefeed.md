@@ -46,9 +46,7 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
-{{site.data.alerts.callout_info}}
 See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
-{{site.data.alerts.end}}
 
 #### Kafka
 

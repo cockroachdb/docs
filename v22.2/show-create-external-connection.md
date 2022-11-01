@@ -41,7 +41,7 @@ Parameter | Description
 SHOW CREATE ALL EXTERNAL CONNECTIONS;
 ~~~
 
-This will return the `CREATE EXTERNAL CONNECTION` statement with the **unredacted** URI:
+This will return a list of of active external connection names along with the `CREATE EXTERNAL CONNECTION` statements that were used to create them, including the **unredacted** URI:
 
 ~~~
   connection_name |                                                                              create_statement

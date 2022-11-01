@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 {% include feature-phases/preview.md %}
 
-{% include_cached new-in.html version="v22.2" %} You can use external connections to specify and interact with resources that are external from CockroachDB. With `CREATE EXTERNAL CONNECTION`, you define a name for an external connection while passing the provider URI and query parameters. [Backup](backup.html), [restore](restore.html), [import](import.html), [export](export.html), and [changefeed](create-changefeed.html) queries can interact with the defined external connection instead of a required, provider-specific URI. As a result, you can decouple the management of the external resource from the operation in which you're using them.
+{% include_cached new-in.html version="v22.2" %} You can use external connections to specify and interact with resources that are external from CockroachDB. With `CREATE EXTERNAL CONNECTION`, you define a name for an external connection while passing the provider URI and query parameters. [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), [`EXPORT`](export.html), and [`CREATE CHANGEFEED`](create-changefeed.html) queries can interact with the defined external connection instead of a required, provider-specific URI. As a result, you can decouple the management of the external resource from the operation in which you're using them.
 
 `CREATE EXTERNAL CONNECTION` will validate the URI by writing, reading, and listing a test file to the external storage URI. If you're using a [KMS URI](take-and-restore-encrypted-backups.html), `CREATE EXTERNAL CONNECTION` will encrypt and decrypt a file. You'll find a `crdb_external_storage_location` file in your external storage as a result of this test. Each of the operations that access the external connection is aware of the raw URI that is parsed to configure, authenticate, and interact with the connection.
 
@@ -57,7 +57,7 @@ Storage or sink      | Operation support
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
 [Azure Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
 [Google Cloud Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
-[Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format)] | Encrypted backups
+[Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format) | Encrypted backups
 [Kafka](changefeed-sinks.html#kafka) | Changefeeds
 [Nodelocal](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
 [Userfile](use-userfile-for-bulk-operations.html) | Backups, restores, imports, exports
@@ -82,7 +82,7 @@ See the [examples](#create-an-external-connection-for-cloud-storage) in the next
 
 ## Examples
 
-The examples in this section demonstrate a couple of the storage and operation options that external connections support.
+The examples in this section demonstrate some of the storage and operation options that external connections support.
 
 ## Create an external connection for cloud storage
 
@@ -95,7 +95,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     CREATE EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}';
     ~~~
 
-1. To check a list of all external connections, run:
+1. Verify that the new external connection was created successfully with [`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -115,7 +115,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     BACKUP DATABASE movr INTO 'external://backup_bucket' AS OF SYSTEM TIME '-10s' WITH revision_history;
     ~~~
 
-1. Use [`SHOW BACKUP`](show-backup.html) to view your backups in the storage defined by an external connection:
+1. Use [`SHOW BACKUP`](show-backup.html) to view your backups in the storage defined by the external connection:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -136,7 +136,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     RESTORE DATABASE movr FROM LATEST IN 'external://backup_bucket';
     ~~~
 
-1. To delete the external connection:
+1. When you no longer need the external connection, you can delete it with [`DROP EXTERNAL CONNECTION`](drop-external-connection.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -168,3 +168,5 @@ In this example, you create an external connection to a Kafka sink to which a ch
 - [`RESTORE`](restore.html)
 - [`EXPORT`](export.html)
 - [`IMPORT INTO`](import-into.html)
+- [`DROP EXTERNAL CONNECTION`](drop-external-connection.html)
+- [`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html)
