@@ -12,7 +12,7 @@ Privilege | Levels
 `UPDATE` | Table
 `USAGE`  | Function, Schema, Type
 `ZONECONFIG` | Database, Table
+`EXTERNALCONNECTION` | System
 `BACKUP` | System, Database, Table
 `RESTORE` | System, Database
 `EXTERNALIOIMPLICITACCESS` | System
-`CHANGEFEED` | Table

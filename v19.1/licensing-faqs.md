@@ -14,10 +14,10 @@ toc_not_nested: true
 The following table lists the current license for non-CCL features for each published release:
 
 
-CockroachDB version | License | Converts to Apache 2.0   
+CockroachDB version | License | Converts to Apache 2.0
 --------------------|---------|----------------------------
 19.2 | Business Source License | Oct 01, 2022
-19.1 | Apache 2.0 | -                          
+19.1 | Apache 2.0 | -
 2.1 | Apache 2.0 | -
 2.0 | Apache 2.0 | -
 
@@ -37,7 +37,7 @@ Yes, you can. Contributing code will follow the same process and requires the sa
 
 CockroachDB’s enterprise features have always been licensed under the Cockroach Community License (CCL) and will continue to be licensed this way in our 19.2 release and beyond. The Cockroach Community License does not convert to Apache 2.0.
 
-There are two categories of features in under the CCL: CCL (Paid) and CCL (Free). Access to CCL (Paid) features requires access to an enterprise license with Cockroach Labs. You can grab a 30-day free trial enterprise license [here](https://www.cockroachlabs.com/get-cockroachdb). CCL (Free) features are included without an enterprise license.
+There are two categories of features in under the CCL: CCL (Paid) and CCL (Free). Access to CCL (Paid) features requires access to an enterprise license with Cockroach Labs. You can grab a 30-day free trial enterprise license [here](https://www.cockroachlabs.com/get-started-cockroachdb/). CCL (Free) features are included without an enterprise license.
 
 ## What is the major difference between the Apache 2.0 license and the BSL?
 
