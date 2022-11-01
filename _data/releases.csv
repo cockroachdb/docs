@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 version,major_version,release_date,withdrawn,no_windows,release_type,no_source,go_version,sha,docker_image,has_sql_only,linux_arm,mac_arm,has_sha256sum
 beta-20160407,v1.0,2016-04-07,false,true,Testing,true,go1.8.3,96f4c50a69272cfd5a32e65889f5f72033502ed2,cockroachdb/cockroach-unstable,false,false,false,false
 beta-20160414,v1.0,2016-04-14,false,true,Testing,true,go1.8.3,852d6b6b3d3feec24f82ace7fc07e67a436d212c,cockroachdb/cockroach-unstable,false,false,false,false
