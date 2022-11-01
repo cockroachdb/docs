@@ -7,7 +7,7 @@ CockroachDB docs follow these principles:
 
 The following guidance is provided to benefit authors and reviewers by reflecting past style decisions, and to benefit readers by promoting consistency and readability across our content.
 
-Included in this guide: 
+Included in this guide:
 
 - [Style and tone](#style-and-tone)
 - [Inclusive language](#inclusive-language)
