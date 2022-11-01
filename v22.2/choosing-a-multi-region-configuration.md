@@ -62,7 +62,7 @@ Different databases and tables within the same cluster can each use different co
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
-- [Survive Region Outages with CockroachDB](https://www.cockroachlabs.com/blog/under-the-hood-multi-region)
+- [Survive Region Outages with CockroachDB](https://www.cockroachlabs.com/blog/under-the-hood-multi-region/)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)

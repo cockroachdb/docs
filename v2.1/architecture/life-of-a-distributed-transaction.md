@@ -161,7 +161,7 @@ The leaseholder then proposes these Raft operations to the Raft group leader. Th
 
 ## Raft Leader
 
-CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft](https://www.cockroachlabs.com/docs/v2.1/architecture/replication-layer.html#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
+CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft](replication-layer.html#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
 
 In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in RocksDB.
 

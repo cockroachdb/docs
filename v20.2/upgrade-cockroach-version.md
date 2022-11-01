@@ -74,21 +74,21 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v20.1 to v20.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](spatial-indexes.html), and [spatial functions](functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](migrate-from-shapefiles.html), [GeoJSON](migrate-from-geojson.html), [GeoPackages](migrate-from-geopackage.html), and [OpenStreetMap](migrate-from-openstreetmap.html).
 
-- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
+- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](enum.html) consisting of sets of enumerated, static values.
 
-- **Altering column data types:** After finalization, it will be possible to [alter column data types](../v20.2/alter-column.html#altering-column-types) where column data must be rewritten.
+- **Altering column data types:** After finalization, it will be possible to [alter column data types](alter-column.html#altering-column-types) where column data must be rewritten.
 
-- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../v20.2/create-schema.html), as well [alter user-defined schemas](../v20.2/alter-schema.html), [drop user-defined schemas](../v20.2/drop-schema.html), [set the schema for a database object](../v20.2/set-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html). For details on migrating a cluster that does not use user-defined schemas in its naming hierarchy, see [Migrating namespaces from previous versions of CockroachDB](sql-name-resolution.html#migrating-namespaces-from-previous-versions-of-cockroachdb).
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](create-schema.html), as well [alter user-defined schemas](alter-schema.html), [drop user-defined schemas](drop-schema.html), [set the schema for a database object](set-schema.html), and [convert databases to user-defined schemas](convert-to-schema.html). For details on migrating a cluster that does not use user-defined schemas in its naming hierarchy, see [Migrating namespaces from previous versions of CockroachDB](sql-name-resolution.html#migrating-namespaces-from-previous-versions-of-cockroachdb).
 
-- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foreign-key.html) constraint.
+- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](foreign-key.html) constraint.
 
-- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) to set a minimum length for passwords.
+- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](cluster-settings.html) to set a minimum length for passwords.
 
-- **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
+- **Materialized views:** After finalization, it will be possible to create [materialized views](views.html#materialized-views), or views that store their selection query results on-disk.
 
-- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
+- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.
 
 ## Step 4. Perform the rolling upgrade
 

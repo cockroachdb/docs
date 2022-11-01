@@ -1,4 +1,4 @@
-We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](../v21.1/as-of-system-time.html). Read our guidance in the [Performance](../v21.1/backup.html#performance) section on the [`BACKUP`](../v21.1/backup.html) page.
+We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Read our guidance in the [Performance](backup.html#performance) section on the [`BACKUP`](backup.html) page.
 
 {{site.data.alerts.callout_info}}
 Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
@@ -15,9 +15,9 @@ BACKUP DATABASE bank INTO 'userfile://defaultdb.public.userfiles_$user/bank-back
 This directory will hold the files that make up a backup; including the manifest file and data files.
 
 {{site.data.alerts.callout_info}}
-When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`](../v21.1/cockroach-userfile-get.html) to download the backup files to a local machine and [`cockroach userfile upload --url {CONNECTION STRING}`](../v21.1/cockroach-userfile-upload.html) to upload to the `userfile` of the alternate cluster.
+When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`](cockroach-userfile-get.html) to download the backup files to a local machine and [`cockroach userfile upload --url {CONNECTION STRING}`](cockroach-userfile-upload.html) to upload to the `userfile` of the alternate cluster.
 
-For an example, read [Upload a backup directory recursively](../v21.1/cockroach-userfile-upload.html#upload-a-backup-directory-recursively).
+For an example, read [Upload a backup directory recursively](cockroach-userfile-upload.html#upload-a-backup-directory-recursively).
 {{site.data.alerts.end}}
 
 In cases when your database needs to be restored, run the following:

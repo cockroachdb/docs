@@ -47,7 +47,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the table.
 To create the most efficient indexes, we recommend reviewing:
 
 - [Indexes: Best Practices](indexes.html#best-practices)
-- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
+- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)
 
 #### Single-Column Indexes
 
