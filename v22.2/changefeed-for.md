@@ -19,6 +19,10 @@ For more information, see [Change Data Capture Overview](change-data-capture-ove
 
 ## Required privileges
 
+{% include {{ page.version.version }}/cdc/privilege-model.md %}
+
+### Legacy privilege model
+
 Changefeeds can only be created by superusers, i.e., [members of the `admin` role](security-reference/authorization.html#admin-role). The admin role exists by default with `root` as the member.
 
 ## Considerations

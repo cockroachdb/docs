@@ -27,7 +27,7 @@ The `root` user is created by default for each cluster. The `root` user is assig
 ## Roles
 
 {{site.data.alerts.callout_info}}
-[`CREATE ROLE`](create-role.html) is an enterprise feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/enterprise).
+[`CREATE ROLE`](create-role.html) is an enterprise feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/enterprise/).
 {{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
@@ -120,11 +120,11 @@ You can manage the following privileges for databases and tables:
 - `ALL`
 - `CREATE`
 - `DROP`
-- `GRANT`  
-- `SELECT`  
-- `INSERT`  
-- `DELETE`  
-- `UPDATE`  
+- `GRANT`
+- `SELECT`
+- `INSERT`
+- `DELETE`
+- `UPDATE`
 
 ## Authorization best practices
 
@@ -187,18 +187,18 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name |    schema_name     |         table_name         | grantee  | privilege_type  
+          database_name |    schema_name     |         table_name         | grantee  | privilege_type
     +---------------+--------------------+----------------------------+----------+----------------+
-      movr          | crdb_internal      | NULL                       | db_admin | ALL             
-      movr          | information_schema | NULL                       | db_admin | ALL             
-      movr          | pg_catalog         | NULL                       | db_admin | ALL             
-      movr          | public             | NULL                       | db_admin | ALL             
-      movr          | public             | promo_codes                | db_admin | ALL             
-      movr          | public             | rides                      | db_admin | ALL             
-      movr          | public             | user_promo_codes           | db_admin | ALL             
-      movr          | public             | users                      | db_admin | ALL             
-      movr          | public             | vehicle_location_histories | db_admin | ALL             
-      movr          | public             | vehicles                   | db_admin | ALL             
+      movr          | crdb_internal      | NULL                       | db_admin | ALL
+      movr          | information_schema | NULL                       | db_admin | ALL
+      movr          | pg_catalog         | NULL                       | db_admin | ALL
+      movr          | public             | NULL                       | db_admin | ALL
+      movr          | public             | promo_codes                | db_admin | ALL
+      movr          | public             | rides                      | db_admin | ALL
+      movr          | public             | user_promo_codes           | db_admin | ALL
+      movr          | public             | users                      | db_admin | ALL
+      movr          | public             | vehicle_location_histories | db_admin | ALL
+      movr          | public             | vehicles                   | db_admin | ALL
     (10 rows)
     ~~~
 
@@ -220,12 +220,12 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name | grantee  | privilege_type  
+          database_name | schema_name | table_name | grantee  | privilege_type
     +---------------+-------------+------------+----------+----------------+
-      movr          | public      | vehicles   | app_user | DELETE          
-      movr          | public      | vehicles   | app_user | INSERT          
-      movr          | public      | vehicles   | app_user | SELECT          
-      movr          | public      | vehicles   | app_user | UPDATE          
+      movr          | public      | vehicles   | app_user | DELETE
+      movr          | public      | vehicles   | app_user | INSERT
+      movr          | public      | vehicles   | app_user | SELECT
+      movr          | public      | vehicles   | app_user | UPDATE
     (4 rows)
     ~~~
 
@@ -247,9 +247,9 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-      database_name | schema_name | table_name |   grantee   | privilege_type  
+      database_name | schema_name | table_name |   grantee   | privilege_type
     +---------------+-------------+------------+-------------+----------------+
-      movr          | public      | vehicles   | report_user | SELECT          
+      movr          | public      | vehicles   | report_user | SELECT
     (1 row)
     ~~~
 
@@ -258,7 +258,7 @@ Let's say we want to create the following access control setup for the `movr` da
 <section class="filter-content" markdown="1" data-scope="rbac">
 
 {{site.data.alerts.callout_info}}
-The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/enterprise).
+The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/enterprise/).
 
 Note that [`GRANT <roles>`](grant-roles.html) does not require an enterprise license. All users can grant the [default roles](#default-roles).
 {{site.data.alerts.end}}
@@ -295,10 +295,10 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     ~~~
 
     ~~~
-            role_name    
+            role_name
     +---------------+
-      admin          
-      db_admin_role  
+      admin
+      db_admin_role
     (2 rows)
     ~~~
 
@@ -318,20 +318,20 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     ~~~
 
     ~~~
-          database_name |    schema_name     |    grantee    | privilege_type  
+          database_name |    schema_name     |    grantee    | privilege_type
     +---------------+--------------------+---------------+----------------+
-      movr          | crdb_internal      | admin         | ALL             
-      movr          | crdb_internal      | db_admin_role | ALL             
-      movr          | crdb_internal      | root          | ALL             
-      movr          | information_schema | admin         | ALL             
-      movr          | information_schema | db_admin_role | ALL             
-      movr          | information_schema | root          | ALL             
-      movr          | pg_catalog         | admin         | ALL             
-      movr          | pg_catalog         | db_admin_role | ALL             
-      movr          | pg_catalog         | root          | ALL             
-      movr          | public             | admin         | ALL             
-      movr          | public             | db_admin_role | ALL             
-      movr          | public             | root          | ALL             
+      movr          | crdb_internal      | admin         | ALL
+      movr          | crdb_internal      | db_admin_role | ALL
+      movr          | crdb_internal      | root          | ALL
+      movr          | information_schema | admin         | ALL
+      movr          | information_schema | db_admin_role | ALL
+      movr          | information_schema | root          | ALL
+      movr          | pg_catalog         | admin         | ALL
+      movr          | pg_catalog         | db_admin_role | ALL
+      movr          | pg_catalog         | root          | ALL
+      movr          | public             | admin         | ALL
+      movr          | public             | db_admin_role | ALL
+      movr          | public             | root          | ALL
     (12 rows)
     ~~~
 
@@ -365,11 +365,11 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     ~~~
 
     ~~~
-            role_name    
+            role_name
     +---------------+
-      admin          
-      app_user_role  
-      db_admin_role  
+      admin
+      app_user_role
+      db_admin_role
     (3 rows)
     ~~~
 
@@ -384,15 +384,15 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |    grantee    | privilege_type  
+          database_name | schema_name | table_name |    grantee    | privilege_type
     +---------------+-------------+------------+---------------+----------------+
-      movr          | public      | vehicles   | admin         | ALL             
-      movr          | public      | vehicles   | app_user_role | DELETE          
-      movr          | public      | vehicles   | app_user_role | INSERT          
-      movr          | public      | vehicles   | app_user_role | SELECT          
-      movr          | public      | vehicles   | app_user_role | UPDATE          
-      movr          | public      | vehicles   | db_admin_role | ALL             
-      movr          | public      | vehicles   | root          | ALL             
+      movr          | public      | vehicles   | admin         | ALL
+      movr          | public      | vehicles   | app_user_role | DELETE
+      movr          | public      | vehicles   | app_user_role | INSERT
+      movr          | public      | vehicles   | app_user_role | SELECT
+      movr          | public      | vehicles   | app_user_role | UPDATE
+      movr          | public      | vehicles   | db_admin_role | ALL
+      movr          | public      | vehicles   | root          | ALL
     (7 rows)
     ~~~
 
@@ -431,12 +431,12 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     ~~~
 
     ~~~
-             role_name      
+             role_name
     +------------------+
-      admin             
-      app_user_role     
-      db_admin_role     
-      report_user_role  
+      admin
+      app_user_role
+      db_admin_role
+      report_user_role
     (4 rows)
     ~~~
 
@@ -451,16 +451,16 @@ Each `cockroach demo` instance runs with a temporary enterprise license that ena
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |     grantee      | privilege_type  
+          database_name | schema_name | table_name |     grantee      | privilege_type
     +---------------+-------------+------------+------------------+----------------+
-      movr          | public      | vehicles   | admin            | ALL             
-      movr          | public      | vehicles   | app_user_role    | DELETE          
-      movr          | public      | vehicles   | app_user_role    | INSERT          
-      movr          | public      | vehicles   | app_user_role    | SELECT          
-      movr          | public      | vehicles   | app_user_role    | UPDATE          
-      movr          | public      | vehicles   | db_admin_role    | ALL             
-      movr          | public      | vehicles   | report_user_role | SELECT          
-      movr          | public      | vehicles   | root             | ALL             
+      movr          | public      | vehicles   | admin            | ALL
+      movr          | public      | vehicles   | app_user_role    | DELETE
+      movr          | public      | vehicles   | app_user_role    | INSERT
+      movr          | public      | vehicles   | app_user_role    | SELECT
+      movr          | public      | vehicles   | app_user_role    | UPDATE
+      movr          | public      | vehicles   | db_admin_role    | ALL
+      movr          | public      | vehicles   | report_user_role | SELECT
+      movr          | public      | vehicles   | root             | ALL
     (8 rows)
     ~~~
 

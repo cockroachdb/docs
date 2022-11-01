@@ -37,6 +37,8 @@ A larger number of buckets allows for greater load-balancing and thus greater wr
 
 We recommend doing thorough performance testing of your workload with different `bucket_count`s if the default `bucket_count` does not satisfy your use case.
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Hash-sharded indexes on partitioned tables
 
 You can create hash-sharded indexes with implicit partitioning under the following scenarios:

@@ -8,7 +8,7 @@ toc_not_nested: true
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
 {{site.data.alerts.callout_info}}
-This page shows you how to upgrade to the latest v2.1 release ({{page.release_info.version}}) from v2.0.x, or from any patch release in the v2.1.x series. To upgrade within the v2.0.x series, see [the v2.0 version of this page](https://www.cockroachlabs.com/docs/v2.0/upgrade-cockroach-version.html).
+This page shows you how to upgrade to the latest v2.1 release ({{page.release_info.version}}) from v2.0.x, or from any patch release in the v2.1.x series. To upgrade within the v2.0.x series, see [the v2.0 version of this page](../v2.0/upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade

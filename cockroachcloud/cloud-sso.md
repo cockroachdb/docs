@@ -73,7 +73,9 @@ Yes, as long as Enterprise Authentication is enabled for your {{ site.data.produ
 
 ### Which authentication flows are supported with Enterprise Authentication? Is it possible to enable the identity provider initiated flow?
 
-Enterprise Authentication supports only a flow initiated by {{ site.data.products.db }}. Initiation from the IdP is not supported.
+The primary flow is to initiate {{ site.data.products.db }} SSO through the Cockroach Cloud Console.
+
+If you need to initiate SSO integration from the IdP, contact your account team for assistance.
 
 ### What default role is assigned to users when auto-provisioning is enabled in a {{ site.data.products.db }} organization?
 

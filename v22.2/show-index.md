@@ -46,7 +46,7 @@ Field | Description
 `direction` | How the column is sorted in the index. Possible values: `ASC` or `DESC` for indexed columns; `N/A` for stored columns.
 `storing` | Whether the `STORING` clause was used to index the column during [index creation](create-index.html). Possible values: `true` or `false`.
 `implicit` | Whether the column is part of the index despite not being explicitly included during [index creation](create-index.html). Possible values: `true` or `false`<br><br>[Primary key](primary-key.html) columns are the only columns implicitly included in secondary indexes. The inclusion of primary key columns improves performance when retrieving columns not in the index.
-`visible` | Whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html).
+`visible` | Whether the index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index).
 
 A column is in the primary key if the value of the `index_name` column is `{tbl}_pkey` and value of the `storing` column is `false`.
 

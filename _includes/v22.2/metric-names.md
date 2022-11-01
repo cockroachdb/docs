@@ -135,13 +135,17 @@ Name | Help
 `range.removes` | Number of range removals
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
-`range.snapshots.preemptive-applied` | Number of applied pre-emptive snapshots
+`range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
 `range.splits` | Number of range splits
+`rangekeybytes` | Number of bytes taken up by range keys (e.g. MVCC range tombstones)
+`rangekeycount` | Count of all range keys (e.g. MVCC range tombstones)
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
+`rangevalbytes` | Number of bytes taken up by range key values (e.g. MVCC range tombstones)
+`rangevalcount` | Count of all range key values (e.g. MVCC range tombstones)
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
@@ -213,6 +217,7 @@ Name | Help
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
+`storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.
 `sys.cgo.allocbytes` | Current bytes of memory allocated by cgo
 `sys.cgo.totalbytes` | Total bytes of memory allocated by cgo, but not released
 `sys.cgocalls` | Total number of cgo call

@@ -28,12 +28,51 @@ You can restore:
 
 ## Required privileges
 
+{{site.data.alerts.callout_info}}
+Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups. 
+
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all restores.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
+
+Restore | Privilege
+-------+-----------
+Cluster | Grant a user the system level `RESTORE` privilege. For example, `GRANT SYSTEM RESTORE TO user;`.
+Database | Grant a user the system level `RESTORE` privilege to restore databases onto the cluster. For example, `GRANT SYSTEM RESTORE TO user;`.
+Table | Grant a user the database level `RESTORE` privilege to restore schema objects into the database. For example, `GRANT RESTORE ON DATABASE nonadmin TO user;`.
+
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role). 
+
+Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all three types of restore (cluster, database, and table) without the need to grant a specific `RESTORE` privilege.  However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
+
+See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
+
+## Required privileges using the legacy privilege model
+
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+
 - [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other restores, the user must have [write access](security-reference/authorization.html#managing-privileges) (`CREATE` or `INSERT`) on all objects affected.
 
-### Source privileges
+See the [Required privileges](#required-privileges) section for the updated privilege model.
 
-{% include {{ page.version.version }}/misc/non-http-source-privileges.md %}
+## Source privileges
+
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+
+Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- [Nodelocal](cockroach-nodelocal-upload.html)
+
+No special privilege is required for: 
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+
+{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
@@ -221,6 +260,8 @@ CockroachDB does **not** support incremental-only restores.
 The ordering of regions and how region matching is determined is a known limitation. See the [Known Limitations](#known-limitations) section for the tracking issues on limitations around `RESTORE` and multi-region support.
 
 For more on multi-region databases, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## Viewing and controlling restore jobs
 

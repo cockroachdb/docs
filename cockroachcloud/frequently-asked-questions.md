@@ -19,7 +19,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 The  {{ site.data.products.db }} Console will always show the latest available cloud infrastructure providers and regions. Open the [**Create Cluster**](https://cockroachlabs.cloud/cluster/create) page and select a Plan to see which providers and regions are currently available.
 
-We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions in which their offerings are available. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting EKS or GKE in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
 
 **Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
@@ -80,7 +80,7 @@ See the [Security Overview page](../{{site.versions["stable"]}}/security-referen
 
 ### Who has access to my cluster data?
 
-The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions).
+The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions/).
 
 ## Cluster maintenance
 
@@ -150,10 +150,10 @@ Response times are under 10ms for public access but typically much lower. Additi
 
 ### Where can I find the Support Policy and Service Level Agreement (SLA) for {{ site.data.products.dedicated }}?
 
-The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions):
+The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions/):
 
-- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
-- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
+- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy/)
+- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/)
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
@@ -179,6 +179,6 @@ To optimize schema design to achieve your performance goals, we recommend workin
 
 ### Can I monitor my cluster with third-party tools?
 
-Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](monitoring-page.html#monitor-with-datadog) for more information.
+Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).

@@ -30,7 +30,7 @@ CockroachDB customers can integrate these services, using Vault's KMS secrets en
 
 ## Use Vault's Transit Secrets Engine to manage a {{ site.data.products.core }} cluster's encryption-at-rest store key
 
-When deploying {{ site.data.products.enterprise }}, customers can provide their own externally managed encryption keys for use as the *store key* for CockroachDB's [{{ site.data.products.enterprise }} Encryption-at-rest](https://www.cockroachlabs.com/docs/stable/security-reference/encryption.html#encryption-at-rest-enterprise).
+When deploying {{ site.data.products.enterprise }}, customers can provide their own externally managed encryption keys for use as the *store key* for CockroachDB's [{{ site.data.products.enterprise }} Encryption-at-rest](security-reference/encryption.html#encryption-at-rest-enterprise).
 
 Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transit) can be used to generate suitable encryption keys for use as your cluster's store key.
 

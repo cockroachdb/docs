@@ -96,6 +96,10 @@ By default, `cockroach start-single-node` writes all messages to log files, and 
 
 See the [default logging configuration](configure-logs.html#default-logging-configuration).
 
+## Docker-specific features of single-node clusters
+
+When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, some additional features are available to help with testing and development. Refer to [Start a local cluster in Docker (Linux)](start-a-local-cluster-in-docker-linux.html) and [Start a local cluster in Docker (macOS)](start-a-local-cluster-in-docker-mac.html).
+
 ## Standard output
 
 When you run `cockroach start-single-node`, some helpful details are printed to the standard output:

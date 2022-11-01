@@ -79,14 +79,32 @@
       		      "/cockroachcloud/network-authorization.html"
       	      ]
       	    },
+						{
+      	      "title": "Private clusters (Preview)",
+      	      "urls": [
+      		      "/cockroachcloud/private-clusters.html"
+      	      ]
+      	    },
+            {
+              "title": "Egress Perimeter Controls (Preview)",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
       	    {
       	      "title": "SQL Audit Logging",
       	      "urls": [
       		      "/cockroachcloud/sql-audit-logging.html"
       	      ]
-      	    }
-      	  ]
-      	},
+      	    },
+            {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
+              ]
+            }
+          ]
+        },
       	{
       	  "title": "Migrate Data",
       	  "items": [

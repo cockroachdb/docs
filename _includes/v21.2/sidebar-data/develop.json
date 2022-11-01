@@ -252,7 +252,7 @@
       ]
     },
     {
-      "title": "Test Your Application",
+      "title": "Test Your Application Locally",
       "urls": [
         "/${VERSION}/local-testing.html"
       ]

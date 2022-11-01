@@ -19,6 +19,8 @@ In contrast to cluster-wide settings, node-level settings apply to a single node
 These cluster settings have a broad impact on CockroachDB internals and affect all applications, workloads, and users running on a CockroachDB cluster. For some settings, a [session setting](set-vars.html#supported-variables) could be a more appropriate scope.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/settings/settings.html %}
 
 ## View current cluster settings

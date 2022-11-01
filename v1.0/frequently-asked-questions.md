@@ -105,7 +105,7 @@ Yes. Every [transaction](transactions.html) in CockroachDB guarantees [ACID sema
 
 No. CockroachDB was designed to work without atomic clocks or GPS clocks. It’s an open source database intended to be run on arbitrary collections of nodes, from physical servers in a corp development cluster to public cloud infrastructure using the flavor-of-the-month virtualization layer. It’d be a showstopper to require an external dependency on specialized hardware for clock synchronization. However, CockroachDB does require moderate levels of clock synchronization for correctness. If clocks drift past a maximum threshold, nodes will be taken offline. It's therefore highly recommended to run [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
-For more details on how CockroachDB handles unsychronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
+For more details on how CockroachDB handles unsynchronized clocks, see [Clock Synchronization](recommended-production-settings.html#clock-synchronization). And for a broader discussion of clocks, and the differences between clocks in Spanner and CockroachDB, see [Living Without Atomic Clocks](https://www.cockroachlabs.com/blog/living-without-atomic-clocks/).
 
 ## What languages can I use to work with CockroachDB?
 

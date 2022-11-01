@@ -2,6 +2,7 @@
 title: MovR&#58; An Example Multi-Region Use-Case
 summary: This page covers an example use-case for multi-region applications.
 toc: true
+canonical: /stable/movr-flask-use-case.html
 ---
 
 This page walks you through an example use case for multi-region application development and deployment. It is the first section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
