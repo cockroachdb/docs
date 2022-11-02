@@ -564,10 +564,8 @@ layout: null
 
 # FAQs
 /docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
-
 {% endif %}
 
 {% comment %}The below redirect is required in order to properly render /dev and /stable pages. Make sure you know what you're doing prior to removing it. {% endcomment %}
-{%- for version in site.versions -%}
-{{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
-{% endfor -%}
+
+{%- include redirects/dev-stable-alias %}
