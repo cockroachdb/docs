@@ -49,7 +49,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3> Cloud API changes </h3>
 
-- The [Cloud API](../api/cloud/v1.html#get-/api/v1/clusters) documentation now indicates which endpoints are in preview.
+- The [Cloud API](../api/cloud/v1.html) documentation now indicates which endpoints are in preview.
 
 <h3> Bug fixes </h3>
 
