@@ -24,6 +24,8 @@ Abbreviated PostgreSQL | `INTERVAL '1 yr 2 mons 3 d 4 hrs 5 mins 6 secs'`
 
 The value of `intervalstyle` affects how CockroachDB parses certain `INTERVAL` values. Specifically, when `intervalstyle = 'sql_standard'`, and when the `INTERVAL` value begins with a negative symbol, CockroachDB parses all fields as negative values (e.g., `-3 years 1 day` is parsed as `-(3 years 1 day)`, or `-3 years, -1 day`). When `intervalstyle = 'postgres'` (the default format), and when the `INTERVAL` value begins with a negative symbol, CockroachDB only applies the negative symbol to the field that it directly precedes (e.g., `-3 years 1 day` is parsed as `-3 years, +1 day`).
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Details on SQL Standard input
 
 Without a [precision](#precision) or [duration field](#duration-fields) specified, expect the following behavior from SQL Standard input (`Y-M D H:M:S`):

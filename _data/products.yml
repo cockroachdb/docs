@@ -1,8 +1,8 @@
-serverless: CockroachDB Serverless
+serverless: CockroachDB serverless
 
-dedicated: CockroachDB Dedicated
+dedicated: CockroachDB dedicated
 
-core: CockroachDB Self-Hosted
+core: CockroachDB self-hosted
 # tbd
 enterprise: Enterprise
 # tbd

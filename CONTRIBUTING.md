@@ -52,7 +52,7 @@ These instructions assume that you use macOS. If you use Linux, use your default
 
 8. Learn the essentials of our [Docs Structure](#docs-structure).
 
-9. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md.
+9. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
 
 ## Get started
 

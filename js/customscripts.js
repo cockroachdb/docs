@@ -423,8 +423,6 @@ $(function() {
       return
     }
 
-    Console.log(this)
-
     return this.hostname && this.hostname !== location.hostname;
   }).addClass('external').attr("target","_blank").attr("rel","noopener");
 });

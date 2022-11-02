@@ -138,45 +138,37 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 ### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
-{% include common/experimental-warning.md %}
+{% include feature-phases/preview.md %}
 
 This feature is disabled by default.
 
 When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](create-table.html#on-update-expressions) to the [home region column](#crdb_region).
 
-Once enabled, the auto-rehoming behavior described here **will only apply to newly created `REGIONAL BY ROW` tables**. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
+Once enabled, the auto-rehoming behavior described here has the following limitations:
+
+- It **will only apply to newly created `REGIONAL BY ROW` tables**. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
+- The [`crdb_region`](#crdb_region) column from a [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) table cannot be referenced as a [foreign key](foreign-key.html) from another table.
 
 To enable it using the [session setting](set-vars.html), issue the following statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET experimental_enable_auto_rehoming = true;
+SET enable_auto_rehoming = on;
 ~~~
 
 ~~~
 SET
 ~~~
 
-To enable it using the [cluster setting](cluster-settings.html), issue the following statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
-~~~
-
-~~~
-SET CLUSTER SETTING
-~~~
-
 #### Example
 
 1. Follow steps 1 and 2 from the [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html) tutorial. This will involve starting a [`cockroach demo`](cockroach-demo.html) cluster in a terminal window (call it _terminal 1_).
 
-1. From the [SQL client](cockroach-sql.html) running in terminal 1, set the cluster setting that enables auto-rehoming. You must issue this cluster setting (or the session setting described above) before creating the `REGIONAL BY ROW` tables this feature operates on.
+1. From the [SQL client](cockroach-sql.html) running in terminal 1, set the setting that enables auto-rehoming. You must issue this setting before creating the `REGIONAL BY ROW` tables that you want auto-rehomed.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
+    SET enable_auto_rehoming = on;
     ~~~
 
 1. In a second terminal window (call it _terminal 2_), [finish the tutorial starting from step 3](demo-low-latency-multi-region-deployment.html#step-3-load-and-run-movr) onward to finish loading the cluster with data and applying the multi-region SQL configuration.

@@ -2,7 +2,6 @@
 title: Migrate from a CockroachDB Serverless to CockroachDB Dedicated Cluster
 summary: Learn how to migrate data from a CockroachDB Serverless cluster into a CockroachDB Dedicated cluster.
 toc: true
-redirect_from: migrate-from-free-to-dedicated.html
 docs_area: migrate
 ---
 
@@ -148,7 +147,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
       d_ytd DECIMAL(12,2) NULL,
       d_next_o_id INT8 NULL,
       CONSTRAINT "primary" PRIMARY KEY (d_w_id ASC, d_id ASC),
-      FAMILY "primary" (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id) 
+      FAMILY "primary" (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id)
     );
     ~~~
 

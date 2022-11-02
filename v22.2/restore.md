@@ -127,6 +127,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ## Functional details
 
 You can restore:
@@ -259,6 +261,8 @@ The ordering of regions and how region matching is determined is a known limitat
 
 For more on multi-region databases, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## Viewing and controlling restore jobs
 
 After CockroachDB successfully initiates a restore, it registers the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
@@ -272,6 +276,8 @@ If initiated correctly, the statement returns when the restore is finished or if
 ## Examples
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>

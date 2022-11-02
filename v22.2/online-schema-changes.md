@@ -77,6 +77,8 @@ Until all schema change statements are moved to use the declarative schema chang
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## Best practices for online schema changes
 
 ### Schema changes in multi-region clusters

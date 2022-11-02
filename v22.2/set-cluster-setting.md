@@ -47,6 +47,8 @@ To disable distributed execution for all new sessions:
 > SET CLUSTER SETTING sql.defaults.distsql = 0;
 ~~~
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Disable automatic diagnostic reporting
 
 To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of usage data to Cockroach Labs:
