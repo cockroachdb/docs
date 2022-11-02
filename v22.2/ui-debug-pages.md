@@ -27,7 +27,7 @@ The following debug reports are useful for monitoring and troubleshooting Cockro
 Report | Description | Access level
 --------|-----|--------
 [Custom Time Series Chart](ui-custom-chart-debug-page.html) | Create a custom chart of time series data. | All users.
-Problem Ranges | View ranges in your cluster that are unavailable, under-replicated, slow, or have other problems. | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
+Problem Ranges | View ranges in your cluster that are unavailable, under-replicated, slow, paused, or have other problems. | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
 Data Distribution and Zone Configs | View the distribution of table data across nodes and verify zone configuration. | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
 Statement Diagnostics History  | Diagnostic bundles for all statements executed on the cluster.  | [`admin` users only on secure clusters](ui-overview.html#db-console-access).
 
