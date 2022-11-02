@@ -15,9 +15,49 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
+As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.7](v22.1.html#v22-1-7) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.7](v22.1.html#v22-1-7).
 {{site.data.alerts.end}}
 
+## November 7, 2022
+
+<h3> General changes </h3>
+
+- The following regions are now available for all {{ site.data.products.db }} clusters:
+
+    GCP                                          | AWS
+    ---------------------------------------------|------
+    Osaka, Japan (`asia-northeast2`)             | Osaka, Japan (`ap-northeast-3`)
+    Seoul, South Korea (`asia-northeast3`)       | Montréal, Québec (`ca-central-1`)
+    Mumbai, India (`asia-south1`)                | Stockholm, Sweden (`eu-north-1`)
+    Delhi, India (`asia-south2`)                 |
+    Jakarta, Indonesia (`asia-southeast2`)       |
+    Melbourne, Australia (`australia-southeast2`)|
+    Warsaw, Poland (`europe-central2`)           |
+    Hamina, Finland (`europe-north1`)            |
+    Frankfurt, Germany (`europe-west3`)          |
+    Zurich, Switzerland (`europe-west6`)         |
+    Toronto, Ontario (`northamerica-northeast2`) |
+    Salt Lake City, Utah (`us-west3`)            |
+    Las Vegas, Nevada (`us-west4`)               |
+
+<h3> Console changes </h3>
+
+- Added an icon next to a cluster's name on the [**Billing overview**](../cockroachcloud/billing-management.html) page to indicate when a cluster has been deleted.
+- The host name shown for {{ site.data.products.serverless }} connection strings is now instance-specific, which makes [options parameters](../{{site.versions["stable"]}}/connection-parameters.html#supported-options-parameters) unnecessary. The new host names require that the PostgreSQL client used supports SNI.
+- The [**Database page**](../cockroachcloud/databases-page.html) in the {{ site.data.products.db }} Console now shows the last time table statistics were updated.
+- All newly-created AWS clusters use [`gp3` volumes](https://docs.amazonaws.cn/en_us/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type). Older AWS clusters still use `io1` volumes. AWS `gp3` volumes expose three parameters: storage amount, IOPS, and throughput.
+
+<h3> Cloud API changes </h3>
+
+- The [Cloud API](../api/cloud/v1.html#get-/api/v1/clusters) documentation now indicates which endpoints are in preview.
+
+<h3> Bug fixes </h3>
+
+- The **Sessions** link on the [**Overview**](../cockroachcloud/cluster-overview-page.html) page now redirects to the correct tab on [**SQL Activity**](../cockroachcloud/sessions-page.html) page.
+- Fixed a bug where stale data caused **Connect** modal errors immediately after creating a {{ site.data.products.serverless }} cluster.
+- Fixed a bug where backup metadata payloads were limited to 4MiB instead of the desired 32MiB.
+- Fixed a bug where the node-aggregated disk low alert was not firing.
+  
 ## October 3, 2022
 
 <h3> Bug fixes </h3>
