@@ -4,10 +4,7 @@ summary: Interleaving tables improves query performance by optimizing the key-va
 toc: true
 toc_not_nested: true
 docs_area:
-canonical: /v22.1/interleave-in-parent.html
 ---
-
-{{ page.canonical }}
 
 {{site.data.alerts.callout_danger}}
 `INTERLEAVE IN PARENT` was permanently removed from CockroachDB in v21.2.
