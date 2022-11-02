@@ -188,7 +188,9 @@ The following table lists the available parameters for cloud storage sink URIs:
 
 URI Parameter      | Storage | Description
 -------------------+------------------------+---------------------------
-`ASSUME_ROLE`      | AWS S3, GCS | The ARN (AWS) or service account (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
+`AWS_ACCESS_KEY_ID` | AWS | The access key to your AWS account.
+`AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
+`ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
 `AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these. 
 `AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure | The URL-encoded account key for your Azure account.
