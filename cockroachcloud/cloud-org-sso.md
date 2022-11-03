@@ -18,7 +18,7 @@ Basic SSO provides flexibility and convenience for your users, and is enabled by
 Basic SSO has the following differences from [Cloud Organization SSO](#cloud-organization-sso):
 
   - Configuration is not possible.
-  - New authentication methods cannot be added, and existing authentication methods cannot be disabled.
+  - Identities from GitHub, Google, and Microsoft are supported. New authentication methods cannot be added, and existing authentication methods cannot be modified, limited, or disabled.
   - It is not possible to enforce a requirement to use SSO rather than password authentication.
   - It is not possible to limit the email domains allowed to sign in using a given authentication method.
   - Autoprovisioning is not supported, and members must be invited before they can sign in.
