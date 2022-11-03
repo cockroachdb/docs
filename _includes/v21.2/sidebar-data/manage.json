@@ -186,7 +186,7 @@
 										]
 									},
 									{
-										"title": "Cloud Organization SSO",
+										"title": "Single Sign-On (SSO)",
 										"urls": [
 											"/cockroachcloud/cloud-org-sso.html"
 										]

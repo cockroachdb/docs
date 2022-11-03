@@ -1,6 +1,6 @@
 ---
-title: Cloud Organization Single Sign-On (SSO)
-summary: Learn about Cloud Organization Single Sign-On.
+title: Single Sign-On (SSO) for {{ site.data.products.db }} organizations
+summary: Learn about the options for Single Sign-On for your {{ site.data.products.db }} organization.
 toc: true
 docs_area: manage
 ---
@@ -17,7 +17,7 @@ Basic SSO provides flexibility and convenience for your users, and is enabled by
 
 Basic SSO has the following differences from [Cloud Organization SSO](#cloud-organization-sso):
 
-  - Customization is not possible.
+  - Configuration is not possible.
   - New authentication methods cannot be added, and existing authentication methods cannot be disabled.
   - It is not possible to enforce a requirement to use SSO rather than password authentication.
   - It is not possible to limit the email domains allowed to sign in using a given authentication method.
@@ -104,17 +104,17 @@ A user can view their current authentication method by clicking **My Account** i
 
 No. With Basic SSO, only one authentication method can be active for each {{ site.data.products.db }} Console user. To view or update their active authentication method, a user can click **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) .
 
-#### Does this change how administrators invite users?
+#### Does this change how organizational admins invite users?
 
-The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method members use to sign in, then an account is created automatically after a user successfully authenticates.
+The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to your {{ site.data.products.db }} organization remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method a member uses to sign in, then an account is created automatically upon successfully authentication.
 
-#### As an admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
+#### As an organizational admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
 
 If Cloud Organization SSO is enabled, then deprovisioning a user at the level of the IdP also removes their access to the {{ site.data.products.db }} organization.
 
 To remove a user's access to {{ site.data.products.db }} without deprovisioning the user from the IdP (such as when a user changes teams but does not leave the organization entirely), you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](console-access-management.html#delete-a-team-member).
 
-#### Can admins require a particular authentication method for their {{ site.data.products.db }} organization?
+#### Can organizational admins require a particular authentication method for their {{ site.data.products.db }} organization?
 
 Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization, only the [authentication methods you have enabled](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) are displayed to your users.
 
