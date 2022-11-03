@@ -2,7 +2,6 @@
 title: CockroachDB Serverless FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless
 toc: true
-redirect_from: free-faqs.html
 docs_area: get_started
 ---
 

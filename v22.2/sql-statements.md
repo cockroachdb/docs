@@ -211,3 +211,11 @@ Statement | Usage
 [`CREATE CHANGEFEED`](create-changefeed.html) | [**({{ site.data.products.enterprise }})**](enterprise-licensing.html) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink ([Kafka](changefeed-sinks.html#kafka) or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink)).
 [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | **(Core)** Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
 [`ALTER CHANGEFEED`](alter-changefeed.html) | Modify an existing changefeed. Modifying a changefeed requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+
+## External resource statements
+
+Statement | Usage
+----------+----------
+[`CREATE EXTERNAL CONNECTION`](create-external-connection.html) | Create an external connection, which represents a provider-specific URI, to interact with resources that are external from CockroachDB.
+[`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html) | Display the connection name and the creation statements for active external connections.
+[`DROP EXTERNAL CONNECTION`](drop-external-connection.html) | Drop an external connection.

@@ -117,7 +117,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 <h3>Console changes</h3>
 
 - Added **Distributed execution** and **Vectorized execution** information to the **Overview** tab of the **Statement Details** page.
-- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.  
+- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.
 - Users without accounts can now accept invitations by creating a user using SSO-based authorization such as GitHub.
 - Timeseries charts are now displayed in UTC.
 
@@ -271,7 +271,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3>Bug fixes</h3>
 
-- Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-free-cluster.html) clusters.
+- Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-serverless-cluster.html) clusters.
 
 <h3>Miscellaneous changes</h3>
 

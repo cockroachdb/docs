@@ -38,7 +38,7 @@ Egress traffic from a private cluster to non-cloud external resources will alway
 ## What's next?
 - [Security Overview](security-overview.html)
 - [Network Authorization](network-authorization.html)
-{% comment %}- [Egress Perimeter Controls](egress-perimeter-controls.html){% endcomment %}
+- [Egress Perimeter Controls](egress-perimeter-controls.html)
 
 ## Limitations
 
