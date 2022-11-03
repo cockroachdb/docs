@@ -13,7 +13,7 @@ Users may connect with {{ site.data.products.db }} in two ways:
 
 ## {{ site.data.products.db }} authentication
 
-You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or using [Single Sign-On (SSO) for Cockroach Cloud](cloud-org-sso.html).
+You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for {{ site.data.products.db }}](cloud-org-sso.html).
 
 {% include cockroachcloud/prefer-sso.md %}
 

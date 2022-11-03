@@ -31,9 +31,9 @@ If your organization needs more flexibility and customization to meet your secur
 Cloud Organization SSO allows you to customize your SSO configuration to meet your organization's security and business requirements:
 
 - Members sign in using a custom URL that allows only the authentication methods that you have configured.
-- Members can sign in using any enabled authentication method, to help reduce the impact of an identity provider outage. If a member signs in using a new method, they are prompted to optionally update their default.
-- Multiple authentication methods can be enabled simultaneously. You can add custom authentication methods that connect to IdPs such as Okta or OneLogin using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
-- Authentication methods can be disabled, including email authentication. Disabled authentication methods are not available on the custom login URL.
+- Members can sign in using any enabled authentication method, to help reduce the impact of an identity provider outage. If a member signs in using a method that's different from what they've used earlier, they are prompted to optionally update their default method.
+- You can [enable multiple authentication methods](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) simultaneously. You can even add custom authentication methods that connect to IdPs such as Okta or ActiveDirectory through the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+- You can disable authentication methods, including email authentication. Disabled authentication methods are not available on the custom login URL.
 - [Autoprovisioning](#autoprovisioning) optionally removes the need to invite members to your organization. Autoprovisioning is disabled by default for each SSO authentication method.
 - You can limit the email domains that are allowed to log in, at the level of the individual authentication method. By default, any email domain is allowed.
 
@@ -41,21 +41,21 @@ To enable and configure Cloud Organization SSO, refer to [Configure Cloud Organi
 
 ### Restrict SSO authentication by email domain
 
-Cockroach Labs recommends that you invite users to your organization using only identities that you manage, such as your organization's Google, Github, or Microsoft organization or a centralized IdP that supports [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/). With [Cloud Organization SSO](#cloud-organization-sso), you can limit the email domains that are allowed to log in, at the level of the individual authentication method. If you enable [autoprovisioning](#autoprovisioning), members can sign in without an invitation.
+Cockroach Labs recommends that you invite users to your organization using only identities that you manage, such as your organization's Google, Github, or Microsoft organization or a centralized IdP that supports [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/). With [Cloud Organization SSO](#cloud-organization-sso), you can limit the email domains that are allowed to log in, at the level of the individual authentication method. If you enable [autoprovisioning](#autoprovisioning), members can sign up to your organization without an invitation.
 
 - For members who log in in using an IdP managed by your organization, deprovisioning them from the IdP prevents them from accessing  resources in your {{ site.data.products.db }} organization.
 - For members who log in using an identity you don't manage, such as a personal GMail account, you must deprovision them from {{ site.data.products.db }} to prevent their access to your {{ site.data.products.db }} organization.
 
 ### Autoprovisioning
 
-Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](https://www.cockroachlabs.com/docs/cockroachcloud/console-access-management.html#invite-team-members-to-cockroachdb-cloud). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and and are assigned the [Developer role](/docs/cockroachcloud/console-access-management.html#developer) by default.
+Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](console-access-management.html#invite-team-members-to-cockroachdb-cloud). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Developer role](console-access-management.html#developer) by default.
 
-When autoprovisioning is enabled for an SSO authentication method, a {{ site.data.products.db }} account is created automatically when a member successfully authenticates using that method. Together with [Allowed Email Domains](configure-cloud-org-sso.html#allowed-email-domains), autoprovisioning allows the users who are already provisioned in your IdP to get started quickly, without waiting for an invitation.
+Together with [Allowed Email Domains](configure-cloud-org-sso.html#allowed-email-domains), autoprovisioning allows the users who are already provisioned in your IdP to get started quickly, without waiting for an invitation.
 
 Autoprovisioning is optional, and can be configured separately for each enabled SSO authentication method.
 
 {{site.data.alerts.callout_danger}}
-{{ site.data.products.db }} users are identified by their email address. To reduce the risk of duplicated users, ensure that users have unique email addresses before enabling auto-provisioning for an authentication method. If duplicate users result from auto-provisioning, you must delete them manually. Refer to [Manage Team Members](/docs/cockroachcloud/console-access-management.html#manage-team-members).
+{{ site.data.products.db }} users are identified by their email address. To reduce the risk of duplicated users, ensure that users have unique email addresses before you enable autoprovisioning for an authentication method. If duplicate users result from enabling autoprovisioning, you must delete them manually. Refer to [Manage Team Members](/docs/cockroachcloud/console-access-management.html#manage-team-members).
 {{site.data.alerts.end}}
 
 Cockroach Labs recommends that you enable autoprovisioning on only a single SSO method at a time, and that you migrate your users gradually. Most organizations aim to manage users in a single centralized IdP. It may be necessary to temporarily enable autoprovisioning to migrate a group of users who have not yet been created in your centralized IdP.
@@ -64,18 +64,18 @@ Cockroach Labs recommends that you enable autoprovisioning on only a single SSO 
 
 After you [enable an authentication method](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) for your organization, it will appear on your organization's custom URL, and your existing users can opt to sign in using that method rather than their password. When an existing member signs in using an SSO authentication method for the first time, they can optionally designate that authentication method as their new default.
 
-When a member changes their authentication method, there are some important differences between **Basic SSO** and **Cloud Organization SSO**:
+When a member changes their authentication method, note the following important differences between **Basic SSO** and **Cloud Organization SSO**:
 
-- **Basic SSO**: When a member signs up for an account, they can authenticate using an email address and password or using SSO. When a member successfully authenticates using SSO for the first time, that method becomes their new authentication method, and their previously-used password is not retained. If they want to go back to using a password, they must be manually deleted and re-invited. Refer to [Manage Team Members](https://www.cockroachlabs.com/docs/cockroachcloud/console-access-management.html#manage-team-members).
+- **Basic SSO**: When a member successfully authenticates using an SSO authentication method for the first time, this becomes their new authentication method, and any previously-used password is not retained. If a member wants to revert to using a password, the member must be manually deleted and re-invited. Refer to [Manage Team Members](https://www.cockroachlabs.com/docs/cockroachcloud/console-access-management.html#manage-team-members).
 
-- **Cloud Organization SSO**: A member may sign in using any enabled authentication method, including switching back to using a password if password authentication is enabled.
+- **Cloud Organization SSO**: A member may sign in using any enabled authentication method, including password authentication, as long as the email address for the user is same across the enabled methods.
 
-    Keep the following in mind and communicate it to your members before enabling Cloud Organization SSO:
+    Before enabling Cloud Organization SSO, communicate the following to your members:
 
       - If your organization includes members who are also members of other organizations, and this is the first of their organizations to enable Cloud Organization SSO, those members must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. **However, those who were previously admins must be granted the role again**.
-      - After you enable Cloud Organization SSO, all other members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
+      - After you enable Cloud Organization SSO, all other members of your {{ site.data.products.db }} organization who were authenticating with [Basic SSO](cloud-org-sso.html#basic-sso) rather than a password must sign in again to regain access to your organization. After signing in, members retain the same organizational roles they had before the migration.
 
-During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
+When you [enable Cloud Organization SSO](configure-cloud-org-sso.html#enable-cloud-organization-sso), a list of affected members is shown. Those members are also notified that Cloud Organization SSO has been enabled and that they must sign in again to regain access.
 
 ### Enforce a requirement to use SSO
 
@@ -87,19 +87,19 @@ Refer to [Require SSO](configure-cloud-org-sso.html#require-sso).
 
 ## Frequently Asked Questions (FAQ)
 
-#### Will it work if I try to sign in with SSO without explicitly setting it up for my account, if I already use an email from an SSO Provider such as Gmail?
+#### If a user already has an email address associated with an SSO provider such as Gmail, can they sign in with Basic SSO?
 
-Yes, as long as the email address associated with your SSO provider is exactly the same as the one associated with your existing {{ site.data.products.db }} account. After successfully signing in, you will be prompted to approve the updated authentication method for your account.
+Yes, as long as the email address associated with the user's SSO provider is exactly the same as the one associated with the user's existing {{ site.data.products.db }} account. After successfully signing in, the user will be prompted to approve the updated authentication method for their account.
 
-To view your current authentication method, visit **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud).
+A user can view their current authentication method by clicking **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud).
 
-#### Once I change my active login method to a new SSO provider, can I still sign in using my email/password combination or my GitHub identity?
+#### With Basic SSO, once a user changes their active login method to a new SSO provider, can they still sign in using an email/password combination or GitHub identity?
 
-No. Only one authentication method can be active for each {{ site.data.products.db }} Console user. Visit **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) to view or update your active authentication method.
+No. With Basic SSO, only one authentication method can be active for each {{ site.data.products.db }} Console user. To view or update their active authentication method, a user can click **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) .
 
 #### Does this change how administrators invite users?
 
-The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method they use to sign in, then an account is created automatically after they successfully authenticate.
+The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to {{ site.data.products.db }} remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method members use to sign in, then an account is created automatically after a user successfully authenticates.
 
 #### As an admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
 
@@ -109,11 +109,11 @@ To remove a user's access to {{ site.data.products.db }} without deprovisioning 
 
 #### Can admins require a particular authentication method for their {{ site.data.products.db }} organization?
 
-Yes, when Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization, only the authentication methods you have enabled are displayed to your users.
+Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization, only the [authentication methods you have enabled](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) are displayed to your users.
 
 #### Which authentication flows are supported with Enterprise Authentication? Is it possible to enable the identity provider initiated flow?
 
-The primary flow is to initiate Cloud Organization SSO through the {{ site.data.products.db }} Console.
+The primary flow is the _service-initiated flow_, where you initiate configuration of Cloud Organization SSO through the {{ site.data.products.db }} Console.
 
 If you need to initiate SSO integration from the IdP, contact your account team for assistance.
 

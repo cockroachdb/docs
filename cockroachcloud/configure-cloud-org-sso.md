@@ -9,28 +9,28 @@ docs_area: manage
 
 {% include_cached cockroachcloud/sso-intro.md %}
 
-This page shows how to enable [Cloud Organization SSO](cloud-org-sso.html) and manage your configuration.
+This page describes how to enable [Cloud Organization SSO](cloud-org-sso.html) and manage your SSO configuration.
 
 ## Plan to enable Cloud Organization SSO
 
 To ensure a smooth migration to Cloud Organization SSO, review the following information before you enable the feature.
 
 {{site.data.alerts.callout_info}}
-After it is enabled, Cloud Organization SSO cannot be disabled. To configure Cloud Organization SSO to behave like [Basic SSO](cloud-org-sso.html#basic-sso), refer to [Emulate Basic SSO](#emulate-basic-sso)
+After it is enabled, Cloud Organization SSO **cannot** be disabled. To configure Cloud Organization SSO to behave like [Basic SSO](cloud-org-sso.html#basic-sso), refer to [Emulate Basic SSO](#emulate-basic-sso).
 {{site.data.alerts.end}}
 
 ### Decide your custom URL
 
-When you [enable Cloud Organization SSO](#enable-cloud-organization-sso), you will configure a custom URL, that your users use to access {{ site.data.products.db }}. After the feature is enabled, your users must use that page to sign in. Your custom URL must be unique within {{ site.data.products.db }}. Communicate the custom URL to your users ahead of time.
+When you [enable Cloud Organization SSO](#enable-cloud-organization-sso), you will configure a custom URL through which your users can access {{ site.data.products.db }}. After the feature is enabled, your users must use that page to sign in. Your custom URL must be unique within {{ site.data.products.db }}. **Communicate this custom URL to your users ahead of time.**
 
-To change your custom URL after Cloud Organization SSO has been enabled, contact your account team.
+To change your custom URL after enabling Cloud Organization SSO, contact your account team.
 
 ### Decide which authentication methods to enable
 
 All enabled authentication methods appear on your custom URL and are available to your users. By default, when you enable Cloud Organization SSO, the following authentication methods are enabled by default:
 
 - Email and password
-- Github
+- GitHub
 - Google
 - Microsoft
 
@@ -70,7 +70,7 @@ To enable Cloud Organization SSO:
 
       Click **Next**
 
-1. The list of default authentication methods displays. By default, **Email**, **Github**, **Google**, and **Microsoft** are enabled.
+1. The list of default authentication methods displays. By default, **Email**, **GitHub**, **Google**, and **Microsoft** are enabled.
 
      To configure an authentication method, click its name and fill in the details. You can also do this later. Refer to [Configure advanced settings](#configure-advanced-settings).
      To disable an authentication method, click **Disable**. You can also do this later.
@@ -87,15 +87,15 @@ To enable Cloud Organization SSO:
 
 ## Update the custom URL
 
-After you enable Cloud Organization SSO, your users sign in use a custom URL that exposes only the authentication methods that you enable, rather than the [public sign-in URL](https://cockroachlabs.cloud).
+After you enable Cloud Organization SSO, your users sign in use a custom URL that exposes only the authentication methods that you enable, rather than the public sign-in URL at `https://cockroachlabs.cloud`.
 
 To update the custom URL after Cloud Organization SSO is enabled, contact your account team.
 
 ## Enable or disable an authentication method
 
-When you enable an authentication method, users can begin authenticating to {{ site.data.products.db }} using that authentication method. A user can log in using any enabled authentication method. When they successfully sign in with a new authentication method for the first time, this becomes their new default method. You can optionally [configure advanced settings](#configure-advanced-settings) for each enabled authentication method.
+When you enable an authentication method, users can begin authenticating to {{ site.data.products.db }} using that authentication method. A user can log in using any enabled authentication method, as long as the email address for the user is the same across all enabled methods. When they successfully sign in with a new authentication method for the first time, they have the option to update their default authentication method. You can optionally [configure advanced settings](#configure-advanced-settings) for each enabled authentication method.
 
-When you disable an authentication method, users who are no longer associated with any enabled authentication method can no longer sign in and must be provisioned in an identity provider that is associated with an enabled method.
+When you disable an authentication method, users who are no longer associated with the other enabled authentication method(s) can no longer sign in and must be provisioned in an identity provider that is associated with one of those other enabled methods.
 
 When you enable or disable an authentication method, a notification is displayed with a list of users who must sign in with a different authentication method to regain access. Each affected user also receives an email notification prompting them to sign in again.
 
@@ -128,13 +128,14 @@ By default, users can access your {{ site.data.products.db }} organization from 
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. At the top of the page, click **Edit**.
-1. Set **Allowed Email Domains** to a comma-separated list of email domains. domains in CIDR format. Each domain should begin with a `@`. To ensure that you are not locked out of {{ site.data.products.db }} while you are configuring Cloud SSO, be sure to allow access to the email domain that you use to sign in.
+1. Set **Allowed Email Domains** to a comma-separated list of email domains. Each domain should begin with a `@`. To ensure that you are not locked out of {{ site.data.products.db }} while you are configuring Cloud Organization SSO, be sure to allow access to the email domain that you use to sign in.
 1. Click **Save**.
 
 ### Autoprovisioning
 
 By default, autoprovisioning is disabled. In order to log in to {{ site.data.products.db }} using SSO:
-- A user's email address must exist in the SSO IdP, **and**
+
+- A user's email address must exist in the SSO IdP.
 - An admin user must have already invited the user to the {{ site.data.products.db }} organization.
 
 Autoprovisioning allows members to access your organization without an invitation. Users are assigned the [Developer role](/docs/cockroachcloud/console-access-management.html#developer) by default. If you enable autoprovisioning, Cockroach Labs recommends that you also limit the [allowed email domains](#allowed-email-domains) for the authentication method.
@@ -200,14 +201,14 @@ To begin enforcing a requirement to sign in using SSO:
 
 ## Emulate Basic SSO
 
-After Cloud Organization SSO is enabled, it can't be disabled. To emulate the behavior of Basic SSO:
+After Cloud Organization SSO is enabled, it cannot be disabled. To emulate the behavior of Basic SSO:
 
 1. Enable the following authentication methods:
       - Password
-      - Github
+      - GitHub
       - Google
       - Microsoft
-1. For Github, Google, and Microsoft authentication methods, allow all email domains and disable autoprovisioning.
+1. For GitHub, Google, and Microsoft authentication methods, allow all email domains and disable autoprovisioning.
 
 ## What's next?
 
