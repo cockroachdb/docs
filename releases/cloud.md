@@ -22,7 +22,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3> General changes </h3>
 
-- The following regions are now available for all {{ site.data.products.db }} clusters:
+- The following new regions are now available for all {{ site.data.products.dedicated }} clusters:
 
     GCP                                          | AWS
     ---------------------------------------------|------
@@ -43,7 +43,6 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 <h3> Console changes </h3>
 
 - Added an icon next to a cluster's name on the [**Billing overview**](../cockroachcloud/billing-management.html) page to indicate when a cluster has been deleted.
-- The host name shown for {{ site.data.products.serverless }} connection strings is now instance-specific, which makes [options parameters](../{{site.versions["stable"]}}/connection-parameters.html#supported-options-parameters) unnecessary. The new host names require that the PostgreSQL client used supports SNI.
 - The [**Database page**](../cockroachcloud/databases-page.html) in the {{ site.data.products.db }} Console now shows the last time table statistics were updated.
 - All newly-created AWS clusters use [`gp3` volumes](https://docs.amazonaws.cn/en_us/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type). Older AWS clusters still use `io1` volumes. AWS `gp3` volumes expose three parameters: storage amount, IOPS, and throughput.
 
