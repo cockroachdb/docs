@@ -139,9 +139,6 @@ sass:
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
-
-# change location to cockroachlabs.cloud before merging
 jekyll_get_json:
   - data: cloud_api_releases
-    #json: 'https://management-staging.crdb.io/assets/docs/api/manifest.json'
     json: 'https://cockroachlabs.cloud/assets/docs/api/manifest.json'
