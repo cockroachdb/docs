@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include cockroachcloud/ccloud/backup-types.md %}
-
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
@@ -14,6 +12,9 @@ docs_area: manage
 - [`IMPORT`](../{{site.versions["stable"]}}/import.html)
 - [`EXPORT`](../{{site.versions["stable"]}}/export.html)
 
+{% include cockroachcloud/ccloud/backup-types.md %}
+
+The examples on this page demonstrate how to take customer-owned backups.
 
 {{site.data.alerts.callout_info}}
 For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.

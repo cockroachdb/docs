@@ -1,6 +1,4 @@
-[//]: # (Cloud backup types)
+{{ site.data.products.db }} clusters support two types of backups:
 
-Cockroach Cloud clusters support two types of backups:
-
-- Managed-service backups: automated full and incremental backups daily stored on Cockroach Cloud storage 
-- {% if page.name == "run-bulk-operations.md" %} Self-service backups {% else %} [Self-service backups](../cockroachcloud/run-bulk-operations.html) {% endif %}: backups to your own storage buckets using the [`BACKUP`](../{{site.versions["stable"]}}/backup.html) statement
+- Managed-service backups: Cockroach Labs takes automated backups of {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters that are stored in Cockroach Labs' cloud storage
+- {% if page.name == "run-bulk-operations.md" %} Customer-owned backups {% else %} [Self-service backups](../cockroachcloud/run-bulk-operations.html) {% endif %}: You can take manual backups and store them in your [cloud storage buckets](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) using the [`BACKUP`](../{{site.versions["stable"]}}/backup.html) statement

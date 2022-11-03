@@ -51,6 +51,10 @@ The following table outlines SQL statements you can use to create, configure, pa
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
 [`DROP SCHEDULES`](drop-schedules.html) | Drop backup schedules.
 
+## {{ site.data.products.db }} backup types
+
+{% include cockroachcloud/ccloud/backup-types.md %} 
+
 ## Backup storage
 
 We recommend taking backups to [cloud storage](use-cloud-storage-for-bulk-operations.html) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:

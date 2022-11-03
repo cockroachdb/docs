@@ -49,7 +49,7 @@ The following table outlines SQL statements you can use to create, configure, pa
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
 [`DROP SCHEDULES`](drop-schedules.html) | Drop backup schedules.
 
-## Cockroach Cloud backup types
+## {{ site.data.products.db }} backup types
 
 {% include cockroachcloud/ccloud/backup-types.md %} 
 
