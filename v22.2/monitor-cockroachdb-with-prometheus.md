@@ -176,7 +176,7 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/replicas.json
+    $ wget https://raw.githubusercontent.com/cockroachdb/cockroach/master/monitoring/grafana-dashboards/replication.json
     # replicas dashboard: replica information and operations.
     ~~~
 

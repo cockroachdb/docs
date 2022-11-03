@@ -57,6 +57,7 @@ plugins:
 - jekyll-include-cache
 - jekyll-last-modified-at
 - jekyll-minifier
+- jekyll-get-json
 release_info:
   v1.0:
     build_time: 2018/02/13 15:13:51 (go1.8.3)
@@ -138,3 +139,6 @@ sass:
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
+jekyll_get_json:
+  - data: cloud_api_releases
+    json: 'https://cockroachlabs.cloud/assets/docs/api/manifest.json'
