@@ -72,7 +72,11 @@ When a member changes their authentication method, note the following important 
 
     Before enabling Cloud Organization SSO, communicate the following to your members:
 
-      - If your organization includes members who are also members of other organizations, and this is the first of their organizations to enable Cloud Organization SSO, those members must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. **However, those who were previously admins must be granted the role again**.
+      - If your organization includes members who are also members of other organizations, and this is the first of their organizations to enable Cloud Organization SSO, those members must be re-added to your organization.
+          - If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in.
+          - If autoprovisioning is disabled for the authentication method they select, they must be re-invited to your organization.
+
+          **If a member who previously had the organizational admin role is automatically or manually re-provisioned, they do not automatically retain the organizational admin role.**
       - After you enable Cloud Organization SSO, all other members of your {{ site.data.products.db }} organization who were authenticating with [Basic SSO](cloud-org-sso.html#basic-sso) rather than a password must sign in again to regain access to your organization. After signing in, members retain the same organizational roles they had before the migration.
 
 When you [enable Cloud Organization SSO](configure-cloud-org-sso.html#enable-cloud-organization-sso), a list of affected members is shown. Those members are also notified that Cloud Organization SSO has been enabled and that they must sign in again to regain access.
@@ -81,7 +85,10 @@ When you [enable Cloud Organization SSO](configure-cloud-org-sso.html#enable-clo
 
 Using SSO with a centralized identity management and user provisioning is a recommended security practice. It helps to mitigate against the risk of unauthorized access to your organization's data and infrastructure by users who should no longer have access, such as when a {{ site.data.products.db }} account using password authentication is not deprovisioned when an employee leaves the organization.
 
-To help mitigate against this risk, SSO is preferred over password authentication, whether your organization uses Basic SSO or Cloud Organization SSO. If a member opts to log in using SSO, their default authentication method is automatically and their previous password is not retained. After a member switches to using SSO, they cannot switch back to using a password, but they can switch to a different SSO authentication method as long as the associated email address is identical. For a member to switch back to using a password, they must be removed and re-invited to your {{ site.data.products.db }} organization.
+To help mitigate against this risk, SSO is generally preferred over password authentication, where both options are available.
+
+ - **Basic SSO**: If a member logs in using SSO, their default authentication method is automatically updated and their previous password is not retained. After a member switches to using SSO, they cannot switch back to using a password, but they can switch to a different SSO authentication method as long as the associated email address is identical. For a member to switch back to using a password, they must be removed and re-invited to your {{ site.data.products.db }} organization.
+ - **Cloud Organization SSO**: If a member logs in using SSO, they are prompted to _optionally_ update their default authentication method is automatically updated and their previous password _is_ retained and they can switch back to password authentication at any time. However, if an organizational admin disables password authentication, passwords are _not_ retained. Depending on an organization's security and compliance requirements, they may decide to retain password authentication as a failsafe.
 
 Refer to [Require SSO](configure-cloud-org-sso.html#require-sso).
 
@@ -111,11 +118,11 @@ To remove a user's access to {{ site.data.products.db }} without deprovisioning 
 
 Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization, only the [authentication methods you have enabled](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) are displayed to your users.
 
-#### Which authentication flows are supported with Enterprise Authentication? Is it possible to enable the identity provider initiated flow?
+#### Which authentication flows are supported with Cloud Organization SSO? Is it possible to enable the identity provider initiated flow?
 
 The primary flow is the _service-initiated flow_, where you initiate configuration of Cloud Organization SSO through the {{ site.data.products.db }} Console.
 
-If you need to initiate SSO integration from the IdP, contact your account team for assistance.
+If you need to initiate configuration from the IdP, contact your account team for assistance.
 
 #### What default role is assigned to users when auto-provisioning is enabled in a {{ site.data.products.db }} organization?
 

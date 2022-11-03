@@ -29,14 +29,14 @@ To change your custom URL after enabling Cloud Organization SSO, contact your ac
 
 All enabled authentication methods appear on your custom URL and are available to your users. By default, when you enable Cloud Organization SSO, the following authentication methods are enabled by default:
 
-- Email and password
+- Password
 - GitHub
 - Google
 - Microsoft
 
 In addition, you can create authentication methods that connect to your identity provider using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 
-Members are identified by their email address. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them. To allow members to migrate from password authentication to SSO, ensure that their email addresses match those in your identity providers.
+Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your identity providers. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them. 
 
 ### Prepare for migration of existing members
 
@@ -140,7 +140,7 @@ By default, autoprovisioning is disabled. In order to log in to {{ site.data.pro
 
 Autoprovisioning allows members to access your organization without an invitation. Users are assigned the [Developer role](/docs/cockroachcloud/console-access-management.html#developer) by default. If you enable autoprovisioning, Cockroach Labs recommends that you also limit the [allowed email domains](#allowed-email-domains) for the authentication method.
 
-To enable auto-provisioning for an SSO authentication method:
+To enable autoprovisioning for an SSO authentication method:
 
 1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an admin user.
 1. Go to **Organization** > **Authentication**.
@@ -157,7 +157,7 @@ You can add a custom authentication method to connect to any IdP that supports [
 To configure a custom OIDC authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure {{ site.data.products.db }} SSO:<ul><li>Issuer URL</li><li>Client ID</li><li>Client secret</li><li>Callback URL</li></ul>
-1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an admin user.
+1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an organizational admin.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **OIDC (OpenID Connect)**.
