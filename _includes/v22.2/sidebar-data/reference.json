@@ -175,6 +175,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/alter-backup-schedule.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-changefeed.html"

@@ -196,6 +196,7 @@ Statement | Usage
 [`RESTORE`](restore.html) | Restore clusters, databases, and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
 [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups. Core users can only use backup scheduling for full backups of clusters, databases, or tables. To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+[`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html) | Modify an existing backup schedule.
 [`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
 [`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
