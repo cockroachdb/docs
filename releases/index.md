@@ -233,8 +233,9 @@ The following binaries are not suitable for production environments:
             {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
+            <td>
                 {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
-                <span class="badge badge-gray">Withdrawn</span></td>
+                <span class="badge badge-gray">Withdrawn</span>
                 {% else %}
                     {% if r.no_source == "true" %}
                 N/A
