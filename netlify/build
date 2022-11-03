@@ -1,5 +1,7 @@
 #!/bin/bash
 
+time curl -s https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jpa/src/main/java/io/roach/data/jpa/JpaApplication.java > /dev/null
+
 # Populate the site_url to be used by jekyll for generating sidebar and search links
 site_url="${DEPLOY_PRIME_URL}"
 JEKYLL_ENV="preview"
@@ -26,7 +28,7 @@ popd
 
 gem install bundler --silent
 bundle install --quiet
-build _config_cockroachdb.yml,_config_url.yml
+build _config_cockroachdb.yml,_config_url.yml,_config_cockroachdb_local.yml
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
@@ -61,6 +63,8 @@ fi;
 if [[ $? != 0 ]]; then
   exit 1
 fi;
+
+time curl -s https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_database.html > /dev/null
 
 # Run tests defined in __tests__
 ./node_modules/.bin/jest
