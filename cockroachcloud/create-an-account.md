@@ -7,6 +7,10 @@ docs_area: deploy
 
 Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
 
+{{site.data.alerts.callout_info}}
+If your organization uses [Cloud Organization SSO](cloud-org-sso.md#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an organizational admin.
+{{site.data.alerts.end}}
+
 ## Choose an authentication method
 
 You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-org-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..

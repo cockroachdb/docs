@@ -38,22 +38,17 @@ In addition, you can create authentication methods that connect to your identity
 
 Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your identity providers. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
 
-### Prepare for migration of existing members
-
-Keep the following in mind and communicate it to your members:
-
-- If your organization includes members who are also members of other organizations, and this is the first of their organizations to enable Cloud Organization SSO, those members must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. **However, those who previously had the organizational admin role must be granted the role again**.
-- After you enable Cloud Organization SSO, all other members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-
-During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
-
 ### Communicate to your members
 
-Communicate to your users about:
+Before you enable Cloud Organization SSO, notify your users about what to expect, such as:
 
 - The custom login URL and when they should begin using it.
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
-- For members who are organizational admins and are also members of other organizations, they may need to be re-added to your organization and re-assigned the organizational admin role. Refer to [Prepare for migration of existing members](#prepare-for-migration-of-existing-members).
+- Some members may need to be re-added to your organization:
+  - All members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
+  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the organizational admin role, it must be granted to them again.
+
+  During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
 ## Enable Cloud Organization SSO
 
@@ -70,7 +65,7 @@ To enable Cloud Organization SSO:
 
       Click **Next**
 
-1. The list of default authentication methods displays. By default, **Email**, **GitHub**, **Google**, and **Microsoft** are enabled.
+1. The list of default authentication methods displays. By default, **Password**, **GitHub**, **Google**, and **Microsoft** are enabled.
 
      To configure an authentication method, click its name and fill in the details. You can also do this later. Refer to [Configure advanced settings](#configure-advanced-settings).
      To disable an authentication method, click **Disable**. You can also do this later.
@@ -209,6 +204,8 @@ After Cloud Organization SSO is enabled, it cannot be disabled. To emulate the b
       - Google
       - Microsoft
 1. For GitHub, Google, and Microsoft authentication methods, allow all email domains and disable autoprovisioning.
+
+Members must still sign in using your organization's custom URL.
 
 ## What's next?
 
