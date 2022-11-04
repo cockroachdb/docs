@@ -34,9 +34,9 @@ All enabled authentication methods appear on your custom URL and are available t
 - Google
 - Microsoft
 
-In addition, you can create authentication methods that connect to your identity provider using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+In addition, you can create authentication methods that connect to your IdP using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 
-Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your identity providers. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
+Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your IdPs. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
 
 ### Communicate to your members
 
@@ -90,7 +90,7 @@ To update the custom URL after Cloud Organization SSO is enabled, contact your a
 
 When you enable an authentication method, members can begin authenticating to {{ site.data.products.db }} using that authentication method. A member can log in using any enabled authentication method, as long as the email address for the member is the same across all enabled methods. When they successfully sign in with a new authentication method for the first time, they have the option to update their default authentication method. You can optionally [configure advanced settings](#configure-advanced-settings) for each enabled authentication method.
 
-When you disable an authentication method, members who are no longer associated with the other enabled authentication method(s) can no longer sign in and must be provisioned in an identity provider that is associated with one of those other enabled methods.
+When you disable an authentication method, members who are no longer associated with the other enabled authentication method(s) can no longer sign in and must be provisioned in an IdP that is associated with one of those other enabled methods.
 
 When you enable or disable an authentication method, a notification is displayed with a list of members who must sign in with a different authentication method to regain access. Each affected member also receives an email notification prompting them to sign in again.
 
@@ -184,7 +184,7 @@ To configure a custom SAML authentication method:
 1. Click **Save**.
 1. Click **Test**. If errors are shown, edit the configuration to fix the problems and try again.
 1. Optionally, [configure advanced settings](#configure-advanced-settings) for the new authentication method.
-1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>:<code>The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
+1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>: The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
 1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
 1. Configure the SAML assertions that your IdP sends to {{ site.data.products.db }}. Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Refer to the documentation for your IdP.
 
