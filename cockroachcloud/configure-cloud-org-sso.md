@@ -34,9 +34,9 @@ All enabled authentication methods appear on your custom URL and are available t
 - Google
 - Microsoft
 
-In addition, you can create authentication methods that connect to your identity provider using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+In addition, you can create authentication methods that connect to your IdP using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 
-Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your identity providers. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
+Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your IdPs. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
 
 ### Communicate to your members
 
@@ -90,7 +90,7 @@ To update the custom URL after Cloud Organization SSO is enabled, contact your a
 
 When you enable an authentication method, members can begin authenticating to {{ site.data.products.db }} using that authentication method. A member can log in using any enabled authentication method, as long as the email address for the member is the same across all enabled methods. When they successfully sign in with a new authentication method for the first time, they have the option to update their default authentication method. You can optionally [configure advanced settings](#configure-advanced-settings) for each enabled authentication method.
 
-When you disable an authentication method, members who are no longer associated with the other enabled authentication method(s) can no longer sign in and must be provisioned in an identity provider that is associated with one of those other enabled methods.
+When you disable an authentication method, members who are no longer associated with the other enabled authentication method(s) can no longer sign in and must be provisioned in an IdP that is associated with one of those other enabled methods.
 
 When you enable or disable an authentication method, a notification is displayed with a list of members who must sign in with a different authentication method to regain access. Each affected member also receives an email notification prompting them to sign in again.
 
