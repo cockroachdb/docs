@@ -18,7 +18,7 @@ Basic SSO provides flexibility and convenience for your users, and is enabled by
 Basic SSO has the following differences from [Cloud Organization SSO](#cloud-organization-sso):
 
   - Configuration is not possible.
-  - Identities from GitHub, Google, and Microsoft are supported. New authentication methods cannot be added, and existing authentication methods cannot be modified, limited, or disabled.
+  - New authentication methods cannot be added, and existing authentication methods cannot be modified, limited, or disabled.
   - It is not possible to enforce a requirement to use SSO rather than password authentication.
   - It is not possible to limit the email domains allowed to sign in using a given authentication method.
   - Autoprovisioning is not supported, and members must be invited before they can sign in.
@@ -51,19 +51,19 @@ Autoprovisioning is optional, and can be configured separately for each enabled 
 {{ site.data.products.db }} users are identified by their email address. To reduce the risk of duplicated users, ensure that users have unique email addresses before you enable autoprovisioning for an authentication method. If duplicate users result from enabling autoprovisioning, you must delete them manually. Refer to [Manage Team Members](/docs/cockroachcloud/console-access-management.html#manage-team-members).
 {{site.data.alerts.end}}
 
-Cockroach Labs recommends that you enable autoprovisioning on only a single SSO method at a time, and that you migrate your users gradually. Most organizations aim to manage users in a single centralized IdP. It may be necessary to temporarily enable autoprovisioning to migrate a group of users who have not yet been created in your centralized IdP.
+Cockroach Labs recommends that you enable autoprovisioning on only a single SSO method at a time, and that you migrate your users gradually. Most organizations aim to manage users in a single centralized IdP. It may be necessary to temporarily enable autoprovisioning to migrate a group of users from your centralized IdP who have yet not been onboarded to your Cloud organization.
 
 If you [require SSO authentication](configure-cloud-org-sso.html#require-sso), then when you deprovision a member from your IdP, they can no longer access your {{ site.data.products.db }} organization. If you allow password authentication or if some of your members log in using an identity you don't manage, such as a personal GMail account, you must deprovision them from {{ site.data.products.db }} to prevent their access to your {{ site.data.products.db }} organization. These situations may sometimes be desirable, such as when partners or consultants must access your cloud organization and you don't want to add them to your IdP.
 
 ### Migration of individual members to SSO
 
-After you [enable Cloud Organization SSO](configure-cloud-org-sso.html#enable-cloud-organization-sso) and [enable an authentication method](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) for your organization, it will appear on your organization's custom URL, and your existing users can then sign in using that method, rather than the method they were using previously. When an existing member signs in using an SSO authentication method for the first time, they can optionally designate that authentication method as their new default.
+After you [enable Cloud Organization SSO](configure-cloud-org-sso.html#enable-cloud-organization-sso) and [enable an authentication method](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) for your organization, it will appear on your organization's custom URL. Your existing users can then sign in using that method, rather than the method they were using previously. When an existing member signs in using an SSO authentication method for the first time, they can optionally designate that authentication method as their new default.
 
-After you enable Cloud Organization SSO, all members of your organization must sign in again, even if they were previously signed in using [Basic SSO](#basic-sso). After signing in, they retain the same roles organizational roles they had previously.
+After you enable Cloud Organization SSO, all members of your organization must sign in again, even if they were previously signed in using [Basic SSO](#basic-sso). After signing in, they retain the same organizational roles they had previously.
 
-However, members of your organization who also belong to other {{ site.data.products.db }} organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited to your organization.
+However, members of your organization who also belong to other {{ site.data.products.db }} organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, you must re-invite them to your organization.
 
-During enablement of Cloud Organization SSO or when you enable or disable an authentication method, you are shown a list of the members who will be impacted and the action that must be taken for them to regain access. Those members are also notified about the change via email.
+When you enable Cloud Organization SSO or when you enable or disable an authentication method, you are shown a list of the members who will be impacted and the action that must be taken for them to regain access. Those members are also notified about the change via email.
 
 ## Frequently Asked Questions (FAQ)
 
@@ -93,7 +93,7 @@ Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }}
 
 #### Which SAML-based authentication flows are supported with Cloud Organization SSO?
 
-The primary flow is the _service-initiated flow_, where you initiate configuration of Cloud Organization SSO through the {{ site.data.products.db }} Console.
+The primary flow is the _service provider-initiated flow_, where you initiate configuration of Cloud Organization SSO through the {{ site.data.products.db }} Console.
 
 If you need to initiate configuration from the IdP, contact your account team for assistance.
 
