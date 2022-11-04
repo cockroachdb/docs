@@ -393,7 +393,7 @@ users-7.ndjson",
 
 For a specific operation, see the following examples:
 
-- [Backup with an S3 storage class](backup.html#backup-with-an-s3-storage-class)
+- [Backup with an S3 storage class](backup.html#back-up-with-an-s3-storage-class)
 - [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class)
 - [Export tabular data with an S3 storage class](export.html#export-tabular-data-with-an-s3-storage-class)
 

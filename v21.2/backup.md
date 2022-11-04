@@ -95,7 +95,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
 
 {{site.data.alerts.callout_success}}
-Backups support [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+Backups support [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
 
 ## Functional details

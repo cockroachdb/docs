@@ -105,7 +105,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 {{site.data.alerts.callout_success}}
-Backups support cloud object locking and [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
 
 ## Functional details
@@ -318,7 +318,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 (1 row)
 ~~~
 
-### Backup with an S3 storage class
+### Back up with an S3 storage class
 
 To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
@@ -328,6 +328,8 @@ BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SEC
 ~~~
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
+
+{% include {{ page.version.version }}/misc/storage-class-glacier-incremental.md %}
 
 </section>
 
