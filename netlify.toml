@@ -1,0 +1,5 @@
+[[plugins]]
+package = "netlify-plugin-cache"
+  [plugins.inputs]
+  # Optional (but highly recommended). Defaults to [".cache"].
+  paths = ["/opt/build/repo/vendor/", "/opt/build/repo/_site/docs/", "/opt/build/repo/.jekyll-cache/", "/opt/build/repo/.jekyll-metadata"]
