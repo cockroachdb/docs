@@ -48,7 +48,7 @@ Before you enable Cloud Organization SSO, notify your users about what to expect
   - All members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
   - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the organizational admin role, it must be granted to them again.
 
-  During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
+During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
 ## Enable Cloud Organization SSO
 
@@ -82,7 +82,7 @@ To enable Cloud Organization SSO:
 
 ## Update the custom URL
 
-After you enable Cloud Organization SSO, your users sign in use a custom URL that exposes only the authentication methods that you enable, rather than the public sign-in URL at `https://cockroachlabs.cloud`.
+After you enable Cloud Organization SSO, your users sign in at a custom URL that exposes only the authentication methods that you enable, rather than the public sign-in URL at `https://cockroachlabs.cloud`.
 
 To update the custom URL after Cloud Organization SSO is enabled, contact your account team.
 
@@ -128,7 +128,7 @@ By default, users can access your {{ site.data.products.db }} organization from 
 
 ### Autoprovisioning
 
-By default, autoprovisioning is disabled. In order to log in to {{ site.data.products.db }} using SSO:
+By default, autoprovisioning is disabled. In order to log in to {{ site.data.products.db }} using SSO without autoprovisioning:
 
 - A user's email address must exist in the SSO IdP.
 - An organizational admin user must have already invited the user to the {{ site.data.products.db }} organization.
@@ -188,6 +188,7 @@ To configure a custom SAML authentication method:
 1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
 
 ## Require SSO
+
 To begin enforcing a requirement to sign in using SSO:
 
 1. [Enable Cloud Organization SSO](#enable-cloud-organization-sso).
