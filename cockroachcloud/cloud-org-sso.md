@@ -31,7 +31,7 @@ If your organization needs more flexibility and customization to meet your secur
 Cloud Organization SSO allows you to customize your SSO configuration to meet your organization's security and business requirements:
 
 - Members sign in using a custom URL that allows only the authentication methods that you have configured.
-- Members can sign in using any enabled authentication method, to help reduce the impact of an identity provider outage. If a member signs in using a method that's different from what they've used earlier, they are prompted to optionally update their default method.
+- Members can sign in using any enabled authentication method, to help reduce the impact of an identity provider outage. If a member signs in using a new method for the first time, they are prompted to optionally update their default method. **This is possible only as long as the members are using the same email address to sign in through each method**.
 - You can [enable multiple authentication methods](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) simultaneously. You can even add custom authentication methods that connect to IdPs such as Okta or ActiveDirectory through the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 - You can disable any authentication method. To enforce a requirement to use SSO, you can enable only SSO authentication methods and disable password authentication. If you disable password authentication, passwords are not retained.
 - [Autoprovisioning](#autoprovisioning) optionally removes the need to invite members to your organization. Autoprovisioning is disabled by default for each SSO authentication method.
@@ -95,7 +95,7 @@ Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }}
 
 The primary flow is the _service provider-initiated flow_, where you initiate configuration of Cloud Organization SSO through the {{ site.data.products.db }} Console.
 
-If you need to initiate configuration from the IdP, contact your account team for assistance.
+If you require an _identity provider-initiated flow_, contact your account team for assistance.
 
 #### What `default `role is assigned to users when auto-provisioning is enabled in a {{ site.data.products.db }} organization?
 
