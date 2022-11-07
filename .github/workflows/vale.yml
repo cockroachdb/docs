@@ -10,7 +10,7 @@ jobs:
 
     - name: Get changed files
       id: changed_files
-      uses: tj-actions/changed-files@v32.1.0
+      uses: tj-actions/changed-files@main
 
     - name: Calculate changed files to pass to Vale
       id: calc_changed_files

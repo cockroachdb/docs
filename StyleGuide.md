@@ -1,5 +1,7 @@
 CockroachDB docs follow these principles:
 
+test
+
 - **Commit to Excellence:** We commit to publishing documentation that serves our users and customers with a focus on excellence. We take pride in writing clear, concise, and correct docs, iterating constantly, and aiming to produce great work to help our users.
 - **Communicate Openly and Honestly:** We produce our best documentation when we communicate openly and honestly with our users. Documenting features and limitations transparently enables users to effectively use Cockroach Labs products while instilling confidence in the docs as a trusted resource.
 - **Respect:** We aim to write humble, positive, friendly, and above all else helpful documentation. We appreciate every user through inclusive, accessible, and non-hyperbolic language.
@@ -445,7 +447,7 @@ Enter a line break between a heading and its content.
 Use bold text to emphasize an important word or phrase, or to create visual separation and callouts (e.g., **Example:**). Do not combine bold with italic.
 
 Use bold text when you refer to the name of a UI section or field. The name should be in bold only if it appears verbatim in the UI. If a UI element, such as a table, is not labeled in the UI, do not bold when you reference the element in the documentation.
-  
+
 To bold a word or phrase, surround the text with two asterisks (`**`).
 
 **Examples:**
@@ -734,8 +736,8 @@ $ go get -u github.com/lib/pq
 ```
 
 Notes for usage:
-  
-- **Copy to Clipboard** should be used for every code block that can be **executed**. 
+
+- **Copy to Clipboard** should be used for every code block that can be **executed**.
 - There must be a line break above the `{% include_cached copy-clipboard.html %}` line.
 
 #### Placeholders
@@ -1086,17 +1088,17 @@ CREATE DATABASE movr PRIMARY REGION "gcp-us-east1" REGIONS "gcp-us-east1", "gcp-
 ```
 
 For more information about the `remote_include` tag, see the README in the [jekyll-remote-include](https://github.com/cockroachdb/jekyll-remote-include) repo.
-  
+
 #### Filter tabs
-  
+
 On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
-  
+
 Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
 
 **Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
 
 The general process to follow and use this is as follows:
-  
+
 1. Identify each page to be linked from a filter tab.
     - Make a note of each HTML page filename (e.g., `install-cockroachdb-mac.html`).
     - Draft a tab name (e.g., `Install on <strong>Mac</strong>`)—the text to display on the tab itself. This supports HTML, not Markdown.
@@ -1111,7 +1113,7 @@ The general process to follow and use this is as follows:
     - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
 3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
-  
+
 #### Technical limitations of include files
 
 Include files have the following technical limitations:
