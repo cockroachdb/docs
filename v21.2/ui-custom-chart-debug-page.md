@@ -17,7 +17,7 @@ To view the Custom Chart page, [access the DB Console](ui-overview.html), click 
 
 On the **Custom Chart** page, you can set the time span for all charts, add new custom charts, and customize each chart:
 
-- To set the time span for the page, use the dropdown menu above the charts and select the desired time span.
+- To set the time span for the page, use the dropdown menu above the charts and select the desired time span. In addition, once you have selected a metric to display, you can drag within the chart itself to a set a custom time range.
 
 - To add a chart, click **Add Chart** and customize the new chart.
 

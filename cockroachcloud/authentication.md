@@ -13,11 +13,11 @@ Users may connect with {{ site.data.products.db }} in two ways:
 
 ## {{ site.data.products.db }} authentication
 
-You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or using [Single Sign-On (SSO) for Cockroach Cloud](cloud-sso.html).
+You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for {{ site.data.products.db }}](cloud-org-sso.html).
 
 {% include cockroachcloud/prefer-sso.md %}
 
-If you have not done so,[create your own free {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
+If you have not done so, [create your own free {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 
 ## Connecting SQL clients
 
@@ -55,5 +55,7 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 
 ## See also
 
+- [Cloud Organization SSO](cloud-org-sso.html)
+- [Configure Cloud Organization SSO](configure-cloud-org-sso.html)
 - [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
 - [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

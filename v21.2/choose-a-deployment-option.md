@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mdash;{{ site.data.products.serverless }} and {{ site.data.products.dedicated }}&mdash;and a self managed option&mdash;CockroachDB Self-Hosted. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb).
+Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mdash;{{ site.data.products.serverless }} and {{ site.data.products.dedicated }}&mdash;and a self managed option&mdash;CockroachDB Self-Hosted. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
 
 <table>
   <tr>

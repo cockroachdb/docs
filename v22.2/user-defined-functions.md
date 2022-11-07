@@ -109,12 +109,8 @@ If you do not specify a schema for the function `add` when you create it, the de
 
 User-defined functions are not supported in:
 
-<!--
-{% include {{ page.version.version }}/known-limitations/udf-changefeed-expression.md %}
--->
-
 {% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
-
+{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
 
 ## See also
 

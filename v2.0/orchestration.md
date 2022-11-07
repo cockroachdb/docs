@@ -2,7 +2,7 @@
 title: Orchestration
 summary: Learn how to run CockroachDB with popular open-source orchestration systems.
 toc: false
-
+canonical: /stable/kubernetes-overview.html
 ---
 
 Orchestration systems automate the deployment, scaling, and management of containerized applications. Combined with CockroachDB's [automated sharding](frequently-asked-questions.html#how-does-cockroachdb-scale) and [fault tolerance](frequently-asked-questions.html#how-does-cockroachdb-survive-failures), they have the potential to lower operator overhead to almost nothing.

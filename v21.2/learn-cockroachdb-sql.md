@@ -200,7 +200,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 
 ## Query a table
 
-To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data. You can also use the [`LIMIT`](https://www.cockroachlabs.com/docs/dev/limit-offset.html) clause to restrict the number of rows retrieved:
+To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data. You can also use the [`LIMIT`](limit-offset.html) clause to restrict the number of rows retrieved:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -7,7 +7,7 @@ To pause all running changefeeds:
 PAUSE JOBS (SELECT job_id FROM [SHOW JOBS] WHERE job_type='CHANGEFEED' AND status IN ('running'));
 ~~~
 
-This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW JOBS`](../v20.2/stream-data-out-of-cockroachdb-using-changefeeds.html#using-show-jobs).
+This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW JOBS`](stream-data-out-of-cockroachdb-using-changefeeds.html#using-show-jobs).
 
 To resume all running changefeeds:
 

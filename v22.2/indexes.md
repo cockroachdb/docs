@@ -28,6 +28,8 @@ Each table automatically has a _primary index_ called `{tbl}_pkey`, which indexe
 
  To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 The primary index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use [secondary indexes](schema-design-indexes.html) to improve the performance of queries using columns not in a table's primary key. You can create them:
 
 <a name="unique-secondary-indexes"></a>

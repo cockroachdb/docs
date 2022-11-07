@@ -2,7 +2,6 @@
 title: CockroachDB Serverless FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless
 toc: true
-redirect_from: free-faqs.html
 docs_area: get_started
 ---
 
@@ -14,7 +13,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### What is {{ site.data.products.serverless }}?
 
-{{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
+{{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
 {{site.data.alerts.callout_success}}
 For a deeper dive into serverless database concepts and how to get started with {{ site.data.products.serverless }}, take the free [Introduction to Serverless Databases and {{ site.data.products.serverless }}](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-serverless+self-paced/about) course on Cockroach University.
@@ -131,7 +130,7 @@ There are some features of CockroachDB that are unsupported or partially support
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). If you [add billing information to your organization](billing-management.html), even if you don't set a spend limit, you can run bulk operations using cloud storage providers. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.
+Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). You must [add billing information to your organization](billing-management.html) to run bulk operations using cloud storage providers, but you can leave your spend limit at the $0 default. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.
 
 {{site.data.alerts.callout_danger}}
 We don't recommend `userfile` for `EXPORT` operations. You can either add billing information to your organization to enable access to cloud storage, or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
@@ -139,11 +138,17 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless }} clusters have access to both [Core Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise Changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html).
+Yes, {{ site.data.products.serverless }} clusters have access to both [Core changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html) once you have [billing information on file](billing-management.html) for your organization, even if you leave your spend limit at the $0 default.
+
+If you don't have [billing information on file](billing-management.html) for your organization, you can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html) or [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html). Once you enter billing information, even if you have a spend limit of $0, you can also [run a changefeed to a configurable sink](../{{site.versions["stable"]}}/changefeed-sinks.html).
+
+{{site.data.alerts.callout_info}}
+Creating a [changefeed](../{{site.versions["stable"]}}/create-and-configure-changefeeds.html) for a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `pq: Outbound IO is disabled by configuration`.
+{{site.data.alerts.end}}
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-The [**Backups** page](backups-page.html) allows you to restore your cluster from automatic full cluster backups, which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of Serverless clusters, or allow database or table level restores from automatic full cluster backups. However, you can also backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+The [**Backups** page](backups-page.html) allows you to restore your cluster from automatic full cluster backups, which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of Serverless clusters, or allow database or table level restores from automatic full cluster backups. However, you can also backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you leave your spend limit at the $0 default, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
 
 {{site.data.alerts.callout_info}}
 Running a [bulk operation](run-bulk-operations.html) to cloud storage from a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `external network access is disabled`.
