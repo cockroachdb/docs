@@ -102,6 +102,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
 - [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 {{site.data.alerts.callout_success}}
 Backups support cloud object locking and [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
@@ -170,6 +172,8 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>

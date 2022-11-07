@@ -14,8 +14,7 @@ This tutorial walks you through the process of deploying a 9-node CockroachDB cl
 
 ### Watch a demo
 
-Watch [this webinar recording](https://www.cockroachlabs.com/webinars/implementation-topologies-for-distributed-sql
-) to see a demonstration of the concepts and features in this tutorial.
+Watch [this webinar recording](https://www.cockroachlabs.com/webinars/implementation-topologies-for-distributed-sql/) to see a demonstration of the concepts and features in this tutorial.
 
 <!-- Older demo video
 <iframe width="640" height="385" src="https://www.youtube.com/embed/TgnQwOOk9Js" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
@@ -33,7 +32,7 @@ Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/c
 
 ### Request a trial license
 
-Some CockroachDB features used in this tutorial require an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise) before you get started.
+Some CockroachDB features used in this tutorial require an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
@@ -343,7 +342,7 @@ Before you can run MovR against the cluster, you must create a `movr` database a
     $ cockroach sql --insecure --host=<address of HAProxy in US East>
     ~~~
 
-3. In the SQL shell, create the `movr` database:    
+3. In the SQL shell, create the `movr` database:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -427,7 +426,7 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
     [INFO] (MainThread) - 4.954505 users/second
     [INFO] (MainThread) - 4.954505 rides/second
     [INFO] (MainThread) - 0.582883 vehicles/second
-    ~~~   
+    ~~~
 
 2. Start MovR in the US East region, representing users in New York. Be sure to point at the address of the US East load balancer:
 
@@ -938,7 +937,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ sql   
+    ~~~ sql
     > ALTER INDEX promo_codes@promo_codes_idx_west
         CONFIGURE ZONE USING
           num_replicas = 3,
@@ -967,7 +966,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
       SELECT * FROM [SHOW RANGES FROM TABLE user_promo_codes]
         WHERE "start_key" NOT LIKE '%Prefix%';
       SELECT * FROM [SHOW RANGES FROM TABLE vehicle_location_histories]
-        WHERE "start_key" NOT LIKE '%Prefix%';      
+        WHERE "start_key" NOT LIKE '%Prefix%';
     ~~~
 
     ~~~
@@ -1110,7 +1109,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
 
 3. Most of the latency reduction is due to the geo-partitioned tables. However, the duplicate indexes approach for the `promo_codes` table is also relevant. To validate that the cost-based optimizer is picking the appropriate leaseholder from reads from `promo_codes` in each region, click **Statements** on the left, select **APP > MOVR-EAST**, and then click the `SELECT FROM promo_codes` statement:
 
-    <img src="{{ 'images/v20.2/geo-partitioning-sql-latency-after-3.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />    
+    <img src="{{ 'images/v20.2/geo-partitioning-sql-latency-after-3.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
     In the "Logical Plan" area, note the `table = promo_codes@promo_codes_idx_east` scan. This proves that the cost-based optimizer used the leaseholder for that index and, thus, didn't leave the region for the instance of MovR running in US East.
 
@@ -1136,11 +1135,11 @@ Given that most of the data in your cluster is geo-partitioned, let's focus on A
 
 3. Back in the DB Console, click **Overview** and note that the cluster now considers that node "suspect":
 
-    <img src="{{ 'images/v20.2/geo-partitioning-resiliency-1.png' | relative_url }}" alt="Geo-partitioning resiliency" style="max-width:100%" />    
+    <img src="{{ 'images/v20.2/geo-partitioning-resiliency-1.png' | relative_url }}" alt="Geo-partitioning resiliency" style="max-width:100%" />
 
 4. Despite the node being unavailable, the MovR instance in US East continues to make progress because the other 2 nodes, each in a distinct AZ, remain available, and all partitions in the region therefore remain available. To verify this, click **Metrics**, select node 1 or 2 from the **Graph** menu, and check that SQL traffic continues on the node:
 
-    <img src="{{ 'images/v20.2/geo-partitioning-resiliency-2.png' | relative_url }}" alt="Geo-partitioning resiliency" style="max-width:100%" />    
+    <img src="{{ 'images/v20.2/geo-partitioning-resiliency-2.png' | relative_url }}" alt="Geo-partitioning resiliency" style="max-width:100%" />
 
 ## See also
 

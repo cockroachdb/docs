@@ -940,6 +940,20 @@ a.btn-primary {
 	        }
 			}
 
+      &#mac-intel {
+
+				&:before {
+					background-image: url(#{$images-url}icon-apple.png);
+	        }
+			}
+
+      &#mac-arm {
+
+				&:before {
+					background-image: url(#{$images-url}icon-apple.png);
+	        }
+			}
+
 			&#linux {
 
 				&:before {

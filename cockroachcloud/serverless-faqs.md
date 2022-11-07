@@ -2,7 +2,6 @@
 title: CockroachDB Serverless FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless
 toc: true
-redirect_from: free-faqs.html
 docs_area: get_started
 ---
 
@@ -140,6 +139,8 @@ We don't recommend `userfile` for `EXPORT` operations. You can either add billin
 ### Is change data capture available to me?
 
 Yes, {{ site.data.products.serverless }} clusters have access to both [Core changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise changefeeds](../{{site.versions["stable"]}}/changefeed-examples.html) once you have [billing information on file](billing-management.html) for your organization, even if you leave your spend limit at the $0 default.
+
+If you don't have [billing information on file](billing-management.html) for your organization, you can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html) or [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html). Once you enter billing information, even if you have a spend limit of $0, you can also [run a changefeed to a configurable sink](../{{site.versions["stable"]}}/changefeed-sinks.html).
 
 {{site.data.alerts.callout_info}}
 Creating a [changefeed](../{{site.versions["stable"]}}/create-and-configure-changefeeds.html) for a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `pq: Outbound IO is disabled by configuration`.

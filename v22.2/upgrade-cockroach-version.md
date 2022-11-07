@@ -134,45 +134,23 @@ We recommend creating scripts to perform these steps instead of performing them 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.version}}**.
+These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.version }}**.
 {{site.data.alerts.end}}
 
-1. [Drain and shut down the node.](node-shutdown.html#perform-node-shutdown)
-
-1. Download and install the CockroachDB binary you want to use:
-
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
       <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
     </div>
 
-    <div class="filter-content" markdown="1" data-scope="mac">
+1. [Drain and shut down the node](node-shutdown.html#perform-node-shutdown).
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.darwin-10.9-amd64.tgz|tar -xzf -
-    ~~~
+1. Visit [What's New in {{ page.version.version }}?](/docs/releases/{{ page.version.version }}.html) and download the **CockroachDB {{ latest.version }} full binary** for your architecture.
 
-    </div>
+1. Extract the archive. In the following instructions, replace `{COCKROACHDB_DIR}` with the path to the extracted archive directory.
 
-    <div class="filter-content" markdown="1" data-scope="linux">
+1. If you have a previous version of the `cockroach` binary in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.linux-amd64.tgz|tar -xzf -
-    ~~~
-
-    </div>
-
-1. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
-
-    <div class="filters clearfix">
-      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
-      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
-    </div>
-    <p></p>
-
-    <div class="filter-content" markdown="1" data-scope="mac">
+    If you get a permission error because the `cockroach` binary is located in a system directory, add `sudo` before each command. The binary will be owned by the effective user, which is `root` if you use `sudo`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -181,54 +159,60 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{latest.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
+    cp -i {COCKROACHDB_DIR}/cockroach /usr/local/bin/cockroach
     ~~~
 
-    </div>
+1. Start the node so that it can rejoin the cluster.
 
     <div class="filter-content" markdown="1" data-scope="linux">
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    i="$(which cockroach)"; mv "$i" "$i"_old
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{latest.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
-    ~~~
-
-    </div>
-
-1. Start the node to have it rejoin the cluster.
 
     Without a process manager like `systemd`, re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
-    --certs-dir=certs \
-    --advertise-addr=<node address> \
-    --join=<node1 address>,<node2 address>,<node3 address>
+    cockroach start \
+        --certs-dir=certs \
+        --advertise-addr={node address} \
+        --join={node1 address},{node2 address},{node3 address}
     ~~~
 
     If you are using `systemd` as the process manager, run this command to start the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ systemctl start <systemd config filename>
+    systemctl start {systemd config filename}
     ~~~
 
-1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [DB Console](ui-cluster-overview-page.html#node-status).
+    </div>
 
-1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
+    <div class="filter-content" markdown="1" data-scope="mac">
+
+    Re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ rm /usr/local/bin/cockroach_old
+    cockroach start \
+        --certs-dir=certs \
+        --advertise-addr={node address} \
+        --join={node1 address},{node2 address},{node3 address}
     ~~~
 
+    </div>
+
+1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [DB Console](ui-cluster-overview-page.html#node-status).
+
+1. If you use `cockroach` in your `$PATH`, you can remove the previous binary:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    rm /usr/local/bin/cockroach_old
+    ~~~
+
+    <div class="filter-content" markdown="1" data-scope="linux">
+
     If you leave versioned binaries on your servers, you do not need to do anything.
+
+    </div>
 
 1. After the node has rejoined the cluster, ensure that the node is ready to accept a SQL connection.
 
@@ -249,7 +233,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
+If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the previous binary.
 
 Once you are satisfied with the new version:
 
@@ -281,7 +265,7 @@ After the upgrade has finalized (whether manually or automatically), it is no lo
 
 1. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
-In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
+In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade.
 
 ## See also
 

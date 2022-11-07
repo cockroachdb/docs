@@ -52,7 +52,12 @@ Before you begin, connect to your cluster. For guidance on connecting to your {{
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
+Cockroach Labs runs the following managed-service backups:
+
+- {{ site.data.products.dedicated }} clusters: [Full cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+- {{ site.data.products.serverless }} clusters: [Full cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) every hour that are retained for 30 days.
+
+For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html). 
 
 The following examples show how to run manual backups and restores:
 

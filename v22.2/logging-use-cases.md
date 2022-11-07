@@ -452,6 +452,40 @@ For example, this JSON message found in the `OPS` logging channel contains a [`n
 
 See the [reference documentation](log-formats.html#format-json-fluent-compact) for details on the remaining JSON fields.
 
+### Network logging with log buffering
+
+A database operator can configure CockroachDB to buffer log messages for a configurable time period or collected message size before writing them to the [log sink](configure-logs.html#configure-log-sinks). This is especially useful for writing log messages to network log sinks, such as [Fluentd-compatible servers](configure-logs.html#output-to-fluentd-compatible-network-collectors) or [HTTP servers](configure-logs.html#output-to-http-network-collectors), where high-traffic or high-contention scenarios can result in log message write latency.
+
+{% include_cached new-in.html version="v22.2" %} Log buffering is enabled by default on the [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destinations, but you may wish to adjust the buffering configuration for these log sinks based on your needs.
+
+For example, the following logging configuration adjusts the default log buffering behavior for both a [Fluentd-compatible](configure-logs.html#output-to-fluentd-compatible-network-collectors) and an [HTTP](configure-logs.html#output-to-http-network-collectors) log sink destination:
+
+~~~ yaml
+fluent-defaults:
+  buffering:
+    flush-trigger-size: 2MiB
+http-defaults:
+  buffering:
+    max-staleness: 10s
+    max-buffer-size: 75MiB
+sinks:
+  fluent-servers:
+    health:
+      channels: HEALTH
+      buffering:
+        flush-trigger-size: 100KB  # Override flush-trigger-size for HEALTH channel only
+  http-servers:
+    health:
+      channels: HEALTH
+      buffering:
+        max-staleness: 2s  # Override max-staleness for HEALTH channel only
+        max-buffer-size: 100MiB # Override max-buffer-size for HEALTH channel only
+~~~
+
+Together, this configuration ensures that log messages to the Fluentd log sink target are buffered for up to `2MiB` in accumulated size, and log messages to the HTTP server log sink target are buffered for up to `10s` duration (with a limit of up to `75MiB` accumulated message size in the buffer before messages begin being dropped), before being written to the log sink. Further, each long sink target is configured with an overridden value for these settings specific to log messages in the `HEALTH` [log channel](logging-overview.html#logging-channels), which are flushed more aggressively in both cases.
+
+See [Log buffering](configure-logs.html#log-buffering-for-network-sinks) for more information.
+
 ## See also
 
 - [Notable Event Types](eventlog.html)

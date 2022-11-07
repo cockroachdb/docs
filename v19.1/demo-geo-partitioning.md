@@ -32,7 +32,7 @@ You'll deploy a 9-node CockroachDB cluster across 3 GCE regions, with each node 
 A few notes:
 
 - For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd) disk.
-- You'll start each node with the [`--locality` flag](start-a-node.html#locality) describing the node's region and availability zone. Before partitioning, this will lead CockroachDB to evenly distribute data across the 3 regions. After partitioning, this information will be used to pin data closer to users.    
+- You'll start each node with the [`--locality` flag](start-a-node.html#locality) describing the node's region and availability zone. Before partitioning, this will lead CockroachDB to evenly distribute data across the 3 regions. After partitioning, this information will be used to pin data closer to users.
 - There will be an extra VM in each region for an instance of your application and the open-source HAProxy load balancer. The application in each region will be pointed at the local load balancer, which will direct connections only to the CockroachDB nodes in the same region.
 
 ### Review the application
@@ -45,7 +45,7 @@ For your application, you'll use our open-source, fictional, peer-to-peer ride-s
 
 A few notes about the schema:
 
-- There are just three self-explanatory tables: `users` represents the people registered for the service, `vehicles` represents the pool of vehicles for the service, and `rides` represents when and where users have rented a vehicle.   
+- There are just three self-explanatory tables: `users` represents the people registered for the service, `vehicles` represents the pool of vehicles for the service, and `rides` represents when and where users have rented a vehicle.
 - Each table has a composite primary key of `city` and `id`, with `city` being first in the key. These compound primary keys will enable you to [geo-partition data at the row level](partitioning.html#partition-using-primary-key) by `city`.
 
 #### The workflow
@@ -92,7 +92,7 @@ The workflow for MovR is as follows:
 
 ## Step 1. Request a trial license
 
-[Geo-partitioning](partitioning.html) is an enterprise feature. For the purpose of this tutorial, [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise) for use with your cluster.
+[Geo-partitioning](partitioning.html) is an enterprise feature. For the purpose of this tutorial, [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) for use with your cluster.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
@@ -337,7 +337,7 @@ Before you can run MovR against the cluster and demonstrate the geo-partitioning
     $ cockroach sql --insecure --host=<address of HAProxy in US East>
     ~~~
 
-3. In the SQL shell, create the `movr` database:    
+3. In the SQL shell, create the `movr` database:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -441,7 +441,7 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.03.
     [INFO] (MainThread) - 4.954505 users/second
     [INFO] (MainThread) - 4.954505 rides/second
     [INFO] (MainThread) - 0.582883 vehicles/second
-    ~~~   
+    ~~~
 
 2. Start MovR in the US East region, representing users in New York. Be sure to point at the address of the US East load balancer:
 
