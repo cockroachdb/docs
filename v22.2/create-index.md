@@ -129,6 +129,26 @@ The preceding example is equivalent to the following PostgreSQL-compatible synta
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
+### Create trigram indexes
+
+You can create [trigram indexes](trigram-indexes.html) on `STRING` columns by specifying the `gin_trgm_ops` or `gist_trgm_ops` opclass:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INVERTED INDEX ON rides(city gin_trgm_ops);
+~~~
+
+The preceding example is equivalent to the following PostgreSQL-compatible syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INDEX trgm_idx ON rides USING GIN (city gin_trgm_ops);
+~~~
+
+{{site.data.alerts.callout_info}}
+GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
+{{site.data.alerts.end}}
+  
 ### Create spatial indexes
 
 You can create [spatial indexes](spatial-indexes.html) on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [GIN index](inverted-indexes.html).
