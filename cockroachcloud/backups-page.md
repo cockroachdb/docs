@@ -37,19 +37,10 @@ A list of your full cluster backups displays on your cluster's **Backups** page.
 For each backup, the following details display:
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-- The date and time the backup was taken (**Data From**)
-- The **Status** of the backup
-- The **Type** of backup
-- The **Size** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
-- The number of [**Databases**](#databases) included in the backup
-
-    To view the databases included in the backup, click the number in the [**Databases**](#databases) column.
+{% include cockroachcloud/ccloud/backup-details-dedicated.md %} 
 </div>
 <div class="filter-content" markdown="1" data-scope="serverless">
-- The date and time the backup was taken (**Data From**)
-- The **Status** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
+{% include cockroachcloud/ccloud/backup-details-serverless.md %} 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
