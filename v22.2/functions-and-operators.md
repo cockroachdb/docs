@@ -81,7 +81,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | 5 | `*` | Multiplication | binary |
 |   | `/` | Division | binary |
 |   | `//` | Floor division | binary |
-|   | `%` | Modulo | binary |
+|   | `%` | Modulo, or text similarity when accessing a `STRING` column. For more information, see [Trigram Indexes](trigram-indexes.html#comparisons). | binary |
 | 6 | `+` | Addition | binary |
 |   | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
