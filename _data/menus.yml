@@ -74,7 +74,7 @@ resources:
         text: "<h3 class='text-primary'>Cockroach <br>University</h3>World-class training and tutorials for beginners and advanced use cases."
 
 resources_learn:
-  - name: Guides & Tech Breifs
+  - name: Guides & Tech Briefs
     url: https://resources.cockroachlabs.com/guides
     weight: 100
   - name: Blog
