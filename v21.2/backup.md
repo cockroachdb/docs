@@ -305,6 +305,8 @@ BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SEC
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
+{% include {{ page.version.version }}/misc/storage-class-glacier-incremental.md %}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="azure">
