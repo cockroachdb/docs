@@ -220,6 +220,7 @@ Name | Help
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
 `storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.
+`storage.marked-for-compaction-files` | Count of SSTables marked for compaction
 `sys.cgo.allocbytes` | Current bytes of memory allocated by cgo
 `sys.cgo.totalbytes` | Total bytes of memory allocated by cgo, but not released
 `sys.cgocalls` | Total number of cgo call
