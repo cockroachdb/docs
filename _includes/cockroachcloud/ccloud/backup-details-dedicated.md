@@ -5,4 +5,4 @@
 - The remaining number of days the backup will be retained (**Expires In**)
 - The number of [**Databases**](../cockroachcloud/backups-page.html?#databases) included in the backup
 
-    To view the databases included in the backup, click the number in the [**Databases**](../cockroachcloud/backups-page.html?#databases) column.
+    To view the databases included in the backup, click the number in the [**Databases**](../cockroachcloud/backups-page.html?#databases) column
