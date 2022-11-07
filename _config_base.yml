@@ -50,6 +50,9 @@ jekyll-minifier:
   simple_doctype: 'false'
   uglifier_args:
     harmony: 'true'
+jekyll_get_json:
+- data: cloud_api_releases
+  json: https://cockroachlabs.cloud/assets/docs/api/manifest.json
 keep_files:
 - _internal
 markdown: Redcarpet
@@ -129,16 +132,13 @@ release_info:
     start_time: 2022-10-28 11:19:45.440335 +0000 UTC
     version: v22.1.10
   v22.2:
-    build_time: 2022-11-01 00:00:00 (go1.18)
+    build_time: 2022-11-07 00:00:00 (go1.18)
     crdb_branch_name: release-22.2
     docker_image: cockroachdb/cockroach-unstable
-    name: v22.2.0-beta.5
-    start_time: 2022-10-26 13:32:16.613955 +0000 UTC
-    version: v22.2.0-beta.5
+    name: v22.2.0-beta.6
+    start_time: 2022-11-03 16:38:50.871587 +0000 UTC
+    version: v22.2.0-beta.6
 sass:
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
-jekyll_get_json:
-  - data: cloud_api_releases
-    json: 'https://cockroachlabs.cloud/assets/docs/api/manifest.json'
