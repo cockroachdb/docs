@@ -35,7 +35,7 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
 
-- You need an API key with `admin` privilege on clusters in your organization. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
+- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts and API keys in the cloud console. Refer to [Service Accounts](console-access-management.html#service-accounts).
 
 {{site.data.alerts.callout_danger}}
 The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
