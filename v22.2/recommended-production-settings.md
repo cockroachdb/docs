@@ -64,7 +64,7 @@ Once you have [sized your cluster](#sizing), derive the amount of RAM, storage c
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
-{% capture cap_per_vcpu %}{% include_cached {{ page.version.version }}/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached v22.1}/prod-deployment/provision-storage.md %}{% endcapture %}
 
 <table>
 <thead>
