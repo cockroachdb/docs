@@ -26,7 +26,9 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 
     GCP                                          | AWS
     ---------------------------------------------|------
-    Frankfurt, Germany (`europe-west3`)          | Montréal, Québec (`ca-central-1`)
+    Frankfurt, Germany (`europe-west3`)          | Osaka, Japan (`ap-northeast-3`)
+                                                 | Montréal, Québec (`ca-central-1`)
+                                                 | Stockholm, Sweden (`eu-north-1`)
 
 <h3> Console changes </h3>
 
