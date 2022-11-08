@@ -15,7 +15,7 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.7](v22.1.html#v22-1-7) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.7](v22.1.html#v22-1-7).
+As of November 7, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10).
 {{site.data.alerts.end}}
 
 ## November 7, 2022
@@ -44,7 +44,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 - Added an icon next to a cluster's name on the [**Billing overview**](../cockroachcloud/billing-management.html) page to indicate when a cluster has been deleted.
 - The [**Database page**](../cockroachcloud/databases-page.html) in the {{ site.data.products.db }} Console now shows the last time table statistics were updated.
-- All newly-created AWS clusters use [`gp3` volumes](https://docs.amazonaws.cn/en_us/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type). Older AWS clusters still use `io1` volumes. AWS `gp3` volumes expose three parameters: storage amount, IOPS, and throughput.
+- All new AWS clusters now use [`gp3` volumes](https://docs.amazonaws.cn/en_us/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type). Previously created AWS clusters still use `io1` volumes. AWS `gp3` volumes expose three parameters: storage amount, IOPS, and throughput.
 
 <h3> Cloud API changes </h3>
 
@@ -52,10 +52,10 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3> Bug fixes </h3>
 
-- The **Sessions** link on the [**Overview**](../cockroachcloud/cluster-overview-page.html) page now redirects to the correct tab on [**SQL Activity**](../cockroachcloud/sessions-page.html) page.
+- The **Sessions** link on the [**Overview**](../cockroachcloud/cluster-overview-page.html) page now redirects to the correct tab on the [**SQL Activity**](../cockroachcloud/sessions-page.html) page.
 - Fixed a bug where stale data caused **Connect** modal errors immediately after creating a {{ site.data.products.serverless }} cluster.
 - Fixed a bug where backup metadata payloads were limited to 4MiB instead of the desired 32MiB.
-- Fixed a bug where the node-aggregated disk low alert was not firing.
+- Fixed a bug where the node-aggregated low disk alert was not firing.
   
 ## October 3, 2022
 
