@@ -278,6 +278,11 @@ You can use workload identities with assume role authentication to run the follo
 - [`IMPORT`](import.html)/[`IMPORT INTO`](import-into.html)
 - [`RESTORE`](restore.html)
 
+There are multiple IAM roles referred to in this section, see the following descriptions:
+
+- _Identity role_: the IAM role you have associated with your Kubernetes service account.
+- _Operation role_: the IAM role to be assumed. This contains the permissions required to complete a CockroachDB operation.
+
 #### Set up AWS workload identity
 
 First of all, it is necessary to create an IAM role for your Kubernetes service account to assume, and then configure your CockroachDB pods to use the service account. We will refer to this IAM role as an "identity role". You can complete all of these steps with Amazon's guide on [IAM roles for service accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
@@ -288,7 +293,7 @@ Once you have an identity role that your CockroachDB nodes can assume, you can c
 
     <img src="{{ 'images/v22.2/aws-wi-arn-copy.png' | relative_url }}" alt="Role summary page showing the ARN copied" style="border:1px solid #eee;max-width:100%" />
 
-1. Create or open the IAM role that your identity role will assume.
+1. Create or open the IAM role (operation role) that your identity role will assume.
 
     a. To create a role, click **Create Role** under the **Roles** menu. Select **Custom trust policy** and then add the ARN of your identity role to the JSON by clicking `Principal`. This will open a dialog box. Select **IAM Roles** for **Principal Type** and paste the ARN. Click **Add Principal** and then **Next**.
 
@@ -304,13 +309,13 @@ Once you have an identity role that your CockroachDB nodes can assume, you can c
     If you already have the role that contains permissions for the bulk operation, ensure that you add the identity role ARN to the role's **Trust Relationships** tab on the **Summary** page.
     {{site.data.alerts.end}}
 
-1. To run the bulk operation, you can use [`implicit` authentication](#implicit-authentication) for your workload identity role and pass the `ASSUME_ROLE` parameter for your bulk operation role. For a backup to Amazon S3:
+1. To run the bulk operation, you can use [`implicit` authentication](#implicit-authentication) for your identity role and pass the `ASSUME_ROLE` parameter for your operation role. For a backup to Amazon S3:
 
     ~~~sql
     BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
     ~~~
 
-    In this SQL statement, `AUTH=implicit` uses the workload identity role to authenticate to the S3 bucket. The workload identity role then assumes the operation IAM role that has permission to write a backup to the S3 bucket.
+    In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to the S3 bucket. The identity role then assumes the operation role that has permission to write a backup to the S3 bucket.
 
 </section>
 
@@ -417,14 +422,14 @@ For this example, both service accounts have already been created. If you need t
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}iam.gserviceaccount.com';
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com';
     ~~~
 
     CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's: 
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}iam.gserviceaccount.com';
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}iam.gserviceaccount.com';
     ~~~
 
     For more information on Google Cloud Storage KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
@@ -453,7 +458,7 @@ When passing a chained role into `BACKUP`, it will follow this pattern with each
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={intermediate service account name}iam.gserviceaccount.com,{final service account name}iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={intermediate service account name}@{project name}.iam.gserviceaccount.com,{final service account name}iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Google Cloud workload identity 
@@ -476,8 +481,8 @@ Service accounts in Google and Kubernetes refer to different resources. See [Goo
 
 Since there are multiple IAM service accounts referred to in this section, see the following descriptions:
 
-- _Identity_: the IAM service account you have associated with your Kubernetes service account.
-- _Operation_: the IAM service account to be assumed. This contains the permissions required to complete a CockroachDB operation (backup, restore, import, export, or changefeed).
+- _Identity service account_: the IAM service account you have associated with your Kubernetes service account.
+- _Operation service account_: the IAM service account to be assumed. This contains the permissions required to complete a CockroachDB operation.
 
 #### Set up Google Cloud workload identity
 
@@ -507,7 +512,7 @@ Once you have an identity service account that your CockroachDB nodes can assume
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
+    BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={operation service account}@{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
     ~~~
 
     In this SQL statement, `AUTH=implicit` uses the workload identity service account to authenticate to the bucket. The workload identity role then assumes the operation service account that has permission to write a backup to the bucket.
