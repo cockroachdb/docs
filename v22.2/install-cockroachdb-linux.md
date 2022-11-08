@@ -17,12 +17,10 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-<h2>Install options</h2>
-
 Use one of the options below to install CockroachDB.
 
 <div id="download-the-binary-linux" class="install-option">
-  <h3>Download the binary</h3>
+  <h2 id="install-binary">Download the binary</h2>
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
   <ol>
     <li>
@@ -101,7 +99,7 @@ true
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h3>Use Kubernetes</h3>
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
 
   <p>To orchestrate CockroachDB using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, use the following tutorials:</p>
 
@@ -113,7 +111,7 @@ true
 </div>
 
 <div id="use-docker-linux" class="install-option">
-  <h3>Use Docker</h3>
+  <h2 id="install-docker">Use Docker</h2>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
 
@@ -153,7 +151,7 @@ true
 </div>
 
 <div id="build-from-source-linux" class="install-option">
-  <h3>Build from Source</h3>
+  <h2 id="install-source">Build from Source</h2>
   <p>See the <a href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source">public wiki</a> for guidance.</p>
 </div>
 
