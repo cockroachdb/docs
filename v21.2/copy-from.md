@@ -33,6 +33,7 @@ Option | Description
 `NULL 'value'` |  The string that represents a `NULL` value in the input data.
 `BINARY` | Copy data from binary format. If `BINARY` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
 `CSV` |  Copy data from CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
+`ESCAPE` | Specify an escape character for quoting the fields in CSV data.
 
 ## Required privileges
 

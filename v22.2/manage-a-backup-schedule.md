@@ -13,6 +13,8 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
+For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:
