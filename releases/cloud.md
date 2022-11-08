@@ -15,9 +15,38 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
+As of November 7, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10).
 {{site.data.alerts.end}}
 
+## November 7, 2022
+
+<h3> General changes </h3>
+
+- The following new regions are now available for all {{ site.data.products.dedicated }} clusters:
+
+    GCP                                          | AWS
+    ---------------------------------------------|------
+    Frankfurt, Germany (`europe-west3`)          | Osaka, Japan (`ap-northeast-3`)
+                                                 | Montréal, Québec (`ca-central-1`)
+                                                 | Stockholm, Sweden (`eu-north-1`)
+
+<h3> Console changes </h3>
+
+- Added an icon next to a cluster's name on the [**Billing overview**](../cockroachcloud/billing-management.html) page to indicate when a cluster has been deleted.
+- The [**Database page**](../cockroachcloud/databases-page.html) in the {{ site.data.products.db }} Console now shows the last time table statistics were updated.
+- All new AWS clusters now use [`gp3` volumes](https://docs.amazonaws.cn/en_us/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type). Previously created AWS clusters still use `io1` volumes. AWS `gp3` volumes expose three parameters: storage amount, IOPS, and throughput.
+
+<h3> Cloud API changes </h3>
+
+- The [Cloud API](../api/cloud/v1.html) documentation now indicates which endpoints are in preview.
+
+<h3> Bug fixes </h3>
+
+- The **Sessions** link on the [**Overview**](../cockroachcloud/cluster-overview-page.html) page now redirects to the correct tab on the [**SQL Activity**](../cockroachcloud/sessions-page.html) page.
+- Fixed a bug where stale data caused **Connect** modal errors immediately after creating a {{ site.data.products.serverless }} cluster.
+- Fixed a bug where backup metadata payloads were limited to 4MiB instead of the desired 32MiB.
+- Fixed a bug where the node-aggregated low disk alert was not firing.
+  
 ## October 3, 2022
 
 <h3> Bug fixes </h3>
