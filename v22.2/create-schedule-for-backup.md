@@ -90,9 +90,18 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 - We recommend that you schedule your backups at a cadence that your cluster can keep up with; for example, if a previous backup is still running when it is time to start the next one, adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
 - To prevent scheduled backups from falling behind, first determine how long a single backup takes and use that as your starting point for the schedule's cadence.
 - Ensure you are monitoring your backup schedule (e.g., [Prometheus](monitor-cockroachdb-with-prometheus.html)) and alerting metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect.
-- Ensure that your [GC window](configure-replication-zones.html#gc-ttlseconds) is long enough to accommodate your backup schedule, otherwise your incremental backups will throw [an error](common-errors.html#protected-ts-verification-error). For example, if you set up your schedule to be `RECURRING '@daily'` but your GC window is less than 1 day, all your incremental backups will fail.
 - The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
 - If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
+
+### Protected timestamps and scheduled backups 
+
+{% include_cached new-in.html version="v22.2" %} Scheduled backups ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of [protected timestamps](architecture/storage-layer.html#protected-timestamps) means that you can run scheduled backups at a cadence independent from the [GC TTL](configure-replication-zones.html#gc-ttlseconds) of the data. This is unlike non-scheduled backups that are tightly coupled to the GC TTL. See [Garbage collection and backups](take-full-and-incremental-backups.html#garbage-collection-and-backups) for more detail.
+
+The data being backed up will not be eligible for garbage collection until a successful backup completes. At this point, the schedule will release the existing protected timestamp record and write a new one to protect data for the next backup that is scheduled to run. It is important to consider that when a scheduled backup fails there will be an accumulation of data until the next successful backup. Resolving the backup failure or [dropping the backup schedule](drop-schedules.html) will make the data eligible for garbage collection once again.
+
+You can also use the `exclude_data_from_backup` option with a scheduled backup as a way to prevent protected timestamps from prolonging garbage collection on a table. See the example [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) for usage information.
+
+We recommend monitoring for your backup schedule to alert for failed backups. See [Set up monitoring for the backup schedule](manage-a-backup-schedule.html#set-up-monitoring-for-the-backup-schedule) for more detail.
 
 ## View and control backup schedules
 

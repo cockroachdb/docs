@@ -28,7 +28,10 @@ Backup / Restore Type             | Description                                 
 [Encrypted backup and restore](take-and-restore-encrypted-backups.html)      | An encrypted backup using a KMS or passphrase.                                                                                                               | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
 [Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup.                              | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
 [Scheduled backup](manage-a-backup-schedule.html)                  | A schedule for periodic backups.                                                                                                                             | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)  
-[Automated backup](../cockroachcloud/backups-page.html)                 | Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB Cloud cluster.                                                   | {{ site.data.products.db }} clusters                                                                                                                                     
+[Automated backup](../cockroachcloud/backups-page.html)                 | Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB Cloud cluster.                                                   | {{ site.data.products.db }} clusters    
+
+{% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
 ## Backup and restore SQL statements
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
