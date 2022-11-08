@@ -9,6 +9,7 @@ docs_area: reference.db_console
 
 - [Scheduled backups](manage-a-backup-schedule.html)
 - [Scheduled auto statistics compaction](cost-based-optimizer.html#table-statistics)
+- [Row-level TTL](row-level-ttl.html)
 
 To view these details, [access the DB console](ui-overview.html#db-console-access) and click **Schedules** in the left-hand navigation.
 
@@ -44,6 +45,8 @@ Creation Time        | The time at which the user originally created the schedul
 Click on a schedule ID to view the full SQL statement that the schedule runs. For example, the following screenshot shows the resulting [`BACKUP`](backup.html) statement for a full cluster backup recurring every day:
 
 <img src="{{ 'images/v22.2/schedule-id-screen.png' | relative_url }}" alt="UI for each individual schedule ID displaying the CREATE SCHEDULE SQL statement" style="border:1px solid #eee;max-width:100%" />
+
+You may also view a `protected_timestamp_record` on this page. This indicates that the schedule is actively managing its own [protected timestamp](architecture/storage-layer.html#protected-timestamps) records independently of [GC TTL](configure-replication-zones.html#gc-ttlseconds). See [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) for more detail.
 
 ## See also
 
