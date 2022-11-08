@@ -109,7 +109,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 
 - The [**Connect to your cluster**](../{{site.versions["stable"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["stable"]}}/third-party-database-tools.html).
 - The [**Connect to your cluster**](../cockroachcloud/connect-to-a-serverless-cluster.html) dialog for clusters running CockroachDB [v22.1](v22.1.html) now loads more quickly.
-- If users log in using an [SSO](../cockroachcloud/cloud-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
+- If users log in using an [SSO](../cockroachcloud/cloud-org-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
 - Previously, {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](../cockroachcloud/plan-your-cluster.html?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.
 - The date and time selection on the [**Statements**](../cockroachcloud/statements-page.html) and [**Transactions**](../cockroachcloud/transactions-page.html) pages now defaults to UTC and has an improved design.
 
@@ -122,7 +122,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 <h3>General changes</h3>
 
 - [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
-- [Single Sign-On (SSO)](../cockroachcloud/cloud-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
+- [Cloud Organization Single Sign-On (SSO)](../cockroachcloud/cloud-org-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
 
 <h3>Console changes</h3>
 
@@ -144,7 +144,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 <h3>Console changes</h3>
 
 - Added **Distributed execution** and **Vectorized execution** information to the **Overview** tab of the **Statement Details** page.
-- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.  
+- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.
 - Users without accounts can now accept invitations by creating a user using SSO-based authorization such as GitHub.
 - Timeseries charts are now displayed in UTC.
 
@@ -298,7 +298,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 
 <h3>Bug fixes</h3>
 
-- Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-free-cluster.html) clusters.
+- Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-serverless-cluster.html) clusters.
 
 <h3>Miscellaneous changes</h3>
 

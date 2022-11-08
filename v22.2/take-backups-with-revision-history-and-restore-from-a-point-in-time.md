@@ -16,7 +16,9 @@ You can create full or incremental backups [with revision history](backup.html#w
 - Taking full backups with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.
 - Taking incremental backups with revision history allows you to back up every change made since the last backup and within the garbage collection period leading up to and including the given timestamp. You can take incremental backups with revision history even when your previous full or incremental backups were taken without revision history.
 
-You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history.
+You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history. 
+
+{% include {{ page.version.version }}/backups/pts-schedules-incremental.md %}
 
 ## Create a backup with revision history
 

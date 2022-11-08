@@ -132,9 +132,9 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e.,  ahead of this transaction's timestamp); however, this only succeeds if the write intent's transaction has become inactive.
   	- If the push succeeds, the operation continues.
   	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
-- `MISSING`, the resolver consults the write intent's timestamp. 
-	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created. 
-	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior. 
+- `MISSING`, the resolver consults the write intent's timestamp.
+	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created.
+	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior.
 
     Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records](transaction-layer.html#transaction-records).
 
@@ -156,7 +156,7 @@ The leaseholder then proposes these Raft operations to the Raft group leader. Th
 
 ## Raft Leader
 
-CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft](https://www.cockroachlabs.com/docs/v2.1/architecture/replication-layer.html#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
+CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft](replication-layer.html#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
 
 In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in the storage engine.
 

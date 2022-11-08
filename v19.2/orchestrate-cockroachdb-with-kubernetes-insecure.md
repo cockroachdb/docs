@@ -3,6 +3,7 @@ title: Orchestrate CockroachDB in a Single Kubernetes Cluster (Insecure)
 summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
+canonical: /stable/deploy-cockroachdb-with-kubernetes-insecure.html
 ---
 
 <div class="filters filters-big clearfix">
@@ -165,7 +166,7 @@ To shut down the CockroachDB cluster:
         {% include copy-clipboard.html %}
         ~~~ shell
         $ eksctl delete cluster --name cockroachdb
-        ~~~    
+        ~~~
     - Manual GCE:
 
         {% include copy-clipboard.html %}

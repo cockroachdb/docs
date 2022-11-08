@@ -16,9 +16,7 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
-{{site.data.alerts.callout_success}}
- You can create [schedules for periodic backups](manage-a-backup-schedule.html) in CockroachDB. We recommend using scheduled backups to automate daily backups of your cluster.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
 ## Backup collections
 
@@ -153,6 +151,8 @@ If your cluster grows too large for nightly [full backups](#full-backups), you c
 
 Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
+If you are taking backups on a regular cadence, we recommend [creating a schedule](create-schedule-for-backup.html) for your backups.
+
 ### Garbage collection and backups
 
 Incremental backups with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#create-a-backup-with-revision-history) are created by finding what data has been created, deleted, or modified since the timestamp of the last backup in the chain of backups. For the first incremental backup in a chain, this timestamp corresponds to the timestamp of the base [(full) backup](#full-backups). For subsequent incremental backups, this timestamp is the timestamp of the previous incremental backup in the chain.
@@ -162,6 +162,8 @@ Incremental backups with [revision history](take-backups-with-revision-history-a
 We recommend configuring the garbage collection period to be at least the frequency of incremental backups and ideally with a buffer to account for slowdowns. You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html#gc-ttlseconds).
 
 If an incremental backup is created outside of the garbage collection period, you will receive a `protected ts verification error…`. To resolve this issue, see the [Common Errors](common-errors.html#protected-ts-verification-error) page.
+
+{% include {{ page.version.version }}/backups/pts-schedules-incremental.md %}
 
 ### Take an incremental backup
 
