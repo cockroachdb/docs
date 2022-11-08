@@ -17,12 +17,10 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-<h2>Install options</h2>
-
 Use one of the options below to install CockroachDB.
 
 <div id="download-the-binary-windows" class="install-option">
-  <h3>Download the executable</h3>
+  <h2 id="install-binary">Download the executable</h2>
 
   {% include windows_warning.md %}
 
@@ -52,13 +50,13 @@ Use one of the options below to install CockroachDB.
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h3>Use Kubernetes</h3>
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
 
   <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
 </div>
 
 <div id="use-docker-windows" class="install-option">
-  <h3>Use Docker</h3>
+  <h2 id="install-docker">Use Docker</h2>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
 
