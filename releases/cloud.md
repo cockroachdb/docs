@@ -26,19 +26,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 
     GCP                                          | AWS
     ---------------------------------------------|------
-    Osaka, Japan (`asia-northeast2`)             | Osaka, Japan (`ap-northeast-3`)
-    Seoul, South Korea (`asia-northeast3`)       | Montréal, Québec (`ca-central-1`)
-    Mumbai, India (`asia-south1`)                | Stockholm, Sweden (`eu-north-1`)
-    Delhi, India (`asia-south2`)                 |
-    Jakarta, Indonesia (`asia-southeast2`)       |
-    Melbourne, Australia (`australia-southeast2`)|
-    Warsaw, Poland (`europe-central2`)           |
-    Hamina, Finland (`europe-north1`)            |
-    Frankfurt, Germany (`europe-west3`)          |
-    Zurich, Switzerland (`europe-west6`)         |
-    Toronto, Ontario (`northamerica-northeast2`) |
-    Salt Lake City, Utah (`us-west3`)            |
-    Las Vegas, Nevada (`us-west4`)               |
+    Frankfurt, Germany (`europe-west3`)          | Montréal, Québec (`ca-central-1`)
 
 <h3> Console changes </h3>
 
