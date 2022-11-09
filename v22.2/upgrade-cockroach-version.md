@@ -10,7 +10,7 @@ docs_area: manage
 {% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
 {% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
 {% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
-{% assign actual_latest_prod = site.data.releases | where: "release_type", "Production" | sort: "release_date" | last %}
+{% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
@@ -115,7 +115,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.2';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '22.1';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
