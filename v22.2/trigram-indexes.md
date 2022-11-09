@@ -16,9 +16,9 @@ Some PostgreSQL syntax and features are currently unsupported. For details, see 
 
 ## How do trigram indexes work?
 
-Trigram indexes separate strings into trigrams. A trigram is a group of three consecutive characters in a string that is used to [measure the similarity of two strings](https://www.postgresql.org/docs/current/pgtrgm.html). 
+Trigram indexes separate strings into trigrams. A trigram is a group of three consecutive characters (including spaces) in a string that is used to [measure the similarity of two strings](https://www.postgresql.org/docs/current/pgtrgm.html). 
 
-For example, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions) to display the trigrams for a string (in this example, `word`):
+For example, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions) to display all of the possible trigrams for a string (in this example, `word`):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -63,12 +63,6 @@ Fuzzy string matching, as well as `LIKE` and `ILIKE` pattern matching, can be ve
 
 To create a trigram index, use the [`CREATE INDEX`](create-index.html) syntax that defines an [inverted index](inverted-indexes.html), specifying a `STRING` column and the `gin_trgm_ops` or `gist_trgm_ops` opclass. It is necessary to specify an opclass in order to enable [trigram-based comparisons](#comparisons).
 
-- Using `CREATE INVERTED INDEX`:
-
-  ~~~ sql
-  CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
-  ~~~
-
 - Using the PostgreSQL-compatible syntax:
 
   ~~~ sql
@@ -82,6 +76,12 @@ To create a trigram index, use the [`CREATE INDEX`](create-index.html) syntax th
   {{site.data.alerts.callout_info}}
   GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
   {{site.data.alerts.end}}
+
+- Using `CREATE INVERTED INDEX`:
+
+  ~~~ sql
+  CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
+  ~~~
 
 ### Comparisons
 
@@ -333,7 +333,7 @@ EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
 
 ## Unsupported features
 
-The following PostgreSQL syntax and features are currently unsupported:
+The following PostgreSQL syntax and features are currently unsupported. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41285).
 
 - `word_similarity()` matching.
 - `strict_word_similarity()` matching.

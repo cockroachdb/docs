@@ -119,14 +119,14 @@ You can create [GIN indexes](inverted-indexes.html) on schemaless data in a [`JS
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE INVERTED INDEX ON promo_codes (rules);
+> CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
-The preceding example is equivalent to the following PostgreSQL-compatible syntax:
+The following syntax is equivalent:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON promo_codes USING GIN (rules);
+> CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
 
 ### Create trigram indexes
@@ -135,14 +135,14 @@ You can create [trigram indexes](trigram-indexes.html) on `STRING` columns by sp
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE INVERTED INDEX ON rides(city gin_trgm_ops);
+CREATE INDEX ON rides USING GIN (vehicle_city gin_trgm_ops);
 ~~~
 
-The preceding example is equivalent to the following PostgreSQL-compatible syntax:
+The following syntax is equivalent:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE INDEX trgm_idx ON rides USING GIN (city gin_trgm_ops);
+CREATE INVERTED INDEX ON rides(vehicle_city gin_trgm_ops);
 ~~~
 
 {{site.data.alerts.callout_info}}
