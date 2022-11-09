@@ -143,9 +143,7 @@ URI Parameter      | Description
 
 ## Webhook sink
 
-{{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. For more information, read about its usage considerations, available [parameters](create-changefeed.html#parameters), and [options](create-changefeed.html#options) below.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 {% include_cached new-in.html version="v21.2" %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
