@@ -68,6 +68,14 @@ The following binaries are not suitable for production environments:
             {% endif %}
         {% endfor %}
 
+        {% assign v_docker_arm = "false" %}
+        {% for r in releases %}
+            {% if r.docker_arm == "true" %}
+                {% assign v_docker_arm = "true" %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+
         {% if releases[0] %}
 ### {{ s }} Releases
 
@@ -215,6 +223,9 @@ The following binaries are not suitable for production environments:
 
 <section class="filter-content" data-scope="docker">
     <p>Docker images for CockroachDB are published on <a class="external" href="https://hub.docker.com/r/cockroachdb/cockroach/tags)">Docker Hub</a>.</p>
+        {% if v_docker_arm == "true" %}
+    <p><a href="https://docs.docker.com/build/building/multi-platform/">Multi-platform images</a> include support for both Intel and ARM. ARM support is <b>experimental</b> and is not yet qualified for production use.</p>
+        {% endif %}
     <table class="release-table">
     <thead>
         <tr>
@@ -240,7 +251,7 @@ The following binaries are not suitable for production environments:
                     {% if r.no_source == "true" %}
                 N/A
                     {% else %}
-                <code>cockroachdb/cockroach{% if r.version contains "-" %}-unstable{% endif %}:{{ r.version }}</code>
+                <b>Intel{% if r.docker_arm == "true" %}/ARM{% endif %}</b>: <code>{{ r.docker_image }}:{{ r.version }}</code>
                     {% endif %}
             </td>
         {% endif %}
