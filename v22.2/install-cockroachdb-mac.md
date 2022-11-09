@@ -28,7 +28,7 @@ Use one of the options below to install CockroachDB.
 <div id="use-homebrew" class="install-option">
 
   <h2 id="install-homebrew">Use Homebrew</h2>
-  {{ arch_note_homebrew }}
+  {% comment %} TODO: Uncomment at v22.2.0 GA{{ arch_note_homebrew }}{% endcomment %}
   <ol>
     <li>
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
