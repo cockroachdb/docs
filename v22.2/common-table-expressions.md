@@ -295,7 +295,7 @@ SELECT * FROM cte LIMIT 10;
 (10 rows)
 ~~~
 
-While this practice works for testing and debugging, Cockroach Labs does not recommend it in production.
+While adding a limit to prevent infinite recursion works for testing and debugging, Cockroach Labs does not recommend it in production. It is best practice to ensure that recursive subqueries have an explicit end condition.
 
 ### Loose index scan using a recursive CTE
 
@@ -323,7 +323,25 @@ Create an index:
 CREATE INDEX ON test (n);
 ~~~
 
-A simple statement that counts the number of distinct values will read every row in the index:
+Issue a statement to count the number of distinct values:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT COUNT(DISTINCT n) FROM test;
+~~~
+
+~~~
+SELECT COUNT(DISTINCT n) FROM test;
+  count
+---------
+     10
+(1 row)
+
+
+Time: 273ms total (execution 273ms / network 0ms)
+~~~
+
+This statement has a high latency because it reads every row in the index.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -350,7 +368,7 @@ EXPLAIN ANALYZE SELECT COUNT(DISTINCT n) FROM test;
             spans: FULL SCAN
 ~~~
 
-This statement will have a high latency. Instead, use a recursive CTE to perform a loose index scan:
+Instead, use a recursive CTE to perform a loose index scan:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -362,7 +380,7 @@ WITH RECURSIVE temp (i) AS (
 SELECT COUNT(*) FROM temp;
 ~~~
 
-The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](order-by.html) clauses to select the lowest value in the table. The recursive subquery uses an [inner join](join.html#inner-joins) to select the next lowest value until all unique values are retrieved. To get the number of distinct values in table `test`, you only need to count the number of values returned by the recursive CTE:
+The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](order-by.html) clauses to select the lowest value in the table. The recursive subquery uses an [inner join](joins.html#inner-joins) to select the next lowest value until all unique values are retrieved. To get the number of distinct values in table `test`, you only need to count the number of values returned by the recursive CTE:
 
 ~~~
   count
@@ -374,7 +392,7 @@ The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](orde
 Time: 13ms total (execution 13ms / network 0ms)
 ~~~
 
-The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest:
+The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
