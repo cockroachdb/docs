@@ -178,7 +178,7 @@ To survive region failures, you must add at least 3 [database regions](#database
 
 ## Table localities
 
-_Table locality_ determines how CockroachDB optimizes access to the table's data from that locality. Every table in a multi-region database has a "table locality setting". By default, all tables in a multi-region database are _regional_ tables -- that is, CockroachDB optimizes access to the table's data from a single region (by default, the database's primary region).
+_Table locality_ determines how CockroachDB optimizes access to the table's data from that locality. Every table in a multi-region database has a "table locality setting". By default, all tables in a multi-region database are _regional_ tables—that is, CockroachDB optimizes access to the table's data from a single region (by default, the database's primary region).
 
 For information about the table localities CockroachDB supports, see the sections:
 
