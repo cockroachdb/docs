@@ -18,6 +18,11 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
+    
+    {{site.data.alerts.callout_info}}
+    You can also select up to 3 regions with 3 nodes per region if you want to create a [multi-region](plan-your-cluster.html#multi-region-clusters) trial cluster.
+    {{site.data.alerts.end}}
+    
 1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
 
     {{site.data.alerts.callout_info}}
