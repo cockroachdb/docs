@@ -72,11 +72,7 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 
 ### Schedule options
 
-{{site.data.alerts.callout_danger}}
-**This is an experimental feature.**  Its interface, options, and outputs are subject to change, and there may be bugs.
-
-If you encounter a bug, please [file an issue](file-an-issue.html).
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
  Option                     | Value                                   | Description
 ----------------------------+-----------------------------------------+------------------------------
