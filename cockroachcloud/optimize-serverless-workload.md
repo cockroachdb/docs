@@ -23,13 +23,14 @@ To understand these resources, you need to understand a bit about the {{ site.da
 
 **Storage layer I/O** includes the read and write requests sent by the SQL layer to the storage layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using these equivalencies:
 
-  - 1 RU = 8 storage read requests
-  - 1 RU = 64 KiB request payload (prorated)
   - 1 RU = 2 storage read batches
+  - 1 RU = 8 storage read requests
+  - 1 RU = 64 KiB read request payload (prorated)
+
   - 1 RU = 1 storage write batch
   - 1 RU = 1 storage write request
-  - 1 RU = 1 KiB request payload (prorated)
-  
+  - 1 RU = 1 KiB write request payload (prorated)
+
 ### Example Request Unit calculation
 
 Say you have a simple key-value pair table with a secondary index:
