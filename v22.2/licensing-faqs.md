@@ -160,3 +160,7 @@ The CockroachDB team is committed to supporting the open-source community and wi
 ### Can I fork the CockroachDB project pre-BSL and create my own CockroachDB derivative with a different license?
 
 You can fork any historical version of CockroachDB in your own project, as allowed by the license available for that version, and modify it for your purpose. Note however that only the copyright holder (Cockroach Labs) can relicense the components that you forked from: your derivative will need to keep the original license at the time of the fork. Any component you copy from a BSL-licensed CockroachDB into your project will make the BSL apply to your project as well.
+
+### If Cockroach Labs is making available software to me under the Business Source License (BSL), does Cockroach Labs grant me any patent rights?
+
+The BSL does not explicitly reference patents in the text of the license. However, Cockroach Labs believes that the BSL includes an implied patent license and intends that in this case the BSL include an implied patent license under those patent claims that are licenseable by Cockroach Labs which are necessarily infringed by any permitted use of the BSL licensed software alone.
