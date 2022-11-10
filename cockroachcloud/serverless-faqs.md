@@ -104,6 +104,10 @@ Yes. All data on {{ site.data.products.db }} is encrypted-at-rest using the tool
 
 Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
 
+### Is there a public API for {{ site.data.products.db }}?
+
+Yes, see the [Cloud API](cloud-api.html) page for more information. Note that the Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer), and we do not currently support an HTTP data API. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
 {{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters. For more information, see [{{ site.data.products.serverless }} Architecture](architecture.html).
