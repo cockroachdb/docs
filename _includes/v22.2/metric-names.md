@@ -147,6 +147,8 @@ Name | Help
 `rangevalbytes` | Number of bytes taken up by range key values (e.g. MVCC range tombstones)
 `rangevalcount` | Count of all range key values (e.g. MVCC range tombstones)
 `rebalancing.readbytespersecond` | Average number of bytes written recently per second
+`rebalancing.readspersecond` | Average number of keys read recently per second
+`rebalancing.requestspersecond` | Average number of requests received recently per second
 `rebalancing.writebytespersecond` | Average number of bytes read recently per second
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
