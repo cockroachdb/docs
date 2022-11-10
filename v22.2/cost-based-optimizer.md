@@ -213,7 +213,7 @@ You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [
 
 In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
 
-Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. In this case, it performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
+Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. Unless [queries are limited to a single region](control-whether-queries-are-limited-to-a-single-region), CockroachDB performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
 
 {{site.data.alerts.callout_info}}
 The asynchronous parallel lookup behavior does not occur if you [disable vectorized execution](vectorized-execution.html#configure-vectorized-execution).
@@ -227,11 +227,13 @@ Locality optimized search is supported for scans that are guaranteed to return 1
 
 {% include {{page.version.version}}/sql/locality-optimized-search-virtual-computed-columns.md %}
 
-## Control whether the optimizer creates a plan with a remote region
+## Control whether queries are limited to a single region
 
 Although the optimizer prefers to [read from columns in local regions](locality-optimized-search-in-multi-region-clusters) when possible, by default, it does not guarantee that any query will not visit a remote region. This can occur if a query has no home region (for example, if it reads from different home regions in a [regional by row table](multiregion-overview.html#regional-by-row-tables)) or a query's home region differs from the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) region.
 
-For some latency-sensitive applications, cross-region latency may not be acceptable. In these cases, set the [`enforce_home_region` session variable](show-vars.html#enforce-home-region) to `on`. This configures the optimizer to return an error and in some cases a suggested resolution if a query cannot be run entirely in a single region. 
+For some latency-sensitive applications, cross-region latency may not be acceptable. In these cases, set the [`enforce_home_region` session variable](show-vars.html#enforce-home-region) to `on`. This configures the optimizer to return an error and in some cases a suggested resolution if a query cannot be run entirely in a single region.
+
+Only tables with `ZONE` [survivability](when-to-use-zone-vs-region-survival-goals.html) can be scanned without error when this setting is enabled.
 
 ## Query plan cache
 
