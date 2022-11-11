@@ -70,7 +70,7 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
-`DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
+`DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the backup job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 
 ### Backup file URLs
 
@@ -330,7 +330,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 RESTORE TABLE bank.customers FROM LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the backup job creation completes: 
 
 ~~~
         job_id
@@ -531,7 +531,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 > RESTORE FROM LATEST IN 'azure://{container name}/{path/to/backup}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the backup job creation completes: 
 
 ~~~
         job_id
@@ -737,7 +737,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the backup job creation completes: 
 
 ~~~
         job_id
