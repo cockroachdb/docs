@@ -69,7 +69,7 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 <a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions](multiregion-overview.html#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
-`DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
+`DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore [job creation](backup-architecture.html#job-creation-phase) completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
 `incremental_location`<a name="incr-location"></a> | [`STRING`](string.html) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
 <a name="new-db-name"></a>`new_db_name`                             | Database name                                 | Rename a database during a restore with `RESTORE DATABASE movr ... WITH new_db_name = new_movr`. The existing backed-up database can remain active while the same database is restored with a different name. <br><br> See [Rename a database on restore](#rename-a-database-on-restore).
@@ -360,7 +360,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the restore [job creation](backup-architecture.html#job-creation-phase) completes:
 
 ~~~
         job_id
@@ -577,7 +577,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 > RESTORE FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the restore [job creation](backup-architecture.html#job-creation-phase) completes:
 
 ~~~
         job_id
@@ -795,7 +795,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 > RESTORE FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH DETACHED;
 ~~~
 
-The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the restore [job creation](backup-architecture.html#job-creation-phase) completes:
 
 ~~~
         job_id
