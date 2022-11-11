@@ -15,7 +15,7 @@ To view these details, [access the DB console](ui-overview.html#db-console-acces
 
 ## Filter schedules
 
-- Use the **Status** menu to filter schedules by schedule status.
+- Use the **Status** menu to filter schedules by schedule status, displaying all schedules, only active schedules, or only paused schedules.
 - Use the **Show** menu to toggle displaying the latest 50 schedules or all schedules on the cluster.
 
 ## Schedules list 
@@ -34,11 +34,11 @@ Column               | Description
 Schedule ID          | The unique ID for the schedule. This is used to [pause](pause-schedules.html), [resume](resume-schedules.html), and [drop](drop-schedules.html) schedules.
 Label                | The label given to the schedule on creation.
 Status               | The current status of the schedule, **Active** or **Paused**.
-Next Execution Time  | The next time at which the scheduled task will run.
+Next Execution Time (UTC)  | The next time at which the scheduled task will run.
 Recurrence           | How often the schedule will run.
 Jobs Running         | The number of jobs currently running for that schedule.
 Owner                | The user that created the schedule.
-Creation Time        | The time at which the user originally created the schedule.
+Creation Time (UTC)       | The time at which the user originally created the schedule.
 
 ## Schedule details
 
