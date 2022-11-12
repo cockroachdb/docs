@@ -133,6 +133,12 @@ Name | Help
 `range.adds` | Number of range additions
 `range.raftleadertransfers` | Number of Raft leader transfers
 `range.removes` | Number of range removals
+`range.snapshots.recv-in-progress` | Number of non-empty snapshots in progress on a receiver store
+`range.snapshots.recv-queue` | Number of queued non-empty snapshots on a receiver store
+`range.snapshots.recv-total-in-progress` | Number of empty and non-empty snapshots in progress on a receiver store
+`range.snapshots.send-in-progress` | Number of non-empty snapshots in progress on a sender store
+`range.snapshots.send-queue` | Number of queued non-empty snapshots on a sender store
+`range.snapshots.send-total-in-progress` | Number of empty and non-empty in-progress snapshots on a sender store
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
 `range.snapshots.preemptive-applied` | Number of applied preemptive snapshots

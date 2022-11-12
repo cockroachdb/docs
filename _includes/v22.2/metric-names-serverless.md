@@ -29,8 +29,8 @@ Name | Description
 `distsender.rpc.sent.nextreplicaerror` | Number of replica-addressed RPCs sent due to per-replica errors
 `distsender.rpc.sent` | Number of replica-addressed RPCs sent
 `exec.error` | Number of batch KV requests that failed to execute on this node. This count excludes transaction restart/abort errors. However, it will include other errors expected during normal operation, such as ConditionFailedError. This metric is thus not an indicator of KV health.
-`exec.latency` | Latency of batch KV requests (including errors) executed on this node. This measures requests already addressed to a single replica, from the moment at which they arrive at the internal gRPC endpoint to the moment at which the response (or an error) is returned. This latency includes in particular commit waits, conflict resolution and replication, and end-users can easily produce high measurements via long-running transactions that conflict with foreground traffic. This metric thus does not provide a good signal for understanding the health of the KV layer. 
-`exec.success` | Number of batch KV requests executed successfully on this node. A request is considered to have executed 'successfully' if it either returns a result or a transaction restart/abort error. 
+`exec.latency` | Latency of batch KV requests (including errors) executed on this node. This measures requests already addressed to a single replica, from the moment at which they arrive at the internal gRPC endpoint to the moment at which the response (or an error) is returned. This latency includes in particular commit waits, conflict resolution and replication, and end-users can easily produce high measurements via long-running transactions that conflict with foreground traffic. This metric thus does not provide a good signal for understanding the health of the KV layer.
+`exec.success` | Number of batch KV requests executed successfully on this node. A request is considered to have executed 'successfully' if it either returns a result or a transaction restart/abort error.
 `gcbytesage` | Cumulative age of non-live data
 `gossip.bytes.received` | Number of received gossip bytes
 `gossip.bytes.sent` | Number of sent gossip bytes
@@ -112,10 +112,10 @@ Name | Description
 `queue.tsmaintenance.processingnanos` | Nanoseconds spent processing replicas in the time series maintenance queue
 `raft.commandsapplied` | Count of Raft commands applied. This measurement is taken on the Raft apply loops of all Replicas (leaders and followers alike), meaning that it does not measure the number of Raft commands *proposed* (in the hypothetical extreme case, all Replicas may apply all commands through snapshots, thus not increasing this metric at all). Instead, it is a proxy for how much work is being done advancing the Replica state machines on this node.
 `raft.heartbeats.pending` | Number of pending heartbeats and responses waiting to be coalesced
-`raft.process.commandcommit.latency` | Latency histogram for applying a batch of Raft commands to the state machine. This metric is misnamed: it measures the latency for *applying* a batch of committed Raft commands to a Replica state machine. This requires only non-durable I/O (except for replication configuration changes). Note that a "batch" in this context is really a sub-batch of the batch received for application during raft ready handling. The 'raft.process.applycommitted.latency' histogram is likely more suitable in most cases, as it measures the total latency across all sub-batches (i.e. the sum of commandcommit.latency for a complete batch). 
-`raft.process.logcommit.latency` | Latency histogram for committing Raft log entries to stable storage. This measures the latency of durably committing a group of newly received Raft entries as well as the HardState entry to disk. This excludes any data processing, i.e. we measure purely the commit latency of the resulting Engine write. Homogeneous bands of p50-p99 latencies (in the presence of regular Raft traffic), make it likely that the storage layer is healthy. Spikes in the latency bands can either hint at the presence of large sets of Raft entries being received, or at performance issues at the storage layer. 
+`raft.process.commandcommit.latency` | Latency histogram for applying a batch of Raft commands to the state machine. This metric is misnamed: it measures the latency for *applying* a batch of committed Raft commands to a Replica state machine. This requires only non-durable I/O (except for replication configuration changes). Note that a "batch" in this context is really a sub-batch of the batch received for application during raft ready handling. The 'raft.process.applycommitted.latency' histogram is likely more suitable in most cases, as it measures the total latency across all sub-batches (i.e. the sum of commandcommit.latency for a complete batch).
+`raft.process.logcommit.latency` | Latency histogram for committing Raft log entries to stable storage. This measures the latency of durably committing a group of newly received Raft entries as well as the HardState entry to disk. This excludes any data processing, i.e. we measure purely the commit latency of the resulting Engine write. Homogeneous bands of p50-p99 latencies (in the presence of regular Raft traffic), make it likely that the storage layer is healthy. Spikes in the latency bands can either hint at the presence of large sets of Raft entries being received, or at performance issues at the storage layer.
 `raft.process.tickingnanos` | Nanoseconds spent in store.processRaft() processing replica.Tick()
-`raft.process.workingnanos` | Nanoseconds spent in store.processRaft() working. This is the sum of the measurements passed to the raft.process.handleready.latency histogram. 
+`raft.process.workingnanos` | Nanoseconds spent in store.processRaft() working. This is the sum of the measurements passed to the raft.process.handleready.latency histogram.
 `raft.rcvd.app` | Number of MsgApp messages received by this store
 `raft.rcvd.appresp` | Number of MsgAppResp messages received by this store
 `raft.rcvd.dropped` | Number of incoming Raft messages dropped (due to queue length or size)
@@ -136,6 +136,13 @@ Name | Description
 `range.raftleadertransfers` | Number of raft leader transfers
 `range.removes` | Number of range removals
 `range.snapshots.generated` | Number of generated snapshots
+`range.snapshots.recv-in-progress` | Number of non-empty snapshots in progress on a receiver store
+`range.snapshots.recv-queue` | Number of queued non-empty snapshots on a receiver store
+`range.snapshots.recv-total-in-progress` | Number of empty and non-empty snapshots in progress on a receiver store
+`range.snapshots.send-in-progress` | Number of non-empty snapshots in progress on a sender store
+`range.snapshots.send-queue` | Number of queued non-empty snapshots on a sender store
+`range.snapshots.send-total-in-progress` | Number of empty and non-empty in-progress
+snapshots on a sender store
 `range.splits` | Number of range splits
 `ranges.overreplicated` | Number of ranges with more live replicas than the replication target
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
@@ -148,10 +155,10 @@ Name | Description
 `replicas.quiescent` | Number of quiesced replicas
 `replicas.reserved` | Number of replicas reserved for snapshots
 `replicas` | Number of replicas
-`requests.backpressure.split` | Number of backpressured writes waiting on a Range split. A Range will backpressure (roughly) non-system traffic when the range is above the configured size until the range splits. When the rate of this metric is nonzero over extended periods of time, it should be investigated why splits are not occurring. 
+`requests.backpressure.split` | Number of backpressured writes waiting on a Range split. A Range will backpressure (roughly) non-system traffic when the range is above the configured size until the range splits. When the rate of this metric is nonzero over extended periods of time, it should be investigated why splits are not occurring.
 `requests.slow.distsender` | Number of replica-bound RPCs currently stuck or retrying for a long time. Note that this is not a good signal for KV health. The remote side of the RPCs tracked here may experience contention, so an end user can easily cause values for this metric to be emitted by leaving a transaction open for a long time and contending with it using a second transaction.
-`requests.slow.lease` | Number of requests that have been stuck for a long time acquiring a lease. This gauge registering a nonzero value usually indicates range or replica unavailability, and should be investigated. In the common case, we also expect to see 'requests.slow.raft' to register a nonzero value, indicating that the lease requests are not getting a timely response from the replication layer. 
-`requests.slow.raft` | Number of requests that have been stuck for a long time in the replication layer. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated. 
+`requests.slow.lease` | Number of requests that have been stuck for a long time acquiring a lease. This gauge registering a nonzero value usually indicates range or replica unavailability, and should be investigated. In the common case, we also expect to see 'requests.slow.raft' to register a nonzero value, indicating that the lease requests are not getting a timely response from the replication layer.
+`requests.slow.raft` | Number of requests that have been stuck for a long time in the replication layer. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated.
 `rocksdb.block.cache.hits` | Count of block cache hits
 `rocksdb.block.cache.misses` | Count of block cache misses
 `rocksdb.block.cache.pinned-usage` | Bytes pinned by the block cache
