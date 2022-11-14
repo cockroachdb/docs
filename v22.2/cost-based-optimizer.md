@@ -229,7 +229,7 @@ Locality optimized search is supported for scans that are guaranteed to return 1
 
 ## Control whether queries are limited to a single region
 
-Although the optimizer prefers to [read from columns in local regions](locality-optimized-search-in-multi-region-clusters) when possible, by default, it does not guarantee that any query will not visit a remote region. This can occur if a query has no home region (for example, if it reads from different home regions in a [regional by row table](multiregion-overview.html#regional-by-row-tables)) or a query's home region differs from the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) region.
+Although the optimizer prefers to [read from columns in local regions](locality-optimized-search-in-multi-region-clusters) when possible, by default, it does not guarantee that any query will not visit a remote region. This can occur if a query has no [home region](multiregion-overview.html#table-localities) (for example, if it reads from different home regions in a [regional by row table](multiregion-overview.html#regional-by-row-tables)) or a query's home region differs from the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) region.
 
 For some latency-sensitive applications, cross-region latency may not be acceptable. In these cases, set the [`enforce_home_region` session variable](show-vars.html#enforce-home-region) to `on`. This configures the optimizer to return an error and in some cases a suggested resolution if a query cannot be run entirely in a single region.
 
