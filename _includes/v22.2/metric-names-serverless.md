@@ -1,8 +1,8 @@
 Name | Description
 -----|-----
-`addsstable.applications` | Number of SSTable ingestions applied (i.e. applied by Replicas)
+`addsstable.applications` | Number of SSTable ingestions applied (i.e., applied by Replicas)
 `addsstable.copies` | number of SSTable ingestions that required copying files during application
-`addsstable.proposals` | Number of SSTable ingestions proposed (i.e. sent to Raft by lease holders)
+`addsstable.proposals` | Number of SSTable ingestions proposed (i.e., sent to Raft by lease holders)
 `admission.wait_sum.kv-stores` | Total wait time in micros
 `admission.wait_sum.kv` | Total wait time in micros
 `admission.wait_sum.sql-kv-response` | Total wait time in micros
@@ -13,7 +13,7 @@ Name | Description
 `capacity` | Total storage capacity
 `changefeed.backfill_count` | Number of changefeeds currently executing backfill
 `changefeed.backfill_pending_ranges` | Number of ranges in an ongoing backfill that are yet to be fully emitted
-`changefeed.commit_latency` | Event commit latency: a difference between event MVCC timestamp and the time it was acknowledged by the downstream sink.  If the sink batches events,  then the difference between the oldest event in the batch and acknowledgement is recorded; Excludes latency during backfill
+`changefeed.commit_latency` | Event commit latency: a difference between event MVCC timestamp and the time it was acknowledged by the downstream sink.  If the sink batches events,  then the difference between the earliest event in the batch and acknowledgement is recorded; Excludes latency during backfill
 `changefeed.emitted_messages` | Messages emitted by all feeds
 `changefeed.error_retries` | Total retryable errors encountered by all changefeeds
 `changefeed.failures` | Total number of changefeed jobs which have failed
@@ -62,23 +62,23 @@ Name | Description
 `queue.consistency.process.failure` | Number of replicas which failed processing in the consistency checker queue
 `queue.consistency.process.success` | Number of replicas successfully processed by the consistency checker queue
 `queue.consistency.processingnanos` | Nanoseconds spent processing replicas in the consistency checker queue
-`queue.gc.info.abortspanconsidered` | Number of AbortSpan entries old enough to be considered for removal
+`queue.gc.info.abortspanconsidered` | Number of AbortSpan entries eligible for removal based on their ages
 `queue.gc.info.abortspangcnum` | Number of AbortSpan entries fit for removal
 `queue.gc.info.abortspanscanned` | Number of transactions present in the AbortSpan scanned from the engine
-`queue.gc.info.intentsconsidered` | Number of 'old' intents
+`queue.gc.info.intentsconsidered` | Number of intents eligible to be considered because they are at least two hours old
 `queue.gc.info.intenttxns` | Number of associated distinct transactions
-`queue.gc.info.numkeysaffected` | Number of keys with GC'able data
+`queue.gc.info.numkeysaffected` | Number of keys with data that is eligible for garbage collection
 `queue.gc.info.pushtxn` | Number of attempted pushes
 `queue.gc.info.resolvesuccess` | Number of successful intent resolutions
 `queue.gc.info.resolvetotal` | Number of attempted intent resolutions
-`queue.gc.info.transactionspangcaborted` | Number of GC'able entries corresponding to aborted txns
-`queue.gc.info.transactionspangccommitted` | Number of GC'able entries corresponding to committed txns
-`queue.gc.info.transactionspangcpending` | Number of GC'able entries corresponding to pending txns
+`queue.gc.info.transactionspangcaborted` | Number of entries eligible for garbage collection that correspond to aborted txns
+`queue.gc.info.transactionspangccommitted` | Number of entries eligible for garbage collection that correspond to committed txns
+`queue.gc.info.transactionspangcpending` | Number of entries eligible for garbage collection that correspond to pending txns
 `queue.gc.info.transactionspanscanned` | Number of entries in transaction spans scanned from the engine
-`queue.gc.pending` | Number of pending replicas in the MVCC GC queue
-`queue.gc.process.failure` | Number of replicas which failed processing in the MVCC GC queue
-`queue.gc.process.success` | Number of replicas successfully processed by the MVCC GC queue
-`queue.gc.processingnanos` | Nanoseconds spent processing replicas in the MVCC GC queue
+`queue.gc.pending` | Number of pending replicas in the MVCC garbage collection queue
+`queue.gc.process.failure` | Number of replicas which failed processing in the MVCC garbage collection queue
+`queue.gc.process.success` | Number of replicas successfully processed by the MVCC garbage collection queue
+`queue.gc.processingnanos` | Nanoseconds spent processing replicas in the MVCC garbage collection queue
 `queue.raftlog.pending` | Number of pending replicas in the Raft log queue
 `queue.raftlog.process.failure` | Number of replicas which failed processing in the Raft log queue
 `queue.raftlog.process.success` | Number of replicas successfully processed by the Raft log queue
@@ -87,11 +87,11 @@ Name | Description
 `queue.raftsnapshot.process.failure` | Number of replicas which failed processing in the Raft repair queue
 `queue.raftsnapshot.process.success` | Number of replicas successfully processed by the Raft repair queue
 `queue.raftsnapshot.processingnanos` | Nanoseconds spent processing replicas in the Raft repair queue
-`queue.replicagc.pending` | Number of pending replicas in the replica GC queue
-`queue.replicagc.process.failure` | Number of replicas which failed processing in the replica GC queue
-`queue.replicagc.process.success` | Number of replicas successfully processed by the replica GC queue
-`queue.replicagc.processingnanos` | Nanoseconds spent processing replicas in the replica GC queue
-`queue.replicagc.removereplica` | Number of replica removals attempted by the replica GC queue
+`queue.replicagc.pending` | Number of pending replicas in the replica  queue
+`queue.replicagc.process.failure` | Number of replicas which failed processing in the replica garbage collection queue
+`queue.replicagc.process.success` | Number of replicas successfully processed by the replica garbage collection queue
+`queue.replicagc.processingnanos` | Nanoseconds spent processing replicas in the replica garbage collection queue
+`queue.replicagc.removereplica` | Number of replica removals attempted by the replica garbage collection queue
 `queue.replicate.addreplica` | Number of replica additions attempted by the replicate queue
 `queue.replicate.pending` | Number of pending replicas in the replicate queue
 `queue.replicate.process.failure` | Number of replicas which failed processing in the replicate queue
@@ -112,8 +112,8 @@ Name | Description
 `queue.tsmaintenance.processingnanos` | Nanoseconds spent processing replicas in the time series maintenance queue
 `raft.commandsapplied` | Count of Raft commands applied. This measurement is taken on the Raft apply loops of all Replicas (leaders and followers alike), meaning that it does not measure the number of Raft commands *proposed* (in the hypothetical extreme case, all Replicas may apply all commands through snapshots, thus not increasing this metric at all). Instead, it is a proxy for how much work is being done advancing the Replica state machines on this node.
 `raft.heartbeats.pending` | Number of pending heartbeats and responses waiting to be coalesced
-`raft.process.commandcommit.latency` | Latency histogram for applying a batch of Raft commands to the state machine. This metric is misnamed: it measures the latency for *applying* a batch of committed Raft commands to a Replica state machine. This requires only non-durable I/O (except for replication configuration changes). Note that a "batch" in this context is really a sub-batch of the batch received for application during raft ready handling. The 'raft.process.applycommitted.latency' histogram is likely more suitable in most cases, as it measures the total latency across all sub-batches (i.e. the sum of commandcommit.latency for a complete batch).
-`raft.process.logcommit.latency` | Latency histogram for committing Raft log entries to stable storage. This measures the latency of durably committing a group of newly received Raft entries as well as the HardState entry to disk. This excludes any data processing, i.e. we measure purely the commit latency of the resulting Engine write. Homogeneous bands of p50-p99 latencies (in the presence of regular Raft traffic), make it likely that the storage layer is healthy. Spikes in the latency bands can either hint at the presence of large sets of Raft entries being received, or at performance issues at the storage layer.
+`raft.process.commandcommit.latency` | Latency histogram for applying a batch of Raft commands to the state machine. This metric is misnamed: it measures the latency for *applying* a batch of committed Raft commands to a Replica state machine. This requires only non-durable I/O (except for replication configuration changes). Note that a "batch" in this context is really a sub-batch of the batch received for application during Raft ready handling. The 'raft.process.applycommitted.latency' histogram is likely more suitable in most cases, as it measures the total latency across all sub-batches (i.e., the sum of commandcommit.latency for a complete batch).
+`raft.process.logcommit.latency` | Latency histogram for committing Raft log entries to stable storage. This measures the latency of durably committing a group of newly received Raft entries as well as the HardState entry to disk. This excludes any data processing, i.e., we measure purely the commit latency of the resulting Engine write. Homogeneous bands of p50-p99 latencies (in the presence of regular Raft traffic), make it likely that the storage layer is healthy. Spikes in the latency bands can either hint at the presence of large sets of Raft entries being received, or at performance issues at the storage layer.
 `raft.process.tickingnanos` | Nanoseconds spent in store.processRaft() processing replica.Tick()
 `raft.process.workingnanos` | Nanoseconds spent in store.processRaft() working. This is the sum of the measurements passed to the raft.process.handleready.latency histogram.
 `raft.rcvd.app` | Number of MsgApp messages received by this store
@@ -130,10 +130,10 @@ Name | Description
 `raft.rcvd.vote` | Number of MsgVote messages received by this store
 `raft.rcvd.voteresp` | Number of MsgVoteResp messages received by this store
 `raft.ticks` | Number of Raft ticks queued
-`raftlog.behind` | Number of Raft log entries followers on other stores are behind. This gauge provides a view of the aggregate number of log entries the Raft leaders on this node think the followers are behind. Since a raft leader may not always have a good estimate for this information for all of its followers, and since followers are expected to be behind (when they are not required as part of a quorum) *and* the aggregate thus scales like the count of such followers, it is difficult to meaningfully interpret this metric.
+`raftlog.behind` | Number of Raft log entries followers on other stores are behind. This gauge provides a view of the aggregate number of log entries the Raft leaders on this node think the followers are behind. Since a Raft leader may not always have a good estimate for this information for all of its followers, and since followers are expected to be behind (when they are not required as part of a quorum) *and* the aggregate thus scales like the count of such followers, it is difficult to meaningfully interpret this metric.
 `raftlog.truncated` | Number of Raft log entries truncated
 `range.adds` | Number of range additions
-`range.raftleadertransfers` | Number of raft leader transfers
+`range.raftleadertransfers` | Number of Raft leader transfers
 `range.removes` | Number of range removals
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.recv-in-progress` | Number of non-empty snapshots in progress on a receiver store
@@ -148,17 +148,17 @@ snapshots on a sender store
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
-`rebalancing.writespersecond` | Number of keys written (i.e. applied by raft) per second to the store, averaged over a large time period as used in rebalancing decisions
+`rebalancing.writespersecond` | Number of keys written (i.e., applied by raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
-`replicas.leaders` | Number of raft leaders
+`replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders
 `replicas.quiescent` | Number of quiesced replicas
 `replicas.reserved` | Number of replicas reserved for snapshots
 `replicas` | Number of replicas
 `requests.backpressure.split` | Number of backpressured writes waiting on a range split. A range will backpressure (roughly) non-system traffic when the range is above the configured size until the range splits. When the rate of this metric is nonzero over extended periods of time, it should be investigated why splits are not occurring.
 `requests.slow.distsender` | Number of replica-bound RPCs currently stuck or retrying for a long time. Note that this is not a good signal for KV health. The remote side of the RPCs tracked here may experience contention, so an end user can easily cause values for this metric to be emitted by leaving a transaction open for a long time and contending with it using a second transaction.
-`requests.slow.lease` | Number of requests that have been stuck for a long time acquiring a lease. This gauge registering a nonzero value usually indicates range or replica unavailability, and should be investigated. In the common case, we also expect to see requests.slow.raft to register a nonzero value, indicating that the lease requests are not getting a timely response from the replication layer.
-`requests.slow.raft` | Number of requests that have been stuck for a long time in the replication layer. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated.
+`requests.slow.lease` | Number of requests that have been stuck for a long time acquiring a lease. A nonzero value usually indicates range or replica unavailability, and should be investigated. Commonly, `requests.slow.raft` is also a nonzero value, which indicates that the lease requests are not getting a timely response from the replication layer.
+`requests.slow.raft` | Number of requests that have been stuck for a long time in the replication layer. An (evaluated) request has to pass through the replication layer, notably the quota pool and Raft. If it fails to do so within a highly permissive duration, this metric is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated.
 `rocksdb.block.cache.hits` | Count of block cache hits
 `rocksdb.block.cache.misses` | Count of block cache misses
 `rocksdb.block.cache.pinned-usage` | Bytes pinned by the block cache
@@ -218,9 +218,9 @@ snapshots on a sender store
 `sys.cpu.user.percent` | Current user cpu percentage
 `sys.fd.open` | Process open file descriptors
 `sys.fd.softlimit` | Process open FD soft limit
-`sys.gc.count` | Total number of GC runs
-`sys.gc.pause.ns` | Total GC pause
-`sys.gc.pause.percent` | Current GC pause percentage
+`sys.gc.count` | Total number of garbage collection runs
+`sys.gc.pause.ns` | Total garbage collection pause
+`sys.gc.pause.percent` | Current garbage collection pause percentage
 `sys.go.allocbytes` | Current bytes of memory allocated by go
 `sys.go.totalbytes` | Total bytes of memory allocated by go, but not released
 `sys.goroutines` | Current number of goroutines

@@ -59,10 +59,10 @@ Name | Help
 `queue.consistency.process.failure` | Number of replicas which failed processing in the consistency checker queue
 `queue.consistency.process.success` | Number of replicas successfully processed by the consistency checker queue
 `queue.consistency.processingnanos` | Nanoseconds spent processing replicas in the consistency checker queue
-`queue.gc.info.abortspanconsidered` | Number of AbortSpan entries old enough to be considered for removal
+`queue.gc.info.abortspanconsidered` | Number of AbortSpan entries eligible for removal based on their ages
 `queue.gc.info.abortspangcnum` | Number of AbortSpan entries fit for removal
 `queue.gc.info.abortspanscanned` | Number of transactions present in the AbortSpan scanned from the engine
-`queue.gc.info.intentsconsidered` | Number of 'old' intents
+`queue.gc.info.intentsconsidered` | Number of intents eligible to be considered because they are at least two hours old
 `queue.gc.info.intenttxns` | Number of associated distinct transactions
 `queue.gc.info.numkeysaffected` | Number of keys with GC'able data
 `queue.gc.info.pushtxn` | Number of attempted pushes
@@ -145,13 +145,13 @@ Name | Help
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
 `range.splits` | Number of range splits
-`rangekeybytes` | Number of bytes taken up by range keys (e.g. MVCC range tombstones)
-`rangekeycount` | Count of all range keys (e.g. MVCC range tombstones)
+`rangekeybytes` | Number of bytes taken up by range keys (e.g., MVCC range tombstones)
+`rangekeycount` | Count of all range keys (e.g., MVCC range tombstones)
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
-`rangevalbytes` | Number of bytes taken up by range key values (e.g. MVCC range tombstones)
-`rangevalcount` | Count of all range key values (e.g. MVCC range tombstones)
+`rangevalbytes` | Number of bytes taken up by range key values (e.g., MVCC range tombstones)
+`rangevalcount` | Count of all range key values (e.g., MVCC range tombstones)
 `rebalancing.readbytespersecond` | Average number of bytes written recently per second
 `rebalancing.writebytespersecond` | Average number of bytes read recently per second
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
