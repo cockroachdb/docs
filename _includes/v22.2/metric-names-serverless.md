@@ -141,8 +141,7 @@ Name | Description
 `range.snapshots.recv-total-in-progress` | Number of empty and non-empty snapshots in progress on a receiver store
 `range.snapshots.send-in-progress` | Number of non-empty snapshots in progress on a sender store
 `range.snapshots.send-queue` | Number of queued non-empty snapshots on a sender store
-`range.snapshots.send-total-in-progress` | Number of empty and non-empty in-progress
-snapshots on a sender store
+`range.snapshots.send-total-in-progress` | Number of empty and non-empty in-progress on a sender store
 `range.splits` | Number of range splits
 `ranges.overreplicated` | Number of ranges with more live replicas than the replication target
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
