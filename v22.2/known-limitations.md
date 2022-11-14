@@ -12,7 +12,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Unsupported trigram syntax
 
-The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes):
+The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes.html):
 
 {% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
 
