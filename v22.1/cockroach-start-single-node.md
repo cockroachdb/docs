@@ -222,6 +222,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 </section>
 
 <section class="filter-content" markdown="1" data-scope="secure">
+
 1. Stop the single-node cluster:
 
     Get the process ID of the node:
@@ -247,7 +248,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 	server drained and shutdown completed
 	~~~
 
-2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
+1. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -263,7 +264,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
 
-3. Add two more nodes:
+1. Add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -289,14 +290,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine. Also, since all nodes use the same hostname (`localhost`), you can use the first node's certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
 
-4. Open the [built-in SQL shell](cockroach-sql.html):
+1. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
-5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
+1. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -316,6 +317,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
+
 1. Stop the single-node cluster:
 
     Get the process ID of the node:
@@ -341,7 +343,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 	server drained and shutdown completed
 	~~~
 
-2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
+1. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -355,7 +357,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     The new flag to note is `--join`, which specifies the addresses and ports of the nodes that will comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
-3. Add two more nodes:
+1. Add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -381,14 +383,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine.
 
-4. Open the [built-in SQL shell](cockroach-sql.html):
+1. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
+1. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
