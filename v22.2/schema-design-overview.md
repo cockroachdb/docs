@@ -38,7 +38,7 @@ For guidance on creating user-defined schemas, see [Create a User-defined Schema
 
 ### Tables
 
-Tables, belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [schema](#schemas).
+Tables belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [schema](#schemas).
 
 Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints](constraints.html), or computed with [scalar expressions](computed-columns.html).
 

@@ -22,14 +22,14 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 Parameter                   | Description
 ----------------------------|------------
 `ALL`<br>`ALL PRIVILEGES`   | Revoke all [privileges](#supported-privileges).
-`targets`                   | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To revoke privileges on all tables in a database or schema, you can use `REVOKE ... ON TABLE *`. For an example, see [Revoke privileges on all tables in a database or schema](#revoke-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`                 | A comma-separated list of [users and roles](security-reference/authorization.html#users-and-roles).
-`target_functions`          | A comma-separated list of [user-defined functions](create-function.html).
-`target_types`              | A comma-separated list of [user-defined types](create-type.html).
-`schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
-`ALL TABLES IN SCHEMA`      |  Revoke privileges on all tables in a schema or list of schemas.
 `privilege_list`            | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to revoke.
-`WITH ADMIN OPTION`         | Designate the user as a role admin. Role admins can [grant](grant.html) or revoke membership for the specified role.
+`grant_targets`             | A comma-separated list of database, table, sequence, or function names. The list should be preceded by the object type (e.g., `DATABASE mydatabase`). If the object type is not specified, all names are interpreted as table or sequence names.
+`target_types`              | A comma-separated list of [user-defined types](create-type.html).
+`ALL SEQUENCES IN SCHEMA`   | Revoke [privileges](#supported-privileges) on all sequences in a schema or list of schemas.
+`ALL TABLES IN SCHEMA`      | Revoke [privileges](#supported-privileges) on all tables in a schema or list of schemas.
+`ALL FUNCTIONS IN SCHEMA`.  | Revoke [privileges](#supported-privileges) on all [user-defined functions](user-defined-functions.html) in a schema or list of schemas.
+`schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
+`role_spec_list`            | A comma-separated list of [roles](security-reference/authorization.html#users-and-roles).
 
 ## Supported privileges
 
@@ -55,7 +55,7 @@ The following privileges can be revoked:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max WITH PASSWORD roach;
+> CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -142,65 +142,83 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT CREATE, SELECT, DELETE ON TABLE rides, users TO max;
+GRANT CREATE, SELECT, DELETE ON TABLE rides, users TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE movr.*;
+SHOW GRANTS ON TABLE movr.*;
 ~~~
 
 ~~~
-  database_name | schema_name |         table_name         | grantee | privilege_type
-----------------+-------------+----------------------------+---------+-----------------
-  movr          | public      | promo_codes                | admin   | ALL
-  movr          | public      | promo_codes                | root    | ALL
-  movr          | public      | rides                      | admin   | ALL
-  movr          | public      | rides                      | max     | CREATE
-  movr          | public      | rides                      | max     | DELETE
-  movr          | public      | rides                      | max     | SELECT
-  movr          | public      | rides                      | root    | ALL
-  movr          | public      | user_promo_codes           | admin   | ALL
-  movr          | public      | user_promo_codes           | root    | ALL
-  movr          | public      | users                      | admin   | ALL
-  movr          | public      | users                      | max     | CREATE
-  movr          | public      | users                      | max     | DELETE
-  movr          | public      | users                      | max     | SELECT
-  movr          | public      | users                      | root    | ALL
-  movr          | public      | vehicle_location_histories | admin   | ALL
-  movr          | public      | vehicle_location_histories | root    | ALL
-  movr          | public      | vehicles                   | admin   | ALL
-  movr          | public      | vehicles                   | root    | ALL
-(18 rows)
+  database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
+----------------+-------------+----------------------------+---------+----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL            |      t
+  movr          | public      | promo_codes                | demo    | ALL            |      t
+  movr          | public      | promo_codes                | root    | ALL            |      t
+  movr          | public      | rides                      | admin   | ALL            |      t
+  movr          | public      | rides                      | demo    | ALL            |      t
+  movr          | public      | rides                      | max     | CREATE         |      f
+  movr          | public      | rides                      | max     | DELETE         |      f
+  movr          | public      | rides                      | max     | SELECT         |      f
+  movr          | public      | rides                      | root    | ALL            |      t
+  movr          | public      | user_promo_codes           | admin   | ALL            |      t
+  movr          | public      | user_promo_codes           | demo    | ALL            |      t
+  movr          | public      | user_promo_codes           | root    | ALL            |      t
+  movr          | public      | users                      | admin   | ALL            |      t
+  movr          | public      | users                      | demo    | ALL            |      t
+  movr          | public      | users                      | max     | CREATE         |      f
+  movr          | public      | users                      | max     | DELETE         |      f
+  movr          | public      | users                      | max     | SELECT         |      f
+  movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | vehicle_location_histories | admin   | ALL            |      t
+  movr          | public      | vehicle_location_histories | demo    | ALL            |      t
+  movr          | public      | vehicle_location_histories | root    | ALL            |      t
+  movr          | public      | vehicles                   | admin   | ALL            |      t
+  movr          | public      | vehicles                   | demo    | ALL            |      t
+  movr          | public      | vehicles                   | root    | ALL            |      t
+(24 rows)
 ~~~
 
 {% include_cached copy-clipboard.html %}
+~~~
+REVOKE DELETE ON ALL TABLES IN SCHEMA public FROM max;
+~~~
+
+This is equivalent to the following syntax:
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE DELETE ON movr.* FROM max;
+REVOKE DELETE ON movr.public.* FROM max;
 ~~~
 
 ~~~
-  database_name | schema_name |         table_name         | grantee | privilege_type
-----------------+-------------+----------------------------+---------+-----------------
-  movr          | public      | promo_codes                | admin   | ALL
-  movr          | public      | promo_codes                | root    | ALL
-  movr          | public      | rides                      | admin   | ALL
-  movr          | public      | rides                      | max     | CREATE
-  movr          | public      | rides                      | max     | SELECT
-  movr          | public      | rides                      | root    | ALL
-  movr          | public      | user_promo_codes           | admin   | ALL
-  movr          | public      | user_promo_codes           | root    | ALL
-  movr          | public      | users                      | admin   | ALL
-  movr          | public      | users                      | max     | CREATE
-  movr          | public      | users                      | max     | SELECT
-  movr          | public      | users                      | root    | ALL
-  movr          | public      | vehicle_location_histories | admin   | ALL
-  movr          | public      | vehicle_location_histories | root    | ALL
-  movr          | public      | vehicles                   | admin   | ALL
-  movr          | public      | vehicles                   | root    | ALL
-(16 rows)
+  database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
+----------------+-------------+----------------------------+---------+----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL            |      t
+  movr          | public      | promo_codes                | demo    | ALL            |      t
+  movr          | public      | promo_codes                | root    | ALL            |      t
+  movr          | public      | rides                      | admin   | ALL            |      t
+  movr          | public      | rides                      | demo    | ALL            |      t
+  movr          | public      | rides                      | max     | CREATE         |      f
+  movr          | public      | rides                      | max     | SELECT         |      f
+  movr          | public      | rides                      | root    | ALL            |      t
+  movr          | public      | user_promo_codes           | admin   | ALL            |      t
+  movr          | public      | user_promo_codes           | demo    | ALL            |      t
+  movr          | public      | user_promo_codes           | root    | ALL            |      t
+  movr          | public      | users                      | admin   | ALL            |      t
+  movr          | public      | users                      | demo    | ALL            |      t
+  movr          | public      | users                      | max     | CREATE         |      f
+  movr          | public      | users                      | max     | SELECT         |      f
+  movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | vehicle_location_histories | admin   | ALL            |      t
+  movr          | public      | vehicle_location_histories | demo    | ALL            |      t
+  movr          | public      | vehicle_location_histories | root    | ALL            |      t
+  movr          | public      | vehicles                   | admin   | ALL            |      t
+  movr          | public      | vehicles                   | demo    | ALL            |      t
+  movr          | public      | vehicles                   | root    | ALL            |      t
+(22 rows)
 ~~~
-
 
 ### Revoke privileges on schemas
 
@@ -304,7 +322,7 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER abbey WITH PASSWORD lincoln;
+> CREATE USER abbey WITH PASSWORD 'lincoln';
 ~~~
 
 {% include_cached copy-clipboard.html %}

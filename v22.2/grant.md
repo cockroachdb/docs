@@ -22,13 +22,14 @@ You can use `GRANT` to directly grant privileges to a role or user, or you can g
 Parameter                 | Description
 --------------------------|------------
 `ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
-`targets`                 | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`               | A comma-separated list of [users](security-reference/authorization.html#create-and-manage-users) and/or [roles](security-reference/authorization.html#users-and-roles).
+`privilege_list`          | A comma-separated list of [privileges](#supported-privileges) to grant. For guidelines, see [Managing privileges](security-reference/authorization.html#managing-privileges).
+`grant_targets`           | A comma-separated list of database, table, sequence, or function names. The list should be preceded by the object type (e.g., `DATABASE mydatabase`). If the object type is not specified, all names are interpreted as table or sequence names.
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
+`ALL SEQUENCES IN SCHEMA` | Grant [privileges](#supported-privileges) on all sequences in a schema or list of schemas.
+`ALL TABLES IN SCHEMA`    | Grant [privileges](#supported-privileges) on all tables in a schema or list of schemas.
+`ALL FUNCTIONS IN SCHEMA` | Grant [privileges](#supported-privileges) on all [user-defined functions](user-defined-functions.html) in a schema or list of schemas.
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
-`ALL TABLES IN SCHEMA`    |  Grant privileges on all tables in a schema or list of schemas.
-`privilege_list`          | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to grant.
-`role_spec_list`          | A comma-separated list of source roles.
+`role_spec_list`          | A comma-separated list of [roles](security-reference/authorization.html#users-and-roles).
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
 `WITH GRANT OPTION`       | Allow the user to grant the specified privilege to others.
 
@@ -73,7 +74,7 @@ Roles and users can be granted the following privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max WITH PASSWORD roach;
+> CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -120,37 +121,49 @@ Roles and users can be granted the following privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT SELECT ON TABLE movr.public.* TO max;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO max;
+~~~
+
+This is equivalent to the following syntax:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SELECT ON TABLE movr.public.* TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE movr.public.*;
+SHOW GRANTS ON TABLE movr.public.*;
 ~~~
 
 ~~~
-  database_name | schema_name |         table_name         | grantee | privilege_type  | is_grantable
-----------------+-------------+----------------------------+---------+-----------------+--------------
-  movr          | public      | promo_codes                | admin   | ALL             | true
-  movr          | public      | promo_codes                | max     | SELECT          | false
-  movr          | public      | promo_codes                | root    | ALL             | true
-  movr          | public      | rides                      | admin   | ALL             | true
-  movr          | public      | rides                      | max     | DELETE          | false
-  movr          | public      | rides                      | max     | SELECT          | false
-  movr          | public      | rides                      | root    | ALL             | true
-  movr          | public      | user_promo_codes           | admin   | ALL             | true
-  movr          | public      | user_promo_codes           | max     | SELECT          | false
-  movr          | public      | user_promo_codes           | root    | ALL             | true
-  movr          | public      | users                      | admin   | ALL             | true
-  movr          | public      | users                      | max     | SELECT          | false
-  movr          | public      | users                      | root    | ALL             | true
-  movr          | public      | vehicle_location_histories | admin   | ALL             | true
-  movr          | public      | vehicle_location_histories | max     | SELECT          | false
-  movr          | public      | vehicle_location_histories | root    | ALL             | true
-  movr          | public      | vehicles                   | admin   | ALL             | true
-  movr          | public      | vehicles                   | max     | SELECT          | false
-  movr          | public      | vehicles                   | root    | ALL             | true
-(19 rows)
+  database_name | schema_name |         table_name         | grantee | privilege_type | is_grantable
+----------------+-------------+----------------------------+---------+----------------+---------------
+  movr          | public      | promo_codes                | admin   | ALL            |      t
+  movr          | public      | promo_codes                | demo    | ALL            |      t
+  movr          | public      | promo_codes                | max     | SELECT         |      f
+  movr          | public      | promo_codes                | root    | ALL            |      t
+  movr          | public      | rides                      | admin   | ALL            |      t
+  movr          | public      | rides                      | demo    | ALL            |      t
+  movr          | public      | rides                      | max     | SELECT         |      f
+  movr          | public      | rides                      | root    | ALL            |      t
+  movr          | public      | user_promo_codes           | admin   | ALL            |      t
+  movr          | public      | user_promo_codes           | demo    | ALL            |      t
+  movr          | public      | user_promo_codes           | max     | SELECT         |      f
+  movr          | public      | user_promo_codes           | root    | ALL            |      t
+  movr          | public      | users                      | admin   | ALL            |      t
+  movr          | public      | users                      | demo    | ALL            |      t
+  movr          | public      | users                      | max     | SELECT         |      f
+  movr          | public      | users                      | root    | ALL            |      t
+  movr          | public      | vehicle_location_histories | admin   | ALL            |      t
+  movr          | public      | vehicle_location_histories | demo    | ALL            |      t
+  movr          | public      | vehicle_location_histories | max     | SELECT         |      f
+  movr          | public      | vehicle_location_histories | root    | ALL            |      t
+  movr          | public      | vehicles                   | admin   | ALL            |      t
+  movr          | public      | vehicles                   | demo    | ALL            |      t
+  movr          | public      | vehicles                   | max     | SELECT         |      f
+  movr          | public      | vehicles                   | root    | ALL            |      t
+(24 rows)
 ~~~
 
 ### Make a table readable to every user in the system
@@ -247,7 +260,7 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER abbey WITH PASSWORD lincoln;
+> CREATE USER abbey WITH PASSWORD 'lincoln';
 ~~~
 
 {% include_cached copy-clipboard.html %}
