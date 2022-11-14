@@ -1,3 +1,0 @@
-- The date and time the backup was taken (**Data From**)
-- The **Status** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)

@@ -1,8 +1,0 @@
-- The date and time the backup was taken (**Data From**)
-- The **Status** of the backup
-- The **Type** of backup
-- The **Size** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
-- The number of [**Databases**](../cockroachcloud/backups-page.html?#databases) included in the backup
-
-    To view the databases included in the backup, click the number in the [**Databases**](../cockroachcloud/backups-page.html?#databases) column
