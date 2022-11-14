@@ -405,7 +405,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 WITH DETACHED;
 ~~~
 
-The job ID is returned after the restore [job creation](backup-architecture.html#job-creation-phase) completes:
+The job ID is returned after the restore job creation completes:
 
 ~~~
         job_id
