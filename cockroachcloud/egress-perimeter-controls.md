@@ -29,12 +29,10 @@ Further reading: [review how CockroachDB products differs in advanced security f
 Regardless of user-specific Egress Perimeter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality and ongoing operations.
 {{site.data.alerts.end}}
 
-## Prerequisites to using Egress Perimeter Controls with the Cloud Console API
+## Prerequisites
 
-- You need a {{ site.data.products.db }} account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} have a non-zero operating cost that must be billed.
-
+- You need a {{ site.data.products.dedicated }} cluster. Egress Perimeter Controls are not supported for {{ site.data.products.serverless }} clusters.
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
-
 - You need an API key with `admin` privilege on clusters in your organization. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
 
 {{site.data.alerts.callout_danger}}
