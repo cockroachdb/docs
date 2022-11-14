@@ -18,9 +18,9 @@ See also:
 
 ## Prerequisites
 
-- You need a {{ site.data.products.dedicated }} cluster. CMEK is not supported for {{ site.data.products.serverless }} clusters.
+- You need a {{ site.data.products.db }} account with billing enabled. CMEK is available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} have a non-zero operating cost that must be billed.
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
-- You need an API key with `admin` privilege on clusters in your organization. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
+- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts with API keys in the cloud console. Refer to [Service Accounts](console-access-management.html#service-accounts).
 
 ## Overview of CMEK management procedures
 
