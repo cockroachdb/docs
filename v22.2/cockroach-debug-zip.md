@@ -45,10 +45,20 @@ The following files collected by `cockroach debug zip`, which are found in the i
 | Heap profiles                                                                                        | `memprof.{date-and-time}.{heapsize}.pprof`                                           |
 | Memory statistics                                                                                    | `memstats.{date-and-time}.{heapsize}.txt`                                            |
 | CPU profiles                                                                                         | `cpuprof.{date-and-time}`                                                            |
-| [Active query dumps](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) | `activequeryprof.{date-and-time}.csv`                                                |
+| [Active query dumps](cluster-setup-troubleshooting.html#out-of-memory-oom-crash)                     | `activequeryprof.{date-and-time}.csv`                                                |
 
 The following information is also contained in the `.zip` file, and cannot be filtered:
 
+- System tables. The following system tables are not included:
+  - `system.users`
+  - `system.web_sessions`
+  - `system.join_tokens`
+  - `system.comments`
+  - `system.ui`
+  - `system.zones`
+  - `system.statement_bundle_chunks`
+  - `system.statement_statistics`
+  - `system.transaction_statistics`
 - Cluster events
 - Database details
 - Schema change events
