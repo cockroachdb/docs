@@ -109,9 +109,7 @@ Field              | Type                | Description      | Default
 
 ## Google Cloud Pub/Sub
 
-{{site.data.alerts.callout_info}}
-The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
@@ -140,6 +138,8 @@ When using Pub/Sub as your downstream sink, consider the following:
 - Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
 - You must specify the `region` parameter in the URI to maintain [ordering guarantees](changefeed-messages.html#ordering-guarantees). Unordered messages are not supported, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 
 ### Pub/Sub topic naming
 
@@ -208,9 +208,7 @@ URI Parameter      | Storage | Description
 
 ## Webhook sink
 
-{{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. The following section provides usage considerations.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 

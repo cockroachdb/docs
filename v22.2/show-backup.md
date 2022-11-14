@@ -37,7 +37,7 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_backup.html %}
+{% include {{ page.version.version }}/backups/show-backup-replace-diagram.html %}
 </div>
 
 ## Parameters

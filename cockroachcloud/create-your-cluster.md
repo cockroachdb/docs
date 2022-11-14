@@ -71,6 +71,8 @@ Currently, you can add a maximum of 150 nodes to your cluster. For larger config
 
 ## Step 5. Select the hardware per node
 
+{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
 
 1. Select the **Compute**.
@@ -88,7 +90,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    We recommending choosing up to {{ cap_per_vcpu | strip_html }}. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
