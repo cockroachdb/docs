@@ -6,9 +6,9 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-A _trigram index_ is a type of [inverted index](inverted-indexes.html) created on a [`STRING`](string.html) column. Trigram indexes are used to efficiently search for strings in large tables without providing an exact search term.
+{% include_cached new-in.html version="v22.2" %} A _trigram index_ is a type of [inverted index](inverted-indexes.html) created on a [`STRING`](string.html) column. Trigram indexes are used to efficiently search for strings in large tables without providing an exact search term.
 
-This page describes to create and use trigram indexes on CockroachDB.
+This page describes how to create and use trigram indexes on CockroachDB.
 
 {{site.data.alerts.callout_info}}
 Some PostgreSQL syntax and features are currently unsupported. For details, see [Unsupported features](#unsupported-features).
@@ -96,7 +96,7 @@ For usage examples, see [Use a trigram index to speed up fuzzy string matching](
 
 ## Examples
 
-### Simple examples
+### Create various trigram indexes
 
 Suppose you have a table with the following columns:
 
@@ -160,7 +160,7 @@ INSERT INTO t VALUES
 INSERT INTO t SELECT 'empty' FROM generate_series(1, 10000);
 ~~~
 
-Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function](functions-and-operators.html#trigrams-functions):
+First, see how trigram matching performs without a trigram index. Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function](functions-and-operators.html#trigrams-functions):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -199,7 +199,7 @@ SELECT similarity('weird', 'word');
   0.2222222222222222
 ~~~
 
-Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan:
+Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan, which you can verify using [`EXPLAIN`](explain.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -335,13 +335,7 @@ EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
 
 The following PostgreSQL syntax and features are currently unsupported. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/41285).
 
-- `word_similarity()` matching.
-- `strict_word_similarity()` matching.
-- `%>` and `<%` comparisons and acceleration.
-- `<<%` and `%>>` comparisons and acceleration.
-- `<->`, `<<->`, `<->>`, `<<<->`, and `<->>>` comparisons.
-- Acceleration on [regex string matching](scalar-expressions.html#string-matching-using-posix-regular-expressions).
-- `%` comparisons, `show_trgm`, and trigram index creation on [collated strings](collate.html).
+{% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
 
 ## See also
 

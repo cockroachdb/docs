@@ -10,6 +10,14 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Unsupported trigram syntax
+
+The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes):
+
+{% include {{ page.version.version }}/sql/trigram-unsupported-syntax.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41285)
+
 ### A multi-region table cannot be restored into a non-multi-region table
 
 You cannot [restore](restore.html) a multi-region table into a non-multi-region table.

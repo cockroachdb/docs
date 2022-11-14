@@ -44,7 +44,7 @@ To view the expression used to generate the index, run `SHOW CREATE TABLE`:
 
 ## Examples
 
-### Simple examples
+### Create various expression indexes
 
 Suppose you have a table with the following columns:
 {% include_cached copy-clipboard.html %}

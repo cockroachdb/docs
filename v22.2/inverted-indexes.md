@@ -61,16 +61,13 @@ This lets you search based on subcomponents.
 
 You can use GIN indexes to improve the performance of queries using `JSONB` or `ARRAY` columns. You can create them:
 
-- For existing tables with [`CREATE INDEX`](create-index.html):
-- At the same time as the table with the `INVERTED INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-gin-indexes).
-
-  - PostgreSQL-compatible [`CREATE INDEX ... USING GIN`]:
+  - - Using the PostgreSQL-compatible syntax [`CREATE INDEX ... USING GIN`](create-index.html):
 
         ~~~ sql
         CREATE INDEX {optional name} ON {table} USING GIN ({column});
         ~~~
 
-  - `CREATE INVERTED INDEX`:
+  - While creating the table, using the syntax [`CREATE INVERTED INDEX`](create-table.html#create-a-table-with-secondary-and-gin-indexes):
 
         ~~~ sql
         CREATE INVERTED INDEX {optional name} ON {table} ({column});
