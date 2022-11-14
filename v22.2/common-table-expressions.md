@@ -301,6 +301,8 @@ While adding a limit to prevent infinite recursion works for testing and debuggi
 
 You can use a recursive CTE to perform a loose index scan, which speeds up certain queries that would otherwise require a full scan. A loose index scan reads noncontiguous ranges of an index by performing multiple shorter scans.
 
+In this example, compare the latencies when scanning an index with and without a recursive CTE:
+
 Create a table:
 
 {% include_cached copy-clipboard.html %}
@@ -323,7 +325,7 @@ Create an index:
 CREATE INDEX ON test (n);
 ~~~
 
-Issue a statement to count the number of distinct values:
+Issue a statement to count the number of distinct values, without using a recursive CTE:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -341,7 +343,7 @@ SELECT COUNT(DISTINCT n) FROM test;
 Time: 273ms total (execution 273ms / network 0ms)
 ~~~
 
-This statement has a high latency because it reads every row in the index.
+This statement has a high latency because it reads every row in the index. You can see this using [`EXPLAIN`](explain.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -392,7 +394,7 @@ The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](orde
 Time: 13ms total (execution 13ms / network 0ms)
 ~~~
 
-The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest.
+The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest. You can see this using [`EXPLAIN`](explain.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
