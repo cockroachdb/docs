@@ -415,6 +415,6 @@ To maximize transaction performance, you'll need to maximize the performance of 
 
 ## See also
 
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
-
-For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
+- If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+- For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
+- To read more about SQL best practices, see our [SQL Performance Best Practices](https://www.cockroachlabs.com/blog/sql-performance-best-practices/) blog post.

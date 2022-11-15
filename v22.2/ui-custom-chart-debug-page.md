@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.db_console
 ---
 
-The **Custom Chart** debug page in the DB Console lets you create one or multiple custom charts showing any combination of over [200 available metrics](#available-metrics).
+The **Custom Chart** debug page in the DB Console lets you create one or multiple custom charts showing any combination of [available metrics](#available-metrics).
 
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
@@ -17,7 +17,7 @@ To view the Custom Chart page, [access the DB Console](ui-overview.html), click 
 
 On the **Custom Chart** page, you can set the time span for all charts, add new custom charts, and customize each chart:
 
-- To set the time span for the page, use the dropdown menu above the charts and select the desired time span.
+- To set the time span for the page, use the dropdown menu above the charts and select the desired time span. In addition, once you have selected a metric to display, you can drag within the chart itself to a set a custom time range.
 
 - To add a chart, click **Add Chart** and customize the new chart.
 

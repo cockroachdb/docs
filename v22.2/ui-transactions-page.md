@@ -41,7 +41,7 @@ If you click the transaction fingerprint in the **Transactions** column, the [**
 
 ## Active Executions view
 
-The **Active Executions** view helps you:
+{% include_cached new-in.html version="v22.2" %} The **Active Executions** view helps you:
 
 - Understand and tune workload performance, particularly for long-running transactions.
 
@@ -57,7 +57,7 @@ The **Statements** tab is selected. Click the **Transactions** tab and the **Act
 Active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
 {{site.data.alerts.end}}
 
-The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'paris'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
+The following screenshot shows the active statement execution for `SELECT city, id FROM vehicles WHERE city = 'los angeles'` while running the [`movr` workload](cockroach-workload.html#run-the-movr-workload):
 
 <img src="{{ 'images/v22.2/transaction-execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 

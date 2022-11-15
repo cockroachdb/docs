@@ -28,6 +28,8 @@ Each table automatically has a _primary index_ called `{tbl}_pkey`, which indexe
 
  To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 The primary index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use [secondary indexes](schema-design-indexes.html) to improve the performance of queries using columns not in a table's primary key. You can create them:
 
 <a name="unique-secondary-indexes"></a>
@@ -57,6 +59,10 @@ Tables are not locked during index creation due to CockroachDB support for [onli
 Indexes create a trade-off: they greatly improve the speed of queries, but may slightly slow down writes to an affected column (because new values have to be written for both the table _and_ the index).
 
 To maximize your indexes' performance, Cockroach Labs recommends following the [secondary index best practices](schema-design-indexes.html#best-practices).
+
+To observe the impact of an index without affecting a production workload, you can [create an index](create-index.html) using the `NOT VISIBLE` clause. The index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible). 
+
+Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
 
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).

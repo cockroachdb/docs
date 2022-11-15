@@ -11,9 +11,14 @@ IgnoreDirs:
   - ^docs/advisories
 IgnoreURLs:
   - "http://localhost:*"
-  - "https://github.com.*"
+  - "http://roach-single/*"
+  - "https://roach-single/*"
+  - "https://github.com/*"
+  - "https://raw.github.com/*"
+  - "https://docs.github.com/*"
   - "https://movr.cloud"
   - "https://support.cockroachlabs.com/*"
+  - "https://www.cockroachlabs.com/*"
   - "https://www.php.net/*"
   - "https://crates.io/*"
   - "https://docs.pipenv.org/*"

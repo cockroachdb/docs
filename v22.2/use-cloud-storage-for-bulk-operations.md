@@ -25,12 +25,16 @@ URLs for the files you want to import must use the format shown below. For examp
 [scheme]://[host]/[path]?[parameters]
 ~~~
 
-Location                                                    | Scheme      | Host                                             | Parameters                                                                 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
+The following table provides a list of the parameters supported by each storage scheme:
+
+Location                                                    | Scheme      | Host                                             | Parameters
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | [`AUTH`](#authentication): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`](#assume-role-authentication) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`](#authentication) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. **Default**: `STANDARD`.                          
+Amazon                                                      | `s3`        | Bucket name                                      | [`AUTH`](#authentication): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`](#assume-role-authentication) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`](#authentication) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
 Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#authentication).
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
-HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).
+HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services                                     | `s3`        | Bucket name                                      | {{site.data.alerts.callout_danger}} While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
 
@@ -54,11 +58,11 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [changefeeds](change-data-capture-overview.html),  or [`EXPORT`](export.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
-Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`                                                     
+Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`
+Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -67,12 +71,12 @@ NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backup
 
 Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
-Google Cloud | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`                                                     
-HTTP         | `http://localhost:8080/employees.sql`                                            
+Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`
+Google Cloud | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`
+HTTP         | `http://localhost:8080/employees.sql`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -126,6 +130,10 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+{{site.data.alerts.end}}
+
 {% include_cached copy-clipboard.html %}
 ~~~sql
 BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
@@ -144,17 +152,21 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example prof
 CockroachDB supports assume role authentication on clusters running v22.2. Authenticating to cloud storage with `ASSUME_ROLE` on clusters running versions v22.1 and earlier, or mixed versions, is not supported and will result in failed bulk operations.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} To limit the control access to your Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket. 
+{% include_cached new-in.html version="v22.2" %} To limit the control access to your Amazon S3 buckets, you can create IAM roles for users to assume. IAM roles do not have an association to a particular user. The role contains permissions that define the operations a user (or [Principal](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-principal)) can complete. An IAM user can then assume a role to undertake a CockroachDB backup, restore, import, etc. As a result, the IAM user only has access to the assigned role, rather than having unlimited access to an S3 bucket.
 
 {{site.data.alerts.callout_success}}
 Role assumption applies the principle of least privilege rather than directly providing privilege to a user. Creating IAM roles to manage access to AWS resources is Amazon's recommended approach compared to giving access straight to IAM users.
 {{site.data.alerts.end}}
 
+The [following section](#set-up-aws-assume-role-authentication) demonstrates setting up assume role authentication between two users. Since you can chain an arbitrary number of roles, see the [Role chaining](#aws-role-chaining) section for additional detail. 
+
+#### Set up AWS assume role authentication
+
 For example, to configure a user to assume an IAM role that allows a bulk operation to an Amazon S3 bucket, take the following steps:
 
 1. Create a role that contains a policy to interact with the S3 buckets depending on the operation your user needs to complete. See the [Storage permissions](#storage-permissions) section for details on the minimum permissions each CockroachDB bulk operation requires. You can create an IAM role in[ Amazon's Management console](https://aws.amazon.com/console/), under the **IAM** and then **Policies** menu. Alternately, you can use the [AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-quickstart.html).
 
-1. <a name="step-2-user"></a> If you do not already have the user that needs to assume the role, [create the user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html). Under **IAM** in the Amazon console, navigate to **Users** and **Add users**. You can then add the necessary permissions by clicking on the **Permissions** tab. Ensure that the IAM user has [`sts:AssumeRole` permissions](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) attached. The following policy will give the user assume role permissions: 
+1. <a name="step-2-user"></a> If you do not already have the user that needs to assume the role, [create the user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html). Under **IAM** in the Amazon console, navigate to **Users** and **Add users**. You can then add the necessary permissions by clicking on the **Permissions** tab. Ensure that the IAM user has [`sts:AssumeRole` permissions](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) attached. The following policy will give the user assume role permissions:
 
     ~~~json
     {
@@ -171,7 +183,7 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
 
     The `sts:AssumeRole` permission allows the user to obtain a temporary set of security credentials that gives them access to an S3 bucket to which they would not have access with their user-based permissions.
 
-1. <a name="step-3-assume"></a> Return to your IAM role's **Summary** page, and click on the **Trust Relationships** tab. Add a trust policy into the role, which will define the users that can assume the role. 
+1. <a name="step-3-assume"></a> Return to your IAM role's **Summary** page, and click on the **Trust Relationships** tab. Add a trust policy into the role, which will define the users that can assume the role.
 
     The following trust policy provides the user the privilege to assume the role:
 
@@ -190,7 +202,7 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
     }
     ~~~
     When creating a trust policy consider the following:
-    - In the trust policy you need to include the ARN of the user that you want to assume the role under `Principal`. You can also include the [`Condition` attribute](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) to further control access to the Amazon S3 bucket. For example, this could limit the operation to a specified date range, to users with multi-factor authentication enabled, or to specific IP addresses.  
+    - In the trust policy you need to include the ARN of the user that you want to assume the role under `Principal`. You can also include the [`Condition` attribute](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html) to further control access to the Amazon S3 bucket. For example, this could limit the operation to a specified date range, to users with multi-factor authentication enabled, or to specific IP addresses.
     - If you set the `Principal` ARN to `root`, this will allow any IAM user in the account with the `AssumeRole` permission to access the Amazon S3 bucket as per the defined IAM role permissions.
     - When the IAM user takes on the role to perform a bulk operation, they are temporarily granted the permissions contained in the role. That is, not the permissions specified in their user profile.
 
@@ -200,7 +212,7 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
     BACKUP DATABASE movr INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{role name}' AS OF SYSTEM TIME '-10s';
     ~~~
 
-    CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's: 
+    CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's:
 
     ~~~sql
     BACKUP INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE={ARN}'
@@ -209,11 +221,11 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
 
     For more information on AWS KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 
-#### Role chaining
+#### AWS role chaining
 
-Beyond a user assuming a role, it is also possible to "chain" roles to create a path for users to assume roles to particular operations. Role chaining allows a user to assume a role through an intermediate role(s) instead of the user directly assuming a role. In this way, the role chain passes the request for access to the final role in the chain. Role chaining could be useful when a third-party organization needs access to your Amazon S3 bucket to complete a bulk operation. Or, your organization could grant roles based on limited-privilege levels.
+Role chaining allows a user to assume a role through an intermediate role(s) instead of the user directly assuming a role. In this way, the role chain passes the request for access to the final role in the chain. Role chaining could be useful when a third-party organization needs access to your Amazon S3 bucket to complete a bulk operation. Or, your organization could grant roles based on limited-privilege levels.
 
-Assuming the role follows the same approach outlined in the previous section. The additional required step to chain roles is to ensure that the ARN of role A, which is assuming role B, is present in role B's trust policy with the `sts:AssumeRole` action. 
+Assuming the role follows the same approach outlined in the previous section. The additional required step to chain roles is to ensure that the ARN of role A, which is assuming role B, is present in role B's trust policy with the `sts:AssumeRole` action.
 
 The role B's trust policy must contain:
 
@@ -245,7 +257,7 @@ When passing a chained role into `BACKUP`, it will follow this pattern:
 BACKUP DATABASE movr INTO "s3://{bucket name}?AWS_ACCESS_KEY_ID={user's key}&AWS_SECRET_ACCESS_KEY={user's secret key}&ASSUME_ROLE={role A ARN},{role B ARN},{role C ARN}" AS OF SYSTEM TIME '-10s';
 ~~~
 
-Each chained role is listed separated by a `,`. You can copy the ARN of the role from its summary page.
+Each chained role is listed separated by a `,` character. You can copy the ARN of the role from its summary page.
 
 </section>
 
@@ -275,6 +287,10 @@ BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDEN
 
 For CockroachDB instances that are running within a Google Cloud Environment, [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) can be used from the [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to implicitly access resources within the storage bucket.
 
+{{site.data.alerts.callout_info}}
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+{{site.data.alerts.end}}
+
 For CockroachDB clusters running in other environments, `implicit` authentication access can still be set up manually with the following steps:
 
   1. [Create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket.
@@ -303,6 +319,84 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
 If the use of implicit credentials is disabled with [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security), an error will be returned when accessing external cloud storage services for various bulk operations when using `AUTH=implicit`.
 {{site.data.alerts.end}}
 
+### Assume role authentication
+
+{{site.data.alerts.callout_info}}
+CockroachDB supports assume role authentication on clusters running v22.2. Authenticating to cloud storage with `ASSUME_ROLE` on clusters running versions v22.1 and earlier, or mixed versions, is not supported and will result in failed bulk operations.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.2" %} To limit the control access to your Google Cloud Storage buckets, you can create [service accounts](https://cloud.google.com/iam/docs/understanding-service-accounts) for another service account to assume. Service accounts do not necessarily have an association to a particular user. The service account contains permissions that define the operations a user, who has access to the service account, can complete. A service account can then assume another service account to undertake a CockroachDB backup, restore, import, etc. As a result, a service account with limited privileges only has access to the roles of the assumed service account, rather than having unlimited access to a GCS bucket.
+
+The access is also limited by the generated [short-lived credentials](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct). The service account/role that is assuming another role, will issue the request for the short-lived credentials. If there are multiple roles in the [chain](#google-cloud-role-chaining), then each role defined in the chain will issue the request for credentials for the next role in the chain. 
+
+The [following section](#set-up-google-cloud-assume-role-authentication) demonstrates setting up assume role authentication between two service accounts A and B. You can also chain an arbitrary number of roles, see the [Role chaining](#google-cloud-role-chaining) section for additional detail.
+
+#### Set up Google Cloud assume role authentication
+
+In the following example, we will configure service account A to assume service account B. In this way, service account A will be able to assume the role of service account B to complete a bulk operation to a GCS bucket.
+
+For this example, both service accounts have already been created. If you need to create your own service accounts, see Google Cloud's [Creating and managing service accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) page.
+
+1. First, you'll create a role that contains a policy to interact with the Google Cloud Storage bucket depending on the bulk operation your user needs to complete. This role will be attached to service account B in order that service account A can assume it.
+    - In [Google's Cloud console](https://console.cloud.google.com/getting-started), click **IAM & Admin**, **Roles**, and then **Create Role**.
+    - Add a title for the role and then click **Add Permissions**. Filter for the permissions required for the bulk operation. For example, if you want to enable service account B to run a changefeed, your role will include the `storage.objects.create` permission. See the [Storage permissions](#storage-permissions) section on this page for details on the minimum permissions each CockroachDB bulk operation requires.
+
+    {{site.data.alerts.callout_success}}
+    Alternately, you can use the [gcloud CLI](https://cloud.google.com/sdk/gcloud/reference/iam/roles/create) to create roles. 
+    {{site.data.alerts.end}}
+
+1. The service account that will be assumed (B in this case) must be granted access to the storage bucket with the role assigned from step 1. 
+    - Go to the **Cloud Storage** menu and select the bucket. In the bucket's menu, click **Grant Access**. 
+    - Add the service account to the **Add principals** box and select the name of the role you created in step 1 under **Assign roles**.
+
+1. <a name="service-account-token-granting"></a>Next, service account B needs the "Service Account Token Creator" role for service account A. This enables service account B to create short-lived tokens for A. 
+    - Go to the **Service Accounts** menu in the Google Cloud Console. 
+    - Select service account B from the list, then the **Permissions** tab, and click **Grant Access** under **Principals with access to this service account**. 
+    - Enter the name of service account A into the **New principals** box and select "Service Account Token Creator" under the **Assign roles** dropdown. Click **Save** to complete.
+
+1. Finally, you will run the bulk operation from your CockroachDB cluster. If you're using [specified authentication](#specified-authentication), pass in the GCS bucket's URL with the IAM user's `CREDENTIALS`. If you're using [implicit authentication](#implicit-authentication), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's service account name, which you can copy from the **Service Accounts** page:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}iam.gserviceaccount.com';
+    ~~~
+
+    CockroachDB also supports authentication for assuming roles when taking encrypted backups. To use with an encrypted backup, pass the `ASSUME_ROLE` parameter to the KMS URI as well as the bucket's: 
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}iam.gserviceaccount.com';
+    ~~~
+
+    For more information on Google Cloud Storage KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+
+    {{site.data.alerts.callout_info}}
+    CockroachDB supports assume role authentication for changefeeds emitting to Google Cloud Pub/Sub sinks. The process to set up assume role for Pub/Sub works in a similar way, except that you will provide the final service account with the "Pub/Sub Editor" role at the project level. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail on the Pub/Sub sink.
+    {{site.data.alerts.end}}
+
+#### Google Cloud role chaining
+
+Role chaining allows a service account to assume a role through an intermediate service account(s) instead of the service account directly assuming a role. In this way, the role chain passes the request for access to the final role in the chain. Role chaining could be useful when a third-party organization needs access to your Google Cloud Storage bucket to complete a bulk operation. Or, your organization could grant roles based on limited-privilege levels.
+
+Following from the previous setup section, if you want to add an intermediate account to the chain of roles, it is necessary to ensure each service account has granted the "Service Account Token Creator" role to the previous account in the chain. See [step 3](#service-account-token-granting) in the previous section to add this role on a service account.
+
+In a chain of three roles, A, B, C:
+
+Service Account A | &larr; Service Account B (intermediate accounts) | &larr; Service Account C (final account)
+-----------------+----------------+---------
+Credentials included in `AUTH=implicit` or `specified` | Grants access to **A** with the Service Account Token Creator role | Grants access to **B** with the Service Account Token Creator role<br>Access to the resource e.g., storage bucket
+
+- The initial account (A) requests permissions from account B.
+- The intermediate account (B) will delegate the request to account C.
+- The final service account (C) will request the credentials that account A requires.
+
+When passing a chained role into `BACKUP`, it will follow this pattern with each chained role separated by a `,` character: 
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={intermediate service account name}iam.gserviceaccount.com,{final service account name}iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
+~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="azure">
@@ -318,7 +412,7 @@ BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_N
 
 <section class="filter-content" markdown="1" data-scope="http">
 
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](https://www.cockroachlabs.com/docs/stable/cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 
 If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#flags-external-io-disable-http).
 
@@ -336,7 +430,7 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 
 This section describes the minimum permissions required to run CockroachDB bulk operations. While we provide the required permissions for Amazon S3 and Google Cloud Storage, the provider's documentation provides detail on the setup process and different options regarding access management.
 
-Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket. 
+Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket.
 
 This table outlines the actions that each operation performs against the storage bucket:
 
@@ -402,11 +496,11 @@ This table outlines the actions that each operation performs against the storage
 
 These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) are the minimum access permissions to be set in an Amazon S3 bucket policy:
 
-Operation    | S3 permission                                                                          
+Operation    | S3 permission
 -------------+----------------------------------------------------------------------------------
-Backup       | `s3:PutObject`, `s3:GetObject`, `s3:ListBucket`  
-Restore      | `s3:GetObject`, `s3:ListBucket`     
-Import       | `s3:GetObject`                                             
+Backup       | `s3:PutObject`, `s3:GetObject`, `s3:ListBucket`
+Restore      | `s3:GetObject`, `s3:ListBucket`
+Import       | `s3:GetObject`
 Export       | `s3:PutObject`
 Enterprise Changefeeds  | `s3:PutObject`
 
@@ -443,15 +537,15 @@ An example S3 bucket policy for a **backup**:
 
 <section class="filter-content" markdown="1" data-scope="gcs-perms">
 
-In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions. 
+In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions.
 
-For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles). 
+For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles).
 
-Operation    | GCS Permission                                                                          
+Operation    | GCS Permission
 -------------+----------------------------------------------------------------------------------
-Backup       | `storage.objects.create`, `storage.objects.get`, `storage.objects.list`   
-Restore      | `storage.objects.get`, `storage.objects.list`       
-Import       | `storage.objects.get`                                             
+Backup       | `storage.objects.create`, `storage.objects.get`, `storage.objects.list`
+Restore      | `storage.objects.get`, `storage.objects.list`
+Import       | `storage.objects.get`
 Export       | `storage.objects.create`
 Changefeeds  | `storage.objects.create`
 
@@ -477,13 +571,33 @@ For specific cloud-storage provider documentation, see the following:
 
 ### Amazon S3 storage classes
 
-When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
+
+The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 
 ~~~
 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
 ~~~
 
-{% include {{ page.version.version }}/misc/storage-classes.md %}
+While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes. 
+
+{{site.data.alerts.callout_info}}
+[Incremental backups](take-full-and-incremental-backups.html#incremental-backups) are **not** compatible with the S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes. Incremental backups require ad-hoc reading of previous backups, which is not possible with the Glacier Flexible Retrieval or Glacier Deep Archive storage classes as they do not allow immediate access to S3 objects without first restoring the objects. See Amazon's documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for more detail.
+{{site.data.alerts.end}}
+
+This table lists the valid CockroachDB parameters that map to an S3 storage class:
+
+CockroachDB parameter | AWS S3 storage class
+----------------------+--------------------------
+`STANDARD` | [S3 Standard](https://aws.amazon.com/s3/storage-classes/#General_purpose)
+`REDUCED_REDUNDANCY` | [Reduced redundancy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) **Note**: Amazon recommends against using this storage class.
+`STANDARD_IA` | [Standard Infrequent Access](https://aws.amazon.com/s3/storage-classes/#Infrequent_access)
+`ONEZONE_IA` | [One Zone Infrequent Access](https://aws.amazon.com/s3/storage-classes/#__)
+`INTELLIGENT_TIERING` | [Intelligent Tiering](https://aws.amazon.com/s3/storage-classes/#Unknown_or_changing_access)
+`GLACIER` | [Glacier Flexible Retrieval](https://aws.amazon.com/s3/storage-classes/#Flexible_Retrieval)
+`DEEP_ARCHIVE` | [Glacier Deep Archive](https://aws.amazon.com/s3/storage-classes/#____)
+`OUTPOSTS` | [Outpost](https://aws.amazon.com/s3/storage-classes/#S3_on_Outposts)
+`GLACIER_IR` | [Glacier Instant Retrieval](https://aws.amazon.com/s3/storage-classes/#Instant_Retrieval)
 
 You can view an object's storage class in the [Amazon S3 Console](https://s3.console.aws.amazon.com) from the object's **Properties** tab. Alternatively, use the [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/s3api/list-objects-v2.html) to list objects in a bucket, which will also display the storage class:
 
@@ -512,7 +626,7 @@ users-7.ndjson",
 
 For a specific operation, see the following examples:
 
-- [Backup with an S3 storage class](backup.html#backup-with-an-s3-storage-class)
+- [Back up with an S3 storage class](backup.html#back-up-with-an-s3-storage-class)
 - [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class)
 - [Export tabular data with an S3 storage class](export.html#export-tabular-data-with-an-s3-storage-class)
 

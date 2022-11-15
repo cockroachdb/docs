@@ -22,9 +22,11 @@ You can also backup:
 
     `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
-Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
+Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention. You can check that backups in external storage are valid by using a [backup validation](backup-validation.html) command.
 
 To view the contents of an backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+
+{% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
@@ -45,14 +47,20 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ## Required privileges
 
+{% include {{ page.version.version }}/backups/updated-backup-privileges.md %}
+
+## Required privileges using the legacy privilege model
+
+The following details the legacy privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
-- `BACKUP` requires full read and write permissions to its target destination.
-- `BACKUP` does **not** require delete or overwrite permissions to its target destination. This allows `BACKUP` to write to cloud storage buckets that have [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) configured. We recommend enabling object locking in cloud storage buckets to protect the validity of a backup.
 
-### Destination privileges
+See the [Required privileges](#required-privileges) section for the updated privilege model.
 
-{% include {{ page.version.version }}/backups/destination-file-privileges.md %}
+## Destination privileges
+
+{% include {{ page.version.version }}/backups/destination-privileges.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
@@ -96,8 +104,10 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
 - [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 {{site.data.alerts.callout_success}}
-Backups support cloud object locking and [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
 
 ## Functional details
@@ -164,6 +174,8 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
@@ -290,7 +302,7 @@ AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
 
-The job ID is returned immediately without waiting for the job to finish:
+The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
 
 ~~~
         job_id
@@ -308,7 +320,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 (1 row)
 ~~~
 
-### Backup with an S3 storage class
+### Back up with an S3 storage class
 
 To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
@@ -318,6 +330,8 @@ BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SEC
 ~~~
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
+
+{% include {{ page.version.version }}/misc/storage-class-glacier-incremental.md %}
 
 </section>
 
@@ -438,7 +452,7 @@ AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
 
-The job ID is returned immediately without waiting for the job to finish:
+The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
 
 ~~~
         job_id
@@ -577,7 +591,7 @@ AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
 
-The job ID is returned immediately without waiting for the job to finish:
+The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
 
 ~~~
         job_id

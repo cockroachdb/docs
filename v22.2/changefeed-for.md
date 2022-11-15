@@ -11,13 +11,15 @@ docs_area: reference.sql
 
 The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
 
-{% include {{ page.version.version }}/cdc/core-url.md %}
-
 For more information, see [Change Data Capture Overview](change-data-capture-overview.html).
 
-{% include common/experimental-warning.md %}
+{% include feature-phases/preview.md %}
 
 ## Required privileges
+
+{% include {{ page.version.version }}/cdc/privilege-model.md %}
+
+### Legacy privilege model
 
 Changefeeds can only be created by superusers, i.e., [members of the `admin` role](security-reference/authorization.html#admin-role). The admin role exists by default with `root` as the member.
 

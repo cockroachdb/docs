@@ -61,11 +61,28 @@
       		      "/cockroachcloud/security-overview.html"
       	      ]
       	    },
-      	    {
-      	      "title": "Authentication",
-      	      "urls": [
-      		      "/cockroachcloud/authentication.html"
-      	      ]
+						{
+							"title": "Authentication",
+								"items": [
+									{
+										"title": "Authentication Overview",
+										"urls": [
+											"/cockroachcloud/authentication.html"
+										]
+									},
+									{
+										"title": "Single Sign-On (SSO)",
+										"urls": [
+											"/cockroachcloud/cloud-org-sso.html"
+										]
+									},
+									{
+										"title": "Configure Cloud Organization SSO",
+										"urls": [
+											"/cockroachcloud/configure-cloud-org-sso.html"
+										]
+									}
+								]
       	    },
       	    {
       	      "title": "User Authorization",
@@ -79,14 +96,32 @@
       		      "/cockroachcloud/network-authorization.html"
       	      ]
       	    },
+						{
+      	      "title": "Private clusters (Preview)",
+      	      "urls": [
+      		      "/cockroachcloud/private-clusters.html"
+      	      ]
+      	    },
+            {
+              "title": "Egress Perimeter Controls (Preview)",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
       	    {
       	      "title": "SQL Audit Logging",
       	      "urls": [
       		      "/cockroachcloud/sql-audit-logging.html"
       	      ]
-      	    }
-      	  ]
-      	},
+      	    },
+            {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
+              ]
+            }
+          ]
+        },
       	{
       	  "title": "Migrate Data",
       	  "items": [

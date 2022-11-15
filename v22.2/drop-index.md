@@ -55,16 +55,16 @@ Suppose you create an index on the `name` and `city` columns of the `users` tabl
 ~~~
 
 ~~~
-  table_name |     index_name      | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+---------------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey          |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey          |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey          |   false    |            3 | name        | N/A       |  true   |  false
-  users      | users_pkey          |   false    |            4 | address     | N/A       |  true   |  false
-  users      | users_pkey          |   false    |            5 | credit_card | N/A       |  true   |  false
-  users      | users_name_city_idx |    true    |            1 | name        | ASC       |  false  |  false
-  users      | users_name_city_idx |    true    |            2 | city        | ASC       |  false  |  false
-  users      | users_name_city_idx |    true    |            3 | id          | ASC       |  false  |   true
+  table_name |     index_name      | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+---------------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | users_name_city_idx |     t      |            1 | name        | ASC       |    f    |    f     |    t
+  users      | users_name_city_idx |     t      |            2 | city        | ASC       |    f    |    f     |    t
+  users      | users_name_city_idx |     t      |            3 | id          | ASC       |    f    |    t     |    t
+  users      | users_pkey          |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey          |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey          |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey          |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey          |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
 (8 rows)
 ~~~
 
@@ -81,13 +81,13 @@ You can drop this index with the `DROP INDEX` statement:
 ~~~
 
 ~~~
-  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
-  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
-  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | users_pkey |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
 (5 rows)
 ~~~
 
@@ -112,15 +112,9 @@ Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` c
 ~~~
   table_name | constraint_name | constraint_type |            details             | validated
 -------------+-----------------+-----------------+--------------------------------+------------
-  users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
-  users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
-  users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
-  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey     |   false    |            3 | name        | N/A       |  true   |  false
-  users      | users_pkey     |   false    |            4 | address     | N/A       |  true   |  false
-  users      | users_pkey     |   false    |            5 | credit_card | N/A       |  true   |  false
-(8 rows)
+  users      | id_name_unique  | UNIQUE          | UNIQUE (id ASC, name ASC)      |     t
+  users      | users_pkey      | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |     t
+(2 rows)
 ~~~
 
 If no index exists on `id` and `name`, CockroachDB automatically creates an index:
@@ -131,14 +125,17 @@ If no index exists on `id` and `name`, CockroachDB automatically creates an inde
 ~~~
 
 ~~~
-  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+----------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey     |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey     |   false    |            2 | id          | ASC       |  false  |  false
-  users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
-  users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
-  users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
-(5 rows)
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+----------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | id_name_unique |     f      |            1 | id          | ASC       |    f    |    f     |    t
+  users      | id_name_unique |     f      |            2 | name        | ASC       |    f    |    f     |    t
+  users      | id_name_unique |     f      |            3 | city        | ASC       |    t    |    t     |    t
+  users      | users_pkey     |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey     |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey     |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
+(8 rows)
 ~~~
 
 The `UNIQUE` constraint is dependent on the `id_name_unique` index, so you cannot drop the index with a simple `DROP INDEX` statement:
@@ -167,13 +164,13 @@ To drop an index and its dependent objects, you can use `CASCADE`:
 ~~~
 
 ~~~
-  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
--------------+------------+------------+--------------+-------------+-----------+---------+-----------
-  users      | users_pkey |   false    |            1 | city        | ASC       |  false  |  false
-  users      | users_pkey |   false    |            2 | id          | ASC       |  false  |  false
-  users      | users_pkey |   false    |            3 | name        | N/A       |  true   |  false
-  users      | users_pkey |   false    |            4 | address     | N/A       |  true   |  false
-  users      | users_pkey |   false    |            5 | credit_card | N/A       |  true   |  false
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | users_pkey |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
 (5 rows)
 ~~~
 

@@ -41,7 +41,7 @@ If you click the statement fingerprint in the **Statements** column, the [**Stat
 
 ## Active Executions view
 
-The **Active Executions** view helps you:
+{% include_cached new-in.html version="v22.2" %} The **Active Executions** view helps you:
 
 - Understand and tune workload performance, particularly for long-running statements.
 

@@ -2,7 +2,6 @@
 title: Migrate from a CockroachDB Serverless to CockroachDB Dedicated Cluster
 summary: Learn how to migrate data from a CockroachDB Serverless cluster into a CockroachDB Dedicated cluster.
 toc: true
-redirect_from: migrate-from-free-to-dedicated.html
 docs_area: migrate
 ---
 
@@ -83,7 +82,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     > CREATE DATABASE tpcc;
     ~~~
 
-1. Write an [`IMPORT`](../{{site.versions["stable"]}}/import.html) statement that matches the schema of the table data you're importing.
+1. Write a [`CREATE TABLE`](../{{site.versions["stable"]}}/create-table.html) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
     You can use the [`SHOW CREATE TABLE`](../{{site.versions["stable"]}}/show-create.html#show-the-create-table-statement-for-a-table) statement in the {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
@@ -91,25 +90,33 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
     {% include v20.2/misc/csv-import-callout.md %}
 
-    For example, to import the data from `warehouse.csv` into a `warehouse` table, use the following statement:
+    For example, to import the data from `warehouse.csv` into a `warehouse` table, issue the following statement to create the table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > IMPORT TABLE tpcc.warehouse (
-        w_id INT8 NOT NULL,
-        w_name VARCHAR(10) NULL,
-        w_street_1 VARCHAR(20) NULL,
-        w_street_2 VARCHAR(20) NULL,
-        w_city VARCHAR(20) NULL,
-        w_state CHAR(2) NULL,
-        w_zip CHAR(9) NULL,
-        w_tax DECIMAL(4,4) NULL,
-        w_ytd DECIMAL(12,2) NULL,
-        CONSTRAINT "primary" PRIMARY KEY (w_id ASC),
-        FAMILY "primary" (w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
-      ) CSV DATA ('s3://<bucket_name>/warehouse.csv?AWS_ACCESS_KEY_ID=<access_key>&AWS_SECRET_ACCESS_KEY=<secret_key>')
-      WITH
-        skip = '1';
+    CREATE TABLE tpcc.warehouse (
+      w_id INT8 NOT NULL,
+      w_name VARCHAR(10) NULL,
+      w_street_1 VARCHAR(20) NULL,
+      w_street_2 VARCHAR(20) NULL,
+      w_city VARCHAR(20) NULL,
+      w_state CHAR(2) NULL,
+      w_zip CHAR(9) NULL,
+      w_tax DECIMAL(4,4) NULL,
+      w_ytd DECIMAL(12,2) NULL,
+      CONSTRAINT "primary" PRIMARY KEY (w_id ASC),
+      FAMILY "primary" (w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
+    );
+    ~~~
+
+    Next, use `IMPORT INTO` to import the data into the new table:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    IMPORT INTO tpcc.warehouse (w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
+      CSV DATA ('s3://<bucket_name>/warehouse.csv?AWS_ACCESS_KEY_ID=<access_key>&AWS_SECRET_ACCESS_KEY=<secret_key>')
+    WITH
+      skip = '1';
     ~~~
 
     Notice that we used the [`skip` option](../v21.2/import.html#skip-first-n-lines) in the above command. This is because the first line of the CSV file we created in [Step 1](#step-1-export-data-to-a-local-csv-file) is the header row, not actual data to import. For more information about the options available for `IMPORT ... CSV`, see [Import options](../{{site.versions["stable"]}}/import.html#import-options).
@@ -117,41 +124,46 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     ~~~
             job_id       |  status   | fraction_completed | rows | index_entries | bytes
     ---------------------+-----------+--------------------+------+---------------+--------
-      652283814057476097 | succeeded |                  1 |    1 |             0 |    53
+      652285202857820161 | succeeded |                  1 |   10 |             0 |  1017
     (1 row)
     ~~~
 
-    {{site.data.alerts.callout_info}}
-    To import data into an existing table, use [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html).
-    {{site.data.alerts.end}}
-
 1. Repeat the above for each CSV file you want to import. For example, let's import the second file (`district.csv`) we created earlier:
+
+    Issue the following statement to create the table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > IMPORT TABLE tpcc.district (
-        d_id INT8 NOT NULL,
-        d_w_id INT8 NOT NULL,
-        d_name VARCHAR(10) NULL,
-        d_street_1 VARCHAR(20) NULL,
-        d_street_2 VARCHAR(20) NULL,
-        d_city VARCHAR(20) NULL,
-        d_state CHAR(2) NULL,
-        d_zip CHAR(9) NULL,
-        d_tax DECIMAL(4,4) NULL,
-        d_ytd DECIMAL(12,2) NULL,
-        d_next_o_id INT8 NULL,
-        CONSTRAINT "primary" PRIMARY KEY (d_w_id ASC, d_id ASC),
-        FAMILY "primary" (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id)                     
-      ) CSV DATA ('s3://<bucket_name>/district.csv?AWS_ACCESS_KEY_ID=<access_key>&AWS_SECRET_ACCESS_KEY=<secret_key>')
-      WITH
-        skip = '1';
+    CREATE TABLE tpcc.district (
+      d_id INT8 NOT NULL,
+      d_w_id INT8 NOT NULL,
+      d_name VARCHAR(10) NULL,
+      d_street_1 VARCHAR(20) NULL,
+      d_street_2 VARCHAR(20) NULL,
+      d_city VARCHAR(20) NULL,
+      d_state CHAR(2) NULL,
+      d_zip CHAR(9) NULL,
+      d_tax DECIMAL(4,4) NULL,
+      d_ytd DECIMAL(12,2) NULL,
+      d_next_o_id INT8 NULL,
+      CONSTRAINT "primary" PRIMARY KEY (d_w_id ASC, d_id ASC),
+      FAMILY "primary" (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id)
+    );
+    ~~~
+
+    Next, use `IMPORT INTO` to import the data into the new table:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    IMPORT INTO tpcc.district (d_id, d_w_id, d_name, d_street_1, d_street_2, d_city, d_state, d_zip, d_tax, d_ytd, d_next_o_id) CSV DATA ('s3://<bucket_name>/warehouse.csv?AWS_ACCESS_KEY_ID=<access_key>&AWS_SECRET_ACCESS_KEY=<secret_key>')
+    WITH
+      skip = '1';
     ~~~
 
     ~~~
             job_id       |  status   | fraction_completed | rows | index_entries | bytes
     ---------------------+-----------+--------------------+------+---------------+--------
-      652285202857820161 | succeeded |                  1 |   10 |             0 |  1017
+      802887970117091329 | succeeded |                  1 |   10 |             0 |  1067
     (1 row)
     ~~~
 
@@ -163,10 +175,10 @@ For best practices for optimizing import performance in CockroachDB, see [Import
     ~~~
 
     ~~~
-      schema_name | table_name | type  | owner  | estimated_row_count
-    --------------+------------+-------+--------+----------------------
-      public      | district   | table | lauren |                  10
-      public      | warehouse  | table | lauren |                   1
+      schema_name | table_name | type  | owner | estimated_row_count | locality
+    --------------+------------+-------+-------+---------------------+-----------
+      public      | district   | table | ryan  |                  10 | NULL
+      public      | warehouse  | table | ryan  |                   1 | NULL
     (2 rows)
     ~~~
 

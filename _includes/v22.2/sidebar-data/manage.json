@@ -156,6 +156,12 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Backup Validation",
+          "urls": [
+            "/${VERSION}/backup-validation.html"
+          ]
         }
       ]
     },
@@ -219,17 +225,28 @@
               ]
             },
             {
-              "title": "Authenticating to CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/authentication.html"
-              ]
-            },
-            {
-              "title": "Single Sign-On (SSO) for CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/cloud-sso.html"
-              ]
-            },
+							"title": "Authentication",
+								"items": [
+									{
+										"title": "Authentication Overview",
+										"urls": [
+											"/cockroachcloud/authentication.html"
+										]
+									},
+									{
+										"title": "Single Sign-On (SSO)",
+										"urls": [
+											"/cockroachcloud/cloud-org-sso.html"
+										]
+									},
+									{
+										"title": "Configure Cloud Organization SSO",
+										"urls": [
+											"/cockroachcloud/configure-cloud-org-sso.html"
+										]
+									}
+								]
+      	    },
             {
               "title": "User Authorization",
               "urls": [
@@ -246,6 +263,12 @@
               "title": "SQL Audit Logging",
               "urls": [
                 "/cockroachcloud/sql-audit-logging.html"
+              ]
+            },
+            {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
               ]
             },
             {
@@ -452,7 +475,7 @@
               ]
             },
             {
-              "title": "Monitor with Datadog",
+              "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]

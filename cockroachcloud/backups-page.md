@@ -19,8 +19,8 @@ The backups that Cockroach Labs runs for you can be viewed on the [Backups page]
 Cockroach Labs runs [full cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="{{ site.data.products.dedicated }}">
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+<section class="filter-content" markdown="1" data-scope="dedicated">
+Cockroach Labs runs [full cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. 
 
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.

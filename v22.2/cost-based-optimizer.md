@@ -21,9 +21,9 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 ## Table statistics
 
-The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
+The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and [refreshed periodically](#control-statistics-refresh-rate) for existing tables.
 
-By default, CockroachDB automatically generates table statistics when tables are [created](create-table.html), and as they are [updated](update.html). It does this using a [background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
+By default, CockroachDB automatically generates table statistics when tables are [created](create-table.html), and as they are [updated](update.html). It does this using a [background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on. Specifically, the optimizer chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
@@ -41,11 +41,10 @@ For best query performance, most users should leave automatic statistics enabled
 Statistics are refreshed in the following cases:
 
 - When there are no statistics.
-- When it's been a long time since the last refresh, where "long time" is defined according to a moving average of the time across the last several refreshes.
+- When it has been a long time since the last refresh, where "long time" is based on a moving average of the time across the last several refreshes.
 - After a successful [`IMPORT`](import.html) or [`RESTORE`](restore.html) into the table.
 - After any schema change affecting the table.
 - After each mutation operation ([`INSERT`](insert.html), [`UPDATE`](update.html), or [`DELETE`](delete.html)), the probability of a refresh is calculated using a formula that takes the [cluster settings](cluster-settings.html) shown in the following table as inputs. These settings define the target number of rows in a table that must be stale before statistics on that table are refreshed. Increasing either setting will reduce the frequency of refreshes. In particular, `min_stale_rows` impacts the frequency of refreshes for small tables, while `fraction_stale_rows` has more of an impact on larger tables.
-
 
     | Setting                                              | Default Value | Details                                                                               |
     |------------------------------------------------------+---------------+---------------------------------------------------------------------------------------|
@@ -60,11 +59,19 @@ Statistics are refreshed in the following cases:
 
 Suppose the [clusters settings](cluster-settings.html) `sql.stats.automatic_collection.fraction_stale_rows` and `sql.stats.automatic_collection.min_stale_rows` have the default values .2 and 500 as shown in the preceding table.
 
-If a table has 100 rows and 20 became stale, a re-collection would not be triggered because, even though 20% of the rows are stale, they do not meet the 500 row minimum.
+If a table has 100 rows and 20 became stale, a re-collection would not be triggered because, even though 20% of the rows are stale, they do not meet the 500-row minimum.
 
-On the other hand, if a table has 1,500,000,000 rows, 20% of that, or 300,000,000 rows, would have to become stale before auto statistics collection was triggered. With a table this large, you would have to lower `sql.stats.automatic_collection.fraction_stale_rows` significantly to allow for regular stats collections. This can cause smaller tables to have stats collected much more frequently, because it is a global setting that affects automatic stats collection for all tables.
+On the other hand, if a table has 1,500,000,000 rows, then 20% of that, or 300,000,000 rows, would have to become stale before automatic statistics collection was triggered. With a table this large, you would have to lower `sql.stats.automatic_collection.fraction_stale_rows` significantly to allow for regular statistics collections. Doing so can cause smaller tables to have statistics collected much more frequently, because it is a global setting that affects automatic statistics collection for all tables.
 
-In such cases we recommend that you use the [`sql_stats_automatic_collection_enabled` storage parameter](#enable-and-disable-automatic-statistics-collection-for-tables), which lets you configure auto statistics on a per-table basis.
+In such cases, we recommend that you use the [`sql_stats_automatic_collection_enabled` storage parameter](#enable-and-disable-automatic-statistics-collection-for-tables), which lets you configure automatic statistics collection on a per-table basis.
+
+#### Configure non-default statistics retention
+
+By default, when CockroachDB refreshes statistics for a column, it deletes the previous statistics for the column (while leaving the most recent 4-5 historical statistics). When CockroachDB refreshes statistics, it also deletes the statistics for any "non-default" column sets, or columns for which statistics are not [collected by default](#table-statistics).
+
+Historical statistics on non-default column sets should not be retained indefinitely, because they will not be refreshed automatically and could cause the optimizer to choose a suboptimal plan if they become stale. Such non-default historical statistics may exist because columns were deleted or removed from an index, and are therefore no longer part of a multi-column statistic.
+
+CockroachDB deletes statistics on non-default columns according to the `sql.stats.non_default_columns.min_retention_period` [cluster setting](cluster-settings.html), which defaults to a 24-hour retention period.
 
 ### Enable and disable automatic statistics collection for clusters
 
@@ -174,22 +181,33 @@ When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are 
 
 ### Control whether the `avg_size` statistic is used to cost scans
 
-The `avg_size` table statistic represents the average size of a table column.
-If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
+The `avg_size` table statistic represents the average size of a table column. If a table does not have an average size statistic available for a column, it uses the default value of 4 bytes.
 
 The optimizer uses `avg_size` to cost scans and relevant joins. Costing scans per row regardless of the size of the columns comprising the row doesn't account for time to read or transport a large number of bytes over the network. This can lead to undesirable plans when there are multiple options for scans or joins that read directly from tables.
 
-Cockroach Labs recommends that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, you can disable it by setting the `cost_scans_with_default_col_size` [session variable](set-vars.html) to true with `SET cost_scans_with_default_col_size=true`.
+We recommend that you allow the optimizer to consider column size when costing plans. If you are an advanced user and need to disable using `avg_size` for troubleshooting or performance tuning reasons, set the [`cost_scans_with_default_col_size` session variable](set-vars.html#cost-scans-with-default-col-size) to `true` with `SET cost_scans_with_default_col_size=true`.
 
 ## Control whether the optimizer creates a plan with a full scan
 
 Even if you have [secondary indexes](schema-design-indexes.html), the optimizer may determine that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and find that a statement plan is not using the secondary index, then it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html#example).
 
-You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+You can disable statement plans that perform full table scans with the [`disallow_full_table_scans` session variable](set-vars.html#disallow-full-table-scans).
 
-If you disable full scans, you can set the `large_full_scan_rows` session variable to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
+If you disable full scans, you can set the [`large_full_scan_rows` session variable](set-vars.html#large-full-scan-rows) to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
 
-If you disable full scans, and you provide an [index hint](table-expressions.html#force-index-selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+If you disable full scans, and you provide an [index hint](indexes.html#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](ui-overview-dashboard.html) will be updated.
+
+## Control whether the optimizer uses an index
+
+You can specify [whether an index is visible](alter-index.html#index-visibility) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection). 
+
+This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
+
+{{site.data.alerts.callout_info}}
+Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
+{{site.data.alerts.end}}
+
+You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
 
 ## Locality optimized search in multi-region clusters
 
@@ -228,7 +246,7 @@ Only the following statements use the plan cache:
 - [`UPSERT`](upsert.html)
 - [`DELETE`](delete.html)
 
-The optimizer can use cached plans if they are: 
+The optimizer can use cached plans if they are:
 
 - Prepared statements.
 - Non-prepared statements using identical constant values.
@@ -253,6 +271,8 @@ To avoid performance degradation, Cockroach Labs strongly recommends setting thi
 {{site.data.alerts.end}}
 
 For more information about selecting an optimal join ordering, see our blog post [An Introduction to Join Ordering](https://www.cockroachlabs.com/blog/join-ordering-pt1/).
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ### Reduce planning time for queries with many joins
 

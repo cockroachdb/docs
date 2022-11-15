@@ -155,5 +155,5 @@ Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE
 - [`DROP INDEX`](drop-index.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)
-- ['ALTER PRIMARY KEY'](alter-primary-key.html)
+- [`ALTER PRIMARY KEY`](alter-primary-key.html)
 - [Online Schema Changes](online-schema-changes.html)

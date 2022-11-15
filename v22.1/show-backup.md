@@ -24,7 +24,7 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-22.1/grammar_svg/show_backup.html %}
+{% include {{ page.version.version }}/backups/show-backup-replace-diagram.html %}
 </div>
 
 ## Parameters

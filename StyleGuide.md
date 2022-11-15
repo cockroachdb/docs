@@ -678,7 +678,6 @@ All product names except CockroachDB should be written as Liquid variables unles
 - **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
 - **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
 - **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
-- **Enterprise** : `{{ site.data.products.enterprise }}`
 - **CockroachDB Cloud** : `{{ site.data.products.db }}`
 
 ### Code

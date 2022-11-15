@@ -77,6 +77,8 @@ To follow along with the examples below:
         SET CLUSTER SETTING sql.defaults.multiregion_placement_policy.enabled = on;
         ~~~
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Create a database with the replica placement policy set to restricted
 
 If you know at database creation time that you'd like to set the database's replica placement policy to ["restricted"](#parameters-restricted), you can do so in a [`CREATE DATABASE`](create-database.html) statement as shown below:

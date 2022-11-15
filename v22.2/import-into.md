@@ -27,26 +27,29 @@ Optimize import operations in your applications by following our [Import Perform
 
 ## Required privileges
 
-#### Table privileges
+### Table privileges
 
 The user must have the `INSERT` and `DROP` [privileges](security-reference/authorization.html#managing-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
 
-#### Source privileges
+### Source privileges
 
-The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
-- [Userfile](use-userfile-for-bulk-operations.html)
+Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-The source file URL _does_ require the `ADMIN` role in the following scenarios:
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
+- Using [HTTP](use-a-local-file-server-for-bulk-operations.html) or HTTPS.
 
-- S3 or GS using `IMPLICIT` credentials
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html), or [HTTPS](use-a-local-file-server-for-bulk-operations.html)
+No special privilege is required for: 
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+
+{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
-
-Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
@@ -156,6 +159,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ## Performance
 
 - All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
@@ -181,6 +186,8 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 We recommend reading the [Considerations](#considerations) section for important details when working with `IMPORT INTO`.
 

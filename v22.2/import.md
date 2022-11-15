@@ -35,13 +35,27 @@ Optimize import operations in your applications by following our [Import Perform
 
 ## Required privileges
 
-#### Table privileges
+### Table privileges
 
 The user must have the `CREATE` [privileges](security-reference/authorization.html#managing-privileges) on the target database.
 
-#### Source privileges
+### Source privileges
 
-{% include {{ page.version.version }}/misc/source-privileges.md %}
+{% include {{ page.version.version }}/misc/external-io-privilege.md %}
+
+Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
+- Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
+- Using [HTTP](use-a-local-file-server-for-bulk-operations.html) or HTTPS.
+
+No special privilege is required for: 
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+
+{% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
@@ -128,6 +142,8 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
+
 ### Table users and privileges
 
 Imported tables are treated as new tables, so you must [`GRANT`](grant.html) privileges to them.
@@ -155,6 +171,8 @@ If initiated correctly, the statement returns when the import is finished or if 
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>

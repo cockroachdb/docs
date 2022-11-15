@@ -25,12 +25,12 @@ URLs for the files you want to import must use the format shown below. For examp
 [scheme]://[host]/[path]?[parameters]
 ~~~
 
-Location                                                    | Scheme      | Host                                             | Parameters                                                                 
+Location                                                    | Scheme      | Host                                             | Parameters
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`: optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). For more information, see [Authentication - Amazon S3](#authentication). <br><br>`S3_STORAGE_CLASS`: Specify the Amazon S3 storage class for created objects. See [Amazon S3 storage classes](#amazon-s3-storage-classes) for the available                              
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH`: optional `implicit` or `specified` (default: `specified`); `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). For more information, see [Authentication - Amazon S3](#authentication). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
 Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME` <br><br>For more information, see [Authentication - Azure Storage](#authentication).
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).     
-HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).      
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#authentication).
+HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#authentication).
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services                                     | `s3`        | Bucket name                                      | {{site.data.alerts.callout_danger}}While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#authentication).
 
@@ -54,11 +54,11 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [changefeeds](change-data-capture-overview.html),  or [`EXPORT`](export.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
-Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`                                                     
+Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`
+Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -67,12 +67,12 @@ NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backup
 
 Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
-Location     | Example                                                                          
+Location     | Example
 -------------+----------------------------------------------------------------------------------
-Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
-Google Cloud | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`                                                     
-HTTP         | `http://localhost:8080/employees.sql`                                            
+Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+Azure        | `azure://acme-co/employees.sql?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`
+Google Cloud | `gs://acme-co/employees.sql?AUTH=specified&CREDENTIALS=encoded-123`
+HTTP         | `http://localhost:8080/employees.sql`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -209,7 +209,7 @@ BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_N
 
 <section class="filter-content" markdown="1" data-scope="http">
 
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](https://www.cockroachlabs.com/docs/stable/cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 
 If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#flags-external-io-disable-http).
 
@@ -229,7 +229,7 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 
 This section describes the minimum permissions required to run CockroachDB bulk operations. While we outline information on the necessary permissions to access Amazon S3 and Google Cloud Storage when running these operations, the provider's documentation provides detail on the setup process and different options regarding access management.
 
-Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket. 
+Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket.
 
 This table outlines the actions that each operation performs against the storage bucket:
 
@@ -296,11 +296,11 @@ This table outlines the actions that each operation performs against the storage
 
 These [actions](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html) are the minimum access permissions to be set in an Amazon S3 bucket policy:
 
-Operation    | S3 permission                                                                          
+Operation    | S3 permission
 -------------+----------------------------------------------------------------------------------
 Backup       | `s3:PutObject`, `s3:GetObject`, `s3:ListBucket`, `s3:DeleteObject`
-Restore      | `s3:GetObject`, `s3:ListBucket`     
-Import       | `s3:GetObject`                                             
+Restore      | `s3:GetObject`, `s3:ListBucket`
+Import       | `s3:GetObject`
 Export       | `s3:PutObject`
 Enterprise Changefeeds  | `s3:PutObject`
 
@@ -338,15 +338,15 @@ An example S3 bucket policy for a **backup**:
 
 <section class="filter-content" markdown="1" data-scope="gcs-perms">
 
-In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions. 
+In Google Cloud Storage, you can grant users roles that define their access level to the storage bucket. For the purposes of running CockroachDB operations to your bucket, the following table lists the permissions that represent the minimum level required for each operation. GCS provides different levels of granularity for defining the roles in which these permissions reside. You can assign roles that already have these [permissions](https://cloud.google.com/storage/docs/access-control/iam-permissions) configured, or make your own custom roles that include these permissions.
 
 For more detail about Predefined, Basic, and Custom roles, see [IAM roles for Cloud Storage](https://cloud.google.com/storage/docs/access-control/iam-roles).
 
-Operation    | GCS Permission                                                                          
+Operation    | GCS Permission
 -------------+----------------------------------------------------------------------------------
 Backup       | `storage.objects.create`, `storage.objects.get`, `storage.objects.list`, `storage.objects.delete`
-Restore      | `storage.objects.get`, `storage.objects.list`       
-Import       | `storage.objects.get`                                             
+Restore      | `storage.objects.get`, `storage.objects.list`
+Import       | `storage.objects.get`
 Export       | `storage.objects.create`
 Changefeeds  | `storage.objects.create`
 
@@ -358,13 +358,33 @@ For guidance on adding a user to a bucket's policy, see [Add a principal to a bu
 
 ### Amazon S3 storage classes
 
-{% include_cached new-in.html version="v21.2.6" %} When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+{% include_cached new-in.html version="v21.2.6" %} When storing objects in Amazon S3 buckets during [backups](take-full-and-incremental-backups.html), [exports](export.html), and [changefeeds](change-data-capture-overview.html), you can specify the `S3_STORAGE_CLASS={class}` parameter in the URI to configure a storage class type.
+
+The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 
 ~~~
 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
 ~~~
 
-{% include {{ page.version.version }}/misc/storage-classes.md %}
+While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes. 
+
+{{site.data.alerts.callout_info}}
+[Incremental backups](take-full-and-incremental-backups.html#incremental-backups) are **not** compatible with the S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes. Incremental backups require ad-hoc reading of previous backups, which is not possible with the Glacier Flexible Retrieval or Glacier Deep Archive storage classes as they do not allow immediate access to S3 objects without first restoring the objects. See Amazon's documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for more detail.
+{{site.data.alerts.end}}
+
+This table lists the valid CockroachDB parameters that map to an S3 storage class:
+
+CockroachDB parameter | AWS S3 storage class
+----------------------+--------------------------
+`STANDARD` | [S3 Standard](https://aws.amazon.com/s3/storage-classes/#General_purpose)
+`REDUCED_REDUNDANCY` | [Reduced redundancy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) **Note**: Amazon recommends against using this storage class.
+`STANDARD_IA` | [Standard Infrequent Access](https://aws.amazon.com/s3/storage-classes/#Infrequent_access)
+`ONEZONE_IA` | [One Zone Infrequent Access](https://aws.amazon.com/s3/storage-classes/#__)
+`INTELLIGENT_TIERING` | [Intelligent Tiering](https://aws.amazon.com/s3/storage-classes/#Unknown_or_changing_access)
+`GLACIER` | [Glacier Flexible Retrieval](https://aws.amazon.com/s3/storage-classes/#Flexible_Retrieval)
+`DEEP_ARCHIVE` | [Glacier Deep Archive](https://aws.amazon.com/s3/storage-classes/#____)
+`OUTPOSTS` | [Outpost](https://aws.amazon.com/s3/storage-classes/#S3_on_Outposts)
+`GLACIER_IR` | [Glacier Instant Retrieval](https://aws.amazon.com/s3/storage-classes/#Instant_Retrieval)
 
 You can view an object's storage class in the [Amazon S3 Console](https://s3.console.aws.amazon.com) from the object's **Properties** tab. Alternatively, use the [AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/s3api/list-objects-v2.html) to list objects in a bucket, which will also display the storage class:
 
@@ -393,7 +413,7 @@ users-7.ndjson",
 
 For a specific operation, see the following examples:
 
-- [Backup with an S3 storage class](backup.html#backup-with-an-s3-storage-class)
+- [Back up with an S3 storage class](backup.html#back-up-with-an-s3-storage-class)
 - [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class)
 - [Export tabular data with an S3 storage class](export.html#export-tabular-data-with-an-s3-storage-class)
 

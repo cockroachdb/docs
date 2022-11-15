@@ -98,18 +98,16 @@ The configurable fields are as follows:
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
-`Flush.MaxMessages` | [`INT`](int.html)  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1`
+`Flush.MaxMessages` | [`INT`](int.html)  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1000`
 `Flush.Messages`   | [`INT`](int.html)   | Configure the number of messages the changefeed should batch before flushing. | `0`
 `Flush.Bytes`      | [`INT`](int.html)   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
-`Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+`Flush.Frequency`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
 `"Version"`        | [`STRING`](string.html) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
 <a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`](string.html) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](changefeed-messages.html#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. | `"ONE"`
 
 ## Google Cloud Pub/Sub
 
-{{site.data.alerts.callout_info}}
-The Google Cloud Pub/Sub sink is currently in **beta**. For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 {% include_cached new-in.html version="v22.1" %} Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
@@ -137,6 +135,8 @@ When using Pub/Sub as your downstream sink, consider the following:
 - Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
 - You must specify the `region` parameter in the URI to maintain [ordering guarantees](changefeed-messages.html#ordering-guarantees). Unordered messages are not supported, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 
 ### Pub/Sub topic naming
 
@@ -194,9 +194,7 @@ URI Parameter      | Description
 
 ## Webhook sink
 
-{{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. The following section provides usage considerations.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 

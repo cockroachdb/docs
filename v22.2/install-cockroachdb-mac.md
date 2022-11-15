@@ -17,12 +17,18 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-<h2>Install options</h2>
+{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+
+{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+
+{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contains binaries for both Intel and ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>). CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use. Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
 
 Use one of the options below to install CockroachDB.
 
 <div id="use-homebrew" class="install-option">
-  <h3>Use Homebrew</h3>
+
+  <h2 id="install-homebrew">Use Homebrew</h2>
+  {{ arch_note_homebrew }}
   <ol>
     <li>
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
@@ -47,26 +53,12 @@ If you previously installed CockroachDB via Homebrew, run <code>brew uninstall c
 </div>
 
 <div id="download-the-binary" class="install-option">
-  <h3>Download the binary</h3>
+  <h2 id="install-binary">Download the binary</h2>
+  {{ arch_note_binaries }}
   <ol>
     <li>
-      <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz" class="mac-binary-step1" id="mac-binary-step1-{{page.version.version}}" data-eventcategory="mac-binary-step1">CockroachDB archive</a> for OS X and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>, and copy the binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell:</p>
-      <div class="copy-clipboard">
-        <svg data-eventcategory="mac-binary-step1-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
-        <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
-      </div>
-      <div class="highlight"><pre class="highlight"><code data-eventcategory="mac-binary-step1"><span class="nv language-shell mac-binary-step1" id="mac-binary-step1-{{ page.version.version }}" data-eventcategory="mac-binary-step1">$ </span>curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/</code></pre></div>
-      <p>If you get a permissions error, prefix the command with <code>sudo</code>.</p>
-    </li>
-    <li>
-      <p>On macOS Catalina (10.15) and above, the first time you run a newly-downloaded version of the <code>cockroach</code> command, a dialog may appear with the message <b>"cockroach" could not be opened because the developer cannot be verified</b>. Cockroach Labs is aware of this issue. To work around this problem and allow the binary to run:</p>
-      <ol><li>Click <b>Cancel</b>. Do not click <b>Move To Trash</b>. In the terminal, the command exits with an error.</li>
-          <li>Open <b>System Preferences</b>, then click <b>Security & Privacy</b>.</li>
-          <li>Click <b>General</b>.</li>
-          <li>The message <b>"cockroach" was blocked from use because it is not from an identified developer</b> displays. Click <b>Allow Anyway</b>.</li>
-          <li>Run the <code>cockroach</code> command again.</li>
-          <li>The message <b>macOS cannot verify the developer of “cockroach”. Are you sure you want to open it?</b> appears. Click <b>Open</b>. The command runs as expected.</li>
-      </ol>
+      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host.</p>
+      <p>The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>. <p>Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
     </li>
     <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
     <p>If you plan to use CockroachDB's <a href="spatial-features.html">spatial features</a>, you must complete the following steps. Otherwise, your installation is now complete.</p>
@@ -141,15 +133,17 @@ true
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h3>Use Kubernetes</h3>
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
 
   <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
 </div>
 
 <div id="use-docker" class="install-option">
-  <h3>Use Docker</h3>
+  <h2 id="install-docker">Use Docker</h2>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+
+  {{ arch_note_docker }}
 
   <ol>
     <li>
@@ -183,7 +177,7 @@ true
 </div>
 
 <div id="build-from-source" class="install-option">
-  <h3>Build from source</h3>
+  <h2 id="install-source">Build from source</h2>
   <p>See the <a href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source">public wiki</a> for guidance.</p>
 </div>
 

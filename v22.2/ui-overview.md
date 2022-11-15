@@ -40,11 +40,15 @@ The [Databases](ui-databases-page.html) page shows details about the system and 
 
 ### SQL Activity
 
-The SQL Activity page summarizes SQL activity in your cluster.
+The **SQL Activity** page summarizes SQL activity in your cluster.
 
-- [Statements](ui-statements-page.html) shows frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement [diagnostics](ui-statements-page.html#diagnostics).
-- [Transactions](ui-transactions-page.html) show details about transactions running on the cluster.
-- [Sessions](ui-sessions-page.html) shows details about open sessions in the cluster.
+- [**Statements**](ui-statements-page.html) shows frequently executed and high-latency [SQL statements](sql-statements.html) with the option to collect statement [diagnostics](ui-statements-page.html#diagnostics).
+- [**Transactions**](ui-transactions-page.html) shows details about transactions running on the cluster.
+- [**Sessions**](ui-sessions-page.html) shows details about open sessions in the cluster.
+
+### Insights
+
+The [**Insights**](ui-insights-page.html) page exposes problematic health signals and enables you to quickly find optimization opportunities to maximize database efficiency. The **Insights** page contains workload-level and schema-level insights.
 
 ### Network Latency
 
@@ -75,7 +79,7 @@ If your CockroachDB cluster is behind a load balancer, you may wish to proxy you
 You can accomplish this using one of these methods:
 
 - Once connected to DB Console, use the **Web server** dropdown menu from the [**Advanced Debug**](ui-debug-pages.html#license-and-node-information) page to select a different node to proxy to.
-- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`. 
+- Use the `remote_node_id` parameter in your DB Console URL to proxy directly to a specific node. For example, use `http://<host>:<http-port>/?remote_node_id=2` to proxy directly to node `2`.
 
 ## DB Console security considerations
 

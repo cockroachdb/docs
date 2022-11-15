@@ -48,6 +48,7 @@ The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) m
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
+{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
 
 ## Unresolved limitations
 
@@ -595,3 +596,8 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
+
+### User-defined functions
+
+{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
+{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}

@@ -234,6 +234,21 @@ root@:26257/movr> SHOW timezone;
 (1 row)
 ~~~
 
+### Set default session variable values for all users
+
+To set a default value for all users for any [session variable](set-vars.html) that applies during login, issue a statment like the following:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE ALL SET sql.spatial.experimental_box2d_comparison_operators.enabled = "on";
+~~~
+
+~~~
+ALTER ROLE
+~~~
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## See also
 
 - [`DROP ROLE`](drop-role.html)

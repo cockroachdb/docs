@@ -214,18 +214,27 @@ SHOW INDEXES FROM rides;
 ~~~
 
 ~~~
-  table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
--------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | rides_pkey                                    |   false    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_pkey                                    |   false    |            2 | id           | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_city_ref_users            |    true    |            1 | city         | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_city_ref_users            |    true    |            2 | rider_id     | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_city_ref_users            |    true    |            3 | id           | ASC       |  false  |   true
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            1 | vehicle_city | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            2 | vehicle_id   | ASC       |  false  |  false
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | id           | ASC       |  false  |   true
-  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | city         | ASC       |  false  |   true
-(9 rows)
+  table_name |                  index_name                   | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
+-------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            2 | vehicle_id    | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            3 | city          | ASC       |    f    |    t     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            3 | vehicle_city  | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            4 | rider_id      | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            5 | vehicle_id    | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            6 | start_address | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            7 | end_address   | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
+(17 rows)
+
 
 Time: 5ms total (execution 5ms / network 0ms)
 ~~~

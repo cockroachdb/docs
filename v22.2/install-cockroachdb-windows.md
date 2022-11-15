@@ -17,12 +17,10 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-<h2>Install options</h2>
-
 Use one of the options below to install CockroachDB.
 
 <div id="download-the-binary-windows" class="install-option">
-  <h3>Download the executable</h3>
+  <h2 id="install-binary">Download the executable</h2>
 
   {% include windows_warning.md %}
 
@@ -52,15 +50,17 @@ Use one of the options below to install CockroachDB.
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h3>Use Kubernetes</h3>
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
 
   <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
 </div>
 
 <div id="use-docker-windows" class="install-option">
-  <h3>Use Docker</h3>
+  <h2 id="install-docker">Use Docker</h2>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+
+  <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contains binaries for both Intel and ARM. CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use. Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
 
   <ol>
     <li>
