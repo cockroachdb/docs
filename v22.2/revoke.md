@@ -26,7 +26,7 @@ Parameter                   | Description
 `grant_targets`             | A comma-separated list of database, table, sequence, or function names. The list should be preceded by the object type (e.g., `DATABASE mydatabase`). If the object type is not specified, all names are interpreted as table or sequence names.
 `target_types`              | A comma-separated list of [user-defined types](create-type.html).
 `ALL SEQUENCES IN SCHEMA`   | Revoke [privileges](#supported-privileges) on all sequences in a schema or list of schemas.
-`ALL TABLES IN SCHEMA`      | Revoke [privileges](#supported-privileges) on all tables in a schema or list of schemas.
+`ALL TABLES IN SCHEMA`      | Revoke [privileges](#supported-privileges) on all tables and sequences in a schema or list of schemas.
 `ALL FUNCTIONS IN SCHEMA`.  | Revoke [privileges](#supported-privileges) on all [user-defined functions](user-defined-functions.html) in a schema or list of schemas.
 `schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
 `role_spec_list`            | A comma-separated list of [roles](security-reference/authorization.html#users-and-roles).
