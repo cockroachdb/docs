@@ -5,13 +5,13 @@
     {
       "title": "Migration Overview",
       "urls": [
-        "/${VERSION}/migration-overview.html"
+        "/${VERSION}/migration-overview/"
       ]
     },
     {
       "title": "Migrations Page",
       "urls": [
-        "/cockroachcloud/migrations-page.html"
+        "/cockroachcloud/migrations-page/"
       ]
     },
     {
@@ -20,49 +20,49 @@
         {
           "title": "Migrate data using AWS DMS",
           "urls": [
-            "/${VERSION}/aws-dms.html"
+            "/${VERSION}/aws-dms/"
           ]
         },
         {
           "title": "Migrate from CSV",
           "urls": [
-            "/${VERSION}/migrate-from-csv.html"
+            "/${VERSION}/migrate-from-csv/"
           ]
         },
         {
           "title": "Migrate from Avro",
           "urls": [
-            "/${VERSION}/migrate-from-avro.html"
+            "/${VERSION}/migrate-from-avro/"
           ]
         },
         {
           "title": "Migrate from Shapefiles",
           "urls": [
-            "/${VERSION}/migrate-from-shapefiles.html"
+            "/${VERSION}/migrate-from-shapefiles/"
           ]
         },
         {
           "title": "Migrate from OpenStreetMap",
           "urls": [
-            "/${VERSION}/migrate-from-openstreetmap.html"
+            "/${VERSION}/migrate-from-openstreetmap/"
           ]
         },
         {
           "title": "Migrate from GeoJSON",
           "urls": [
-            "/${VERSION}/migrate-from-geojson.html"
+            "/${VERSION}/migrate-from-geojson/"
           ]
         },
         {
           "title": "Migrate from GeoPackage",
           "urls": [
-            "/${VERSION}/migrate-from-geopackage.html"
+            "/${VERSION}/migrate-from-geopackage/"
           ]
         },
         {
           "title": "Import Performance Best Practices",
           "urls": [
-            "/${VERSION}/import-performance-best-practices.html"
+            "/${VERSION}/import-performance-best-practices/"
           ]
         }
       ]
@@ -70,13 +70,13 @@
     {
       "title": "Migrate from Serverless to Dedicated",
       "urls": [
-        "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+        "/cockroachcloud/migrate-from-serverless-to-dedicated/"
       ]
     },
     {
       "title": "Export Spatial Data",
       "urls": [
-        "/${VERSION}/export-spatial-data.html"
+        "/${VERSION}/export-spatial-data/"
       ]
     }
   ]

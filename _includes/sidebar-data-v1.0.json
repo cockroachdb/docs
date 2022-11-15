@@ -10,7 +10,7 @@
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart.html"
+      "/cockroachcloud/quickstart/"
     ]
   },
   {% include sidebar-data-cockroachcloud.json %},
@@ -24,7 +24,7 @@
 	  {
 	    "title": "Install CockroachDB",
 	    "urls": [
-	      "/${VERSION}/install-cockroachdb.html"
+	      "/${VERSION}/install-cockroachdb/"
 	    ]
 	  },
 	  {
@@ -33,14 +33,14 @@
 	      {
 		"title": "From Binary",
 		"urls": [
-		  "/${VERSION}/start-a-local-cluster.html",
-		  "/${VERSION}/secure-a-cluster.html"
+		  "/${VERSION}/start-a-local-cluster/",
+		  "/${VERSION}/secure-a-cluster/"
 		]
 	      },
 	      {
 		"title": "In Docker",
 		"urls": [
-		  "/${VERSION}/start-a-local-cluster-in-docker.html"
+		  "/${VERSION}/start-a-local-cluster-in-docker/"
 		]
 	      }
 	    ]
@@ -51,13 +51,13 @@
 	      {
 		"title": "Essential SQL Statements",
 		"urls": [
-		  "/${VERSION}/learn-cockroachdb-sql.html"
+		  "/${VERSION}/learn-cockroachdb-sql/"
 		]
 	      },
 	      {
 		"title": "Use the Built-in SQL Client",
 		"urls": [
-		  "/${VERSION}/use-the-built-in-sql-client.html"
+		  "/${VERSION}/use-the-built-in-sql-client/"
 		]
 	      }
 	    ]
@@ -68,66 +68,66 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/build-an-app-with-cockroachdb.html"
+		  "/${VERSION}/build-an-app-with-cockroachdb/"
 		]
 	      },
 	      {
 		"title": "Go",
 		"urls": [
-		  "/${VERSION}/build-a-go-app-with-cockroachdb.html",
-		  "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html"
+		  "/${VERSION}/build-a-go-app-with-cockroachdb/",
+		  "/${VERSION}/build-a-go-app-with-cockroachdb-gorm/"
 		]
 	      },
 	      {
 		"title": "Python",
 		"urls": [
-		  "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-		  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html"
+		  "/${VERSION}/build-a-python-app-with-cockroachdb/",
+		  "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy/"
 		]
 	      },
 	      {
 		"title": "Ruby",
 		"urls": [
-		  "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-		  "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+		  "/${VERSION}/build-a-ruby-app-with-cockroachdb/",
+		  "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord/"
 		]
 	      },
 	      {
 		"title": "Java",
 		"urls": [
-		  "/${VERSION}/build-a-java-app-with-cockroachdb.html",
-		  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html"
+		  "/${VERSION}/build-a-java-app-with-cockroachdb/",
+		  "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate/"
 		]
 	      },
 	      {
 		"title": "Node.js",
 		"urls": [
-		  "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
-		  "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+		  "/${VERSION}/build-a-nodejs-app-with-cockroachdb/",
+		  "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize/"
 		]
 	      },
 	      {
 		"title": "C++",
 		"urls": [
-		  "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
+		  "/${VERSION}/build-a-c++-app-with-cockroachdb/"
 		]
 	      },
 	      {
 		"title": "Clojure",
 		"urls": [
-		  "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
+		  "/${VERSION}/build-a-clojure-app-with-cockroachdb/"
 		]
 	      },
 	      {
 		"title": "PHP",
 		"urls": [
-		  "/${VERSION}/build-a-php-app-with-cockroachdb.html"
+		  "/${VERSION}/build-a-php-app-with-cockroachdb/"
 		]
 	      },
 	      {
 		"title": "Rust",
 		"urls": [
-		  "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+		  "/${VERSION}/build-a-rust-app-with-cockroachdb/"
 		]
 	      }
 	    ]
@@ -138,31 +138,31 @@
 	      {
 		"title": "Multi-Active Availability",
 		"urls": [
-		  "/${VERSION}/multi-active-availability.html"
+		  "/${VERSION}/multi-active-availability/"
 		]
 	      },
 	      {
 		"title": "Data Replication",
 		"urls": [
-		  "/${VERSION}/demo-data-replication.html"
+		  "/${VERSION}/demo-data-replication/"
 		]
 	      },
 	      {
 		"title": "Fault Tolerance & Recovery",
 		"urls": [
-		  "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+		  "/${VERSION}/demo-fault-tolerance-and-recovery/"
 		]
 	      },
 	      {
 		"title": "Automatic Rebalancing",
 		"urls": [
-		  "/${VERSION}/demo-automatic-rebalancing.html"
+		  "/${VERSION}/demo-automatic-rebalancing/"
 		]
 	      },
 	      {
 		"title": "Cross-Cloud Migration",
 		"urls": [
-		  "/${VERSION}/demo-automatic-cloud-migration.html"
+		  "/${VERSION}/demo-automatic-cloud-migration/"
 		]
 	      }
 	    ]
@@ -175,13 +175,13 @@
 	  {
 	    "title": "Install Client Drivers",
 	    "urls": [
-	      "/${VERSION}/install-client-drivers.html"
+	      "/${VERSION}/install-client-drivers/"
 	    ]
 	  },
 	  {
 	    "title": "SQL Feature Support",
 	    "urls": [
-	      "/${VERSION}/sql-feature-support.html"
+	      "/${VERSION}/sql-feature-support/"
 	    ]
 	  },
 	  {
@@ -190,313 +190,313 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/sql-statements.html"
+		  "/${VERSION}/sql-statements/"
 		]
 	      },
 	      {
 		"title": "<code>ADD COLUMN</code>",
 		"urls": [
-		  "/${VERSION}/add-column.html"
+		  "/${VERSION}/add-column/"
 		]
 	      },
 	      {
 		"title": "<code>ADD CONSTRAINT</code>",
 		"urls": [
-		  "/${VERSION}/add-constraint.html"
+		  "/${VERSION}/add-constraint/"
 		]
 	      },
 	      {
 		"title": "<code>ALTER COLUMN</code>",
 		"urls": [
-		  "/${VERSION}/alter-column.html"
+		  "/${VERSION}/alter-column/"
 		]
 	      },
 	      {
 		"title": "<code>ALTER TABLE</code>",
 		"urls": [
-		  "/${VERSION}/alter-table.html"
+		  "/${VERSION}/alter-table/"
 		]
 	      },
 	      {
 		"title": "<code>ALTER VIEW</code>",
 		"urls": [
-		  "/${VERSION}/alter-view.html"
+		  "/${VERSION}/alter-view/"
 		]
 	      },
 	      {
 		"title": "<code>BACKUP</code> (Enterprise)",
 		"urls": [
-		  "/${VERSION}/backup.html"
+		  "/${VERSION}/backup/"
 		]
 	      },
 	      {
 		"title": "<code>BEGIN</code>",
 		"urls": [
-		  "/${VERSION}/begin-transaction.html"
+		  "/${VERSION}/begin-transaction/"
 		]
 	      },
 	      {
 		"title": "<code>COMMIT</code>",
 		"urls": [
-		  "/${VERSION}/commit-transaction.html"
+		  "/${VERSION}/commit-transaction/"
 		]
 	      },
 	      {
 		"title": "<code>CREATE DATABASE</code>",
 		"urls": [
-		  "/${VERSION}/create-database.html"
+		  "/${VERSION}/create-database/"
 		]
 	      },
 	      {
 		"title": "<code>CREATE INDEX</code>",
 		"urls": [
-		  "/${VERSION}/create-index.html"
+		  "/${VERSION}/create-index/"
 		]
 	      },
 	      {
 		"title": "<code>CREATE TABLE</code>",
 		"urls": [
-		  "/${VERSION}/create-table.html"
+		  "/${VERSION}/create-table/"
 		]
 	      },
 	      {
 		"title": "<code>CREATE TABLE AS</code>",
 		"urls": [
-		  "/${VERSION}/create-table-as.html"
+		  "/${VERSION}/create-table-as/"
 		]
 	      },
 	      {
 		"title": "<code>CREATE USER</code>",
 		"urls": [
-		  "/${VERSION}/create-user.html"
+		  "/${VERSION}/create-user/"
 		]
 	      },
 	      {
 		"title": "<code>CREATE VIEW</code>",
 		"urls": [
-		  "/${VERSION}/create-view.html"
+		  "/${VERSION}/create-view/"
 		]
 	      },
 	      {
 		"title": "<code>DELETE</code>",
 		"urls": [
-		  "/${VERSION}/delete.html"
+		  "/${VERSION}/delete/"
 		]
 	      },
 	      {
 		"title": "<code>DROP COLUMN</code>",
 		"urls": [
-		  "/${VERSION}/drop-column.html"
+		  "/${VERSION}/drop-column/"
 		]
 	      },
 	      {
 		"title": "<code>DROP CONSTRAINT</code>",
 		"urls": [
-		  "/${VERSION}/drop-constraint.html"
+		  "/${VERSION}/drop-constraint/"
 		]
 	      },
 	      {
 		"title": "<code>DROP DATABASE</code>",
 		"urls": [
-		  "/${VERSION}/drop-database.html"
+		  "/${VERSION}/drop-database/"
 		]
 	      },
 	      {
 		"title": "<code>DROP INDEX</code>",
 		"urls": [
-		  "/${VERSION}/drop-index.html"
+		  "/${VERSION}/drop-index/"
 		]
 	      },
 	      {
 		"title": "<code>DROP TABLE</code>",
 		"urls": [
-		  "/${VERSION}/drop-table.html"
+		  "/${VERSION}/drop-table/"
 		]
 	      },
 	      {
 		"title": "<code>DROP VIEW</code>",
 		"urls": [
-		  "/${VERSION}/drop-view.html"
+		  "/${VERSION}/drop-view/"
 		]
 	      },
 	      {
 		"title": "<code>EXPLAIN</code>",
 		"urls": [
-		  "/${VERSION}/explain.html"
+		  "/${VERSION}/explain/"
 		]
 	      },
 	      {
 		"title": "<code>GRANT</code>",
 		"urls": [
-		  "/${VERSION}/grant.html"
+		  "/${VERSION}/grant/"
 		]
 	      },
 	      {
 		"title": "<code>INSERT</code>",
 		"urls": [
-		  "/${VERSION}/insert.html"
+		  "/${VERSION}/insert/"
 		]
 	      },
 	      {
 		"title": "<code>RENAME COLUMN</code>",
 		"urls": [
-		  "/${VERSION}/rename-column.html"
+		  "/${VERSION}/rename-column/"
 		]
 	      },
 	      {
 		"title": "<code>RENAME DATABASE</code>",
 		"urls": [
-		  "/${VERSION}/rename-database.html"
+		  "/${VERSION}/rename-database/"
 		]
 	      },
 	      {
 		"title": "<code>RENAME INDEX</code>",
 		"urls": [
-		  "/${VERSION}/rename-index.html"
+		  "/${VERSION}/rename-index/"
 		]
 	      },
 	      {
 		"title": "<code>RENAME TABLE</code>",
 		"urls": [
-		  "/${VERSION}/rename-table.html"
+		  "/${VERSION}/rename-table/"
 		]
 	      },
 	      {
 		"title": "<code>RELEASE SAVEPOINT</code>",
 		"urls": [
-		  "/${VERSION}/release-savepoint.html"
+		  "/${VERSION}/release-savepoint/"
 		]
 	      },
 	      {
 		"title": "<code>RESTORE</code> (Enterprise)",
 		"urls": [
-		  "/${VERSION}/restore.html"
+		  "/${VERSION}/restore/"
 		]
 	      },
 	      {
 		"title": "<code>REVOKE</code>",
 		"urls": [
-		  "/${VERSION}/revoke.html"
+		  "/${VERSION}/revoke/"
 		]
 	      },
 	      {
 		"title": "<code>ROLLBACK</code>",
 		"urls": [
-		  "/${VERSION}/rollback-transaction.html"
+		  "/${VERSION}/rollback-transaction/"
 		]
 	      },
 	      {
 		"title": "<code>SAVEPOINT</code>",
 		"urls": [
-		  "/${VERSION}/savepoint.html"
+		  "/${VERSION}/savepoint/"
 		]
 	      },
 	      {
 		"title": "<code>SELECT</code>",
 		"urls": [
-		  "/${VERSION}/select.html"
+		  "/${VERSION}/select/"
 		]
 	      },
 	      {
 		"title": "<code>SET</code> &lt;session variable&gt;",
 		"urls": [
-		  "/${VERSION}/set-vars.html"
+		  "/${VERSION}/set-vars/"
 		]
 	      },
 	      {
 		"title": "<code>SET CLUSTER SETTING</code>",
 		"urls": [
-		  "/${VERSION}/set-cluster-setting.html"
+		  "/${VERSION}/set-cluster-setting/"
 		]
 	      },
 	      {
 		"title": "<code>SET TRANSACTION</code>",
 		"urls": [
-		  "/${VERSION}/set-transaction.html"
+		  "/${VERSION}/set-transaction/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW</code> &lt;session variable&gt;",
 		"urls": [
-		  "/${VERSION}/show-vars.html"
+		  "/${VERSION}/show-vars/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW CLUSTER SETTING</code>",
 		"urls": [
-		  "/${VERSION}/show-cluster-setting.html"
+		  "/${VERSION}/show-cluster-setting/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW COLUMNS</code>",
 		"urls": [
-		  "/${VERSION}/show-columns.html"
+		  "/${VERSION}/show-columns/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW CONSTRAINTS</code>",
 		"urls": [
-		  "/${VERSION}/show-constraints.html"
+		  "/${VERSION}/show-constraints/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW CREATE TABLE</code>",
 		"urls": [
-		  "/${VERSION}/show-create-table.html"
+		  "/${VERSION}/show-create-table/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW CREATE VIEW</code>",
 		"urls": [
-		  "/${VERSION}/show-create-view.html"
+		  "/${VERSION}/show-create-view/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW DATABASES</code>",
 		"urls": [
-		  "/${VERSION}/show-databases.html"
+		  "/${VERSION}/show-databases/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW GRANTS</code>",
 		"urls": [
-		  "/${VERSION}/show-grants.html"
+		  "/${VERSION}/show-grants/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW INDEX</code>",
 		"urls": [
-		  "/${VERSION}/show-index.html"
+		  "/${VERSION}/show-index/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW TABLES</code>",
 		"urls": [
-		  "/${VERSION}/show-tables.html"
+		  "/${VERSION}/show-tables/"
 		]
 	      },
 	      {
 		"title": "<code>SHOW USERS</code>",
 		"urls": [
-		  "/${VERSION}/show-users.html"
+		  "/${VERSION}/show-users/"
 		]
 	      },
 	      {
 		"title": "<code>TRUNCATE</code>",
 		"urls": [
-		  "/${VERSION}/truncate.html"
+		  "/${VERSION}/truncate/"
 		]
 	      },
 	      {
 		"title": "<code>UPDATE</code>",
 		"urls": [
-		  "/${VERSION}/update.html"
+		  "/${VERSION}/update/"
 		]
 	      },
 	      {
 		"title": "<code>UPSERT</code>",
 		"urls": [
-		  "/${VERSION}/upsert.html"
+		  "/${VERSION}/upsert/"
 		]
 	      }
 	    ]
@@ -507,49 +507,49 @@
 	      {
 		"title": "Keywords & Identifiers",
 		"urls": [
-		  "/${VERSION}/keywords-and-identifiers.html"
+		  "/${VERSION}/keywords-and-identifiers/"
 		]
 	      },
 	      {
 		"title": "Constants",
 		"urls": [
-		  "/${VERSION}/sql-constants.html"
+		  "/${VERSION}/sql-constants/"
 		]
 	      },
 	      {
 		"title": "Value Expressions",
 		"urls": [
-		  "/${VERSION}/sql-expressions.html"
+		  "/${VERSION}/sql-expressions/"
 		]
 	      },
 	      {
 		"title": "Table Expressions",
 		"urls": [
-		  "/${VERSION}/table-expressions.html"
+		  "/${VERSION}/table-expressions/"
 		]
 	      },
 	      {
 		"title": "Name Resolution",
 		"urls": [
-		  "/${VERSION}/sql-name-resolution.html"
+		  "/${VERSION}/sql-name-resolution/"
 		]
 	      },
 	      {
 		"title": "<code>AS OF SYSTEM TIME</code>",
 		"urls": [
-		  "/${VERSION}/as-of-system-time.html"
+		  "/${VERSION}/as-of-system-time/"
 		]
 	      },
 	      {
 		"title": "<code>NULL</code> Handling",
 		"urls": [
-		  "/${VERSION}/null-handling.html"
+		  "/${VERSION}/null-handling/"
 		]
 	      },
 	      {
 		"title": "Full SQL Grammar",
 		"urls": [
-		  "/${VERSION}/sql-grammar.html"
+		  "/${VERSION}/sql-grammar/"
 		]
 	      }
 	    ]
@@ -560,43 +560,43 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/constraints.html"
+		  "/${VERSION}/constraints/"
 		]
 	      },
 	      {
 		"title": "Check",
 		"urls": [
-		  "/${VERSION}/check.html"
+		  "/${VERSION}/check/"
 		]
 	      },
 	      {
 		"title": "Default Value",
 		"urls": [
-		  "/${VERSION}/default-value.html"
+		  "/${VERSION}/default-value/"
 		]
 	      },
 	      {
 		"title": "Foreign Key",
 		"urls": [
-		  "/${VERSION}/foreign-key.html"
+		  "/${VERSION}/foreign-key/"
 		]
 	      },
 	      {
 		"title": "Not Null",
 		"urls": [
-		  "/${VERSION}/not-null.html"
+		  "/${VERSION}/not-null/"
 		]
 	      },
 	      {
 		"title": "Primary Key",
 		"urls": [
-		  "/${VERSION}/primary-key.html"
+		  "/${VERSION}/primary-key/"
 		]
 	      },
 	      {
 		"title": "Unique",
 		"urls": [
-		  "/${VERSION}/unique.html"
+		  "/${VERSION}/unique/"
 		]
 	      }
 	    ]
@@ -607,73 +607,73 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/data-types.html"
+		  "/${VERSION}/data-types/"
 		]
 	      },
 	      {
 		"title": "<code>INT</code>",
 		"urls": [
-		  "/${VERSION}/int.html"
+		  "/${VERSION}/int/"
 		]
 	      },
 	      {
 		"title": "<code>SERIAL</code>",
 		"urls": [
-		  "/${VERSION}/serial.html"
+		  "/${VERSION}/serial/"
 		]
 	      },
 	      {
 		"title": "<code>DECIMAL</code>",
 		"urls": [
-		  "/${VERSION}/decimal.html"
+		  "/${VERSION}/decimal/"
 		]
 	      },
 	      {
 		"title": "<code>FLOAT</code>",
 		"urls": [
-		  "/${VERSION}/float.html"
+		  "/${VERSION}/float/"
 		]
 	      },
 	      {
 		"title": "<code>BOOL</code>",
 		"urls": [
-		  "/${VERSION}/bool.html"
+		  "/${VERSION}/bool/"
 		]
 	      },
 	      {
 		"title": "<code>DATE</code>",
 		"urls": [
-		  "/${VERSION}/date.html"
+		  "/${VERSION}/date/"
 		]
 	      },
 	      {
 		"title": "<code>TIMESTAMP</code>",
 		"urls": [
-		  "/${VERSION}/timestamp.html"
+		  "/${VERSION}/timestamp/"
 		]
 	      },
 	      {
 		"title": "<code>INTERVAL</code>",
 		"urls": [
-		  "/${VERSION}/interval.html"
+		  "/${VERSION}/interval/"
 		]
 	      },
 	      {
 		"title": "<code>STRING</code>",
 		"urls": [
-		  "/${VERSION}/string.html"
+		  "/${VERSION}/string/"
 		]
 	      },
 	      {
 		"title": "<code>COLLATE</code>",
 		"urls": [
-		  "/${VERSION}/collate.html"
+		  "/${VERSION}/collate/"
 		]
 	      },
 	      {
 		"title": "<code>BYTES</code>",
 		"urls": [
-		  "/${VERSION}/bytes.html"
+		  "/${VERSION}/bytes/"
 		]
 	      }
 	    ]
@@ -681,31 +681,31 @@
 	  {
 	    "title": "Privileges",
 	    "urls": [
-	      "/${VERSION}/privileges.html"
+	      "/${VERSION}/privileges/"
 	    ]
 	  },
 	  {
 	    "title": "Functions and Operators",
 	    "urls": [
-	      "/${VERSION}/functions-and-operators.html"
+	      "/${VERSION}/functions-and-operators/"
 	    ]
 	  },
 	  {
 	    "title": "Transactions",
 	    "urls": [
-	      "/${VERSION}/transactions.html"
+	      "/${VERSION}/transactions/"
 	    ]
 	  },
 	  {
 	    "title": "Views",
 	    "urls": [
-	      "/${VERSION}/views.html"
+	      "/${VERSION}/views/"
 	    ]
 	  },
 	  {
 	    "title": "Window Functions",
 	    "urls": [
-	      "/${VERSION}/window-functions.html"
+	      "/${VERSION}/window-functions/"
 	    ]
 	  },
 	  {
@@ -714,19 +714,19 @@
 	      {
 		"title": "Indexes",
 		"urls": [
-		  "/${VERSION}/indexes.html"
+		  "/${VERSION}/indexes/"
 		]
 	      },
 	      {
 		"title": "Column Families",
 		"urls": [
-		  "/${VERSION}/column-families.html"
+		  "/${VERSION}/column-families/"
 		]
 	      },
 	      {
 		"title": "Interleaved Tables",
 		"urls": [
-		  "/${VERSION}/interleave-in-parent.html"
+		  "/${VERSION}/interleave-in-parent/"
 		]
 	      }
 	    ]
@@ -734,7 +734,7 @@
 	  {
 	    "title": "Information Schema",
 	    "urls": [
-	      "/${VERSION}/information-schema.html"
+	      "/${VERSION}/information-schema/"
 	    ]
 	  },
 	  {
@@ -743,7 +743,7 @@
 	      {
 		"title": "From PostgreSQL",
 		"urls": [
-		  "/${VERSION}/porting-postgres.html"
+		  "/${VERSION}/porting-postgres/"
 		]
 	      }
 	    ]
@@ -756,14 +756,14 @@
 	  {
 	    "title": "Recommended Production Settings",
 	    "urls": [
-	      "/${VERSION}/recommended-production-settings.html"
+	      "/${VERSION}/recommended-production-settings/"
 	    ]
 	  },
 	  {
 	    "title": "Manual Deployment",
 	    "urls": [
-	      "/${VERSION}/manual-deployment.html",
-	      "/${VERSION}/manual-deployment-insecure.html"
+	      "/${VERSION}/manual-deployment/",
+	      "/${VERSION}/manual-deployment-insecure/"
 	    ]
 	  },
 	  {
@@ -772,35 +772,35 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/cloud-deployment.html"
+		  "/${VERSION}/cloud-deployment/"
 		]
 	      },
 	      {
 		"title": "AWS",
 		"urls": [
-		  "/${VERSION}/deploy-cockroachdb-on-aws.html",
-		  "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+		  "/${VERSION}/deploy-cockroachdb-on-aws/",
+		  "/${VERSION}/deploy-cockroachdb-on-aws-insecure/"
 		]
 	      },
 	      {
 		"title": "Azure",
 		"urls": [
-		  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
-		  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+		  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure/",
+		  "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure/"
 		]
 	      },
 	      {
 		"title": "Digital Ocean",
 		"urls": [
-		  "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
-		  "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+		  "/${VERSION}/deploy-cockroachdb-on-digital-ocean/",
+		  "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure/"
 		]
 	      },
 	      {
 		"title": "Google Cloud Platform GCE",
 		"urls": [
-		  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
-		  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+		  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform/",
+		  "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure/"
 		]
 	      }
 	    ]
@@ -811,20 +811,20 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/orchestration.html"
+		  "/${VERSION}/orchestration/"
 		]
 	      },
 	      {
 		"title": "Kubernetes",
 		"urls": [
-		  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html"
+		  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes/"
 		]
 	      },
 	      {
 		"title": "Docker Swarm",
 		"urls": [
-		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
-		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
+		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm/",
+		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure/"
 		]
 	      }
 	    ]
@@ -832,37 +832,37 @@
 	  {
 	    "title": "Cluster Settings",
 	    "urls": [
-	      "/${VERSION}/cluster-settings.html"
+	      "/${VERSION}/cluster-settings/"
 	    ]
 	  },
 	  {
 	    "title": "Cockroach Commands",
 	    "urls": [
-	      "/${VERSION}/cockroach-commands.html"
+	      "/${VERSION}/cockroach-commands/"
 	    ]
 	  },
 	  {
 	    "title": "Start a Node",
 	    "urls": [
-	      "/${VERSION}/start-a-node.html"
+	      "/${VERSION}/start-a-node/"
 	    ]
 	  },
 	  {
 	    "title": "Create Security Certificates",
 	    "urls": [
-	      "/${VERSION}/create-security-certificates.html"
+	      "/${VERSION}/create-security-certificates/"
 	    ]
 	  },
 	  {
 	    "title": "Create & Manage Users",
 	    "urls": [
-	      "/${VERSION}/create-and-manage-users.html"
+	      "/${VERSION}/create-and-manage-users/"
 	    ]
 	  },
 	  {
 	    "title": "Configure Replication Zones",
 	    "urls": [
-	      "/${VERSION}/configure-replication-zones.html"
+	      "/${VERSION}/configure-replication-zones/"
 	    ]
 	  }
 	]
@@ -873,73 +873,73 @@
 	  {
 	    "title": "Explore the Admin UI",
 	    "urls": [
-	      "/${VERSION}/explore-the-admin-ui.html"
+	      "/${VERSION}/explore-the-admin-ui/"
 	    ]
 	  },
 	  {
 	    "title": "Monitor CockroachDB with Prometheus",
 	    "urls": [
-	      "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+	      "/${VERSION}/monitor-cockroachdb-with-prometheus/"
 	    ]
 	  },
 	  {
 	    "title": "Upgrade a Cluster's Version",
 	    "urls": [
-	      "/${VERSION}/upgrade-cockroach-version.html"
+	      "/${VERSION}/upgrade-cockroach-version/"
 	    ]
 	  },
 	  {
 	    "title": "Stop a Node",
 	    "urls": [
-	      "/${VERSION}/stop-a-node.html"
+	      "/${VERSION}/stop-a-node/"
 	    ]
 	  },
 	  {
 	    "title": "Back up Data",
 	    "urls": [
-	      "/${VERSION}/back-up-data.html"
+	      "/${VERSION}/back-up-data/"
 	    ]
 	  },
 	  {
 	    "title": "Restore Data",
 	    "urls": [
-	      "/${VERSION}/restore-data.html"
+	      "/${VERSION}/restore-data/"
 	    ]
 	  },
 	  {
 	    "title": "Dump/Export Schema or Data",
 	    "urls": [
-	      "/${VERSION}/sql-dump.html"
+	      "/${VERSION}/sql-dump/"
 	    ]
 	  },
 	  {
 	    "title": "Import Data",
 	    "urls": [
-	      "/${VERSION}/import-data.html"
+	      "/${VERSION}/import-data/"
 	    ]
 	  },
 	  {
 	    "title": "Generate CockroachDB Resources",
 	    "urls": [
-	      "/${VERSION}/generate-cockroachdb-resources.html"
+	      "/${VERSION}/generate-cockroachdb-resources/"
 	    ]
 	  },
 	  {
 	    "title": "View Node Details",
 	    "urls": [
-	      "/${VERSION}/view-node-details.html"
+	      "/${VERSION}/view-node-details/"
 	    ]
 	  },
 	  {
 	    "title": "View Version Details",
 	    "urls": [
-	      "/${VERSION}/view-version-details.html"
+	      "/${VERSION}/view-version-details/"
 	    ]
 	  },
 	  {
 	    "title": "Diagnostics Reporting",
 	    "urls": [
-	      "/${VERSION}/diagnostics-reporting.html"
+	      "/${VERSION}/diagnostics-reporting/"
 	    ]
 	  }
 	]
@@ -950,49 +950,49 @@
 	  {
 	    "title": "Overview",
 	    "urls": [
-	      "/${VERSION}/troubleshooting-overview.html"
+	      "/${VERSION}/troubleshooting-overview/"
 	    ]
 	  },
 	  {
 	    "title": "Common Errors",
 	    "urls": [
-	      "/${VERSION}/common-errors.html"
+	      "/${VERSION}/common-errors/"
 	    ]
 	  },
 	  {
 	    "title": "Cluster & Node Setup",
 	    "urls": [
-	      "/${VERSION}/cluster-setup-troubleshooting.html"
+	      "/${VERSION}/cluster-setup-troubleshooting/"
 	    ]
 	  },
 	  {
 	    "title": "Query Behavior",
 	    "urls": [
-	      "/${VERSION}/query-behavior-troubleshooting.html"
+	      "/${VERSION}/query-behavior-troubleshooting/"
 	    ]
 	  },
 	  {
 	    "title": "Debug & Error Logs",
 	    "urls": [
-	      "/${VERSION}/debug-and-error-logs.html"
+	      "/${VERSION}/debug-and-error-logs/"
 	    ]
 	  },
 	  {
 	    "title": "Collect Cluster Debug Info",
 	    "urls": [
-	      "/${VERSION}/debug-zip.html"
+	      "/${VERSION}/debug-zip/"
 	    ]
 	  },
 	  {
 	    "title": "Support Resources",
 	    "urls": [
-	      "/${VERSION}/support-resources.html"
+	      "/${VERSION}/support-resources/"
 	    ]
 	  },
 	  {
 	    "title": "File an Issue",
 	    "urls": [
-	      "/${VERSION}/file-an-issue.html"
+	      "/${VERSION}/file-an-issue/"
 	    ]
 	  }
 	]
@@ -1003,7 +1003,7 @@
 	  {
 	    "title": "Improve the Docs",
 	    "urls": [
-	      "/${VERSION}/improve-the-docs.html"
+	      "/${VERSION}/improve-the-docs/"
 	    ]
 	  }
 	]
@@ -1015,31 +1015,31 @@
 	  {
 	    "title": "Product FAQs",
 	    "urls": [
-	      "/${VERSION}/frequently-asked-questions.html"
+	      "/${VERSION}/frequently-asked-questions/"
 	    ]
 	  },
 	  {
 	    "title": "SQL FAQs",
 	    "urls": [
-	      "/${VERSION}/sql-faqs.html"
+	      "/${VERSION}/sql-faqs/"
 	    ]
 	  },
 	  {
 	    "title": "Operational FAQs",
 	    "urls": [
-	      "/${VERSION}/operational-faqs.html"
+	      "/${VERSION}/operational-faqs/"
 	    ]
 	  },
 	  {
 	    "title": "CockroachDB in Comparison",
 	    "urls": [
-	      "/${VERSION}/cockroachdb-in-comparison.html"
+	      "/${VERSION}/cockroachdb-in-comparison/"
 	    ]
 	  },
 	  {
 	    "title": "CockroachDB Architecture",
 	    "urls": [
-	      "/${VERSION}/cockroachdb-architecture.html"
+	      "/${VERSION}/cockroachdb-architecture/"
 	    ]
 	  },
 	  {
@@ -1048,49 +1048,49 @@
 	      {
 		"title": "Simplified Deployment",
 		"urls": [
-		  "/${VERSION}/simplified-deployment.html"
+		  "/${VERSION}/simplified-deployment/"
 		]
 	      },
 	      {
 		"title": "Strong Consistency",
 		"urls": [
-		  "/${VERSION}/strong-consistency.html"
+		  "/${VERSION}/strong-consistency/"
 		]
 	      },
 	      {
 		"title": "SQL",
 		"urls": [
-		  "/${VERSION}/sql.html"
+		  "/${VERSION}/sql/"
 		]
 	      },
 	      {
 		"title": "Distributed Transactions",
 		"urls": [
-		  "/${VERSION}/distributed-transactions.html"
+		  "/${VERSION}/distributed-transactions/"
 		]
 	      },
 	      {
 		"title": "Automated Scaling & Repair",
 		"urls": [
-		  "/${VERSION}/automated-scaling-and-repair.html"
+		  "/${VERSION}/automated-scaling-and-repair/"
 		]
 	      },
 	      {
 		"title": "High Availability",
 		"urls": [
-		  "/${VERSION}/high-availability.html"
+		  "/${VERSION}/high-availability/"
 		]
 	      },
 	      {
 		"title": "Open Source",
 		"urls": [
-		  "/${VERSION}/open-source.html"
+		  "/${VERSION}/open-source/"
 		]
 	      },
 	      {
 		"title": "Go Implementation",
 		"urls": [
-		  "/${VERSION}/go-implementation.html"
+		  "/${VERSION}/go-implementation/"
 		]
 	      }
 	    ]

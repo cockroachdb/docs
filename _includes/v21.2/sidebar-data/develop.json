@@ -5,7 +5,7 @@
     {
       "title": "Developer Guide Overview",
       "urls": [
-        "/${VERSION}/developer-guide-overview.html"
+        "/${VERSION}/developer-guide-overview/"
       ]
     },
     {
@@ -14,19 +14,19 @@
         {
           "title": "Install a driver or ORM",
           "urls": [
-            "/${VERSION}/install-client-drivers.html"
+            "/${VERSION}/install-client-drivers/"
           ]
         },
         {
           "title": "Connect to a Cluster",
           "urls": [
-            "/${VERSION}/connect-to-the-database.html"
+            "/${VERSION}/connect-to-the-database/"
           ]
         },
         {
           "title": "Use Connection Pools",
           "urls": [
-            "/${VERSION}/connection-pooling.html"
+            "/${VERSION}/connection-pooling/"
           ]
         }
       ]
@@ -37,31 +37,31 @@
         {
           "title": "Overview",
           "urls": [
-            "/${VERSION}/schema-design-overview.html"
+            "/${VERSION}/schema-design-overview/"
           ]
         },
         {
           "title": "Create a Database",
           "urls": [
-            "/${VERSION}/schema-design-database.html"
+            "/${VERSION}/schema-design-database/"
           ]
         },
         {
           "title": "Create a User-defined Schema",
           "urls": [
-            "/${VERSION}/schema-design-schema.html"
+            "/${VERSION}/schema-design-schema/"
           ]
         },
         {
           "title": "Create a Table",
           "urls": [
-            "/${VERSION}/schema-design-table.html"
+            "/${VERSION}/schema-design-table/"
           ]
         },
         {
           "title": "Add Secondary Indexes",
           "urls": [
-            "/${VERSION}/schema-design-indexes.html"
+            "/${VERSION}/schema-design-indexes/"
           ]
         },
         {
@@ -70,13 +70,13 @@
             {
               "title": "Change and Remove Objects",
               "urls": [
-                "/${VERSION}/schema-design-update.html"
+                "/${VERSION}/schema-design-update/"
               ]
             },
             {
               "title": "Online Schema Changes",
               "urls": [
-                "/${VERSION}/online-schema-changes.html"
+                "/${VERSION}/online-schema-changes/"
               ]
             }
           ]
@@ -87,49 +87,49 @@
             {
               "title": "Use Computed Columns",
               "urls": [
-                "/${VERSION}/computed-columns.html"
+                "/${VERSION}/computed-columns/"
               ]
             },
             {
               "title": "Group Columns into Families",
               "urls": [
-                "/${VERSION}/column-families.html"
+                "/${VERSION}/column-families/"
               ]
             },
             {
               "title": "Index a Subset of Rows",
               "urls": [
-                "/${VERSION}/partial-indexes.html"
+                "/${VERSION}/partial-indexes/"
               ]
             },
             {
               "title": "Index Sequential Keys",
               "urls": [
-                "/${VERSION}/hash-sharded-indexes.html"
+                "/${VERSION}/hash-sharded-indexes/"
               ]
             },
             {
               "title": "Index JSON and Array Data",
               "urls": [
-                "/${VERSION}/inverted-indexes.html"
+                "/${VERSION}/inverted-indexes/"
               ]
             },
             {
               "title": "Index Expressions",
               "urls": [
-                "/${VERSION}/expression-indexes.html"
+                "/${VERSION}/expression-indexes/"
               ]
             },
             {
               "title": "Index Spatial Data",
               "urls": [
-                "/${VERSION}/spatial-indexes.html"
+                "/${VERSION}/spatial-indexes/"
               ]
             },
             {
               "title": "Scale to Multiple Regions",
               "urls": [
-                "/${VERSION}/multiregion-scale-application.html"
+                "/${VERSION}/multiregion-scale-application/"
               ]
             }
           ]
@@ -142,31 +142,31 @@
         {
           "title": "Insert Data",
           "urls": [
-            "/${VERSION}/insert-data.html"
+            "/${VERSION}/insert-data/"
           ]
         },
         {
           "title": "Update Data",
           "urls": [
-            "/${VERSION}/update-data.html"
+            "/${VERSION}/update-data/"
           ]
         },
         {
           "title": "Bulk-update Data",
           "urls": [
-            "/${VERSION}/bulk-update-data.html"
+            "/${VERSION}/bulk-update-data/"
           ]
         },
         {
           "title": "Delete Data",
           "urls": [
-            "/${VERSION}/delete-data.html"
+            "/${VERSION}/delete-data/"
           ]
         },
         {
           "title": "Bulk-delete Data",
           "urls": [
-            "/${VERSION}/bulk-delete-data.html"
+            "/${VERSION}/bulk-delete-data/"
           ]
         }
       ]
@@ -177,7 +177,7 @@
         {
           "title": "Select Rows of Data",
           "urls": [
-            "/${VERSION}/query-data.html"
+            "/${VERSION}/query-data/"
           ]
         },
         {
@@ -186,13 +186,13 @@
             {
               "title": "Reusable Views",
               "urls": [
-                "/${VERSION}/views.html"
+                "/${VERSION}/views/"
               ]
             },
             {
               "title": "Subqueries",
               "urls": [
-                "/${VERSION}/subqueries.html"
+                "/${VERSION}/subqueries/"
               ]
             }
           ]
@@ -200,13 +200,13 @@
         {
           "title": "Create Temporary Tables",
           "urls": [
-            "/${VERSION}/temporary-tables.html"
+            "/${VERSION}/temporary-tables/"
           ]
         },
         {
           "title": "Paginate Results",
           "urls": [
-            "/${VERSION}/pagination.html"
+            "/${VERSION}/pagination/"
           ]
         },
         {
@@ -215,13 +215,13 @@
             {
               "title": "AS OF SYSTEM TIME",
               "urls": [
-                "/${VERSION}/as-of-system-time.html"
+                "/${VERSION}/as-of-system-time/"
               ]
             },
             {
               "title": "Follower Reads",
               "urls": [
-                "/${VERSION}/follower-reads.html"
+                "/${VERSION}/follower-reads/"
               ]
             }
           ]
@@ -229,7 +229,7 @@
         {
           "title": "Query Spatial Data",
           "urls": [
-            "/${VERSION}/query-spatial-data.html"
+            "/${VERSION}/query-spatial-data/"
           ]
         }
       ]
@@ -240,13 +240,13 @@
         {
           "title": "Transactions Overview",
           "urls": [
-            "/${VERSION}/transactions.html"
+            "/${VERSION}/transactions/"
           ]
         },
         {
           "title": "Advanced Client-side Transaction Retries",
           "urls": [
-            "/${VERSION}/advanced-client-side-transaction-retries.html"
+            "/${VERSION}/advanced-client-side-transaction-retries/"
           ]
         }
       ]
@@ -254,13 +254,13 @@
     {
       "title": "Test Your Application Locally",
       "urls": [
-        "/${VERSION}/local-testing.html"
+        "/${VERSION}/local-testing/"
       ]
     },
     {
       "title": "Troubleshoot Common Problems",
       "urls": [
-        "/${VERSION}/error-handling-and-troubleshooting.html"
+        "/${VERSION}/error-handling-and-troubleshooting/"
       ]
     },
     {
@@ -270,31 +270,31 @@
         {
           "title": "Overview",
           "urls": [
-            "/${VERSION}/make-queries-fast.html"
+            "/${VERSION}/make-queries-fast/"
           ]
         },
         {
           "title": "Statement Tuning with <code>EXPLAIN</code>",
           "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
+            "/${VERSION}/sql-tuning-with-explain/"
           ]
         },
         {
           "title": "Apply SQL Statement Performance Rules",
           "urls": [
-            "/${VERSION}/apply-statement-performance-rules.html"
+            "/${VERSION}/apply-statement-performance-rules/"
           ]
         },
         {
           "title": "SQL Performance Best Practices",
           "urls": [
-            "/${VERSION}/performance-best-practices-overview.html"
+            "/${VERSION}/performance-best-practices-overview/"
           ]
         },
         {
           "title": "Performance Tuning Recipes",
           "urls": [
-            "/${VERSION}/performance-recipes.html"
+            "/${VERSION}/performance-recipes/"
           ]
         },
         {
@@ -304,31 +304,31 @@
             {
               "title": "Overview",
               "urls": [
-                "/${VERSION}/performance-features-overview.html"
+                "/${VERSION}/performance-features-overview/"
               ]
             },
             {
               "title": "Indexes",
               "urls": [
-                "/${VERSION}/indexes.html"
+                "/${VERSION}/indexes/"
               ]
             },
             {
               "title": "Cost-Based Optimizer",
               "urls": [
-                "/${VERSION}/cost-based-optimizer.html"
+                "/${VERSION}/cost-based-optimizer/"
               ]
             },
             {
               "title": "Vectorized Execution Engine",
               "urls": [
-                "/${VERSION}/vectorized-execution.html"
+                "/${VERSION}/vectorized-execution/"
               ]
             },
             {
               "title": "Load-Based Splitting",
               "urls": [
-                "/${VERSION}/load-based-splitting.html"
+                "/${VERSION}/load-based-splitting/"
               ]
             }
           ]
@@ -341,7 +341,7 @@
         {
           "title": "Overview of Example Applications",
           "urls": [
-            "/${VERSION}/example-apps.html"
+            "/${VERSION}/example-apps/"
           ]
         },
         {
@@ -350,13 +350,13 @@
             {
               "title": "Spring Boot with JDBC",
               "urls": [
-                "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc.html"
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc/"
               ]
             },
             {
               "title": "Spring Boot with JPA",
               "urls": [
-                "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa.html"
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa/"
               ]
             }
           ]
@@ -367,7 +367,7 @@
             {
               "title": "Overview",
               "urls": [
-                "/${VERSION}/movr.html"
+                "/${VERSION}/movr/"
               ]
             },
             {
@@ -376,37 +376,37 @@
                 {
                   "title": "Overview",
                   "urls": [
-                    "/${VERSION}/movr-flask-overview.html"
+                    "/${VERSION}/movr-flask-overview/"
                   ]
                 },
                 {
                   "title": "Global Application Use Case",
                   "urls": [
-                    "/${VERSION}/movr-flask-use-case.html"
+                    "/${VERSION}/movr-flask-use-case/"
                   ]
                 },
                 {
                   "title": "Multi-region Database Schema",
                   "urls": [
-                    "/${VERSION}/movr-flask-database.html"
+                    "/${VERSION}/movr-flask-database/"
                   ]
                 },
                 {
                   "title": "Set up a Development Environment",
                   "urls": [
-                    "/${VERSION}/movr-flask-setup.html"
+                    "/${VERSION}/movr-flask-setup/"
                   ]
                 },
                 {
                   "title": "Develop a Global Application",
                   "urls": [
-                    "/${VERSION}/movr-flask-application.html"
+                    "/${VERSION}/movr-flask-application/"
                   ]
                 },
                 {
                   "title": "Deploy a Global Application",
                   "urls": [
-                    "/${VERSION}/movr-flask-deployment.html"
+                    "/${VERSION}/movr-flask-deployment/"
                   ]
                 }
               ]
@@ -416,7 +416,7 @@
         {
       	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
       	  "urls": [
-      	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+      	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud/"
       	  ]
       	}
       ]
@@ -430,19 +430,19 @@
             {
               "title": "Alembic",
               "urls": [
-                "/${VERSION}/alembic.html"
+                "/${VERSION}/alembic/"
               ]
             },
             {
               "title": "Flyway",
               "urls": [
-                "/${VERSION}/flyway.html"
+                "/${VERSION}/flyway/"
               ]
             },
             {
               "title": "Liquibase",
               "urls": [
-                "/${VERSION}/liquibase.html"
+                "/${VERSION}/liquibase/"
               ]
             }
           ]
@@ -453,13 +453,13 @@
             {
               "title": "DBeaver GUI",
               "urls": [
-                "/${VERSION}/dbeaver.html"
+                "/${VERSION}/dbeaver/"
               ]
             },
             {
               "title": "IntelliJ IDEA",
               "urls": [
-                "/${VERSION}/intellij-idea.html"
+                "/${VERSION}/intellij-idea/"
               ]
             }
           ]

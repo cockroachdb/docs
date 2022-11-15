@@ -12,14 +12,14 @@
     {
       "title": "All Releases",
       "urls": [
-        "/releases/index.html"
+        "/releases/index/"
       ]
     },
     {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
       {
         "title": "{{ x }}",
         "urls": [
-          "/releases/{{ x }}.html"
+          "/releases/{{ x }}/"
         ]
       },
     {% endfor %}
@@ -28,30 +28,30 @@
       "title": "Latest Testing Release",
       "urls": [
           {% comment %} check if a testing version is available and pull the latest testing version {% endcomment %}
-          "/releases/{{ v_test[0] }}.html"
+          "/releases/{{ v_test[0] }}/"
       ]
     },
     {% endif %}
     {
       "title": "Release Support Policy",
       "urls": [
-        "/releases/release-support-policy.html"
+        "/releases/release-support-policy/"
       ]
     },
     {
       "title": "Known Limitations",
       "urls": [
-        "/${VERSION}/known-limitations.html"
+        "/${VERSION}/known-limitations/"
       ]
     },
     {
       "title": "Technical Advisories",
       "urls": [
-        "/advisories/index.html",
+        "/advisories/index/",
         {% for x in site.data.advisories %}
-          "/advisories/{{ x.advisory }}.html",
+          "/advisories/{{ x.advisory }}/",
         {% endfor %}
-        "/advisories/index.html"
+        "/advisories/index/"
       ]
     }
   ]
@@ -59,12 +59,12 @@
 {
   "title": "CockroachDB Cloud",
   "urls": [
-    "/releases/cloud.html"
+    "/releases/cloud/"
   ]
 },
 {
   "title": "CockroachDB Kubernetes Operator",
   "urls": [
-    "/releases/kubernetes-operator.html"
+    "/releases/kubernetes-operator/"
   ]
 }

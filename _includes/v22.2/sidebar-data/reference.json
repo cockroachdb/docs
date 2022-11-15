@@ -8,55 +8,55 @@
           {
             "title": "Architecture Overview",
             "urls": [
-              "/${VERSION}/architecture/overview.html"
+              "/${VERSION}/architecture/overview/"
             ]
           },
           {
             "title": "SQL Layer",
             "urls": [
-              "/${VERSION}/architecture/sql-layer.html"
+              "/${VERSION}/architecture/sql-layer/"
             ]
           },
           {
             "title": "Transaction Layer",
             "urls": [
-              "/${VERSION}/architecture/transaction-layer.html"
+              "/${VERSION}/architecture/transaction-layer/"
             ]
           },
           {
             "title": "Distribution Layer",
             "urls": [
-              "/${VERSION}/architecture/distribution-layer.html"
+              "/${VERSION}/architecture/distribution-layer/"
             ]
           },
           {
             "title": "Replication Layer",
             "urls": [
-              "/${VERSION}/architecture/replication-layer.html"
+              "/${VERSION}/architecture/replication-layer/"
             ]
           },
           {
             "title": "Storage Layer",
             "urls": [
-              "/${VERSION}/architecture/storage-layer.html"
+              "/${VERSION}/architecture/storage-layer/"
             ]
           },
           {
             "title": "Life of a Distributed Transaction",
             "urls": [
-              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+              "/${VERSION}/architecture/life-of-a-distributed-transaction/"
             ]
           },
           {
             "title": "Reads and Writes Overview",
             "urls": [
-              "/${VERSION}/architecture/reads-and-writes-overview.html"
+              "/${VERSION}/architecture/reads-and-writes-overview/"
             ]
           },
           {
             "title": "CockroachDB Cloud Architecture",
             "urls": [
-              "/cockroachcloud/architecture.html"
+              "/cockroachcloud/architecture/"
             ]
           }
         ]
@@ -67,13 +67,13 @@
           {
             "title": "SQL Overview",
             "urls": [
-              "/${VERSION}/sql-feature-support.html"
+              "/${VERSION}/sql-feature-support/"
             ]
           },
           {
             "title": "PostgreSQL Compatibility",
             "urls": [
-              "/${VERSION}/postgresql-compatibility.html"
+              "/${VERSION}/postgresql-compatibility/"
             ]
           },
           {
@@ -82,55 +82,55 @@
               {
                 "title": "Full SQL Grammar",
                 "urls": [
-                  "/${VERSION}/sql-grammar.html"
+                  "/${VERSION}/sql-grammar/"
                 ]
               },
               {
                 "title": "Keywords & Identifiers",
                 "urls": [
-                  "/${VERSION}/keywords-and-identifiers.html"
+                  "/${VERSION}/keywords-and-identifiers/"
                 ]
               },
               {
                 "title": "Constants",
                 "urls": [
-                  "/${VERSION}/sql-constants.html"
+                  "/${VERSION}/sql-constants/"
                 ]
               },
               {
                 "title": "Selection Queries",
                 "urls": [
-                  "/${VERSION}/selection-queries.html"
+                  "/${VERSION}/selection-queries/"
                 ]
               },
               {
                 "title": "Table Expressions",
                 "urls": [
-                  "/${VERSION}/table-expressions.html"
+                  "/${VERSION}/table-expressions/"
                 ]
               },
               {
                 "title": "Common Table Expressions",
                 "urls": [
-                  "/${VERSION}/common-table-expressions.html"
+                  "/${VERSION}/common-table-expressions/"
                 ]
               },
               {
                 "title": "Scalar Expressions",
                 "urls": [
-                  "/${VERSION}/scalar-expressions.html"
+                  "/${VERSION}/scalar-expressions/"
                 ]
               },
               {
                 "title": "User-Defined Functions",
                 "urls": [
-                  "/${VERSION}/user-defined-functions.html"
+                  "/${VERSION}/user-defined-functions/"
                 ]
               },
               {
                 "title": "<code>NULL</code> Handling",
                 "urls": [
-                  "/${VERSION}/null-handling.html"
+                  "/${VERSION}/null-handling/"
                 ]
               }
             ]
@@ -141,919 +141,919 @@
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/sql-statements.html"
+                  "/${VERSION}/sql-statements/"
                 ]
               },
               {
                 "title": "<code>ADD COLUMN</code>",
                 "urls": [
-                  "/${VERSION}/add-column.html"
+                  "/${VERSION}/add-column/"
                 ]
               },
               {
                 "title": "<code>ADD CONSTRAINT</code>",
                 "urls": [
-                  "/${VERSION}/add-constraint.html"
+                  "/${VERSION}/add-constraint/"
                 ]
               },
               {
                 "title": "<code>ADD REGION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/add-region.html"
+                  "/${VERSION}/add-region/"
                 ]
               },
               {
                 "title": "<code>ADD SUPER REGION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/add-super-region.html"
+                  "/${VERSION}/add-super-region/"
                 ]
               },
               {
                 "title": "<code>ALTER BACKUP</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/alter-backup.html"
+                  "/${VERSION}/alter-backup/"
                 ]
               },
               {
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/alter-changefeed.html"
+                  "/${VERSION}/alter-changefeed/"
                 ]
               },
               {
                 "title": "<code>ALTER COLUMN</code>",
                 "urls": [
-                  "/${VERSION}/alter-column.html"
+                  "/${VERSION}/alter-column/"
                 ]
               },
               {
                 "title": "<code>ALTER DATABASE</code>",
                 "urls": [
-                  "/${VERSION}/alter-database.html"
+                  "/${VERSION}/alter-database/"
                 ]
               },
               {
                 "title": "<code>ALTER DEFAULT PRIVILEGES</code>",
                 "urls": [
-                  "/${VERSION}/alter-default-privileges.html"
+                  "/${VERSION}/alter-default-privileges/"
                 ]
               },
               {
                 "title": "<code>ALTER FUNCTION</code>",
                 "urls": [
-                  "/${VERSION}/alter-function.html"
+                  "/${VERSION}/alter-function/"
                 ]
               },
               {
                 "title": "<code>ALTER INDEX</code>",
                 "urls": [
-                  "/${VERSION}/alter-index.html"
+                  "/${VERSION}/alter-index/"
                 ]
               },
               {
                 "title": "<code>ALTER PARTITION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/alter-partition.html"
+                  "/${VERSION}/alter-partition/"
                 ]
               },
               {
                 "title": "<code>ALTER PRIMARY KEY</code>",
                 "urls": [
-                  "/${VERSION}/alter-primary-key.html"
+                  "/${VERSION}/alter-primary-key/"
                 ]
               },
               {
                 "title": "<code>ALTER RANGE</code>",
                 "urls": [
-                  "/${VERSION}/alter-range.html"
+                  "/${VERSION}/alter-range/"
                 ]
               },
               {
                 "title": "<code>ALTER RANGE ... RELOCATE</code>",
                 "urls": [
-                  "/${VERSION}/alter-range-relocate.html"
+                  "/${VERSION}/alter-range-relocate/"
                 ]
               },
               {
                 "title": "<code>ALTER ROLE</code>",
                 "urls": [
-                  "/${VERSION}/alter-role.html"
+                  "/${VERSION}/alter-role/"
                 ]
               },
               {
                 "title": "<code>ALTER SCHEMA</code>",
                 "urls": [
-                  "/${VERSION}/alter-schema.html"
+                  "/${VERSION}/alter-schema/"
                 ]
               },
               {
                 "title": "<code>ALTER SEQUENCE</code>",
                 "urls": [
-                  "/${VERSION}/alter-sequence.html"
+                  "/${VERSION}/alter-sequence/"
                 ]
               },
               {
                 "title": "<code>ALTER SUPER REGION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/alter-super-region.html"
+                  "/${VERSION}/alter-super-region/"
                 ]
               },
               {
                 "title": "<code>ALTER TABLE</code>",
                 "urls": [
-                  "/${VERSION}/alter-table.html"
+                  "/${VERSION}/alter-table/"
                 ]
               },
               {
                 "title": "<code>ALTER TYPE</code>",
                 "urls": [
-                  "/${VERSION}/alter-type.html"
+                  "/${VERSION}/alter-type/"
                 ]
               },
               {
                 "title": "<code>ALTER USER</code>",
                 "urls": [
-                  "/${VERSION}/alter-user.html"
+                  "/${VERSION}/alter-user/"
                 ]
               },
               {
                 "title": "<code>ALTER VIEW</code>",
                 "urls": [
-                  "/${VERSION}/alter-view.html"
+                  "/${VERSION}/alter-view/"
                 ]
               },
               {
                 "title": "<code>EXPERIMENTAL_AUDIT</code>",
                 "urls": [
-                  "/${VERSION}/experimental-audit.html"
+                  "/${VERSION}/experimental-audit/"
                 ]
               },
               {
                 "title": "<code>BACKUP</code>",
                 "urls": [
-                  "/${VERSION}/backup.html"
+                  "/${VERSION}/backup/"
                 ]
               },
               {
                 "title": "<code>BEGIN</code>",
                 "urls": [
-                  "/${VERSION}/begin-transaction.html"
+                  "/${VERSION}/begin-transaction/"
                 ]
               },
               {
                 "title": "<code>CANCEL JOB</code>",
                 "urls": [
-                  "/${VERSION}/cancel-job.html"
+                  "/${VERSION}/cancel-job/"
                 ]
               },
               {
                 "title": "<code>CANCEL QUERY</code>",
                 "urls": [
-                  "/${VERSION}/cancel-query.html"
+                  "/${VERSION}/cancel-query/"
                 ]
               },
               {
                 "title": "<code>CANCEL SESSION</code>",
                 "urls": [
-                  "/${VERSION}/cancel-session.html"
+                  "/${VERSION}/cancel-session/"
                 ]
               },
               {
                 "title": "<code>COMMENT ON</code>",
                 "urls": [
-                  "/${VERSION}/comment-on.html"
+                  "/${VERSION}/comment-on/"
                 ]
               },
               {
                 "title": "<code>COMMIT</code>",
                 "urls": [
-                  "/${VERSION}/commit-transaction.html"
+                  "/${VERSION}/commit-transaction/"
                 ]
               },
               {
                 "title": "<code>CONFIGURE ZONE</code>",
                 "urls": [
-                  "/${VERSION}/configure-zone.html"
+                  "/${VERSION}/configure-zone/"
                 ]
               },
               {
                 "title": "<code>COPY FROM</code>",
                 "urls": [
-                  "/${VERSION}/copy-from.html"
+                  "/${VERSION}/copy-from/"
                 ]
               },
               {
                 "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/create-changefeed.html"
+                  "/${VERSION}/create-changefeed/"
                 ]
               },
               {
                 "title": "<code>CREATE DATABASE</code>",
                 "urls": [
-                  "/${VERSION}/create-database.html"
+                  "/${VERSION}/create-database/"
                 ]
               },
               {
                 "title": "<code>CREATE EXTERNAL CONNECTION</code>",
                 "urls": [
-                  "/${VERSION}/create-external-connection.html"
+                  "/${VERSION}/create-external-connection/"
                 ]
               },
               {
                 "title": "<code>CREATE FUNCTION</code>",
                 "urls": [
-                  "/${VERSION}/create-function.html"
+                  "/${VERSION}/create-function/"
                 ]
               },
               {
                 "title": "<code>CREATE INDEX</code>",
                 "urls": [
-                  "/${VERSION}/create-index.html"
+                  "/${VERSION}/create-index/"
                 ]
               },
               {
                 "title": "<code>CREATE ROLE</code>",
                 "urls": [
-                  "/${VERSION}/create-role.html"
+                  "/${VERSION}/create-role/"
                 ]
               },
               {
                 "title": "<code>CREATE SCHEDULE FOR BACKUP</code>",
                 "urls": [
-                  "/${VERSION}/create-schedule-for-backup.html"
+                  "/${VERSION}/create-schedule-for-backup/"
                 ]
               },
               {
                 "title": "<code>CREATE SCHEMA</code>",
                 "urls": [
-                  "/${VERSION}/create-schema.html"
+                  "/${VERSION}/create-schema/"
                 ]
               },
               {
                 "title": "<code>CREATE SEQUENCE</code>",
                 "urls": [
-                  "/${VERSION}/create-sequence.html"
+                  "/${VERSION}/create-sequence/"
                 ]
               },
               {
                 "title": "<code>CREATE STATISTICS</code>",
                 "urls": [
-                  "/${VERSION}/create-statistics.html"
+                  "/${VERSION}/create-statistics/"
                 ]
               },
               {
                 "title": "<code>CREATE TABLE</code>",
                 "urls": [
-                  "/${VERSION}/create-table.html"
+                  "/${VERSION}/create-table/"
                 ]
               },
               {
                 "title": "<code>CREATE TABLE AS</code>",
                 "urls": [
-                  "/${VERSION}/create-table-as.html"
+                  "/${VERSION}/create-table-as/"
                 ]
               },
               {
                 "title": "<code>CREATE TYPE</code>",
                 "urls": [
-                  "/${VERSION}/create-type.html"
+                  "/${VERSION}/create-type/"
                 ]
               },
               {
                 "title": "<code>CREATE USER</code>",
                 "urls": [
-                  "/${VERSION}/create-user.html"
+                  "/${VERSION}/create-user/"
                 ]
               },
               {
                 "title": "<code>CREATE VIEW</code>",
                 "urls": [
-                  "/${VERSION}/create-view.html"
+                  "/${VERSION}/create-view/"
                 ]
               },
               {
                 "title": "<code>DELETE</code>",
                 "urls": [
-                  "/${VERSION}/delete.html"
+                  "/${VERSION}/delete/"
                 ]
               },
               {
                 "title": "<code>DROP COLUMN</code>",
                 "urls": [
-                  "/${VERSION}/drop-column.html"
+                  "/${VERSION}/drop-column/"
                 ]
               },
               {
                 "title": "<code>DROP CONSTRAINT</code>",
                 "urls": [
-                  "/${VERSION}/drop-constraint.html"
+                  "/${VERSION}/drop-constraint/"
                 ]
               },
               {
                 "title": "<code>DROP DATABASE</code>",
                 "urls": [
-                  "/${VERSION}/drop-database.html"
+                  "/${VERSION}/drop-database/"
                 ]
               },
               {
                 "title": "<code>DROP EXTERNAL CONNECTION</code>",
                 "urls": [
-                  "/${VERSION}/drop-external-connection.html"
+                  "/${VERSION}/drop-external-connection/"
                 ]
               },
               {
                 "title": "<code>DROP FUNCTION</code>",
                 "urls": [
-                  "/${VERSION}/drop-function.html"
+                  "/${VERSION}/drop-function/"
                 ]
               },
               {
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
-                  "/${VERSION}/drop-region.html"
+                  "/${VERSION}/drop-region/"
                 ]
               },
               {
                 "title": "<code>DROP SECONDARY REGION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/drop-secondary-region.html"
+                  "/${VERSION}/drop-secondary-region/"
                 ]
               },
               {
                 "title": "<code>DROP SUPER REGION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/drop-super-region.html"
+                  "/${VERSION}/drop-super-region/"
                 ]
               },
               {
                 "title": "<code>DROP TYPE</code>",
                 "urls": [
-                  "/${VERSION}/drop-type.html"
+                  "/${VERSION}/drop-type/"
                 ]
               },
               {
                 "title": "<code>DROP INDEX</code>",
                 "urls": [
-                  "/${VERSION}/drop-index.html"
+                  "/${VERSION}/drop-index/"
                 ]
               },
               {
                 "title": "<code>DROP ROLE</code>",
                 "urls": [
-                  "/${VERSION}/drop-role.html"
+                  "/${VERSION}/drop-role/"
                 ]
               },
               {
                 "title": "<code>DROP SCHEDULES</code>",
                 "urls": [
-                  "/${VERSION}/drop-schedules.html"
+                  "/${VERSION}/drop-schedules/"
                 ]
               },
               {
                 "title": "<code>DROP SCHEMA</code>",
                 "urls": [
-                  "/${VERSION}/drop-schema.html"
+                  "/${VERSION}/drop-schema/"
                 ]
               },
               {
                 "title": "<code>DROP SEQUENCE</code>",
                 "urls": [
-                  "/${VERSION}/drop-sequence.html"
+                  "/${VERSION}/drop-sequence/"
                 ]
               },
               {
                 "title": "<code>DROP TABLE</code>",
                 "urls": [
-                  "/${VERSION}/drop-table.html"
+                  "/${VERSION}/drop-table/"
                 ]
               },
               {
                 "title": "<code>DROP USER</code>",
                 "urls": [
-                  "/${VERSION}/drop-user.html"
+                  "/${VERSION}/drop-user/"
                 ]
               },
               {
                 "title": "<code>DROP VIEW</code>",
                 "urls": [
-                  "/${VERSION}/drop-view.html"
+                  "/${VERSION}/drop-view/"
                 ]
               },
               {
                 "title": "<code>EXPERIMENTAL CHANGEFEED FOR</code>",
                 "urls": [
-                  "/${VERSION}/changefeed-for.html"
+                  "/${VERSION}/changefeed-for/"
                 ]
               },
               {
                 "title": "<code>EXPLAIN</code>",
                 "urls": [
-                  "/${VERSION}/explain.html"
+                  "/${VERSION}/explain/"
                 ]
               },
               {
                 "title": "<code>EXPLAIN ANALYZE</code>",
                 "urls": [
-                  "/${VERSION}/explain-analyze.html"
+                  "/${VERSION}/explain-analyze/"
                 ]
               },
               {
                 "title": "<code>EXPORT</code>",
                 "urls": [
-                  "/${VERSION}/export.html"
+                  "/${VERSION}/export/"
                 ]
               },
               {
                 "title": "<code>GRANT</code>",
                 "urls": [
-                  "/${VERSION}/grant.html"
+                  "/${VERSION}/grant/"
                 ]
               },
               {
                 "title": "<code>IMPORT</code>",
                 "urls": [
-                  "/${VERSION}/import.html"
+                  "/${VERSION}/import/"
                 ]
               },
               {
                 "title": "<code>IMPORT INTO</code>",
                 "urls": [
-                  "/${VERSION}/import-into.html"
+                  "/${VERSION}/import-into/"
                 ]
               },
               {
                 "title": "<code>INSERT</code>",
                 "urls": [
-                  "/${VERSION}/insert.html"
+                  "/${VERSION}/insert/"
                 ]
               },
               {
                 "title": "<code>JOIN</code>",
                 "urls": [
-                  "/${VERSION}/joins.html"
+                  "/${VERSION}/joins/"
                 ]
               },
               {
                 "title": "<code>LIMIT</code>/<code>OFFSET</code>",
                 "urls": [
-                  "/${VERSION}/limit-offset.html"
+                  "/${VERSION}/limit-offset/"
                 ]
               },
               {
                 "title": "<code>ORDER BY</code>",
                 "urls": [
-                  "/${VERSION}/order-by.html"
+                  "/${VERSION}/order-by/"
                 ]
               },
               {
                 "title": "<code>OWNER TO</code>",
                 "urls": [
-                  "/${VERSION}/owner-to.html"
+                  "/${VERSION}/owner-to/"
                 ]
               },
               {
                 "title": "<code>PARTITION BY</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/partition-by.html"
+                  "/${VERSION}/partition-by/"
                 ]
               },
               {
                 "title": "<code>PAUSE JOB</code>",
                 "urls": [
-                  "/${VERSION}/pause-job.html"
+                  "/${VERSION}/pause-job/"
                 ]
               },
               {
                 "title": "<code>PAUSE SCHEDULES</code>",
                 "urls": [
-                  "/${VERSION}/pause-schedules.html"
+                  "/${VERSION}/pause-schedules/"
                 ]
               },
               {
                 "title": "<code>PLACEMENT (RESTRICTED | DEFAULT)</code>",
                 "urls": [
-                  "/${VERSION}/placement-restricted.html"
+                  "/${VERSION}/placement-restricted/"
                 ]
               },
               {
                 "title": "<code>REASSIGN OWNED</code>",
                 "urls": [
-                  "/${VERSION}/reassign-owned.html"
+                  "/${VERSION}/reassign-owned/"
                 ]
               },
               {
                 "title": "<code>REFRESH</code>",
                 "urls": [
-                  "/${VERSION}/refresh.html"
+                  "/${VERSION}/refresh/"
                 ]
               },
               {
                 "title": "<code>RENAME COLUMN</code>",
                 "urls": [
-                  "/${VERSION}/rename-column.html"
+                  "/${VERSION}/rename-column/"
                 ]
               },
               {
                 "title": "<code>RENAME CONSTRAINT</code>",
                 "urls": [
-                  "/${VERSION}/rename-constraint.html"
+                  "/${VERSION}/rename-constraint/"
                 ]
               },
               {
                 "title": "<code>RENAME DATABASE</code>",
                 "urls": [
-                  "/${VERSION}/rename-database.html"
+                  "/${VERSION}/rename-database/"
                 ]
               },
               {
                 "title": "<code>RENAME INDEX</code>",
                 "urls": [
-                  "/${VERSION}/rename-index.html"
+                  "/${VERSION}/rename-index/"
                 ]
               },
               {
                 "title": "<code>RENAME TABLE</code>",
                 "urls": [
-                  "/${VERSION}/rename-table.html"
+                  "/${VERSION}/rename-table/"
                 ]
               },
               {
                 "title": "<code>RELEASE SAVEPOINT</code>",
                 "urls": [
-                  "/${VERSION}/release-savepoint.html"
+                  "/${VERSION}/release-savepoint/"
                 ]
               },
               {
                 "title": "<code>RESET CLUSTER SETTING</code>",
                 "urls": [
-                  "/${VERSION}/reset-cluster-setting.html"
+                  "/${VERSION}/reset-cluster-setting/"
                 ]
               },
               {
                 "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
-                  "/${VERSION}/reset-vars.html"
+                  "/${VERSION}/reset-vars/"
                 ]
               },
               {
                 "title": "<code>RESET &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/reset-storage-parameter.html"
+                  "/${VERSION}/reset-storage-parameter/"
                 ]
               },
               {
                 "title": "<code>RESTORE</code>",
                 "urls": [
-                  "/${VERSION}/restore.html"
+                  "/${VERSION}/restore/"
                 ]
               },
               {
                 "title": "<code>RESUME JOB</code>",
                 "urls": [
-                  "/${VERSION}/resume-job.html"
+                  "/${VERSION}/resume-job/"
                 ]
               },
               {
                 "title": "<code>RESUME SCHEDULES</code>",
                 "urls": [
-                  "/${VERSION}/resume-schedules.html"
+                  "/${VERSION}/resume-schedules/"
                 ]
               },
               {
                 "title": "<code>REVOKE</code>",
                 "urls": [
-                  "/${VERSION}/revoke.html"
+                  "/${VERSION}/revoke/"
                 ]
               },
               {
                 "title": "<code>ROLLBACK</code>",
                 "urls": [
-                  "/${VERSION}/rollback-transaction.html"
+                  "/${VERSION}/rollback-transaction/"
                 ]
               },
               {
                 "title": "<code>SAVEPOINT</code>",
                 "urls": [
-                  "/${VERSION}/savepoint.html"
+                  "/${VERSION}/savepoint/"
                 ]
               },
               {
                 "title": "<code>SELECT</code>",
                 "urls": [
-                  "/${VERSION}/select-clause.html"
+                  "/${VERSION}/select-clause/"
                 ]
               },
               {
                 "title": "<code>SELECT FOR UPDATE</code>",
                 "urls": [
-                  "/${VERSION}/select-for-update.html"
+                  "/${VERSION}/select-for-update/"
                 ]
               },
               {
                 "title": "<code>SET CLUSTER SETTING</code>",
                 "urls": [
-                  "/${VERSION}/set-cluster-setting.html"
+                  "/${VERSION}/set-cluster-setting/"
                 ]
               },
               {
                 "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
-                  "/${VERSION}/set-vars.html"
+                  "/${VERSION}/set-vars/"
                 ]
               },
               {
                 "title": "<code>SET &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/set-storage-parameter.html"
+                  "/${VERSION}/set-storage-parameter/"
                 ]
               },
               {
                 "title": "<code>SET LOCALITY</code>",
                 "urls": [
-                  "/${VERSION}/set-locality.html"
+                  "/${VERSION}/set-locality/"
                 ]
               },
               {
                 "title": "<code>SET PRIMARY REGION (Enterprise)</code>",
                 "urls": [
-                  "/${VERSION}/set-primary-region.html"
+                  "/${VERSION}/set-primary-region/"
                 ]
               },
               {
                 "title": "<code>SET SCHEMA</code>",
                 "urls": [
-                  "/${VERSION}/set-schema.html"
+                  "/${VERSION}/set-schema/"
                 ]
               },
               {
                 "title": "<code>SET SECONDARY REGION</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/set-secondary-region.html"
+                  "/${VERSION}/set-secondary-region/"
                 ]
               },
               {
                 "title": "<code>SET TRANSACTION</code>",
                 "urls": [
-                  "/${VERSION}/set-transaction.html"
+                  "/${VERSION}/set-transaction/"
                 ]
               },
               {
                 "title": "<code>SHOW BACKUP</code>",
                 "urls": [
-                  "/${VERSION}/show-backup.html"
+                  "/${VERSION}/show-backup/"
                 ]
               },
               {
                 "title": "<code>SHOW CLUSTER SETTING</code>",
                 "urls": [
-                  "/${VERSION}/show-cluster-setting.html"
+                  "/${VERSION}/show-cluster-setting/"
                 ]
               },
               {
                 "title": "<code>SHOW COLUMNS</code>",
                 "urls": [
-                  "/${VERSION}/show-columns.html"
+                  "/${VERSION}/show-columns/"
                 ]
               },
               {
                 "title": "<code>SHOW CONSTRAINTS</code>",
                 "urls": [
-                  "/${VERSION}/show-constraints.html"
+                  "/${VERSION}/show-constraints/"
                 ]
               },
               {
                 "title": "<code>SHOW CREATE</code>",
                 "urls": [
-                  "/${VERSION}/show-create.html"
+                  "/${VERSION}/show-create/"
                 ]
               },
               {
                 "title": "<code>SHOW CREATE EXTERNAL CONNECTION</code>",
                 "urls": [
-                  "/${VERSION}/show-create-external-connection.html"
+                  "/${VERSION}/show-create-external-connection/"
                 ]
               },
               {
                 "title": "<code>SHOW CREATE SCHEDULE</code>",
                 "urls": [
-                  "/${VERSION}/show-create-schedule.html"
+                  "/${VERSION}/show-create-schedule/"
                 ]
               },
               {
                 "title": "<code>SHOW DATABASES</code>",
                 "urls": [
-                  "/${VERSION}/show-databases.html"
+                  "/${VERSION}/show-databases/"
                 ]
               },
               {
                 "title": "<code>SHOW DEFAULT PRIVILEGES</code>",
                 "urls": [
-                  "/${VERSION}/show-default-privileges.html"
+                  "/${VERSION}/show-default-privileges/"
                 ]
               },
               {
                 "title": "<code>SHOW ENUMS</code>",
                 "urls": [
-                  "/${VERSION}/show-enums.html"
+                  "/${VERSION}/show-enums/"
                 ]
               },
               {
                 "title": "<code>SHOW FULL TABLE SCANS</code>",
                 "urls": [
-                  "/${VERSION}/show-full-table-scans.html"
+                  "/${VERSION}/show-full-table-scans/"
                 ]
               },
               {
                 "title": "<code>SHOW GRANTS</code>",
                 "urls": [
-                  "/${VERSION}/show-grants.html"
+                  "/${VERSION}/show-grants/"
                 ]
               },
               {
                 "title": "<code>SHOW INDEX</code>",
                 "urls": [
-                  "/${VERSION}/show-index.html"
+                  "/${VERSION}/show-index/"
                 ]
               },
               {
                 "title": "<code>SHOW JOBS</code>",
                 "urls": [
-                  "/${VERSION}/show-jobs.html"
+                  "/${VERSION}/show-jobs/"
                 ]
               },
               {
                 "title": "<code>SHOW LOCALITY</code>",
                 "urls": [
-                  "/${VERSION}/show-locality.html"
+                  "/${VERSION}/show-locality/"
                 ]
               },
               {
                 "title": "<code>SHOW PARTITIONS</code> (Enterprise)",
                 "urls": [
-                  "/${VERSION}/show-partitions.html"
+                  "/${VERSION}/show-partitions/"
                 ]
               },
               {
                 "title": "<code>SHOW RANGES</code>",
                 "urls": [
-                  "/${VERSION}/show-ranges.html"
+                  "/${VERSION}/show-ranges/"
                 ]
               },
               {
                 "title": "<code>SHOW RANGE FOR ROW</code>",
                 "urls": [
-                  "/${VERSION}/show-range-for-row.html"
+                  "/${VERSION}/show-range-for-row/"
                 ]
               },
               {
                 "title": "<code>SHOW REGIONS</code>",
                 "urls": [
-                  "/${VERSION}/show-regions.html"
+                  "/${VERSION}/show-regions/"
                 ]
               },
               {
                 "title": "<code>SHOW &#123;session variable&#125;</code>",
                 "urls": [
-                  "/${VERSION}/show-vars.html"
+                  "/${VERSION}/show-vars/"
                 ]
               },
               {
                 "title": "<code>SHOW SUPER REGIONS</code>",
                 "urls": [
-                  "/${VERSION}/show-super-regions.html"
+                  "/${VERSION}/show-super-regions/"
                 ]
               },
               {
                 "title": "<code>SHOW ROLES</code>",
                 "urls": [
-                  "/${VERSION}/show-roles.html"
+                  "/${VERSION}/show-roles/"
                 ]
               },
               {
                 "title": "<code>SHOW SCHEDULES</code>",
                 "urls": [
-                  "/${VERSION}/show-schedules.html"
+                  "/${VERSION}/show-schedules/"
                 ]
               },
               {
                 "title": "<code>SHOW SCHEMAS</code>",
                 "urls": [
-                  "/${VERSION}/show-schemas.html"
+                  "/${VERSION}/show-schemas/"
                 ]
               },
               {
                 "title": "<code>SHOW SEQUENCES</code>",
                 "urls": [
-                  "/${VERSION}/show-sequences.html"
+                  "/${VERSION}/show-sequences/"
                 ]
               },
               {
                 "title": "<code>SHOW SESSIONS</code>",
                 "urls": [
-                  "/${VERSION}/show-sessions.html"
+                  "/${VERSION}/show-sessions/"
                 ]
               },
               {
                 "title": "<code>SHOW STATEMENTS</code>",
                 "urls": [
-                  "/${VERSION}/show-statements.html"
+                  "/${VERSION}/show-statements/"
                 ]
               },
               {
                 "title": "<code>SHOW STATISTICS</code>",
                 "urls": [
-                  "/${VERSION}/show-statistics.html"
+                  "/${VERSION}/show-statistics/"
                 ]
               },
               {
                 "title": "<code>SHOW SAVEPOINT STATUS</code>",
                 "urls": [
-                  "/${VERSION}/show-savepoint-status.html"
+                  "/${VERSION}/show-savepoint-status/"
                 ]
               },
               {
                 "title": "<code>SHOW TABLES</code>",
                 "urls": [
-                  "/${VERSION}/show-tables.html"
+                  "/${VERSION}/show-tables/"
                 ]
               },
               {
                 "title": "<code>SHOW TRACE FOR SESSION</code>",
                 "urls": [
-                  "/${VERSION}/show-trace.html"
+                  "/${VERSION}/show-trace/"
                 ]
               },
               {
                 "title": "<code>SHOW TRANSACTIONS</code>",
                 "urls": [
-                  "/${VERSION}/show-transactions.html"
+                  "/${VERSION}/show-transactions/"
                 ]
               },
               {
                 "title": "<code>SHOW TYPES</code>",
                 "urls": [
-                  "/${VERSION}/show-types.html"
+                  "/${VERSION}/show-types/"
                 ]
               },
               {
                 "title": "<code>SHOW USERS</code>",
                 "urls": [
-                  "/${VERSION}/show-users.html"
+                  "/${VERSION}/show-users/"
                 ]
               },
               {
                 "title": "<code>SHOW ZONE CONFIGURATIONS</code>",
                 "urls": [
-                  "/${VERSION}/show-zone-configurations.html"
+                  "/${VERSION}/show-zone-configurations/"
                 ]
               },
               {
                 "title": "<code>SPLIT AT</code>",
                 "urls": [
-                  "/${VERSION}/split-at.html"
+                  "/${VERSION}/split-at/"
                 ]
               },
               {
                 "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
                 "urls": [
-                  "/${VERSION}/survive-failure.html"
+                  "/${VERSION}/survive-failure/"
                 ]
               },
               {
                 "title": "<code>TRUNCATE</code>",
                 "urls": [
-                  "/${VERSION}/truncate.html"
+                  "/${VERSION}/truncate/"
                 ]
               },
               {
                 "title": "<code>UNSPLIT AT</code>",
                 "urls": [
-                  "/${VERSION}/unsplit-at.html"
+                  "/${VERSION}/unsplit-at/"
                 ]
               },
               {
                 "title": "<code>UPDATE</code>",
                 "urls": [
-                  "/${VERSION}/update.html"
+                  "/${VERSION}/update/"
                 ]
               },
               {
                 "title": "<code>UPSERT</code>",
                 "urls": [
-                  "/${VERSION}/upsert.html"
+                  "/${VERSION}/upsert/"
                 ]
               },
               {
                 "title": "<code>VALIDATE CONSTRAINT</code>",
                 "urls": [
-                  "/${VERSION}/validate-constraint.html"
+                  "/${VERSION}/validate-constraint/"
                 ]
               },
               {
                 "title": "<code>WITH &#123;storage parameter&#125;</code>",
                 "urls": [
-                  "/${VERSION}/with-storage-parameter.html"
+                  "/${VERSION}/with-storage-parameter/"
                 ]
               }
             ]
@@ -1064,121 +1064,121 @@
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/data-types.html"
+                  "/${VERSION}/data-types/"
                 ]
               },
               {
                 "title": "<code>ARRAY</code>",
                 "urls": [
-                  "/${VERSION}/array.html"
+                  "/${VERSION}/array/"
                 ]
               },
               {
                 "title": "<code>BIT</code>",
                 "urls": [
-                  "/${VERSION}/bit.html"
+                  "/${VERSION}/bit/"
                 ]
               },
               {
                 "title": "<code>BOOL</code>",
                 "urls": [
-                  "/${VERSION}/bool.html"
+                  "/${VERSION}/bool/"
                 ]
               },
               {
                 "title": "<code>BYTES</code>",
                 "urls": [
-                  "/${VERSION}/bytes.html"
+                  "/${VERSION}/bytes/"
                 ]
               },
               {
                 "title": "<code>COLLATE</code>",
                 "urls": [
-                  "/${VERSION}/collate.html"
+                  "/${VERSION}/collate/"
                 ]
               },
               {
                 "title": "<code>DATE</code>",
                 "urls": [
-                  "/${VERSION}/date.html"
+                  "/${VERSION}/date/"
                 ]
               },
               {
                 "title": "<code>DECIMAL</code>",
                 "urls": [
-                  "/${VERSION}/decimal.html"
+                  "/${VERSION}/decimal/"
                 ]
               },
               {
                 "title": "<code>ENUM</code>",
                 "urls": [
-                  "/${VERSION}/enum.html"
+                  "/${VERSION}/enum/"
                 ]
               },
               {
                 "title": "<code>FLOAT</code>",
                 "urls": [
-                  "/${VERSION}/float.html"
+                  "/${VERSION}/float/"
                 ]
               },
               {
                 "title": "<code>INET</code>",
                 "urls": [
-                  "/${VERSION}/inet.html"
+                  "/${VERSION}/inet/"
                 ]
               },
               {
                 "title": "<code>INT</code>",
                 "urls": [
-                  "/${VERSION}/int.html"
+                  "/${VERSION}/int/"
                 ]
               },
               {
                 "title": "<code>INTERVAL</code>",
                 "urls": [
-                  "/${VERSION}/interval.html"
+                  "/${VERSION}/interval/"
                 ]
               },
               {
                 "title": "<code>JSONB</code>",
                 "urls": [
-                  "/${VERSION}/jsonb.html"
+                  "/${VERSION}/jsonb/"
                 ]
               },
               {
                 "title": "<code>OID</code>",
                 "urls": [
-                  "/${VERSION}/oid.html"
+                  "/${VERSION}/oid/"
                 ]
               },
               {
                 "title": "<code>SERIAL</code>",
                 "urls": [
-                  "/${VERSION}/serial.html"
+                  "/${VERSION}/serial/"
                 ]
               },
               {
                 "title": "<code>STRING</code>",
                 "urls": [
-                  "/${VERSION}/string.html"
+                  "/${VERSION}/string/"
                 ]
               },
               {
                 "title": "<code>TIME</code>",
                 "urls": [
-                  "/${VERSION}/time.html"
+                  "/${VERSION}/time/"
                 ]
               },
               {
                 "title": "<code>TIMESTAMP</code>",
                 "urls": [
-                  "/${VERSION}/timestamp.html"
+                  "/${VERSION}/timestamp/"
                 ]
               },
               {
                 "title": "<code>UUID</code>",
                 "urls": [
-                  "/${VERSION}/uuid.html"
+                  "/${VERSION}/uuid/"
                 ]
               }
             ]
@@ -1189,43 +1189,43 @@
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/constraints.html"
+                  "/${VERSION}/constraints/"
                 ]
               },
               {
                 "title": "Check",
                 "urls": [
-                  "/${VERSION}/check.html"
+                  "/${VERSION}/check/"
                 ]
               },
               {
                 "title": "Default Value",
                 "urls": [
-                  "/${VERSION}/default-value.html"
+                  "/${VERSION}/default-value/"
                 ]
               },
               {
                 "title": "Foreign Key",
                 "urls": [
-                  "/${VERSION}/foreign-key.html"
+                  "/${VERSION}/foreign-key/"
                 ]
               },
               {
                 "title": "Not Null",
                 "urls": [
-                  "/${VERSION}/not-null.html"
+                  "/${VERSION}/not-null/"
                 ]
               },
               {
                 "title": "Primary Key",
                 "urls": [
-                  "/${VERSION}/primary-key.html"
+                  "/${VERSION}/primary-key/"
                 ]
               },
               {
                 "title": "Unique",
                 "urls": [
-                  "/${VERSION}/unique.html"
+                  "/${VERSION}/unique/"
                 ]
               }
             ]
@@ -1233,19 +1233,19 @@
           {
             "title": "Functions and Operators",
             "urls": [
-              "/${VERSION}/functions-and-operators.html"
+              "/${VERSION}/functions-and-operators/"
             ]
           },
           {
             "title": "Window Functions",
             "urls": [
-              "/${VERSION}/window-functions.html"
+              "/${VERSION}/window-functions/"
             ]
           },
           {
             "title": "Name Resolution",
             "urls": [
-              "/${VERSION}/sql-name-resolution.html"
+              "/${VERSION}/sql-name-resolution/"
             ]
           },
           {
@@ -1254,31 +1254,31 @@
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/system-catalogs.html"
+                  "/${VERSION}/system-catalogs/"
                 ]
               },
               {
                 "title": "<code>crdb_internal</code>",
                 "urls": [
-                  "/${VERSION}/crdb-internal.html"
+                  "/${VERSION}/crdb-internal/"
                 ]
               },
               {
                 "title": "<code>information_schema</code>",
                 "urls": [
-                  "/${VERSION}/information-schema.html"
+                  "/${VERSION}/information-schema/"
                 ]
               },
               {
                 "title": "<code>pg_catalog</code>",
                 "urls": [
-                  "/${VERSION}/pg-catalog.html"
+                  "/${VERSION}/pg-catalog/"
                 ]
               },
               {
                 "title": "<code>pg_extension</code>",
                 "urls": [
-                  "/${VERSION}/pg-extension.html"
+                  "/${VERSION}/pg-extension/"
                 ]
               }
             ]
@@ -1289,151 +1289,151 @@
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/spatial-features.html"
+                  "/${VERSION}/spatial-features/"
                 ]
               },
               {
                 "title": "Work with Spatial Data",
                 "urls": [
-                  "/${VERSION}/spatial-data.html"
+                  "/${VERSION}/spatial-data/"
                 ]
               },
               {
                 "title": "Spatial and GIS Glossary",
                 "urls": [
-                  "/${VERSION}/spatial-glossary.html"
+                  "/${VERSION}/spatial-glossary/"
                 ]
               },
               {
                 "title": "POINT",
                 "urls": [
-                  "/${VERSION}/point.html"
+                  "/${VERSION}/point/"
                 ]
               },
               {
                 "title": "LINESTRING",
                 "urls": [
-                  "/${VERSION}/linestring.html"
+                  "/${VERSION}/linestring/"
                 ]
               },
               {
                 "title": "POLYGON",
                 "urls": [
-                  "/${VERSION}/polygon.html"
+                  "/${VERSION}/polygon/"
                 ]
               },
               {
                 "title": "MULTIPOINT",
                 "urls": [
-                  "/${VERSION}/multipoint.html"
+                  "/${VERSION}/multipoint/"
                 ]
               },
               {
                 "title": "MULTILINESTRING",
                 "urls": [
-                  "/${VERSION}/multilinestring.html"
+                  "/${VERSION}/multilinestring/"
                 ]
               },
               {
                 "title": "MULTIPOLYGON",
                 "urls": [
-                  "/${VERSION}/multipolygon.html"
+                  "/${VERSION}/multipolygon/"
                 ]
               },
               {
                 "title": "GEOMETRYCOLLECTION",
                 "urls": [
-                  "/${VERSION}/geometrycollection.html"
+                  "/${VERSION}/geometrycollection/"
                 ]
               },
               {
                 "title": "Well Known Text (WKT)",
                 "urls": [
-                  "/${VERSION}/well-known-text.html"
+                  "/${VERSION}/well-known-text/"
                 ]
               },
               {
                 "title": "Well Known Binary (WKB)",
                 "urls": [
-                  "/${VERSION}/well-known-binary.html"
+                  "/${VERSION}/well-known-binary/"
                 ]
               },
               {
                 "title": "GeoJSON",
                 "urls": [
-                  "/${VERSION}/geojson.html"
+                  "/${VERSION}/geojson/"
                 ]
               },
               {
                 "title": "SRID 4326 - longitude and latitude",
                 "urls": [
-                  "/${VERSION}/srid-4326.html"
+                  "/${VERSION}/srid-4326/"
                 ]
               },
               {
                 "title": "ST_Contains",
                 "urls": [
-                  "/${VERSION}/st_contains.html"
+                  "/${VERSION}/st_contains/"
                 ]
               },
               {
                 "title": "ST_Within",
                 "urls": [
-                  "/${VERSION}/st_within.html"
+                  "/${VERSION}/st_within/"
                 ]
               },
               {
                 "title": "ST_Intersects",
                 "urls": [
-                  "/${VERSION}/st_intersects.html"
+                  "/${VERSION}/st_intersects/"
                 ]
               },
               {
                 "title": "ST_CoveredBy",
                 "urls": [
-                  "/${VERSION}/st_coveredby.html"
+                  "/${VERSION}/st_coveredby/"
                 ]
               },
               {
                 "title": "ST_Covers",
                 "urls": [
-                  "/${VERSION}/st_covers.html"
+                  "/${VERSION}/st_covers/"
                 ]
               },
               {
                 "title": "ST_Disjoint",
                 "urls": [
-                  "/${VERSION}/st_disjoint.html"
+                  "/${VERSION}/st_disjoint/"
                 ]
               },
               {
                 "title": "ST_Equals",
                 "urls": [
-                  "/${VERSION}/st_equals.html"
+                  "/${VERSION}/st_equals/"
                 ]
               },
               {
                 "title": "ST_Overlaps",
                 "urls": [
-                  "/${VERSION}/st_overlaps.html"
+                  "/${VERSION}/st_overlaps/"
                 ]
               },
               {
                 "title": "ST_Touches",
                 "urls": [
-                  "/${VERSION}/st_touches.html"
+                  "/${VERSION}/st_touches/"
                 ]
               },
               {
                 "title": "ST_ConvexHull",
                 "urls": [
-                  "/${VERSION}/st_convexhull.html"
+                  "/${VERSION}/st_convexhull/"
                 ]
               },
               {
                 "title": "ST_Union",
                 "urls": [
-                  "/${VERSION}/st_union.html"
+                  "/${VERSION}/st_union/"
                 ]
               }
             ]
@@ -1441,7 +1441,7 @@
           {
             "title": "Experimental Features",
             "urls": [
-              "/${VERSION}/experimental-features.html"
+              "/${VERSION}/experimental-features/"
             ]
           }
         ]
@@ -1449,7 +1449,7 @@
       {
         "title": "Cluster Settings",
         "urls": [
-          "/${VERSION}/cluster-settings.html"
+          "/${VERSION}/cluster-settings/"
         ]
       },
       {
@@ -1458,43 +1458,43 @@
           {
             "title": "Security Overview",
             "urls": [
-              "/${VERSION}/security-reference/security-overview.html"
+              "/${VERSION}/security-reference/security-overview/"
             ]
           },
           {
             "title": "Authentication",
             "urls": [
-              "/${VERSION}/security-reference/authentication.html"
+              "/${VERSION}/security-reference/authentication/"
             ],
             "items": [
               {
                 "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
-                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+                "urls": [ "/${VERSION}/security-reference/scram-authentication/" ]
               }
             ]
           },
           {
             "title": "Authorization",
             "urls": [
-              "/${VERSION}/security-reference/authorization.html"
+              "/${VERSION}/security-reference/authorization/"
             ]
           },
           {
             "title": "Encryption",
             "urls": [
-              "/${VERSION}/security-reference/encryption.html"
+              "/${VERSION}/security-reference/encryption/"
             ]
           },
           {
             "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
             "urls": [
-              "/${VERSION}/security-reference/transport-layer-security.html"
+              "/${VERSION}/security-reference/transport-layer-security/"
             ]
           },
           {
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "urls": [
-              "/cockroachcloud/cmek.html"
+              "/cockroachcloud/cmek/"
             ]
           }
         ]
@@ -1505,13 +1505,13 @@
           {
             "title": "<code>cockroach</code> Commands Overview",
             "urls": [
-              "/${VERSION}/cockroach-commands.html"
+              "/${VERSION}/cockroach-commands/"
             ]
           },
           {
             "title": "Client Connection Parameters",
             "urls": [
-              "/${VERSION}/connection-parameters.html"
+              "/${VERSION}/connection-parameters/"
             ]
           },
           {
@@ -1520,151 +1520,151 @@
               {
                 "title": "<code>cockroach start</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-start.html"
+                  "/${VERSION}/cockroach-start/"
                 ]
               },
               {
                 "title": "<code>cockroach init</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-init.html"
+                  "/${VERSION}/cockroach-init/"
                 ]
               },
               {
                 "title": "<code>cockroach start-single-node</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-start-single-node.html"
+                  "/${VERSION}/cockroach-start-single-node/"
                 ]
               },
               {
                 "title": "<code>cockroach cert</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-cert.html"
+                  "/${VERSION}/cockroach-cert/"
                 ]
               },
               {
                 "title": "<code>cockroach sql</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-sql.html"
+                  "/${VERSION}/cockroach-sql/"
                 ]
               },
               {
                 "title": "<code>cockroach sqlfmt</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-sqlfmt.html"
+                  "/${VERSION}/cockroach-sqlfmt/"
                 ]
               },
               {
                 "title": "<code>cockroach node</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-node.html"
+                  "/${VERSION}/cockroach-node/"
                 ]
               },
               {
                 "title": "<code>cockroach nodelocal upload</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-nodelocal-upload.html"
+                  "/${VERSION}/cockroach-nodelocal-upload/"
                 ]
               },
               {
                "title": "<code>cockroach auth-session</code>",
                "urls": [
-                 "/${VERSION}/cockroach-auth-session.html"
+                 "/${VERSION}/cockroach-auth-session/"
                ]
               },
               {
                 "title": "<code>cockroach demo</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-demo.html"
+                  "/${VERSION}/cockroach-demo/"
                 ]
               },
               {
                 "title": "<code>cockroach debug ballast</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-debug-ballast.html"
+                  "/${VERSION}/cockroach-debug-ballast/"
                 ]
               },
               {
                 "title": "<code>cockroach debug encryption-active-key</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-debug-encryption-active-key.html"
+                  "/${VERSION}/cockroach-debug-encryption-active-key/"
                 ]
               },
               {
                 "title": "<code>cockroach debug job-trace</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-debug-job-trace.html"
+                  "/${VERSION}/cockroach-debug-job-trace/"
                 ]
               },
               {
                 "title": "<code>cockroach debug list-files</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-debug-list-files.html"
+                  "/${VERSION}/cockroach-debug-list-files/"
                 ]
               },
               {
                 "title": "<code>cockroach debug merge-logs</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-debug-merge-logs.html"
+                  "/${VERSION}/cockroach-debug-merge-logs/"
                 ]
               },
               {
                 "title": "<code>cockroach debug zip</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-debug-zip.html"
+                  "/${VERSION}/cockroach-debug-zip/"
                 ]
               },
               {
                 "title": "<code>cockroach statement-diag</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-statement-diag.html"
+                  "/${VERSION}/cockroach-statement-diag/"
                 ]
               },
               {
                 "title": "<code>cockroach gen</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-gen.html"
+                  "/${VERSION}/cockroach-gen/"
                 ]
               },
               {
                 "title": "<code>cockroach userfile upload</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-userfile-upload.html"
+                  "/${VERSION}/cockroach-userfile-upload/"
                 ]
               },
               {
                 "title": "<code>cockroach userfile list</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-userfile-list.html"
+                  "/${VERSION}/cockroach-userfile-list/"
                 ]
               },
               {
                 "title": "<code>cockroach userfile get</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-userfile-get.html"
+                  "/${VERSION}/cockroach-userfile-get/"
                 ]
               },
               {
                 "title": "<code>cockroach userfile delete</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-userfile-delete.html"
+                  "/${VERSION}/cockroach-userfile-delete/"
                 ]
               },
               {
                 "title": "<code>cockroach version</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-version.html"
+                  "/${VERSION}/cockroach-version/"
                 ]
               },
               {
                 "title": "<code>cockroach workload</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-workload.html"
+                  "/${VERSION}/cockroach-workload/"
                 ]
               },
               {
                 "title": "<code>cockroach import</code>",
                 "urls": [
-                  "/${VERSION}/cockroach-import.html"
+                  "/${VERSION}/cockroach-import/"
                 ]
               }
             ]
@@ -1672,7 +1672,7 @@
           {
             "title": "The <code>cockroach-sql</code> command",
             "urls": [
-              "/${VERSION}/cockroach-sql-binary.html"
+              "/${VERSION}/cockroach-sql-binary/"
             ]
           }
         ]
@@ -1683,13 +1683,13 @@
           {
             "title": "DB Console Overview",
             "urls": [
-              "/${VERSION}/ui-overview.html"
+              "/${VERSION}/ui-overview/"
             ]
           },
           {
             "title": "Cluster Overview Page",
             "urls": [
-              "/${VERSION}/ui-cluster-overview-page.html"
+              "/${VERSION}/ui-cluster-overview-page/"
             ]
           },
           {
@@ -1698,73 +1698,73 @@
               {
                 "title": "Overview Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-overview-dashboard.html"
+                  "/${VERSION}/ui-overview-dashboard/"
                 ]
               },
               {
                 "title": "Hardware Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-hardware-dashboard.html"
+                  "/${VERSION}/ui-hardware-dashboard/"
                 ]
               },
               {
                 "title": "Runtime Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-runtime-dashboard.html"
+                  "/${VERSION}/ui-runtime-dashboard/"
                 ]
               },
               {
                 "title": "SQL Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-sql-dashboard.html"
+                  "/${VERSION}/ui-sql-dashboard/"
                 ]
               },
               {
                 "title": "Storage Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-storage-dashboard.html"
+                  "/${VERSION}/ui-storage-dashboard/"
                 ]
               },
               {
                 "title": "Replication Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-replication-dashboard.html"
+                  "/${VERSION}/ui-replication-dashboard/"
                 ]
               },
               {
                 "title": "Distributed Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-distributed-dashboard.html"
+                  "/${VERSION}/ui-distributed-dashboard/"
                 ]
               },
               {
                 "title": "Queues Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-queues-dashboard.html"
+                  "/${VERSION}/ui-queues-dashboard/"
                 ]
               },
               {
                 "title": "Slow Requests Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-slow-requests-dashboard.html"
+                  "/${VERSION}/ui-slow-requests-dashboard/"
                 ]
               },
               {
                 "title": "Changefeeds Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-cdc-dashboard.html"
+                  "/${VERSION}/ui-cdc-dashboard/"
                 ]
               },
               {
                 "title": "Overload Dashboard",
                 "urls": [
-                  "/${VERSION}/ui-overload-dashboard.html"
+                  "/${VERSION}/ui-overload-dashboard/"
                 ]
               },
               {
                 "title": "Custom Chart",
                 "urls": [
-                  "/${VERSION}/ui-custom-chart-debug-page.html"
+                  "/${VERSION}/ui-custom-chart-debug-page/"
                 ]
               }
             ]
@@ -1772,61 +1772,61 @@
           {
             "title": "Databases Page",
             "urls": [
-              "/${VERSION}/ui-databases-page.html"
+              "/${VERSION}/ui-databases-page/"
             ]
           },
           {
             "title": "Sessions Page",
             "urls": [
-              "/${VERSION}/ui-sessions-page.html"
+              "/${VERSION}/ui-sessions-page/"
             ]
           },
           {
             "title": "Statements Page",
             "urls": [
-              "/${VERSION}/ui-statements-page.html"
+              "/${VERSION}/ui-statements-page/"
             ]
           },
           {
             "title": "Transactions Page",
             "urls": [
-              "/${VERSION}/ui-transactions-page.html"
+              "/${VERSION}/ui-transactions-page/"
             ]
           },
           {
             "title": "Insights Page",
             "urls": [
-              "/${VERSION}/ui-insights-page.html"
+              "/${VERSION}/ui-insights-page/"
             ]
           },
           {
             "title": "Network Latency Page",
             "urls": [
-              "/${VERSION}/ui-network-latency-page.html"
+              "/${VERSION}/ui-network-latency-page/"
             ]
           },
           {
             "title": "Hot Ranges Page",
             "urls": [
-              "/${VERSION}/ui-hot-ranges-page.html"
+              "/${VERSION}/ui-hot-ranges-page/"
             ]
           },
           {
             "title": "Jobs Page",
             "urls": [
-              "/${VERSION}/ui-jobs-page.html"
+              "/${VERSION}/ui-jobs-page/"
             ]
           },
           {
             "title": "Schedules Page",
             "urls": [
-              "/${VERSION}/ui-schedules-page.html"
+              "/${VERSION}/ui-schedules-page/"
             ]
           },
           {
             "title": "Advanced Debug Page",
             "urls": [
-              "/${VERSION}/ui-debug-pages.html"
+              "/${VERSION}/ui-debug-pages/"
             ]
           }
         ]
@@ -1834,19 +1834,19 @@
       {
         "title": "Transaction Retry Error Reference",
         "urls": [
-          "/${VERSION}/transaction-retry-error-reference.html"
+          "/${VERSION}/transaction-retry-error-reference/"
         ]
       },
       {
         "title": "Cluster API",
         "urls": [
-          "/api/cluster/v2.html"
+          "/api/cluster/v2/"
         ]
       },
       {
         "title": "Cloud API",
         "urls": [
-          "/api/cloud/v1.html"
+          "/api/cloud/v1/"
         ]
       },
       {
@@ -1855,19 +1855,19 @@
           {
             "title": "Logging Levels and Channels",
             "urls": [
-              "/${VERSION}/logging.html"
+              "/${VERSION}/logging/"
             ]
           },
           {
             "title": "Log Formats",
             "urls": [
-              "/${VERSION}/log-formats.html"
+              "/${VERSION}/log-formats/"
             ]
           },
           {
             "title": "Notable Event Types",
             "urls": [
-              "/${VERSION}/eventlog.html"
+              "/${VERSION}/eventlog/"
             ]
           }
         ]
@@ -1875,13 +1875,13 @@
       {
         "title": "API Support Policy",
         "urls": [
-          "/${VERSION}/api-support-policy.html"
+          "/${VERSION}/api-support-policy/"
         ]
       },
       {
         "title": "Diagnostics Reporting",
         "urls": [
-          "/${VERSION}/diagnostics-reporting.html"
+          "/${VERSION}/diagnostics-reporting/"
         ]
       },
       {
@@ -1890,23 +1890,23 @@
           {
             "title": "Overview",
             "urls": [
-              "/${VERSION}/performance.html"
+              "/${VERSION}/performance/"
             ]
           },
           {
             "title": "Benchmarking Instructions",
             "urls": [
-              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+              "/${VERSION}/performance-benchmarking-with-tpcc-local/",
+              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion/",
+              "/${VERSION}/performance-benchmarking-with-tpcc-small/",
+              "/${VERSION}/performance-benchmarking-with-tpcc-medium/",
+              "/${VERSION}/performance-benchmarking-with-tpcc-large/"
             ]
           },
           {
             "title": "Serverless Performance Benchmarking",
             "urls": [
-              "/cockroachcloud/serverless-benchmarking.html"
+              "/cockroachcloud/serverless-benchmarking/"
             ]
           }
         ]
@@ -1914,7 +1914,7 @@
       {
         "title": "Unsupported Features in CockroachDB Serverless",
         "urls": [
-          "/cockroachcloud/serverless-unsupported-features.html"
+          "/cockroachcloud/serverless-unsupported-features/"
         ]
       },
       {
@@ -1923,13 +1923,13 @@
           {
             "title": "Tools Supported by Cockroach Labs",
             "urls": [
-              "/${VERSION}/third-party-database-tools.html"
+              "/${VERSION}/third-party-database-tools/"
             ]
           },
           {
             "title": "Tools Supported by the Community",
             "urls": [
-              "/${VERSION}/community-tooling.html"
+              "/${VERSION}/community-tooling/"
             ]
           }
         ]

@@ -5,55 +5,55 @@
     {
       "title": "Change Data Capture Overview",
       "urls": [
-        "/${VERSION}/change-data-capture-overview.html"
+        "/${VERSION}/change-data-capture-overview/"
       ]
     },
     {
       "title": "Use Changefeeds",
       "urls": [
-        "/${VERSION}/use-changefeeds.html"
+        "/${VERSION}/use-changefeeds/"
       ]
     },
     {
       "title": "Create and Configure Changefeeds",
       "urls": [
-        "/${VERSION}/create-and-configure-changefeeds.html"
+        "/${VERSION}/create-and-configure-changefeeds/"
       ]
     },
     {
       "title": "Changefeed Sinks",
       "urls": [
-        "/${VERSION}/changefeed-sinks.html"
+        "/${VERSION}/changefeed-sinks/"
       ]
     },
     {
       "title": "Changefeeds in Multi-Region Deployments",
       "urls": [
-        "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+        "/${VERSION}/changefeeds-in-multi-region-deployments/"
       ]
     },
     {
       "title": "Monitor and Debug Changefeeds",
       "urls": [
-        "/${VERSION}/monitor-and-debug-changefeeds.html"
+        "/${VERSION}/monitor-and-debug-changefeeds/"
       ]
     },
     {
       "title": "Changefeed Examples",
       "urls": [
-        "/${VERSION}/changefeed-examples.html"
+        "/${VERSION}/changefeed-examples/"
       ]
     },
     {
       "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
       "urls": [
-        "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+        "/cockroachcloud/stream-changefeed-to-snowflake-aws/"
       ]
     },
     {
       "title": "Advanced Changefeed Configuration",
       "urls": [
-        "/${VERSION}/advanced-changefeed-configuration.html"
+        "/${VERSION}/advanced-changefeed-configuration/"
       ]
     }
   ]

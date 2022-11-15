@@ -8,37 +8,37 @@
         {
           "title": "Plan Your Cluster",
           "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
+            "/cockroachcloud/plan-your-cluster/"
           ]
         },
         {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html"
+            "/cockroachcloud/serverless-cluster-management/"
           ]
         },
         {
           "title": "Manage a CockroachDB Dedicated Cluster",
           "urls": [
-            "/cockroachcloud/cluster-management.html"
+            "/cockroachcloud/cluster-management/"
           ]
         },
         {
           "title": "Manage Billing",
           "urls": [
-             "/cockroachcloud/billing-management.html"
+             "/cockroachcloud/billing-management/"
           ]
         },
         {
           "title": "Use the Cloud API",
           "urls": [
-            "/cockroachcloud/cloud-api.html"
+            "/cockroachcloud/cloud-api/"
           ]
         },
         {
           "title": "Use the <code>ccloud</code> command",
           "urls": [
-            "/cockroachcloud/ccloud-get-started.html"
+            "/cockroachcloud/ccloud-get-started/"
           ]
         }
       ]
@@ -49,43 +49,43 @@
         {
           "title": "Pod Scheduling",
           "urls": [
-            "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+            "/${VERSION}/schedule-cockroachdb-kubernetes/"
           ]
         },
         {
           "title": "Resource Management",
           "urls": [
-            "/${VERSION}/configure-cockroachdb-kubernetes.html"
+            "/${VERSION}/configure-cockroachdb-kubernetes/"
           ]
         },
         {
           "title": "Certificate Management",
           "urls": [
-            "/${VERSION}/secure-cockroachdb-kubernetes.html"
+            "/${VERSION}/secure-cockroachdb-kubernetes/"
           ]
         },
         {
           "title": "Cluster Scaling",
           "urls": [
-            "/${VERSION}/scale-cockroachdb-kubernetes.html"
+            "/${VERSION}/scale-cockroachdb-kubernetes/"
           ]
         },
         {
           "title": "Cluster Monitoring",
           "urls": [
-            "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+            "/${VERSION}/monitor-cockroachdb-kubernetes/"
           ]
         },
         {
           "title": "Cluster Upgrades",
           "urls": [
-            "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+            "/${VERSION}/upgrade-cockroachdb-kubernetes/"
           ]
         },
         {
           "title": "Optimizing Performance",
           "urls": [
-            "/${VERSION}/kubernetes-performance.html"
+            "/${VERSION}/kubernetes-performance/"
           ]
         }
       ]
@@ -99,13 +99,13 @@
             {
               "title": "Run Bulk Operations",
               "urls": [
-                "/cockroachcloud/run-bulk-operations.html"
+                "/cockroachcloud/run-bulk-operations/"
               ]
             },
             {
               "title": "Restore Data from a Backup",
               "urls": [
-                "/cockroachcloud/backups-page.html"
+                "/cockroachcloud/backups-page/"
               ]
             }
           ]
@@ -116,31 +116,31 @@
             {
               "title": "Full and Incremental Backups",
               "urls": [
-                "/${VERSION}/take-full-and-incremental-backups.html"
+                "/${VERSION}/take-full-and-incremental-backups/"
               ]
             },
             {
               "title": "Backups with Revision History and Point-in-time Restore",
               "urls": [
-                "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+                "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time/"
               ]
             },
             {
               "title": "Encrypted Backup and Restore",
               "urls": [
-                "/${VERSION}/take-and-restore-encrypted-backups.html"
+                "/${VERSION}/take-and-restore-encrypted-backups/"
               ]
             },
             {
               "title": "Locality-aware Backup and Restore",
               "urls": [
-                "/${VERSION}/take-and-restore-locality-aware-backups.html"
+                "/${VERSION}/take-and-restore-locality-aware-backups/"
               ]
             },
             {
               "title": "Scheduled Backups",
               "urls": [
-                "/${VERSION}/manage-a-backup-schedule.html"
+                "/${VERSION}/manage-a-backup-schedule/"
               ]
             }
           ]
@@ -153,19 +153,19 @@
         {
           "title": "Cloud Storage",
           "urls": [
-            "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+            "/${VERSION}/use-cloud-storage-for-bulk-operations/"
           ]
         },
         {
           "title": "Userfile Storage",
           "urls": [
-            "/${VERSION}/use-userfile-for-bulk-operations.html"
+            "/${VERSION}/use-userfile-for-bulk-operations/"
           ]
         },
         {
           "title": "Local File Server",
           "urls": [
-            "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
+            "/${VERSION}/use-a-local-file-server-for-bulk-operations/"
           ]
         }
       ]
@@ -182,19 +182,19 @@
 									{
 										"title": "Authentication Overview",
 										"urls": [
-											"/cockroachcloud/authentication.html"
+											"/cockroachcloud/authentication/"
 										]
 									},
 									{
 										"title": "Single Sign-On (SSO)",
 										"urls": [
-											"/cockroachcloud/cloud-org-sso.html"
+											"/cockroachcloud/cloud-org-sso/"
 										]
 									},
 									{
 										"title": "Configure Cloud Organization SSO",
 										"urls": [
-											"/cockroachcloud/configure-cloud-org-sso.html"
+											"/cockroachcloud/configure-cloud-org-sso/"
 										]
 									}
 								]
@@ -202,31 +202,31 @@
             {
               "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
               "urls": [
-                "/${VERSION}/security-reference/config-secure-hba.html"
+                "/${VERSION}/security-reference/config-secure-hba/"
               ]
             },
             {
               "title": "User Authorization",
               "urls": [
-                "/cockroachcloud/user-authorization.html"
+                "/cockroachcloud/user-authorization/"
               ]
             },
             {
               "title": "Network Authorization",
               "urls": [
-                "/cockroachcloud/network-authorization.html"
+                "/cockroachcloud/network-authorization/"
               ]
             },
             {
               "title": "SQL Audit Logging",
               "urls": [
-                "/cockroachcloud/sql-audit-logging.html"
+                "/cockroachcloud/sql-audit-logging/"
               ]
             },
             {
               "title": "Manage Console Access",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/console-access-management/"
               ]
             }
           ]
@@ -237,43 +237,43 @@
             {
               "title": "Authentication",
               "urls": [
-                "/${VERSION}/authentication.html"
+                "/${VERSION}/authentication/"
               ]
             },
             {
               "title": "Encryption",
               "urls": [
-                "/${VERSION}/encryption.html"
+                "/${VERSION}/encryption/"
               ]
             },
             {
               "title": "Authorization",
               "urls": [
-                "/${VERSION}/authorization.html"
+                "/${VERSION}/authorization/"
               ]
             },
             {
               "title": "SQL Audit Logging",
               "urls": [
-                "/${VERSION}/sql-audit-logging.html"
+                "/${VERSION}/sql-audit-logging/"
               ]
             },
             {
               "title": "GSSAPI Authentication",
               "urls": [
-                "/${VERSION}/gssapi_authentication.html"
+                "/${VERSION}/gssapi_authentication/"
               ]
             },
             {
               "title": "Single Sign-on",
               "urls": [
-                "/${VERSION}/sso.html"
+                "/${VERSION}/sso/"
               ]
             },
             {
               "title": "Rotate Security Certificates",
               "urls": [
-                "/${VERSION}/rotate-certificates.html"
+                "/${VERSION}/rotate-certificates/"
               ]
             }
           ]
@@ -289,37 +289,37 @@
             {
               "title": "Cluster Overview Page",
               "urls": [
-                "/cockroachcloud/cluster-overview-page.html"
+                "/cockroachcloud/cluster-overview-page/"
               ]
             },
             {
               "title": "Alerts Page",
               "urls": [
-                "/cockroachcloud/alerts-page.html"
+                "/cockroachcloud/alerts-page/"
               ]
             },
             {
               "title": "Monitoring Page",
               "urls": [
-                "/cockroachcloud/monitoring-page.html"
+                "/cockroachcloud/monitoring-page/"
               ]
             },
             {
               "title": "Statements Page",
               "urls": [
-                "/cockroachcloud/statements-page.html"
+                "/cockroachcloud/statements-page/"
               ]
             },
             {
               "title": "Sessions Page",
               "urls": [
-                "/cockroachcloud/sessions-page.html"
+                "/cockroachcloud/sessions-page/"
               ]
             },
             {
               "title": "Transactions Page",
               "urls": [
-                "/cockroachcloud/transactions-page.html"
+                "/cockroachcloud/transactions-page/"
               ]
             }
           ]
@@ -330,31 +330,31 @@
             {
               "title": "Monitoring Clusters Overview",
               "urls": [
-                "/${VERSION}/monitoring-and-alerting.html"
+                "/${VERSION}/monitoring-and-alerting/"
               ]
             },
             {
               "title": "Common Issues to Monitor",
               "urls": [
-                "/${VERSION}/common-issues-to-monitor.html"
+                "/${VERSION}/common-issues-to-monitor/"
               ]
             },
             {
               "title": "Enable the Node Map",
               "urls": [
-                "/${VERSION}/enable-node-map.html"
+                "/${VERSION}/enable-node-map/"
               ]
             },
             {
               "title": "Use Prometheus and Alertmanager",
               "urls": [
-                "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+                "/${VERSION}/monitor-cockroachdb-with-prometheus/"
               ]
             },
             {
               "title": "Cluster API",
               "urls": [
-                "/${VERSION}/cluster-api.html"
+                "/${VERSION}/cluster-api/"
               ]
             }
           ]
@@ -365,25 +365,25 @@
             {
               "title": "Third-Party Monitoring Integration Overview",
               "urls": [
-                "/${VERSION}/third-party-monitoring-tools.html"
+                "/${VERSION}/third-party-monitoring-tools/"
               ]
             },
             {
               "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
-                "/${VERSION}/datadog.html"
+                "/${VERSION}/datadog/"
               ]
             },
             {
               "title": "Monitor with DBmarlin",
               "urls": [
-                "/${VERSION}/dbmarlin.html"
+                "/${VERSION}/dbmarlin/"
               ]
             },
             {
               "title": "Monitor with Kibana",
               "urls": [
-                "/${VERSION}/kibana.html"
+                "/${VERSION}/kibana/"
               ]
             }
           ]
@@ -396,19 +396,19 @@
         {
           "title": "Overview",
           "urls": [
-            "/${VERSION}/logging-overview.html"
+            "/${VERSION}/logging-overview/"
           ]
         },
         {
           "title": "Configure Logs",
           "urls": [
-            "/${VERSION}/configure-logs.html"
+            "/${VERSION}/configure-logs/"
           ]
         },
         {
           "title": "Logging Use Cases",
           "urls": [
-            "/${VERSION}/logging-use-cases.html"
+            "/${VERSION}/logging-use-cases/"
           ]
         }
       ]
@@ -425,31 +425,31 @@
                 {
                   "title": "Upgrade Policy",
                   "urls": [
-                     "/cockroachcloud/upgrade-policy.html"
+                     "/cockroachcloud/upgrade-policy/"
                   ]
                 },
                 {
                   "title": "Upgrade to v21.2",
                   "urls": [
-                     "/cockroachcloud/upgrade-to-v21.2.html"
+                     "/cockroachcloud/upgrade-to-v21.2/"
                   ]
                 },
                 {
                   "title": "Upgrade to v21.1",
                   "urls": [
-                     "/cockroachcloud/upgrade-to-v21.1.html"
+                     "/cockroachcloud/upgrade-to-v21.1/"
                   ]
                 },
                 {
                   "title": "Upgrade to v20.2",
                   "urls": [
-                     "/cockroachcloud/upgrade-to-v20.2.html"
+                     "/cockroachcloud/upgrade-to-v20.2/"
                   ]
                 },
                 {
                   "title": "Upgrade to v20.1",
                   "urls": [
-                     "/cockroachcloud/upgrade-to-v20.1.html"
+                     "/cockroachcloud/upgrade-to-v20.1/"
                   ]
                 }
               ]
@@ -460,7 +460,7 @@
                 {
                   "title": "Upgrade to CockroachDB v21.2",
                   "urls": [
-                    "/${VERSION}/upgrade-cockroach-version.html"
+                    "/${VERSION}/upgrade-cockroach-version/"
                   ]
                 }
               ]
@@ -470,19 +470,19 @@
         {
           "title": "Manage Long-Running Queries",
           "urls": [
-            "/${VERSION}/manage-long-running-queries.html"
+            "/${VERSION}/manage-long-running-queries/"
           ]
         },
         {
           "title": "Node Shutdown",
           "urls": [
-            "/${VERSION}/node-shutdown.html"
+            "/${VERSION}/node-shutdown/"
           ]
         },
         {
           "title": "Disaster Recovery",
           "urls": [
-            "/${VERSION}/disaster-recovery.html"
+            "/${VERSION}/disaster-recovery/"
           ]
         }
       ]
@@ -490,7 +490,7 @@
     {
       "title": "Replication Controls",
       "urls": [
-        "/${VERSION}/configure-replication-zones.html"
+        "/${VERSION}/configure-replication-zones/"
       ]
     },
     {
@@ -499,49 +499,49 @@
         {
           "title": "Troubleshooting Overview",
           "urls": [
-            "/${VERSION}/troubleshooting-overview.html"
+            "/${VERSION}/troubleshooting-overview/"
           ]
         },
         {
           "title": "Common Errors and Solutions",
           "urls": [
-            "/${VERSION}/common-errors.html"
+            "/${VERSION}/common-errors/"
           ]
         },
         {
           "title": "Troubleshoot Cluster Setup",
           "urls": [
-            "/${VERSION}/cluster-setup-troubleshooting.html"
+            "/${VERSION}/cluster-setup-troubleshooting/"
           ]
         },
         {
           "title": "Troubleshoot Statement Behavior",
           "urls": [
-            "/${VERSION}/query-behavior-troubleshooting.html"
+            "/${VERSION}/query-behavior-troubleshooting/"
           ]
         },
         {
           "title": "Troubleshoot CockroachDB Cloud",
           "urls": [
-            "/cockroachcloud/troubleshooting-page.html"
+            "/cockroachcloud/troubleshooting-page/"
           ]
         },
         {
           "title": "Replication Reports",
           "urls": [
-            "/${VERSION}/query-replication-reports.html"
+            "/${VERSION}/query-replication-reports/"
           ]
         },
         {
           "title": "Support Resources",
           "urls": [
-            "/${VERSION}/support-resources.html"
+            "/${VERSION}/support-resources/"
           ]
         },
         {
           "title": "File an Issue",
           "urls": [
-            "/${VERSION}/file-an-issue.html"
+            "/${VERSION}/file-an-issue/"
           ]
         }
       ]

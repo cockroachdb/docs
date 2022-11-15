@@ -5,7 +5,7 @@
     {
       "title": "Change Data Capture Overview",
       "urls": [
-        "/${VERSION}/change-data-capture-overview.html"
+        "/${VERSION}/change-data-capture-overview/"
       ]
     },
     {
@@ -14,25 +14,25 @@
         {
           "title": "Create and Configure Changefeeds",
           "urls": [
-            "/${VERSION}/create-and-configure-changefeeds.html"
+            "/${VERSION}/create-and-configure-changefeeds/"
           ]
         },
         {
           "title": "Changefeed Messages",
           "urls": [
-            "/${VERSION}/changefeed-messages.html"
+            "/${VERSION}/changefeed-messages/"
           ]
         },
         {
           "title": "Changefeed Sinks",
           "urls": [
-            "/${VERSION}/changefeed-sinks.html"
+            "/${VERSION}/changefeed-sinks/"
           ]
         },
         {
           "title": "Changefeed Examples",
           "urls": [
-            "/${VERSION}/changefeed-examples.html"
+            "/${VERSION}/changefeed-examples/"
           ]
         }
       ]
@@ -43,19 +43,19 @@
         {
           "title": "Changefeeds on Tables with Column Families",
           "urls": [
-            "/${VERSION}/changefeeds-on-tables-with-column-families.html"
+            "/${VERSION}/changefeeds-on-tables-with-column-families/"
           ]
         },
         {
           "title": "Export Data with Changefeeds",
           "urls": [
-            "/${VERSION}/export-data-with-changefeeds.html"
+            "/${VERSION}/export-data-with-changefeeds/"
           ]
         },
         {
           "title": "Changefeeds in Multi-Region Deployments",
           "urls": [
-            "/${VERSION}/changefeeds-in-multi-region-deployments.html"
+            "/${VERSION}/changefeeds-in-multi-region-deployments/"
           ]
         }
       ]
@@ -63,7 +63,7 @@
     {
       "title": "Monitor and Debug Changefeeds",
       "urls": [
-        "/${VERSION}/monitor-and-debug-changefeeds.html"
+        "/${VERSION}/monitor-and-debug-changefeeds/"
       ]
     },
     {
@@ -72,13 +72,13 @@
       {
         "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
         "urls": [
-          "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+          "/cockroachcloud/stream-changefeed-to-snowflake-aws/"
         ]
       },
       {
         "title": "Stream a Changefeed to a Confluent Cloud Kafka Cluster",
         "urls": [
-          "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
+          "/${VERSION}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster/"
         ]
       }
     ]
@@ -86,7 +86,7 @@
     {
       "title": "Advanced Changefeed Configuration",
       "urls": [
-        "/${VERSION}/advanced-changefeed-configuration.html"
+        "/${VERSION}/advanced-changefeed-configuration/"
       ]
     }
   ]
