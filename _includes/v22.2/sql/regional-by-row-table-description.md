@@ -4,4 +4,4 @@ Use regional by row tables when your application requires low-latency reads and 
 
 For an example of a table that can benefit from the _regional by row_ setting in a multi-region deployment, see the `users` table from the [MovR application](movr.html).
 
-For instructions showing how to set a table's locality to `REGIONAL BY ROW`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#regional-by-row).
+For instructions showing how to set a table's locality to `REGIONAL BY ROW` and configure its home regions, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#crdb_region).
