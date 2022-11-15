@@ -201,6 +201,10 @@ Since [decommissioning](#decommissioning) a node rebalances all of its range rep
 The sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait) should not be greater than the configured [drain timeout](#drain-timeout).
 {{site.data.alerts.end}}
 
+#### `kv.allocator.recovery_store_selector`
+
+When a node is rebalancing all of its range replicas onto other nodes, this setting controls the algorithm used to select the new node for each range replica. When set to `good` (the default), a random node is selected from the list of all eligible nodes. When set to `best`, a node with a low range count is preferred.
+
 <section class="filter-content" markdown="1" data-scope="drain">
 #### `server.time_until_store_dead`
 
