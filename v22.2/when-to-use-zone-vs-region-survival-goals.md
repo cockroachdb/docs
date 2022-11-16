@@ -11,8 +11,8 @@ A [_survival goal_](multiregion-overview.html#survival-goals) dictates how many 
 
 Allowed survival goals include:
 
-- `ZONE` (default). Databases configured to survive zone failures have 3 [voting replicas](architecture/overview.html#architecture-replica) for every range, all in the [home region](multiregion-overview.html#table-localities). To support low-latency reads from other regions, one [non-voting replica](architecture/replication-layer.html#non-voting-replicas) is placed in each non-home region.
-- `REGION`. Databases configured to survive region failures have 2 voting replicas in the home region, and 3 voting replicas in non-home regions. This enables fast reads from within the home region and ensures minimal disruption in case one node fails, since the home region has two possible leaseholder candidates.
+- `ZONE` (default): Databases configured to survive zone failures have 3 [voting replicas](architecture/overview.html#architecture-replica) for every range, all in the [home region](multiregion-overview.html#table-localities). To support low-latency reads from other regions, one [non-voting replica](architecture/replication-layer.html#non-voting-replicas) is placed in each non-home region.
+- `REGION`: Databases configured to survive region failures have 2 voting replicas in the home region, and 3 voting replicas in non-home regions. This enables fast reads from within the home region and ensures minimal disruption in case one node fails, since the home region has two possible leaseholder candidates.
 
 Set a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures) if:
 
