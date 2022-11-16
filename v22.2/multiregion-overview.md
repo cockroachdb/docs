@@ -178,7 +178,7 @@ To survive region failures, you must add at least 3 [database regions](#database
 
 ## Table localities
 
-_Table locality_ determines how CockroachDB optimizes access to CockroachDB optimizes access to the table's data. Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level. A table or row's home region is where the [leaseholder](replication-layer.html#leases) of its ranges is placed, along with a number of voting replicas determined by the [survival goal](when-to-use-zone-vs-region-survival-goals.html) of the database.
+_Table locality_ determines how CockroachDB optimizes access to CockroachDB optimizes access to the table's data. Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level. A table or row's home region is where the [leaseholder](architecture/replication-layer.html#leases) of its ranges is placed, along with a number of voting replicas determined by the [survival goal](when-to-use-zone-vs-region-survival-goals.html) of the database.
 
 By default, all tables in a multi-region database are _regional_ tables—that is, CockroachDB optimizes access to the table's data from a single home region (by default, the database's primary region).
 
