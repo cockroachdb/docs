@@ -55,17 +55,17 @@ The following privileges can be revoked:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max WITH PASSWORD 'roach';
+CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT CREATE ON DATABASE movr TO max;
+GRANT CREATE ON DATABASE movr TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE movr;
+SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
@@ -79,12 +79,12 @@ The following privileges can be revoked:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE CREATE ON DATABASE movr FROM max;
+REVOKE CREATE ON DATABASE movr FROM max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE movr;
+SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
@@ -103,12 +103,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT DELETE ON TABLE rides TO max;
+GRANT DELETE ON TABLE rides TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE rides;
+SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
@@ -122,12 +122,12 @@ Any tables that previously inherited the database-level privileges retain the pr
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE DELETE ON TABLE rides FROM max;
+REVOKE DELETE ON TABLE rides FROM max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE rides;
+SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
@@ -181,7 +181,7 @@ SHOW GRANTS ON TABLE movr.*;
 ~~~
 
 {% include_cached copy-clipboard.html %}
-~~~
+~~~ sql
 REVOKE DELETE ON ALL TABLES IN SCHEMA public FROM max;
 ~~~
 
@@ -224,17 +224,17 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEMA cockroach_labs;
+CREATE SCHEMA cockroach_labs;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON SCHEMA cockroach_labs TO max;
+GRANT ALL ON SCHEMA cockroach_labs TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON SCHEMA cockroach_labs;
+SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
@@ -248,12 +248,12 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE CREATE ON SCHEMA cockroach_labs FROM max;
+REVOKE CREATE ON SCHEMA cockroach_labs FROM max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON SCHEMA cockroach_labs;
+SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
@@ -270,17 +270,17 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TYPE status AS ENUM ('available', 'unavailable');
+CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON TYPE status TO max;
+GRANT ALL ON TYPE status TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TYPE status;
+SHOW GRANTS ON TYPE status;
 ~~~
 
 ~~~
@@ -295,12 +295,12 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE GRANT ON TYPE status FROM max;
+REVOKE GRANT ON TYPE status FROM max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TYPE status;
+SHOW GRANTS ON TYPE status;
 ~~~
 
 ~~~
@@ -317,22 +317,22 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE developer WITH CREATEDB;
+CREATE ROLE developer WITH CREATEDB;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER abbey WITH PASSWORD 'lincoln';
+CREATE USER abbey WITH PASSWORD 'lincoln';
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT developer TO abbey;
+GRANT developer TO abbey;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON ROLE developer;
+SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
@@ -344,12 +344,12 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE developer FROM abbey;
+REVOKE developer FROM abbey;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON ROLE developer;
+SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
@@ -362,12 +362,12 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT developer TO abbey WITH ADMIN OPTION;
+GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON ROLE developer;
+SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
@@ -379,12 +379,12 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> REVOKE ADMIN OPTION FOR developer FROM abbey;
+REVOKE ADMIN OPTION FOR developer FROM abbey;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON ROLE developer;
+SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~

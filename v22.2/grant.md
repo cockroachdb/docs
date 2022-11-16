@@ -74,17 +74,17 @@ Roles and users can be granted the following privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max WITH PASSWORD 'roach';
+CREATE USER max WITH PASSWORD 'roach';
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
+GRANT ALL ON DATABASE movr TO max WITH GRANT OPTION;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE movr;
+SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
@@ -100,12 +100,12 @@ Roles and users can be granted the following privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT DELETE ON TABLE rides TO max;
+GRANT DELETE ON TABLE rides TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE rides;
+SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
@@ -170,12 +170,12 @@ SHOW GRANTS ON TABLE movr.public.*;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT SELECT ON TABLE vehicles TO public;
+GRANT SELECT ON TABLE vehicles TO public;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE vehicles;
+SHOW GRANTS ON TABLE vehicles;
 ~~~
 
 ~~~
@@ -192,17 +192,17 @@ SHOW GRANTS ON TABLE movr.public.*;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEMA cockroach_labs;
+CREATE SCHEMA cockroach_labs;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
+GRANT ALL ON SCHEMA cockroach_labs TO max WITH GRANT OPTION;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON SCHEMA cockroach_labs;
+SHOW GRANTS ON SCHEMA cockroach_labs;
 ~~~
 
 ~~~
@@ -218,17 +218,17 @@ SHOW GRANTS ON TABLE movr.public.*;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TYPE status AS ENUM ('available', 'unavailable');
+CREATE TYPE status AS ENUM ('available', 'unavailable');
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
+GRANT ALL ON TYPE status TO max WITH GRANT OPTION;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TYPE status;
+SHOW GRANTS ON TYPE status;
 ~~~
 
 ~~~
@@ -246,7 +246,7 @@ SHOW GRANTS ON TABLE movr.public.*;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT ZONECONFIG ON TABLE rides TO max;
+GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~
 
 The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to add, modify, reset, or remove replication zones for the table `rides`.
@@ -255,22 +255,22 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE developer WITH CREATEDB;
+CREATE ROLE developer WITH CREATEDB;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER abbey WITH PASSWORD 'lincoln';
+CREATE USER abbey WITH PASSWORD 'lincoln';
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT developer TO abbey;
+GRANT developer TO abbey;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON ROLE developer;
+SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
@@ -284,12 +284,12 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT developer TO abbey WITH ADMIN OPTION;
+GRANT developer TO abbey WITH ADMIN OPTION;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON ROLE developer;
+SHOW GRANTS ON ROLE developer;
 ~~~
 
 ~~~
@@ -303,12 +303,12 @@ The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statemen
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT UPDATE ON TABLE rides TO max WITH GRANT OPTION;
+GRANT UPDATE ON TABLE rides TO max WITH GRANT OPTION;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE rides;
+SHOW GRANTS ON TABLE rides;
 ~~~
 
 ~~~
