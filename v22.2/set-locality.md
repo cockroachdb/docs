@@ -79,7 +79,7 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 
 <a name="crdb_region"></a>
 
-Every row in a regional by row table has a hidden `crdb_region` column that represents the row's [home region](multiregion-overview.html#table-localities). To see a row's home region, issue a statement like the following:
+Every row in a regional by row table has a column of type `crdb_internal_region` that represents the row's [home region](multiregion-overview.html#table-localities). By default, this column is called `crdb_region` and is hidden. To see a row's home region, issue a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
