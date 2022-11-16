@@ -150,10 +150,16 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - When using **Truncate** or **Do nothing** as a target table preparation mode, you cannot include tables with any hidden columns. You can verify which tables contain hidden columns by executing the following SQL query:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
+    ~~~
+
+- If you select **Enable validation** in your [task settings](#step-2-2-task-settings) and have a [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html) column in your database, the migration will fail with the following error:
+
+    ~~~
+    Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
+    ~~~
 
 - **Drop tables on target** is not supported on v22.1 and earlier, and will error on initial load.
 
@@ -173,7 +179,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     ~~~
 
     Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
-    
+
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 
     {% include_cached copy-clipboard.html %}
