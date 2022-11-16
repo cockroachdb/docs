@@ -1,5 +1,5 @@
-- `word_similarity()` matching.
-- `strict_word_similarity()` matching.
+- `word_similarity()` built-in function.
+- `strict_word_similarity()` built-in function.
 - `%>` and `<%` comparisons and acceleration.
 - `<<%` and `%>>` comparisons and acceleration.
 - `<->`, `<<->`, `<->>`, `<<<->`, and `<->>>` comparisons.

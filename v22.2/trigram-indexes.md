@@ -16,9 +16,9 @@ Some PostgreSQL syntax and features are currently unsupported. For details, see 
 
 ## How do trigram indexes work?
 
-Trigram indexes separate strings into trigrams. A trigram is a group of three consecutive characters (including spaces) in a string that is used to [measure the similarity of two strings](https://www.postgresql.org/docs/current/pgtrgm.html). 
+Trigram indexes make [substring and similarity matches](https://www.postgresql.org/docs/current/pgtrgm.html) efficient by indexing the unique trigrams of a string. A trigram is a group of three consecutive characters (including spaces) in a string.
 
-For example, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions) to display all of the possible trigrams for a string (in this example, `word`):
+To display all of the possible trigrams for a string, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -31,12 +31,24 @@ SELECT show_trgm('word');
   {"  w"," wo",ord,"rd ",wor}
 ~~~
 
-Trigrams enable fuzzy string matching based on text similarity. This is useful when:
+A trigram index stores every unique trigram within each string being indexed. When you search a trigram index for a value, the database retrieves all of the entries in the index that match enough of the trigrams of the search value to satisfy the match. The type of match depends on the [comparison operator](#comparisons):
+
+- Exact for an equality (`=`) or pattern matching (`LIKE`/`ILIKE`) search.
+- Inexact for a similarity (`%`) search.
+
+Trigrams enable pattern matching even when the prefix of the string is not known. For example: 
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM t WHERE text_col LIKE '%foobar%';
+~~~
+
+Fuzzy string matching based on text similarity is useful when:
 
 - The spelling of a search term is not exact.
 - The exact search term is not known.
 
-For example, if you don't know how to spell a name in your database, you can use a [`%` comparison](#comparisons) to perform a fuzzy search. When applied to a `STRING` column, the `%` operator matches values that meet a configured similarity threshold. 
+For example, if you don't know how to spell a name in your database, you can use a `%` comparison to perform a fuzzy search. When applied to a `STRING` column, the `%` operator matches values that meet a [configured similarity threshold](#comparisons).
 
 To search for names like "Steven" in column `first_name`:
 
@@ -127,7 +139,7 @@ CREATE INDEX ON t USING GIN (a, w gin_trgm_ops);
 An expression index with trigram matching enabled:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE INDEX ON t USING GIN ((lower(w)) gin_trgm_ops);
+CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 ~~~
 
 ### Use a trigram index to speed up fuzzy string matching
