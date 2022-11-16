@@ -386,12 +386,10 @@ Use the `ccloud cluster user create` command to create a new SQL user by passing
 ccloud cluster user create dim-dog maxroach
 ~~~
 
-{% comment %}
 ~~~
 Password: ****************
 ∙∙∙ Creating SQL user...
 ~~~
-{% endcomment %}
 
 ## Delete a cluster using `ccloud cluster delete`
 
@@ -412,3 +410,11 @@ Success! Deleted cluster
 If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. {{ site.data.products.serverless }} clusters are created in less than a minute. {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
 {{site.data.alerts.end}}
 
+## Turn off telemetry events for `ccloud`
+
+Cockroach Labs collects anonymized telemetry events to improve the usability of `ccloud`. Use the `ccloud settings set` command and disable sending telemetry events to Cockroach Labs.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud settings set --disable-telemetry=true
+~~~
