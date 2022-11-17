@@ -1,17 +1,17 @@
 Privilege | Levels
 ----------|------------
-`ALL` | Database, Schema, Table, Type
-`CREATE` | Database, Schema, Table
-`DROP` | Database, Table
+`ALL` | Database, Schema, Table, Sequence, Type
+`CREATE` | Database, Schema, Table, Sequence
+`DROP` | Database, Table, Sequence
 `EXECUTE` | Function
-`GRANT` | Database, Function, Schema, Table, Type
+`GRANT` | Database, Function, Schema, Table, Sequence, Type
 `CONNECT` | Database
-`SELECT` | Table
-`INSERT` | Table
-`DELETE` | Table
-`UPDATE` | Table
-`USAGE`  | Function, Schema, Type
-`ZONECONFIG` | Database, Table
+`SELECT` | Table, Sequence
+`INSERT` | Table, Sequence
+`DELETE` | Table, Sequence
+`UPDATE` | Table, Sequence
+`USAGE`  | Function, Schema, Sequence, Type
+`ZONECONFIG` | Database, Table, Sequence
 `EXTERNALCONNECTION` | System
 `BACKUP` | System, Database, Table
 `RESTORE` | System, Database

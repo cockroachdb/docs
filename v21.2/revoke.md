@@ -28,7 +28,6 @@ Parameter                   | Description
 `schema_name_list`          | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`      | **New in v21.2:** Revoke privileges on all tables in a schema or list of schemas.
 `privilege_list`            | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to revoke.
-`WITH ADMIN OPTION`         | Designate the user as a role admin. Role admins can [grant](grant.html) or revoke membership for the specified role.
 
 ## Supported privileges
 
