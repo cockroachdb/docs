@@ -39,7 +39,7 @@ Log all queries against a table to a file, for security purposes. For more infor
 You have the following options for controlling lease and replica location:
 
 1. Relocate leases and replicas using `EXPERIMENTAL_RELOCATE`
-2. Relocate just leases using `EXPERIMENTAL_RELOCATE LEASE`
+1. Relocate just leases using `EXPERIMENTAL_RELOCATE LEASE`
 
 For example, to distribute leases and ranges for N primary keys across N stores in the cluster, run a statement with the following structure:
 

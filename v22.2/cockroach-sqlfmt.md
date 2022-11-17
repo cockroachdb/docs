@@ -63,15 +63,15 @@ Using the interactive query formatter, output with the default column width (80 
     $ cockroach sqlfmt
     ~~~
 
-2. Press **Enter**.
+1. Press **Enter**.
 
-3. Run the query:
+1. Run the query:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
     ~~~
-4. Press **CTRL+D**.
+1. Press **CTRL+D**.
 
     ~~~ sql
     CREATE TABLE animals (

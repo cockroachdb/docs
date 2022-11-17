@@ -16,7 +16,7 @@ An **organization** allows you to manage your clusters under a shared [billing](
 To switch between the organizations:
 
 1. [Log in](https://cockroachlabs.cloud/).
-2. From the drop-down box in the top-right corner, select the organization you want to access.
+1. From the drop-down box in the top-right corner, select the organization you want to access.
 
 The settings and information about the organization are found on the **Settings** page. The organization ID and organization label used by the `ccloud` CLI are listed under **Organization settings**. 
 
@@ -144,11 +144,11 @@ To change the API key name for an existing API key:
 As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
-2. On the **Access** page, click **Add Team Member**.
-3. In the **Email Address** field, enter the email address of the team member you want to invite.
-4. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
-5. (Optional) Click **Add another** to invite another team member.
-6. Click **Invite**.
+1. On the **Access** page, click **Add Team Member**.
+1. In the **Email Address** field, enter the email address of the team member you want to invite.
+1. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
+1. (Optional) Click **Add another** to invite another team member.
+1. Click **Invite**.
 
 {{site.data.alerts.callout_success}}
 We recommend [creating a SQL user](user-authorization.html) for each Team Member you invite.
@@ -165,8 +165,8 @@ If you are a member of multiple [organizations](console-access-management.html#o
 #### Change a Team Member's role
 
 1. On the **Access** page, locate the Team Member's details whose role you want to change.
-2. In the **Action** column, click the three dots to view the allowed actions.
-3. If the Team Member is a Developer, click **Change to Admin** to grant them Admin access. If the Team Member is an Admin, click **Change to Developer** to grant them only Developer access.
+1. In the **Action** column, click the three dots to view the allowed actions.
+1. If the Team Member is a Developer, click **Change to Admin** to grant them Admin access. If the Team Member is an Admin, click **Change to Developer** to grant them only Developer access.
 
 {{site.data.alerts.callout_info}}
 As a Console Admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you will not be allowed to change your role until you assign another Team Member to be the Console Admin.
@@ -175,15 +175,15 @@ As a Console Admin, you can change your own access to a Developer role; however,
 #### Delete a Team Member
 
 1. On the **Access** page, locate the Team Member you want to delete.
-2. In the **Action** column, click the three dots to view the allowed actions.
-3. Click **Delete Member**.
-4. On the confirmation window, click **Delete**.
+1. In the **Action** column, click the three dots to view the allowed actions.
+1. Click **Delete Member**.
+1. On the confirmation window, click **Delete**.
 
 #### Revoke a pending invite
 
 1. On the **Access** page, locate the Team Member's details whose pending invite you want to revoke.
-2. In the **Action** column, click the three dots to view the allowed actions.
-3. Click **Revoke Invite**.
+1. In the **Action** column, click the three dots to view the allowed actions.
+1. Click **Revoke Invite**.
 
 #### Delete an email address
 

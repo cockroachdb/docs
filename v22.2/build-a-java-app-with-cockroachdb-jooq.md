@@ -80,17 +80,17 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 The code below uses jOOQ to map Java methods to SQL operations. It performs the following steps, some of which correspond to method calls of the `Sample` class.
 
 1. Inputs the `db.sql` file to the database. `db.sql` includes SQL statements that create an `accounts` table in the `bank` database.
-2. Inserts rows into the `accounts` table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()`).
-3. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
-4. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
+1. Inserts rows into the `accounts` table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()`).
+1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
+1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
 In addition, the code shows a pattern for automatically handling [transaction retries](transactions.html#client-side-intervention-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
 1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/jooq-basic-sample/jooq-basic-sample.zip).
-2. Open `jooq-basic-sample/src/main/java/com/cockroachlabs/Sample.java`, and edit the connection string passed to `DriverManager.getConnection()` in the `Sample` class's `main()` method so that the certificate paths are fully and correctly specified.
-3. Compile and run the code using Maven:
+1. Open `jooq-basic-sample/src/main/java/com/cockroachlabs/Sample.java`, and edit the connection string passed to `DriverManager.getConnection()` in the `Sample` class's `main()` method so that the certificate paths are fully and correctly specified.
+1. Compile and run the code using Maven:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -178,16 +178,16 @@ SELECT id, balance FROM accounts;
 The code below uses jOOQ to map Java methods to SQL operations. It performs the following steps, some of which correspond to method calls of the `Sample` class.
 
 1. Inputs the `db.sql` file to the database. `db.sql` includes SQL statements that create an `accounts` table in the `bank` database.
-2. Inserts rows into the `accounts` table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()`).
-3. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
-4. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
+1. Inserts rows into the `accounts` table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()`).
+1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
+1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
 In addition, the code shows a pattern for automatically handling [transaction retries](transactions.html#client-side-intervention-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
 1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/{{ page.version.version }}/app/insecure/jooq-basic-sample/jooq-basic-sample.zip).
-2. Compile and run the code using Maven:
+1. Compile and run the code using Maven:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

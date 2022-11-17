@@ -51,7 +51,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --join=roach1,roach2,roach3
     ~~~
 
-2. This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
+1. This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
     - `docker run`: The Docker command to start a new container.
     - `-d`: This flag runs the container in the background so you can continue the next steps in the same shell.
     - `--name`: The name for the container. This is optional, but a custom name makes it significantly easier to reference the container in other commands, for example, when opening a Bash session in the container or stopping the container.
@@ -61,7 +61,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     - `-v "//c/Users/<username>/cockroach-data/roach1:/cockroach/cockroach-data"`: This flag mounts a host directory as a data volume. This means that data and logs for this node will be stored in `Users/<username>/cockroach-data/roach1` on the host and will persist after the container is stopped or deleted. For more details, see Docker's <a href="https://docs.docker.com/engine/admin/volumes/bind-mounts/">Bind Mounts</a> topic.
     - `{{page.release_info.docker_image}}:{{page.release_info.version}} start --insecure --join`: The CockroachDB command to [start a node](cockroach-start.html) in the container in insecure mode. The `--join` flag specifies the `hostname` of each node that will initially comprise your cluster. Otherwise, all [`cockroach start`](cockroach-start.html) defaults are accepted. Note that since each node is in a unique container, using identical default ports won’t cause conflicts.
 
-3. Start two more nodes:
+1. Start two more nodes:
 
     {{site.data.alerts.callout_info}}Again, be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
@@ -87,7 +87,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --join=roach1,roach2,roach3
     ~~~
 
-4. Perform a one-time initialization of the cluster:
+1. Perform a one-time initialization of the cluster:
 
     ~~~ powershell
     PS C:\Users\username> docker exec -it roach1 ./cockroach init --insecure
@@ -109,7 +109,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     PS C:\Users\username> docker exec -it roach1 ./cockroach sql --insecure
     ~~~
 
-2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -138,7 +138,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-3. Now exit the SQL shell on node 1 and open a new shell on node 2:
+1. Now exit the SQL shell on node 1 and open a new shell on node 2:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -149,7 +149,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     PS C:\Users\username> docker exec -it roach2 ./cockroach sql --insecure
     ~~~
 
-4. Run the same `SELECT` query as before:
+1. Run the same `SELECT` query as before:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -165,7 +165,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-5. Exit the SQL shell on node 2:
+1. Exit the SQL shell on node 2:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -183,7 +183,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 5 minutes:
+1. Run the workload for 5 minutes:
 
     ~~~ powershell
     PS C:\Users\username> docker exec -it roach1 ./cockroach workload run movr \
@@ -197,7 +197,7 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
 1. When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host, so go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-2. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v22.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -207,11 +207,11 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-3. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v22.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-4. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 6.  Stop the cluster
 

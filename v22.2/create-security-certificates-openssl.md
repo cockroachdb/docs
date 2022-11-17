@@ -77,7 +77,7 @@ Note the following:
     - `certs`: Create your CA certificate and all node and client certificates and keys in this directory and then upload the relevant files to the nodes and clients.
     - `my-safe-directory`: Create your CA key in this directory and then reference the key when generating node and client certificates. After that, keep the key safe and secret; do not upload it to your nodes or clients.
 
-2. Create the `ca.cnf` file and copy the following configuration into it.
+1. Create the `ca.cnf` file and copy the following configuration into it.
 
     You can set the CA certificate expiration period using the `default_days` parameter. We recommend using the CockroachDB default value of the CA certificate expiration period, which is 365 days.
 
@@ -129,7 +129,7 @@ Note the following:
     The `keyUsage` and `extendedkeyUsage` parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration and you can add additional usages, but do not omit `keyUsage` and `extendedkeyUsage` parameters or remove the listed usages.
     {{site.data.alerts.end}}
 
-3. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+1. Create the CA key using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -140,7 +140,7 @@ Note the following:
     $ chmod 400 my-safe-directory/ca.key
     ~~~
 
-4. Create the CA certificate using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+1. Create the CA certificate using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -154,7 +154,7 @@ Note the following:
     -batch
     ~~~
 
-6. Reset database and index files:
+1. Reset database and index files:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -194,7 +194,7 @@ In the following steps, replace the placeholder text in the code with the actual
     The `subjectAltName` parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the `subjectAltName` parameter.
     {{site.data.alerts.end}}
 
-2. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+1. Create the key for the first node using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -205,7 +205,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ chmod 400 certs/node.key
     ~~~
 
-3. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+1. Create the CSR for the first node using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -217,7 +217,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-4. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
+1. Sign the node CSR to create the node certificate for the first node using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -233,7 +233,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-5. Verify the values in the `Subject Alternative Name` field in the certificate:
+1. Verify the values in the `Subject Alternative Name` field in the certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -272,7 +272,7 @@ In the following steps, replace the placeholder text in the code with the actual
     The `commonName` and `subjectAltName` parameters are vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the `commonName` parameter or modify the `subjectAltName` parameter.
     {{site.data.alerts.end}}
 
-2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+1. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -283,7 +283,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ chmod 400 certs/client.<username_1>.key
     ~~~
 
-3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+1. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -295,7 +295,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
+1. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -311,7 +311,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-5. Verify the values in the `CN` field in the certificate:
+1. Verify the values in the `CN` field in the certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -334,14 +334,14 @@ In the following steps, replace the placeholder text in the code with the actual
     $ cockroach start-single-node --certs-dir=certs --cert-principal-map=<node-domain>:node,<username_1>:root --background
     ~~~
 
-2. Connect to the cluster using a connection URL:
+1. Connect to the cluster using a connection URL:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url='postgres://<hostname>:26257/?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.<username_1>.crt&sslkey=certs/client.<username_1>.key&sslmode=verify-full'
     ~~~
 
-3. Create a new SQL user:
+1. Create a new SQL user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -373,7 +373,7 @@ In the following steps, replace the placeholder text in the code with the actual
     {{site.data.alerts.callout_danger}}
     The `commonName` parameter is vital for CockroachDB functions. You can modify or omit other parameters as per your preferred OpenSSL configuration, but do not omit the `commonName` parameter.  {{site.data.alerts.end}}
 
-2. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
+1. Create the key for the first client using the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -384,7 +384,7 @@ In the following steps, replace the placeholder text in the code with the actual
     $ chmod 400 certs/client.<username_2>.key
     ~~~
 
-3. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
+1. Create the CSR for the first client using the [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -396,7 +396,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-4. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
+1. Sign the client CSR to create the client certificate for the first client using the [`openssl ca`](https://www.openssl.org/docs/manmaster/man1/ca.html) command.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -412,7 +412,7 @@ In the following steps, replace the placeholder text in the code with the actual
     -batch
     ~~~
 
-5. Verify the values in the `CN` field in the certificate:
+1. Verify the values in the `CN` field in the certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -426,7 +426,7 @@ In the following steps, replace the placeholder text in the code with the actual
         Subject: O=Cockroach, CN=roach
     ~~~
 
-6. Connect to the SQL client using the client certificate:
+1. Connect to the SQL client using the client certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

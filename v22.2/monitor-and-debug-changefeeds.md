@@ -152,7 +152,7 @@ For more information, see [`SHOW JOBS`](show-jobs.html).
  On the [**Custom Chart** debug page](ui-custom-chart-debug-page.html) of the DB Console:
 
 1. To add a chart, click **Add Chart**.
-2. Select `changefeed.error_retries` from the **Metric Name** dropdown menu.
+1. Select `changefeed.error_retries` from the **Metric Name** dropdown menu.
 
     A graph of changefeed restarts due to retryable errors will display.
 

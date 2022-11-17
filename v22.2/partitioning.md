@@ -188,7 +188,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-2. Initialize the cluster:
+1. Initialize the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -197,7 +197,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --host=localhost:26257
     ~~~
 
-3. Add 3 nodes in the German availability zone:
+1. Add 3 nodes in the German availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -238,7 +238,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-3. Add 3 nodes in the Australian availability zone:
+1. Add 3 nodes in the Australian availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -293,7 +293,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-2. Create the database and set it as current:
+1. Create the database and set it as current:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -305,7 +305,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
     > SET DATABASE = roachlearn;
     ~~~
 
-3. Create the table with the appropriate partitions:
+1. Create the table with the appropriate partitions:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -360,7 +360,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=us]';
     ~~~
 
-2. Create a replication zone for the `europe` partition and constrain its data to the German availability zone:
+1. Create a replication zone for the `europe` partition and constrain its data to the German availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -368,7 +368,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=de]';
     ~~~
 
-3. Create a replication zone for the `australia` partition and constrain its data to the Australian availability zone:
+1. Create a replication zone for the `australia` partition and constrain its data to the Australian availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -376,7 +376,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=aus]';
     ~~~
 
-4. After creating these replication zones, you can view them using the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
+1. After creating these replication zones, you can view them using the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -475,7 +475,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
     --join=<node1 hostname>,<node2 hostname>
     ~~~
 
-2. Start the second node:
+1. Start the second node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -485,7 +485,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
     --join=<node1 hostname>,<node2 hostname>
     ~~~
 
-3. Initialize the cluster:
+1. Initialize the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

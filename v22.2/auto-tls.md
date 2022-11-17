@@ -41,7 +41,7 @@ The example commands below must be tailored for your environment and run for eac
 
     Alternatively, the directory `~/.cockroach-certs` is used, by default, if none is specified in the next step.
 
-2. For each node, run `cockroach connect`. Specify a shared token, certs directory, number of nodes you'll have when starting the cluster, and the address and port on which the node will listen for connections from the others (which defaults to `localhost:26257`).
+1. For each node, run `cockroach connect`. Specify a shared token, certs directory, number of nodes you'll have when starting the cluster, and the address and port on which the node will listen for connections from the others (which defaults to `localhost:26257`).
 
     For example, for the first node:
 
@@ -90,7 +90,7 @@ The example commands below must be tailored for your environment and run for eac
     
     Finally, all nodes report `server certificate generation complete`. The `certs-dir` directory on each is populated with all required files.
 
-2. Run [`cockroach start`](cockroach-start.html) for each node. This starts the node, but does not yet initialize the cluster. If testing this process on a single machine, run the following in each node's directory, adjusting the port numbers for each.
+1. Run [`cockroach start`](cockroach-start.html) for each node. This starts the node, but does not yet initialize the cluster. If testing this process on a single machine, run the following in each node's directory, adjusting the port numbers for each.
 
   {% include_cached copy-clipboard.html %}
   ~~~ shell
@@ -126,11 +126,11 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 1. Using the `root` user, log in to the [SQL shell](cockroach-sql.html). [Create additional users](create-role.html#create-a-role-that-can-log-in-to-the-database), specifying role options as [parameters](create-role.html#parameters), or add the users as members of the `admin` role to confer all role options, if appropriate.
 
-2. Create the certificate and key pair for each of the additional users.
+1. Create the certificate and key pair for each of the additional users.
 
     ~~~ shell
     cockroach cert create-client {username} \
     --ca-key=certs/ca.key --certs-dir=certs
     ~~~
 
-3. Securely send each user the certificate and key that matches their username: `client.{username}.crt` and `client.{username}.key`.
+1. Securely send each user the certificate and key that matches their username: `client.{username}.crt` and `client.{username}.key`.

@@ -355,7 +355,7 @@ For reference information about connecting to CockroachDB with supported client 
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
-2. Navigate to the `node` directory of the repo:
+1. Navigate to the `node` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -364,19 +364,19 @@ For reference information about connecting to CockroachDB with supported client 
 
     The code sample in this directory does the following:
       1. Connects to {{ site.data.products.db }} with the [node-postgres driver](https://node-postgres.com) using the connection string set in the `DATABASE_URL` environment variable.
-      2. Creates a table.
-      3. Inserts some data into the table.
-      4. Reads the inserted data.
-      5. Prints the data to the terminal.
+      1. Creates a table.
+      1. Inserts some data into the table.
+      1. Reads the inserted data.
+      1. Prints the data to the terminal.
 
-3. Install the code dependencies:
+1. Install the code dependencies:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm install
     ~~~
 
-4. Run the code:
+1. Run the code:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

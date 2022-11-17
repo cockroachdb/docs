@@ -11,14 +11,14 @@ Use the [built-in SQL client](cockroach-sql.html) locally as follows:
     $ cockroach sql --insecure --host=<address of load balancer>
     ~~~
 
-2. Create an `insecurenodetest` database:
+1. Create an `insecurenodetest` database:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE insecurenodetest;
     ~~~
 
-3. View the cluster's databases, which will include `insecurenodetest`:
+1. View the cluster's databases, which will include `insecurenodetest`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -38,4 +38,4 @@ Use the [built-in SQL client](cockroach-sql.html) locally as follows:
     (5 rows)
     ~~~
 
-4. Use `\q` to exit the SQL shell.
+1. Use `\q` to exit the SQL shell.

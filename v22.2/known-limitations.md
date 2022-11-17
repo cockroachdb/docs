@@ -278,15 +278,15 @@ CockroachDB does not currently support [`IMPORT`s](import.html) into tables with
 To work around this limitation:
 
 1. Drop any partial indexes defined on the table.
-2. Perform the `IMPORT`.
-3. Recreate the partial indexes.
+1. Perform the `IMPORT`.
+1. Recreate the partial indexes.
 
 If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) with partial indexes:
 
 1. Drop the partial indexes on the PostgreSQL server.
-2. Recreate the `PGDUMP`.
-3. `IMPORT` the `PGDUMP`.
-4. Add partial indexes on the CockroachDB server.
+1. Recreate the `PGDUMP`.
+1. `IMPORT` the `PGDUMP`.
+1. Add partial indexes on the CockroachDB server.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 

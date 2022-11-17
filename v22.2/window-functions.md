@@ -74,8 +74,8 @@ Parameter | Description
 At a high level, window functions work by:
 
 1. Creating a "virtual table" using a [selection query][selection-query].
-2. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause](sql-grammar.html#over_clause), directly after the window function, or in a [`WINDOW` clause](sql-grammar.html#window_clause), as a part of the selection query.
-3. Applying the window function to each of the window frames.
+1. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause](sql-grammar.html#over_clause), directly after the window function, or in a [`WINDOW` clause](sql-grammar.html#window_clause), as a part of the selection query.
+1. Applying the window function to each of the window frames.
 
 For example, consider a query where the window frames are defined for each window function call:
 
@@ -91,8 +91,8 @@ For example, consider a query where the window frames are defined for each windo
 Its operation can be described as follows (numbered steps listed here correspond to the numbers in the diagram below):
 
 1. The outer `SELECT DISTINCT(city) ... FROM rides` creates a "virtual table" on which the window functions will operate.
-2. The window function `SUM(revenue) OVER ()` operates on a window frame containing all rows of the query output.
-3. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition](partitioning.html) (Amsterdam, Boston, L.A., etc.).
+1. The window function `SUM(revenue) OVER ()` operates on a window frame containing all rows of the query output.
+1. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition](partitioning.html) (Amsterdam, Boston, L.A., etc.).
 
 <img src="{{ 'images/v22.2/window-functions.png' | relative_url }}" alt="Window function diagram" style="border:1px solid #eee;max-width:100%" />
 

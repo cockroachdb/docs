@@ -130,14 +130,14 @@ If you require comparisons using [`<`](functions-and-operators.html#operators), 
         );
     ~~~
 
-2. Create an index on the computed column:
+1. Create an index on the computed column:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
-3. Execute the query with the comparison:
+1. Execute the query with the comparison:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -3,7 +3,7 @@ title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
 summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachDB Cloud
 toc: true
 toc_not_nested: true
-docs_area: 
+docs_area:
 ---
 
 This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
@@ -37,23 +37,23 @@ Before you connect to your {{ site.data.products.dedicated }} cluster, you need 
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
-2. Click the **Add Network** button in the right corner. The **Add Network** dialog displays.
-3. (Optional) Enter a descriptive name for the network.
-4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
-5. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
+1. Click the **Add Network** button in the right corner. The **Add Network** dialog displays.
+1. (Optional) Enter a descriptive name for the network.
+1. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
+1. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
     The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
 
-6. Click **Apply**.
+1. Click **Apply**.
 
 ### Step 2. Create a SQL user
 
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
-2. Click the **Add User** button in the top right corner. The **Add User** dialog displays.
-3. Enter a **Username** and **Password**.
-4. Click **Save**.
+1. Click the **Add User** button in the top right corner. The **Add User** dialog displays.
+1. Enter a **Username** and **Password**.
+1. Click **Save**.
 
     Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
 
@@ -70,7 +70,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
       <button style="width: 15%" class="filter-button" data-scope="windows">Windows</button>
     </div>
     {% include cockroachcloud/download-the-cert.md %}
-    
+
 1. On the **Command Line** tab, copy the connection string.
 
     Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
@@ -129,10 +129,10 @@ On your local workstation's terminal:
 
       The **Connect** dialog displays.
 
-  2. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
-  3. Select a **Region** to connect to.
-  4. From the **Database** dropdown, select `todos`.
-  5. On the **Connection String** tab, click **Copy connection string**.
+  1. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
+  1. Select a **Region** to connect to.
+  1. From the **Database** dropdown, select `todos`.
+  1. On the **Connection String** tab, click **Copy connection string**.
 
       Copy the application connection string to an accessible location. You will update the password and certificate path in the next step.
 
@@ -152,14 +152,14 @@ In a new terminal:
     $ git clone https://github.com/cockroachdb/examples-python
     ~~~
 
-2. Navigate to the `flask-alchemy` folder:
+1. Navigate to the `flask-alchemy` folder:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd examples-python/flask-sqlalchemy
     ~~~
 
-3. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string) and save the file.
+1. In the `hello.cfg` file, replace the value for the `SQLALCHEMY_DATABASE_URI` with the application connection string you generated in [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string) and save the file.
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -183,7 +183,7 @@ In a new terminal:
 
     For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-2. Run the `hello.py` code:
+1. Run the `hello.py` code:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -192,11 +192,11 @@ In a new terminal:
 
     The application should run at `http://localhost:5000`.
 
-3. Enter a new to-do item.
+1. Enter a new to-do item.
 
-4. Verify that the user interface reflects the new to-do item added to the database.
+1. Verify that the user interface reflects the new to-do item added to the database.
 
-5. Use `Ctrl+C` to stop the application.
+1. Use `Ctrl+C` to stop the application.
 
 ## Deploy the app
 
@@ -279,21 +279,21 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     CMD ["python", "hello.py"]
     ~~~
 
-2. Set the environment variable:
+1. Set the environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eval $(minikube docker-env)
     ~~~
 
-3. Create the Docker image:
+1. Create the Docker image:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker build -t appdocker .
     ~~~
 
-4. Verify the image was created:
+1. Verify the image was created:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -360,7 +360,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
       type: LoadBalancer
     ~~~
 
-2. Create the deployment with `kubectl`:
+1. Create the deployment with `kubectl`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -372,7 +372,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     service/appdeploy created
     ~~~
 
-3. Verify that the deployment and server were created:
+1. Verify that the deployment and server were created:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -394,7 +394,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
     appdeploy    LoadBalancer   10.96.154.104   <pending>     80:32349/TCP   42s
     ~~~
 
-4. Start the app:
+1. Start the app:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -414,10 +414,10 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
         NAME                         READY   STATUS              RESTARTS   AGE
         appdeploy-577f66b4c8-46s5r   0/1     ErrImageNeverPull   0          23m
         appdeploy-577f66b4c8-9chjx   0/1     ErrImageNeverPull   0          23m
-        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m  
+        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m
         ~~~
 
-    2. Port-forward from your local machine to one of the pods:
+    1. Port-forward from your local machine to one of the pods:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
@@ -429,7 +429,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
         Forwarding from [::1]:5000 -> 5000
         ~~~
 
-    3. Go to `http://localhost:5000/` in your browser.
+    1. Go to `http://localhost:5000/` in your browser.
 
 ## Monitor the app
 
@@ -441,11 +441,11 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 1. On the Console, navigate to the cluster's **Monitoring** page and click **Open DB Console**.
 
     You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
-    
+
 1. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
-    
+
     {% include cockroachcloud/postgresql-special-characters.md %}
-    
+
 1. Click **Log In**.
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
@@ -460,7 +460,7 @@ On the [**Cluster Overview** page](../{{site.versions["stable"]}}/ui-cluster-ove
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-2. On the [**Hardware** dashboard](../{{site.versions["stable"]}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+1. On the [**Hardware** dashboard](../{{site.versions["stable"]}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -469,4 +469,4 @@ On the [**Cluster Overview** page](../{{site.versions["stable"]}}/ui-cluster-ove
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-2. The [**Statements** page](../{{site.versions["stable"]}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+1. The [**Statements** page](../{{site.versions["stable"]}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

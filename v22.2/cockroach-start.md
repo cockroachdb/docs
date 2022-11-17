@@ -459,7 +459,7 @@ For more information about the `--locality` flag, see [Locality](#locality).
     --max-sql-memory=.25
     ~~~
 
-2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
+1. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -473,7 +473,7 @@ For more information about the `--locality` flag, see [Locality](#locality).
     --max-sql-memory=.25
     ~~~
 
-3. Run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
+1. Run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

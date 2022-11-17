@@ -64,7 +64,7 @@ This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking
     --background
     ~~~
 
-2. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -173,7 +173,7 @@ The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/
     kill -TERM 4503
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
+1. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 

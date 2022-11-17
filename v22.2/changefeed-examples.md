@@ -37,7 +37,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
-2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
