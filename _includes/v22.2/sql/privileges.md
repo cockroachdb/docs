@@ -13,6 +13,6 @@ Privilege | Levels
 `USAGE`  | Function, Schema, Sequence, Type
 `ZONECONFIG` | Database, Table, Sequence
 `EXTERNALCONNECTION` | System
-`BACKUP` | System, Database, Table, Sequence
+`BACKUP` | System, Database, Table
 `RESTORE` | System, Database
 `EXTERNALIOIMPLICITACCESS` | System
