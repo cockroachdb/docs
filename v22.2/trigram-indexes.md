@@ -16,9 +16,9 @@ Some PostgreSQL syntax and features are currently unsupported. For details, see 
 
 ## How do trigram indexes work?
 
-Trigram indexes make [substring and similarity matches](https://www.postgresql.org/docs/current/pgtrgm.html) efficient by indexing the unique trigrams of a string. A trigram is a group of three consecutive characters (including spaces) in a string.
+Trigram indexes make [substring and similarity matches](https://www.postgresql.org/docs/current/pgtrgm.html) efficient by indexing the unique trigrams of a string. A trigram is a group of three consecutive characters in a string.
 
-To display all of the possible trigrams for a string, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions):
+To display the trigrams within a string, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
