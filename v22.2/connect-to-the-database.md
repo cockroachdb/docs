@@ -69,7 +69,7 @@ node-postgres accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>
+postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full
 ~~~
 
 </div>
@@ -118,7 +118,7 @@ Sequelize versions 6.10 and later accept the following format for CockroachDB co
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>
+postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full
 ~~~
 
 </div>
@@ -147,7 +147,7 @@ For Sequelize versions 6.9 and earlier, use the following format:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<routing-id>.<database>?ssl=true
+postgresql://<username>:<password>@<host>:<port>/<database>?ssl=true
 ~~~
 
 </div>
@@ -190,7 +190,7 @@ For example, suppose that you are defining the `DataSource` for your application
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
-{{ site.data.products.serverless }} requires you to specify the `type`, `url`, `ssl`, and `options: "--cluster"` properties:
+{{ site.data.products.serverless }} requires you to specify the `type`, `url`, and `ssl` properties:
 
 {% include_cached copy-clipboard.html %}
 ~~~ ts
@@ -200,9 +200,6 @@ export const AppDataSource = new DataSource({
     type: "cockroachdb",
     url: process.env.DATABASE_URL,
     ssl: true,
-    extra: {
-        options: "--cluster=<routing-id>"
-    },
     ...
 });
 ~~~
@@ -330,7 +327,7 @@ Prisma accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>
+postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full
 ~~~
 
 </div>
@@ -368,7 +365,6 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -441,7 +437,7 @@ Psycopg2 accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -491,7 +487,7 @@ Psycopg accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -541,7 +537,7 @@ SQLAlchemy accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -600,7 +596,6 @@ DATABASES = {
         'PORT': '{port}',
         'OPTIONS': {
             'sslmode': 'verify-full',
-            'options': '--cluster={routing-id}'
         },
     },
 }
@@ -628,7 +623,6 @@ DATABASES = {
         'PORT': '{port}',
         'OPTIONS': {
             'sslmode': 'verify-full',
-            'sslrootcert': os.path.expandvars('{root-cert}'),
         },
     },
 }
@@ -686,7 +680,6 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -759,7 +752,7 @@ pgx accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -818,7 +811,7 @@ pq accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -877,7 +870,7 @@ GORM accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -915,7 +908,6 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -976,7 +968,7 @@ JDBC accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
 ~~~
 
 </div>
@@ -1031,7 +1023,7 @@ Hibernate accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
 ~~~
 
 </div>
@@ -1073,8 +1065,6 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
-
 </div>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
@@ -1140,7 +1130,7 @@ pg accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -1191,7 +1181,7 @@ Active Record accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 
 </div>
@@ -1233,7 +1223,6 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 
 </div>
 

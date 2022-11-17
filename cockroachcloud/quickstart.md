@@ -79,7 +79,7 @@ Select **General connection string**, then copy the connection string displayed 
 ? How would you like to connect? General connection string
 Retrieving cluster info: succeeded
  Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
-postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?options=--cluster%3Ddim-dog-147&sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full
 ~~~
 
 </section>
@@ -294,7 +294,7 @@ cockroach convert-url --url "<connection-string>"
 ~~~
 ...
 # Connection URL for JDBC (Java and JVM-based languages):
-jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
 ~~~
 
 </section>

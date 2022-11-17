@@ -113,7 +113,7 @@ connStringBuilder.Port = 26257;
 connStringBuilder.SslMode = SslMode.Require;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
-connStringBuilder.Database = "{routing-id}.bank";
+connStringBuilder.Database = "bank";
 connStringBuilder.RootCertificate = "~/.postgresql/root.crt";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
@@ -122,7 +122,6 @@ Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
 - `{host-name}` is the name of the {{ site.data.products.db }} free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- `{routing-id}` is your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture).
 
 </section>
 

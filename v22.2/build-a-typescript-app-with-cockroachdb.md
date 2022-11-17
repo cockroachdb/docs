@@ -79,8 +79,6 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. Open the `datasource.ts` file, and edit the `options: "--cluster=<routing-id>"` configuration property to specify the routing ID to your serverless cluster.
-
 1. Set the `DATABASE_URL` environment variable to a CockroachDB connection string compatible with TypeORM.
 
     {% include_cached copy-clipboard.html %}
