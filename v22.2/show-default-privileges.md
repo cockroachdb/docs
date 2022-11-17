@@ -113,5 +113,6 @@ To show default privileges, the user/role must have any [privilege](security-ref
 ## See also
 
 - [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html)
+- [`SHOW ROLES`](show-roles.html)
 - [SQL Statements](sql-statements.html)
 - [Default Privileges](security-reference/authorization.html#default-privileges)
