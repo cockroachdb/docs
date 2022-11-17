@@ -104,8 +104,8 @@ postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachl
 The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
 1. Select **General connection string** from the **Select option** dropdown.
-2. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
-3. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+1. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
+1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
 
     {{site.data.alerts.callout_info}}
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
@@ -288,7 +288,7 @@ For reference information about connecting to CockroachDB with supported client 
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
 
-2. Navigate to the `node` directory of the repo:
+1. Navigate to the `node` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -302,14 +302,14 @@ For reference information about connecting to CockroachDB with supported client 
       4. Reads the inserted data.
       5. Prints the data to the terminal.
 
-3. Install the code dependencies:
+1. Install the code dependencies:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     npm install
     ~~~
 
-4. Run the code:
+1. Run the code:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
