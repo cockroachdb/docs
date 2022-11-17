@@ -11,7 +11,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 You can use the [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) command in conjunction with `cockroach debug zip` to merge the collected logs into one file, making them easier to parse.
 
 {{site.data.alerts.callout_danger}}
-The files produced by `cockroach debug zip` can contain highly [sensitive, identifiable information](configure-logs.html#redact-logs), such as usernames, hashed passwords, and possibly table data. Use the [`--redact-logs`](#redact-sensitive-information-from-the-logs) flag to redact sensitive data from log files and crash reports before sharing them with Cockroach Labs.
+The files produced by `cockroach debug zip` can contain [highly sensitive, personally-identifiable information (PII)](configure-logs.html#redact-logs), such as usernames, hashed passwords, and possibly table data. Use the [`--redact`](#redact-sensitive-information) flag to configure CockroachDB to redact sensitive data when generating the `.zip` file (excluding range keys) if intending to share it with Cockroach Labs.
 {{site.data.alerts.end}}
 
 ## Details
@@ -96,7 +96,8 @@ Flag | Description
 `--files-until` | End timestamp for log file, goroutine dump, and heap profile collection. This can be used to limit the size of the generated `.zip`, which is increased by these files. The timestamp uses the format `YYYY-MM-DD`, followed optionally by `HH:MM:SS` or `HH:MM`. For example:<br /><br />`--files-until='2021-07-01 16:00'`<br /><br />When specifying a narrow time window, we recommend adding extra seconds/minutes to account for uncertainties such as clock drift.<br /><br />**Default:** 24 hours beyond now (to include files created during `.zip` creation)
 `--include-files` | [Files](#files) to include in the generated `.zip`. This can be used to limit the size of the generated `.zip`, and affects logs, heap profiles, goroutine dumps, and/or CPU profiles. The files are specified as a comma-separated list of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)). For example:<br /><br />`--include-files=*.pprof`<br /><br />Note that this flag is applied _before_ `--exclude-files`. Use [`cockroach debug list-files`](cockroach-debug-list-files.html) with this flag to see a list of files that will be contained in the `.zip`.
 `--nodes` | Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br /><br />`--nodes=1,10,13-15`
-`--redact-logs` | Redact [sensitive data](configure-logs.html#redact-logs) from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed above) collected by the `debug zip` command may still contain sensitive information.
+`--redact` | **New in v22.1.9** Redact sensitive data from the generated `.zip`, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. See [Redact sensitive information](#redact-sensitive-information) for an example.
+`--redact-logs` | **Deprecated** Redact [sensitive data](configure-logs.html#redact-logs) from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed above) collected by the `debug zip` command may still contain sensitive information. To redact sensitive data across the entire generated `.zip`, use the `--redact` flag instead.
 `--timeout` | Return an error if the command does not conclude within a specified nonzero value. The timeout is suffixed with `s` (seconds), `m` (minutes), or `h` (hours). For example:<br /><br />`--timeout=2m`
 
 ### Client connection
@@ -146,7 +147,7 @@ Generate a debug zip file containing only log files:
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --include-files=*.log
 ~~~
 
-### Redact sensitive information from the logs
+### Redact sensitive information
 
 Example of a log string without redaction enabled:
 
@@ -158,7 +159,7 @@ Enable log redaction:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ cockroach debug zip ./cockroach-data/logs/debug.zip --redact-logs --insecure --host=200.100.50.25
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
 ~~~
 
 ~~~

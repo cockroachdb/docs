@@ -228,7 +228,7 @@ AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
 
-The job ID is returned immediately without waiting for the job to finish:
+The job ID is returned after the backup job creation completes: 
 
 ~~~
         job_id

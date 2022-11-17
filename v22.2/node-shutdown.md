@@ -522,7 +522,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
     ~~~
     CockroachDB node starting at 2022-09-01 06:25:24.922474 +0000 UTC (took 5.1s)
-    build:               CCL v22.2.0-alpha.1 @ 2022/08/30 23:02:58 (go1.18.4)
+    build:               CCL v22.2.0-alpha.1 @ 2022/08/30 23:02:58 (go1.19.1)
     webui:               https://localhost:8080
     sql:                 postgresql://root@localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
     sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt&user=root

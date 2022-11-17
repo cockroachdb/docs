@@ -42,14 +42,14 @@ The user must be a member of the [`admin`](security-reference/authorization.html
 
 ### Set the table locality to `REGIONAL BY TABLE`
 
-To optimize read and write access to the data in a table from the primary region, use the following statement:
+To optimize read and write access to the data in a table from the primary region, use the following statement, which sets the table's home region to the primary region:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
 ~~~
 
-To optimize read and write access to the data in a table from the `us-east-1` region, use the following statement:
+To optimize read and write access to the data in a table from the `us-east-1` region, use the following statement, which sets the table's home region to `us-east-1`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -57,10 +57,10 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN "us-east-1";
 ~~~
 
 {{site.data.alerts.callout_info}}
-If no region is supplied, `REGIONAL BY TABLE` defaults to the primary region.
+If no region is supplied, `REGIONAL BY TABLE` defaults the table's home region to the primary region.
 {{site.data.alerts.end}}
 
-For more information about how table localities work, see [Regional tables](multiregion-overview.html#regional-tables).
+For more information about how this table locality works, see [Regional tables](multiregion-overview.html#regional-tables).
 
 <a name="regional-by-row"></a>
 
@@ -79,7 +79,7 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 
 <a name="crdb_region"></a>
 
-Every row in a regional by row table has a hidden `crdb_region` column that represents the row's home region. To see a row's region, issue a statement like the following:
+Every row in a regional by row table has a column of type `crdb_internal_region` that represents the row's [home region](multiregion-overview.html#table-localities). By default, this column is called `crdb_region` and is hidden. To see a row's home region, issue a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
