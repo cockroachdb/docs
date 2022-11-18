@@ -18,7 +18,7 @@ These details let you monitor the overall state of client connections and identi
 
 ## Required privileges
 
-All users can see their own currently active sessions. All users belonging to the `admin` role can view see all users' currently active sessions. To view other non-admin users' sessions, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set.
+All users can see their own currently active sessions. All users belonging to the `admin` role can view see all users' currently active sessions. To view other non-admin users' sessions, the non-admin user must have the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) defined.
 
 ## Synopsis
 

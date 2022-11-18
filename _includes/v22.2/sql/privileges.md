@@ -16,3 +16,10 @@ Privilege | Levels
 `BACKUP` | System, Database, Table
 `RESTORE` | System, Database
 `EXTERNALIOIMPLICITACCESS` | System
+`VIEWACTIVITY` | System
+`VIEWACTIVITYREDACTED` | System
+`VIEWCLUSTERMETADATA` | System
+`VIEWCLUSTERSETTING` | System
+`VIEWDEBUG` | System
+`CANCELQUERY` | System
+`NOSQLLOGIN` | System

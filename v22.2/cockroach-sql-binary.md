@@ -64,7 +64,7 @@ Or you can download the [binary from the releases page](../releases/{{ page.vers
 
 ## Prerequisites
 
-The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user's role option has been set to `NOLOGIN` or `NOSQLLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
+The [role option of the user](security-reference/authorization.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user has been set to use the `NOLOGIN` role or the `NOSQLLOGIN` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `NOSQLLOGIN` role option), the user cannot log in using the SQL CLI with any authentication method.
 
 ## Synopsis
 
