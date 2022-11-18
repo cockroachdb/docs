@@ -72,22 +72,22 @@ In this phase of the tutorial we will act as an administrator for our organizati
     
         {% include_cached copy-clipboard.html %}
         ~~~shell
-        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
+        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full
         export CLI_DB_CONNECTION_URL="postgresql://${USER_NAME}:${PASSWORD}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
         ~~~
 
-    1. Obtain your CockroachDB cluster's CA public certificate:
+    2. Obtain your CockroachDB cluster's CA public certificate:
 
         1. Visit the [CockroachDB Cloud Console's cluster page](https://cockroachlabs.cloud/cluster/). 
-        1. Select your cluster.
-        1. Click the **Connect** button.
-        1. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
+        2. Select your cluster.
+        3. Click the **Connect** button.
+        4. Select **"Download CA Cert (Required only once)"** and use the generated `curl` command to download the certificate.
 
         ~~~shell
         curl --create-dirs -o root.crt -O https://management-staging.crdb.io/clusters/505a138c-37ff-46b7-9c50-4119cf0881f6/cert
         ~~~
 
-1. Prove that your connection works by executing a SQL statement.
+2. Prove that your connection works by executing a SQL statement.
 
     Recall that this command must be run in the directory where `root.crt` is located, as specified in the connection URL.
 
@@ -101,7 +101,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
     Time: 107ms
     ~~~
 
-1.  Connect to Vault.
+3.  Connect to Vault.
 
     1. Set your Vault target and the `admin` Vault namespace.
 
@@ -113,7 +113,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
         export VAULT_NAMESPACE=admin
         ~~~
 
-    1. Authenticate to your Vault, providing the admin token when prompted:
+    2. Authenticate to your Vault, providing the admin token when prompted:
 
         {% include_cached copy-clipboard.html %}
         ~~~shell
@@ -123,7 +123,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
         Success! You are now authenticated...
         ~~~
 
-1. Enable the Vault database secrets engine:
+4. Enable the Vault database secrets engine:
 
     {{site.data.alerts.callout_info}}
     This only needs to be done once for an individual Vault cluster. For more information on using the Vault Secrets CLI, see [Vault's documentation](https://www.vaultproject.io/docs/commands/secrets).
@@ -147,11 +147,11 @@ The connection lies in a Vault configuration, which will store your CockroachDB 
         {% include_cached copy-clipboard.html %}
         <!-- the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  -->
         ~~~shell
-        {% raw %}export VAULT_TLS_OPTS="sslmode=require&options=--cluster=${CLUSTER_NAME}"
+        {% raw %}export VAULT_TLS_OPTS="sslmode=require"
         export VAULT_DB_CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${VAULT_TLS_OPTS}"{% endraw %}
         ~~~
 
-    1. Write the `crdb-config` database configuration to Vault, specifying admin credentials that will be used by Vault to create credentials for your defined role:
+    2. Write the `crdb-config` database configuration to Vault, specifying admin credentials that will be used by Vault to create credentials for your defined role:
         {% include_cached copy-clipboard.html %}
         ~~~shell
         vault write database/config/crdb-config \
@@ -414,11 +414,11 @@ In this phase of the tutorial, we will use credentials provisioned by Vault to a
         export DB_NAME=defaultdb
         export CLUSTER_NAME=lilac-grizzly-684 # generated CockroachDB client password
         export HOST=free-tier21.aws-us-west-2.crdb.io
-        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
+        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full"
         export CLI_DB_CONNECTION_URL="postgresql://$USER_NAME:$PASSWORD@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
         ~~~    
         
-    1. List all the tables in database `defaultdb` to confirm you can connect to your CockroachDB cluster:
+    2. List all the tables in database `defaultdb` to confirm you can connect to your CockroachDB cluster:
         {% include_cached copy-clipboard.html %}
         ~~~shell
         cockroach sql --url "${CLI_DB_CONNECTION_URL}" --execute "show tables;"
@@ -430,7 +430,7 @@ In this phase of the tutorial, we will use credentials provisioned by Vault to a
         Time: 120ms
         ~~~
 
-    1. To confirm that the credentials have been properly limited, attempt a forbidden operation. `crdb-role`  does not have permission to list users, so try that in order to generate a permissions error:
+    3. To confirm that the credentials have been properly limited, attempt a forbidden operation. `crdb-role`  does not have permission to list users, so try that in order to generate a permissions error:
         {% include_cached copy-clipboard.html %}
         ~~~shell
         cockroach sql --url "${CLI_DB_CONNECTION_URL}" --execute "show users;"

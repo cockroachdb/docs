@@ -129,10 +129,10 @@ It does all of the above using the practices we recommend for using JDBC with Co
         ...
 
         # Connection URL for JDBC (Java and JVM-based languages):
-        jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+        jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
         ~~~
 
-    1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+    2. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell

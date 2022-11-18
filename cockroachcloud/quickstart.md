@@ -79,7 +79,7 @@ Select **General connection string**, then copy the connection string displayed 
 ? How would you like to connect? General connection string
 Retrieving cluster info: succeeded
  Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
-postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?options=--cluster%3Ddim-dog-147&sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+postgresql://maxroach:ThisIsNotAGoodPassword@dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
 ~~~
 
 </section>
@@ -104,8 +104,8 @@ postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachl
 The **Connect to cluster** dialog shows information about how to connect to your cluster.
 
 1. Select **General connection string** from the **Select option** dropdown.
-1. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
-1. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+2. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. This certificate is required by most Python clients connecting to {{ site.data.products.db }}.
+3. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
 
     {{site.data.alerts.callout_info}}
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
@@ -239,7 +239,7 @@ cockroach convert-url --url "<connection-string>"
 ~~~
 ...
 # Connection URL for JDBC (Java and JVM-based languages):
-jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
 ~~~
 
 </section>

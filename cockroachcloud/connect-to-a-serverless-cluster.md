@@ -71,17 +71,16 @@ For connection examples and code snippets in your language, see the following:
     `{host}`  | The host on which the CockroachDB node is running.
     `{port}`  | The port at which the CockroachDB node is listening.
     `{database}`  | The name of the (existing) database.
-    `{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](architecture.html).
 
   </section>
   <section class="filter-content" markdown="1" data-scope="cockroachdb-client">
 
-1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
-1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
-1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
+2. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+3. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
+4. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
+5. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
 
-1. Enter the SQL user's password and hit enter.
+6. Enter the SQL user's password and hit enter.
 
     {% include cockroachcloud/postgresql-special-characters.md %}
 

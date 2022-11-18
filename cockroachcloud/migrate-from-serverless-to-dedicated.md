@@ -27,7 +27,7 @@ In {{ site.data.products.serverless }} clusters, all external service integratio
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---url 'postgres://<username>:<password>@free-tier.<region>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt&options=--cluster=<cluster_name>' \
+--url 'postgres://<username>:<password>@<cluster-name>.<region code>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt' \
 --execute "SELECT * FROM tpcc.warehouse" --format=csv > /Users/<username>/<path/to/file>/warehouse.csv
 ~~~
 
@@ -43,7 +43,7 @@ Repeat this step for each table you want to migrate. For example, let's export o
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---url 'postgres://<username>:<password>@free-tier.<region>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt&options=--cluster=<cluster_name>' \
+--url 'postgres://<username>:<password>@<cluster-name>.<region code>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt' \
 --execute "SELECT * FROM tpcc.district" --format=csv > /Users/<username>/<path/to/file>/district.csv
 ~~~
 

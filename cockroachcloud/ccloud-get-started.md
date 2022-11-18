@@ -332,7 +332,7 @@ ccloud cluster sql --connection-url dim-dog
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluster%3Ddim-dog-1567&sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
+postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
 ~~~
 
 </section>
@@ -341,7 +341,7 @@ postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluste
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-5bct.gcp-us-east4.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
+postgresql://dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
 ~~~
 
 </section>
@@ -358,8 +358,7 @@ ccloud cluster sql --connection-params dim-dog
 ~~~
 Connection parameters
  Database:  defaultdb
- Host:      free-tier7.gcp-us-central1.crdb.io
- Options:   --cluster=dim-dog-1567
+ Host:      dim-dog-147.6wr.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -371,7 +370,7 @@ Connection parameters
 ∙∙∙ Retrieving cluster info...
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-5bct.gcp-us-east4.crdb.io
+ Host:      dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud
  Port:      26257
 ~~~
 

@@ -55,10 +55,6 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
         type: "cockroachdb",
         url: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false }, // For insecure connections only
-        /* ssl: true,
-        extra: {
-            options: "--cluster=<routing-id>"
-        }, */
         synchronize: true,
         logging: false,
         entities: ["src/entity/**/*.ts"],
@@ -67,7 +63,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
     })
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach` welcome text:
+2. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach` welcome text:
 
 
     {% include_cached copy-clipboard.html %}
@@ -78,8 +74,6 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-1. Open the `datasource.ts` file, and edit the `options: "--cluster=<routing-id>"` configuration property to specify the routing ID to your serverless cluster.
 
 1. Set the `DATABASE_URL` environment variable to a CockroachDB connection string compatible with TypeORM.
 
