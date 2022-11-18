@@ -81,7 +81,8 @@ table tr td:nth-child(2) {
  Indexes | ✓ | Common Extension | [Indexes documentation](indexes.html)
  Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
- GIN indexes | ✓ | Common Extension | [GIN Indexes documentation](inverted-indexes.html)
+ GIN indexes | ✓ | Common Extension | [GIN indexes documentation](inverted-indexes.html)
+ Trigram indexes | ✓ | PostgreSQL Extension | [Trigram indexes documentation](trigram-indexes.html)
  Partial indexes | ✓ | Common Extension | [Partial indexes documentation](partial-indexes.html)
  Spatial indexes | ✓ | Common Extension | [Spatial indexes documentation](spatial-indexes.html)
  Multiple indexes per query | Partial | Common Extension | [Index selection](indexes.html#selection)

@@ -218,16 +218,25 @@ $(function() {
   function setFilterScope(scope) {
     // find the filter set with this scope
     $('[data-scope].current').each(function(index) {
-      // if the target scope is in the same group as the current scope for that group, remove current
-      if (scopes.get($(this).attr('data-scope')) === scopes.get(scope)) {
-        console.log("current scope is in target scope " + scope + "'s group.");
-        $(this).removeClass('current');
-      } else {
-        console.log("current scope " + scope + " in different group.");
-      }
+      console.log("data-scope is: " + $(this).attr('data-scope'));
+      // if the target scope is in the same group as the current scope for that 
+      // group, remove the current class
+      
+      const sectionScopes = $(this).attr('data-scope').split(" ");
+      // multiple scopes can be set, so try each scope, but stop after removing current
+      sectionScopes.every(v => {
+        if (scopes.get(v) === scopes.get(scope)) {
+          console.log("current scope is in target scope " + scope + "'s group.");
+          $(this).removeClass('current');
+          return false;
+        } else {
+          console.log("current scope " + scope + " in different group.");
+          return true;
+        }
+      });
     });
-    // add target scope to current
-    $('[data-scope="' + scope + '"]').addClass('current');
+    // add current class to any section containing the scope
+    $('[data-scope~="' + scope + '"]').addClass('current');
     renderTOC();
   }
 
