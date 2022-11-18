@@ -1119,7 +1119,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 Contains one row for each transaction contention event.
 
-Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
+Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](security-reference/authorization.html#role-options)) to access. If you have the `VIEWACTIVITYREDACTED` privilege, `contending_key` will be redacted.
 
 Contention events are stored in memory. You can control the amount of contention events stored per node via the `sql.contention.event_store.capacity` [cluster setting](cluster-settings.html).
 
