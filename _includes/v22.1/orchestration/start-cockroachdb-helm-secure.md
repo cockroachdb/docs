@@ -1,7 +1,11 @@
-{{site.data.alerts.callout_danger}}
-The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
+The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier.
 
-If you are already running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
+The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
+
+A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
+
+{{site.data.alerts.callout_danger}}
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -100,7 +104,7 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                                      STORAGECLASS   REASON    AGE
     pvc-71019b3a-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-0   standard                 11m
     pvc-7108e172-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-1   standard                 11m
-    pvc-710dcb66-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-2   standard                 11m    
+    pvc-710dcb66-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-2   standard                 11m
     ~~~
 
 {{site.data.alerts.callout_success}}
