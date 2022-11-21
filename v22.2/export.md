@@ -40,7 +40,7 @@ The `EXPORT` statement cannot be used within a [transaction](transactions.html).
 
 Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-- Interacting with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
 - Using [HTTP](use-a-local-file-server-for-bulk-operations.html) or HTTPS.
