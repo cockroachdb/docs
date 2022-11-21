@@ -16,6 +16,12 @@ See also:
 - [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek-faq.html)
 - [Encryption at Rest (Enterprise)](../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest)
 
+## Prerequisites
+
+- You need a {{ site.data.products.dedicated }} cluster. CMEK is not supported for {{ site.data.products.serverless }} clusters.
+- Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
+- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts with API keys in CockroachDB Cloud Console. Refer to [Service Accounts](console-access-management.html#service-accounts).
+
 ## Overview of CMEK management procedures
 
 This section gives a high level overview of the operations involved with implementing CMEK with your {{ site.data.products.dedicated }} cluster.
@@ -51,7 +57,7 @@ Your account team will enable the CMEK feature for your {{ site.data.products.db
 Create a new {{ site.data.products.dedicated }} cluster. There are two ways to do this:
 
 - [Using the {{ site.data.products.db }} console clusters page](https://cockroachlabs.cloud/cluster).
-- [Using the Cloud API](cloud-api.html#create-a-new-cluster). 
+- [Using the Cloud API](cloud-api.html#create-a-new-cluster).
 
 ### Step 3. Provision IAM and KMS in your Cloud
 
@@ -63,7 +69,7 @@ Next, you must provision the resources required resources in your Cloud, whether
 Follow the instructions that correspond to your cluster's deployment environment:
 
 - [Provisioning Amazon Web Services (AWS) for CMEK](cmek-ops-aws.html)
-- [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html) 
+- [Provisioning Google Cloud Platform (GCP) for CMEK](cmek-ops-gcp.html)
 
 ### Step 4. Activate CMEK for your {{ site.data.products.dedicated }} Cluster
 
@@ -144,7 +150,7 @@ See the [API specification](../api/cloud/v1.html).
 
 ## Check CMEK status
 
-An API call displays information about your cluster's use of CMEK: 
+An API call displays information about your cluster's use of CMEK:
 
 See the [API specification](../api/cloud/v1.html).
 
@@ -313,7 +319,7 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    
+
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
     curl --request PATCH \
@@ -337,7 +343,7 @@ Do not delete the CMEK key.
 Deleting the CMEK key will permanently prevent decryption of your data, preventing all possible access and rendering the data inaccessible.
 {{site.data.alerts.end}}
 
-First, revoke {{ site.data.products.dedicated }}'s access to your key at the IAM level with your cloud provider. 
+First, revoke {{ site.data.products.dedicated }}'s access to your key at the IAM level with your cloud provider.
 
 You can do this two ways:
 
@@ -349,7 +355,7 @@ This will **not** immediately stop your cluster from encrypting and decrypting d
 That is because CockroachDB does not use your CMEK key to encrypt/decrypt your cluster data itself. {{ site.data.products.dedicated }} accesses your CMEK key to encrypt/decrypt a key encryption key (KEK). This KEK is used to encrypt a data encryption key (DEK), which is used to encrypt/decrypt your application data. Your cluster will continue to use the already-provisioned DEK until you make the Cloud API call to revoke CMEK.
 
 ### Step 2. Update your cluster to stop using the CMEK key for encryption
-  
+
 Your cluster will continue to operate with the encryption keys it has provisioned with your CMEK key until you update it to revoke CMEK.
 
 1. Update your cluster with the the Cloud API as follows:
