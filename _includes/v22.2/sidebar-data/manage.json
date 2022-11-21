@@ -342,9 +342,15 @@
               ]
             },
             {
-              "title": "Single Sign-on",
+              "title": "Cluster Single Sign-on (SSO) for CockroachDB SQL Access",
               "urls": [
-                "/${VERSION}/sso.html"
+                "/${VERSION}/sso-sql.html"
+              ]
+            },
+            {
+              "title": "Single Sign-on (SSO) for DB Console",
+              "urls": [
+                "/${VERSION}/sso-db-console.html"
               ]
             },
             {

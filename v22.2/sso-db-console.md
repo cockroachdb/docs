@@ -1,5 +1,5 @@
 ---
-title: Single Sign-on for DB Console
+title: Single Sign-on (SSO) for DB Console
 summary: Overview of requirements and management procedures for single sign-on (SSO) for DB Console.
 toc: true
 docs_area: manage

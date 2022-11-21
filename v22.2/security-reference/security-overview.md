@@ -75,7 +75,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Web console authentication with third-party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+  <td>Web console authentication with third-party <a href="../sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
  </tr>
  <tr>
   <td>&nbsp;</td>

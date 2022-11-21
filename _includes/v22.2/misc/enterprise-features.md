@@ -7,4 +7,4 @@ Feature | Description
 [Node Map](enable-node-map.html) | This feature visualizes the geographical configuration of a cluster by plotting node localities on a world map.
 [Encryption at Rest](security-reference/encryption.html#encryption-at-rest-enterprise) | Supplementing CockroachDB's encryption in flight capabilities, this feature provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using AES in counter mode, with all key sizes allowed.
 [GSSAPI with Kerberos Authentication](gssapi_authentication.html) | CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication, which lets you use an external enterprise directory system that supports Kerberos, such as Active Directory.
-[Single Sign-on (SSO)](sso.html) | This feature lets you use an external identity provider for user access to the DB Console in a secure cluster.
+[Single Sign-on (SSO) for DB Console](sso-db-console.html) | This feature lets you use an external identity provider for user access to the DB Console in a secure cluster.
