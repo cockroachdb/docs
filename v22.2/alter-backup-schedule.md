@@ -36,7 +36,7 @@ Parameter | Description
 `schedule_label` | The name or label given to the backup schedule.
 `collectionURI` | The URI where you want to store the backup. See [Backup file URLs](backup.html#backup-file-urls) for detail on forming the URI.
 `option` | Control the backup behavior with a comma-separated list of these [options](#backup-options).
-`RECURRING crontab` | Specify when the backup should be taken. By default, these are incremental backups that capture changes since the last backup and append to the current full backup. Define the schedule as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
+`RECURRING crontab` | Specify when the backup should be taken. By default, these are incremental backups. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with `ALTER BACKUP SCHEDULE`. Define the schedule as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
 `FULL BACKUP crontab / ALWAYS` | Specify when to take a new full backup. Define the schedule as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>`FULL BACKUP ALWAYS` will trigger `RECURRING` to always take full backups. **Note:** If you do not have an Enterprise license then `ALWAYS` is the only accepted value of `FULL BACKUP`. <br><br>If you omit the `FULL BACKUP` clause, the default backup schedule will be as follows: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
 `schedule_option` | Control the schedule behavior with a comma-separated list of these [schedule options](#schedule-options).
 
@@ -44,7 +44,7 @@ Parameter | Description
 
 You can use the backup options in this table to control the behavior of your backups. See [Apply different options to scheduled backups](#apply-different-options-to-scheduled-backups) for an example.
 
-{% include {{ page.version.version }}/backups/backup-options.md %}
+{% include {{ page.version.version }}/backups/backup-options-for-schedules.md %}
 
 ### Schedule options
 
