@@ -170,8 +170,19 @@
       "items": [
         {
           "title": "Cloud Storage",
-          "urls": [
-            "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+          "items": [
+            {
+              "title": "Use Cloud Storage for Bulk Operations",
+              "urls": [
+                "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+              ]
+            },
+            {
+              "title": "Cloud Storage Authentication",
+              "urls": [
+                "/${VERSION}/cloud-storage-authentication.html"
+              ]
+            }
           ]
         },
         {
