@@ -20,7 +20,7 @@ See also:
 
 - You need a {{ site.data.products.dedicated }} cluster. CMEK is not supported for {{ site.data.products.serverless }} clusters.
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
-- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts with API keys in the cloud console. Refer to [Service Accounts](console-access-management.html#service-accounts).
+- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts with API keys in CockroachDB Cloud Console. Refer to [Service Accounts](console-access-management.html#service-accounts).
 
 ## Overview of CMEK management procedures
 
