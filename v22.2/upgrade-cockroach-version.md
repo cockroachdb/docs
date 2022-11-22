@@ -31,6 +31,10 @@ There are no "minor releases" of CockroachDB.
 
 ## Step 1. Verify that you can upgrade
 
+{{site.data.alerts.callout_danger}}
+In CockroachDB v22.2.x and above, a cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
+{{site.data.alerts.end}}
+
 Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to open the SQL shell. Then check your current cluster version:
 
 {% include_cached copy-clipboard.html %}
