@@ -354,6 +354,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
@@ -554,6 +561,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 #### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -760,6 +774,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 #### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

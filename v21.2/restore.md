@@ -389,6 +389,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
@@ -586,6 +593,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 #### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -785,6 +799,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 #### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

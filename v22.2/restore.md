@@ -429,6 +429,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
@@ -442,7 +449,7 @@ To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH new_db_name = new_bank;
+WITH new_db_name = 'new_bank';
 ~~~
 
 When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
@@ -646,6 +653,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH into_db = 'newdb';
@@ -658,7 +672,7 @@ To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}'
-WITH new_db_name = new_bank;
+WITH new_db_name = 'new_bank';
 ~~~
 
 When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
@@ -864,6 +878,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH into_db = 'newdb';
@@ -876,7 +897,7 @@ To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}'
-WITH new_db_name = new_bank;
+WITH new_db_name = 'new_bank';
 ~~~
 
 When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
