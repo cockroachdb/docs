@@ -46,6 +46,27 @@ To create a multi-region cluster, click **Add regions** until you have the desir
 Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 {{site.data.alerts.end}}
 
+The following regions are available for {{ site.data.products.dedicated }}:
+
+GCP                                          | AWS
+---------------------------------------------|------
+Frankfurt, Germany (`europe-west3`)          | Osaka, Japan (`ap-northeast-3`)
+Eemshaven (`europe-west4`)                   | Montréal, Québec (`ca-central-1`)
+London (`europe-west2`)                      | Stockholm, Sweden (`eu-north-1`)
+St. Ghislain (`europe-west1`)                | Oregon (`us-west-2`)
+California (`us-west2`)                      | Ohio (`us-east-2`)
+São Paulo (`southamerica-east1`)             | Central Canada (`ca-central-1`)
+Oregon (`us-west1`)                          | São Paulo (`sa-east-1`)
+South Carolina (`us-east1`)                  | Mumbai (`ap-south-1`)
+Iowa (`us-central1`)                         | Seoul (`ap-northeast-2`)
+Montréal (`northamerica-northeast1`)         | Tokyo (`ap-northeast-1`)
+Sydney (`australia-southeast1`)              | Singapore (`ap-southeast-1`)
+Jurong West (`asia-southeast1`)              | Paris (`eu-west-3`)
+Changhua County (`asia-east1`)               | London (`eu-west-2`)
+Tokyo (`asia-northeast1`)                    | Frankfurt (`eu-central-1`)
+Hong Kong (`asia-east2`)                     | Ireland (`eu-west-1`)   
+                                             | Sydney (`ap-southeast-2`)   
+
 **Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
 
 - Mumbai (`asia-south1`)
