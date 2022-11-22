@@ -925,6 +925,12 @@
                 ]
               },
               {
+               "title": "<code>SHOW SYSTEM GRANTS</code>",
+               "urls": [
+                 "/${VERSION}/show-system-grants.html"
+               ]
+              },
+              {
                 "title": "<code>SHOW ROLES</code>",
                 "urls": [
                   "/${VERSION}/show-roles.html"
