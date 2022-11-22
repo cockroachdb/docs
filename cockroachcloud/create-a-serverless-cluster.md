@@ -37,6 +37,8 @@ South Carolina (`us-east1`)                  | Ireland (`eu-west-1`)
 Iowa (`us-central1`)                         | Oregon (`us-west-2`)
 St. Ghislain (`europe-west1`)                | N. Virginia (`us-east-1`)
 
+If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+
 {{site.data.alerts.callout_info}}
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 {{site.data.alerts.end}}
