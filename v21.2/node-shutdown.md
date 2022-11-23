@@ -258,9 +258,10 @@ To determine an appropriate termination grace period:
 - Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, in case an underlying hardware or software issue causes node shutdown to become "stuck".
 
 <section class="filter-content" markdown="1" data-scope="decommission">
+
 ### Size and replication factor
 
-Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommissioning process will hang indefinitely.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If fewer nodes are available than the replication factor, CockroachDB will automatically reduce the replication factor (for example, from 5 to 3) to try to allow the decommission to succeed. However, the replication factor will not be reduced lower than 3. If three nodes are not available, the decommissioning process will hang indefinitely until nodes are added or you update the zone configurations to use a replication factor of 1.
 
 #### 3-node cluster with 3-way replication
 
@@ -286,19 +287,6 @@ If you decommission a node, the process will run successfully because the cluste
 
 <div style="text-align: center;"><img src="{{ 'images/v21.2/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-#### 5-node cluster with 5-way replication for a specific table
-
-In this scenario, a [custom replication zone](configure-replication-zones.html#create-a-replication-zone-for-a-table) has been set to replicate a specific table 5 times (range 6), while all other data is replicated 3 times:
-
-<div style="text-align: center;"><img src="{{ 'images/v21.2/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommissioning process will hang indefinitely:
-
-<div style="text-align: center;"><img src="{{ 'images/v21.2/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-To successfully decommission a node in this cluster, you need to **add a 6th node** (or reduce the replication factor on the table). The decommissioning process can then complete:
-
-<div style="text-align: center;"><img src="{{ 'images/v21.2/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 </section>
 
 ## Perform node shutdown
@@ -539,7 +527,7 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
     ~~~
 
 1. Filter the logs for shutdown progress messages. [By default](configure-logs.html#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file:
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     grep 'drain' node1/logs/cockroach.log
@@ -768,7 +756,7 @@ The value of `is_decommissioning` will change back to `false`:
 ~~~
   id | is_live | replicas | is_decommissioning | membership | is_draining
 -----+---------+----------+--------------------+------------+--------------
-   1 |  false  |       73 |       false        |   active   |    true  
+   1 |  false  |       73 |       false        |   active   |    true
 (1 row)
 ~~~
 
