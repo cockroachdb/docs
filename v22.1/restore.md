@@ -50,7 +50,7 @@ You can restore:
  `table_pattern` | The table or [view](views.html) you want to restore.
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `collectionURI` | The [collection](take-full-and-incremental-backups.html#backup-collections) URI where the [full backup](take-full-and-incremental-backups.html#full-backups) (and appended [incremental backups](take-full-and-incremental-backups.html#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-from-the-most-recent-backup) example.
+ `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-backup) example.
  <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `localityURI` | The URI where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
@@ -234,8 +234,8 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 There are two ways to specify a backup to restore:
 
-- [Restoring from the most recent backup](#restore-from-the-most-recent-backup)
-- [Restoring from a specific backup](#restore-from-a-specific-backup)
+- [Restoring from the most recent backup](#restore-the-most-recent-backup)
+- [Restoring from a specific backup](#restore-a-specific-backup)
 
 The examples in this section demonstrate restoring from the most recent backup using the `LATEST` syntax.
 
