@@ -312,6 +312,8 @@ For more information about importing data from Avro, including examples, see [Mi
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
+{% include {{ page.version.version }}/backups/azure-url-encode.md %}
+
 ### Import into a new table from a CSV file
 
 To import into a new table, use [`CREATE TABLE`](create-table.html) followed by `IMPORT INTO`.

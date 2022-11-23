@@ -228,6 +228,8 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
+{% include {{ page.version.version }}/backups/azure-url-encode.md %}
+
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 
 ### Export a table into CSV
