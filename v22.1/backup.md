@@ -161,11 +161,9 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 
 ## Examples
 
-Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
+Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
-
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
 
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.

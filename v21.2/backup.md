@@ -155,8 +155,6 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-
 {{site.data.alerts.callout_info}}
 The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
 

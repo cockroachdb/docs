@@ -154,9 +154,7 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 ## Examples
 
-The following provide connection examples to Amazon S3. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
-
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 ### Import a PostgreSQL database dump
 

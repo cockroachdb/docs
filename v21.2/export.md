@@ -77,9 +77,7 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 
 ## Examples
 
-The following provide connection examples to Amazon S3. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
-
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 

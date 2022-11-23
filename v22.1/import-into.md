@@ -182,9 +182,7 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 
 We recommend reading the [Considerations](#considerations) section for important details when working with `IMPORT INTO`.
 
-The following provide connection examples to Amazon S3. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
-
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 ### Import into a new table from a CSV file
 

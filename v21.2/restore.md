@@ -227,10 +227,6 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
-
 ### View the backup subdirectories
 
 `BACKUP ... INTO` adds a backup to a [collection](take-full-and-incremental-backups.html#backup-collections) within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
