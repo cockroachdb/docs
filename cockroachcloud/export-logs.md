@@ -1,13 +1,15 @@
 ---
-title: Export Logs From a CockroachDB Dedicated Cluster
-summary: Export Logs From a CockroachDB Dedicated Cluster
+title: Export Logs From a CockroachDB dedicated Cluster
+summary: Export Logs From a CockroachDB dedicated Cluster
 toc: true
 docs_area: manage
 ---
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink.
 
+{{site.data.alerts.callout_danger}}
 The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+{{site.data.alerts.end}}
 
 {% include feature-phases/preview-opt-in.md %}
 
@@ -199,8 +201,8 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 1. Add your {{ site.data.products.dedicated }} cluster's service account principal to the role you just created.
 
-	1. In the GCP console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
- 1. Click the **+ Add** button.
+	1. In the GCP console, visit the [IAM admin page](https://console.cloud.google.com/iam-admin) for your project.
+ 1. Click the **+ Grant Access** button.
  1. In the box labeled **New principals**, enter the service account ID for the {{ site.data.products.dedicated }}-managed service account to which you will grant access. The service account ID takes the following format:
 
         {% include_cached copy-clipboard.html %}
@@ -211,6 +213,13 @@ Perform the following steps to enable log export from your {{ site.data.products
         Where:
         - `{cluster_id}` is the **last 12 digits** of your {{ site.data.products.dedicated }} cluster ID as determined in step 2.
         - `{project_id}` is your {{ site.data.products.dedicated }} cluster's associated GCP `account_id` as determined in step 3.
+
+        The service account ID should resemble the following example:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~
+        crl-logging-user-a1c42be2e53b@crl-prod-abc.iam.gserviceaccount.com	
+        ~~~
 
  1. In the **Select a role** dropdown, select the role you created in step 4.
 	1. Click **SAVE**.
