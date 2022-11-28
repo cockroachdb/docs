@@ -83,7 +83,7 @@ When a {{ site.data.products.serverless }} cluster is idle, it will scale down t
 
 ### Why is disk usage increasing despite lack of writes?
 
-{{ site.data.products.serverless }} clusters regularly store information about their own health and status in system tables. Once these tables hit their retention limit, storage will level off. Overall, however, the amount of stored data should be very small in relation to the overall storage limits.
+{{ site.data.products.serverless }} clusters regularly store information about their own health and status in system tables. Once these tables hit their retention limit, storage will level off. However, the amount of stored data should be very small in relation to the overall storage limits.
 
 ## Security
 
