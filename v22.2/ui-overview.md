@@ -33,6 +33,7 @@ The Metrics page provides dashboards for all types of CockroachDB metrics.
 - [Slow requests dashboard](ui-slow-requests-dashboard.html) has metrics about important cluster tasks that take longer than expected to complete, including Raft proposals and lease acquisitions.
 - [Changefeeds dashboard](ui-cdc-dashboard.html) has metrics about the [changefeeds](change-data-capture-overview.html) created across your cluster.
 - [Overload dashboard](ui-overload-dashboard.html) has metrics about the performance of the parts of your cluster relevant to the cluster's [admission control system](admission-control.html).
+- [TTL dashboard](ui-ttl-dashboard.html) has metrics about the progress and performance of [batch deleting expired data using Row-Level TTL](row-level-ttl.html) from your cluster.
 
 ### Databases
 
