@@ -26,17 +26,6 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. _(Optional)_ Select a region in the **Regions** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
-The following regions are available for {{ site.data.products.serverless }}:
-
-GCP                                          | AWS
----------------------------------------------|------
-Jurong West (`asia-southeast1`)              | Singapore (`ap-southeast-1`)
-São Paulo (`southamerica-east1`)             | Mumbai (`ap-south-1`)
-California (`us-west2`)                      | Frankfurt (`eu-central-1`)
-South Carolina (`us-east1`)                  | Ireland (`eu-west-1`) 
-Iowa (`us-central1`)                         | Oregon (`us-west-2`)
-St. Ghislain (`europe-west1`)                | N. Virginia (`us-east-1`)
-
 If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 {{site.data.alerts.callout_info}}

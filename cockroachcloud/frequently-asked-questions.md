@@ -17,7 +17,26 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### In what clouds and regions is {{ site.data.products.db }} available?
 
-The  {{ site.data.products.db }} Console will always show the latest available cloud infrastructure providers and regions. Open the [**Create Cluster**](https://cockroachlabs.cloud/cluster/create) page and select a Plan to see which providers and regions are currently available.
+The following regions are available for {{ site.data.products.dedicated }}:
+
+GCP                                          | AWS
+---------------------------------------------|------
+Frankfurt, Germany (`europe-west3`)          | Osaka, Japan (`ap-northeast-3`)
+Eemshaven (`europe-west4`)                   | Montréal, Québec (`ca-central-1`)
+London (`europe-west2`)                      | Stockholm, Sweden (`eu-north-1`)
+St. Ghislain (`europe-west1`)                | Oregon (`us-west-2`)
+California (`us-west2`)                      | Ohio (`us-east-2`)
+São Paulo (`southamerica-east1`)             | Central Canada (`ca-central-1`)
+Oregon (`us-west1`)                          | São Paulo (`sa-east-1`)
+South Carolina (`us-east1`)                  | Mumbai (`ap-south-1`)
+Iowa (`us-central1`)                         | Seoul (`ap-northeast-2`)
+Montréal (`northamerica-northeast1`)         | Tokyo (`ap-northeast-1`)
+Sydney (`australia-southeast1`)              | Singapore (`ap-southeast-1`)
+Jurong West (`asia-southeast1`)              | Paris (`eu-west-3`)
+Changhua County (`asia-east1`)               | London (`eu-west-2`)
+Tokyo (`asia-northeast1`)                    | Frankfurt (`eu-central-1`)
+Hong Kong (`asia-east2`)                     | Ireland (`eu-west-1`)   
+                                             | Sydney (`ap-southeast-2`) 
 
 We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions in which their offerings are available. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting EKS or GKE in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
