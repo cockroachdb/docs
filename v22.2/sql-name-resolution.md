@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 This page documents **name resolution** in CockroachDB.
 
-To reference an object (e.g., a table) in a query, you can specify a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following the rules in [How name resolution works](#how-name-resolution-works).
+To reference an object (e.g., a table) in a query, you can specify the [identifier](keywords-and-identifiers.html#identifiers) that refers to a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following the rules in [How name resolution works](#how-name-resolution-works).
 
 ## Naming hierarchy
 
@@ -275,3 +275,4 @@ fully qualified name, as follows:
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [Information Schema](information-schema.html)
+- [Keywords and Identifiers](keywords-and-identifiers.html)

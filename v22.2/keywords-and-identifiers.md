@@ -47,3 +47,4 @@ To bypass either of these rules, simply surround the identifier with double-quot
 
 - [SQL Statements](sql-statements.html)
 - [Full SQL Grammar](sql-grammar.html)
+- [SQL Name Resolution](sql-name-resolution.html)
