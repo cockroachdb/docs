@@ -44,7 +44,7 @@ For each backup, the following details display:
 - The remaining number of days the backup will be retained (**Expires In**)
 - The number of [**Databases**](#databases) included in the backup
 
-    To view the databases included in the backup, click the number in the [**Databases**](#databases) column
+    To view the databases included in the backup and initiate a restore, click the number in the [**Databases**](#databases) column
 </div>
 <div class="filter-content" markdown="1" data-scope="serverless">
 - The date and time the backup was taken (**Data From**)
