@@ -126,7 +126,7 @@ URI Parameter      | Description
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
 `region`           | (Required) The single region to which all output will be sent.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
 
@@ -162,7 +162,7 @@ Some considerations when using cloud storage sinks:
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
-You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication). 
+You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Use Cloud Storage for Bulk Operations — Authentication](cloud-storage-authentication.html). 
 
 Examples of supported cloud storage sink URIs:
 
@@ -193,7 +193,7 @@ URI Parameter      | Storage | Description
 `AWS_ACCESS_KEY_ID` | AWS | The access key to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
 `ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
-`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these. 
+`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these. 
 `AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure | The URL-encoded account key for your Azure account.
 `CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
@@ -204,7 +204,7 @@ URI Parameter      | Storage | Description
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
+[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) provides more detail on authentication to cloud storage sinks.
 
 ## Webhook sink
 

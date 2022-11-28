@@ -80,9 +80,9 @@ CockroachDB supports assume role authentication on clusters running v22.2. Authe
 Role assumption applies the principle of least privilege rather than directly providing privilege to a user. Creating IAM roles to manage access to AWS resources is Amazon's recommended approach compared to giving access straight to IAM users.
 {{site.data.alerts.end}}
 
-The [following section](#set-up-aws-assume-role-authentication) demonstrates setting up assume role authentication between two users. Since you can chain an arbitrary number of roles, see the [Role chaining](#aws-role-chaining) section for additional detail. 
+The [following section](#set-up-amazon-s3-assume-role) demonstrates setting up assume role authentication between two users. Since you can chain an arbitrary number of roles, see the [Role chaining](#amazon-s3-role-chaining) section for additional detail. 
 
-### Set up Amazon S3 assume role authentication
+### Set up Amazon S3 assume role
 
 For example, to configure a user to assume an IAM role that allows a bulk operation to an Amazon S3 bucket, take the following steps:
 
@@ -130,7 +130,7 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
     - If you set the `Principal` ARN to `root`, this will allow any IAM user in the account with the `AssumeRole` permission to access the Amazon S3 bucket as per the defined IAM role permissions.
     - When the IAM user takes on the role to perform a bulk operation, they are temporarily granted the permissions contained in the role. That is, not the permissions specified in their user profile.
 
-1. Run the bulk operation. If using [specified authentication](#specified-authentication), pass in the S3 bucket's URL with the IAM user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. If using [implicit authentication](#implicit-authentication), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's ARN, which you can copy from the IAM role's summary page:
+1. Run the bulk operation. If using [specified authentication](#amazon-s3-specified), pass in the S3 bucket's URL with the IAM user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. If using [implicit authentication](#google-cloud-storage-implicit), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's ARN, which you can copy from the IAM role's summary page:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -238,7 +238,7 @@ Once you have an identity role that your CockroachDB nodes can assume, you can c
 
     <img src="{{ 'images/v22.2/aws-wi-review-page.png' | relative_url }}" alt="Final screen in the create role process to review permissions and name role" style="border:1px solid #eee;max-width:100%" />
 
-1. To run the bulk operation, you can use [`implicit` authentication](#implicit-authentication) for your identity role and pass the `ASSUME_ROLE` parameter for your operation role. For a backup to Amazon S3:
+1. To run the bulk operation, you can use [`implicit` authentication](#google-cloud-storage-implicit) for your identity role and pass the `ASSUME_ROLE` parameter for your operation role. For a backup to Amazon S3:
 
     ~~~sql
     BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
@@ -321,9 +321,9 @@ CockroachDB supports assume role authentication on clusters running v22.2. Authe
 
 {% include_cached new-in.html version="v22.2" %} To limit the control access to your Google Cloud Storage buckets, you can create [service accounts](https://cloud.google.com/iam/docs/understanding-service-accounts) for another service account to assume. Service accounts do not necessarily have an association to a particular user. The service account contains permissions that define the operations a user, who has access to the service account, can complete. A service account can then assume another service account to undertake a CockroachDB backup, restore, import, etc. As a result, a service account with limited privileges only has access to the roles of the assumed service account, rather than having unlimited access to a GCS bucket.
 
-The access is also limited by the generated [short-lived credentials](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct). The service account/role that is assuming another role, will issue the request for the short-lived credentials. If there are multiple roles in the [chain](#google-cloud-role-chaining), then each role defined in the chain will issue the request for credentials for the next role in the chain. 
+The access is also limited by the generated [short-lived credentials](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct). The service account/role that is assuming another role, will issue the request for the short-lived credentials. If there are multiple roles in the [chain](#google-cloud-storage-role-chaining), then each role defined in the chain will issue the request for credentials for the next role in the chain. 
 
-The [following section](#set-up-google-cloud-assume-role-authentication) demonstrates setting up assume role authentication between two service accounts A and B. You can also chain an arbitrary number of roles, see the [Role chaining](#google-cloud-role-chaining) section for additional detail.
+The [following section](#set-up-google-cloud-storage-assume-role) demonstrates setting up assume role authentication between two service accounts A and B. You can also chain an arbitrary number of roles, see the [Role chaining](#google-cloud-storage-role-chaining) section for additional detail.
 
 ### Set up Google Cloud Storage assume role
 
@@ -354,7 +354,7 @@ For this example, both service accounts have already been created. If you need t
 
     <img src="{{ 'images/v22.2/gcs-assume-grant-sa-access.png' | relative_url }}" alt="Granting service account A access to service account B with the token creator role." style="border:1px solid #eee;max-width:100%" />
 
-1. Finally, you will run the bulk operation from your CockroachDB cluster. If you're using [specified authentication](#specified-authentication), pass in the GCS bucket's URL with the IAM user's `CREDENTIALS`. If you're using [implicit authentication](#implicit-authentication), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's service account name, which you can copy from the **Service Accounts** page:
+1. Finally, you will run the bulk operation from your CockroachDB cluster. If you're using [specified authentication](#google-cloud-storage-specified), pass in the GCS bucket's URL with the IAM user's `CREDENTIALS`. If you're using [implicit authentication](#google-cloud-storage-implicit), specify `AUTH=IMPLICIT` instead. For assuming the role, pass the assumed role's service account name, which you can copy from the **Service Accounts** page:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -444,7 +444,7 @@ Once you have an identity service account that your CockroachDB nodes can assume
     If you already have the service account that contains permissions for the bulk operation, ensure that you give the identity service account access to this service account. Click on your service account and navigate to the **Permissions** tab. Then, use the process in step 2 to complete this. 
     {{site.data.alerts.end}}
 
-1. To run the bulk operation, you can use [`implicit` authentication](#implicit-authentication) for your identity service account and pass the `ASSUME_ROLE` parameter for your operation service account. For a backup to your Google Cloud Storage bucket:
+1. To run the bulk operation, you can use [`implicit` authentication](#google-cloud-storage-implicit) for your identity service account and pass the `ASSUME_ROLE` parameter for your operation service account. For a backup to your Google Cloud Storage bucket:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql

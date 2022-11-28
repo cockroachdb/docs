@@ -102,7 +102,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 - [URL format](use-cloud-storage-for-bulk-operations.html#url-format)
 - [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
-- [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
+- [Authentication parameters](cloud-storage-authentication.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
@@ -474,7 +474,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](cloud-storage-authentication.html).
 
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.

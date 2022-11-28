@@ -63,7 +63,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - [Nodelocal](cockroach-nodelocal-upload.html)
 
@@ -731,7 +731,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 <section class="filter-content" markdown="1" data-scope="gcs">
 
 {{site.data.alerts.callout_info}}
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](cloud-storage-authentication.html).
 {{site.data.alerts.end}}
 
 ### View the backup subdirectories
