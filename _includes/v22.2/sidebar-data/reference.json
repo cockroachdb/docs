@@ -211,6 +211,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/alter-locality.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER PARTITION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-partition.html"
