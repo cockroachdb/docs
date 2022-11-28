@@ -11,7 +11,7 @@ Cluster SSO for SQL access allows users to access the SQL interface of a Cockroa
 
 Note that this regards SQL access to a specific CockroachDB Cluster, not access to a Cockroach Cloud organization. For the latter, see [Single Sign-On (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html)
 
-Cluster SSO includes separate flows for [human users](#authenticate-human-users-with-the-cloud-console) and [software-operated service accounts](#authenticate-software-users-service-accounts), as described in what follows.
+Cluster SSO includes separate flows for [human users](#authenticate-human-users-with-the-cloud-console) and [software-operated service accounts](#authenticate-software-users-service-accounts-with-external-idps), as described in what follows.
 
 ## Authenticate human users with the cloud console
 
@@ -144,7 +144,8 @@ cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:2625
 ~~~
 
 
-## Cluster SSO for SQL access with self-hosted CockroachDB clusters
+## Managing Cluster SSO for self-hosted CockroachDB clusters
+
 
 ### Configure your self-hosted cluster to enable Cluster SSO for SQL access
 
@@ -197,12 +198,9 @@ For Azure - https://learn.microsoft.com/en-us/azure/active-directory/develop/acc
 For Azure - https://login.microsoftonline.com/<Azure_Tenant_Id>/v2.0
 
 
-
-
 ### SQL access for human users
 
 ### SQL access for service accounts
-
 
 Self-hosted
 CC allows us to abstract away lots of the complexity of setting this all up. Under the hood, CC is creating signed JWTs. These tokens contain information about the user who logged in and are signed with an asymmetric key so we know they came from CC. In order to get this to work for self-hosted customers, they have to set a series of cluster settings including:
@@ -224,10 +222,7 @@ There are some cases where a customer will want to use a third-party token issue
 
 Many of these providers do not have subject fields that are valid SQL usernames. To support this, we reuse the existing username maps (see PSQL docs https://www.postgresql.org/docs/current/auth-username-maps.html). Using this method, users can map the subjects in their tokens to whatever they wish.
 
-
-
-
-CRDB SSO FAQ
+## CRDB SSO FAQ
 
 What is CRDB SSO?
 CRDB SSO is a feature to be released in 22.2.0 (currently available on beta3) that allows users to integrate with external identity providers so that user logins can be managed centrally. The way we do this under the hood is by passing JWTs (signed tokens) to CRDB.
