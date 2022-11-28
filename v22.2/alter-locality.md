@@ -23,7 +23,7 @@ ALTER DATABASE <database> ALTER LOCALITY <locality_scope> CONFIGURE ZONE USING <
 
 Parameter | Description
  --- | ---
-`database` | The [multi-region database](multiregion-overview.html)  containing the [regions](multiregion-overview.html#database-regions) whose [zone configs](configure-replication-zones.html) you want to modify.
+`database` | The [multi-region database](multiregion-overview.html) containing the [regions](multiregion-overview.html#database-regions) whose [zone configs](configure-replication-zones.html) you want to modify.
 `locality_scope`  | One of: `GLOBAL` ([global tables](multiregion-overview.html#global-tables)), `REGIONAL` (all [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) and [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables), or `REGIONAL IN` (all `REGIONAL BY TABLE IN {region}` tables and all `{region}` [partitions](partitioning.html) of `REGIONAL BY ROW` tables).
 `set_zone_config` | The [zone config](configure-replication-zones.html) you want to apply to the [schema objects](schema-design-overview.html) in that [region](multiregion-overview.html#database-regions).
 
