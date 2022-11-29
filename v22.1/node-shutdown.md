@@ -126,13 +126,15 @@ Each of the [node shutdown steps](#node-shutdown-sequence) is performed in order
 
 Before you [perform node shutdown](#perform-node-shutdown), review the following prerequisites to graceful shutdown:
 
-- Configure your [load balancer](#load-balancing) to monitor node health.
-- Review and adjust [cluster settings](#cluster-settings) and [drain timeout](#drain-timeout) as needed for your deployment.
-- Implement [connection retry logic](#connection-retry-loop) to handle closed connections.
-- Configure the [termination grace period](#termination-grace-period) of your process manager or orchestration system.
+<ul>
+<li>Configure your <a href="#load-balancing">load balancer</a> to monitor node health.</li>
+<li>Review and adjust <a href="#cluster-settings">cluster settings</a> and <a href="#drain-timeout">drain timeout</a> as needed for your deployment.</li>
+<li>Implement <a href="#connection-retry-loop">connection retry logic</a> to handle closed connections.</li>
+<li>Configure the <a href="#termination-grace-period">termination grace period</a> of your process manager or orchestration system.</li>
 <section class="filter-content" markdown="1" data-scope="decommission">
-- Ensure that the [size and replication factor](#size-and-replication-factor) of your cluster are sufficient to handle decommissioning.
+<li>Ensure that the <a href="#size-and-replication-factor">size and replication factor</a> of your cluster are sufficient to handle decommissioning.</li>
 </section>
+</ul>
 
 ### Load balancing
 
