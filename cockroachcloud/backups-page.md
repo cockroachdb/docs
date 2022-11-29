@@ -180,7 +180,7 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as {{ site.data.products.db }} will need the `specified` credentials upon [`RESTORE`](../{{site.versions["stable"]}}/restore.html). For more information on authentication parameters to cloud storage providers, see [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/cloud-storage-authentication.html).
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as {{ site.data.products.db }} will need the `specified` credentials upon [`RESTORE`](../{{site.versions["stable"]}}/restore.html). For more information on authentication parameters to cloud storage providers, see [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html#authentication).
     {{site.data.alerts.end}}
 
 1. [Connect to your {{ site.data.products.db }} cluster](connect-to-your-cluster.html):

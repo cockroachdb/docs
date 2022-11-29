@@ -162,7 +162,7 @@ Some considerations when using cloud storage sinks:
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
-You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Use Cloud Storage for Bulk Operations — Authentication](cloud-storage-authentication.html). 
+You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](cloud-storage-authentication.html). 
 
 Examples of supported cloud storage sink URIs:
 
