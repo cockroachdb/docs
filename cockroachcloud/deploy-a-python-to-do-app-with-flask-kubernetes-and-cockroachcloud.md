@@ -3,7 +3,7 @@ title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
 summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachDB Cloud
 toc: true
 toc_not_nested: true
-docs_area: 
+docs_area:
 ---
 
 This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
@@ -42,7 +42,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 5. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
+    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.versions["cloud"]}}/ui-overview.html).
 
 6. Click **Apply**.
 
@@ -70,7 +70,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
       <button style="width: 15%" class="filter-button" data-scope="windows">Windows</button>
     </div>
     {% include cockroachcloud/download-the-cert.md %}
-    
+
 1. On the **Command Line** tab, copy the connection string.
 
     Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
@@ -79,7 +79,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 On your local workstation's terminal:
 
-1. If you haven't already, [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html) and copy it into the `PATH`:
+1. If you haven't already, [Download the CockroachDB binary](../{{site.versions["cloud"]}}/install-cockroachdb.html) and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -414,7 +414,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
         NAME                         READY   STATUS              RESTARTS   AGE
         appdeploy-577f66b4c8-46s5r   0/1     ErrImageNeverPull   0          23m
         appdeploy-577f66b4c8-9chjx   0/1     ErrImageNeverPull   0          23m
-        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m  
+        appdeploy-577f66b4c8-cnhrg   0/1     ErrImageNeverPull   0          23m
         ~~~
 
     2. Port-forward from your local machine to one of the pods:
@@ -441,16 +441,16 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 1. On the Console, navigate to the cluster's **Monitoring** page and click **Open DB Console**.
 
     You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
-    
+
 1. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
-    
+
     {% include cockroachcloud/postgresql-special-characters.md %}
-    
+
 1. Click **Log In**.
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](../{{site.versions["stable"]}}/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](../{{site.versions["cloud"]}}/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -460,7 +460,7 @@ On the [**Cluster Overview** page](../{{site.versions["stable"]}}/ui-cluster-ove
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-2. On the [**Hardware** dashboard](../{{site.versions["stable"]}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+2. On the [**Hardware** dashboard](../{{site.versions["cloud"]}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -469,4 +469,4 @@ On the [**Cluster Overview** page](../{{site.versions["stable"]}}/ui-cluster-ove
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-2. The [**Statements** page](../{{site.versions["stable"]}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+2. The [**Statements** page](../{{site.versions["cloud"]}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

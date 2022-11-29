@@ -128,7 +128,7 @@
       	    {
       	      "title": "Migration Overview",
       	      "urls": [
-      		      "/{{site.versions["stable"]}}/migration-overview.html"
+      		      "/{{site.versions["cloud"]}}/migration-overview.html"
       	      ]
       	    },
             {
@@ -140,37 +140,37 @@
             {
       	      "title": "Migrate from Oracle",
       	      "urls": [
-      		      "/{{site.versions["stable"]}}/migrate-from-oracle.html"
+      		      "/{{site.versions["cloud"]}}/migrate-from-oracle.html"
       	      ]
       	    },
       	    {
       	      "title": "Migrate from PostgreSQL",
       	      "urls": [
-      		      "/{{site.versions["stable"]}}/migrate-from-postgres.html"
+      		      "/{{site.versions["cloud"]}}/migrate-from-postgres.html"
       	      ]
       	    },
       	    {
       	      "title": "Migrate from MySQL",
       	      "urls": [
-      		      "/{{site.versions["stable"]}}/migrate-from-mysql.html"
+      		      "/{{site.versions["cloud"]}}/migrate-from-mysql.html"
       	      ]
       	    },
       	    {
       	      "title": "Migrate from CSV",
       	      "urls": [
-      		      "/{{site.versions["stable"]}}/migrate-from-csv.html"
+      		      "/{{site.versions["cloud"]}}/migrate-from-csv.html"
       	      ]
       	    },
       	    {
       	      "title": "Migrate from Avro",
       	      "urls": [
-      		      "/{{site.versions["stable"]}}/migrate-from-avro.html"
+      		      "/{{site.versions["cloud"]}}/migrate-from-avro.html"
       	      ]
       	    },
             {
               "title": "Import Performance Best Practices",
               "urls": [
-                "/{{site.versions["stable"]}}/import-performance-best-practices.html"
+                "/{{site.versions["cloud"]}}/import-performance-best-practices.html"
               ]
             }
       	  ]
@@ -181,7 +181,7 @@
           	{
           	  "title": "Tune Performance",
           	  "urls": [
-          	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
+          	    "/{{site.versions["cloud"]}}/performance-best-practices-overview.html"
           	  ]
           	},
             {
