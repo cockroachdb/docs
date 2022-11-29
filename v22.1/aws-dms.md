@@ -161,6 +161,8 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
     ~~~
 
+    This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
+
 - **Drop tables on target** is not supported on v22.1 and earlier, and will error on initial load.
 
 - On v22.1.0 to v22.1.6, a migration may fail if there is an odd number of `"` characters in a row. AWS DMS will return an error message like the following: `[TARGET_LOAD ]D: Command failed to load data with exit error code 0.`. This is resolved in [v22.1.7 and later](../releases/v22.1.html).

@@ -161,6 +161,8 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
     ~~~
 
+    This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
+
 ## Troubleshooting common issues
 
 - For visibility into migration problems:
