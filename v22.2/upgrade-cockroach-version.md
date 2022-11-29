@@ -124,8 +124,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **SCRAM-SHA-256 authentication:** CockroachDB supports [SCRAM-SHA-256](security-reference/scram-authentication.html) authentication for clients in both CockroachDB Cloud and CockroachDB Self-Hosted. For SQL client sessions, it is now possible to use the authentication methods `password` (cleartext passwords), and `cert-password` (TLS client cert or cleartext password) with either CRDB-BCRYPT or SCRAM-SHA-256 stored credentials.
-- **Row-Level Time to Live (TTL):** CockroachDB has preview support for Time to Live ("TTL") expiration on table rows, also known as [Row-Level TTL](row-level-ttl.html). Row-Level TTL is a mechanism whereby rows from a table are considered "expired" and can be automatically deleted once those rows have been stored longer than a specified expiration time.
+TBD
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 
@@ -260,6 +259,8 @@ Once you are satisfied with the new version:
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
+
+1. After the upgrade to {{ page.version.version }} is finalized, it is expected to notice an increase in compaction activity due to a migration within the storage engine that runs in the background. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in DB Console or monitor the `storage.marked-for-compaction-files` time series metric. In the absence of routine compactions, when the metric's value nears or reaches `0`, the migration is complete and compaction activity returns to normal levels.
 
 ## Troubleshooting
 
