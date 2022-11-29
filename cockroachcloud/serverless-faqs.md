@@ -79,7 +79,11 @@ When automatic statistics collection starts your cluster may consume RUs above t
 
 ### What is the cold start latency of a Serverless cluster?
 
-When a Serverless cluster is idle, it will scale down to zero and consume no RUs. When the cluster becomes active again it will begin serving requests within a fraction of a second, typically around 600 milliseconds.
+When a {{ site.data.products.serverless }} cluster is idle, it will scale down to zero and consume no RUs. When the cluster becomes active again it will begin serving requests within a fraction of a second, typically around 600 milliseconds.
+
+### Why is disk usage increasing despite lack of writes?
+
+{{ site.data.products.serverless }} clusters regularly store information about their own health and status in system tables. Once these tables hit their retention limit, storage will level off. However, the amount of stored data should be very small in relation to the overall storage limits.
 
 ## Security
 
