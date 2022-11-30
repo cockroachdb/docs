@@ -215,7 +215,7 @@ JOIN users AS u ON r.rider_id = u.id;
   index recommendations: 2
   1. type: index creation
      SQL command: CREATE INDEX ON rides (rider_id) STORING (vehicle_city, vehicle_id, start_address, end_address, start_time, end_time, revenue);
-  2. type: index creation
+  1. type: index creation
      SQL command: CREATE INDEX ON users (id) STORING (name, address, credit_card);
 (22 rows)
 

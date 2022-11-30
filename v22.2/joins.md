@@ -111,7 +111,7 @@ To perform a [merge join](https://en.wikipedia.org/wiki/Sort-merge_join) of two 
 Merge joins are performed on the indexed columns of two tables as follows:
 
 1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC`).
-2. CockroachDB takes one row from each table and compares them.
+1. CockroachDB takes one row from each table and compares them.
     - For inner joins:
         - If the rows are equal, CockroachDB returns the rows.
         - If there are multiple matches, the cartesian product of the matches is returned.
@@ -128,8 +128,8 @@ If a merge join cannot be used, CockroachDB uses a [hash join](https://en.wikipe
 Hash joins are performed on two tables as follows:
 
 1. CockroachDB reads both tables and attempts to pick the smaller table.
-2. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
-3. CockroachDB then scans the large table, looking up each row in the hash table.
+1. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
+1. CockroachDB then scans the large table, looking up each row in the hash table.
 
 ### Lookup joins
 
@@ -138,7 +138,7 @@ The [cost-based optimizer](cost-based-optimizer.html) decides when it would be b
 Lookup joins are performed on two tables as follows:
 
 1. CockroachDB reads each row in the small table.
-2. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
+1. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 

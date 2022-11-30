@@ -6,7 +6,7 @@ For example, imagine we are a Movr administrator in New York, and we want to get
 
 1. SSH to the instance in `us-east1-b` with the Python client.
 
-2. Query for the data:
+1. Query for the data:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -44,7 +44,7 @@ For contrast, imagine we are now a Movr administrator in Los Angeles, and we wan
 
 1. SSH to the instance in `us-west2-a` with the Python client.
 
-2. Query for the data:
+1. Query for the data:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -82,7 +82,7 @@ The geographic distribution of data impacts write performance as well. For examp
 
 1. SSH to the instance in `us-west1-a` with the Python client.
 
-2. Create 100 Seattle-based users:
+1. Create 100 Seattle-based users:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -101,9 +101,9 @@ The geographic distribution of data impacts write performance as well. For examp
     48.4025478363
     ~~~
 
-3. SSH to the instance in `us-east1-b` with the Python client.
+1. SSH to the instance in `us-east1-b` with the Python client.
 
-4. Create 100 new NY-based users:
+1. Create 100 new NY-based users:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

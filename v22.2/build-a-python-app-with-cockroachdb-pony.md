@@ -60,8 +60,8 @@ $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-direc
 The code below uses PonyORM to map Python objects and methods to SQL operations. When you run the code as a script, it performs the following operations:
 
 1. Reads existing account IDs from the `bank` database.
-2. Creates additional accounts with randomly generated IDs, and then adds a bit of money to each new account.
-3. Chooses two accounts at random and takes half of the money from the first account and deposits it into the second.
+1. Creates additional accounts with randomly generated IDs, and then adds a bit of money to each new account.
+1. Chooses two accounts at random and takes half of the money from the first account and deposits it into the second.
 
 <section class="filter-content" markdown="1" data-scope="secure">
 

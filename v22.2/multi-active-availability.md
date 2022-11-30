@@ -34,9 +34,9 @@ For databases, though, active-active replication is incredibly difficult to inst
 For this example, we have 2 replicas (**A**, **B**) in an active-active high availability cluster.
 
 1. **A** receives a write for key `xyz` of `'123'`, and then immediately fails.
-2. **B** receives a read of key `xyz`, and returns a `NULL` because it cannot find the key.
-3. **B** then receives a write for key `xyz` of `'456'`.
-4. **A** is restarted and attempts to rejoin **B**––but what do you do about key `xyz`? There's an inconsistency in the system without a clear way to resolve it.
+1. **B** receives a read of key `xyz`, and returns a `NULL` because it cannot find the key.
+1. **B** then receives a write for key `xyz` of `'456'`.
+1. **A** is restarted and attempts to rejoin **B**––but what do you do about key `xyz`? There's an inconsistency in the system without a clear way to resolve it.
 
 {{site.data.alerts.callout_info}}In this example, the cluster remained active the entire time. But in terms of the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>, this is an AP system; it favored being available instead of consistent when partitions occur.{{site.data.alerts.end}}
 
@@ -53,10 +53,10 @@ To prevent conflicts and guarantee your data's consistency, clusters that lose a
 For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a multi-active availability cluster.
 
 1. **A** receives a write on `xyz` of `'123'`. It communicates this write to nodes **B** and **C**, who confirm that they've received the write, as well. Once **A** receives the first confirmation, the change is committed.
-2. **A** fails.
-3. **B** receives a read of key `xyz`, and returns the result `'123'`.
-4. **C** then receives an update for key `xyz` to the values `'456'`. It communicates this write to node **B**, who confirms that its received the write, as well. After receiving the confirmation, the change is committed.
-5. **A** is restarted and rejoins the cluster. It receives an update that the key `xyz` had its value changed to `'456'`.
+1. **A** fails.
+1. **B** receives a read of key `xyz`, and returns the result `'123'`.
+1. **C** then receives an update for key `xyz` to the values `'456'`. It communicates this write to node **B**, who confirms that its received the write, as well. After receiving the confirmation, the change is committed.
+1. **A** is restarted and rejoins the cluster. It receives an update that the key `xyz` had its value changed to `'456'`.
 
 {{site.data.alerts.callout_info}}In this example, if nodes <strong>B</strong> or <strong>C</strong> failed at any time, the cluster would have stopped responding. In terms of the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>, this is a CP system; it favored being consistent instead of available when partitions occur.{{site.data.alerts.end}}
 

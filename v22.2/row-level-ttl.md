@@ -104,8 +104,8 @@ The statement has the following effects:
 <a name="crdb-internal-expiration"></a>
 
 1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table.
-2. Adds a `NOT VISIBLE` column called `crdb_internal_expiration` of type [`TIMESTAMPTZ`](timestamp.html) to represent the TTL.
-3. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
+1. Adds a `NOT VISIBLE` column called `crdb_internal_expiration` of type [`TIMESTAMPTZ`](timestamp.html) to represent the TTL.
+1. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
 
 To see the hidden column and the storage parameters, enter the [`SHOW CREATE TABLE`](show-create.html) statement:
 

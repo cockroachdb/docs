@@ -2,7 +2,7 @@ For this service, the most effective technique for improving read and write late
 
 1. Partitioning is an enterprise feature, so start off by [registering for a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/).
 
-2. Once you've received the trial license, SSH to any node in your cluster and [apply the license](licensing-faqs.html#set-a-license):
+1. Once you've received the trial license, SSH to any node in your cluster and [apply the license](licensing-faqs.html#set-a-license):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -20,7 +20,7 @@ For this service, the most effective technique for improving read and write late
     --execute="SET CLUSTER SETTING enterprise.license = '<your license>';"
     ~~~
 
-3. Define partitions for all tables and their secondary indexes.
+1. Define partitions for all tables and their secondary indexes.
 
     Start with the `users` table:
 
@@ -145,7 +145,7 @@ For this service, the most effective technique for improving read and write late
     The `rides` table contains 1 million rows, so dropping this index will take a few minutes.
     {{site.data.alerts.end}}
 
-7. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-partition) to require city data to be stored on specific nodes based on node locality.
+1. Now [create replication zones](configure-replication-zones.html#create-a-replication-zone-for-a-partition) to require city data to be stored on specific nodes based on node locality.
 
     City | Locality
     -----|---------

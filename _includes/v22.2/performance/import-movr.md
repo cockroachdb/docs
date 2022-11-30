@@ -7,7 +7,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     $ cockroach sql {{page.certs}} --host=<address of any node>
     ~~~
 
-2. Create the `movr` database and set it as the default:
+1. Create the `movr` database and set it as the default:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -19,7 +19,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     > SET DATABASE = movr;
     ~~~
 
-3. Use the [`IMPORT`](import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables:
+1. Use the [`IMPORT`](import.html) statement to create and populate the `users`, `vehicles,` and `rides` tables:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -118,7 +118,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     You can observe the progress of imports as well as all schema change operations (e.g., adding secondary indexes) on the [**Jobs** page](ui-jobs-page.html) of the DB Console.
     {{site.data.alerts.end}}
 
-7. Logically, there should be a number of [foreign key](foreign-key.html) relationships between the tables:
+1. Logically, there should be a number of [foreign key](foreign-key.html) relationships between the tables:
 
     Referencing columns | Referenced columns
     --------------------|-------------------
@@ -152,7 +152,7 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
     REFERENCES vehicles (city, id);
     ~~~
 
-4. Exit the built-in SQL shell:
+1. Exit the built-in SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

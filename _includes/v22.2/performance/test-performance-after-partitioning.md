@@ -8,7 +8,7 @@ Again imagine we are a Movr administrator in New York, and we want to get the ID
 
 1. SSH to the instance in `us-east1-b` with the Python client.
 
-2. Query for the data:
+1. Query for the data:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -48,7 +48,7 @@ Now let's again imagine 100 people in New York and 100 people in Seattle and 100
 
 1. SSH to the instance in `us-west1-a` with the Python client.
 
-2. Create 100 Seattle-based users:
+1. Create 100 Seattle-based users:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -69,9 +69,9 @@ Now let's again imagine 100 people in New York and 100 people in Seattle and 100
 
     Before partitioning, this query took a median time of 48.40ms. After partitioning, the query took a median time of only 8.90ms.
 
-3. SSH to the instance in `us-east1-b` with the Python client.
+1. SSH to the instance in `us-east1-b` with the Python client.
 
-4. Create 100 new NY-based users:
+1. Create 100 new NY-based users:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

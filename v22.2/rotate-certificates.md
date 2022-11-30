@@ -30,9 +30,9 @@ You may need to rotate the node, client, or CA certificates in the following sce
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-2. Upload the new client certificate and key to the client using your preferred method.
+1. Upload the new client certificate and key to the client using your preferred method.
 
-3. Have the client use the new client certificate.
+1. Have the client use the new client certificate.
 
     This step is application-specific and may require restarting the client.
 
@@ -55,7 +55,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
     Since you must create the new certificate and key in the same directory as the existing certificate and key, use the `--overwrite` flag to overwrite the existing files. Also, be sure to specify all addresses at which node can be reached.
 
-2. Upload the node certificate and key to the node:
+1. Upload the node certificate and key to the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -64,7 +64,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
     <username>@<node address>:~/certs
     ~~~
 
-3. Reload the node certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
+1. Reload the node certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -73,7 +73,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
     The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
 
-4. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
+1. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
 
     Scroll to the node certificate details and confirm that the **Valid Until** field shows the new certificate expiration time.
 
@@ -90,7 +90,7 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
     $ mv  my-safe-directory/ca.key my-safe-directory/ca.old.key
     ~~~
 
-2. Create a new CA certificate and key, using the `--overwrite` flag to overwrite the old CA certificate:
+1. Create a new CA certificate and key, using the `--overwrite` flag to overwrite the old CA certificate:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -104,7 +104,7 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
     {{site.data.alerts.callout_danger}}The CA key is never loaded automatically by <code>cockroach</code> commands, so it should be created in a separate directory, identified by the <code>--ca-key</code> flag.{{site.data.alerts.end}}
 
-2. Upload the new CA certificate to each node:
+1. Upload the new CA certificate to each node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -112,9 +112,9 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
     <username>@<node1 address>:~/certs
     ~~~
 
-3. Upload the new CA certificate to each client using your preferred method.
+1. Upload the new CA certificate to each client using your preferred method.
 
-4. On each node, reload the CA certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
+1. On each node, reload the CA certificate without restarting the node by issuing a `SIGHUP` signal to the `cockroach` process:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -123,15 +123,15 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
     The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
 
-5. Reload the CA certificate on each client.
+1. Reload the CA certificate on each client.
 
     This step is application-specific and may require restarting the client.
 
-6. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
+1. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
 
     The details of the old as well as new CA certificates should be shown. Confirm that the **Valid Until** field of the new CA certificate shows the new certificate expiration time.
 
-7. Once you are confident that all nodes and clients have the new CA certificate, [rotate the node certificates](#rotate-node-certificates) and [rotate the client certificates](#rotate-client-certificates).
+1. Once you are confident that all nodes and clients have the new CA certificate, [rotate the node certificates](#rotate-node-certificates) and [rotate the client certificates](#rotate-client-certificates).
 
 ## Why CockroachDB creates a combined CA certificate
 

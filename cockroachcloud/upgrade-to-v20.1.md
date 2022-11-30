@@ -93,11 +93,11 @@ To start the upgrade process:
 
 1. [Sign in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 
-2. In the **Clusters** list, select the cluster you want to upgrade.
+1. In the **Clusters** list, select the cluster you want to upgrade.
 
-3. Select **Actions > Upgrade cluster**.
+1. Select **Actions > Upgrade cluster**.
 
-4. On the **Upgrade your cluster** dialog, confirm that you have reviewed the pre-upgrade guidance and then click **Start Upgrade**.
+1. On the **Upgrade your cluster** dialog, confirm that you have reviewed the pre-upgrade guidance and then click **Start Upgrade**.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 As mentioned earlier, your cluster will be upgraded one node at a time without interrupting the cluster's overall health and availability. This "rolling upgrade" approach will take approximately 4-5 minutes per node.

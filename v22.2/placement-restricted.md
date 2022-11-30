@@ -59,9 +59,9 @@ To follow along with the examples below:
     cockroach demo --global --nodes 9
     ~~~
 
-2. Set the demo cluster's [database regions](multiregion-overview.html#database-regions) and [table localities](multiregion-overview.html#table-locality) as described in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html) (specifically, starting at [Step 5. Execute multi-region SQL statements](demo-low-latency-multi-region-deployment.html#step-5-execute-multi-region-sql-statements)).
+1. Set the demo cluster's [database regions](multiregion-overview.html#database-regions) and [table localities](multiregion-overview.html#table-locality) as described in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html) (specifically, starting at [Step 5. Execute multi-region SQL statements](demo-low-latency-multi-region-deployment.html#step-5-execute-multi-region-sql-statements)).
 
-3. Enable the replica placement syntax with either the [session variable](set-vars.html) or the [cluster setting](cluster-settings.html) as shown below.
+1. Enable the replica placement syntax with either the [session variable](set-vars.html) or the [cluster setting](cluster-settings.html) as shown below.
 
     1. To use the session variable:
 
@@ -70,7 +70,7 @@ To follow along with the examples below:
         SET enable_multiregion_placement_policy = on;
         ~~~
 
-    2. To use the cluster setting:
+    1. To use the cluster setting:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql

@@ -156,7 +156,7 @@ If the query performance is irregular:
 
 1.  Run [`SHOW TRACE FOR SESSION`](show-trace.html) for the query twice: once when the query is performing as expected and once when the query is slow.
 
-2.  [Contact support](support-resources.html) to help analyze the outputs of the `SHOW TRACE` command.
+1.  [Contact support](support-resources.html) to help analyze the outputs of the `SHOW TRACE` command.
 
 ### `SELECT` statements are slow
 

@@ -16,7 +16,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. SSH to the machine where you want the node to run.
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -24,7 +24,7 @@ After completing these steps, nodes will not yet be live. They will complete the
     | tar -xz
     ~~~
 
-3. Copy the binary into the `PATH`:
+1. Copy the binary into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -33,7 +33,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+1. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -52,7 +52,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-5. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -79,7 +79,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
-6. Repeat these steps for each additional node that you want in your cluster.
+1. Repeat these steps for each additional node that you want in your cluster.
 
 </section>
 
@@ -93,7 +93,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
 1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -101,7 +101,7 @@ After completing these steps, nodes will not yet be live. They will complete the
     | tar -xz
     ~~~
 
-3. Copy the binary into the `PATH`:
+1. Copy the binary into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -110,7 +110,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+1. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -129,35 +129,35 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-5. Create the Cockroach directory:
+1. Create the Cockroach directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir /var/lib/cockroach
     ~~~
 
-6. Create a Unix user named `cockroach`:
+1. Create a Unix user named `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ useradd cockroach
     ~~~
 
-7.  Move the `certs` directory to the `cockroach` directory.
+1.  Move the `certs` directory to the `cockroach` directory.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv certs /var/lib/cockroach/
     ~~~
 
-8.  Change the ownership of the `cockroach` directory to the user `cockroach`:
+1.  Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chown -R cockroach /var/lib/cockroach
     ~~~
 
-9.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
+1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -171,7 +171,7 @@ After completing these steps, nodes will not yet be live. They will complete the
     {% include {{ page.version.version }}/prod-deployment/securecockroachdb.service %}
     ~~~
 
-10. In the sample configuration template, specify values for the following flags:
+1. In the sample configuration template, specify values for the following flags:
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
@@ -179,14 +179,14 @@ After completing these steps, nodes will not yet be live. They will complete the
 
  	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
-11. Start the CockroachDB cluster:
+1. Start the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ systemctl start securecockroachdb
     ~~~
 
-11. Repeat these steps for each additional node that you want in your cluster.
+1. Repeat these steps for each additional node that you want in your cluster.
 
 {{site.data.alerts.callout_info}}
 `systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run `systemctl stop securecockroachdb`
