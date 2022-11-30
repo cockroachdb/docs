@@ -78,7 +78,7 @@ SHOW REGIONS;
 Next, modify the database to use the [multi-region abstractions](multiregion-overview.html) as follows:
 
 1. Set the primary region using [`SET PRIMARY REGION`](set-primary-region.html).
-2. Add the other two regions using [`ADD REGION`](add-region.html).
+1. Add the other two regions using [`ADD REGION`](add-region.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

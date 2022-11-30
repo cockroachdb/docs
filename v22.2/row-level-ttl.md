@@ -63,7 +63,7 @@ The statement has the following effects:
 <a name="crdb-internal-expiration"></a>
 
 1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table.
-2. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
+1. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
 
 To see the storage parameters, enter the [`SHOW CREATE TABLE`](show-create.html) statement:
 
