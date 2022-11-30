@@ -22,8 +22,8 @@ As of December 5, 2022, {{ site.data.products.serverless }} clusters are running
 
 <h3> Console changes </h3>
 
-- {{ site.data.products.serverless }} clusters now have a **Metrics** page in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**.
-- The `p99.9` and `p99.99` latencies are now shown in the `SQL Connection Latency` and `SQL Statement Latency` charts on the Metrics page for {{ site.data.products.serverless }} clusters.
+- {{ site.data.products.serverless }} clusters now have a [**Metrics** page](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html) in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**.
+- The `p99.9` and `p99.99` latencies are now shown in the `SQL Connection Latency` and `SQL Statement Latency` charts on the [**Metrics** page](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html) for {{ site.data.products.serverless }} clusters.
 - The **Last used** column on the [**Table Details** page](../cockroachcloud/databases-page.html) now uses the UTC timezone.
 
 <h3> Bug fixes </h3>
