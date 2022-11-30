@@ -128,6 +128,8 @@ transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
 [client-side intervention](#client-side-intervention).
 
+**New in v22.2:** The [`enable_implicit_transaction_for_batch_statements` session variable](set-vars.html#enable-implicit-transaction-for-batch-statements) defaults to `true`. This means that any batch of statements is treated as an implicit transaction, so the `BEGIN`/`COMMIT` commands are not needed to group all the statements in one transaction.
+
 #### Bounded staleness reads
 
 In the event [bounded staleness reads](follower-reads.html#bounded-staleness-reads) are used along with either the [`with_min_timestamp` function or the `with_max_staleness` function](functions-and-operators.html#date-and-time-functions) and the `nearest_only` parameter is set to `true`, the query will throw an error if it can't be served by a nearby replica.

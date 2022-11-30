@@ -20,7 +20,7 @@ You can restore:
 ## Considerations
 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
-- `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See [Options](#options) for more usage detail.
+- `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
 - [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
@@ -62,17 +62,17 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
-<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
+<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. The target database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
+<a name="new-db-name"></a>`new_db_name`                             | Database name                                 | [Rename a database during a restore](#rename-a-database-on-restore). The existing backed-up database can remain active while the same database is restored with a different name. <br><br>Example: `RESTORE DATABASE movr ... WITH new_db_name = 'new_movr'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the missing [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 <a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions](multiregion-overview.html#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
-`DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
+<a name="detached"></a>`DETACHED`                                   | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
-`incremental_location`<a name="incr-location"></a> | [`STRING`](string.html) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
-<a name="new-db-name"></a>`new_db_name`                             | Database name                                 | Rename a database during a restore with `RESTORE DATABASE movr ... WITH new_db_name = new_movr`. The existing backed-up database can remain active while the same database is restored with a different name. <br><br> See [Rename a database on restore](#rename-a-database-on-restore).
+<a name="incr-location"></a>`incremental_location` | [`STRING`](string.html) | Restore an incremental backup from the alternate collection URI the backup was originally taken with. <br><br>See [Restore incremental backups](#restore-from-incremental-backups) for more detail.
 
 ### Backup file URLs
 
@@ -352,7 +352,7 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_
 
 ### Restore a backup asynchronously
 
-Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
+Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -382,7 +382,16 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
+Next, restore the table into the newly created database with `into_db`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -397,7 +406,7 @@ WITH into_db = 'newdb';
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH new_db_name = new_bank;
+WITH new_db_name = 'new_bank';
 ~~~
 
 When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
@@ -470,6 +479,8 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 </section>
 
 <section class="filter-content" markdown="1" data-scope="azure">
+
+{% include {{ page.version.version }}/backups/azure-url-encode.md %}
 
 ### View the backup subdirectories
 
@@ -570,7 +581,7 @@ RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAM
 
 ### Restore a backup asynchronously
 
-Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
+Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -601,6 +612,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH into_db = 'newdb';
@@ -613,7 +631,7 @@ By default, tables and views are restored to the database they originally belong
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}'
-WITH new_db_name = new_bank;
+WITH new_db_name = 'new_bank';
 ~~~
 
 When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
@@ -685,9 +703,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
 
 ### View the backup subdirectories
 
@@ -788,7 +804,7 @@ RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTI
 
 ### Restore a backup asynchronously
 
-Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
+Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -819,6 +835,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH into_db = 'newdb';
@@ -831,7 +854,7 @@ By default, tables and views are restored to the database they originally belong
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}'
-WITH new_db_name = new_bank;
+WITH new_db_name = 'new_bank';
 ~~~
 
 When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:

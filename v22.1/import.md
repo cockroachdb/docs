@@ -282,6 +282,8 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
+{% include {{ page.version.version }}/backups/azure-url-encode.md %}
+
 ### Import a PostgreSQL database dump
 
 {% include_cached copy-clipboard.html %}

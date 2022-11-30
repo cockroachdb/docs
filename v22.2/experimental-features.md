@@ -34,31 +34,6 @@ Log all queries against a table to a file, for security purposes. For more infor
 > ALTER TABLE t EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~
 
-### Relocate leases and replicas
-
-You have the following options for controlling lease and replica location:
-
-1. Relocate leases and replicas using `EXPERIMENTAL_RELOCATE`
-1. Relocate just leases using `EXPERIMENTAL_RELOCATE LEASE`
-
-For example, to distribute leases and ranges for N primary keys across N stores in the cluster, run a statement with the following structure:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE t EXPERIMENTAL_RELOCATE SELECT ARRAY[<storeid1>, <storeid2>, ..., <storeidN>], <primarykeycol1>, <primarykeycol2>, ..., <primarykeycolN>;
-~~~
-
-To relocate just the lease without moving the replicas, run a statement like the one shown below, which moves the lease for the range containing primary key 'foo' to store 1.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE t EXPERIMENTAL_RELOCATE LEASE SELECT 1, 'foo';
-~~~
-
-{{site.data.alerts.callout_info}}
-If you prefer to use an approach to relocating replicas and leases based on range IDs, see the [`ALTER RANGE ... RELOCATE`](alter-range-relocate.html) statement.
-{{site.data.alerts.end}}
-
 ### Show table fingerprints
 
 Table fingerprints are used to compute an identification string of an entire table, for the purpose of gauging whether two tables have the same data. This is useful, for example, when restoring a table from backup.

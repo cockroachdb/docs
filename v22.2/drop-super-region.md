@@ -102,6 +102,7 @@ HINT: you must first drop super region usa before you can drop the region us-wes
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [`SET SECONDARY REGION`](set-secondary-region.html)
 - [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [Zone Config Extensions](zone-config-extensions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`ALTER DATABASE`](alter-database.html)
 - [SQL Statements](sql-statements.html)

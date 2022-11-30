@@ -165,7 +165,7 @@ Use the following command to specify regions and survival goals at database crea
 (3 rows)
 ~~~
 
-## Create a multi-region database with a secondary region
+### Create a multi-region database with a secondary region
 
 {% include enterprise-feature.md %}
 

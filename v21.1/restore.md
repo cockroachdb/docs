@@ -64,7 +64,7 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
-<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
+<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](#restore-tables-into-a-different-database) for table restores. The target database must exist before a restore with `into_db`. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the missing [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
@@ -352,7 +352,16 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
+Next, restore the table into the newly created database with `into_db`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -554,6 +563,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 #### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -760,6 +776,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 #### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+First, create the new database that you'll restore the table or view into:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

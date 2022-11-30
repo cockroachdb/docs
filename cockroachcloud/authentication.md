@@ -8,7 +8,7 @@ docs_area: manage
 Users may connect with {{ site.data.products.db }} in two ways:
 
 - The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administrating or connecting to clusters.
-- SQL clients, including the [CockroachDB CLI](../{{site.versions["stable"]}}/cockroach-start.html) client and the [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["stable"]}}/sql-feature-support.html).
+- SQL clients, including the [CockroachDB CLI](../{{site.versions["cloud"]}}/cockroach-start.html) client and the [various supported drivers and ORMs](../{{site.versions["cloud"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["cloud"]}}/sql-feature-support.html).
 
 
 ## {{ site.data.products.db }} authentication
@@ -21,11 +21,11 @@ If you have not done so, [create your own free {{ site.data.products.serverless 
 
 ## Connecting SQL clients
 
-To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.versions["dev"]}}/install-client-drivers.html).
+To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.versions["cloud"]}}/install-client-drivers.html).
 
-To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["cloud"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 
-To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["dev"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.versions["cloud"]}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 
 ### Node identity verification
 
@@ -57,5 +57,5 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 
 - [Cloud Organization SSO](cloud-org-sso.html)
 - [Configure Cloud Organization SSO](configure-cloud-org-sso.html)
-- [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
+- [Client Connection Parameters](../{{site.versions["cloud"]}}/connection-parameters.html)
 - [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

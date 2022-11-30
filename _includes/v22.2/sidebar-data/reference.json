@@ -211,6 +211,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/alter-locality.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER PARTITION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-partition.html"
@@ -923,6 +929,12 @@
                 "urls": [
                   "/${VERSION}/show-super-regions.html"
                 ]
+              },
+              {
+               "title": "<code>SHOW SYSTEM GRANTS</code>",
+               "urls": [
+                 "/${VERSION}/show-system-grants.html"
+               ]
               },
               {
                 "title": "<code>SHOW ROLES</code>",
@@ -1759,6 +1771,12 @@
                 "title": "Overload Dashboard",
                 "urls": [
                   "/${VERSION}/ui-overload-dashboard.html"
+                ]
+              },
+              {
+                "title": "TTL Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-ttl-dashboard.html"
                 ]
               },
               {
