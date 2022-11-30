@@ -263,7 +263,7 @@ Once you are satisfied with the new version:
     > SHOW CLUSTER SETTING version;
     ~~~
 
-1. After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
 ## Troubleshooting
 
