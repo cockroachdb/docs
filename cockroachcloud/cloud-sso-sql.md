@@ -26,10 +26,11 @@ You might also be looking for [Cluster Single Sign-On (SSO) for Self-hosted Cock
 {{site.data.alerts.callout_info}}
 Note that this authentication method only works for *human users*, since only humans may have {{ site.data.products.db }} console identities.
 
-Software users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticating software users (service accounts) with Cluster SSO].
+Software users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticating software users (service accounts) with Cluster SSO](#authenticate-human-users-with-the-cloud-console).
 {{site.data.alerts.end}}
 
 **Learn more:**
+
 - [Single Sign-On (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html#cloud-organization-sso)
 - [Configure Cloud Organization Single Sign-On (SSO)](configure-cloud-org-sso.html)
 
@@ -70,6 +71,9 @@ This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and 
 **Prerequisites:**
 
 - You must have the ability to create identities and issue tokens with a SAML or OIDC identity provider.
+	{{site.data.alerts.callout_success}}
+	The `issuer` and `audience` fields in the token must match valued [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider).
+	{{site.data.alerts.end}}
 - You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
 - You must have access to a member of the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) in order to update cluster settings, which is required to add an external token issuer/IdP.
 - A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
@@ -78,9 +82,9 @@ This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and 
 
 In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace:
 
-1. Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting.
+1. `server.jwt_authentication.jwks`
 
-	`server.jwt_authentication.jwks`
+	Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting.
 
 	This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
 
@@ -88,21 +92,23 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 	When modifying this cluster setting, you must include the Cockroach Cloud public key in the key set. Failing to do so can prevent maintenance access by essential Cockroach Cloud managed service accounts, leading to unintended consequences. !!!{ Fact check on this? Seems right}
 
-1. Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers:
+1. `server.jwt_authentication.issuers`
 
-	`server.jwt_authentication.issuers`
+	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers:
 
 	A comma separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
 
 	By default will be the CC issuer but they can set it to any string or any list of strings formatted as a json array. Needs to match the issuer of JWTs
 
-1. The name of your cluster as specified by the IdP. This must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
+1. `server.jwt_authentication.audience`
+	
+	The name of your cluster as specified by the IdP. This must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
 
-	`server.jwt_authentication.audience`
+1. `server.jwt_authentication.enabled`
 
-1. Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
+	Required value: `true`
 
-	`server.jwt_authentication.enabled`
+	Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
 
 ### Authenticate to your cluster with your JWT token
 

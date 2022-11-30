@@ -13,14 +13,23 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 
 **Prerequisites**
 
-- You must have the ability to create identities and issue tokens with a SAML or OIDC identity provider.
-- You must have access to a member of the [`admin` role](security-reference/authorization.html#admin-role) in order to update cluster settings, which is required to add an external token issuer/IdP.
-- A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
-- enterprise license
-- enterprise cluster setting
-	`enterprise.license`
+- **IdP:**
 
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+	You must have the ability to create identities and issue tokens with a SAML or OIDC identity provider.
+
+	This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+
+- **CockroachDB:**
+
+	- You must have access to an enterprise cluster, i.e. configured with a valid [CockroachDB enterprise license](enterprise-licensing.html) enabled.
+
+	See [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html) for help enabling your cluster with you enterprise license.
+
+	- SQL users/credentials:
+
+		- You must have access to credentials with the [`admin` role](security-reference/authorization.html#admin-role), in order to update cluster settings, which is required to allow an external token issuer/IdP.
+	
+		- A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
 
 ## Configure your cluster settings
 
