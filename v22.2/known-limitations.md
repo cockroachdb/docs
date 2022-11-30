@@ -10,10 +10,15 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-# DROP OWNED BY does not support drop functions
+### DROP OWNED BY does not support drop functions
+
+`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+
+In its current implementation, this statement does not drop functions. Users must drop their functions manually.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/90476)
 
 {% comment %}
-    KL issue: https://github.com/cockroachdb/cockroach/issues/90476
     initial DROP OWNED BY implementation PR/issue:
     https://github.com/cockroachdb/cockroach/pull/82936
     https://github.com/cockroachdb/cockroach/issues/55381
@@ -23,14 +28,17 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
     review: rafiss (or devadvocado)
 {% endcomment %}
 
+### DROP OWNED BY not supported where role has synthetic privileges
+
 `DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
 
-In its current implementation, this statement does not drop functions. Users must drop their functions manually.
+In its current implentation, this operation cannot be performed for roles that have synthetic privileges (entries in `system.privileges`).
 
-# DROP OWNED BY not supported where role has synthetic privileges
+Instead, you can use `REVOKE SYSTEM` for the relevant privileges the role has in `system.privileges`.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
 {% comment %}
-    KL issue: https://github.com/cockroachdb/cockroach/issues/88149
     initial DROP OWNED BY implementation PR/issue:
     https://github.com/cockroachdb/cockroach/pull/82936
     https://github.com/cockroachdb/cockroach/issues/55381
@@ -40,33 +48,44 @@ In its current implementation, this statement does not drop functions. Users mus
     review: rafiss
 {% endcomment %}
 
-`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+### Expressions with `*` not supported in user defined functions (UDFs)
 
-In its current implentation, this operation cannot be performed for roles that have synthetic privileges (entries in `system.privileges`).
+Expressions such as `SELECT *` are not currently allowed within the body of a UDF.
 
-Instead, you can use `REVOKE SYSTEM` for the relevant privileges the role has in `system.privileges`.
-
-# `*` expressions not supported in user defined functions (UDFs)
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
 
 {% comment %}
     review: mgartner
-    https://github.com/cockroachdb/cockroach/issues/90080
-    https://github.com/cockroachdb/cockroach/issues/86070
-    DOCS?
+    see also https://github.com/cockroachdb/cockroach/issues/86070
+    Link to UDF docs?
 {% endcomment %}
 
-Expressions such as `SELECT *` are not currently supported within the body of a UDF.
+### PARTITION ALL BY can lead to poor performance
 
-# PARTITION ALL BY can lead to poor performance
+`PARTITION ALL BY` was added to support multi-region abstractions. In that setting it typically performs well due to locality optimized search. In other cases, unique indexes can result in poor performance because uniqueness validation may need to perform full index scans. Additionally, creating an index does not mean that there will be any acceleration on queries constraining that column.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83419)
 
 {% comment %}
-    https://github.com/cockroachdb/cockroach/issues/83419
     discussion https://cockroachlabs.slack.com/archives/C04U1BTF8/p1656339354201849
     review: ajwerner
     notes: can't find this statement in docs or relevant implementation issues
 {% endcomment %}
 
-PARTITION ALL BY was added to support multi-region abstractions. In that setting it works well and can perform well due to locality optimized search. In other cases, unique indexes can result in poor performance because uniqueness validation may need to perform full index scans. Additionally, creating an index does not mean that there will be any acceleration on queries constraining that column.
+### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
+
+The cluster setting `kv.rangefeed.range_stuck_threshold` will automatically restart a rangefeed that appears to be stuck if it does not emit events for some time. Rangefeeds are used to stream per-range changefeed events. This setting was introduced in CockroachDB v22.1.7, disabled by default, but is enabled by default in v22.2.0, set to 1 minute.
+
+This setting can erroneously trigger if the client fails to consume events for the configured duration, for example, in the case of an overloaded changefeed sink. Furthermore, this can cause the entire changefeed to fail and restart with error "context canceled", instead of only restarting the internal per-range rangefeed.
+
+If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed.range_stuck_threshold = '0s'`. A fix is under development, and will be included in an upcoming 22.2 patch release.
+
+{% comment %}
+    supplied by @erikgrinaker https://cockroachlabs.slack.com/archives/C4A9ALLRL/p1669645971093569
+    asked for issue
+{% endcomment %}
+
+[Tracking GitHub issue](#)
 
 ## Unresolved limitations
 
