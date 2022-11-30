@@ -10,6 +10,66 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+# DROP OWNED BY does not support drop functions
+
+{% comment %}
+    KL issue: https://github.com/cockroachdb/cockroach/issues/90476
+    initial DROP OWNED BY implementation PR/issue:
+    https://github.com/cockroachdb/cockroach/pull/82936
+    https://github.com/cockroachdb/cockroach/issues/55381
+    doc work in progress (to link to after merge):
+    https://github.com/cockroachdb/docs/pull/15094/files
+    https://cockroachlabs.atlassian.net/browse/DOC-4770 
+    review: rafiss (or devadvocado)
+{% endcomment %}
+
+`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+
+In its current implementation, this statement does not drop functions. Users must drop their functions manually.
+
+# DROP OWNED BY not supported where role has synthetic privileges
+
+{% comment %}
+    KL issue: https://github.com/cockroachdb/cockroach/issues/88149
+    initial DROP OWNED BY implementation PR/issue:
+    https://github.com/cockroachdb/cockroach/pull/82936
+    https://github.com/cockroachdb/cockroach/issues/55381
+    doc work in progress (to link to after merge):
+    https://github.com/cockroachdb/docs/pull/15094/files
+    https://cockroachlabs.atlassian.net/browse/DOC-4770 
+    review: rafiss
+{% endcomment %}
+
+`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+
+In its current implentation, this operation cannot be performed for roles that have synthetic privileges (entries in `system.privileges`).
+
+Instead, you can use `REVOKE SYSTEM` for the relevant privileges the role has in `system.privileges`.
+
+# `*` expressions not supported in user defined functions (UDFs)
+
+{% comment %}
+    review: mgartner
+    https://github.com/cockroachdb/cockroach/issues/90080
+    https://github.com/cockroachdb/cockroach/issues/86070
+    DOCS?
+{% endcomment %}
+
+Expressions such as `SELECT *` are not currently supported within the body of a UDF.
+
+# PARTITION ALL BY can lead to poor performance
+
+{% comment %}
+    https://github.com/cockroachdb/cockroach/issues/83419
+    discussion https://cockroachlabs.slack.com/archives/C04U1BTF8/p1656339354201849
+    review: ajwerner
+    notes: can't find this statement in docs or relevant implementation issues
+{% endcomment %}
+
+PARTITION ALL BY was added to support multi-region abstractions. In that setting it works well and can perform well due to locality optimized search. In other cases, unique indexes can result in poor performance because uniqueness validation may need to perform full index scans. Additionally, creating an index does not mean that there will be any acceleration on queries constraining that column.
+
+## Unresolved limitations
+
 ### Unsupported trigram syntax
 
 The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes.html):
@@ -46,19 +106,6 @@ The `transaction_rows_read_err` and `transaction_rows_written_err` [session sett
 The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
-
-### Row-Level TTL limitations
-
-{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
-
-### Change data capture limitations
-
-Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
-
-{% include {{ page.version.version }}/known-limitations/cdc.md %}
-{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
-
-## Unresolved limitations
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
@@ -609,3 +656,14 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
 {% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
+
+### Row-Level TTL limitations
+
+{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
+
+### Change data capture limitations
+
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
+{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
