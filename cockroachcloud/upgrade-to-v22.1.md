@@ -41,7 +41,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, complete the following steps.
+Before starting the upgrade, complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
