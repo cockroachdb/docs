@@ -115,7 +115,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '22.1';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
@@ -125,7 +125,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
 - The [`CREATE FUNCTION`](create-function.html) statement creates [user-defined functions](user-defined-functions.html).
-- [Inverted trigram indexes](trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
+- [Trigram indexes](trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
 - [Predicates and projections in `CREATE CHANGEFEED` statements](create-changefeed.html). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
 
 
@@ -263,7 +263,7 @@ Once you are satisfied with the new version:
     > SHOW CLUSTER SETTING version;
     ~~~
 
-1. After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
 ## Troubleshooting
 
