@@ -181,7 +181,6 @@ For Azure - https://learn.microsoft.com/en-us/azure/active-directory/develop/acc
 For Azure - https://login.microsoftonline.com/<Azure_Tenant_Id>/v2.0
 
 
-### SQL access for human users
 
 ### SQL access for service accounts
 
@@ -240,9 +239,8 @@ Make sure the username you use in your connection string matches the MAPPED user
 Can I have multiple audiences, issuers, and keys in CRDB?
 Yes. The audience and issuer fields accept either a single value or a JSON array containing multiple values: `[“value1”,”value2”,”value3”]`. The format for public keys is JWKS. You can combine multiple JWKSes by combining the keys array. In that way multiple keys will be accepted.
 
-## Workflows
 
-For human users, we would have a more integrated flow through cloud CLI which would do the necessary handshake across CC Console and the cluster, while users would be prompted to enter their credentials in the identity provider - very much like how SSO for CC Console works.
+
 
 For apps / services, it would be a headless authentication workflow, where the app would get a JWT token from a OIDC-supporting identity provider and then pass that as a password to the database cluster (see below).
 
