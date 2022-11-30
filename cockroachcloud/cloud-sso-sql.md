@@ -1,6 +1,6 @@
 ---
-title: Cluster Single Sign-On (SSO) for Self-hosted CockroachDB
-summary: Overview of Single Sign-On (SSO) for CockroachDB SQL Access, and review of workflows for authenticating human and bot users, and for configuring the feature.
+title: Cluster Single Sign-On (SSO) for Cockroach Cloud
+summary: Overview of Cluster Single Sign-On (SSO) for {{ site.data.products.db }}, and review of workflows for authenticating human and bot users, and for configuring required cluster settings.
 toc: true
 docs_area: manage
 ---
@@ -9,20 +9,70 @@ docs_area: manage
 
 Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of SSO identity providers, including Cockroach Cloud, Google, Microsoft, GitHub, or your own self-hosted SAML or OIDC.
 
-This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-On (SSO) for Cockroach Cloud](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-On (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html).
+This page describes:
+- the workflow involved in authenticating human users with the {{ site.data.products.db }} console acting as identity provider (IdP) or token issuer
+- the cluster settings configuration required to authenticate software users (service accounts)
+
+Note that this regards SQL access to a specific CockroachDB Cluster, not access to a Cockroach Cloud organization. For the latter, see [Single Sign-On (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html).
+
+
+## Authenticate human users with the cloud console
+
+{{ site.data.products.db }} itself can issue authentication tokens for human users, which can be used for SSO using the `ccloud` CLI. {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters are, by default, configured to allow Cluster SSO authentication with {{ site.data.products.db }} serving as SSO provider. No additional set-up is required.
+
+{{site.data.alerts.callout_info}}
+Note that this authentication method only works for *human users*, since only humans may have {{ site.data.products.db }} console identities.
+
+Software users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticating software users (service accounts) with Cluster SSO].
+{{site.data.alerts.end}}
+
+**Learn more:**
+- [Single Sign-On (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html#cloud-organization-sso)
+- [Configure Cloud Organization Single Sign-On (SSO)](../cockroachcloud/configure-cloud-org-sso.html)
+
+**Prerequisites to access a {{ site.data.products.db }} cluster using SSO:**
+
+- You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](../cockroachcloud/quickstart.html).
+- SSO must be enabled for your organization. For help configuring SSO for your {{ site.data.products.db }} organization, see: [Configure Cloud Organization Single Sign-On (SSO)](../cockroachcloud/configure-cloud-org-sso.html)
+- SSO must be enabled for your particular {{ site.data.products.db }} user. Configure this at the [{{ site.data.products.db }} console account settings page](https://cockroachlabs.cloud/account/profile).
+- Your {{ site.data.products.db }} user identity must have access to at least one cluster in your organization.
+- A SQL user specifically corresponding to your SSO identity must be pre-provisioned on the cluster. To authenticate to a specific SQL database, i.e. a cluster, using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} users must correspond to SQL database users by the convention that the SQL username must be `sso_{email_address}`. ???!!! {how does this format actually work, does the at gmail go in there???}
+- [`ccloud`, the Cockroach Cloud CLI](../cockroachcloud/ccloud-get-started.html) must be installed on your local workstation.
+
+
+1. First authenticate to your {{ site.data.products.db }} organization. This command will cause your workstation's default browser to open to a Cockroach Cloud authentication portal. Authenticate here as you normally do to the Cockroach Cloud console. The `ccloud` utility will receive an authentication token from the browser, allowing you to authenticate from the command line.
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	ccloud auth login
+	~~~
+
+1. You may then use the `ccloud` utility to authenticate to your {{ site.data.products.db }} cluster, allowing you to access the SQL interface.
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	ccloud cluster sql --sso { your cluster name}
+	~~~
+
+## Authenticate software users (service accounts) with external IdPs
+
+Currently, Cockroach Cloud can only serve as an token issuer for human users. Authenticating service accounts, i.e. user identities to be controlled by software applications or scripts, rather by humans, is considerably more complicated, as it requires the user, or more realistically, an IdP admin, to provision the appropriate JWT token.
+
+Cockroach Cloud SSO supports the use of external IdPs such as Google, Microsoft, Github, or customer deployed OIDC or SAML solutions such as Okta. All of these options support MFA.
+
+This document covers the specifications for that JWT token, but does not cover the work involved in managing an IdP.
+
+This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+
 
 **Prerequisites**
 
 - You must have the ability to create identities and issue tokens with a SAML or OIDC identity provider.
+- You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](../cockroachcloud/quickstart.html).
 - You must have access to a member of the [`admin` role](security-reference/authorization.html#admin-role) in order to update cluster settings, which is required to add an external token issuer/IdP.
 - A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
-- enterprise license
-- enterprise cluster setting
-	`enterprise.license`
 
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
-
-## Configure your cluster settings
+### Configure your cluster to accept your external identity provider.
 
 In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace:
 
@@ -123,6 +173,20 @@ cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:2625
 ~~~txt
 
 ~~~
+
+## Managing Cluster SSO for self-hosted CockroachDB clusters
+
+
+## Prerequisites
+
+- enterprise license
+
+enterprise cluster setting
+
+cluster setting:
+
+enterprise.license
+
 
 
 

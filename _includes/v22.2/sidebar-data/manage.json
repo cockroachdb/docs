@@ -234,7 +234,7 @@
 										]
 									},
 									{
-										"title": "Single Sign-On (SSO)",
+										"title": "Single Sign-On (SSO) for CockroachDB Cloud Organizations",
 										"urls": [
 											"/cockroachcloud/cloud-org-sso.html"
 										]
@@ -244,7 +244,13 @@
 										"urls": [
 											"/cockroachcloud/configure-cloud-org-sso.html"
 										]
-									}
+									},
+                  {
+                    "title": "Cluster Single Sign-On (SSO) for Cockroach Cloud",
+                    "urls": [
+                      "/cockroachcloud/cloud-sso-sql.html"
+                    ]
+                  }
 								]
       	    },
             {
@@ -342,7 +348,7 @@
               ]
             },
             {
-              "title": "Cluster Single Sign-on (SSO) for CockroachDB SQL Access",
+              "title": "Cluster Single Sign-On (SSO) for Self-hosted CockroachDB",
               "urls": [
                 "/${VERSION}/sso-sql.html"
               ]
