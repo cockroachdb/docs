@@ -58,6 +58,12 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 {% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
 
+### Role and privilege limitations
+
+#### `DROP OWNED BY` errors for roles with synthetic privileges
+
+{% include {{page.version.version}}/known-limitations/drop-owned-by-limitations.md %}
+
 ## Unresolved limitations
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes

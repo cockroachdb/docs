@@ -50,6 +50,7 @@ Statement | Usage
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP FUNCTION`](drop-function.html) | **New in v22.2:** Remove a [user-defined function](user-defined-functions.html) from a database.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP OWNED BY`](drop-owned-by.html) | Drop all objects owned by and any [grants](grant.html) on objects not owned by a [role](security-reference/authorization.html#roles).
 [`DROP REGION`](drop-region.html) | Drop a [region](multiregion-overview.html#database-regions) from a database. [Multi-region features](multiregion-overview.html) require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`DROP SUPER REGION`](drop-super-region.html) | Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions).
 [`DROP SCHEMA`](drop-schema.html) | Drop a user-defined schema.
