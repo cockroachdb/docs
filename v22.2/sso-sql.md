@@ -7,7 +7,7 @@ docs_area: manage
 
 ## What is Cluster Single Sign-On (SSO)?
 
-Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of SSO identity providers, including Cockroach Cloud, Google, Microsoft, GitHub, or your own self-hosted SAML or OIDC.
+Cluster SSO allows users to access the SQL interface of a CockroachDB cluster using a JWT auth token issued by a customer-managed identity provider (IdP).
 
 This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-On (SSO) for Cockroach Cloud](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-On (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html).
 
@@ -15,7 +15,7 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 
 - **IdP:**
 
-	You must have the ability to create identities and issue tokens with a SAML or OIDC identity provider.
+	You must have the ability to create identities and issue JSON Web Token (JWT) formatted auth tokens.
 
 	This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
@@ -34,15 +34,24 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 ## Configure your cluster settings
 In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace:
 
+1. `server.jwt_authentication.enabled`
+
+	JWT authentication must be enabled on your cluster.
+
+	Required value: `true`
+
 1. `server.jwt_authentication.jwks`
 
 	Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting.
 
-	This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
+	This must be a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
 
-	By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing Cockroach Cloud to serve as an IdP.
+	!!!{
 
-	When modifying this cluster setting, you must include the Cockroach Cloud public key in the key set. Failing to do so can prevent maintenance access by essential Cockroach Cloud managed service accounts, leading to unintended consequences. !!!{ Fact check on this? Seems right}
+	@cameron
+	Fact check on this? I thought SAML was supported, but SAML and JWT format are different, yeah? 
+
+	}
 
 1. `server.jwt_authentication.issuers`
 
@@ -50,17 +59,9 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 	A comma separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
 
-	By default will be the CC issuer but they can set it to any string or any list of strings formatted as a json array. Needs to match the issuer of JWTs
-
 1. `server.jwt_authentication.audience`
 	
-	The name of your cluster as specified by the IdP. This must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
-
-1. `server.jwt_authentication.enabled`
-
-	Required value: `true`
-
-	Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
+	The name of your cluster as specified by the IdP, or a comma-separated list of such names. One of the audience names must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
 
 ## Authenticate to your cluster with your JWT token
 
@@ -68,7 +69,11 @@ To provision SQL cluster access for service accounts, you must provision OIDC or
 
 For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discussing using GCP-issued OIDC tokens to authenticate to CockroachDB.
 
-Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, use it to connect to your cluster's SQL interface via the CockroachDB CLI's [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command.
+Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, you may use it to connect to your cluster's SQL interface.
+
+{{site.data.alerts.success}}
+This example uses [`cockroach sql`](cockroach-sql.html), but you can use any SQL client that supports sufficiently long passwords.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -81,100 +86,6 @@ Welcome to the cockroach SQL interface...
 
 
 
-
-
-
-
-To provision SQL cluster access for service accounts, i.e. software users (as opposed to human users), you must provision JWT tokens from your IdP.
-
-For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described in this [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp).
-
-Once you have a valid token from your IdP, 
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
-~~~
-
-~~~txt
-
-~~~
-
-
-
-
-
-Users can authenticate to {{ site.data.products.core }} clusters using JWT tokens issued by your IdP, as long as 
-
-### Configure your self-hosted cluster to enable Cluster SSO for SQL access
-
-In order to get this to work for self-hosted customers, they have to set a series of cluster settings including:
-
-Jwks
-The signing key of the issuer they wish to use
-Can be one key (JWK) or a set of values (JWKS)
-
-`server.jwt_authentication.jwks`
-A JWKS of the signing keys. Will default to the Cockroach Console ones. If users want more than one they have to combine formats. This can either be a singular key or a key set. Note these are public keys not private keys
-
-
-Issuers
-What the issuer of the tokens will be
-
-`server.jwt_authentication.issuers`
-By default will be the CC issuer but they can set it to any string or any list of strings formatted as a json array. Needs to match the issuer of JWTs
-https://cockroachlabs.cloud
-
-Can be one value or a json array of values
-
-Audience
-What the audience on the tokens will be
-Can be one value or a json array of values
-
-
-By default will be the CC cluster ID but they can set it to any string or any list of strings formatted as a json array. Needs to match the audience on JWTs
-[“audience1”,”audience2”]
-Audience1
-For Azure - https://learn.microsoft.com/en-us/azure/active-directory/develop/access-tokens (it’s the AppID of the dummy app registration with no permissions)
-
-[“https://cockroachlabs.cloud”,”https://accounts.google.com”]
-For Azure - https://login.microsoftonline.com/<Azure_Tenant_Id>/v2.0
-
-Enabled
-Whether to allow JWT based logins
-
-
-Cluster settings to be configured to use the feature
-`server.jwt_authentication.enabled`
-True or false
-`server.jwt_authentication.audience`
-By default will be the CC cluster ID but they can set it to any string or any list of strings formatted as a json array. Needs to match the audience on JWTs
-[“audience1”,”audience2”]
-Audience1
-For Azure - https://learn.microsoft.com/en-us/azure/active-directory/develop/access-tokens (it’s the AppID of the dummy app registration with no permissions)
-
-[“https://cockroachlabs.cloud”,”https://accounts.google.com”]
-For Azure - https://login.microsoftonline.com/<Azure_Tenant_Id>/v2.0
-
-
-
-### SQL access for service accounts
-
-Self-hosted
-CC allows us to abstract away lots of the complexity of setting this all up. Under the hood, CC is creating signed JWTs. These tokens contain information about the user who logged in and are signed with an asymmetric key so we know they came from CC. In order to get this to work for self-hosted customers, they have to set a series of cluster settings including:
-Jwks
-The signing key of the issuer they wish to use
-Can be one key (JWK) or a set of values (JWKS)
-Issuers
-What the issuer of the tokens will be
-Can be one value or a json array of values
-Audience
-What the audience on the tokens will be
-Can be one value or a json array of values
-Enabled
-Whether to allow JWT based logins
-
-Once these are set up they can then issue the tokens with normal JWT fields along with the subject field which will be equal to the user’s SQL username. They then pass this token in the password field along with a special option flag to indicate that the password field contains a token. Notably, you can use any SQL client that supports sufficiently long passwords.
 Third-party issuers
 There are some cases where a customer will want to use a third-party token issuer (such as GCP or Azure). This is supported but introduces some sharp edges. It is important for customers to understand how the audience, issuer, and subject fields are populated by their provider and make sure to only allow users they wish to access it.
 
