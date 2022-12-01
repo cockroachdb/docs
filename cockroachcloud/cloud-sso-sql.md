@@ -42,7 +42,8 @@ Software users (i.e. service accounts), can authenticate using JWT tokens from y
 - Your {{ site.data.products.db }} user identity must have access to at least one cluster in your organization.
 - A SQL user specifically corresponding to your SSO identity must be pre-provisioned on the cluster. To authenticate to a specific SQL database, i.e. a cluster, using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} users must correspond to SQL database users by the convention that the SQL username must be `sso_{email_address}`. 
 
-???!!! {how does this format actually work, does the at gmail go in there???}
+???!!! {Cameron, how does this format actually work, does the "@gmail" go in there???}
+
 - [`ccloud`, the Cockroach Cloud CLI](ccloud-get-started.html) must be installed on your local workstation.
 
 
@@ -92,7 +93,9 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 	By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing Cockroach Cloud to serve as an IdP.
 
-	When modifying this cluster setting, you must include the Cockroach Cloud public key in the key set. Failing to do so can prevent maintenance access by essential Cockroach Cloud managed service accounts, leading to unintended consequences. !!!{ Fact check on this? Seems right}
+	When modifying this cluster setting, you must include the Cockroach Cloud public key in the key set. Failing to do so can prevent maintenance access by essential Cockroach Cloud managed service accounts, leading to unintended consequences.
+
+	!!!{ @cameron Fact check on this? Seems right}
 
 1. `server.jwt_authentication.issuers`
 
@@ -133,12 +136,12 @@ cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:2625
 Welcome to the cockroach SQL interface...
 ~~~
 
-## Support for tokens with incompatible subject names
+## Support for tokens with SQL-incompatible subject names
 
 Some token issuers create tokens with a `subject` that isn’t a valid SQL username, for example starting with a number.
 
 You can accomodate this with **user name mapping**, by maping the third party subjects to valid SQL usernames.
 
-To do this, set the `server.identity_map.configuration` cluster setting appropriately with the map name equal to the issuer of the token you wish the map to apply to. See https://www.postgresql.org/docs/current/auth-username-maps.html for more details of the syntax of this field.
+To do this, set the `server.identity_map.configuration` cluster setting appropriately with the map name equal to the issuer of the token you wish the map to apply to. See the [PostgreSQL  user name maps documentation](https://www.postgresql.org/docs/current/auth-username-maps.html) for full details of the syntax of this field.
 
 When connecting to the cluster, make sure the username in your connection string matches the *mapped to* username, not the subject of the token.
