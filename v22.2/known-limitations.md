@@ -48,29 +48,22 @@ Instead, you can use `REVOKE SYSTEM` for the relevant privileges the role has in
     review: rafiss
 {% endcomment %}
 
-### Expressions with `*` not supported in user defined functions (UDFs)
+### Limitations for user-defined functions (UDFs)
+
+#### Support for user-defined functions
+
+User-defined functions are not supported in:
+
+- Expressions (column, index, constraint) in tables.
+- Views.
+- Other user-defined functions.
+- [CDC transformations](https://www.cockroachlabs.com/docs/v22.2/cdc-transformations).
+
+#### Expressions with `*` are not supported in user defined functions
 
 Expressions such as `SELECT *` are not currently allowed within the body of a UDF.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
-
-{% comment %}
-    review: mgartner
-    see also https://github.com/cockroachdb/cockroach/issues/86070
-    Link to UDF docs?
-{% endcomment %}
-
-### PARTITION ALL BY can lead to poor performance
-
-`PARTITION ALL BY` was added to support multi-region abstractions. In that setting it typically performs well due to locality optimized search. In other cases, unique indexes can result in poor performance because uniqueness validation may need to perform full index scans. Additionally, creating an index does not mean that there will be any acceleration on queries constraining that column.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83419)
-
-{% comment %}
-    discussion https://cockroachlabs.slack.com/archives/C04U1BTF8/p1656339354201849
-    review: ajwerner
-    notes: can't find this statement in docs or relevant implementation issues
-{% endcomment %}
 
 ### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
 
@@ -80,12 +73,7 @@ This setting can erroneously trigger if the client fails to consume events for t
 
 If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed.range_stuck_threshold = '0s'`. A fix is under development, and will be included in an upcoming 22.2 patch release.
 
-{% comment %}
-    supplied by @erikgrinaker https://cockroachlabs.slack.com/archives/C4A9ALLRL/p1669645971093569
-    asked for issue
-{% endcomment %}
-
-[Tracking GitHub issue](#)
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92570)
 
 ## Unresolved limitations
 
