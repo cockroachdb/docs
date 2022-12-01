@@ -7,19 +7,32 @@ docs_area: reference.security
 
 Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, functions, tables, clusters, schemas, rows, users, jobs, etc.).
 
-{{site.data.alerts.callout_info}}
 CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
+
+## Authorization models
+
+{{site.data.alerts.callout_info}}
+Starting in v22.2, CockroachDB introduces a new granular [system privilege model](#system-privileges) that provides finer control over a user's ability to work with the database. This new system privilege model is intended to replace the existing [role options model](#role-options) in a future release of CockroachDB. As such, any legacy role options that now have corresponding system privilege versions are **deprecated in CockroachDB v22.2**, though both are supported alongside each other in v22.2. We recommend familiarizing yourself with the new system privilege model, and implementing it where possible.
 {{site.data.alerts.end}}
+
+<span class="version-tag">New in v22.2:</span> CockroachDB offers two authorization models:
+
+Authorization Model         | Features
+----------------------------|---------------------------------------
+[System Privileges](#system-privileges)  | <ul><li> Introduced in CockroachDB v22.2.</li><li> Supported in CockroachDB v22.2, alongside the existing role options.</li><li>Apply cluster-wide. Assigning a system privilege to a user gives that user the privilege at the cluster-level, database-level, and table-level.</li><li>Are granted with the [`GRANT`](../grant.html) statement using the `SYSTEM` parameter, and viewed with the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same system privilege to other users or roles.</li></ul>
+[Role Options](#role-options) |  <ul><li> [Specific role options](#system-privileges) which have had corresponding system privilege versions introduced in CockroachDB v22.2 are now **deprecated**.</li><li>Supported in CockroachDB v22.2, alongside the new system privileges.</li><li>Apply only to a specific object (cluster, database, or table).</li><li>Are granted with the [`GRANT`](../grant.html) statement, and viewed with the [`SHOW GRANTS`](../show-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same role option to other users or roles.</li></ul>
+
+The intention is that role options should be reserved for user administration permissions, while system privileges should be used to define database actions such as reads and writes. If a system privilege exists with the same name as a role option, the system privilege should be used.
 
 ## Users and roles
 
-There is no technical distinction between a role or user in CockroachDB. A role/user can:
+Both [authorization models](#authorization-models) make use of the concept of user and roles. There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
 - Be permitted to log in to the [SQL shell](../cockroach-sql.html).
 - Be granted [privileges](#privileges) to specific actions and database objects.
 - Be a member of other users/roles, inheriting their privileges.
 - Have other users/roles as members that inherit its privileges.
-- Be configured with other [role options](#role-options)
+- Be configured with other [role options](#role-options).
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 
@@ -48,6 +61,10 @@ The `root` user is created by default for each cluster. The `root` user is assig
 For secure clusters, in addition to [generating the client certificate](../authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](../alter-user.html) statement.
 
 ## Roles
+
+{{site.data.alerts.callout_info}}
+This section describes roles. For role options like `CREATEROLE`, see [role options](#role-options).
+{{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
@@ -111,6 +128,10 @@ Users that own objects cannot be dropped until the [ownership is transferred to 
 
 ## Privileges
 
+{{site.data.alerts.callout_info}}
+This section describes privileges that are defined on objects, such as databases, tables, or types. For cluster-wide privileges like `MODIFYCLUSTERSETTING`, see [system privileges](#system-privileges).
+{{site.data.alerts.end}}
+
 When a user connects to a database, either via the built-in SQL client or a client driver, CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
 
 ### Supported privileges
@@ -143,6 +164,34 @@ The creator of an object is also the object's [owner](#object-ownership). Any ro
 
 For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](../show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](../alter-default-privileges.html#examples) statement pages.
 
+## System privileges 
+
+<span class="version-tag">New in v22.2:</span> System privileges offer more granular control over a user's actions when working with CockroachDB, over the legacy [role options authorization model](#role-options).
+
+System privileges are a special kind of [privilege](#privileges) that apply cluster-wide, meaning that the privilege is inherited to all objects within a cluster, such as databases, tables, and types.
+
+You can work with system privileges with [`GRANT SYSTEM`](../grant.html) and [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statements.
+
+The following table lists the new system privileges introduced with CockroachDB v22.2:
+
+New System Privilege        | Replaces Legacy Role Option
+----------------------------|---------------------------------------
+`MODIFYCLUSTERSETTING`      | Yes: the `MODIFYCLUSTERSETTING` and `NOMODIFYCLUSTERSETTING` role option
+`EXTERNALCONNECTION`        | No, new in v22.2
+`VIEWACTIVITY`              | Yes: the `VIEWACTIVITY` and `NOVIEWACTIVITY` role options
+`VIEWACTIVITYREDACTED`      | Yes: the `VIEWACTIVITYREDACTED` and `NOVIEWACTIVITYREDACTED` role options
+`VIEWCLUSTERSETTING`        | Yes: the `VIEWCLUSTERSETTING` and `NOVIEWCLUSTERSETTING` role options
+`CANCELQUERY`               | Yes: the `CANCELQUERY` and `NOCANCELQUERY` role options
+`NOSQLLOGIN`                | Yes: the `SQLLOGIN` and `NOSQLLOGIN` role options
+`VIEWCLUSTERMETADATA`       | No, new in v22.2
+`VIEWDEBUG`                 | No, new in v22.2
+`BACKUP`                    | No, new in v22.2
+`RESTORE`                   | No, new in v22.2
+`EXTERNALIOIMPLICITACCESS`  | No, new in v22.2
+`CHANGEFEED`                | No, new in v22.2
+
+If a system privilege exists with the same name as a role option, the system privilege should be used. Some role options do not have a corresponding system privilege, since they configure per-user attributes. For those system privileges that replace legacy role options (such as `VIEWACTIVITY`), if both the system privilege and its legacy role option are specified for a user/role, the system privilege will take precedence and the legacy role option will be ignored.
+
 ## Role options
 
 Users' authorization to perform certain actions are governed not by grants but by [`role options`](../create-user.html#role-options). These options govern whether users can perform actions such as:
@@ -165,3 +214,4 @@ We recommend the following best practices to set up access control for your clus
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+- Generally, if a [system privilege](#system-privileges) exists with the same name as a [role option](#role-options), the system privilege should be used. 
