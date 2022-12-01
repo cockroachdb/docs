@@ -23,7 +23,7 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 
 	- You must have access to an enterprise cluster, i.e. configured with a valid [CockroachDB enterprise license](enterprise-licensing.html) enabled.
 
-	See [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html) for help enabling your cluster with you enterprise license.
+		See [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html) for help enabling your cluster with you enterprise license.
 
 	- SQL users/credentials:
 
@@ -32,98 +32,65 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 		- A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
 
 ## Configure your cluster settings
-
 In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace:
 
-- JWKS: `server.jwt_authentication.jwks`
-	This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
+1. `server.jwt_authentication.jwks`
+
+	Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting.
+
+	This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
 
 	By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing Cockroach Cloud to serve as an IdP.
 
 	When modifying this cluster setting, you must include the Cockroach Cloud public key in the key set. Failing to do so can prevent maintenance access by essential Cockroach Cloud managed service accounts, leading to unintended consequences. !!!{ Fact check on this? Seems right}
-- Issuers: `server.jwt_authentication.issuers`
+
+1. `server.jwt_authentication.issuers`
+
+	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers:
+
 	A comma separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
 
 	By default will be the CC issuer but they can set it to any string or any list of strings formatted as a json array. Needs to match the issuer of JWTs
 
-- Audience: `server.jwt_authentication.audience`
+1. `server.jwt_authentication.audience`
+	
+	The name of your cluster as specified by the IdP. This must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
 
-1. Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting.
+1. `server.jwt_authentication.enabled`
 
-{% include_cached copy-clipboard.html %}
-~~~shell
+	Required value: `true`
 
-~~~
+	Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
 
-~~~txt
+## Authenticate to your cluster with your JWT token
 
-~~~
+To provision SQL cluster access for service accounts, you must provision OIDC or SAML tokens. There are many ways to do this, which are beyond the scope of this tutorial.
 
-1. Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers:
+For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discussing using GCP-issued OIDC tokens to authenticate to CockroachDB.
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-
-~~~
-
-~~~txt
-
-~~~
-
-1. Add the name of your cluster, as specified in the `audience` field with which your IdP will generate JWT formatted auth tokens.
+Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, use it to connect to your cluster's SQL interface via the CockroachDB CLI's [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-
+cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
 ~~~
 
 ~~~txt
-
-~~~
-1. Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
-
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-
+Welcome to the cockroach SQL interface...
 ~~~
 
-~~~txt
 
-~~~
 
-### Authenticate to your cluster with the JWT token
+
+
+
 
 To provision SQL cluster access for service accounts, i.e. software users (as opposed to human users), you must provision JWT tokens from your IdP.
 
 For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described in this [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp).
 
+Once you have a valid token from your IdP, 
 
-{% include_cached copy-clipboard.html %}
-~~~json
-{ \"iss\": \"117932124322803920123\", \"sub\": \"117932124322803920123\", \"aud\": \"https://firestore.googleapis.com/\", \"iat\": 1529350000, \"exp\": 1732840381 }
-~~~
-
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl -X POST \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    -H "Content-Type: application/json; charset=utf-8" \
-    -d @request.json \
-    "https://iamcredentials.googleapis.com/v1/projects/trestdocs/serviceAccounts/117932124322803920123:signJwt"
-~~~
-
-~~~txt
-
-~~~
-
-
-they can then issue the tokens with normal JWT fields along with the subject field which will be equal to the user’s SQL username.
-
-They then pass this token in the password field along with a special option flag to indicate that the password field contains a token. Notably, you can use any SQL client that supports sufficiently long passwords.
-
-Once you have a valid token from your IdP
 {% include_cached copy-clipboard.html %}
 ~~~shell
 cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:26257?options=--crdb:jwt_auth_enabled=true" --certs-dir={CLUSTER_CERT_DIR}
