@@ -32,12 +32,12 @@ To alter a backup schedule, you must be the owner of the backup schedule, i.e., 
 
 Parameter | Description
 ----------+-------------
-`schedule_id` | The schedule's ID that `CREATE SCHEDULE FOR BACKUP` and `SHOW SCHEDULES` display.
+`schedule_id` | The schedule's ID that [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) and [`SHOW SCHEDULES`](show-schedules.html) display.
 `schedule_label` | The name or label given to the backup schedule.
 `collectionURI` | The URI where you want to store the backup. See [Backup file URLs](backup.html#backup-file-urls) for detail on forming the URI.
 `option` | Control the backup behavior with a comma-separated list of these [options](#backup-options).
 `RECURRING crontab` | Specify when the backup should be taken. By default, these are incremental backups. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with `ALTER BACKUP SCHEDULE`. Define the schedule as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
-`FULL BACKUP crontab / ALWAYS` | Specify when to take a new full backup. Define the schedule as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>`FULL BACKUP ALWAYS` will trigger `RECURRING` to always take full backups. **Note:** If you do not have an Enterprise license then `ALWAYS` is the only accepted value of `FULL BACKUP`. <br><br>If you omit the `FULL BACKUP` clause, the default backup schedule will be as follows: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
+`FULL BACKUP crontab / ALWAYS` | Specify when to take a new full backup. Define the schedule as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>`FULL BACKUP ALWAYS` will trigger `RECURRING` to always take full backups. **Note:** If you do not have an Enterprise license then `ALWAYS` is the only accepted value of `FULL BACKUP`. <br><br>If you omit the `FULL BACKUP` clause, the default backup schedule will be as follows: <ul><li>If `RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>If `RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
 `schedule_option` | Control the schedule behavior with a comma-separated list of these [schedule options](#schedule-options).
 
 ### Backup options
@@ -49,7 +49,7 @@ You can use the backup options in this table to control the behavior of your bac
 ### Schedule options
 
 {{site.data.alerts.callout_danger}}
-**This feature is in preview.**  Its interface, options, and outputs are subject to change, and there may be bugs.
+**The following schedule options are in preview.**  Their interface, options, and outputs are subject to change, and there may be bugs.
 
 If you encounter a bug, please [file an issue](file-an-issue.html).
 {{site.data.alerts.end}}
@@ -79,7 +79,7 @@ This statement specifies:
 - `first_run = 'now'`: Take the first full backup immediately rather than wait for its next `RECURRING` time.
 - `ignore_existing_backups`: Ignore any existing backups already present in the storage location.
 
-The output shows that the [`detached` option](#detached) is implicitly added to scheduled backups:
+The command returns the following output. Note that the [`detached` option](#detached) is implicitly added, because this backup has been configured to run on a schedule:
 
 ~~~
      schedule_id     |   label     | status |           first_run           | schedule |                    backup_stmt
@@ -162,7 +162,7 @@ Full backups are implicitly of `backup_type` `0`, and so does not display in the
 
 ### Apply different options to scheduled backups
 
-You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list and detail on the available options. 
+You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options. 
 
 This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
 

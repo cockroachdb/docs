@@ -49,6 +49,7 @@ The following table outlines SQL statements you can use to create, configure, pa
 [`RESTORE`](restore.html)      | Restore full and incremental backups.
 [`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup.
 [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.
+[`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html) | Alter an existing backup schedule.
 [`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
 [`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
