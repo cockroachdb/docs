@@ -36,8 +36,6 @@ Backup / Restore Type             | Description                                 
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
 
-The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
-
  SQL Statement  | Description                                                                                 
 ----------------|---------------------------------------------------------------------------------------------
 [`BACKUP`](backup.html)       | Create full and incremental backups.
