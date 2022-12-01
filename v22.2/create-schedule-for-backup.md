@@ -104,6 +104,7 @@ View the schedule      | [`SHOW SCHEDULES`](show-schedules.html)
 Pause the schedule     | [`PAUSE SCHEDULES`](pause-schedules.html)
 Resume the schedule    | [`RESUME SCHEDULES`](resume-schedules.html)
 Drop the schedule      | [`DROP SCHEDULES`](drop-schedules.html)
+Alter the schedule     | [`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html)
 
 ## View and control a backup initiated by a schedule
 
@@ -244,6 +245,7 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, Cockro
 - [`PAUSE SCHEDULES`](pause-schedules.html)
 - [`RESUME SCHEDULES`](resume-schedules.html)
 - [`DROP SCHEDULES`](drop-schedules.html)
+- [`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html)
 - [`PAUSE JOB`](pause-job.html)
 - [`RESUME JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
