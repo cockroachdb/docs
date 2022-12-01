@@ -15,6 +15,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+For details on restoring across versions of CockroachDB, see [Restoring Backups Across Versions](restoring-backups-across-versions.html).
+
 {{site.data.alerts.callout_info}}
 The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
