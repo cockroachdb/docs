@@ -34,7 +34,7 @@ Cockroach Labs does **not** support restoring backups from a higher version into
 
 When you need to archive a backup for the long term, we recommend that you also archive the CockroachDB binary of the version that the backup was taken on.
 
-For a true archival copy that is not dependent on CockroachDB at all, running a changefeed to export your data from CockroachDB and archiving the files would be a better approach instead of taking a backup. See [Export Data with Changefeeds](export-data-with-changefeeds.html) for more detail.
+For a true archival copy that is not dependent on CockroachDB at all, running an [`EXPORT INTO CSV`](export.html) and archiving the files would be a better approach instead of taking a backup.
 
 ## See also
 
