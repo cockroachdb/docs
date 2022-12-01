@@ -12,7 +12,7 @@ Read more about [Public Key Infrastructure (PKI) and Transport Layer Security (T
 To enable certificate revocation using your OCSP service:
 
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
-2. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
+1. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
       {% include copy-clipboard.html %}
       ~~~ sql

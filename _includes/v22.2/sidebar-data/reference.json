@@ -175,6 +175,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/alter-backup-schedule.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-changefeed.html"
@@ -208,6 +214,12 @@
                 "title": "<code>ALTER INDEX</code>",
                 "urls": [
                   "/${VERSION}/alter-index.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/alter-locality.html"
                 ]
               },
               {
@@ -923,6 +935,12 @@
                 "urls": [
                   "/${VERSION}/show-super-regions.html"
                 ]
+              },
+              {
+               "title": "<code>SHOW SYSTEM GRANTS</code>",
+               "urls": [
+                 "/${VERSION}/show-system-grants.html"
+               ]
               },
               {
                 "title": "<code>SHOW ROLES</code>",
@@ -1759,6 +1777,12 @@
                 "title": "Overload Dashboard",
                 "urls": [
                   "/${VERSION}/ui-overload-dashboard.html"
+                ]
+              },
+              {
+                "title": "TTL Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-ttl-dashboard.html"
                 ]
               },
               {

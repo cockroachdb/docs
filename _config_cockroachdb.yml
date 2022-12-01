@@ -4,3 +4,4 @@ homepage_title: CockroachDB Docs
 versions:
   dev: v22.2
   stable: v22.1
+  cloud: v22.1

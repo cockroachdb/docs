@@ -194,7 +194,7 @@ To view statistics jobs, there are two options:
     (5 rows)
     ~~~
 
-2. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by [automatically generated statistics](cost-based-optimizer.html#table-statistics):
+1. Use `SHOW AUTOMATIC JOBS` to see statistics jobs that were created by [automatically generated statistics](cost-based-optimizer.html#table-statistics):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

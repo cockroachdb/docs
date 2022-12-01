@@ -6,7 +6,7 @@ cloud: true
 docs_area: manage
 ---
 
-{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.versions["cloud"]}}/{% endcapture %}
 
 The **Transactions** page helps you:
 

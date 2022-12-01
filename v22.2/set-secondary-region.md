@@ -107,5 +107,6 @@ ALTER DATABASE DROP SECONDARY REGION
 - [`ADD SUPER REGION`](add-super-region.html)
 - [`DROP SUPER REGION`](drop-super-region.html)
 - [`SHOW SUPER REGIONS`](show-super-regions.html)
+- [Zone Config Extensions](zone-config-extensions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [SQL Statements](sql-statements.html)

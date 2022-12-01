@@ -39,6 +39,7 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 - Create the first cluster in your organization
 - Select 9 or fewer nodes (we recommend starting with 3 so you can try scaling)
 - Select up to 4 vCPUs of compute and 150 GiB of storage (the trial code will not apply to larger clusters)
+- Select a single region or 3 regions
 - Don't remove the pre-applied trial code at check out
 
 Once the 30-day period is over, your cluster can be scaled beyond the trial period hardware limitations. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
@@ -57,7 +58,7 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
 
-See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page](../{{site.versions["cloud"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
@@ -66,11 +67,11 @@ All data in {{ site.data.products.serverless }} and {{ site.data.products.dedica
 {{site.data.alerts.callout_info}}
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available with an Enterprise license and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
 
-As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
+As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["cloud"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
 {{site.data.alerts.end}}
 
 
-See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page](../{{site.versions["cloud"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 
 
@@ -112,11 +113,11 @@ You can also [backup and restore](run-bulk-operations.html) data on your own. If
 
 ### Can I download the backups that {{ site.data.products.db }} takes for me?
 
-{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.versions["cloud"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to {{ site.data.products.dedicated }}?
 
-Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster.
+Yes. You can [backup](../{{site.versions["cloud"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["cloud"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["cloud"]}}/restore.html) to your {{ site.data.products.db }} cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -175,7 +176,7 @@ The [**{{ site.data.products.db }} Status** page](https://status.cockroachlabs.c
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["stable"]}}/make-queries-fast.html) docs for more information.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["cloud"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["cloud"]}}/make-queries-fast.html) docs for more information.
 
 ### Can I monitor my cluster with third-party tools?
 

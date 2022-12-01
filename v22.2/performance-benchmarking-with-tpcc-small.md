@@ -37,7 +37,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
     - Use the `c5d.4xlarge` machine type.
     - Use [local SSD instance store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-volumes). Local SSDs are low latency disks attached to each VM, which maximizes performance. This configuration best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
 
-2. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
+1. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
 
 {{site.data.alerts.callout_danger}}
 This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist](recommended-production-settings.html).
@@ -76,7 +76,7 @@ CockroachDB requires TCP communication on two ports:
 
 1. SSH to the first VM where you want to run a CockroachDB node.
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -91,7 +91,7 @@ CockroachDB requires TCP communication on two ports:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-3. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -103,9 +103,9 @@ CockroachDB requires TCP communication on two ports:
     --background
     ~~~
 
-4. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
+1. Repeat steps 1 - 3 for the other 2 VMs for CockroachDB nodes. Each time, be sure to adjust the `--advertise-addr` flag.
 
-5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
+1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

@@ -13,10 +13,6 @@ Most users should not need to use this statement; it is for use in emergency sit
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
-{{site.data.alerts.callout_info}}
-If you prefer to use a key based approach to relocating replicas and leases, see the experimental [`ALTER TABLE ... EXPERIMENTAL_RELOCATE`](experimental-features.html#relocate-leases-and-replicas) statement.
-{{site.data.alerts.end}}
-
 ## Synopsis
 
 <div>

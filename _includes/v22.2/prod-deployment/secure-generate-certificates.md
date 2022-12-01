@@ -10,7 +10,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
 
 1. [Install CockroachDB](install-cockroachdb.html) on your local machine, if you haven't already.
 
-2. Create two directories:
+1. Create two directories:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -24,7 +24,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
     - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
-3. Create the CA certificate and key:
+1. Create the CA certificate and key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -33,7 +33,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
+1. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -51,7 +51,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-5. Upload the CA certificate and node certificate and key to the first node:
+1. Upload the CA certificate and node certificate and key to the first node:
    
     {% if page.title contains "Google" %}
     {% include_cached copy-clipboard.html %}
@@ -107,7 +107,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     ~~~
     {% endif %}
 
-6. Delete the local copy of the node certificate and key:
+1. Delete the local copy of the node certificate and key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -118,7 +118,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
     {{site.data.alerts.end}}
 
-7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
+1. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -136,7 +136,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-8. Upload the CA certificate and node certificate and key to the second node:
+1. Upload the CA certificate and node certificate and key to the second node:
 
     {% if page.title contains "AWS" %}
     {% include_cached copy-clipboard.html %}
@@ -167,9 +167,9 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     ~~~
     {% endif %}
 
-9. Repeat steps 6 - 8 for each additional node.
+1. Repeat steps 6 - 8 for each additional node.
 
-10. Create a client certificate and key for the `root` user:
+1. Create a client certificate and key for the `root` user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -179,7 +179,7 @@ Locally, you'll need to [create the following certificates and keys](cockroach-c
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-11. Upload the CA certificate and client certificate and key to the machine where you will run a sample workload:
+1. Upload the CA certificate and client certificate and key to the machine where you will run a sample workload:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

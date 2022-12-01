@@ -1,0 +1,8 @@
+extends: existence
+message: Use "1." instead of "%s" for ordered lists.
+link: https://github.com/cockroachdb/docs/blob/master/StyleGuide.md#lists
+level: warning
+scope: raw
+nonword: true
+tokens:
+  - '^\s*[23456789][0-9]*\.\D'

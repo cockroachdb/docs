@@ -9,14 +9,14 @@
     "cockroachdb" has been added to your repositories
     ~~~
 
-2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
+1. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm repo update
     ~~~
 
-3. Install the CockroachDB Helm chart. 
+1. Install the CockroachDB Helm chart. 
 
     Provide a "release" name to identify and track this particular deployment of the chart.
 
@@ -31,7 +31,7 @@
 
     Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
 
-4. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
+1. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -46,7 +46,7 @@
     my-release-cockroachdb-init-hxzsc   0/1       Completed   0          1h
     ~~~
 
-5. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+1. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

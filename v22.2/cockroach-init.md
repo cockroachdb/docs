@@ -62,9 +62,9 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 <section class="filter-content" markdown="1" data-scope="secure">
 1. SSH to the machine where the node has been started. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster.
 
-2. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
+1. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
 
-3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
+1. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -77,7 +77,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. SSH to the machine where the node has been started. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster.
 
-2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
+1. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -97,9 +97,9 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 <section class="filter-content" markdown="1" data-scope="secure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
-2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
+1. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
 
-3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
+1. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -112,7 +112,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
-2. Run the `cockroach init` command with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
+1. Run the `cockroach init` command with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

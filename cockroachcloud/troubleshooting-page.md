@@ -15,7 +15,7 @@ We have updated the CA certificate used by {{ site.data.products.serverless }} c
 
 ### Cannot load certificates
 
-You see the following error when you are using the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command to connect to your {{ site.data.products.serverless }} cluster:
+You see the following error when you are using the [`cockroach sql`](../{{site.versions["cloud"]}}/cockroach-sql.html) command to connect to your {{ site.data.products.serverless }} cluster:
 
 ~~~
 ERROR: cannot load certificates.
@@ -38,7 +38,7 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-There are two possible causes of this error: incorrect [routing ID](../{{site.versions["stable"]}}/connect-to-the-database.html#connection-parameters) in the connection string, and CA certificate conflicts in the `cockroach` certificate search path.
+There are two possible causes of this error: incorrect [routing ID](../{{site.versions["cloud"]}}/connect-to-the-database.html#connection-parameters) in the connection string, and CA certificate conflicts in the `cockroach` certificate search path.
 
 <h4>Solution: incorrect routing ID in the connection string</h4>
 
@@ -46,7 +46,7 @@ Check if you are using the right routing ID in the [connection method](connect-t
 
 <h4>Solution: CA certificate conflicts</h4>
 
-If you have existing certificates in `~/.cockroach-certs` used to connect to {{ site.data.products.core }} or {{ site.data.products.dedicated }} clusters and are trying to connect to a {{ site.data.products.serverless }} cluster using [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
+If you have existing certificates in `~/.cockroach-certs` used to connect to {{ site.data.products.core }} or {{ site.data.products.dedicated }} clusters and are trying to connect to a {{ site.data.products.serverless }} cluster using [`cockroach sql`](../{{site.versions["cloud"]}}/cockroach-sql.html), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
 
 For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgresql/root.crt` in the connection string:
 
@@ -133,7 +133,7 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 
 <h4>Solution</h4>
 
-{{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["stable"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
+{{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["cloud"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
 
 ### External network access disabled
 
@@ -149,7 +149,7 @@ You must [set up billing information](billing-management.html) for your organiza
 
 ### Outbound I/O is disabled
 
-The following error is displayed if you try to set up a [changefeed](../{{site.versions["stable"]}}/create-and-configure-changefeeds.html) for your {{ site.data.products.serverless }} cluster without having billing information on file:
+The following error is displayed if you try to set up a [changefeed](../{{site.versions["cloud"]}}/create-and-configure-changefeeds.html) for your {{ site.data.products.serverless }} cluster without having billing information on file:
 
 ~~~
 pq: Outbound IO is disabled by configuration
@@ -157,7 +157,7 @@ pq: Outbound IO is disabled by configuration
 
 <h4>Solution</h4>
 
-You must [set up billing information](billing-management.html) for your organization to use [Core](../{{site.versions["stable"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise](../{{site.versions["stable"]}}/changefeed-examples.html) changefeeds, but you can leave your spend limit at the $0 default.
+You must [set up billing information](billing-management.html) for your organization to use [Core](../{{site.versions["cloud"]}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise](../{{site.versions["cloud"]}}/changefeed-examples.html) changefeeds, but you can leave your spend limit at the $0 default.
 
 ## Security errors
 
@@ -176,7 +176,7 @@ Check the directory path for the [CA certificate in the connection method](conne
 
 ### Issue with CockroachDB workloads
 
-The following error is displayed while trying to a run [CockroachDB workload](../{{site.versions["stable"]}}/cockroach-workload.html) with `sslmode=verify-full`:
+The following error is displayed while trying to a run [CockroachDB workload](../{{site.versions["cloud"]}}/cockroach-workload.html) with `sslmode=verify-full`:
 
 ~~~
 Error: x509: certificate signed by unknown authority

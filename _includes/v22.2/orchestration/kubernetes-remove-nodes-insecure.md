@@ -56,7 +56,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     </section>
 
-2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](cockroach-node.html) command to decommission it:
+1. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](cockroach-node.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
     It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
@@ -111,7 +111,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     No more data reported on target nodes. Please verify cluster health before removing the nodes.
     ~~~
 
-3. Once the node has been decommissioned, remove a pod from your StatefulSet:
+1. Once the node has been decommissioned, remove a pod from your StatefulSet:
 
     <section class="filter-content" markdown="1" data-scope="manual">
 

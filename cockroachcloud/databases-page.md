@@ -7,14 +7,14 @@ docs_area: manage
 ---
 
 {% if page.cloud == true %}
-  {% capture link_prefix %}../{{site.versions["stable"]}}/{% endcapture %}
+  {% capture link_prefix %}../{{site.versions["cloud"]}}/{% endcapture %}
   {% assign page_prefix = "" %}
 {% else %}
   {% assign link_prefix = "" %}
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
-{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.versions["cloud"]}}/{% endcapture %}
 
 The **Databases** page of the {{ site.data.products.db }} Console allows you to create, edit, and delete databases and provides details of the following:
 

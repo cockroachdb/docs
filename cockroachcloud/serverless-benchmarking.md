@@ -17,7 +17,7 @@ This page describes {{ site.data.products.serverless }} performance benchmarking
 
 ### What is KV 95?
 
-KV 95 is a simple benchmark that tests linear scaling by [running a workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads) that is 95% point reads and 5% point writes. Reads and writes are distributed to keys spread uniformly across the cluster.
+KV 95 is a simple benchmark that tests linear scaling by [running a workload](../{{site.versions["cloud"]}}/cockroach-workload.html#workloads) that is 95% point reads and 5% point writes. Reads and writes are distributed to keys spread uniformly across the cluster.
 
 ## Baseline performance
 
@@ -33,5 +33,5 @@ When the previously benchmarked cluster was not throttled to 100 RU/s, it used 8
 
 ## Learn more
 
-- See [CockroachDB Performance](../{{site.versions["stable"]}}/performance.html) for more information about CockroachDB performance benchmarking.
-- See [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) for guidance on tuning real workloads.
+- See [CockroachDB Performance](../{{site.versions["cloud"]}}/performance.html) for more information about CockroachDB performance benchmarking.
+- See [SQL Performance Best Practices](../{{site.versions["cloud"]}}/performance-best-practices-overview.html) for guidance on tuning real workloads.

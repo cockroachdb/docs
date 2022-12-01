@@ -12,7 +12,7 @@
     statefulset.apps/cockroachdb created
     ~~~
 
-2. Confirm that three pods are `Running` successfully. Note that they will not
+1. Confirm that three pods are `Running` successfully. Note that they will not
    be considered `Ready` until after the cluster has been initialized:
 
     {% include_cached copy-clipboard.html %}
@@ -27,7 +27,7 @@
     cockroachdb-2   0/1       Running   0          2m
     ~~~
 
-3. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+1. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -41,7 +41,7 @@
     pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
     ~~~
 
-4. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
+1. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -53,7 +53,7 @@
     job.batch/cluster-init created
     ~~~
 
-5. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
+1. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
