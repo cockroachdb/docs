@@ -7,19 +7,32 @@ docs_area: reference.security
 
 Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, functions, tables, clusters, schemas, rows, users, jobs, etc.).
 
-{{site.data.alerts.callout_info}}
 CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
+
+## Authorization models
+
+{{site.data.alerts.callout_info}}
+Starting in v22.2, CockroachDB introduces a new granular [system-level privilege model](#system-level-privileges) that provides finer control over a user's ability to work with the database. This new system-level privilege model is intended to replace the existing [role options model](#role-options) in a future release of CockroachDB. As such, any legacy role options that now have corresponding system-level privilege versions are **deprecated in CockroachDB v22.2**, though both are supported alongside each other in v22.2. We recommend familiarizing yourself with the new system-level privilege model, and implementing it where possible.
 {{site.data.alerts.end}}
+
+<span class="version-tag">New in v22.2:</span> CockroachDB offers two authorization models:
+
+Authorization Model         | Features
+----------------------------|---------------------------------------
+[System-level Privileges](#system-level-privileges)  | <ul><li> Introduced in CockroachDB v22.2.</li><li> Supported in CockroachDB v22.2, alongside the existing role options.</li><li>Apply cluster-wide. A system-level privilege is granted at the cluster level, and is inherited via role membership, similar to how [object-level privileges](#privileges) are inherited.</li><li>Are granted with the [`GRANT`](../grant.html) statement using the `SYSTEM` parameter, and viewed with the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same system-level privilege to other users or roles.</li></ul>
+[Role Options](#role-options) |  <ul><li> [Specific role options](#system-level-privileges) which have had corresponding system-level privileges introduced in CockroachDB v22.2 are now **deprecated**.</li><li>Supported in CockroachDB v22.2, alongside the new system-level privileges.</li><li>Apply only to specific users, and are not inheritable via role membership.</li><li>Are granted with the [`GRANT`](../grant.html) statement, and viewed with the [`SHOW GRANTS`](../show-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same role option to other users or roles.</li></ul>
+
+If a system-level privilege exists with the same name as a role option, the system-level privilege should be used.
 
 ## Users and roles
 
-There is no technical distinction between a role or user in CockroachDB. A role/user can:
+Both [authorization models](#authorization-models) make use of the concept of user and roles. There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
 - Be permitted to log in to the [SQL shell](../cockroach-sql.html).
 - Be granted [privileges](#privileges) to specific actions and database objects.
 - Be a member of other users/roles, inheriting their privileges.
 - Have other users/roles as members that inherit its privileges.
-- Be configured with other [role options](#role-options)
+- Be configured with other [role options](#role-options).
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 
@@ -48,6 +61,10 @@ The `root` user is created by default for each cluster. The `root` user is assig
 For secure clusters, in addition to [generating the client certificate](../authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](../alter-user.html) statement.
 
 ## Roles
+
+{{site.data.alerts.callout_info}}
+This section describes roles. For role options like `CREATEROLE`, see [role options](#role-options).
+{{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
@@ -119,15 +136,43 @@ Roles and users can be granted the following privileges:
 
 {% include {{ page.version.version }}/sql/privileges.md %}
 
+### System-level privileges 
+
+<span class="version-tag">New in v22.2:</span> System-level privileges offer more granular control over a user's actions when working with CockroachDB, over the legacy [role options authorization model](#role-options).
+
+System-level privileges are a special kind of privilege that apply cluster-wide, meaning that the privilege is not tied to any specific object in the database.
+
+You can work with system-level privileges using the [`GRANT `](../grant.html) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.
+
+The following table lists the new system-level privileges introduced with CockroachDB v22.2, and indicates which system-level privileges replace role options:
+
+New System-level Privilege  | Replaces Legacy Role Option
+----------------------------|---------------------------------------
+`MODIFYCLUSTERSETTING`      | Yes: the `MODIFYCLUSTERSETTING` and `NOMODIFYCLUSTERSETTING` role option
+`EXTERNALCONNECTION`        | No, new in v22.2
+`VIEWACTIVITY`              | Yes: the `VIEWACTIVITY` and `NOVIEWACTIVITY` role options
+`VIEWACTIVITYREDACTED`      | Yes: the `VIEWACTIVITYREDACTED` and `NOVIEWACTIVITYREDACTED` role options
+`VIEWCLUSTERSETTING`        | Yes: the `VIEWCLUSTERSETTING` and `NOVIEWCLUSTERSETTING` role options
+`CANCELQUERY`               | Yes: the `CANCELQUERY` and `NOCANCELQUERY` role options
+`NOSQLLOGIN`                | Yes: the `SQLLOGIN` and `NOSQLLOGIN` role options
+`VIEWCLUSTERMETADATA`       | No, new in v22.2
+`VIEWDEBUG`                 | No, new in v22.2
+`BACKUP`                    | No, new in v22.2
+`RESTORE`                   | No, new in v22.2
+`EXTERNALIOIMPLICITACCESS`  | No, new in v22.2
+`CHANGEFEED`                | No, new in v22.2
+
+If a system-level privilege exists with the same name as a role option, the system-level privilege should be used. Some role options do not have a corresponding system-level privilege, since they configure per-user attributes. For those system-level privileges that replace legacy role options (such as `VIEWACTIVITY`), if both the system-level privilege and its legacy role option are specified for a user/role, the system-level privilege will take precedence and the legacy role option will be ignored.
+
 ### Managing privileges
 
 Use the [`GRANT`](../grant.html) and [`REVOKE`](../revoke.html) statements to manage privileges for users and roles.
 
 Take the following points into consideration while granting privileges to roles and users:
 
-- When a role or user is granted privileges for a database, that role or user is not automatically granted access to any new or existing objects within that database. To change access to those objects, see [Default privileges](#default-privileges).
+- When a role or user is granted privileges for a database, that role or user is not automatically granted access to any new or existing objects within that database. To change access to those objects, see [Default privileges](#default-privileges). This does not apply to system-level privileges, which apply cluster-wide.
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
-- In CockroachDB, privileges are granted to users and roles at the database and table levels. They are not yet supported for other granularities such as columns or rows.
+- In CockroachDB, privileges are granted to users and roles at the database and table levels, or cluster-wide at the system level. They are not yet supported for other granularities such as columns or rows.
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](../sql-statements.html).
 
@@ -165,3 +210,4 @@ We recommend the following best practices to set up access control for your clus
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+- Generally, if a [system-level privilege](#system-level-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used. 
