@@ -37,12 +37,20 @@ These instructions assume that you use macOS. If you use Linux, use your default
    ```
    
    You can find instructions to install [git](https://www.atlassian.com/git/tutorials/install-git) for Linux or other operating systems.
+   
+5. Install the latest version of htmltest.
 
-5. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
+   ```
+   brew install htmltest
+   ```
+   
+   You can find instructions to install [htmltest]([https://www.atlassian.com/git/tutorials/install-git](https://github.com/wjdp/htmltest)) for Linux or other operating systems.
 
-6. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+6. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
 
-7. Use Gem from Homebrew to install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site. **Use the `brew-gem` command. If you use `gem`, you'll be using the outdated version of Ruby that installs with macOS.**
+7. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork.
+
+8. Use Gem from Homebrew to install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site. **Use the `brew-gem` command. If you use `gem`, you'll be using the outdated version of Ruby that installs with macOS.**
 
     ```
     sudo brew-gem install jekyll bundler
@@ -50,9 +58,9 @@ These instructions assume that you use macOS. If you use Linux, use your default
 
     If you get a permission error, make sure you're using `brew-gem` and Ruby from Homebrew, rather than `/usr/bin/gem` and `/usr/bin/ruby`.
 
-8. Learn the essentials of our [Docs Structure](#docs-structure).
+9. Learn the essentials of our [Docs Structure](#docs-structure).
 
-9. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
+10. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
 
 ## Get started
 
