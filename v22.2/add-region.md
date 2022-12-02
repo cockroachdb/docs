@@ -3,6 +3,7 @@ title: ADD REGION
 summary: The ADD REGION statement adds a region to a multi-region database.
 toc: true
 docs_area: reference.sql
+canonical: https://localhost:4000/docs/stable/add-region
 ---
 
 The `ALTER DATABASE .. ADD REGION` [statement](sql-statements.html) adds a [region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html). While CockroachDB processes an index modification or changing a table to or from a [`REGIONAL BY ROW` table](multiregion-overview.html#regional-by-row-tables), attempting to drop a region from the database containing that `REGIONAL BY ROW` table will produce an error. Similarly, while this statement is running, all index modifications and locality changes on [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables will be blocked.
