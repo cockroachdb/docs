@@ -653,6 +653,9 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
 
+{{site.data.alerts.callout_info}}
+Earlier connection strings or connection parameters to {{ site.data.products.serverless }} clusters used a routing ID to identify the cluster on the host server. For example, in the connection string the `options` query parameter had `cluster={routing-id}`. This is no longer necessary, as the cluster's routing ID is part of the `{host}` parameter.
+{{site.data.alerts.end}}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">

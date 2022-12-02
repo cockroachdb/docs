@@ -27,7 +27,7 @@ In {{ site.data.products.serverless }} clusters, all external service integratio
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---url 'postgres://<username>:<password>@<cluster-name>.<region code>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt' \
+--url 'postgres://<username>:<password>@<host>:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt' \
 --execute "SELECT * FROM tpcc.warehouse" --format=csv > /Users/<username>/<path/to/file>/warehouse.csv
 ~~~
 
