@@ -38,7 +38,7 @@ These instructions assume that you use macOS. If you use Linux, use your default
    
    You can find instructions to install [git](https://www.atlassian.com/git/tutorials/install-git) for Linux or other operating systems.
    
-5. Install the latest version of htmltest.
+5. Install the latest version of `htmltest`.
 
    ```
    brew install htmltest
