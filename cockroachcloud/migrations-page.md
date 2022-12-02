@@ -6,7 +6,7 @@ cloud: true
 docs_area: migrate
 ---
 
-{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.versions["cloud"]}}/{% endcapture %}
 
 {% include feature-phases/preview.md %}
 
@@ -37,7 +37,7 @@ The dump file must be less than 4 MB. `INSERT` and `COPY` statements will be ign
 
 To begin a database migration:
 
-1. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box. 
+1. Click the upload box and select a `.sql` file, or drop a `.sql` file directly into the box.
 1. Wait for the schema to be analyzed. A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
 1. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
 
@@ -76,7 +76,7 @@ The **Statement Status** graph displays the number of successful statements (gre
 - **Unimplemented Feature** represents a statement that uses an [unimplemented feature](../{{version_prefix}}migration-overview.html#unimplemented-features).
 - **Statement Error** represents a statement that failed for a reason other than a missing user or unimplemented feature.
 - **Not Executed** represents a statement that was not executed by the tool.
-- **Missing User** represents a statement that references a nonexistent user. 
+- **Missing User** represents a statement that references a nonexistent user.
 - **Incidental Error** represents a statement that failed because another SQL statement encountered one of the preceding error types.
 
 ### Suggestions
@@ -136,7 +136,7 @@ To export the current schema, click **Export SQL File** at the top of the **Stat
 
 To analyze a schema that has been updated in the [**Statements** list](#statements-list), click **Retry Migration** at the top of the list.
 
-This is necessary in order to update the number of **Errors** and enable [finalization](#finalize-the-schema). 
+This is necessary in order to update the number of **Errors** and enable [finalization](#finalize-the-schema).
 
 ## Finalize the schema
 
@@ -149,7 +149,7 @@ To finalize the schema, click **Finalize Schema** when viewing the **Summary Rep
 1. In the **Create Schema** tab, name the new database and select a user to own the database. Optionally click **Download SQL export** to download your schema file. This is useful for migrating your database to a different cluster. Then click **Finalize** to create the new database.
 
 {{site.data.alerts.callout_success}}
-After finalizing the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application). 
+After finalizing the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application).
 {{site.data.alerts.end}}
 
 ## See also

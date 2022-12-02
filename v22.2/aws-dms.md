@@ -150,10 +150,18 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - When using **Truncate** or **Do nothing** as a target table preparation mode, you cannot include tables with any hidden columns. You can verify which tables contain hidden columns by executing the following SQL query:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
+    ~~~
+
+- If you select **Enable validation** in your [task settings](#step-2-2-task-settings) and have a [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html) column in your database, the migration will fail with the following error:
+
+    ~~~
+    Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
+    ~~~
+
+    This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
 
 ## Troubleshooting common issues
 
@@ -161,6 +169,14 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     - Check the `SQL_EXEC` [logging channel](logging-overview.html#logging-channels) for log messages related to `COPY` statements and the tables you are migrating.
     - Check the [Amazon CloudWatch logs that you configured](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
+
+- If you encounter errors like the following:
+
+    ~~~
+    2022-10-21T13:24:07 [SOURCE_UNLOAD   ]W:  Value of column 'metadata' in table 'integrations.integration' was truncated to 32768 bytes, actual length: 116664 bytes  (postgres_endpoint_unload.c:1072)
+    ~~~
+
+    Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 

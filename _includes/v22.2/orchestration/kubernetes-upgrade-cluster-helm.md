@@ -161,7 +161,7 @@
       ranges_underreplicated
     --------------------------
                            0
-    (1 row)        
+    (1 row)
     ~~~
 
     This indicates that it is safe to proceed to the next pod.
@@ -242,14 +242,14 @@
 
     {% endif %}
 
-    2. Re-enable auto-finalization:
+    1. Re-enable auto-finalization:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
 
-    3. Exit the SQL shell and delete the temporary pod:
+    1. Exit the SQL shell and delete the temporary pod:
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql

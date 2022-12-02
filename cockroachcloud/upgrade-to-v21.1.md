@@ -25,7 +25,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 
-In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../{{site.versions["stable"]}}/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../{{site.versions["cloud"]}}/multi-active-availability.html) design.
 
 Approximately 72 hours after all nodes are running v21.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the {{ site.data.products.db }} Console.
 
@@ -60,11 +60,11 @@ To start the upgrade process:
 
 1. [Sign in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 
-2. In the **Clusters** list, select the cluster you want to upgrade.
+1. In the **Clusters** list, select the cluster you want to upgrade.
 
-3. Select **Actions > Upgrade cluster**.
+1. Select **Actions > Upgrade cluster**.
 
-4. On the **Upgrade your cluster** dialog, confirm that you have reviewed the pre-upgrade guidance and then click **Start Upgrade**.
+1. On the **Upgrade your cluster** dialog, confirm that you have reviewed the pre-upgrade guidance and then click **Start Upgrade**.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 As mentioned earlier, your cluster will be upgraded one node at a time without interrupting the cluster's overall health and availability. This "rolling upgrade" approach will take approximately 4-5 minutes per node.

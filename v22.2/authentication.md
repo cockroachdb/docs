@@ -15,7 +15,7 @@ Authentication refers to the act of verifying the identity of the other party in
 
 Users may connect with {{ site.data.products.core }} clusters in 2 main ways:
 
-- SQL clients connections, including the CockroachDB CLI client and the [various supported drivers and ORMs](../{{site.versions["stable"]}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.versions["stable"]}}/sql-feature-support.html).
+- SQL clients connections, including the CockroachDB CLI client and the [various supported drivers and ORMs](install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](sql-feature-support.html).
 
 - A read-only monitoring service, which provides cluster and database details, and information useful for troubleshooting and performance tuning. Each CockroachDB node also acts as an HTTP server, providing both a [browser UI DB console](ui-overview.html) and the [cluster API](cluster-api.html), which provides much of the same information as the DB console, but as a rest API suitable for programmatic access.
 
@@ -287,7 +287,7 @@ Going back to our example and assuming that we trust the CA, Rosa needs to get h
 
 A public key is shared using a digital certificate signed by a CA using the CA's private key. The digital certificate contains:
 
--   The certificate owner’s public key    
+-   The certificate owner’s public key
 -   Information about the certificate owner
 -   The CA's digital signature
 

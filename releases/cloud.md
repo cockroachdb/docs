@@ -46,7 +46,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 - Fixed a bug where stale data caused **Connect** modal errors immediately after creating a {{ site.data.products.serverless }} cluster.
 - Fixed a bug where backup metadata payloads were limited to 4MiB instead of the desired 32MiB.
 - Fixed a bug where the node-aggregated low disk alert was not firing.
-  
+
 ## October 3, 2022
 
 <h3> Bug fixes </h3>
@@ -109,7 +109,7 @@ As of November 7, 2022, {{ site.data.products.serverless }} clusters are running
 
 <h3>Console changes</h3>
 
-- The [**Connect to your cluster**](../{{site.versions["stable"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["stable"]}}/third-party-database-tools.html).
+- The [**Connect to your cluster**](../{{site.versions["cloud"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["cloud"]}}/third-party-database-tools.html).
 - The [**Connect to your cluster**](../cockroachcloud/connect-to-a-serverless-cluster.html) dialog for clusters running CockroachDB [v22.1](v22.1.html) now loads more quickly.
 - If users log in using an [SSO](../cockroachcloud/cloud-org-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
 - Previously, {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](../cockroachcloud/plan-your-cluster.html?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.

@@ -21,9 +21,9 @@ On [accessing the DB Console](ui-overview.html#db-console-access) for a secure c
 For secure clusters, you can avoid getting the warning message by using a certificate issued by a public CA whose certificates are trusted by browsers, in addition to the CockroachDB-created certificates.
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
-2. Rename the certificate and key files to `ui.crt` and `ui.key`.
-3. Add the `ui.crt` and `ui.key` files to the [trust store](security-reference/transport-layer-security.html#trust-store). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
-4. The cockroach process reads certificates only when the process starts.
+1. Rename the certificate and key files to `ui.crt` and `ui.key`.
+1. Add the `ui.crt` and `ui.key` files to the [trust store](security-reference/transport-layer-security.html#trust-store). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems. If your cluster is deployed using containers, update the containers to include the new certificate and key.
+1. The cockroach process reads certificates only when the process starts.
 
    - In a manually-deployed cluster, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
       {% include_cached copy-clipboard.html %}
@@ -128,7 +128,7 @@ File name | File usage
 To enable certificate revocation:
 
 1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
-2. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
+1. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
 
       {% include_cached copy-clipboard.html %}
       ~~~ sql

@@ -16,7 +16,7 @@ Feature | Description
 
     {{site.data.alerts.callout_info}}Make sure you install <code>minikube</code> version 0.21.0 or later. Earlier versions do not include a Kubernetes server that supports the <code>maxUnavailability</code> field and <code>PodDisruptionBudget</code> resource type used in the CockroachDB StatefulSet configuration.{{site.data.alerts.end}}
 
-2. Start a local Kubernetes cluster:
+1. Start a local Kubernetes cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

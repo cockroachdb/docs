@@ -33,7 +33,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     `certs` | You'll generate your CA certificate and all node and client certificates and keys in this directory.
     `my-safe-directory` | You'll generate your CA key in this directory and then reference the key when generating node and client certificates.
 
-2. Create the CA (Certificate Authority) certificate and key pair:
+1. Create the CA (Certificate Authority) certificate and key pair:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -42,7 +42,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Create the certificate and key pair for your nodes:
+1. Create the certificate and key pair for your nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -55,7 +55,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
 
     Because you're running a local cluster and all nodes use the same hostname (`localhost`), you only need a single node certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
 
-4. Create a client certificate and key pair for the `root` user:
+1. Create a client certificate and key pair for the `root` user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -91,7 +91,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
     *
     ~~~
 
-2. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
+1. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
     - The `--certs-dir` directory points to the directory holding certificates and keys.
     - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the DB Console.
     - The `--store` flag indicates the location where the node's data and logs are stored.
@@ -100,7 +100,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
         {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
     - The `--background` flag starts the `cockroach` process in the background so you can continue using the same terminal for other operations.
 
-3. Start two more nodes:
+1. Start two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -126,7 +126,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
+1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -174,7 +174,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
-2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -203,7 +203,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-3. Now exit the SQL shell on node 1 and open a new shell on node 2:
+1. Now exit the SQL shell on node 1 and open a new shell on node 2:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -219,7 +219,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     In a real deployment, all nodes would likely use the default port `26257`, and so you wouldn't need to set the port portion of `--host`.
     {{site.data.alerts.end}}
 
-4. Run the same `SELECT` query as before:
+1. Run the same `SELECT` query as before:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -235,14 +235,14 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-5. Now [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need to [access the DB Console](#step-5-access-the-db-console):
+1. Now [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need to [access the DB Console](#step-5-access-the-db-console):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE USER max WITH PASSWORD 'roach';
     ~~~
 
-6. Exit the SQL shell on node 2:
+1. Exit the SQL shell on node 2:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -269,7 +269,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     I190926 16:50:35.915498 1 workload/workloadsql/dataload.go:135  imported promo_codes (0s, 1000 rows)
     ~~~
 
-2. Run the workload for 5 minutes:
+1. Run the workload for 5 minutes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -291,27 +291,27 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
-2.  Assign `max` to the `admin` role (you only need to do this once):
+1.  Assign `max` to the `admin` role (you only need to do this once):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT admin TO max;
     ~~~
 
-3. Exit the SQL shell:
+1. Exit the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-4. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
+1. Go to <a href="https://localhost:8080" data-proofer-ignore>https://localhost:8080</a>. Note that your browser will consider the CockroachDB-created certificate invalid; you'll need to click through a warning message to get to the UI.
 
     {% include {{ page.version.version }}/misc/chrome-localhost.md %}
 
-5. Log in with the username and password you created earlier (`max`/`roach`).
+1. Log in with the username and password you created earlier (`max`/`roach`).
 
-6. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v22.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -321,11 +321,11 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-7. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v22.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-8. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 6. Simulate node maintenance
 
@@ -398,7 +398,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Again, these commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-2. Back on the **Cluster Overview** in the DB Console, you'll now see 5 nodes listed:
+1. Back on the **Cluster Overview** in the DB Console, you'll now see 5 nodes listed:
 
     <img src="{{ 'images/v22.2/ui_cluster_overview_5_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -454,7 +454,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     kill -TERM 4622
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
+1. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the certificate directories:
 

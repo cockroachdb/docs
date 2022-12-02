@@ -33,9 +33,9 @@ First, imagine a simple read scenario where:
 In this case:
 
 1. Node 2 (the gateway node) receives the request to read from table 3.
-2. The leaseholder for table 3 is on node 3, so the request is routed there.
-3. Node 3 returns the data to node 2.
-4. Node 2 responds to the client.
+1. The leaseholder for table 3 is on node 3, so the request is routed there.
+1. Node 3 returns the data to node 2.
+1. Node 2 responds to the client.
 
 If the query is received by the node that has the leaseholder for the relevant range, there are fewer network hops:
 
@@ -50,11 +50,11 @@ Now imagine a simple write scenario where a query is executed against node 3 to 
 In this case:
 
 1. Node 3 (the gateway node) receives the request to write to table 1.
-2. The leaseholder for table 1 is on node 1, so the request is routed there.
-3. The leaseholder is the same replica as the Raft leader (as is typical), so it simultaneously appends the write to its own Raft log and notifies its follower replicas on nodes 2 and 3.
-4. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leader and the write is committed to the key-values on the agreeing replicas. In this diagram, the follower on node 2 acknowledged the write, but it could just as well have been the follower on node 3. Also note that the follower not involved in the consensus agreement usually commits the write very soon after the others.
-5. Node 1 returns acknowledgement of the commit to node 3.
-6. Node 3 responds to the client.
+1. The leaseholder for table 1 is on node 1, so the request is routed there.
+1. The leaseholder is the same replica as the Raft leader (as is typical), so it simultaneously appends the write to its own Raft log and notifies its follower replicas on nodes 2 and 3.
+1. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leader and the write is committed to the key-values on the agreeing replicas. In this diagram, the follower on node 2 acknowledged the write, but it could just as well have been the follower on node 3. Also note that the follower not involved in the consensus agreement usually commits the write very soon after the others.
+1. Node 1 returns acknowledgement of the commit to node 3.
+1. Node 3 responds to the client.
 
 Just as in the read scenario, if the write request is received by the node that has the leaseholder and Raft leader for the relevant range, there are fewer network hops:
 

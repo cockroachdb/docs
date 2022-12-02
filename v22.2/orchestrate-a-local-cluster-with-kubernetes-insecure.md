@@ -76,7 +76,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
     </section>
 
-2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
+1. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
