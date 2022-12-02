@@ -11,8 +11,8 @@ In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation,
 In this tutorial, you'll work through a hypothetical scenario that demonstrates the importance of `SERIALIZABLE` isolation for data correctness.
 
 1. You'll start by reviewing the scenario and its schema.
-2. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on PostgreSQL, which defaults to `READ COMMITTED`.
-3. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
+1. You'll then execute the scenario at one of the weaker isolation levels, `READ COMMITTED`, observing the write skew anomaly and its implications. Because CockroachDB always uses `SERIALIZABLE` isolation, you'll run this portion of the tutorial on PostgreSQL, which defaults to `READ COMMITTED`.
+1. You'll finish by executing the scenario at `SERIALIZABLE` isolation, observing how it guarantees correctness. You'll use CockroachDB for this portion.
 
 {{site.data.alerts.callout_info}}
 For a deeper discussion of transaction isolation and the write skew anomaly, see the [Real Transactions are Serializable](https://www.cockroachlabs.com/blog/acid-rain/) and [What Write Skew Looks Like](https://www.cockroachlabs.com/blog/what-write-skew-looks-like/) blog posts.
@@ -200,7 +200,7 @@ When write skew happens, a transaction reads something, makes a decision based o
       AND doctor_id = 1;
     ~~~
 
-2. In the terminal for doctor 2, since the previous check confirmed the same thing, the application tries to update doctor 2's schedule:
+1. In the terminal for doctor 2, since the previous check confirmed the same thing, the application tries to update doctor 2's schedule:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -209,14 +209,14 @@ When write skew happens, a transaction reads something, makes a decision based o
       AND doctor_id = 2;
     ~~~
 
-3. In the terminal for doctor 1, the application commits the transaction, despite the fact that the previous check (the `SELECT` query) is no longer true:
+1. In the terminal for doctor 1, the application commits the transaction, despite the fact that the previous check (the `SELECT` query) is no longer true:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
-4. In the terminal for doctor 2, the application commits the transaction, despite the fact that the previous check (the `SELECT` query) is no longer true:
+1. In the terminal for doctor 2, the application commits the transaction, despite the fact that the previous check (the `SELECT` query) is no longer true:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -27,7 +27,7 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
-	
+
 	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{YOUR_CLUSTER_ID}/overview`.
@@ -64,11 +64,11 @@ You can create the CMEK key two ways:
 - [Directly in the AWS console](#option-a-use-the-aws-console-to-create-the-cmek-key)
 - By setting up a [Vault AWS-KMS secrets engine](#option-b-use-the-vault-aws-kms-secrets-engine-to-create-the-cmek-key) with access to AWS KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
 		{{site.data.alerts.callout_info}}
-		Learn more about [CockroachDB - HashiCorp Vault integrations](../{{site.versions["stable"]}}/hashicorp-integration.html).
+		Learn more about [CockroachDB - HashiCorp Vault integrations](../{{site.versions["cloud"]}}/hashicorp-integration.html).
 		{{site.data.alerts.end}}
 
 ### Option A: Use the AWS Console to create the CMEK key
-1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/). 
+1. In the AWS console, visit the [KMS page](https://console.aws.amazon.com/kms/).
 1. Choose **Customer managed keys** and click the **Create Key** button.
 1. For **Key type**, specify **Symmetric Key**.
 1. For **Key usage**, specify **Encrypt and decrypt**.
@@ -112,7 +112,7 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
     credentials=access_key="{your access key}" \
     credentials=secret_key="{your secret key}"
 	~~~
-	
+
 	~~~txt
 	Success! Data written to: keymgmt/kms/awskms
 	~~~
@@ -125,7 +125,7 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 	~~~shell
 	vault write keymgmt/key/crdb-cmek-vault type="aes256-gcm96"
 	~~~
-	
+
 	~~~txt
 	Success! Data written to: keymgmt/key/aes256-gcm96
 	~~~
@@ -184,5 +184,3 @@ Note that this IAM policy refers to the ARN for the cross-account IAM role you c
 }
 
 ~~~
-
-

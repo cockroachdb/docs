@@ -49,10 +49,10 @@ Reads in the region with the most demand will access the local leaseholder and, 
 For example, in the animation below, the most active region is `us-east` and, thus, the table's leaseholder is in that region:
 
 1. The read request in `us-east` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder replica.
-4. The leaseholder retrieves the results and returns to the gateway node.
-5. The gateway node returns the results to the client. In this case, reads in the `us-east` remain in the region and are lower latency than reads in other regions.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder replica.
+1. The leaseholder retrieves the results and returns to the gateway node.
+1. The gateway node returns the results to the client. In this case, reads in the `us-east` remain in the region and are lower latency than reads in other regions.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_follow_the_workload_reads.png' | relative_url }}" alt="Follow-the-workload topology reads" style="max-width:100%" />
 
@@ -63,12 +63,12 @@ The replicas for the table are spread across all 3 regions, so writes involve mu
 For example, in the animation below, assuming the most active region is still `us-east`:
 
 1. The write request in `us-east` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder replica.
-4. While the leaseholder appends the write to its Raft log, it notifies its follower replicas.
-5. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
-6. The leaseholders then return acknowledgement of the commit to the gateway node.
-7. The gateway node returns the acknowledgement to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder replica.
+1. While the leaseholder appends the write to its Raft log, it notifies its follower replicas.
+1. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
+1. The leaseholders then return acknowledgement of the commit to the gateway node.
+1. The gateway node returns the acknowledgement to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_follow_the_workload_writes.gif' | relative_url }}" alt="Follow-the-workload topology writes" style="max-width:100%" />
 

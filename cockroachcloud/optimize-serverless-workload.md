@@ -66,9 +66,9 @@ In the {{ site.data.products.db }} Console, you can monitor your cluster's SQL a
 You can reduce the RU cost of a query by reducing the work your cluster must do to execute that query. We recommend the following:
 
 - Drop indexes that are no longer needed.
-- Use [secondary indexes](../{{site.versions["stable"]}}/schema-design-indexes.html) that reduce the number of rows that need to be scanned.
+- Use [secondary indexes](../{{site.versions["cloud"]}}/schema-design-indexes.html) that reduce the number of rows that need to be scanned.
 - Take advantage of SQL filters, joins, and aggregations rather than performing these operations in the application to reduce the amount of data returned to the client.
-- Use [batched `INSERT`](../{{site.versions["stable"]}}/insert.html#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
+- Use [batched `INSERT`](../{{site.versions["cloud"]}}/insert.html#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
 - Use range `UPDATE` and `DELETE` statements to affect many rows in a single statement, rather than sending a separate statement per row.
 - Avoid returning columns that your application does not need.
 - Don't disable automatic statistics, as they are needed to power the [optimizer](../stable/cost-based-optimizer.html).

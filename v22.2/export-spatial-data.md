@@ -54,13 +54,13 @@ To combine multiple CSVs into one file:
       gid,om,yr,mo,dy,date,time,tz,st,stf,stn,mag,inj,fat,loss,closs,slat,slon,elat,elon,len,wid,fc,geom
     ~~~
 
-2. Add the column names output above to your target output CSV file (e.g., `tornadoes.csv`) as header columns.  For the tornadoes database, they should look like the following:
+1. Add the column names output above to your target output CSV file (e.g., `tornadoes.csv`) as header columns.  For the tornadoes database, they should look like the following:
 
     ~~~
     gid, om, yr, mo, dy, date, time, tz, st, stf, stn, mag, inj, fat, loss, closs, slat, slon, elat, elon, len, wid, fc, geom
     ~~~
 
-2. Concatenate the non-header data from all of the exported CSV files, and append the output to the target CSV file as shown below.  The node's store directory on this machine is `/tmp/node0`.
+1. Concatenate the non-header data from all of the exported CSV files, and append the output to the target CSV file as shown below.  The node's store directory on this machine is `/tmp/node0`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

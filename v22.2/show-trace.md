@@ -131,7 +131,7 @@ This example uses two terminals concurrently to generate conflicting transaction
     > CREATE TABLE t (k INT);
     ~~~
 
-2. In terminal 1, open a transaction and perform a write without closing the transaction:
+1. In terminal 1, open a transaction and perform a write without closing the transaction:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -145,14 +145,14 @@ This example uses two terminals concurrently to generate conflicting transaction
 
     Press enter one more time to send these statements to the server.
 
-3. In terminal 2, turn tracing on:
+1. In terminal 2, turn tracing on:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET tracing = on;
     ~~~
 
-4.  In terminal 2, execute a conflicting read:
+1.  In terminal 2, execute a conflicting read:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -161,14 +161,14 @@ This example uses two terminals concurrently to generate conflicting transaction
 
     You'll see that this statement is blocked until the transaction in terminal 1 finishes.
 
-4. In terminal 1, finish the transaction:
+1. In terminal 1, finish the transaction:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > COMMIT;
     ~~~
 
-5. In terminal 2, you'll see the completed read:
+1. In terminal 2, you'll see the completed read:
 
     ~~~
       k
@@ -177,7 +177,7 @@ This example uses two terminals concurrently to generate conflicting transaction
     (1 row)
     ~~~
 
-6. In terminal 2, stop tracing and then view the completed trace:
+1. In terminal 2, stop tracing and then view the completed trace:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -66,9 +66,9 @@ When a node receives a request, it looks up the location of the range(s) that in
 
 1. For each key, the node looks up the location of the range containing the specified key in the second level of range metadata (`meta2`). That information is cached for performance; if the range's location is found in the cache, it is returned immediately.
 
-2. If the range's location is not found in the cache, the node looks up the location of the range where the actual value of `meta2` resides. This information is also cached; if the location of the `meta2` range is found in the cache, the node sends an RPC to the `meta2` range to get the location of the keys the request wants to operate on, and returns that information.
+1. If the range's location is not found in the cache, the node looks up the location of the range where the actual value of `meta2` resides. This information is also cached; if the location of the `meta2` range is found in the cache, the node sends an RPC to the `meta2` range to get the location of the keys the request wants to operate on, and returns that information.
 
-3. Finally, if the location of the `meta2` range is not found in the cache, the node looks up the location of the range where the actual value of the first level of range metadata (`meta1`) resides. This lookup always succeeds because the location of `meta1` is distributed among all the nodes in the cluster using a gossip protocol. The node then uses the information from `meta1` to look up the location of `meta2`, and from `meta2` it looks up the locations of the ranges that include the keys in the request.
+1. Finally, if the location of the `meta2` range is not found in the cache, the node looks up the location of the range where the actual value of the first level of range metadata (`meta1`) resides. This lookup always succeeds because the location of `meta1` is distributed among all the nodes in the cluster using a gossip protocol. The node then uses the information from `meta1` to look up the location of `meta2`, and from `meta2` it looks up the locations of the ranges that include the keys in the request.
 
 Note that the process described above is recursive; every time a lookup is performed, it either (1) gets a location from the cache, or (2) performs another lookup on the value in the next level "up" in the tree. Because the range metadata is cached, a lookup can usually be performed without having to send an RPC to another node.
 
@@ -140,7 +140,7 @@ Let's imagine we have an alphabetically sorted column, which we use for lookups.
     meta1/maxKey -> node4:26257, node5:26257, node6:26257
     ~~~
 
-2. `meta2` contains addresses for the nodes containing the replicas of each range in the cluster:
+1. `meta2` contains addresses for the nodes containing the replicas of each range in the cluster:
 
     ~~~
     # Contains [A-G)

@@ -78,7 +78,7 @@ Unless you changed the integer size when [migrating the schema](#differences-fro
 We **strongly recommend testing your application against CockroachDB** to ensure that:
 
 1. The state of your data is what you expect post-migration.
-2. Performance is sufficient for your application's workloads. Follow the [SQL Performance Best Practices](performance-best-practices-overview.html) and implement [transaction retry logic](transactions.html#transaction-retries).
+1. Performance is sufficient for your application's workloads. Follow the [SQL Performance Best Practices](performance-best-practices-overview.html) and implement [transaction retry logic](transactions.html#transaction-retries).
 
 ## See also
 

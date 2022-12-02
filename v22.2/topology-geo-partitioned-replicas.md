@@ -69,7 +69,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
 1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/).
 
-2. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
+1. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -82,7 +82,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     This creates distinct ranges for each partition of the table.
 
-3. Partition the secondary index by `city` as well:
+1. Partition the secondary index by `city` as well:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -95,7 +95,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     This creates distinct ranges for each partition of the secondary index.
 
-4. For each partition of the table and its secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
+1. For each partition of the table and its secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
 
     {{site.data.alerts.callout_success}}
     The `<table>@*` syntax lets you create zone configurations for all identically named partitions of a table, saving you multiple steps.
@@ -111,7 +111,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
         CONFIGURE ZONE USING constraints = '[+region=us-east]';
       ~~~
 
-5. To confirm that partitions are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html) or [`SHOW PARTITIONS`](show-partitions.html) statement:
+1. To confirm that partitions are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html) or [`SHOW PARTITIONS`](show-partitions.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -187,10 +187,10 @@ Because each partition is constrained to the relevant region (e.g., the `la` par
 For example, in the animation below:
 
 1. The read request in `us-central` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder for the relevant partition.
-4. The leaseholder retrieves the results and returns to the gateway node.
-5. The gateway node returns the results to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder for the relevant partition.
+1. The leaseholder retrieves the results and returns to the gateway node.
+1. The gateway node returns the results to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_geo-partitioning_reads.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
@@ -201,12 +201,12 @@ Just like for reads, because each partition is constrained to the relevant regio
 For example, in the animation below:
 
 1. The write request in `us-central` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder replicas for the relevant table and secondary index partitions.
-4. While each leaseholder appends the write to its Raft log, it notifies its follower replicas, which are in the same region.
-5. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
-6. The leaseholders then return acknowledgement of the commit to the gateway node.
-7. The gateway node returns the acknowledgement to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder replicas for the relevant table and secondary index partitions.
+1. While each leaseholder appends the write to its Raft log, it notifies its follower replicas, which are in the same region.
+1. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
+1. The leaseholders then return acknowledgement of the commit to the gateway node.
+1. The gateway node returns the acknowledgement to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_geo-partitioning_writes.gif' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 

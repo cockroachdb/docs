@@ -220,6 +220,23 @@ REVOKE DELETE ON movr.public.* FROM max;
 (22 rows)
 ~~~
 
+### Revoke global privileges on the entire cluster
+
+Global level [privileges](security-reference/authorization.html#supported-privileges) live above the database level and apply to the entire cluster.
+
+`root` and [`admin`](security-reference/authorization.html#admin-role) users have global privileges by default, and are capable of revoking it from other users and roles using the `REVOKE` statement.
+
+For example, the following statement removes the ability to use [`SET CLUSTER SETTING`](set-cluster-setting.html) from the user `maxroach`
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+REVOKE SYSTEM MODIFYCLUSTERSETTING FROM maxroach;
+~~~
+
+{{site.data.alerts.callout_info}}
+Global privileges in this context mean "cluster-wide" privileges, and have no relation to the term "global" as used by [multi-region SQL statements](multiregion-overview.html).
+{{site.data.alerts.end}}
+
 ### Revoke privileges on schemas
 
 {% include_cached copy-clipboard.html %}

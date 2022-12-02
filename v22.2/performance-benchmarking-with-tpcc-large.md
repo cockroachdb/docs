@@ -48,7 +48,7 @@ You should receive your trial license via email within a few minutes. You'll ena
     - Use the `c5d.9xlarge` machine type.
     - Use [local SSD instance store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html#instance-store-volumes). Local SSDs are low latency disks attached to each VM, which maximizes performance. This configuration best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
 
-2. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
+1. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
 
 {{site.data.alerts.callout_danger}}
 This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist](recommended-production-settings.html).
@@ -87,7 +87,7 @@ CockroachDB requires TCP communication on two ports:
 
 1. SSH to the first VM where you want to run a CockroachDB node.
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -102,7 +102,7 @@ CockroachDB requires TCP communication on two ports:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-3. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -117,11 +117,11 @@ CockroachDB requires TCP communication on two ports:
 
     Each node will start with a [locality](cockroach-start.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 81 racks for 81 nodes so that 1 node will be assigned to each rack.
 
-4. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
+1. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
     - Set the [`--locality`](cockroach-start.html#locality) flag to the appropriate "rack number".
 
-5. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
+1. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](cockroach-init.html) command to join the first nodes into a cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -134,14 +134,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 1. SSH to any VM with the `cockroach` binary.
 
-2. Launch the [built-in SQL shell](cockroach-sql.html):
+1. Launch the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
-3. Adjust some [cluster settings](cluster-settings.html):
+1. Adjust some [cluster settings](cluster-settings.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -154,14 +154,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     SET CLUSTER SETTING kv.range_merge.queue_enabled = false
     ~~~
 
-4. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to the following value:
+1. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to the following value:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     ALTER RANGE default CONFIGURE ZONE USING gc.ttlseconds = 600;
     ~~~
 
-5. Enable the trial license you requested earlier:
+1. Enable the trial license you requested earlier:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -173,7 +173,7 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     > SET CLUSTER SETTING enterprise.license = '<your license key>';
     ~~~
 
-6. Exit the SQL shell:
+1. Exit the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -237,7 +237,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     postgres://root@<node 1 internal address>:26257?sslmode=disable postgres://root@<node 2 internal address>:26257?sslmode=disable postgres://root@<node 3 internal address>:26257?sslmode=disable postgres://root@<node 4 internal address>:26257?sslmode=disable ...
     ~~~
 
-2. Upload the `addrs` file to the 5 VMs with the `workload` binary:
+1. Upload the `addrs` file to the 5 VMs with the `workload` binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -264,7 +264,7 @@ Before running the benchmark, it's important to allocate partitions to workload 
     $ scp addrs <username>@<workload instance 5 address>:.
     ~~~
 
-3. SSH to each VM with `workload` and allocate partitions:
+1. SSH to each VM with `workload` and allocate partitions:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -422,7 +422,7 @@ $(cat addrs)
     $ scp <username>@<workload instance 5 address>:workload5.histogram.ndjson .
     ~~~
 
-2. Upload the result files to one of the VMs with the `workload` binary:
+1. Upload the result files to one of the VMs with the `workload` binary:
 
     {{site.data.alerts.callout_info}}
     The following commands assume you're uploading to the VM with the `workload1.histogram.ndjson` file.
@@ -448,9 +448,9 @@ $(cat addrs)
     $ scp workload5.histogram.ndjson <username>@<workload instance 5 address>:.
     ~~~
 
-3. SSH to the VM where you uploaded the results files.
+1. SSH to the VM where you uploaded the results files.
 
-4. Run the `workload debug tpcc-merge-results` command to synthesize the results:
+1. Run the `workload debug tpcc-merge-results` command to synthesize the results:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

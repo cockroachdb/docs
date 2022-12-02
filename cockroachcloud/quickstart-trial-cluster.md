@@ -18,6 +18,11 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
+    
+    {{site.data.alerts.callout_info}}
+    You can also select 3 regions with 3 nodes per region if you want to create a [multi-region](plan-your-cluster.html#multi-region-clusters) trial cluster.
+    {{site.data.alerts.end}}
+    
 1. Under **Hardware per node**, select 2vCPU for **Compute** and a 35 GiB disk for **Storage**.
 
     {{site.data.alerts.callout_info}}
@@ -139,9 +144,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 Learn more:
 
-- Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- Build a ["Hello World" app with the Django framework](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["stable"]}}/install-client-drivers.html) for your favorite language.
-- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../{{site.versions["stable"]}}/demo-fault-tolerance-and-recovery.html).
+- Use the [built-in SQL client](../{{site.versions["cloud"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Build a ["Hello World" app with the Django framework](../{{site.versions["cloud"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["cloud"]}}/install-client-drivers.html) for your favorite language.
+- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../{{site.versions["cloud"]}}/demo-fault-tolerance-and-recovery.html).
 
 Before you move into production:
 

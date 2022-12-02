@@ -166,6 +166,23 @@ SHOW GRANTS ON TABLE movr.public.*;
 (24 rows)
 ~~~
 
+### Grant global privileges on the entire cluster
+
+Global level [privileges](security-reference/authorization.html#supported-privileges) live above the database level and apply to the entire cluster.
+
+`root` and [`admin`](security-reference/authorization.html#admin-role) users have global privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
+
+For example, the following statement allows the user `maxroach` to use [`SET CLUSTER SETTING`](set-cluster-setting.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
+~~~
+
+{{site.data.alerts.callout_info}}
+Global privileges in this context mean "cluster-wide" privileges, and have no relation to the term "global" as used by [multi-region SQL statements](multiregion-overview.html).
+{{site.data.alerts.end}}
+
 ### Make a table readable to every user in the system
 
 {% include_cached copy-clipboard.html %}

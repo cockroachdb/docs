@@ -52,7 +52,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
-	
+
 	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
@@ -171,7 +171,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
-	
+
 	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
@@ -291,7 +291,7 @@ Where:
 
 ### Is it possible to configure exported logs to be redacted at source?
 
-Logs exported in this fashion retain [`redactable`](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) markers, but are **not** themselves redacted. If you need to redact sensitive log data, you can use these `redactable` markers to do so once log entries have been written to your configured cloud log sink.
+Logs exported in this fashion retain [`redactable`](/docs/{{site.versions["cloud"]}}/configure-logs.html#redact-logs) markers, but are **not** themselves redacted. If you need to redact sensitive log data, you can use these `redactable` markers to do so once log entries have been written to your configured cloud log sink.
 
 ### Is it possible to configure multiple log export configurations to send different log channels to different log groups in my cloud log sink?
 
@@ -307,11 +307,11 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-Currently, the following CockroachDB [log channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) are supported for export in this manner: `SESSIONS`,`OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
+Currently, the following CockroachDB [log channels](/docs/{{site.versions["cloud"]}}/logging-overview.html#logging-channels) are supported for export in this manner: `SESSIONS`,`OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
 
 ### Is it possible to include SQL audit logs as part of the log export capability?
 
-Yes, the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["stable"]}}/experimental-audit.html) statement.
+Yes, the [SQL Audit Log](/docs/{{site.versions["cloud"]}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["cloud"]}}/experimental-audit.html) statement.
 
 ### Can I use an AWS External ID with the log export feature?
 
