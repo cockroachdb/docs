@@ -132,7 +132,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
         jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
         ~~~
 
-    2. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+    1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell

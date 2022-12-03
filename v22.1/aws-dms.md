@@ -23,7 +23,7 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.0 or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.8 or later.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
     - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
@@ -64,8 +64,8 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
     To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
     {{site.data.alerts.end}}
     <img src="{{ 'images/v22.2/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
-2. If needed, you can test the connection under **Test endpoint connection (optional)**.
-3. To create the endpoint, select **Create endpoint**.
+1. If needed, you can test the connection under **Test endpoint connection (optional)**.
+1. To create the endpoint, select **Create endpoint**.
     <img src="{{ 'images/v22.2/aws-dms-test-endpoint.png' | relative_url }}" alt="AWS-DMS-Test-Endpoint" style="max-width:100%" />
 
 ## Step 2. Create a database migration task

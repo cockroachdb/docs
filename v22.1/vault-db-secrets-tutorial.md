@@ -176,7 +176,7 @@ For a SQL role, the template is defined by its `creation_statements`, SQL statem
 
     For example, create a role that has all privileges on the `defaultdb` database:
     {{site.data.alerts.callout_info}}
-    `db_name` is actually not the database name but the Vault database secrets engine namespace (i.e. `crdb-config` in the example).
+    `db_name` is actually not the database name but the Vault database secrets engine namespace (i.e., `crdb-config` in the example).
     {{site.data.alerts.end}}
     {% include_cached copy-clipboard.html %}
     ~~~shell

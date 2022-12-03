@@ -63,7 +63,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
     })
     ~~~
 
-2. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach` welcome text:
+1. Set the `DATABASE_URL` environment variable to the connection string provided in the `cockroach` welcome text:
 
 
     {% include_cached copy-clipboard.html %}

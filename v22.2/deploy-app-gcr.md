@@ -39,14 +39,14 @@ Before starting the tutorial, do the following:
 
     In the connection string copied from the {{ site.data.products.db }} Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created earlier.
 
-2. In the SQL shell, create the `bank` database that your application will use:
+1. In the SQL shell, create the `bank` database that your application will use:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-3. Exit the SQL shell:
+1. Exit the SQL shell:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

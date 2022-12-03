@@ -98,7 +98,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
         ~~~
 
     
-    2. Set the `DATABASE_URL` environment variable to the modified connection string.
+    1. Set the `DATABASE_URL` environment variable to the modified connection string.
     
         {% include_cached copy-clipboard.html %}
         ~~~ shell
@@ -111,7 +111,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
-2. Run the code to create a table and insert some rows:
+1. Run the code to create a table and insert some rows:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

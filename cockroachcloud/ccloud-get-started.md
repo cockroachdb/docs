@@ -26,7 +26,7 @@ The `ccloud quickstart` command will open a browser window to log you in to Cock
 
 In order to use the `ccloud` commands to configure and manage your clusters, you first need to log in to CockroachDB Cloud. Use the `ccloud auth login` command to open a browser window to log in to CockroachDB Cloud.
 
-1. Run the `ccloud auth login` command and hit **Enter** to open a browser window:
+1. Run the `ccloud auth login` command and press **Enter** to open a browser window:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
