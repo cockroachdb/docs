@@ -107,10 +107,47 @@ If you do not specify a schema for the function `add` when you create it, the de
 
 ## Known limitations
 
-User-defined functions are not supported in:
+### Limitations on use of UDFs
 
-{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
-{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
+User-defined functions are not currently supported in:
+
+- Expressions (column, index, constraint) in tables.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+
+- Views.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+
+- Other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}.
+
+### Limitations on expressions allowed within UDFs
+
+The following are not currently allowed within the body of a UDF:
+
+- Subqueries in statements.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87291)
+
+- Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
+
+- Expressions with `*` such as `SELECT *`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
+
+- CTEs (common table expressions).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
+- References to other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
 ## See also
 

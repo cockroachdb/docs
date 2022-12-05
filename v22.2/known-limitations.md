@@ -50,7 +50,7 @@ User-defined functions are not currently supported in:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-- [CDC transformations](https://www.cockroachlabs.com/docs/v22.2/cdc-transformations).
+{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}.
 
 #### Limitations on expressions allowed within UDFs
 
