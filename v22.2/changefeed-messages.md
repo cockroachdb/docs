@@ -241,6 +241,10 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 - It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
 - It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
 
+{% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
+
+See [Export Data with Changefeeds](export-data-with-changefeeds.html) for detail on using changefeeds to export data from CockroachDB.
+
 ## See also
 
 - [Online Schema Changes](online-schema-changes.html)
