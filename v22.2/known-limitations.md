@@ -39,8 +39,17 @@ If the [role](security-reference/authorization.html#roles) for which you are try
 User-defined functions are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+
 - Views.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+
 - Other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
 - [CDC transformations](https://www.cockroachlabs.com/docs/v22.2/cdc-transformations).
 
 #### Limitations on expressions allowed within UDFs
@@ -63,7 +72,9 @@ The following are not currently allowed within the body of a UDF:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
 
-- Other user-defined functions.
+- References to other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
 ### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
 
