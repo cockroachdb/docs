@@ -119,7 +119,7 @@ docs_area:
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Reference</p>
       <ul>
-        <li><a href="architecture/overview.html">Architecture</a></li>
+        <li><a href="architecture/index.html">Architecture</a></li>
         <li><a href="sql-feature-support.html">SQL</a></li>
         <li><a href="cockroach-commands.html">CLI</a></li>
         <li><a href="ui-overview.html">DB Console</a></li>

@@ -15,7 +15,7 @@ Metric | Description
 --------|----
 Capacity Usage | <ul><li>Used capacity: The storage capacity used by CockroachDB (represented as a percentage of total storage capacity allocated across all nodes).</li><li>Usable capacity: The space available for CockroachDB data storage (i.e., the storage capacity of the machine excluding the capacity used by the Cockroach binary, operating system, and other system files). </li></ul>
 Node Status | <ul><li>The number of [live nodes](#live-nodes) in the cluster.</li><li>The number of suspect nodes in the cluster. A node is considered suspect if its liveness status is unavailable or the node is in the process of decommissioning.</li><li>The number of [dead nodes](#dead-nodes) in the cluster.</li>
-Replication Status | <ul><li>The total number of [ranges](architecture/overview.html#glossary) in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
+Replication Status | <ul><li>The total number of [ranges](architecture/index.html#glossary) in the cluster.</li><li>The number of [under-replicated ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li><li>The number of [unavailable ranges](admin-ui-replication-dashboard.html#review-of-cockroachdb-terminology) in the cluster. A non-zero number indicates an unstable cluster.</li>
 
 ## Node List
 

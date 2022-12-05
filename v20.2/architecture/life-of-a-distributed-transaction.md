@@ -6,9 +6,9 @@ toc: true
 
 Because CockroachDB is a distributed transactional database, the path queries take is dramatically different from many other database architectures. To help familiarize you with CockroachDB's internals, this guide covers what that path actually is.
 
-If you've already read the [CockroachDB architecture documentation](overview.html), this guide serves as another way to conceptualize how the database works. This time, instead of focusing on the layers of CockroachDB's architecture, we're going to focus on the linear path that a query takes through the system (and then back out again).
+If you've already read the [CockroachDB architecture documentation](index.html), this guide serves as another way to conceptualize how the database works. This time, instead of focusing on the layers of CockroachDB's architecture, we're going to focus on the linear path that a query takes through the system (and then back out again).
 
-To get the most out of this guide, we recommend beginning with the architecture documentation's [overview](overview.html) and progressing through all of the following sections. This guide provides brief descriptions of each component's function and links  to other documentation where appropriate, but assumes the reader has a basic understanding of the architecture in the first place.
+To get the most out of this guide, we recommend beginning with the architecture documentation's [overview](index.html) and progressing through all of the following sections. This guide provides brief descriptions of each component's function and links  to other documentation where appropriate, but assumes the reader has a basic understanding of the architecture in the first place.
 
 ## Overview
 

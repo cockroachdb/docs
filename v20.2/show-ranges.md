@@ -4,7 +4,7 @@ summary: The SHOW RANGES statement shows information about the ranges that compr
 toc: true
 ---
 
-The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located. If `SHOW RANGES` displays `NULL` for both the start and end keys of a range, the range is empty and has no splits.
+The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/index.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located. If `SHOW RANGES` displays `NULL` for both the start and end keys of a range, the range is empty and has no splits.
 
 {{site.data.alerts.callout_info}}
 To show range information for a specific row in a table or index, use the [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement.
@@ -39,9 +39,9 @@ Field | Description
 `end_key` | The end key for the range.
 `range_id` | The range ID.
 `range_size_mb` | The size of the range.
-`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#glossary).
+`lease_holder` | The node that contains the range's [leaseholder](architecture/index.html#glossary).
 `lease_holder_locality` | The [locality](cockroach-start.html#locality) of the leaseholder.
-`replicas` | The nodes that contain the range [replicas](architecture/overview.html#glossary).
+`replicas` | The nodes that contain the range [replicas](architecture/index.html#glossary).
 `replica_localities` | The [locality](cockroach-start.html#locality) of the range.
 
 {{site.data.alerts.callout_info}}
@@ -124,4 +124,4 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)
 - [Partitioning tables](partitioning.html)
-- [Architecture Overview](architecture/overview.html)
+- [Architecture Overview](architecture/index.html)

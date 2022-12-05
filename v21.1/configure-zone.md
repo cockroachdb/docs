@@ -52,7 +52,7 @@ If the target is a [`system` range](#create-a-replication-zone-for-a-system-rang
 
  Parameter | Description
 -----------+-------------
-`range_name` | The name of the system [range](architecture/overview.html#glossary) whose [replication zone configurations](configure-replication-zones.html) you want to change.
+`range_name` | The name of the system [range](architecture/index.html#glossary) whose [replication zone configurations](configure-replication-zones.html) you want to change.
 `database_name` | The name of the [database](create-database.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.<br>**New in v21.1:** If you directly change a database's zone configuration with `ALTER DATABASE ... CONFIGURE ZONE`, CockroachDB will block all [`ALTER DATABASE ... SET PRIMARY REGION`](set-primary-region.html) statements on the database.
 `table_name` | The name of the [table](create-table.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.
 `partition_name` | The name of the [partition](partitioning.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.

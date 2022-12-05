@@ -58,7 +58,7 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
 
-See the [Security Overview page](../{{site.versions["cloud"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page](../{{site.versions["cloud"]}}/security-reference/index.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
@@ -71,7 +71,7 @@ As a result, encryption will appear to be disabled in the [DB Console](../{{site
 {{site.data.alerts.end}}
 
 
-See the [Security Overview page](../{{site.versions["cloud"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page](../{{site.versions["cloud"]}}/security-reference/index.html) for more information, and for comparison of security options by CockroachDB product.
 
 
 

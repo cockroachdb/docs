@@ -236,7 +236,7 @@ You'll use a non-`root` user for running a client workload and accessing the DB 
 
 ## Step 5. Verify replication
 
-1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture](architecture/overview.html):
+1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture](architecture/index.html):
 
 
     Concept | Description

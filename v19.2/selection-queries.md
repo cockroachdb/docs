@@ -492,7 +492,7 @@ EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 LIMIT 25;
 ~~~
 
 {{site.data.alerts.callout_danger}}
-Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`](insert.html)s to the table will attempt to write to the same (or nearby) underlying [ranges](architecture/overview.html#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column](performance-best-practices-overview.html#use-multi-column-primary-keys).
+Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`](insert.html)s to the table will attempt to write to the same (or nearby) underlying [ranges](architecture/index.html#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column](performance-best-practices-overview.html#use-multi-column-primary-keys).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

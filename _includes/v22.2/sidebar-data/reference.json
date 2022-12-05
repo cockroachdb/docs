@@ -8,7 +8,7 @@
           {
             "title": "Architecture Overview",
             "urls": [
-              "/${VERSION}/architecture/overview.html"
+              "/${VERSION}/architecture/index.html"
             ]
           },
           {
@@ -1476,7 +1476,7 @@
           {
             "title": "Security Overview",
             "urls": [
-              "/${VERSION}/security-reference/security-overview.html"
+              "/${VERSION}/security-reference/index.html"
             ]
           },
           {

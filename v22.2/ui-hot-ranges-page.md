@@ -56,4 +56,4 @@ If your aim is to [reduce hot spots](performance-best-practices-overview.html#ho
 
 - [Hot spots](performance-best-practices-overview.html#hot-spots)
 - [Hash-sharded Indexes](hash-sharded-indexes.html)
-- [Architecture Overview](architecture/overview.html)
+- [Architecture Overview](architecture/index.html)

@@ -4,7 +4,7 @@ summary: The SHOW RANGE FOR ROW statement shows information about the range for 
 toc: true
 ---
 
-The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/index.html#glossary) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
@@ -39,9 +39,9 @@ Field | Description
 `start_key` | The start key for the range.
 `end_key` | The end key for the range.
 `range_id` | The range ID.
-`lease_holder` | The node that contains the range's [leaseholder](architecture/overview.html#glossary).
+`lease_holder` | The node that contains the range's [leaseholder](architecture/index.html#glossary).
 `lease_holder_locality` | The [locality](cockroach-start.html#locality) of the leaseholder.
-`replicas` | The nodes that contain the range [replicas](architecture/overview.html#glossary).
+`replicas` | The nodes that contain the range [replicas](architecture/index.html#glossary).
 `replica_localities` | The [locality](cockroach-start.html#locality) of the range.
 
 ## Examples
@@ -83,4 +83,4 @@ Field | Description
 - [Indexes](indexes.html)
 - [Partitioning tables](partitioning.html)
 + [Follow-the-Workload](demo-follow-the-workload.html)
-+ [Architecture Overview](architecture/overview.html)
++ [Architecture Overview](architecture/index.html)

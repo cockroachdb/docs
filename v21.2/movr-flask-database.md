@@ -32,7 +32,7 @@ The database schema used in this application is a slightly simplified version of
 
 ## Multi-region in CockroachDB
 
-A distributed CockroachDB deployment consists of multiple, regional instances of CockroachDB that communicate as a single, logical entity. In [CockroachDB terminology](architecture/overview.html#cockroachdb-architecture-terms), each instance is called a *node*. Together, the nodes form a *cluster*.
+A distributed CockroachDB deployment consists of multiple, regional instances of CockroachDB that communicate as a single, logical entity. In [CockroachDB terminology](architecture/index.html#cockroachdb-architecture-terms), each instance is called a *node*. Together, the nodes form a *cluster*.
 
 To keep track of geographic information about nodes in a cluster, CockroachDB uses [*cluster regions*](multiregion-overview.html#cluster-regions), [*database regions*](multiregion-overview.html#database-regions), and [*table localities*](multiregion-overview.html#table-locality).
 
@@ -107,7 +107,7 @@ Now that you are familiar with the `movr` schema, you can [set up a development 
 ## See also
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
-- [CockroachDB terminology](architecture/overview.html#cockroachdb-architecture-terms)
+- [CockroachDB terminology](architecture/index.html#cockroachdb-architecture-terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
 - [Define Table Partitions](partitioning.html)

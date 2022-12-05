@@ -31,7 +31,7 @@ This section describes how to:
 
 ## Kubernetes terminology
 
-Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](architecture/overview.html#cockroachdb-architecture-terms) are distinct from Kubernetes "nodes" or "worker nodes".
+Before starting, review some basic Kubernetes terminology. Note that CockroachDB [nodes](architecture/index.html#cockroachdb-architecture-terms) are distinct from Kubernetes "nodes" or "worker nodes".
 
 Feature | Description
 --------|------------

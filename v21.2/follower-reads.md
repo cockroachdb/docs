@@ -9,9 +9,9 @@ CockroachDB can provide faster reads in situations where you can afford to read 
 
 {% include enterprise-feature.md %}
 
-Normally, reads must be serviced by a replica's [leaseholder](architecture/overview.html#architecture-leaseholder). This can be slow, since the leaseholder may be geographically distant from the gateway node that is issuing the query.
+Normally, reads must be serviced by a replica's [leaseholder](architecture/index.html#architecture-leaseholder). This can be slow, since the leaseholder may be geographically distant from the gateway node that is issuing the query.
 
-A follower read is a read taken from the closest [replica](architecture/overview.html#architecture-replica), regardless of the replica's leaseholder status. As long as your [`SELECT` operations](select-clause.html) can tolerate reading stale data, follower reads can reduce read latencies and increase throughput. This can be especially useful in [multi-region deployments](multiregion-overview.html).
+A follower read is a read taken from the closest [replica](architecture/index.html#architecture-replica), regardless of the replica's leaseholder status. As long as your [`SELECT` operations](select-clause.html) can tolerate reading stale data, follower reads can reduce read latencies and increase throughput. This can be especially useful in [multi-region deployments](multiregion-overview.html).
 
 For instructions showing how to use follower reads to get low latency, historical reads in a multi-region deployment, see the [Follower Reads Pattern](topology-follower-reads.html).
 
@@ -204,7 +204,7 @@ COMMIT;
 
 ### Exact staleness read timestamps must be far enough in the past
 
-If an exact staleness read is not using an [`AS OF SYSTEM TIME`](as-of-system-time.html) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica](architecture/overview.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. Most users will [use the `follower_read_timestamp()` function](#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp far enough in the past that there is a high probability of getting a follower read.
+If an exact staleness read is not using an [`AS OF SYSTEM TIME`](as-of-system-time.html) value far enough in the past, CockroachDB cannot perform a follower read. Instead, the read must access the [leaseholder replica](architecture/index.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node. Most users will [use the `follower_read_timestamp()` function](#run-queries-that-use-exact-staleness-follower-reads) to get a timestamp far enough in the past that there is a high probability of getting a follower read.
 
 ### Bounded staleness read limitations
 

@@ -85,7 +85,7 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 ## KV Execution Latency: 99th percentile
 
-KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/overview.html) receives the request and delivers a response.
+KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/index.html) receives the request and delivers a response.
 
 - In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 99% of requests within this time.
 
@@ -93,7 +93,7 @@ KV execution latency is calculated as the time in milliseconds between when the 
 
 ## KV Execution Latency: 90th percentile
 
-KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/overview.html) receives the request and delivers a response.
+KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/index.html) receives the request and delivers a response.
 
 - In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 90% of requests within this time.
 

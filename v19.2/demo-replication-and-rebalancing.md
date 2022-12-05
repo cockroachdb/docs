@@ -141,7 +141,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 3. Verify replication
 
-1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture](architecture/overview.html):
+1. To understand replication in CockroachDB, it's important to review a few concepts from the [architecture](architecture/index.html):
 
 
     Concept | Description

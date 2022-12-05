@@ -42,7 +42,7 @@ Click any table name in [Tables](#tables-view) view to display details for that 
 
 - **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info and [zone configurations](configure-replication-zones.html). In addition, the following metrics are displayed:
 	- **Size** is the approximate disk size of all replicas of this table on the cluster.
-	- **Ranges** is the number of [ranges](architecture/overview.html#terms) in this table.
+	- **Ranges** is the number of [ranges](architecture/index.html#terms) in this table.
 	- **Replicas** is the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
 - **Grants** displays the [grants](#grants-view) associated with the table.
 

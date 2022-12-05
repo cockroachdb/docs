@@ -184,5 +184,5 @@ Time: 1ms total (execution 1ms / network 0ms)
 As shown by the `estimated row count` row, this query scans only 25 rows, far fewer than the 200049 scanned by the `LIMIT`/`OFFSET` query.
 
 {{site.data.alerts.callout_danger}}
-Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`](insert.html)s to the table will attempt to write to the same (or nearby) underlying [ranges](architecture/overview.html#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column](performance-best-practices-overview.html#use-multi-column-primary-keys).
+Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`](insert.html)s to the table will attempt to write to the same (or nearby) underlying [ranges](architecture/index.html#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column](performance-best-practices-overview.html#use-multi-column-primary-keys).
 {{site.data.alerts.end}}

@@ -350,7 +350,7 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on the same data, specifically over table rows with the same index key values (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)) or using index key values that are close to each other, and thus place the indexed data on the same [data ranges](architecture/overview.html).
+- They operate on the same data, specifically over table rows with the same index key values (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)) or using index key values that are close to each other, and thus place the indexed data on the same [data ranges](architecture/index.html).
 - At least some of the transactions write or modify the data.
 
 A set of transactions that all contend on the same keys will be limited in performance to the maximum processing speed of a single node (limited horizontal scalability). Non-contended transactions are not affected in this way.

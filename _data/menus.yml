@@ -117,7 +117,7 @@ docs_items:
     url: https://www.cockroachlabs.com/docs/stable/example-apps.html
     weight: 300
   - name: Architecture Overview
-    url: https://www.cockroachlabs.com/docs/stable/architecture/overview.html
+    url: https://www.cockroachlabs.com/docs/stable/architecture/index.html
     weight: 400
 
 

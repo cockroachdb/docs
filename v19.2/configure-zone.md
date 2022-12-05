@@ -56,7 +56,7 @@ Required privileges for `CONFIGURE ZONE` statements in CockroachDB v19.2 may be 
 
  Parameter | Description
 -----------+-------------
-`range_name` | The name of the system [range](architecture/overview.html#glossary) for which to show [replication zone configurations](configure-replication-zones.html).
+`range_name` | The name of the system [range](architecture/index.html#glossary) for which to show [replication zone configurations](configure-replication-zones.html).
 `database_name` | The name of the [database](create-database.html) for which to show [replication zone configurations](configure-replication-zones.html).
 `table_name` | The name of the [table](create-table.html) for which to show [replication zone configurations](configure-replication-zones.html).
 `partition_name` | The name of the [partition](partitioning.html) for which to show [replication zone configurations](configure-replication-zones.html).

@@ -293,7 +293,7 @@
 		  {
 		    "title": "Overview",
 		    "urls": [
-		      "/${VERSION}/security-overview.html"
+		      "/${VERSION}/index.html"
 		    ]
 		  },
 		  {
@@ -595,7 +595,7 @@
 	      {
 		"title": "Overview",
 		"urls": [
-		  "/${VERSION}/architecture/overview.html"
+		  "/${VERSION}/architecture/index.html"
 		]
 	      },
 	      {

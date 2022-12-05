@@ -25,7 +25,7 @@ Before you start using CockroachDB, you should understand a couple important mec
 - [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb)
 - [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
 
-Note that the sections that follow were written for the purposes of orienting application developers. For more detailed technical documentation on CockroachDB's architecture, see our [architecture documentation](architecture/overview.html).
+Note that the sections that follow were written for the purposes of orienting application developers. For more detailed technical documentation on CockroachDB's architecture, see our [architecture documentation](architecture/index.html).
 
 ### How transactions work in CockroachDB
 
@@ -60,7 +60,7 @@ A growing number of popular third-party database tools offer full support for Co
 
 You might also be interested in the following pages:
 
-- [Architecture Overview](architecture/overview.html)
+- [Architecture Overview](architecture/index.html)
 - [Transactions](transactions.html)
 - [CockroachDB Migration](migration-overview.html)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)

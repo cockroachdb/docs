@@ -7,7 +7,7 @@ toc: true
 The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview](overview.html).
+If you haven't already, we recommend reading the [Architecture Overview](index.html).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -49,7 +49,7 @@ Because this log is treated as serializable, it can be replayed to bring a node 
 
 #### Non-voting replicas
 
-In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#glossary) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
+In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](index.html#glossary) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](index.html#architecture-overview-consensus).
 
 {% include_cached new-in.html version="v21.1" %} In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica is introduced: the _non-voting_ replica.
 

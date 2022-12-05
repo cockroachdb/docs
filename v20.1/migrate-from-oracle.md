@@ -247,7 +247,7 @@ For more information and examples, refer to the following:
 
 ### Privileges for users and roles
 
-The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](security-overview.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
+The Oracle privileges for [users](create-user.html) and [roles](create-role.html) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](index.html), CockroachDB follows the same [role-based access control](authorization.html) methodology as Oracle.   
 
 
 ## Step 8. Import the CSV

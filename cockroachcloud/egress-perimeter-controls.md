@@ -23,7 +23,7 @@ By default, clusters can access external resources via the internet without rest
 
 Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable cluster administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
-Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["cloud"]}}/security-reference/security-overview.html).
+Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["cloud"]}}/security-reference/index.html).
 
 {{site.data.alerts.callout_info}}
 Regardless of user-specific Egress Perimeter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality and ongoing operations.

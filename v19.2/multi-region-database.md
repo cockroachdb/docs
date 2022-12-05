@@ -35,7 +35,7 @@ This database is a slightly simplified version of the [`movr` database](movr.htm
 
 ## Geo-partition the `movr` database
 
-Distributed CockroachDB deployments consist of multiple regional deployments of CockroachDB nodes that communicate as a single, logical database. In [CockroachDB terminology](architecture/overview.html#terms), these nodes comprise a *cluster*. CockroachDB splits rows of table data into *ranges*, and then replicates the ranges and distributes them to the individual nodes of the cluster. You can control where ranges are replicated and distributed with CockroachDB metadata objects known as [*replication zones*](configure-replication-zones.html).
+Distributed CockroachDB deployments consist of multiple regional deployments of CockroachDB nodes that communicate as a single, logical database. In [CockroachDB terminology](architecture/index.html#terms), these nodes comprise a *cluster*. CockroachDB splits rows of table data into *ranges*, and then replicates the ranges and distributes them to the individual nodes of the cluster. You can control where ranges are replicated and distributed with CockroachDB metadata objects known as [*replication zones*](configure-replication-zones.html).
 
 At startup, each node in a cluster is assigned a [locality](cockroach-start.html#locality). You can assign nodes to the same replication zone based on their locality. When you partition data, you break up tables into segments of rows, based on a common value or characteristic. To geo-partition the data, you constrain a partition to a specific replication zone.
 
@@ -132,7 +132,7 @@ Now that you are familiar with the `movr` schema, [set up a development environm
 ## See also
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
-- [CockroachDB terminology](architecture/overview.html#terms)
+- [CockroachDB terminology](architecture/index.html#terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
 - [Define Table Partitions](partitioning.html)

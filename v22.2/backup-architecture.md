@@ -54,7 +54,7 @@ Once one of the nodes has claimed the job from the system jobs table, it will ta
 - Test the connection to the storage bucket URL (`'s3://bucket'`).
 - Determine the specific subdirectory for this backup, including if it should be incremental from any discovered existing directories.
 - Calculate the keys of the backup data, as well as the time ranges if the backup is incremental.
-- Determine the [leaseholder](architecture/overview.html#architecture-leaseholder) nodes for the keys to back up. 
+- Determine the [leaseholder](architecture/index.html#architecture-leaseholder) nodes for the keys to back up. 
 - Provide a plan to the nodes that will execute the data export (typically the leaseholder node).
 
 To map out the storage location's directory to which the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup after any existing incremental layers discovered in it. 
@@ -63,7 +63,7 @@ For more information on how CockroachDB structures backups in storage, see [Back
 
 ### Key and time range resolution
 
-In this part of the resolution phase, the coordinator will calculate all the necessary spans of keys and their time ranges that the cluster needs to export for this backup. It divides the key spans based on which node is the [leaseholder](architecture/overview.html#architecture-leaseholder) of the range for that key span. Every node has a SQL processor on it to process the backup plan that the coordinator will pass to it. Typically, it is the backup SQL processor on the leaseholder node for the key span that will complete the export work.  
+In this part of the resolution phase, the coordinator will calculate all the necessary spans of keys and their time ranges that the cluster needs to export for this backup. It divides the key spans based on which node is the [leaseholder](architecture/index.html#architecture-leaseholder) of the range for that key span. Every node has a SQL processor on it to process the backup plan that the coordinator will pass to it. Typically, it is the backup SQL processor on the leaseholder node for the key span that will complete the export work.  
 
 Each of the node's backup SQL processors are responsible for:
 
@@ -77,7 +77,7 @@ Since any node in a cluster can become the coordinator and all nodes could be re
 
 Once the coordinator has provided a plan to each of the backup SQL processors that specifies the backup data, the distributed export of the backup data begins.
 
-In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** [ranges](architecture/overview.html#architecture-range). Therefore, in this example backup job, the backup data will be exported from these nodes to the specified storage location. 
+In the following diagram, **Node 2** and **Node 3** contain the leaseholders for the **R1** and **R2** [ranges](architecture/index.html#architecture-range). Therefore, in this example backup job, the backup data will be exported from these nodes to the specified storage location. 
 
 While processing, the nodes emit progress data that tracks their backup work to the coordinator. In the diagram, **Node 3** will send progress data to **Node 2**. The coordinator node will then aggregate the progress data into checkpoint files in the storage bucket. The checkpoint files provide a marker for the backup to resume after a retryable state, such as when it has been [paused](pause-job.html).
 
@@ -93,7 +93,7 @@ With the full backup complete, the specified storage location will contain the b
 
 ## See also
 
-- CockroachDB's general [Architecture Overview](architecture/overview.html)
+- CockroachDB's general [Architecture Overview](architecture/index.html)
 - [Storage layer](architecture/storage-layer.html)
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [`BACKUP`](backup.html)

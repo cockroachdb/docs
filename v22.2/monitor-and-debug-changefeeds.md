@@ -112,7 +112,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `flush_hist_nanos` | Time spent flushing messages across all changefeeds. | Nanoseconds
 `checkpoint_hist_nanos` | Time spent checkpointing changefeed progress. | Nanoseconds
 `error_retries` | Total retryable errors encountered by changefeeds. | Errors
-`backfill_pending_ranges` | Number of [ranges](architecture/overview.html#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
+`backfill_pending_ranges` | Number of [ranges](architecture/index.html#architecture-range) in an ongoing backfill that are yet to be fully emitted. | Ranges
 `message_size_hist` | Distribution in the size of emitted messages. | Bytes
 
 ## Debug a changefeed

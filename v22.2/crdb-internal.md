@@ -29,7 +29,7 @@ Table name | Description| Use in production
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.| ✓
-[`cluster_locks`](#cluster_locks) | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). | ✓
+[`cluster_locks`](#cluster_locks) | Contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/index.html#architecture-range). | ✓
 `cluster_database_privileges` | Contains information about the [database privileges](security-reference/authorization.html#privileges) on your cluster.| ✗
 `cluster_execution_insights` | Contains information about SQL statement executions on your cluster.| ✗
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.| ✗
@@ -270,7 +270,7 @@ SELECT * FROM crdb_internal.cluster_contention_events;
 
 ### `cluster_locks`
 
-The `crdb_internal.cluster_locks` schema contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
+The `crdb_internal.cluster_locks` schema contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/index.html#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.
 
 For more information, see the following sections.
 
@@ -288,7 +288,7 @@ The `crdb_internal.cluster_locks` table has the following columns that describe 
 
 | Column            | Type                          | Description                                                                                                                                                                   |
 |-------------------+-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `range_id`        | [`INT`](int.html)             | The ID of the [range](architecture/overview.html#architecture-range) that stores the key the lock is being acquired on.                                                       |
+| `range_id`        | [`INT`](int.html)             | The ID of the [range](architecture/index.html#architecture-range) that stores the key the lock is being acquired on.                                                       |
 | `table_id`        | [`INT`](int.html)             | The ID of the [table](create-table.html) that includes the key the lock is being acquired on.                                                                                 |
 | `database_name`   | [`STRING`](string.html)       | The name of the [database](create-database.html) that includes the key the lock is being acquired on.                                                                         |
 | `schema_name`     | [`STRING`](string.html)       | The name of the [schema](create-schema.html) that includes the key this lock is being acquired on.                                                                            |
@@ -490,7 +490,7 @@ Locks are held by transactions, not queries. A lock can be acquired by a transac
 
 #### Blocked vs. blocking transactions
 
-Run the query below to display a list of pairs of [transactions](transactions.html) that are holding and waiting on locks for the same [keys](architecture/overview.html#architecture-range).
+Run the query below to display a list of pairs of [transactions](transactions.html) that are holding and waiting on locks for the same [keys](architecture/index.html#architecture-range).
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
@@ -537,7 +537,7 @@ LIMIT
 
 #### Client sessions holding locks
 
-Run the query below to display a list of [sessions](show-sessions.html) that are holding and waiting on locks for the same [keys](architecture/overview.html#architecture-range).
+Run the query below to display a list of [sessions](show-sessions.html) that are holding and waiting on locks for the same [keys](architecture/index.html#architecture-range).
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 
@@ -626,7 +626,7 @@ GROUP BY
 
 #### Count queries waiting on locks
 
-Run the query below to show a list of [keys](architecture/overview.html#architecture-range) ordered by how many transactions are waiting on the locks on those keys.
+Run the query below to show a list of [keys](architecture/index.html#architecture-range) ordered by how many transactions are waiting on the locks on those keys.
 
 This example assumes you are running the `bank` workload as described in the [intermediate example](#cluster-locks-intermediate-example).
 

@@ -44,7 +44,7 @@ A few notes about the schema:
 
 ### Important concepts
 
-To understand the techniques in this tutorial, and to be able to apply them in your own scenarios, it's important to first review some important [CockroachDB architectural concepts](architecture/overview.html):
+To understand the techniques in this tutorial, and to be able to apply them in your own scenarios, it's important to first review some important [CockroachDB architectural concepts](architecture/index.html):
 
 {% include {{ page.version.version }}/misc/basic-terms.md %}
 

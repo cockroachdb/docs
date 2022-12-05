@@ -1,0 +1,18 @@
+<div id="breadcrumbs">
+    {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
+    <a href="{{ site.url }}{{ site.baseurl }}/">Home</a>
+    {% for crumb in crumbs offset: 1 %}
+      {% if forloop.last %}
+        / {{ page.title }}
+      {% else %}
+        {%- assign crumb_tmp = crumb | replace:'-',' ' | remove:'.html' -%}
+        {%- assign crumb_first_letter = crumb_tmp | slice: 0 -%}
+        {%- if crumb_first_letter == "v" -%}
+            {%- assign crumb_title = "CockroachDB " | append: crumb_tmp -%}
+        {%- else -%}
+            {%- assign crumb_title = crumb_tmp | capitalize -%}
+        {%- endif -%}
+        / <a href="{{ site.url }}{{ site.baseurl }}{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '/' | replace:'without-plugin/','without-plugins/' }}{% endfor %}">{{ crumb_title }}</a>
+      {% endif %}
+    {% endfor %}
+    </div>

@@ -8,7 +8,7 @@ docs_area: reference.architecture
 The replication layer of CockroachDB's architecture copies data between nodes and ensures consistency between these copies by implementing our consensus algorithm.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview](overview.html).
+If you haven't already, we recommend reading the [Architecture Overview](index.html).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -34,7 +34,7 @@ In relationship to other layers in CockroachDB, the replication layer:
 
 Raft is a consensus protocol––an algorithm which makes sure that your data is safely stored on multiple machines, and that those machines agree on the current state even if some of them are temporarily disconnected.
 
-Raft organizes all nodes that contain a [replica](overview.html#architecture-replica) of a [range](overview.html#architecture-range) into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
+Raft organizes all nodes that contain a [replica](index.html#architecture-replica) of a [range](index.html#architecture-range) into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
 
  A third replica type is introduced, the "non-voting" replica. These replicas do not participate in Raft elections, but are useful for unlocking use cases that require low-latency multi-region reads. For more information, see [Non-voting replicas](#non-voting-replicas).
 
@@ -50,7 +50,7 @@ Because this log is treated as serializable, it can be replayed to bring a node 
 
 #### Non-voting replicas
 
-In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#architecture-replica) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
+In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](index.html#architecture-replica) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](index.html#architecture-overview-consensus).
 
  In order to provide [better support for multi-region clusters](../multiregion-overview.html) (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica is introduced: the _non-voting_ replica.
 
@@ -70,9 +70,9 @@ Non-voting replicas can be configured via [zone configurations through `num_vote
 
 ##### Overview
 
-{% include_cached new-in.html version="v22.1" %} When individual [ranges](overview.html#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely. 
+{% include_cached new-in.html version="v22.1" %} When individual [ranges](index.html#architecture-range) become temporarily unavailable, requests to those ranges are refused by a per-replica "circuit breaker" mechanism instead of hanging indefinitely. 
 
-From a user's perspective, this means that if a [SQL query](sql-layer.html) is going to ultimately fail due to accessing a temporarily unavailable range, a [replica](overview.html#architecture-replica) in that range will trip its circuit breaker (after 60 seconds [by default](#per-replica-circuit-breaker-timeout)) and bubble a `ReplicaUnavailableError` error back up through the system to inform the user why their query did not succeed. These (hopefully transient) errors are also signalled as events in the DB Console's [Replication Dashboard](../ui-replication-dashboard.html) and as "circuit breaker errors" in its [**Problem Ranges** and **Range Status** pages](../ui-debug-pages.html). Meanwhile, CockroachDB continues asynchronously probing the range's availability. If the replica becomes available again, the breaker is reset so that it can go back to serving requests normally.
+From a user's perspective, this means that if a [SQL query](sql-layer.html) is going to ultimately fail due to accessing a temporarily unavailable range, a [replica](index.html#architecture-replica) in that range will trip its circuit breaker (after 60 seconds [by default](#per-replica-circuit-breaker-timeout)) and bubble a `ReplicaUnavailableError` error back up through the system to inform the user why their query did not succeed. These (hopefully transient) errors are also signalled as events in the DB Console's [Replication Dashboard](../ui-replication-dashboard.html) and as "circuit breaker errors" in its [**Problem Ranges** and **Range Status** pages](../ui-debug-pages.html). Meanwhile, CockroachDB continues asynchronously probing the range's availability. If the replica becomes available again, the breaker is reset so that it can go back to serving requests normally.
 
 This feature is designed to increase the availability of your CockroachDB clusters by making them more robust to transient errors.
 

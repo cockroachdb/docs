@@ -29,7 +29,7 @@ Currently, only members of the `admin` role can configure replication zones. By 
 
 ## Overview
 
-Every [range](architecture/overview.html#glossary) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
+Every [range](architecture/index.html#glossary) in the cluster is part of a replication zone.  Each range's zone configuration is taken into account as ranges are rebalanced across the cluster to ensure that any constraints are honored.
 
 When a cluster starts, there are two categories of replication zone:
 

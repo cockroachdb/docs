@@ -4,9 +4,9 @@ summary: To reduce latency for read queries, you can choose to have the closest 
 toc: true
 ---
 
-Follower reads are a mechanism that CockroachDB uses to provide faster reads in situations where you can afford to read data that may be slightly less than current (using [`AS OF SYSTEM TIME`](as-of-system-time.html)). Normally, reads have to be serviced by a replica's [leaseholder](architecture/overview.html#architecture-leaseholder). This can be slow, since the leaseholder may be geographically distant from the gateway node that is issuing the query.
+Follower reads are a mechanism that CockroachDB uses to provide faster reads in situations where you can afford to read data that may be slightly less than current (using [`AS OF SYSTEM TIME`](as-of-system-time.html)). Normally, reads have to be serviced by a replica's [leaseholder](architecture/index.html#architecture-leaseholder). This can be slow, since the leaseholder may be geographically distant from the gateway node that is issuing the query.
 
-A follower read is a read taken from the closest [replica](architecture/overview.html#architecture-replica), regardless of the replica's leaseholder status. This can result in much better latency in [geo-distributed, multi-region deployments](topology-patterns.html#multi-region-patterns).
+A follower read is a read taken from the closest [replica](architecture/index.html#architecture-replica), regardless of the replica's leaseholder status. This can result in much better latency in [geo-distributed, multi-region deployments](topology-patterns.html#multi-region-patterns).
 
  The shortest interval at which [`AS OF SYSTEM TIME`](as-of-system-time.html) can serve follower reads is 4.8 seconds. In prior versions of CockroachDB, the interval was 48 seconds.
 
@@ -53,7 +53,7 @@ Use [`SET CLUSTER SETTING`](set-cluster-setting.html) to set `kv.closed_timestam
 If you have follower reads enabled, you may want to [verify that follower reads are happening](#verify-that-follower-reads-are-happening).
 
 {{site.data.alerts.callout_info}}
-If follower reads are enabled, but the time-travel query is not using [`AS OF SYSTEM TIME`](as-of-system-time.html) far enough in the past (as defined by the [follower read timestamp](#run-queries-that-use-follower-reads)), CockroachDB does not perform a follower read. Instead, the read accesses the [leaseholder replica](architecture/overview.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node.
+If follower reads are enabled, but the time-travel query is not using [`AS OF SYSTEM TIME`](as-of-system-time.html) far enough in the past (as defined by the [follower read timestamp](#run-queries-that-use-follower-reads)), CockroachDB does not perform a follower read. Instead, the read accesses the [leaseholder replica](architecture/index.html#architecture-leaseholder). This adds network latency if the leaseholder is not the closest replica to the gateway node.
 {{site.data.alerts.end}}
 
 ### Verify that follower reads are happening

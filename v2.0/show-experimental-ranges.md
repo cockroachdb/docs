@@ -4,12 +4,12 @@ summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that ma
 toc: true
 ---
 
-The `SHOW EXPERIMENTAL_RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that make up a specific table's data, including:
+The `SHOW EXPERIMENTAL_RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/index.html#glossary) that make up a specific table's data, including:
 
 - The start and end keys for the range(s)
 - The range ID(s)
-- Which nodes contain the range [replicas](architecture/overview.html#glossary)
-- Which node contains the range that is the [leaseholder](architecture/overview.html#glossary)
+- Which nodes contain the range [replicas](architecture/index.html#glossary)
+- Which node contains the range that is the [leaseholder](architecture/index.html#glossary)
 
 This information is useful for verifying that:
 
@@ -121,4 +121,4 @@ A `NULL` in the *End Key* column means "end of table".
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)
 + [Follow-the-Workload](demo-follow-the-workload.html)
-+ [Architecture Overview](architecture/overview.html)
++ [Architecture Overview](architecture/index.html)

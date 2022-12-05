@@ -239,7 +239,7 @@ Therefore, to deploy CockroachDB in production, it is strongly recommended to [u
 
     Alternatively, CockroachDB supports [password authentication](authentication.html#client-authentication), although we typically recommend using client certificates instead.
 
-For more information, see the [Security Overview](security-reference/security-overview.html).
+For more information, see the [Security Overview](security-reference/index.html).
 
 ## Networking
 

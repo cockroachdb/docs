@@ -7,7 +7,7 @@ toc: true
 The SQL layer of CockroachDB's architecture exposes its SQL API to developers and converts SQL statements into key-value operations used by the rest of the database.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview](overview.html).
+If you haven't already, we recommend reading the [Architecture Overview](index.html).
 {{site.data.alerts.end}}
 
 ## Overview

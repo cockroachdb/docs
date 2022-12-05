@@ -57,7 +57,7 @@ You should now be ready to start [creating a multi-region database schema](movr-
 ## See also
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
-- [CockroachDB terminology](architecture/overview.html#terms)
+- [CockroachDB terminology](architecture/index.html#terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Define Table Partitions](partitioning.html)
 - [Topology Patterns](topology-patterns.html)

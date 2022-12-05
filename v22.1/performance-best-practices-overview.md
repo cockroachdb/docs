@@ -322,7 +322,7 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots can cause problems as requests increase.
 
-They commonly occur with transactions that operate on the **same range but different index keys**, which are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#cockroachdb-architecture-terms) node.
+They commonly occur with transactions that operate on the **same range but different index keys**, which are limited by the overall hardware capacity of [the range leaseholder](architecture/index.html#cockroachdb-architecture-terms) node.
 
 A hot spot can occur on a range that is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting](load-based-splitting.html). This creates a hot spot at the single range.
 

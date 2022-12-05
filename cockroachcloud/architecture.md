@@ -9,7 +9,7 @@ cloud: true
 {{ site.data.products.db }} is a fully-managed deployment of CockroachDB. This page describes {{ site.data.products.db }}'s architecture and how it relates to CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](../stable/architecture/overview.html) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
+For an intro to CockroachDB's core architecture and capabilities, see [CockroachDB Architecture](../stable/architecture/index.html) or take the free [Introduction to Distributed SQL and CockroachDB](https://university.cockroachlabs.com/courses/course-v1:crl+intro-to-distributed-sql-and-cockroachdb+self-paced/about) course on Cockroach University.
 {{site.data.alerts.end}}
 
 {% include common/basic-terms.md %}
@@ -88,4 +88,4 @@ The diagrams below shows how {{ site.data.products.serverless }} autoscales with
 
 ## Learn more
 
-See the [CockroachDB architecture](../{{site.versions["cloud"]}}/architecture/overview.html) documentation for more information.
+See the [CockroachDB architecture](../{{site.versions["cloud"]}}/architecture/index.html) documentation for more information.

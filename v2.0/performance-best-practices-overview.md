@@ -243,7 +243,7 @@ Transaction contention occurs when the following three conditions are met:
   secondary [indexes](indexes.html), or via
   [interleaving](interleave-in-parent.html)) or using index key values
   that are close to each other, and thus place the indexed data on the
-  same [data ranges](architecture/overview.html).
+  same [data ranges](architecture/index.html).
 - At least some of the transactions write or modify the data.
 
 A set of transactions that all contend on the same keys will be

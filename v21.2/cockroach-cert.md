@@ -346,7 +346,7 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview](security-reference/security-overview.html)
+- [Security overview](security-reference/index.html)
 - [Authentication](authentication.html)
 - [Client Connection Parameters](connection-parameters.html)
 - [Rotate Security Certificates](rotate-certificates.html)

@@ -318,7 +318,7 @@ Certificate directory: certs
 
 ## See also
 
-- [Security overview](security-overview.html)
+- [Security overview](index.html)
 - [Authentication](authentication.html)
 - [Client Connection Parameters](connection-parameters.html)
 - [Rotate Security Certificates](rotate-certificates.html)

@@ -951,7 +951,7 @@
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/security-overview.html"
+                  "/${VERSION}/index.html"
                 ]
               },
               {

@@ -88,7 +88,7 @@ For more information about how to enable and use super regions, see:
 - [`ALTER SUPER REGION`](alter-super-region.html)
 - [`SHOW SUPER REGIONS`](show-super-regions.html)
 
-Note that super regions take a different approach to data domiciling than [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html). Specifically, super regions make it so that all [replicas](architecture/overview.html#architecture-replica) (both voting and [non-voting](architecture/replication-layer.html#non-voting-replicas)) are placed within the super region, whereas `PLACEMENT RESTRICTED` makes it so that there are no non-voting replicas.
+Note that super regions take a different approach to data domiciling than [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html). Specifically, super regions make it so that all [replicas](architecture/index.html#architecture-replica) (both voting and [non-voting](architecture/replication-layer.html#non-voting-replicas)) are placed within the super region, whereas `PLACEMENT RESTRICTED` makes it so that there are no non-voting replicas.
 
 For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Data Domiciling with CockroachDB](data-domiciling.html).
 

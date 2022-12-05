@@ -76,7 +76,7 @@ For an example using this table, see [Find out which databases and tables have u
 | zone_id                 | [`INT8`](int.html) | The ID of the [replication zone](configure-zone.html).                                                                                |
 | subzone_id              | [`INT8`](int.html) | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                         |
 | report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
-| total_ranges            | [`INT8`](int.html) | Total [ranges](architecture/overview.html#architecture-range) in the zone this report entry is referring to.                                       |
+| total_ranges            | [`INT8`](int.html) | Total [ranges](architecture/index.html#architecture-range) in the zone this report entry is referring to.                                       |
 | unavailable_ranges      | [`INT8`](int.html) | Unavailable ranges in the zone this report entry is referring to.                                                                     |
 | under_replicated_ranges | [`INT8`](int.html) | [Under-replicated ranges](ui-replication-dashboard.html#under-replicated-ranges) in the zone this report entry is referring to.       |
 | over_replicated_ranges  | [`INT8`](int.html) | Over-replicated ranges in the zone this report entry is referring to.                                                                 |
@@ -101,7 +101,7 @@ For an example using this table, see [Find out which databases and tables have r
 | subzone_id     | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                       |
 | locality       | [`STRING`](string.html) | The name of the critical [locality](configure-replication-zones.html#zone-config-node-locality).                                    |
 | report_id      | [`INT8`](int.html)      | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                          |
-| at_risk_ranges | [`INT8`](int.html)      | The [ranges](architecture/overview.html#architecture-range) that are at risk of becoming unavailable as of the time of this report. |
+| at_risk_ranges | [`INT8`](int.html)      | The [ranges](architecture/index.html#architecture-range) that are at risk of becoming unavailable as of the time of this report. |
 
 {{site.data.alerts.callout_info}}
 If you have not [defined any localities](configure-replication-zones.html#zone-config-node-locality), this report will not return any results. It only reports on localities that have been explicitly defined.
