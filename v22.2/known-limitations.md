@@ -18,35 +18,19 @@ In its current implementation, this statement does not drop functions. Users mus
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/90476)
 
-{% comment %}
-    initial DROP OWNED BY implementation PR/issue:
-    https://github.com/cockroachdb/cockroach/pull/82936
-    https://github.com/cockroachdb/cockroach/issues/55381
-    doc work in progress (to link to after merge):
-    https://github.com/cockroachdb/docs/pull/15094/files
-    https://cockroachlabs.atlassian.net/browse/DOC-4770 
-    review: rafiss (or devadvocado)
-{% endcomment %}
-
 ### DROP OWNED BY not supported where role has synthetic privileges
 
 `DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
 
-In its current implentation, this operation cannot be performed for roles that have synthetic privileges (entries in `system.privileges`).
+If the [role](security-reference/authorization.html#roles) for which you are trying to `DROP OWNED BY` was granted a privilege using the [`GRANT SYSTEM ...`](grant.html#grant-global-privileges-on-the-entire-cluster) statement, the error shown below will be signalled. The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-global-privileges-on-the-entire-cluster) for each privilege in the result.
 
-Instead, you can use `REVOKE SYSTEM` for the relevant privileges the role has in `system.privileges`.
+    ~~~
+    ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
+    SQLSTATE: 0A000
+    HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
+    ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
-
-{% comment %}
-    initial DROP OWNED BY implementation PR/issue:
-    https://github.com/cockroachdb/cockroach/pull/82936
-    https://github.com/cockroachdb/cockroach/issues/55381
-    doc work in progress (to link to after merge):
-    https://github.com/cockroachdb/docs/pull/15094/files
-    https://cockroachlabs.atlassian.net/browse/DOC-4770 
-    review: rafiss
-{% endcomment %}
 
 ### Limitations for user-defined functions (UDFs)
 
