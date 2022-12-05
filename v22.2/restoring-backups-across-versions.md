@@ -24,7 +24,7 @@ Backup taken on version   | Restorable into version
 21.2.x                    | 22.1.x
 22.1.x                    | 22.2.x
 
-See the [Upgrade documentation](../{{site.versions["stable"]}}/upgrade-cockroach-version.html) for the necessary steps to finalize your upgrade. For {{ site.data.products.db }} clusters, see the [Upgrade Policy](../cockroachcloud/upgrade-policy.html) page.
+When a cluster is in a mixed-version state during an upgrade, [full cluster restores](restore.html#restore-a-cluster) will fail. See the [Upgrade documentation](../{{site.versions["stable"]}}/upgrade-cockroach-version.html) for the necessary steps to finalize your upgrade. For {{ site.data.products.db }} clusters, see the [Upgrade Policy](../cockroachcloud/upgrade-policy.html) page. 
 
 {{site.data.alerts.callout_info}}
 Cockroach Labs does **not** support restoring backups from a higher version into a lower version. 
