@@ -63,11 +63,23 @@ User-defined functions are not currently supported in:
 
 The following are not currently allowed within the body of a UDF:
 
-* Subqueries in statements. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87291)
-* Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
-* Expressions with `*` such as `SELECT *`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
-* CTEs (common table expressions). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
-* Other user-defined functions.
+- Subqueries in statements.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87291)
+
+- Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
+
+- Expressions with `*` such as `SELECT *`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
+
+- CTEs (common table expressions).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
+- Other user-defined functions.
 
 ### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
 
