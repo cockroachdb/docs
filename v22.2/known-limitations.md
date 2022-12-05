@@ -10,28 +10,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### DROP OWNED BY does not support drop functions
-
-`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
-
-In its current implementation, this statement does not drop functions. Users must drop their functions manually.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/90476)
-
-### DROP OWNED BY not supported where role has synthetic privileges
-
-`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
-
-If the [role](security-reference/authorization.html#roles) for which you are trying to `DROP OWNED BY` was granted a privilege using the [`GRANT SYSTEM ...`](grant.html#grant-global-privileges-on-the-entire-cluster) statement, the error shown below will be signalled. The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-global-privileges-on-the-entire-cluster) for each privilege in the result.
-
-    ~~~
-    ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
-    SQLSTATE: 0A000
-    HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
-    ~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
-
 ### Limitations for user-defined functions (UDFs)
 
 #### Limitations on use of UDFs
@@ -85,6 +63,30 @@ This setting can erroneously trigger if the client fails to consume events for t
 If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed.range_stuck_threshold = '0s'`. A fix is under development, and will be included in an upcoming 22.2 patch release.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92570)
+
+### Limitations for DROP OWNED BY
+
+#### DROP OWNED BY does not support drop functions
+
+`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+
+In its current implementation, this statement does not drop functions. Users must drop their functions manually.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/90476)
+
+#### DROP OWNED BY is not supported where role has synthetic privileges
+
+`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+
+If the [role](security-reference/authorization.html#roles) for which you are trying to `DROP OWNED BY` was granted a privilege using the [`GRANT SYSTEM ...`](grant.html#grant-global-privileges-on-the-entire-cluster) statement, the error shown below will be signalled. The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-global-privileges-on-the-entire-cluster) for each privilege in the result.
+
+    ~~~
+    ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
+    SQLSTATE: 0A000
+    HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
+    ~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
 ## Unresolved limitations
 
