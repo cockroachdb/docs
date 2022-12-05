@@ -15,7 +15,7 @@ Get future release notes emailed to you:
 {% include marketo.html %}
 
 {{site.data.alerts.callout_version}}
-As of December 5, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10).
+As of December 5, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.11](v22.1.html#v22-1-11) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10).
 {{site.data.alerts.end}}
 
 ## December 5, 2022
@@ -25,6 +25,11 @@ As of December 5, 2022, {{ site.data.products.serverless }} clusters are running
 - {{ site.data.products.serverless }} clusters now have a [**Metrics** page](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html) in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**.
 - The `p99.9` and `p99.99` latencies are now shown in the `SQL Connection Latency` and `SQL Statement Latency` charts on the [**Metrics** page](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html) for {{ site.data.products.serverless }} clusters.
 - The **Last used** column on the [**Table Details** page](../cockroachcloud/databases-page.html) now uses the UTC timezone.
+- The {{ site.data.products.serverless }} [**Cost estimator**](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) has been temporarily disabled while a bug is being fixed.
+
+<h3> Cloud API changes </h3>
+
+- A preview of [log export](../cockroachcloud/export-logs.html) for {{ site.data.products.dedicated }} users is now available. To enroll your organization in the preview, contact your Cockroach Labs account team.
 
 <h3> Bug fixes </h3>
 
@@ -32,7 +37,6 @@ As of December 5, 2022, {{ site.data.products.serverless }} clusters are running
 - Fixed a bug where [backups](../cockroachcloud/backups-page.html) shown for a particular day included backups for midnight on the following day.
 - Fixed a bug  on the [**Databases page**](../cockroachcloud/databases-page.html) where the number of index recommendations displayed for a database was inconsistent with the actual number of index recommendations for the database.
 - Fixed a bug that could break the [**Databases page**](../cockroachcloud/databases-page.html) when fetching index usage statistics for databases.
-- Fixed a bug that caused the {{ site.data.products.serverless }} [**Cost estimator**](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) to display incorrect estimates.
 
 ## November 7, 2022
 
