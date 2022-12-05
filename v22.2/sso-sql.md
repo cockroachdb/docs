@@ -64,7 +64,7 @@ For example, your Google Cloud Platform organization can serve as IdP by issuing
 
 Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, you may use it to connect to your cluster's SQL interface.
 
-{{site.data.alerts.success}}
+{{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`](cockroach-sql.html), but you can use any SQL client that supports sufficiently long passwords.
 {{site.data.alerts.end}}
 
