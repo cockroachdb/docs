@@ -36,7 +36,7 @@ If the [role](security-reference/authorization.html#roles) for which you are try
 
 #### Limitations on use of UDFs
 
-User-defined functions are not currently supported in:
+[User-defined functions](user-defined-functions.html) are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
 
@@ -50,11 +50,11 @@ User-defined functions are not currently supported in:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}.
+- [CDC transformations](https://www.cockroachlabs.com/docs/v22.2/cdc-transformations).
 
 #### Limitations on expressions allowed within UDFs
 
-The following are not currently allowed within the body of a UDF:
+The following are not currently allowed within the body of a [UDF](user-defined-functions.html):
 
 - Subqueries in statements.
 
@@ -68,7 +68,7 @@ The following are not currently allowed within the body of a UDF:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
 
-- CTEs (common table expressions).
+- Common table expressions (CTEs).
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
 
@@ -78,7 +78,7 @@ The following are not currently allowed within the body of a UDF:
 
 ### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
 
-The cluster setting `kv.rangefeed.range_stuck_threshold` will automatically restart a rangefeed that appears to be stuck if it does not emit events for some time. Rangefeeds are used to stream per-range changefeed events. This setting was introduced in CockroachDB v22.1.7, disabled by default, but is enabled by default in v22.2.0, set to 1 minute.
+The [cluster setting](cluster-settings.html) `kv.rangefeed.range_stuck_threshold` will automatically restart a rangefeed that appears to be stuck if it does not emit events for some time. Rangefeeds are used to stream per-range changefeed events. This setting was introduced in CockroachDB v22.1.7, disabled by default, but is enabled by default in v22.2.0, set to 1 minute.
 
 This setting can erroneously trigger if the client fails to consume events for the configured duration, for example, in the case of an overloaded changefeed sink. Furthermore, this can cause the entire changefeed to fail and restart with error "context canceled", instead of only restarting the internal per-range rangefeed.
 
@@ -663,11 +663,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
-
-### User-defined functions
-
-{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
-{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
 
 ### Row-Level TTL limitations
 
