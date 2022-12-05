@@ -314,12 +314,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Optimizer stale statistics deletion when columns are dropped
-
-- {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
-
-- {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
-
 ### Automatic statistics refresher may not refresh after upgrade
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
