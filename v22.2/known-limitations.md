@@ -80,11 +80,11 @@ In its current implementation, this statement does not drop functions. Users mus
 
 If the [role](security-reference/authorization.html#roles) for which you are trying to `DROP OWNED BY` was granted a privilege using the [`GRANT SYSTEM ...`](grant.html#grant-global-privileges-on-the-entire-cluster) statement, the error shown below will be signalled. The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-global-privileges-on-the-entire-cluster) for each privilege in the result.
 
-    ~~~
-    ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
-    SQLSTATE: 0A000
-    HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
-    ~~~
+~~~
+ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
+SQLSTATE: 0A000
+HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
+~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
