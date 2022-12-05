@@ -145,7 +145,7 @@ You can restore:
 You can exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter. With this parameter set, a table will be empty when restored.
 {{site.data.alerts.end}}
 
-#### Full cluster
+### Full cluster
 
  A full cluster restore can only be run on a target cluster with no user-created databases or tables. Restoring a full cluster includes:
 
@@ -159,12 +159,13 @@ Also, a full cluster restore will:
 
 - Restore [temporary tables](temporary-tables.html) to their original database during a full cluster restore.
 - Drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
+- When the cluster is in a mixed-version state during an [upgrade](upgrade-cockroach-version.html), a full cluster restore will fail.
 
 {{site.data.alerts.callout_info}}
 When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
 {{site.data.alerts.end}}
 
-#### Databases
+### Databases
 
 Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
 
@@ -178,7 +179,7 @@ To restore a database that already exists in a cluster, use the `new_db_name` op
 If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
 {{site.data.alerts.end}}
 
-#### Tables
+### Tables
 
 You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the target database.
 
