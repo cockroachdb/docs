@@ -50,20 +50,24 @@ Instead, you can use `REVOKE SYSTEM` for the relevant privileges the role has in
 
 ### Limitations for user-defined functions (UDFs)
 
-#### Support for user-defined functions
+#### Limitations on use of UDFs
 
-User-defined functions are not supported in:
+User-defined functions are not currently supported in:
 
 - Expressions (column, index, constraint) in tables.
 - Views.
 - Other user-defined functions.
 - [CDC transformations](https://www.cockroachlabs.com/docs/v22.2/cdc-transformations).
 
-#### Expressions with `*` are not supported in user defined functions
+#### Limitations on expressions allowed within UDFs
 
-Expressions such as `SELECT *` are not currently allowed within the body of a UDF.
+The following are not currently allowed within the body of a UDF:
 
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
+* Subqueries in statements. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87291)
+* Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
+* Expressions with `*` such as `SELECT *`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
+* CTEs (common table expressions). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+* Other user-defined functions.
 
 ### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
 
