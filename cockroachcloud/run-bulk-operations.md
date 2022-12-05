@@ -12,6 +12,9 @@ docs_area: manage
 - [`IMPORT`](../{{site.versions["cloud"]}}/import.html)
 - [`EXPORT`](../{{site.versions["cloud"]}}/export.html)
 
+{% include cockroachcloud/ccloud/backup-types.md %}
+
+The examples on this page demonstrate how to take customer-owned backups.
 
 {{site.data.alerts.callout_info}}
 For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.versions["cloud"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["cloud"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.

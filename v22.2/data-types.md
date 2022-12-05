@@ -23,6 +23,7 @@ Type | Description | Example
 [`INET`](inet.html) | An IPv4 or IPv6 address.  | `192.168.0.1`
 [`INT`](int.html) | A signed integer, up to 64 bits. | `12345`
 [`INTERVAL`](interval.html) | A span of time.  | `INTERVAL '2h30m30s'`
+[`NULL`](null-handling.html) | The undefined value. | `NULL`
 [`JSONB`](jsonb.html) | JSON (JavaScript Object Notation) data.  | `'{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'`
 [`OID`](oid.html) | An unsigned 32-bit integer. | `4294967295`
 [`SERIAL`](serial.html) | A pseudo-type that combines an [integer type](int.html) with a [`DEFAULT` expression](default-value.html).  | `148591304110702593`

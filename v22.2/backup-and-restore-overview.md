@@ -7,6 +7,7 @@ docs_area: manage
 
 This page provides an overview of the backup and restore features available in CockroachDB:
 
+- [Types of backups supported](#cockroachdb-cloud-backup-types) in {{ site.data.products.db }} 
 - [Backup and restore types](#backup-and-restore-types) and their product availability
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
@@ -14,6 +15,10 @@ This page provides an overview of the backup and restore features available in C
 You can create full or incremental backups of a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view). Taking regular backups of your data is an operational best practice.
 
 For an explanation of how a backup works, see [Backup Architecture](backup-architecture.html).
+
+## {{ site.data.products.db }} backup types
+
+{% include cockroachcloud/ccloud/backup-types.md %} 
 
 ## Backup and restore types
 
@@ -36,8 +41,6 @@ Backup / Restore Type             | Description                                 
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
 
-The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
-
  SQL Statement  | Description                                                                                 
 ----------------|---------------------------------------------------------------------------------------------
 [`BACKUP`](backup.html)       | Create full and incremental backups.
@@ -49,6 +52,7 @@ The following table outlines SQL statements you can use to create, configure, pa
 [`RESTORE`](restore.html)      | Restore full and incremental backups.
 [`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup.
 [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.
+[`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html) | Alter an existing backup schedule.
 [`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
 [`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
 [`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.

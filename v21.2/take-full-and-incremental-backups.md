@@ -202,15 +202,7 @@ To take incremental backups, you need an [Enterprise license](enterprise-licensi
 
 ## Examples
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
-
-<section class="filter-content" markdown="1" data-scope="s3">
 
 ### Automated full backups
 
@@ -230,54 +222,6 @@ Both core and Enterprise users can use backup scheduling for full backups of clu
   588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH detached
 (1 row)
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-### Automated full backups
-
-Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE SCHEDULE core_schedule_label
-  FOR BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
-    RECURRING '@daily'
-    FULL BACKUP ALWAYS
-    WITH SCHEDULE OPTIONS first_run = 'now';
-~~~
-~~~
-     schedule_id     |        name         | status |         first_run         | schedule |                                                                                       backup_stmt
----------------------+---------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH detached
-(1 row)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gcs">
-
-### Automated full backups
-
-Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, include the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE SCHEDULE core_schedule_label
-  FOR BACKUP INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-    RECURRING '@daily'
-    FULL BACKUP ALWAYS
-    WITH SCHEDULE OPTIONS first_run = 'now';
-~~~
-~~~
-     schedule_id     |        name         | status |         first_run         | schedule |                                                                                       backup_stmt
----------------------+---------------------+--------+---------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  588799238330220545 | core_schedule_label | ACTIVE | 2020-09-11 00:00:00+00:00 | @daily   | BACKUP INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH detached
-(1 row)
-~~~
-
-</section>
 
 For more examples on how to schedule backups that take full and incremental backups, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
 
