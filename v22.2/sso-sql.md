@@ -25,7 +25,7 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 
 	- SQL users/credentials:
 
-		- You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](../{{site.versions["stable"]}}/security-reference/authorization.html#supported-privileges.html), in order to update cluster settings. This is required to add an external token issuer/IdP.
+		- You must have access to a SQL user with either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](security-reference/authorization.html#supported-privileges.html), in order to update cluster settings. This is required to add an external token issuer/IdP.
 	
 		- A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
 
