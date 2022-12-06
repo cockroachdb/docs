@@ -29,6 +29,9 @@ Use one of the options below to install CockroachDB.
 
   <h2 id="install-homebrew">Use Homebrew</h2>
   {{ arch_note_homebrew }}
+  {{site.data.alerts.callout_danger}}
+  For CockroachDB v22.2.0 on ARM Macs, [spatial features](spatial-features.html) are disabled in the Homebrew formula due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use the Intel binary under Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) or use the [Docker image](#use-docker) distribution.
+  {{site.data.alerts.end}}
   <ol>
     <li>
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
