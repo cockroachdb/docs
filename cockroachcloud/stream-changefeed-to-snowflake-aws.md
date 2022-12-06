@@ -121,7 +121,7 @@ Back in the built-in SQL shell, [create an enterprise changefeed](../{{site.vers
 (1 row)
 ~~~
 
-Be sure to replace the placeholders with your AWS access key ID and AWS secret access key. See [Use Cloud Storage for Bulk Operations — Authentication](../{{site.versions["stable"]}}/cloud-storage-authentication.html) for more detail on authenticating to Amazon S3.
+Be sure to replace the placeholders with your AWS access key ID and AWS secret access key. See [Cloud Storage Authentication](../{{site.versions["stable"]}}/cloud-storage-authentication.html) for more detail on authenticating to Amazon S3.
 
 {{site.data.alerts.callout_info}}
 If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed](../{{site.versions["cloud"]}}/monitor-and-debug-changefeeds.html#debug-a-changefeed).
