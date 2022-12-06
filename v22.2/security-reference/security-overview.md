@@ -10,7 +10,7 @@ docs_area: reference.security
 
 {{ site.data.products.serverless }} provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
 
-{{ site.data.products.dedicated }} offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. Additional security-enhancing features such as single-sign on (SSO) and SQL audit logging are available.
+{{ site.data.products.dedicated }} offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. Additional security-enhancing features such as single sign-on (SSO) and SQL audit logging are available.
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
@@ -75,7 +75,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Web console authentication with third-party <a href="../sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+  <td>Web console authentication with third-party <a href="../sso-db-console.html">Single Sign-on (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
  </tr>
  <tr>
   <td>&nbsp;</td>

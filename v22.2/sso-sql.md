@@ -1,15 +1,13 @@
 ---
-title: Cluster Single Sign-On (SSO) for Self-hosted CockroachDB
-summary: Overview of Single Sign-On (SSO) for CockroachDB SQL Access, and review of workflows for authenticating human and bot users, and for configuring the feature.
+title: Cluster Single Sign-on (SSO) for Self-hosted CockroachDB
+summary: Overview of Single Sign-on (SSO) for CockroachDB SQL Access, and review of workflows for authenticating human and bot users, and for configuring the feature.
 toc: true
 docs_area: manage
 ---
 
-## What is Cluster Single Sign-On (SSO)?
-
 Cluster SSO allows users to access the SQL interface of a CockroachDB cluster using a JWT auth token issued by a customer-managed identity provider (IdP).
 
-This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-On (SSO) for Cockroach Cloud](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-On (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html).
+This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-on (SSO) for Cockroach Cloud](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-on (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html).
 
 **Prerequisites**
 
@@ -21,7 +19,7 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 
 - **CockroachDB:**
 
-	- You must have access to an enterprise cluster, i.e. configured with a valid [CockroachDB enterprise license](enterprise-licensing.html) enabled.
+	- You must have access to an cluster enabled with a valid [CockroachDB Enterprise license](enterprise-licensing.html).
 
 		See [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html) for help enabling your cluster with you enterprise license.
 
@@ -42,25 +40,21 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 1. `server.jwt_authentication.jwks`
 
-	Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting.
-
-	This must be a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
+	Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This must be a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
 
 1. `server.jwt_authentication.issuers`
 
-	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers:
-
-	A comma separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
+	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers. This field takes a comma-separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
 
 1. `server.jwt_authentication.audience`
 	
-	The name of your cluster as specified by the IdP, or a comma-separated list of such names. One of the audience names must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
+	The name of your cluster as specified by the IdP, or a comma-separated list of such names. One of the audience names configured here must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
 
 ## Authenticate to your cluster with your JWT token
 
 To provision SQL cluster access for service accounts, you must provision OIDC or SAML tokens. There are many ways to do this, which are beyond the scope of this tutorial.
 
-For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discussing using GCP-issued OIDC tokens to authenticate to CockroachDB.
+For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discusses using GCP-issued OIDC tokens to authenticate to CockroachDB.
 
 Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, you may use it to connect to your cluster's SQL interface.
 
@@ -81,7 +75,7 @@ Welcome to the cockroach SQL interface...
 
 Some token issuers create tokens with a `subject` that isn’t a valid SQL username, for example starting with a number.
 
-You can accomodate this with **user name mapping**, by maping the third party subjects to valid SQL usernames.
+You can accommodate this with **user name mapping**, by mapping the third-party subjects to valid SQL usernames.
 
 To do this, set the `server.identity_map.configuration` cluster setting appropriately with the map name equal to the issuer of the token you wish the map to apply to. See the [PostgreSQL  user name maps documentation](https://www.postgresql.org/docs/current/auth-username-maps.html) for full details of the syntax of this field.
 
