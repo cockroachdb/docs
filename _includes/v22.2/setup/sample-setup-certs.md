@@ -65,7 +65,7 @@ Select **General connection string**, then copy the connection string displayed 
 ? How would you like to connect? General connection string
 Retrieving cluster info: succeeded
  Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
-postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?options=--cluster%3Ddim-dog-147&sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+postgresql://maxroach:ThisIsNotAGoodPassword@dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
 ~~~
 </div>
 

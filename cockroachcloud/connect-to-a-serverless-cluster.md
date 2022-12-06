@@ -71,7 +71,6 @@ For connection examples and code snippets in your language, see the following:
     `{host}`  | The host on which the CockroachDB node is running.
     `{port}`  | The port at which the CockroachDB node is listening.
     `{database}`  | The name of the (existing) database.
-    `{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](architecture.html).
 
   </section>
   <section class="filter-content" markdown="1" data-scope="cockroachdb-client">
