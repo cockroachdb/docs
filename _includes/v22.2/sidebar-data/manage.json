@@ -246,7 +246,7 @@
 										]
 									},
                   {
-                    "title": "Cluster Single Sign-On (SSO) for Cockroach Cloud",
+                    "title": "Cluster Single Sign-On (SSO) for CockroachDB Cloud",
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
                     ]
