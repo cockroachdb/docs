@@ -47,7 +47,7 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
 {{site.data.alerts.end}}
 
-See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for more detail on authenticating to your cloud storage bucket.
+See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
 
 ### Add an AWS KMS key to an encrypted backup
 
