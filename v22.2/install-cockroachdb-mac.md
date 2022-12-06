@@ -15,6 +15,10 @@ docs_area: deploy
 
 <p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
+{{site.data.alerts.callout_danger}}
+For CockroachDB v22.2.0 on ARM Macs, [spatial features](spatial-features.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use the Intel binary under Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) or use the [Docker image](#use-docker) distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161) for more information.
+{{site.data.alerts.end}}
+
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 {% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
@@ -29,9 +33,6 @@ Use one of the options below to install CockroachDB.
 
   <h2 id="install-homebrew">Use Homebrew</h2>
   {{ arch_note_homebrew }}
-  {{site.data.alerts.callout_danger}}
-  For CockroachDB v22.2.0 on ARM Macs, [spatial features](spatial-features.html) are disabled in the Homebrew formula due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use the Intel binary under Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) or use the [Docker image](#use-docker) distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161) for more information.
-  {{site.data.alerts.end}}
   <ol>
     <li>
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
