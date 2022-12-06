@@ -15,6 +15,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+For details on restoring across versions of CockroachDB, see [Restoring Backups Across Versions](restoring-backups-across-versions.html).
+
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
 ## Considerations
