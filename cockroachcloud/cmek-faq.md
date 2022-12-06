@@ -31,7 +31,7 @@ To learn more about rotating a CMEK key using the {{ site.data.products.db }} AP
 
 Yes, the [managed backups](backups-page.html) stored in {{ site.data.products.db }} infrastructure are also encrypted using the CMEK, by utilizing CoackroachDB’s backup encryption capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
 
-See: [Take and Restore Encrypted Backups](../{{site.versions["cloud"]}}/take-and-restore-encrypted-backups.html)
+See: [Take and Restore Encrypted Backups](../{{site.current_cloud_version}}/take-and-restore-encrypted-backups.html)
 
 ## As part of managed backup encryption, is the same backup data key used to encrypt all backups for a cluster?
 

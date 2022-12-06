@@ -144,9 +144,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 Learn more:
 
-- Use the [built-in SQL client](../{{site.versions["cloud"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- Build a ["Hello World" app with the Django framework](../{{site.versions["cloud"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["cloud"]}}/install-client-drivers.html) for your favorite language.
-- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../{{site.versions["cloud"]}}/demo-fault-tolerance-and-recovery.html).
+- Use the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Build a ["Hello World" app with the Django framework](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.current_cloud_version}}/install-client-drivers.html) for your favorite language.
+- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../{{site.current_cloud_version}}/demo-fault-tolerance-and-recovery.html).
 
 Before you move into production:
 

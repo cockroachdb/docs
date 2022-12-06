@@ -81,8 +81,8 @@ docs_area:
       <h3 class="mt-3">Use Your Cluster</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="../{{site.versions["cloud"]}}/migration-overview.html">Migrate Data</a></li>
-        <li><a href="../{{site.versions["cloud"]}}/performance-best-practices-overview.html">Tune Performance</a></li>
+        <li><a href="../{{site.current_cloud_version}}/migration-overview.html">Migrate Data</a></li>
+        <li><a href="../{{site.current_cloud_version}}/performance-best-practices-overview.html">Tune Performance</a></li>
         <li><a href="{{ '/cockroachcloud/production-checklist.html' | relative_url }}">Move into Production</a></li>
         <li><a href="{{ '/cockroachcloud/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
@@ -94,11 +94,11 @@ docs_area:
       <h3 class="mt-3">Develop</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="../{{site.versions["cloud"]}}/developer-guide-overview.html">Common Dev Tasks</a></li>
-        <li><a href="../{{site.versions["cloud"]}}/example-apps.html">Sample Apps</a></li>
-        <li><a href="../{{site.versions["cloud"]}}/sql-feature-support.html">SQL Reference</a></li>
-        <li><a href="../{{site.versions["cloud"]}}/performance-best-practices-overview.html">SQL Best Practices</a></li>
-        <li><a href="../{{site.versions["cloud"]}}/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
+        <li><a href="../{{site.current_cloud_version}}/developer-guide-overview.html">Common Dev Tasks</a></li>
+        <li><a href="../{{site.current_cloud_version}}/example-apps.html">Sample Apps</a></li>
+        <li><a href="../{{site.current_cloud_version}}/sql-feature-support.html">SQL Reference</a></li>
+        <li><a href="../{{site.current_cloud_version}}/performance-best-practices-overview.html">SQL Best Practices</a></li>
+        <li><a href="../{{site.current_cloud_version}}/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
         </ul>
       </div>
     </div>
@@ -107,7 +107,7 @@ docs_area:
       <div class="landing-column-content">
       <ul>
         <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachDB Cloud FAQs</a></li>
-        <li><a href="../{{site.versions["cloud"]}}/frequently-asked-questions.html">CockroachDB FAQs</a></li>
+        <li><a href="../{{site.current_cloud_version}}/frequently-asked-questions.html">CockroachDB FAQs</a></li>
         <li><a href="{{ '/cockroachcloud/upgrade-policy.html' | relative_url }}">Upgrade Policy</a></li>
         <li><a href="{{ '/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html' | relative_url }}">Deploy a Python App</a></li>
         <li><a href="{{ '/cockroachcloud/stream-changefeed-to-snowflake-aws.html' | relative_url }}">Stream a Changefeed</a></li>

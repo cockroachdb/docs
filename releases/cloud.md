@@ -129,7 +129,7 @@ As of December 5, 2022, {{ site.data.products.serverless }} clusters are running
 
 <h3>Console changes</h3>
 
-- The [**Connect to your cluster**](../{{site.versions["cloud"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["cloud"]}}/third-party-database-tools.html).
+- The [**Connect to your cluster**](../{{site.current_cloud_version}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.current_cloud_version}}/third-party-database-tools.html).
 - The [**Connect to your cluster**](../cockroachcloud/connect-to-a-serverless-cluster.html) dialog for clusters running CockroachDB [v22.1](v22.1.html) now loads more quickly.
 - If users log in using an [SSO](../cockroachcloud/cloud-org-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
 - Previously, {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](../cockroachcloud/plan-your-cluster.html?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.

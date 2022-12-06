@@ -321,7 +321,7 @@ user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](../{{site.versions["cloud"]}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL](../{{site.current_cloud_version}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
