@@ -286,7 +286,7 @@ After the upgrade has finalized (whether manually or automatically), it is no lo
 
 1. Run the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster to capture your cluster's state.
 
-2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
+1. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
 In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 
