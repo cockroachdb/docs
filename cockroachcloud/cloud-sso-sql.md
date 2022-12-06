@@ -76,7 +76,7 @@ This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and 
 	The `issuer` and `audience` fields in the token must match values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider).
 	{{site.data.alerts.end}}
 - You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
-- You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](../{{site.versions["stable"]}}/security-reference/authorization.html#supported-privileges.html), in order to update cluster settings. This is required to add an external token issuer/IdP.
+- You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](../{{site.versions["stable"]}}/security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer/IdP.
 - A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
 
 ### Configure your cluster to accept your external identity provider
