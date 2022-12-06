@@ -240,7 +240,7 @@ File name | File usage
 
 ## Authentication for cloud storage
 
-See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html).
 
 ## Authentication best practice
 

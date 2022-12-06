@@ -63,7 +63,7 @@ The following table outlines SQL statements you can use to create, configure, pa
 We recommend taking backups to [cloud storage](use-cloud-storage-for-bulk-operations.html) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
 
 - [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
-- [Authentication](use-cloud-storage-for-bulk-operations.html#authentication) to set up authentication to a cloud storage bucket and include those credentials in the URL.
+- [Authentication](cloud-storage-authentication.html) to set up authentication to a cloud storage bucket and include those credentials in the URL.
 
 For detail on additional cloud storage features CockroachDB supports:
 

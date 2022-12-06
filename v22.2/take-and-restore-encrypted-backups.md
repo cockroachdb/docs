@@ -53,7 +53,7 @@ The AWS URI **requires** the following:
 ----------------------------+------------------------------------------------------------------------
 `aws:///`                   | The AWS scheme. Note the triple slash (`///`).
 `{key}`                     | The key identifiers used to reference the KMS key that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
-`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication](cloud-storage-authentication.html).
 `REGION=<region>`           | The region of the KMS key.
 
 See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) documentation for guidance on creating an AWS KMS key.
@@ -75,7 +75,7 @@ The Google Cloud URI **requires** the following:
 `locations/{location}`      | The location specified at key creation.
 `keyRings/{key ring}`       | The Google Cloud key ring created to group keys.
 `cryptoKeys/{key name}`     | The name of the key.
-`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, then you must include `&CREDENTIALS=` with your base-64 encoded key. To load credentials from your environment, use `AUTH=implicit`. For details on setting up and using the different authentication types, see [Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, then you must include `&CREDENTIALS=` with your base-64 encoded key. To load credentials from your environment, use `AUTH=implicit`. For details on setting up and using the different authentication types, see [Authentication](cloud-storage-authentication.html).
 
 See Google Cloud's [customer-managed encryption key](https://cloud.google.com/storage/docs/encryption/using-customer-managed-keys) documentation for guidance on creating a KMS key.
 

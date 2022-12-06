@@ -35,7 +35,7 @@ Parameter         | Description
 - `ALTER BACKUP` can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - `ALTER BACKUP` requires full read and write permissions to the target cloud storage bucket.
 
-The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using [`SPECIFIED`](use-cloud-storage-for-bulk-operations.html#authentication) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with [`IMPLICIT`](use-cloud-storage-for-bulk-operations.html#authentication) credentials.
+The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using [`SPECIFIED`](cloud-storage-authentication.html) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with [`IMPLICIT`](cloud-storage-authentication.html) credentials.
 
 We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
@@ -47,7 +47,7 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
 {{site.data.alerts.end}}
 
-See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for more detail on authenticating to your cloud storage bucket.
+See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
 
 ### Add an AWS KMS key to an encrypted backup
 
