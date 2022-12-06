@@ -133,7 +133,7 @@ Examples of supported cloud storage sink URIs:
 ### HTTP
 
 ~~~
-http://localhost:8080/{PATH}
+'http://localhost:8080/{PATH}'
 ~~~
 
 ### Cloud storage parameters
