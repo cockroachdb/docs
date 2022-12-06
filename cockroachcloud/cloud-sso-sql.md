@@ -1,21 +1,21 @@
 ---
 title: Cluster Single Sign-on (SSO) for {{ site.data.products.db }}
-summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, and review of workflows for authenticating human and application users, and for configuring required cluster settings.
+summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, and review of workflows for authenticating human and bot users, and for configuring required cluster settings.
 toc: true
 docs_area: manage
 ---
 
-Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of SSO identity providers, including {{ site.data.products.db }}, Google, Azure, GitHub, or your own self-hosted OIDC.
+Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of Single Sign-n (SSO), and the convenience of being able to choose from a variety of SSO identity providers, including {{ site.data.products.db }}, Google, Microsoft, GitHub, or your own self-hosted SAML or OIDC.
 
 This page describes:
 
 - [Authenticating human users](#authenticate-human-users-with-the-cloud-console) with the {{ site.data.products.db }} Console acting as identity provider (IdP) or token issuer
-- [Authenticating service accounts](#authenticate-application-users-service-accounts-with-external-idps) with an external token issuer
+- [Authenticating service accounts](#authenticate-software-users-service-accounts-with-external-idps) with an external token issuer
 - [Configuring the cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider) required to authenticate service accounts
 
-Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html).
+Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-n (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html).
 
-You might also be looking for [Cluster Single Sign-On (SSO) for Self-hosted CockroachDB](../v22.2/sso-sql.html).
+You might also be looking for [Cluster Single Sign-n (SSO) for Self-hosted CockroachDB](../v22.2/sso-sql.html).
 
 ## Authenticate human users with the cloud console
 
@@ -24,21 +24,21 @@ You might also be looking for [Cluster Single Sign-On (SSO) for Self-hosted Cock
 {{site.data.alerts.callout_info}}
 Note that this authentication method only works for human users, since only humans may have {{ site.data.products.db }} Console identities.
 
-Application users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticating software users (service accounts) with Cluster SSO](#authenticate-human-users-with-the-cloud-console).
+Software users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticating software users (service accounts) with Cluster SSO](#authenticate-human-users-with-the-cloud-console).
 {{site.data.alerts.end}}
 
 **Learn more:**
 
-- [Single Sign-On (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html#cloud-organization-sso)
-- [Configure Cloud Organization Single Sign-On (SSO)](configure-cloud-org-sso.html)
+- [Single Sign-n (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html#cloud-organization-sso)
+- [Configure Cloud Organization Single Sign-n (SSO)](configure-cloud-org-sso.html)
 
 **Prerequisites:**
 
 - You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
-- SSO must be enabled for your organization. For help configuring SSO for your {{ site.data.products.db }} organization, see: [Configure Cloud Organization Single Sign-On (SSO)](configure-cloud-org-sso.html)
+- SSO must be enabled for your organization. For help configuring SSO for your {{ site.data.products.db }} organization, see: [Configure Cloud Organization Single Sign-n (SSO)](configure-cloud-org-sso.html)
 - SSO must be enabled for your particular {{ site.data.products.db }} user. Configure this at the [{{ site.data.products.db }} Console account settings page](https://cockroachlabs.cloud/account/profile).
 - Your {{ site.data.products.db }} user identity must have access to at least one cluster in your organization.
-- To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} users must correspond to SQL users by the convention that the SQL username must be `sso_{email_address}`. 
+- A SQL user specifically corresponding to your SSO identity must be pre-provisioned on the cluster. To authenticate to a specific SQL database, i.e. a cluster, using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} users must correspond to SQL database users by the convention that the SQL username must be `sso_{email_address}`. 
 
 ???!!! {Cameron, how does this format actually work, does the "@gmail" go in there???}
 
@@ -59,9 +59,9 @@ Application users (i.e. service accounts), can authenticate using JWT tokens fro
 	ccloud cluster sql --sso {your cluster name}
 	~~~
 
-## Authenticate application users (service accounts) with external IdPs
+## Authenticate software users (service accounts) with external IdPs
 
-Currently, {{ site.data.products.db }} can only serve as a token issuer for human users as it requires an interactive flow. Authenticating service accounts, i.e. user identities to be controlled by software applications or scripts, rather than by humans, can not leverage an interactive flow and it needs a different headless mechanism.
+Currently, {{ site.data.products.db }} can only serve as a token issuer for human users. Authenticating service accounts, i.e. user identities to be controlled by software applications or scripts, rather by humans, is considerably more complicated, as it requires the user, or more realistically, an IdP admin, to provision the appropriate JWT token.
 
 {{ site.data.products.db }} SSO supports the use of external IdPs such as Google, Microsoft, GitHub, or customer deployed OIDC or SAML solutions, such as Okta. All of these options support multifactor authentication (MFA).
 
@@ -76,7 +76,7 @@ This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and 
 	The `issuer` and `audience` fields in the token must match values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider).
 	{{site.data.alerts.end}}
 - You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
-- You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](permissions), in order to update cluster settings. This is required to add an external token issuer/IdP.
+- You must have access to a member of the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) in order to update cluster settings, which is required to add an external token issuer/IdP.
 - A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
 
 ### Configure your cluster to accept your external identity provider
@@ -87,7 +87,7 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 	Add your IdP's public signing key to your cluster's list of accepted signing JSON web keys (JWKS), under the `jwks` setting. This is a [JWK](https://www.rfc-editor.org/rfc/rfc7517) formatted single key or key set, containing the [public keys](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#key-pairs) for SSO token issuers/IdPs that will be accepted by your cluster.
 
-	By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing {{ site.data.products.db }} to serve as an IdP. When modifying this cluster setting, you must include the {{ site.data.products.db }} public key in the key set. Failing to do so can prevent maintenance access by the {{ site.data.products.db }} managed service, leading to unintended consequences. It can also break the cluster SSO for human users to this cluster.
+	By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing {{ site.data.products.db }} to serve as an IdP. When modifying this cluster setting, you must include the {{ site.data.products.db }} public key in the key set. Failing to do so can prevent maintenance access by essential {{ site.data.products.db }} managed service accounts, leading to unintended consequences.
 
 	!!!{ @cameron Fact check on this? Seems right}
 
@@ -95,7 +95,7 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers. This field takes a comma-separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
 
-	The default value is {{ site.data.products.db }}. When modifying this cluster setting, you must include {{ site.data.products.db }} in the new value. Failing to do so can prevent maintenance access by the {{ site.data.products.db }} managed service, leading to unintended consequences. It can also break the cluster SSO for human users to this cluster.
+	The default value is {{ site.data.products.db }}. When modifying this cluster setting, you must include {{ site.data.products.db }} in the new value. Failing to do so can prevent maintenance access by essential {{ site.data.products.db }} managed service accounts, leading to unintended consequences.
 	!!!{ @cameron Fact check on this? Seems right}
 
 1. `server.jwt_authentication.audience`
@@ -110,9 +110,9 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 ### Authenticate to your cluster with your JWT token
 
-To provision SQL cluster access for application users or service accounts, you must provision JWT tokens. There are many ways to do this, which are beyond the scope of this tutorial.
+To provision SQL cluster access for service accounts, you must provision OIDC or SAML tokens. There are many ways to do this, which are beyond the scope of this tutorial.
 
-For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens for GCP service accounts, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discusses using GCP-issued OIDC tokens to authenticate to CockroachDB.
+For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discusses using GCP-issued OIDC tokens to authenticate to CockroachDB.
 
 Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider)) from your IdP, you may use it to connect to your cluster's SQL interface.
 
