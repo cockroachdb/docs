@@ -43,14 +43,16 @@ No, you can create a Serverless cluster that is free forever. If you choose to s
 
 The following regions are available for {{ site.data.products.serverless }}:
 
-GCP                                          | AWS
----------------------------------------------|------
-Jurong West (`asia-southeast1`)              | Singapore (`ap-southeast-1`)
-São Paulo (`southamerica-east1`)             | Mumbai (`ap-south-1`)
-California (`us-west2`)                      | Frankfurt (`eu-central-1`)
-South Carolina (`us-east1`)                  | Ireland (`eu-west-1`) 
-Iowa (`us-central1`)                         | Oregon (`us-west-2`)
-St. Ghislain (`europe-west1`)                | N. Virginia (`us-east-1`)
+GCP                                         | AWS
+--------------------------------------------|------
+`asia-southeast1` (Jurong West)             | `ap-south-1` (Mumbai) 
+`europe-west1` (St. Ghislain)               | `ap-southeast-1` (Singapore)
+`southamerica-east1` (São Paulo)            | `eu-central-1` (Frankfurt)
+`us-central1` (Iowa)                        | `eu-west-1` (Ireland)
+`us-east1` (South Carolina )                | `us-east-1` (N. Virginia)              
+`us-west2` (California)                     | `us-west-2` (Oregon)
+
+
 
 If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
