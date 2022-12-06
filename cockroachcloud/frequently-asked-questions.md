@@ -15,7 +15,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
-### In what clouds and regions is {{ site.data.products.db }} available?
+### In what clouds and regions is {{ site.data.products.dedicated }} available?
 
 The following regions are available for {{ site.data.products.dedicated }}:
 
