@@ -10,6 +10,10 @@ This page describes the support Cockroach Labs provides for restoring backups ac
 - [Support for restoring backups into a higher version](#support-for-restoring-backups-into-a-higher-version)
 - [Support for long-term backup archival](#support-for-long-term-backup-archival)
 
+{{site.data.alerts.callout_info}}
+We refer to versions on this page in the "v21.2.x" format, because the minor versions of CockroachDB are not considered in backup eligibility. For example, CockroachDB considers both v21.2.8 and v21.2.14 as v21.2 clusters. 
+{{site.data.alerts.end}}
+
 ## Support for restoring backups into a higher version
 
 Cockroach Labs supports restoring a backup taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Therefore, when you're upgrading your cluster from version N to N+1, if you took a backup on major version N, you can restore it to your cluster on either major version N or N+1.
