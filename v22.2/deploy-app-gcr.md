@@ -34,7 +34,7 @@ Before starting the tutorial, do the following:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
+    --url='postgres://<username>:<password>@<global host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
     ~~~
 
     In the connection string copied from the {{ site.data.products.db }} Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created earlier.
@@ -112,7 +112,7 @@ Before starting the tutorial, do the following:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ export DATABASE_URL="postgresql://user:password@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs/root.crt&options=--cluster%3Drouting-id"
+    $ export DATABASE_URL="postgresql://$USER:$PASSWORD@random-cluster-name-4300.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=root.crt"
     ~~~
 
     This Django app uses the `dj_database_url` module to configure the database connection from a connection URL. The module uses the value assigned to the `DATABASE_URL` environment variable for the connection.

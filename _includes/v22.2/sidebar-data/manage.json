@@ -162,6 +162,12 @@
           "urls": [
             "/${VERSION}/backup-validation.html"
           ]
+        },
+        {
+          "title": "Restoring Backups Across Versions",
+          "urls": [
+            "/${VERSION}/restoring-backups-across-versions.html"
+          ]
         }
       ]
     },
@@ -170,8 +176,19 @@
       "items": [
         {
           "title": "Cloud Storage",
-          "urls": [
-            "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+          "items": [
+            {
+              "title": "Use Cloud Storage for Bulk Operations",
+              "urls": [
+                "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+              ]
+            },
+            {
+              "title": "Cloud Storage Authentication",
+              "urls": [
+                "/${VERSION}/cloud-storage-authentication.html"
+              ]
+            }
           ]
         },
         {
@@ -551,6 +568,12 @@
                   "title": "Upgrade Policy",
                   "urls": [
                      "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v22.2",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v22.2.html"
                   ]
                 },
                 {

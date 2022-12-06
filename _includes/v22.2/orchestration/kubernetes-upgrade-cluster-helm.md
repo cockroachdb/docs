@@ -64,7 +64,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.2';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
         ~~~
 
     1. Exit the SQL shell and delete the temporary pod:
@@ -248,6 +248,8 @@
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
+
+        After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
     1. Exit the SQL shell and delete the temporary pod:
 

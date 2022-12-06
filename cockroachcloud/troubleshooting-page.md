@@ -38,12 +38,6 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-There are two possible causes of this error: incorrect [routing ID](../{{site.versions["cloud"]}}/connect-to-the-database.html#connection-parameters) in the connection string, and CA certificate conflicts in the `cockroach` certificate search path.
-
-<h4>Solution: incorrect routing ID in the connection string</h4>
-
-Check if you are using the right routing ID in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your routing ID in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Select option/language** and select **General connection string**, and then locating the parameter `cluster={routing-id}` in your connection string.
-
 <h4>Solution: CA certificate conflicts</h4>
 
 If you have existing certificates in `~/.cockroach-certs` used to connect to {{ site.data.products.core }} or {{ site.data.products.dedicated }} clusters and are trying to connect to a {{ site.data.products.serverless }} cluster using [`cockroach sql`](../{{site.versions["cloud"]}}/cockroach-sql.html), you need download the CA cert by running the command from the **Cluster Overview** > **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
@@ -52,7 +46,7 @@ For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgr
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach sql --url "postgresql://maxroach@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%3Ddim-dog-2114"
+cockroach sql --url "postgresql://maxroach@dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
 ~~~
 
 ### Invalid cluster name in a third-party tool
@@ -65,7 +59,7 @@ FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid clu
 
 <h4>Solution</h4>
 
-Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<routing-id>.<database>` for {{ site.data.products.serverless }} clusters.
+Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**.
 
 For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 

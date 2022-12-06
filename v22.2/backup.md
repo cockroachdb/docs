@@ -102,7 +102,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 - [URL format](use-cloud-storage-for-bulk-operations.html#url-format)
 - [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
-- [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
+- [Authentication parameters](cloud-storage-authentication.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 

@@ -92,17 +92,20 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html?filters=gcs#authentication) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
+[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
 
-Example of a cloud storage sink URI with Amazon S3:
+The following are example file URLs for each of the cloud storage schemes:
 
-~~~
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-~~~
+Location     | Example                                                                          
+-------------+----------------------------------------------------------------------------------
+Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`  
+Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'`
+Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`                         
+HTTP         | `'http://localhost:8080/{PATH}'`
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage and example URIs for Google Cloud Storage and Azure Storage.
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
@@ -150,7 +153,7 @@ Option | Value | Description
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 <a name="cursor-option"></a>`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
 <a name="end-time"></a>`end_time` | [Timestamp](as-of-system-time.html#parameters) | Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://en.wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`. You cannot use `end_time` and [`initial_scan = 'only'`](#initial-scan) simultaneously.
-<a name="format"></a>`format` | `json` / `avro` / `csv`* | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](changefeed-messages.html#avro-types) and detail on [Avro limitations](changefeed-messages.html#avro-limitations). <br><br>*`format=csv` works only in combination with [`initial_scan = 'only'`](#initial-scan). You cannot combine `format=csv` with the [`diff`](#diff-opt) or [`resolved`](#resolved-option) options. See [Export data with changefeeds](export-data-with-changefeeds.html) for details using these options to create a changefeed as an alternative to [`EXPORT`](export.html). <br><br>Default: `format=json`.
+<a name="format"></a>`format` | `json` / `avro` / `csv`* | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](changefeed-messages.html#avro-types) and detail on [Avro limitations](changefeed-messages.html#avro-limitations). <br><br>*`format=csv` works only in combination with [`initial_scan = 'only'`](#initial-scan). You cannot combine `format=csv` with the [`diff`](#diff-opt) or [`resolved`](#resolved-option) options. <span class="version-tag">New in v22.2:</span> Changefeeds use the same CSV format as the [`EXPORT`](export.html) statement. See [Export data with changefeeds](export-data-with-changefeeds.html) for details using these options to create a changefeed as an alternative to `EXPORT`. <br><br>Default: `format=json`.
 `mvcc_timestamp` | N/A |  Include the [MVCC](architecture/storage-layer.html#mvcc) timestamp for each emitted row in a changefeed. With the `mvcc_timestamp` option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.
 <a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`. <br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}
 `key_in_value` | N/A | Make the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink), [webhook sinks](changefeed-sinks.html#webhook-sink), and [GC Pub/Sub sinks](changefeed-sinks.html#google-cloud-pub-sub).

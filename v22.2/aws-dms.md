@@ -61,7 +61,7 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. Enter the **Server name** and **Port** of your CockroachDB cluster.
 1. Supply a **User name**, **Password**, and **Database name** from your CockroachDB cluster.
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{routing-id}.{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
+    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
     {{site.data.alerts.end}}
     <img src="{{ 'images/v22.2/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. If needed, you can test the connection under **Test endpoint connection (optional)**.

@@ -94,11 +94,11 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
         For example:
 
         ~~~
-        postgresql://maxroach:ThisIsNotAGoodPassword@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/bank?options=--cluster%3Ddim-dog-147&sslmode=require
+        postgresql://maxroach:ThisIsNotAGoodPassword@dim-dog-147.6wr.cockroachlabs.cloud:26257/bank?sslmode=require
         ~~~
 
     
-    2. Set the `DATABASE_URL` environment variable to the modified connection string.
+    1. Set the `DATABASE_URL` environment variable to the modified connection string.
     
         {% include_cached copy-clipboard.html %}
         ~~~ shell
@@ -111,7 +111,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
 
     The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
-2. Run the code to create a table and insert some rows:
+1. Run the code to create a table and insert some rows:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
