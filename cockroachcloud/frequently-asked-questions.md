@@ -15,9 +15,27 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
-### In what clouds and regions is {{ site.data.products.db }} available?
+### In what clouds and regions is {{ site.data.products.dedicated }} available?
 
-The  {{ site.data.products.db }} Console will always show the latest available cloud infrastructure providers and regions. Open the [**Create Cluster**](https://cockroachlabs.cloud/cluster/create) page and select a Plan to see which providers and regions are currently available.
+The following regions are available for {{ site.data.products.dedicated }}:
+
+ GCP                                 | AWS                             
+-------------------------------------|---------------------------------
+ `asia-east1` (Changhua County)      | `ap-northeast-1` (Tokyo)        
+ `asia-east2` (Hong Kong)            | `ap-northeast-2` (Seoul)        
+ `asia-northeast1` (Tokyo)           | `ap-northeast-3` (Osaka)        
+ `asia-southeast1` (Jurong West)     | `ap-south-1` (Mumbai)           
+ `australia-southeast1` (Australia)  | `ap-southeast-1` (Singapore)    
+ `europe-west1` (St. Ghislain)       | `ap-southeast-2` (Sydney)       
+ `europe-west2` (London)             | `ca-central-1` (Central Canada) 
+ `europe-west3` (Frankfurt)          | `eu-central-1` (Frankfurt)      
+ `europe-west4` (Eemshaven)          | `eu-north-1` (Stockholm)        
+ `northamerica-northeast1` (Montréal)| `eu-west-1` (Ireland)           
+ `southamerica-east1` (São Paulo)    | `eu-west-2` (London)            
+ `us-central1` (Iowa)                | `eu-west-3` (Paris)             
+ `us-east1` (South Carolina)         | `sa-east-1` (São Paulo)         
+ `us-west1` (Oregon)                 | `us-east-2` (Ohio)              
+ `us-west2` (California)             | `us-west-2` (Oregon)            
 
 We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions in which their offerings are available. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting EKS or GKE in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.

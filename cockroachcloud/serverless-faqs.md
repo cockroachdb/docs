@@ -39,6 +39,23 @@ With {{ site.data.products.serverless }}, you are charged for the storage and ac
 
 No, you can create a Serverless cluster that is free forever. If you choose to set a spend limit for your cluster, you will only be charged for the resources you use up to your spend limit.
 
+### What regions are available for {{ site.data.products.serverless }} clusters?
+
+The following regions are available for {{ site.data.products.serverless }}:
+
+GCP                                         | AWS
+--------------------------------------------|------
+`asia-southeast1` (Jurong West)             | `ap-south-1` (Mumbai) 
+`europe-west1` (St. Ghislain)               | `ap-southeast-1` (Singapore)
+`southamerica-east1` (São Paulo)            | `eu-central-1` (Frankfurt)
+`us-central1` (Iowa)                        | `eu-west-1` (Ireland)
+`us-east1` (South Carolina )                | `us-east-1` (N. Virginia)              
+`us-west2` (California)                     | `us-west-2` (Oregon)
+
+
+
+If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+
 ### How can I estimate how many RUs my workload will consume?
 
 {% include cockroachcloud/serverless-usage.md %}
