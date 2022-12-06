@@ -7,27 +7,27 @@ docs_area: manage
 
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
 
-- [`BACKUP`](../{{site.versions["cloud"]}}/backup.html)
-- [`RESTORE`](../{{site.versions["cloud"]}}/restore.html)
-- [`IMPORT`](../{{site.versions["cloud"]}}/import.html)
-- [`EXPORT`](../{{site.versions["cloud"]}}/export.html)
+- [`BACKUP`](../{{site.current_cloud_version}}/backup.html)
+- [`RESTORE`](../{{site.current_cloud_version}}/restore.html)
+- [`IMPORT`](../{{site.current_cloud_version}}/import.html)
+- [`EXPORT`](../{{site.current_cloud_version}}/export.html)
 
 {% include cockroachcloud/ccloud/backup-types.md %}
 
 The examples on this page demonstrate how to take customer-owned backups.
 
 {{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.versions["cloud"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["cloud"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
+For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
 {{site.data.alerts.end}}
 
 For information on `userfile` commands, visit the following pages:
 
-- [`cockroach userfile upload`](../{{site.versions["cloud"]}}/cockroach-userfile-upload.html)
-- [`cockroach userfile list`](../{{site.versions["cloud"]}}/cockroach-userfile-list.html)
-- [`cockroach userfile get`](../{{site.versions["cloud"]}}/cockroach-userfile-get.html)
-- [`cockroach userfile delete`](../{{site.versions["cloud"]}}/cockroach-userfile-delete.html)
+- [`cockroach userfile upload`](../{{site.current_cloud_version}}/cockroach-userfile-upload.html)
+- [`cockroach userfile list`](../{{site.current_cloud_version}}/cockroach-userfile-list.html)
+- [`cockroach userfile get`](../{{site.current_cloud_version}}/cockroach-userfile-get.html)
+- [`cockroach userfile delete`](../{{site.current_cloud_version}}/cockroach-userfile-delete.html)
 
-The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["cloud"]}}/use-cloud-storage-for-bulk-operations.html).
+The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
 
 {{site.data.alerts.callout_danger}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -54,8 +54,8 @@ Before you begin, connect to your cluster. For guidance on connecting to your {{
 
 Cockroach Labs runs the following managed-service backups:
 
-- {{ site.data.products.dedicated }} clusters: [Full cluster backups](../{{site.versions["cloud"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.versions["cloud"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
-- {{ site.data.products.serverless }} clusters: [Full cluster backups](../{{site.versions["cloud"]}}/take-full-and-incremental-backups.html#full-backups) every hour that are retained for 30 days.
+- {{ site.data.products.dedicated }} clusters: [Full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+- {{ site.data.products.serverless }} clusters: [Full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) every hour that are retained for 30 days.
 
 For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
 
@@ -67,10 +67,10 @@ The following examples show how to run manual backups and restores:
 
 For more information on taking backups and restoring to your cluster, read the following pages:
 
-- [`BACKUP`](../{{site.versions["cloud"]}}/backup.html)
-- [`RESTORE`](../{{site.versions["cloud"]}}/restore.html)
-- [Full and incremental backups](../{{site.versions["cloud"]}}/take-full-and-incremental-backups.html)
-- [Scheduled backups](../{{site.versions["cloud"]}}/manage-a-backup-schedule.html)
+- [`BACKUP`](../{{site.current_cloud_version}}/backup.html)
+- [`RESTORE`](../{{site.current_cloud_version}}/restore.html)
+- [Full and incremental backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html)
+- [Scheduled backups](../{{site.current_cloud_version}}/manage-a-backup-schedule.html)
 
 </section>
 
@@ -102,7 +102,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 ;
 ~~~
 
-Read the [`IMPORT`](../{{site.versions["cloud"]}}/import.html) page for more examples and guidance.
+Read the [`IMPORT`](../{{site.current_cloud_version}}/import.html) page for more examples and guidance.
 
 </section>
 
@@ -120,11 +120,11 @@ EXPORT INTO CSV
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
-Read the [`EXPORT`](../{{site.versions["cloud"]}}/export.html) page for more examples and guidance.
+Read the [`EXPORT`](../{{site.current_cloud_version}}/export.html) page for more examples and guidance.
 
 ## See also
 
-- [Use Userfile for Bulk Operations](../{{site.versions["cloud"]}}/use-userfile-for-bulk-operations.html)
-- [Scheduled Backups](../{{site.versions["cloud"]}}/manage-a-backup-schedule.html)
-- [Take Full and Incremental Backups](../{{site.versions["cloud"]}}/take-full-and-incremental-backups.html)
-- [Use Bulk Operations for Cloud Storage](../{{site.versions["cloud"]}}/use-cloud-storage-for-bulk-operations.html)
+- [Use Userfile for Bulk Operations](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html)
+- [Scheduled Backups](../{{site.current_cloud_version}}/manage-a-backup-schedule.html)
+- [Take Full and Incremental Backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html)
+- [Use Bulk Operations for Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html)

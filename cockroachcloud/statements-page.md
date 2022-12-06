@@ -6,11 +6,11 @@ cloud: true
 docs_area: manage
 ---
 
-{% capture version_prefix %}{{site.versions["cloud"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
 The **Statements** page helps you:
 
-- Identify frequently executed or high latency [SQL statements](../{{site.versions["cloud"]}}/sql-statements.html).
+- Identify frequently executed or high latency [SQL statements](../{{site.current_cloud_version}}/sql-statements.html).
 - View SQL statement fingerprint [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 

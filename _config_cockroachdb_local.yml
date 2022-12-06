@@ -7,6 +7,7 @@ exclude:
 - "v19.2"
 - "v20.1"
 - "v20.2"
+- "v21.1"
 - "ci"
 - "scripts"
 - "vendor"

@@ -6,7 +6,7 @@ cloud: true
 docs_area: migrate
 ---
 
-{% capture version_prefix %}{{site.versions["cloud"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
 {% include feature-phases/preview.md %}
 
