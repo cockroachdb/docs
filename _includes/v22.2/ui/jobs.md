@@ -47,13 +47,16 @@ Status | Description
 -------|------------
 `PENDING` | Job is created but has not started running.
 `PAUSED` | Job is [paused]({{ link_prefix }}pause-job.html).
+`PAUSE-REQUESTED` | A request has been issued to pause the job. The status will move to `PAUSED` when the node running the job registers the request.
 `FAILED` | Job failed to complete.
 `SUCCEEDED` | Job successfully completed.
-`CANCELED` | Job was [cancelled]({{ link_prefix }}cancel-job.html).
+`CANCELED` | Job was [canceled]({{ link_prefix }}cancel-job.html).
+`CANCEL-REQUESTED` | A request has been issued to cancel the job. The status will move to `CANCELED` when the node running the job registers the request.
 `RUNNING`  | Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
 `REVERTING`| Job failed or was canceled and its changes are being reverted.
+`REVERT-FAILED` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
 `RETRYING` | Job is retrying another job that failed.
-
+ 
 ## Job details
 
 The job ID, creation time, user, status, and error messages (if any) are also shown.
