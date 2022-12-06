@@ -80,7 +80,7 @@ CockroachDB supports assume role authentication on clusters running v22.2. Authe
 Role assumption applies the principle of least privilege rather than directly providing privilege to a user. Creating IAM roles to manage access to AWS resources is Amazon's recommended approach compared to giving access directly to IAM users.
 {{site.data.alerts.end}}
 
-The [following section](#set-up-amazon-s3-assume-role) demonstrates setting up assume role authentication between two users. To see examples of assume role authentication for or more than two roles, see [Role chaining](#amazon-s3-role-chaining) for additional detail.
+The [following section](#set-up-amazon-s3-assume-role) demonstrates setting up assume role authentication between two users. To see examples of assume role authentication for more than two roles, see [Role chaining](#amazon-s3-role-chaining) for additional detail.
 
 ### Set up Amazon S3 assume role
 
