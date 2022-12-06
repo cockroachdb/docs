@@ -11,7 +11,7 @@ This page describes the support Cockroach Labs provides for restoring backups ac
 - [Support for long-term backup archival](#support-for-long-term-backup-archival)
 
 {{site.data.alerts.callout_info}}
-We refer to versions on this page in the "v21.2.x" format, because the minor versions of CockroachDB are not considered in backup eligibility. For example, CockroachDB considers both v21.2.8 and v21.2.14 as v21.2 clusters. 
+Since CockroachDB considers the cluster version when running a backup, this page refers to versions in a "v21.2.x" format. For example, both v21.2.8 and v21.2.14 are considered as v21.2 clusters for backup purposes.
 {{site.data.alerts.end}}
 
 ## Support for restoring backups into a higher version
