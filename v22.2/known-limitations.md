@@ -88,6 +88,12 @@ HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.pr
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
 
+### Spatial features disabled for ARM Macs
+
+[Spatial features](spatial-features.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
+
+[GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
+
 ## Unresolved limitations
 
 ### Unsupported trigram syntax
