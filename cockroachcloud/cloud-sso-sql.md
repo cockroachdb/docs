@@ -10,7 +10,7 @@ Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (w
 This page describes:
 
 - [Authenticating human users](#authenticate-human-users-with-the-cloud-console) with the {{ site.data.products.db }} Console acting as identity provider (IdP) or token issuer
-- [Authenticating service accounts](#authenticate-application-users-service-accounts-with-external-idps) with an external token issuer
+- [Authenticating service accounts](#authenticate-application-users-service-accounts) with an external token issuer
 - [Configuring the cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider) required to authenticate service accounts
 
 Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html).
@@ -24,7 +24,7 @@ You might also be looking for [Cluster Single Sign-On (SSO) for Self-hosted Cock
 {{site.data.alerts.callout_info}}
 Note that this authentication method only works for human users, since only humans may have {{ site.data.products.db }} Console identities.
 
-Application users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticating software users (service accounts) with Cluster SSO](#authenticate-human-users-with-the-cloud-console).
+Application users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticate application users (service accounts) with Cluster SSO](#authenticate-application-users-service-accounts).
 {{site.data.alerts.end}}
 
 **Learn more:**
@@ -59,7 +59,7 @@ Application users (i.e. service accounts), can authenticate using JWT tokens fro
 	ccloud cluster sql --sso {your cluster name}
 	~~~
 
-## Authenticate application users (service accounts) with external IdPs
+## Authenticate application users (service accounts)
 
 Currently, {{ site.data.products.db }} can only serve as a token issuer for human users as it requires an interactive flow. Authenticating service accounts, i.e. user identities to be controlled by software applications or scripts, rather than by humans, can not leverage an interactive flow and it needs a different headless mechanism.
 
