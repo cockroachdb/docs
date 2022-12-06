@@ -13,7 +13,7 @@ This page describes:
 - [Authenticating service accounts](#authenticate-application-users-service-accounts-with-external-idps) with an external token issuer
 - [Configuring the cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider) required to authenticate service accounts
 
-Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html).
+Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html).
 
 You might also be looking for [Cluster Single Sign-On (SSO) for Self-hosted CockroachDB](../v22.2/sso-sql.html).
 
@@ -29,7 +29,7 @@ Application users (i.e. service accounts), can authenticate using JWT tokens fro
 
 **Learn more:**
 
-- [Single Sign-On (SSO) for CockroachDB Cloud organizations](cloud-org-sso.html#cloud-organization-sso)
+- [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html#cloud-organization-sso)
 - [Configure Cloud Organization Single Sign-On (SSO)](configure-cloud-org-sso.html)
 
 **Prerequisites:**

@@ -7,7 +7,7 @@ docs_area: manage
 
 Cluster SSO allows users to access the SQL interface of a CockroachDB cluster using a JWT auth token issued by a customer-managed identity provider (IdP).
 
-This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-on (SSO) for Cockroach Cloud](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-on (SSO) for CockroachDB Cloud organizations](../cockroachcloud/cloud-org-sso.html).
+This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-on (SSO) for {{ site.data.products.db }}](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-on (SSO) for {{ site.data.products.db }} organizations](../cockroachcloud/cloud-org-sso.html).
 
 **Prerequisites**
 
