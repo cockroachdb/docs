@@ -51,6 +51,8 @@ Parameter | Description
 - Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
 - User and role names share the same namespace and must be unique.
 
+### Role options
+
 {% include {{page.version.version}}/sql/role-options.md %}
 
 ## Examples
