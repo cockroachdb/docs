@@ -7,10 +7,6 @@ docs_area: reference.sql
 
 The `COPY FROM` statement copies data from [`cockroach sql`](cockroach-sql.html) or other [third party clients](install-client-drivers.html) to tables in your cluster.
 
-{{site.data.alerts.callout_info}}
-To copy data from a file to your cluster, we recommend using an [`IMPORT`](import.html) statement instead.
-{{site.data.alerts.end}}
-
 ## Syntax
 
 <div>
