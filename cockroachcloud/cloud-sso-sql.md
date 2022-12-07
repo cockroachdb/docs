@@ -30,7 +30,6 @@ Application users (i.e. service accounts), can authenticate using JWT tokens fro
 **Prerequisites:**
 
 - You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
-- SSO must be enabled for your particular {{ site.data.products.db }} user. Configure this at the [{{ site.data.products.db }} Console account settings page](https://cockroachlabs.cloud/account/profile).
 - Your {{ site.data.products.db }} user identity must have access to at least one cluster in your organization.
 - To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 
 - [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local workstation.
@@ -46,7 +45,6 @@ Application users (i.e. service accounts), can authenticate using JWT tokens fro
 
 1. You may then use the `ccloud` utility to authenticate to your {{ site.data.products.db }} cluster, allowing you to access the SQL interface. Your browser will open again as `ccloud` requests a fresh token, although will not need to log in again if you are already logged in.
 
-
 	{% include_cached copy-clipboard.html %}
 	~~~shell
 	ccloud cluster sql --sso {your cluster name}
@@ -61,7 +59,7 @@ Currently, {{ site.data.products.db }} can only serve as a token issuer for huma
 You can also use this flow to provision tokens to human users directly.
 
 {{site.data.alerts.callout_info}}
-Currently, this flow will not work for service accounts provisioned in {{ site.data.products.db }} console. You must [create the service account manually](#manually-provision-a-service-account).
+Currently, this flow will not work for service accounts provisioned in {{ site.data.products.db }} console. You must [create the service account manually](#manually-provision-a-service-account), as detailed below.
 
 {{site.data.alerts.end}}
 
@@ -84,11 +82,11 @@ To create a service account, you must:
 
 - Create a service account/IAM username with your external IdP (for example, GCP).
 - Create a SQL username in your cluster.
-- Ensure the correspondence between IdP username and SQL username is covered by your [identity mapping configuration], as described in what follows.
+- Ensure the correspondence between IdP username and SQL username is covered by your identity mapping configuration, as described in the next section.
 
 ### Configure your cluster to accept your external identity provider
 
-In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace, as detailed in what follows.
+In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace, as well as the `identity_map.configuration`.
 
 {{site.data.alerts.callout_success}}
 Note that the required information for a given IdP is served up at that IdP's `.well-known/openid-configuration` path, for example `https://cockroachlabs.cloud/.well-known/openid-configuration` for {{ site.data.products.db }}, and `https://accounts.google.com/.well-known/openid-configuration` for Google cloud.
