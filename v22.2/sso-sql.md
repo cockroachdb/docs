@@ -1,11 +1,11 @@
 ---
 title: Cluster Single Sign-on (SSO) for Self-hosted CockroachDB
-summary: Overview of Single Sign-on (SSO) for CockroachDB SQL Access, and review of workflows for authenticating human and bot users, and for configuring the feature.
+summary: Overview of Single Sign-on (SSO) for CockroachDB SQL Access, and review of workflows for authenticating human and application users, and for configuring the feature.
 toc: true
 docs_area: manage
 ---
 
-Cluster SSO allows users to access the SQL interface of a CockroachDB cluster using a JWT auth token issued by a customer-managed identity provider (IdP).
+Cluster SSO allows users to access the SQL interface of a CockroachDB cluster using a JWT access token issued by a customer-managed identity provider (IdP).
 
 This page discusses use cases for authenticating to {{ site.data.products.core }} clusters. You might instead be looking for [Cluster Single Sign-on (SSO) for {{ site.data.products.db }}](../cockroachcloud/cloud-sso-sql.html) or [Single Sign-on (SSO) for {{ site.data.products.db }} organizations](../cockroachcloud/cloud-org-sso.html).
 
@@ -13,7 +13,7 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 
 - **IdP:**
 
-	You must have the ability to create identities and issue JSON Web Token (JWT) formatted auth tokens.
+	You must have the ability to create identities and issue JSON Web Token (JWT) formatted access tokens.
 
 	This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
@@ -30,7 +30,11 @@ This page discusses use cases for authenticating to {{ site.data.products.core }
 		- A SQL user specifically corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
 
 ## Configure your cluster settings
-In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace:
+In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace, as detailed in what follows.
+
+{{site.data.alerts.callout_success}}
+Note that the required information for a given IdP is served up at that IdP's `.well-known/openid-configuration` path, for example `https://cockroachlabs.cloud/.well-known/openid-configuration` for {{ site.data.products.db }}, and `https://accounts.google.com/.well-known/openid-configuration` for Google cloud.
+{{site.data.alerts.end}}
 
 1. `server.jwt_authentication.enabled`
 
@@ -44,19 +48,21 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 
 1. `server.jwt_authentication.issuers`
 
-	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers. This field takes a comma-separated list of formal names of accepted JWT issuers. This list must include a given IdP, or the cluster will reject JWTs issued by it.
+	Add your IdP's formal `issuer` name (this must match the `issuer` field in the JWT itself) to your cluster's list of accepted token issuers. 
+
+	This field takes a single JWT or JSON list of JWTS. This list must include a given IdP, or the cluster will reject JWTs issued by it.
 
 1. `server.jwt_authentication.audience`
 	
-	The name of your cluster as specified by the IdP, or a comma-separated list of such names. One of the audience names configured here must match the `audience` field with which your IdP will generate JWT formatted auth tokens.
+	The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience names configured here must match the `audience` field with which your IdP will generate JWT formatted access tokens.
 
 ## Authenticate to your cluster with your JWT token
 
-To provision SQL cluster access for service accounts, you must provision OIDC or SAML tokens. There are many ways to do this, which are beyond the scope of this tutorial.
+To provision SQL cluster access for service accounts, you must provision JWT access tokens. There are many ways to do this, which are beyond the scope of this tutorial.
 
-For example, your Google Cloud Platform organization can serve as IdP by issuing OIDC auth tokens, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discusses using GCP-issued OIDC tokens to authenticate to CockroachDB.
+For example, your Google Cloud Platform organization can serve as token issuer, as described here in the [GCP docs on issuing tokens to service accounts](https://cloud.google.com/iam/docs/create-short-lived-credentials-direct#sa-credentials-oidc). This [blog post](https://morgans-blog.deno.dev/sso-crdb-gcp) discusses using GCP to authenticate issue tokens.
 
-Once you have a valid JWT auth token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, you may use it to connect to your cluster's SQL interface.
+Once you have a valid JWT access token (with `issuer` and `audience` matching the values [configured in your cluster settings](#configure-your-cluster-settings)) from your IdP, you may use it to connect to your cluster's SQL interface.
 
 {{site.data.alerts.callout_success}}
 This example uses [`cockroach sql`](cockroach-sql.html), but you can use any SQL client that supports sufficiently long passwords.
