@@ -136,16 +136,15 @@ Note that the required information for a given IdP is served up at that IdP's `.
 
 ### Configure your cluster's identity mapping
 
-1. `server.identity_map.configuration`
+`server.identity_map.configuration`
 
-	Format: `<external issuer> <external user ID> <SQL username>`
+Format: `<external issuer> <external user ID> <SQL username>`
 
-	Specifies mapping of subject names to SQL usernames, for each allowed IdP. For example, a configuration of:
+Specifies mapping of subject names to SQL usernames, for each allowed IdP. For example, a configuration of:
 
-	`https://accounts.google.com   /^([9-0]*)$   gcp_\1`
+`https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
-	would yield a mapping where the SQL username for each GCP-provisioned service account would be `gcp_{user ID}`, e.g. `gcp_1234567` for a service account with ID `1234567`.
-
+would yield a mapping where the SQL username for each GCP-provisioned service account would be `gcp_{user ID}`, e.g. `gcp_1234567` for a service account with ID `1234567`.
 
 ### Authenticate to your cluster with your JWT token
 
