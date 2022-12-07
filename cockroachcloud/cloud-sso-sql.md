@@ -1,5 +1,5 @@
 ---
-title: Cluster Single Sign-on (SSO) for {{ site.data.products.db }}
+title: Cluster Single Sign-on (SSO) for CockroachDB Cloud
 summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
@@ -27,25 +27,21 @@ Note that this authentication method only works for human users, since only huma
 Application users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Authenticate application users (service accounts) with Cluster SSO](#authenticate-application-users-service-accounts).
 {{site.data.alerts.end}}
 
-**Learn more:**
-
-- [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html#cloud-organization-sso)
-- [Configure Cloud Organization Single Sign-On (SSO)](configure-cloud-org-sso.html)
-
 **Prerequisites:**
 
 - You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
-- [Organization SSO](cloud-org-sso.html) must be enabled for your organization. For help configuring SSO for your {{ site.data.products.db }} organization, see: [Configure Cloud Organization Single Sign-On (SSO)](configure-cloud-org-sso.html)
 - SSO must be enabled for your particular {{ site.data.products.db }} user. Configure this at the [{{ site.data.products.db }} Console account settings page](https://cockroachlabs.cloud/account/profile).
 - Your {{ site.data.products.db }} user identity must have access to at least one cluster in your organization.
-- To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. If this SQL user does not exist on the cluster (as revealed by an error when attempting to sign in), an admin must create it manually.
+- To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 
 - [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local workstation.
 
 1. First authenticate to your {{ site.data.products.db }} organization. This command will cause your workstation's default browser to open to a {{ site.data.products.db }} authentication portal. Authenticate here as you normally do to the {{ site.data.products.db }} Console. The `ccloud` utility will receive an authentication token from the browser, allowing you to authenticate from the command line.
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
-	ccloud auth login --no-redirect
+	ccloud auth login
+	# when running ccloud on a remote host, add the following:
+	# --no-redirect
 	~~~
 
 1. You may then use the `ccloud` utility to authenticate to your {{ site.data.products.db }} cluster, allowing you to access the SQL interface. Your browser will open again as `ccloud` requests a fresh token, although will not need to log in again if you are already logged in.
@@ -53,12 +49,21 @@ Application users (i.e. service accounts), can authenticate using JWT tokens fro
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
-	ccloud cluster sql --sso {your cluster name} --no-redirect
+	ccloud cluster sql --sso {your cluster name}
+	# when running ccloud on a remote host, add the following:
+	# --no-redirect
 	~~~
 
 ## Authenticate application users (service accounts)
 
-Currently, {{ site.data.products.db }} can only serve as a token issuer for humans. For service accounts, i.e. user identities to be controlled by software applications or scripts, either continue to use your existing auth method (username/password), or use an external token issuer if you want to better integrate with your identity provider, as described here.
+Currently, {{ site.data.products.db }} can only serve as a token issuer for humans. To authenticate service accounts, i.e. user identities to be controlled by software applications, you may either continue to use your existing auth method (username/password), or use an external token issuer if you want to better integrate with your identity provider, as described here.
+
+You can also use this flow to provision tokens to human users directly.
+
+{{site.data.alerts.callout_info}}
+Currently, this flow will not work for service accounts provisioned in {{ site.data.products.db }} console. You must [create the service account manually](#manually-provision-a-service-account).
+
+{{site.data.alerts.end}}
 
 **Learn more:**
 
@@ -70,9 +75,16 @@ This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and 
 	{{site.data.alerts.callout_success}}
 	The `issuer` and `audience` fields in the token must match values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider).
 	{{site.data.alerts.end}}
-- You must have a user identity on a {{ site.data.products.db }} organization. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
 - You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](../{{site.versions["stable"]}}/security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer/IdP.
-- A SQL user corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user). `ccloud` will prompt you to make this user if it does not already exist.
+- A SQL user corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
+
+### Manually provision a service account
+
+To create a service account, you must:
+
+- Create a service account/IAM username with your external IdP (for example, GCP).
+- Create a SQL username in your cluster.
+- Ensure the correspondence between IdP username and SQL username is covered by your [identity mapping configuration], as described in what follows.
 
 ### Configure your cluster to accept your external identity provider
 
@@ -125,6 +137,17 @@ Note that the required information for a given IdP is served up at that IdP's `.
 
 	Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
 
+1. `server.identity_map.configuration`
+
+	Format: `<external issuer> <external user ID> <SQL username>`
+
+	Specifies mapping of subject names to SQL usernames, for each allowed IdP. For example, a configuration of:
+
+	`https://accounts.google.com   /^([9-0]*)$   gcp_\1`
+
+	would yield a mapping where the SQL username for each GCP-provisioned service account would be `gcp_{user ID}`, e.g. `gcp_1234567` for a service account with ID `1234567`.
+
+
 ### Authenticate to your cluster with your JWT token
 
 To provision SQL cluster access for application users or service accounts, you must provision JWT tokens. There are many ways to do this, which are beyond the scope of this tutorial.
@@ -145,13 +168,3 @@ cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:2625
 ~~~txt
 Welcome to the cockroach SQL interface...
 ~~~
-
-## Support for tokens with SQL-incompatible subject names
-
-Some token issuers create tokens with a `subject` that isn’t a valid SQL username, for example starting with a number.
-
-You can accommodate this with **user name mapping**, by mapping the third-party subjects to valid SQL usernames.
-
-To do this, set the `server.identity_map.configuration` cluster setting appropriately with the map name equal to the issuer of the token you wish the map to apply to. See the [PostgreSQL  user name maps documentation](https://www.postgresql.org/docs/current/auth-username-maps.html) for full details of the syntax of this field.
-
-When connecting to the cluster, make sure the username in your connection string matches the *mapped to* username, not the subject of the token.
