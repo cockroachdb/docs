@@ -1,6 +1,6 @@
 ---
 title: Cluster Single Sign-on (SSO) for Self-hosted CockroachDB
-summary: Overview of Single Sign-on (SSO) for CockroachDB SQL Access, and review of workflows for authenticating human and application users, and for configuring the feature.
+summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.core }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
 ---

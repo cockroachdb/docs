@@ -1,6 +1,6 @@
 ---
 title: Cluster Single Sign-on (SSO) for {{ site.data.products.db }}
-summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, and review of workflows for authenticating human and application users, and for configuring required cluster settings.
+summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
 ---
