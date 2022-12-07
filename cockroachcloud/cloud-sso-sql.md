@@ -63,26 +63,25 @@ Currently, this flow will not work for service accounts provisioned in {{ site.d
 
 {{site.data.alerts.end}}
 
-**Learn more:**
-
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
-
 **Prerequisites:**
 
-- You must have the ability to create identities and issue access token JWTs
+- You must have the ability to create identities and issue access token JWTs on your IdP.
 	{{site.data.alerts.callout_success}}
 	The `issuer` and `audience` fields in the token must match values [configured in your cluster settings](#configure-your-cluster-to-accept-your-external-identity-provider).
 	{{site.data.alerts.end}}
-- You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](../{{site.versions["stable"]}}/security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer/IdP.
-- A SQL user corresponding to the service account must be pre-provisioned on the cluster (or you must have access to a SQL role allowing you to create such a user).
+- You must be able to provision a SQL user provisioned on your cluster, corresponding to the service account identity on your IdP.
+- You must have access to a SQL user with either the [`admin` role](../{{site.versions["stable"]}}/security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` permission](../{{site.versions["stable"]}}/security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer.
+
+**Learn more:**
+
+This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
 ### Manually provision a service account
 
 To create a service account, you must:
 
 - Create a service account/IAM username with your external IdP (for example, GCP).
-- Create a SQL username in your cluster.
-- Ensure the correspondence between IdP username and SQL username is covered by your identity mapping configuration, as described in the next section.
+- Create a SQL user in your cluster, such that the username corresponds to the service account's user ID according to the mapping specified in your [identity mapping configuration](#configure-your-clusters-identity-mapping), as described in the next section.
 
 ### Configure your cluster to accept your external identity provider
 
@@ -134,6 +133,8 @@ Note that the required information for a given IdP is served up at that IdP's `.
 	Required value: `true`
 
 	Check to confirm that JWT authentication is enabled on your cluster. It is enabled by default in {{ site.data.products.db }} clusters.
+
+### Configure your cluster's identity mapping
 
 1. `server.identity_map.configuration`
 
