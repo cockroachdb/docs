@@ -85,7 +85,12 @@ To create a service account, you must:
 
 ### Configure your cluster to accept your external identity provider
 
-In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace, as well as the `identity_map.configuration`.
+In order to authenticate a service account to a {{ site.data.products.db }} cluster using a JWT issuer, you must update several cluster settings in the `server.jwt_authentication` namespace, as well as the `identity_map.configuration`:
+
+- `jwks`: A list of public signing keys for allowed IdPs. You'll need to add your IdP's key.
+- `issuers`: A list of accepted token issuers. You'll need to add your IdP.
+- `audience`: A list of audiences (or targets) for authentication, most relevantly, clusters.
+- `enabled`: JWT token authentication must be allowed on your cluster.
 
 {{site.data.alerts.callout_success}}
 Note that the required information for a given IdP is served up at that IdP's `.well-known/openid-configuration` path, for example `https://cockroachlabs.cloud/.well-known/openid-configuration` for {{ site.data.products.db }}, and `https://accounts.google.com/.well-known/openid-configuration` for Google cloud.
