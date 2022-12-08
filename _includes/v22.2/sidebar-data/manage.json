@@ -263,7 +263,7 @@
 										]
 									},
                   {
-                    "title": "Cluster Single Sign-On (SSO) for CockroachDB Cloud",
+                    "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
                     ]
@@ -365,7 +365,7 @@
               ]
             },
             {
-              "title": "Cluster Single Sign-On (SSO) for Self-hosted CockroachDB",
+              "title": "Cluster Single Sign-on (SSO) using JSON web tokens (JWT)",
               "urls": [
                 "/${VERSION}/sso-sql.html"
               ]
