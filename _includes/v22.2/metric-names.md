@@ -146,7 +146,13 @@ Name | Help
 `range.snapshots.normal-applied` | Number of applied snapshots
 `range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
+`range.snapshots.rebalancing.rcvd-bytes` | Number of rebalancing snapshot bytes received
+`range.snapshots.rebalancing.sent-bytes` | Number of rebalancing snapshot bytes sent
+`range.snapshots.recovery.rcvd-bytes` | Number of recovery snapshot bytes received
+`range.snapshots.recovery.sent-bytes` | Number of recovery snapshot bytes sent
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
+`range.snapshots.unknown.rcvd-bytes` | Number of unknown snapshot bytes received
+`range.snapshots.unknown.sent-bytes` | Number of unknown snapshot bytes sent
 `range.splits` | Number of range splits
 `rangekeybytes` | Number of bytes taken up by range keys (e.g., MVCC range tombstones)
 `rangekeycount` | Count of all range keys (e.g., MVCC range tombstones)
