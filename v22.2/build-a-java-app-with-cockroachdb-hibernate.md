@@ -65,7 +65,7 @@ Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.u
 
 {% include_cached copy-clipboard.html %}
 ~~~ xml
-<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?options=--cluster%3D{routing-id}&amp;sslmode=verify-full</property>
+<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?sslmode=verify-full</property>
 <property name="hibernate.connection.username">{username}</property>
 <property name="hibernate.connection.password">{password}</property>
 ~~~

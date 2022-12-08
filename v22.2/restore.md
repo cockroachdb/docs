@@ -15,6 +15,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+For details on restoring across versions of CockroachDB, see [Restoring Backups Across Versions](restoring-backups-across-versions.html).
+
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
 ## Considerations
@@ -63,7 +65,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - [Nodelocal](cockroach-nodelocal-upload.html)
 

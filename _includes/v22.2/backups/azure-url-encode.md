@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-Azure storage containers **require** a [url encoded](https://en.wikipedia.org/wiki/Percent-encoding) `ACCOUNT_KEY` since it is base64-encoded and may contain +, /, = characters. For more detail on how to pass your Azure Storage credentials with this parameter, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+Azure storage containers **require** a [url encoded](https://en.wikipedia.org/wiki/Percent-encoding) `ACCOUNT_KEY` since it is base64-encoded and may contain +, /, = characters. For more detail on how to pass your Azure Storage credentials with this parameter, read [Use Cloud Storage for Bulk Operations — Authentication](cloud-storage-authentication.html).
 {{site.data.alerts.end}}

@@ -26,7 +26,7 @@ The `ccloud quickstart` command will open a browser window to log you in to Cock
 
 In order to use the `ccloud` commands to configure and manage your clusters, you first need to log in to CockroachDB Cloud. Use the `ccloud auth login` command to open a browser window to log in to CockroachDB Cloud.
 
-1. Run the `ccloud auth login` command and hit **Enter** to open a browser window:
+1. Run the `ccloud auth login` command and press **Enter** to open a browser window:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -321,7 +321,7 @@ user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](../{{site.versions["cloud"]}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL](../{{site.current_cloud_version}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -332,7 +332,7 @@ ccloud cluster sql --connection-url dim-dog
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluster%3Ddim-dog-1567&sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
+postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
 ~~~
 
 </section>
@@ -341,7 +341,7 @@ postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluste
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-5bct.gcp-us-east4.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
+postgresql://dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
 ~~~
 
 </section>
@@ -358,8 +358,7 @@ ccloud cluster sql --connection-params dim-dog
 ~~~
 Connection parameters
  Database:  defaultdb
- Host:      free-tier7.gcp-us-central1.crdb.io
- Options:   --cluster=dim-dog-1567
+ Host:      dim-dog-147.6wr.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -371,7 +370,7 @@ Connection parameters
 ∙∙∙ Retrieving cluster info...
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-5bct.gcp-us-east4.crdb.io
+ Host:      dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud
  Port:      26257
 ~~~
 

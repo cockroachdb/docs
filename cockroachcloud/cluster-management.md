@@ -167,7 +167,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
-Additionally, you can [backup and restore](../{{site.versions["cloud"]}}/take-full-and-incremental-backups.html) data on your own.
+Additionally, you can [backup and restore](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) data on your own.
 
 ## Delete cluster
 

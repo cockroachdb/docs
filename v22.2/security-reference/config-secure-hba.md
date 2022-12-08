@@ -29,7 +29,7 @@ You'll also need to download the cluster's [Certificate Authority certificate](t
 Open a SQL shell against your cluster.
 
 ```shell
-cockroach sql --url "postgresql://$USER:$PASSWORD@free-tier123.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Drandom-cluster-name-123&sslrootcert=root.crt"
+cockroach sql --url "postgresql://$USER:$PASSWORD@random-cluster-name-4300.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=root.crt"
 #
 # Welcome to the CockroachDB SQL shell.
 # All statements must be terminated by a semicolon.
@@ -85,7 +85,7 @@ SET CLUSTER SETTING server.host_based_authentication.configuration TO '
 Exit the database shell by typing `\q`, and then try to re-establish the connection. This time the attempt will be rejected because we are not making the attempt from the sole allowed IP address.
 
 ```shell
- cockroach sql --url "postgresql://$USER:$PASSWORD@free-tier123.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Drandom-cluster-name-123&sslrootcert=root.crt"
+ cockroach sql --url "postgresql://$USER:$PASSWORD@random-cluster-name-4300.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=root.crt"
 
 #
 # Welcome to the CockroachDB SQL shell.
@@ -105,7 +105,7 @@ Finally, let's attempt the connection from the jumpbox. You'll need to use `scp`
 gcloud compute scp root.crt roach-jump-box:root.crt
 gcloud compute ssh roach-jump-box
 
-docs-writer@roach-jump-box:~$ cockroach sql --url "postgresql://$USER:$PASSWORD@free-tier123.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Drandom-cluster-name-123&sslrootcert=root.crt"
+docs-writer@roach-jump-box:~$ cockroach sql --url "postgresql://$USER:$PASSWORD@random-cluster-name-4300.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=root.crt"
 #
 # Welcome to the CockroachDB SQL shell.
 ...

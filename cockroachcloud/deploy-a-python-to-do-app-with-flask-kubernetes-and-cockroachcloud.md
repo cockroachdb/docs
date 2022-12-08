@@ -42,7 +42,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 1. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.versions["cloud"]}}/ui-overview.html).
+    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.current_cloud_version}}/ui-overview.html).
 
 1. Click **Apply**.
 
@@ -79,7 +79,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 On your local workstation's terminal:
 
-1. If you haven't already, [Download the CockroachDB binary](../{{site.versions["cloud"]}}/install-cockroachdb.html) and copy it into the `PATH`:
+1. If you haven't already, [Download the CockroachDB binary](../{{site.current_cloud_version}}/install-cockroachdb.html) and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
@@ -450,7 +450,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](../{{site.versions["cloud"]}}/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](../{{site.current_cloud_version}}/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -460,7 +460,7 @@ On the [**Cluster Overview** page](../{{site.versions["cloud"]}}/ui-cluster-over
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-1. On the [**Hardware** dashboard](../{{site.versions["cloud"]}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+1. On the [**Hardware** dashboard](../{{site.current_cloud_version}}/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -469,4 +469,4 @@ On the [**Cluster Overview** page](../{{site.versions["cloud"]}}/ui-cluster-over
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-1. The [**Statements** page](../{{site.versions["cloud"]}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+1. The [**Statements** page](../{{site.current_cloud_version}}/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

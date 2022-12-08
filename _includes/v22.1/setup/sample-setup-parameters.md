@@ -62,8 +62,7 @@ Success! Created SQL user
 Retrieving cluster info: succeeded
 Connection parameters
  Database:  defaultdb
- Host:      free-tier4.aws-us-west-2.cockroachlabs.cloud
- Options:   --cluster=dim-dog-147
+ Host:      dim-dog-147.6wr.cockroachlabs.cloud
  Password:  ThisIsNotAGoodPassword
  Port:      26257
  Username:  maxroach

@@ -26,6 +26,8 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. _(Optional)_ Select a region in the **Regions** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
+If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+
 {{site.data.alerts.callout_info}}
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 {{site.data.alerts.end}}

@@ -19,7 +19,7 @@ To learn more, visit [Managing Customer-Managed Encryption Keys (CMEK) for {{ si
 {{ site.data.products.dedicated }} includes support for referring to CMEK keys in [Hashicorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS or GCP KMS.
 
 {{site.data.alerts.callout_success}}
-You can learn more about the [supported integrations between CockroachDB and Hashicorp Vault](/docs/{{site.versions["cloud"]}}/hashicorp-integration.html).
+You can learn more about the [supported integrations between CockroachDB and Hashicorp Vault](/docs/{{site.current_cloud_version}}/hashicorp-integration.html).
 {{site.data.alerts.end}}
 
 {{ site.data.products.db }} communicates with the KMS platform using the KMS platform's API, and you manage {{ site.data.products.db }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never present in a cluster and {{ site.data.products.db }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster's newly-written data at rest can be accessed.
@@ -34,9 +34,9 @@ This section describes some of the ways that CMEK can help you protect your data
     {{site.data.alerts.callout_danger}}
     Keep these points in mind before destroying a CMEK key:
 
-    <ul><li><p>If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results. To take or restore from an encrypted backup using database commands, visit [Take and Restore Encrypted Backups](/docs/{{site.versions["cloud"]}}/take-and-restore-encrypted-backups.html).</p></li><li><p>To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.</p></li></ul>
+    <ul><li><p>If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results. To take or restore from an encrypted backup using database commands, visit [Take and Restore Encrypted Backups](/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups.html).</p></li><li><p>To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.</p></li></ul>
     {{site.data.alerts.end}}
-- **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](/docs/{{site.versions["cloud"]}}/data-domiciling.html). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
+- **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](/docs/{{site.current_cloud_version}}/data-domiciling.html). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
     You can use your KMS platform's controls to configure the regions where the CMEK key is available, enable automatic rotation schedules for CMEK keys, and view audit logs that show each time the CMEK key is used by {{ site.data.products.db }}. {{ site.data.products.db }} does not need any visibility into these details.
@@ -58,7 +58,7 @@ When you enable CMEK on a {{ site.data.products.dedicated }} cluster, {{ site.da
 
 1. The _store key_ is a Key Encryption Key (KEK) that encrypts the data keys at rest. It is encrypted at rest by the CMEK key before being propagated to cluster nodes, and is decrypted in memory on each node when the cluster starts. The store key is not automatically rotated.
 
-For more details about encryption in {{ site.data.products.db }}, see [Encryption At Rest](/docs/{{site.versions["cloud"]}}/encryption.html).
+For more details about encryption in {{ site.data.products.db }}, see [Encryption At Rest](/docs/{{site.current_cloud_version}}/encryption.html).
 
 Enabling CMEK has no impact on a cluster's existing data.
 
@@ -117,4 +117,4 @@ The CMEK feature has the following limitations:
 
 - [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html)
 - [Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)](cmek-faq.html)
-- [Encryption At Rest](/docs/{{site.versions["cloud"]}}/encryption.html)
+- [Encryption At Rest](/docs/{{site.current_cloud_version}}/encryption.html)

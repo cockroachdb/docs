@@ -53,4 +53,4 @@ The **Request Units** graph displays the CPU and I/O resources being used by que
 
 ### SQL Statements
 
-The **SQL Statements** graph displays an average of the number of [`SELECT`](../{{site.versions["cloud"]}}/select-clause.html), [`INSERT`](../{{site.versions["cloud"]}}/insert.html), [`UPDATE`](../{{site.versions["cloud"]}}/update.html), and [`DELETE`](../{{site.versions["cloud"]}}/delete.html) statements successfully executed per second.
+The **SQL Statements** graph displays an average of the number of [`SELECT`](../{{site.current_cloud_version}}/select-clause.html), [`INSERT`](../{{site.current_cloud_version}}/insert.html), [`UPDATE`](../{{site.current_cloud_version}}/update.html), and [`DELETE`](../{{site.current_cloud_version}}/delete.html) statements successfully executed per second.

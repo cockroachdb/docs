@@ -72,7 +72,7 @@ In this phase of the tutorial we will act as an administrator for our organizati
 
         {% include_cached copy-clipboard.html %}
         ~~~shell
-        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
+        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full
         export CLI_DB_CONNECTION_URL="postgresql://${USER_NAME}:${PASSWORD}@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
         ~~~
 
@@ -147,7 +147,7 @@ The connection lies in a Vault configuration, which will store your CockroachDB 
         {% include_cached copy-clipboard.html %}
         <!-- the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  -->
         ~~~shell
-        {% raw %}export VAULT_TLS_OPTS="sslmode=require&options=--cluster=${CLUSTER_NAME}"
+        {% raw %}export VAULT_TLS_OPTS="sslmode=require"
         export VAULT_DB_CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${VAULT_TLS_OPTS}"{% endraw %}
         ~~~
 
@@ -176,7 +176,7 @@ For a SQL role, the template is defined by its `creation_statements`, SQL statem
 
     For example, create a role that has all privileges on the `defaultdb` database:
     {{site.data.alerts.callout_info}}
-    `db_name` is actually not the database name but the Vault database secrets engine namespace (i.e. `crdb-config` in the example).
+    `db_name` is actually not the database name but the Vault database secrets engine namespace (i.e., `crdb-config` in the example).
     {{site.data.alerts.end}}
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -414,7 +414,7 @@ In this phase of the tutorial, we will use credentials provisioned by Vault to a
         export DB_NAME=defaultdb
         export CLUSTER_NAME=lilac-grizzly-684 # generated CockroachDB client password
         export HOST=free-tier21.aws-us-west-2.crdb.io
-        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full&options=--cluster=${CLUSTER_NAME}"
+        export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full"
         export CLI_DB_CONNECTION_URL="postgresql://$USER_NAME:$PASSWORD@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
         ~~~
 

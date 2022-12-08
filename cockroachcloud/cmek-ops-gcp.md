@@ -17,7 +17,7 @@ This is part of the larger process of [Enabling CMEK for a {{ site.data.products
 	- [Directly in the GCP key management service (KMS) console](#option-a-use-the-gcp-console)
 	- By [setting up a Vault GCP-KMS secrets engine](#option-b-use-the-vault-gcp-kms-secrets-engine-to-create-the-cmek-key) with access to GCP KMS, in order to leverage the security advantages of Vault's additional layer of abstraction.
 		{{site.data.alerts.callout_info}}
-		[Learn more about the integrations between CockroachDB and HashiCorp Vault.](../{{site.versions["cloud"]}}/hashicorp-integration.html)
+		[Learn more about the integrations between CockroachDB and HashiCorp Vault.](../{{site.current_cloud_version}}/hashicorp-integration.html)
 		{{site.data.alerts.end}}
 - In [Step 4. Authorize the service account to use the CMEK key](#step-4-authorize-the-service-account-to-use-the-cmek-key), we will authorize the cross-tenant service account created in Step 1 to use the key created in Step 2.
 
