@@ -190,4 +190,4 @@ Click the **Execute Query** button to run the `GetLargeAccounts` GraphQL query. 
 
 ## Next steps
 
-Now that you have connected your cluster to Hasura GraphQL Engine, you can use the Explorer to create GraphQL queries to access and modify data in your cluster's tables. You can then use these queries in your application. For example, you can create [Hasura Actions](https://hasura.io/docs/latest/actions/index/) that use these queries. See the [Hasura documentation](https://hasura.io/docs/latest/index/) for detailed information on integrating and deploying Hasura in your applications.
+Now that you have connected your cluster to Hasura GraphQL Engine, you can use the Explorer to create GraphQL queries to access and modify data in your cluster's tables. You can then use these queries in your application. For example, you can create [Hasura Actions](https://hasura.io/docs/latest/actions/index/?utm_source=cockroachdb) that use these queries. See the [Hasura documentation](https://hasura.io/docs/latest/index/?utm_source=cockroachdb) for detailed information on integrating and deploying Hasura in your applications.
