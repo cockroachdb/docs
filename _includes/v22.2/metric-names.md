@@ -39,6 +39,8 @@ Name | Help
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
+`jobs.row_level_ttl.num_active_spans` | Number of active spans the TTL job is deleting from
+`jobs.row_level_ttl.span_total_duration` | Duration for processing a span during row level TTL
 `keybytes` | Number of bytes taken up by keys
 `keycount` | Count of all keys
 `lastupdatenanos` | Time in nanoseconds since Unix epoch at which bytes/keys/intents metrics were last updated
