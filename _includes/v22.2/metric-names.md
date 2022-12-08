@@ -99,17 +99,17 @@ Name | Help
 `queue.replicate.purgatory` | Number of replicas in the replicate queue's purgatory, awaiting allocation options
 `queue.replicate.rebalancereplica` | Number of replica rebalancer-initiated additions attempted by the replicate queue
 `queue.replicate.removedeadreplica` | Number of dead replica removals attempted by the replicate queue (typically in response to a node outage)
-`queue.replicate.removedeadreplica.error` | Number of failed dead replica replica removals processed by the replicate queue
-`queue.replicate.removedeadreplica.success` | Number of successful dead replica replica removals processed by the replicate queue
-`queue.replicate.removedecommissioningreplica.error` | Number of failed decommissioning replica replica removals processed by the replicate queue
-`queue.replicate.removedecommissioningreplica.success` | Number of successful decommissioning replica replica removals processed by the replicate queue
+`queue.replicate.removedeadreplica.error` | Number of failed dead replica removals processed by the replicate queue
+`queue.replicate.removedeadreplica.success` | Number of successful dead replica removals processed by the replicate queue
+`queue.replicate.removedecommissioningreplica.error` | Number of failed decommissioning replica removals processed by the replicate queue
+`queue.replicate.removedecommissioningreplica.success` | Number of successful decommissioning replica removals processed by the replicate queue
 `queue.replicate.removereplica` | Number of replica removals attempted by the replicate queue (typically in response to a rebalancer-initiated addition)
 `queue.replicate.removereplica.error` | Number of failed replica removals processed by the replicate queue
 `queue.replicate.removereplica.success` | Number of successful replica removals processed by the replicate queue
-`queue.replicate.replacedeadreplica.error` | Number of failed dead replica replica replacements processed by the replicate queue
-`queue.replicate.replacedeadreplica.success` | Number of successful dead replica replica replacements processed by the replicate queue
-`queue.replicate.replacedecommissioningreplica.error` | Number of failed decommissioning replica replica replacements processed by the replicate queue
-`queue.replicate.replacedecommissioningreplica.success` | Number of successful decommissioning replica replica replacements processed by the replicate queue
+`queue.replicate.replacedeadreplica.error` | Number of failed dead replica replacements processed by the replicate queue
+`queue.replicate.replacedeadreplica.success` | Number of successful dead replica replacements processed by the replicate queue
+`queue.replicate.replacedecommissioningreplica.error` | Number of failed decommissioning replica replacements processed by the replicate queue
+`queue.replicate.replacedecommissioningreplica.success` | Number of successful decommissioning replica replacements processed by the replicate queue
 `queue.replicate.transferlease` | Number of range lease transfers attempted by the replicate queue
 `queue.split.pending` | Number of pending replicas in the split queue
 `queue.split.process.failure` | Number of replicas which failed processing in the split queue
