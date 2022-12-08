@@ -64,29 +64,17 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92570)
 
-### Limitations for DROP OWNED BY
+### Limitations for `DROP OWNED BY`
 
-#### DROP OWNED BY does not support drop functions
+[`DROP OWNED BY`](drop-owned-by.html) drops all owned objects as well as any [grants](grant.html) on objects not owned by the [role](security-reference/authorization.html#roles).
 
-`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
+#### `DROP OWNED BY` does not support drop functions
 
-In its current implementation, this statement does not drop functions. Users must drop their functions manually.
+{% include {{page.version.version}}/known-limitations/drop-owned-by-function-limitations.md %}
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/90476)
+#### `DROP OWNED BY` is not supported where role has synthetic privileges
 
-#### DROP OWNED BY is not supported where role has synthetic privileges
-
-`DROP OWNED BY` drops all owned objects as well as any grants on objects not owned by the role.
-
-If the [role](security-reference/authorization.html#roles) for which you are trying to `DROP OWNED BY` was granted a privilege using the [`GRANT SYSTEM ...`](grant.html#grant-global-privileges-on-the-entire-cluster) statement, the error shown below will be signalled. The workaround is to use [`SHOW SYSTEM GRANTS FOR {role}`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-global-privileges-on-the-entire-cluster) for each privilege in the result.
-
-~~~
-ERROR: cannot perform drop owned by if role has synthetic privileges; foo has entries in system.privileges
-SQLSTATE: 0A000
-HINT: perform REVOKE SYSTEM ... for the relevant privileges foo has in system.privileges
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88149)
+{% include {{page.version.version}}/known-limitations/drop-owned-by-role-limitations.md %}
 
 ### Spatial features disabled for ARM Macs
 
