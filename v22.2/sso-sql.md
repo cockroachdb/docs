@@ -34,7 +34,7 @@ Currently, this flow will not work for service accounts provisioned in {{ site.d
 
 	- SQL users/credentials:
 
-		- In order to configure your cluster for SSO with JWTs, you must have access to a SQL user with either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING`](security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer/IdP.
+		- In order to configure your cluster for SSO with JWTs, you must have access to a SQL user with either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer/IdP.
 	
 		- In order to access the cluster with a JWT access token, you must have a SQL user specifically corresponding to your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role](security-reference/authorization.html#admin-role).
 
@@ -98,6 +98,12 @@ SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256",
 
 	The default value is {{ site.data.products.db }}. When modifying this cluster setting, you must include {{ site.data.products.db }} in the new value. Failing to do so can prevent maintenance access by the {{ site.data.products.db }} managed service, leading to unintended consequences. It can also break the cluster SSO for human users to this cluster.
 
+	{{site.data.alerts.callout_danger}}
+	Any IdP that is configured on your cluster can grant SQL access to your cluster, and therefore any data that is stored within. This configuration is therefore critical for security.
+
+	Changes to this configuration should be made with utmost care, and access to updating this configuration (granted by the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges)) should be carefully restricted.
+	{{site.data.alerts.end}}
+
 	{{site.data.alerts.callout_success}}
 	{{ site.data.products.db }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
 	The `issuer` is `https://cockroachlabs.cloud`.
@@ -106,6 +112,12 @@ SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256",
 ### `server.jwt_authentication.audience`
 	
 	The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience values here must match the `audience` claim of an access token, or it will be rejected.
+
+	{{site.data.alerts.callout_danger}}
+	Many third party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
+
+	By extension, if your provider allows you to specify scopes or permissions on the token, you should specify these as restrictively as possible to what is necessary for the functions intended for the service account or user.
+	{{site.data.alerts.end}}
 
 ## Configure your cluster's identity mapping
 
