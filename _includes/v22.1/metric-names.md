@@ -151,6 +151,7 @@ Name | Help
 `replicas.commandqueue.maxsize` | Largest number of commands in any CommandQueue
 `replicas.commandqueue.maxtreesize` | Largest number of intervals in any CommandQueue's interval tree
 `replicas.commandqueue.maxwritecount` | Largest number of read-write commands in any CommandQueue
+`replicas.leaders_invalid_lease` | Number of replicas that are Raft leaders whose lease is invalid
 `replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
 `replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders
