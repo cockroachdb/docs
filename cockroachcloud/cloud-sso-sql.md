@@ -35,7 +35,7 @@ Note that this regards SQL access to a specific CockroachDB Cluster, not access 
 	# --no-redirect
 	~~~
 
-1. You may then use the `ccloud` utility to authenticate to your {{ site.data.products.db }} cluster, allowing you to access the SQL interface. Your browser will open again as `ccloud` requests a fresh token, although will not need to log in again if you are already logged in.
+1. You may then use the `ccloud` utility to authenticate to your {{ site.data.products.db }} cluster, allowing you to access the SQL interface. Your browser will open again as `ccloud` requests an access token, although will not need to log in again if you are already logged in.
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
