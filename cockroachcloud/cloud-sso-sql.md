@@ -12,23 +12,30 @@ This page describes the procedure for accessing a {{ site.data.products.db }} cl
 It is also possible to authenticate using JWT tokens from your external customer-managed IdP. See: [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html)
 
 {{site.data.alerts.callout_info}}
-Note that this authentication method only works for human users, since only humans may have {{ site.data.products.db }} Console identities.
-
-Application users (i.e. service accounts), can authenticate using JWT tokens from your own identity provider. See [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
+This authentication method works for human users but not for service accounts, since only humans may have {{ site.data.products.db }} Console identities. To authenticate service accounts using JWT tokens from an external IdP, refer to [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
 
 Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html).
 {{site.data.alerts.end}}
 
 ## Prerequisites
 
-- You must have a user identity on a {{ site.data.products.db }} organization, with access to a cluster or the ability to create a cluster. For help setting up an organization and cluster, see: [Quickstart with CockroachDB](quickstart.html).
+- You must be a member of a {{ site.data.products.db }} organization, and you must have access to an existing cluster or the permission to create a new cluster. For help setting up an organization and cluster, refer to [Quickstart with CockroachDB](quickstart.html).
 - To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 
 - [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local workstation.
 
-## Signing in with Cluster SSO
+## Sign in with Cluster SSO
 
 
-1. First authenticate to your {{ site.data.products.db }} organization. This command will cause your workstation's default browser to open to a {{ site.data.products.db }} authentication portal. Authenticate here as you normally do to the {{ site.data.products.db }} Console. The `ccloud` utility will receive an authentication token from the browser, allowing you to authenticate from the command line.
+1. Authenticate `ccloud` to your {{ site.data.products.db }} organization. When you run the following command, your workstation's default browser opens the {{ site.data.products.db }}  login page for your organization.
+
+	{% include_cached copy-clipboard.html %}
+	~~~shell
+	ccloud auth login --org {your organization label}
+	# when running ccloud on a remote host, add the following:
+	# --no-redirect
+	~~~
+ 
+1. Sign in using your {{ site.data.products.db }} identity. The `ccloud` utility receives an authentication token from the browser and uses it to authenticate itself to your {{ site.data.products.db }} organization.
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
