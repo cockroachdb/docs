@@ -26,20 +26,11 @@ Note that this regards SQL access to a specific CockroachDB Cluster, not access 
 ## Sign in with Cluster SSO
 
 
-1. Authenticate `ccloud` to your {{ site.data.products.db }} organization. When you run the following command, your workstation's default browser opens the {{ site.data.products.db }}  login page for your organization.
+1. Authenticate `ccloud` to your {{ site.data.products.db }} organization. When you run the following command, your workstation's default browser opens the {{ site.data.products.db }} login page for your organization.
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
 	ccloud auth login --org {your organization label}
-	# when running ccloud on a remote host, add the following:
-	# --no-redirect
-	~~~
- 
-1. Sign in using your {{ site.data.products.db }} identity. The `ccloud` utility receives an authentication token from the browser and uses it to authenticate itself to your {{ site.data.products.db }} organization.
-
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	ccloud auth login --org {your org label}
 	# when running ccloud on a remote host, add the following:
 	# --no-redirect
 	~~~
