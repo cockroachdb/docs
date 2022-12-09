@@ -9,7 +9,7 @@ Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-
 
 <a name="changefeed-retry-errors"></a>
 
-{% include_cached new-in.html version="v22.2" %} By default, changefeeds treat errors as retryable except for some specific terminal errors that are non-retryable.
+{% include_cached new-in.html version="v22.2.1" %} By default, changefeeds treat errors as retryable except for some specific terminal errors that are non-retryable.
 
 - **retryable**: The changefeed will automatically retry whatever caused the error. (You may need to intervene so that the changefeed can resume.)
 - **non-retryable**: The changefeed has encountered a terminal error and fails.
