@@ -4,7 +4,7 @@ Thanks for your contribution. It must be reviewed by a member of the [`cockroach
 - [ ] Successful local linkcheck (`make linkcheck`)
 - [ ] Successful pull request tests
 
-To view a HTML preview of each modified page, look for the **Files Changed** comment from the **github-actions** bot. Unfortunately, previews are not available if you use a fork.
+To view a HTML preview of each modified page, look for the **Netlify Preview** comment from the **netlify** bot.
 
 To view build logs, you must authenticate to Netlify using your Github identity.
 
