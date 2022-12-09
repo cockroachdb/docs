@@ -81,11 +81,23 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Check decommissioned nodes
 
-Check the `membership` field in the [output of `cockroach node status --decommission`](cockroach-node.html). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+If your cluster contains partially-decommissioned nodes, they will block an upgrade attempt.
 
-**Before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](remove-nodes.html#step-2-start-the-decommissioning-process-on-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+1. To check the status of decommissioned nodes, run  the [`cockroach node status --decommission`](cockroach-node.html) command:
 
-In case a decommissioning process is hung, [recommission](remove-nodes.html#recommission-nodes) and then [decommission those nodes](remove-nodes.html#remove-multiple-nodes) again, and confirm that they update to `decommissioned`.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach node status --decommission
+    ~~~
+
+    In the output, verify that the value of the `membership` field of each node is `decommissioned`. If any node's `membership` value is `decommissioning`, that node is not fully decommissioned.
+
+1. If any node is not fully decommissioned, try the following:
+
+    1. **Before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](remove-nodes.html#step-2-start-the-decommissioning-process-on-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+    1. For a cluster running v21.1 and above:
+       1. First, reissue the [decommission command](remove-nodes.html). The second command typically succeeds within a few minutes.
+       1. If the second decommission command does not succeed, [recommission](remove-nodes.html#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
 ### Review breaking changes
 
