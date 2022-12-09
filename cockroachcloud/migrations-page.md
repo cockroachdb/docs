@@ -6,9 +6,7 @@ cloud: true
 docs_area: migrate
 ---
 
-{% capture version_prefix %}{{site.versions["cloud"]}}/{% endcapture %}
-
-{% include feature-phases/preview.md %}
+{% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
 The **Migrations** page on the {{ site.data.products.db }} Console features a **Schema Conversion Tool** that helps you:
 
@@ -33,6 +31,10 @@ The **Schema Conversion Tool** expects to analyze a SQL dump file containing [da
     <button class="filter-button" data-scope="oracle">Oracle</button>
     <button class="filter-button" data-scope="mssql">SQL Server</button>
 </div>
+
+<section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
+{% include feature-phases/preview.md %}
+</section>
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 To generate an appropriate file, run the [`pg_dump` utility](https://www.postgresql.org/docs/current/app-pgdump.html) and specify the `-s` or `--schema-only` options to extract **only the schema** of a PostgreSQL database to a `.sql` file.

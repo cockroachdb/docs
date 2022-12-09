@@ -12,6 +12,7 @@ Both Core and {{ site.data.products.enterprise }} changefeeds require that you e
 ## Considerations
 
 - It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
+- If you require [`resolved`](create-changefeed.html#resolved-option) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
 - Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](changefeed-messages.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](monitor-and-debug-changefeeds.html#monitor-a-changefeed).
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.

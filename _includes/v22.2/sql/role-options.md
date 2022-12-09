@@ -1,5 +1,3 @@
-### Role options
-
 Role option | Description
 ------------|-------------
 `CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow a role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with the `CANCELQUERY` role option, non-`admin` roles cannot cancel `admin` queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the role option is set to `NOCANCELQUERY` for all non-`admin` roles.

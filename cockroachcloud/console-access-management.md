@@ -24,11 +24,11 @@ The settings and information about the organization are found on the **Settings*
 
 [Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
 
-SQL users created in the Console have the [`admin` role](../{{site.versions["cloud"]}}/security-reference/authorization.html#admin-role) on the cluster by default, even if the user has [Developer](#developer) privileges for the organization. Therefore, anyone with the username and password of a default SQL user has privileges for all resources across the cluster.
+SQL users created in the Console have the [`admin` role](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) on the cluster by default, even if the user has [Developer](#developer) privileges for the organization. Therefore, anyone with the username and password of a default SQL user has privileges for all resources across the cluster.
 
-For this reason, while creating SQL users in the Console is quick and easy, it is also dangerously powerful, and on clusters with any data of value, users should generally be be [created](../{{site.versions["cloud"]}}/create-user.html) from the SQL client instead, and have their database resource access granted explicitly, precisely, and in keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+For this reason, while creating SQL users in the Console is quick and easy, it is also dangerously powerful, and on clusters with any data of value, users should generally be be [created](../{{site.current_cloud_version}}/create-user.html) from the SQL client instead, and have their database resource access granted explicitly, precisely, and in keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
-Learn more about [managing SQL users' privileges](../{{site.versions["cloud"]}}/security-reference/authorization.html#users-and-roles).
+Learn more about [managing SQL users' privileges](../{{site.current_cloud_version}}/security-reference/authorization.html#users-and-roles).
 
 ## Roles
 
@@ -40,7 +40,7 @@ Both Console Admins and Developers have access to all the information on the **S
 
 ### Developer
 
-A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users. Note that Developers can still create [SQL Users](#sql-users) with the [`admin` role](../{{site.versions["cloud"]}}/security-reference/authorization.html#admin-role) on a cluster.
+A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users. Note that Developers can still create [SQL Users](#sql-users) with the [`admin` role](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) on a cluster.
 
 To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who your Console Admin is, check the **Access** page.
 

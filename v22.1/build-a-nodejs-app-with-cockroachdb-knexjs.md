@@ -61,7 +61,7 @@ $ git clone https://github.com/cockroachlabs/example-app-node-knex
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ npm run
+    $ npm start
     ~~~
 
     The output should look like this:
