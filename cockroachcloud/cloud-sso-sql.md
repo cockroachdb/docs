@@ -14,7 +14,7 @@ It is also possible to authenticate using JWT tokens from your external customer
 {{site.data.alerts.callout_info}}
 This authentication method works for human users but not for service accounts, since only humans may have {{ site.data.products.db }} Console identities. To authenticate service accounts using JWT tokens from an external IdP, refer to [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
 
-Note that this regards SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html).
+Note that the topic of this page is SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html).
 {{site.data.alerts.end}}
 
 ## Prerequisites
