@@ -1,15 +1,15 @@
 ---
-title: Cluster Single Sign-on (SSO) using JSON web tokens (JWT)
+title: Cluster Single Sign-on (SSO) using a JSON web token (JWT)
 summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.core }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
 ---
 
-Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud based or customer-managed identity providers (IdPs).
+Cluster Single Sign-On (SSO) allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
 
 This page describes the procedure for accessing a {{ site.data.products.db }} cluster using the JWT access tokens provided by a customer-managed IdP. This document applies for both {{ site.data.products.core }} and {{ site.data.products.dedicated }} customers.
 
-You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](../cockroachcloud/cloud-sso-sql.html).
+You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](../cockroachcloud/cloud-sso-sql.html). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
 
 {{site.data.alerts.callout_info}}
 Note for {{ site.data.products.dedicated }} customers:

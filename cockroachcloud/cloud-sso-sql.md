@@ -9,7 +9,7 @@ Cluster SSO allows users to access the SQL interface of a CockroachDB cluster (w
 
 This page describes the procedure for accessing a {{ site.data.products.db }} cluster using the {{ site.data.products.db }} console as identity provider.
 
-It is also possible to authenticate using JWT tokens from your external customer-managed IdP. See: [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html)
+To authenticate using JWT tokens from your external IdP, refer to [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
 
 {{site.data.alerts.callout_info}}
 This authentication method works for human users but not for service accounts, since only humans may have {{ site.data.products.db }} Console identities. To authenticate service accounts using JWT tokens from an external IdP, refer to [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
@@ -21,7 +21,7 @@ Note that the topic of this page is SQL access to a specific CockroachDB Cluster
 
 - You must be a member of a {{ site.data.products.db }} organization, and you must have access to an existing cluster or the permission to create a new cluster. For help setting up an organization and cluster, refer to [Quickstart with CockroachDB](quickstart.html).
 - To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 
-- [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local workstation.
+- [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local system.
 
 ## Sign in with Cluster SSO
 
