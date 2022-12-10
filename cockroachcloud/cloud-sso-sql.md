@@ -23,6 +23,10 @@ Note that the topic of this page is SQL access to a specific CockroachDB Cluster
 - To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 
 - [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local system.
 
+## Learn more
+
+This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+
 ## Sign in with Cluster SSO
 
 
