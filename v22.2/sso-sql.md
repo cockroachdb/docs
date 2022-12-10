@@ -20,23 +20,23 @@ Currently, this flow will not work for service accounts provisioned in {{ site.d
 
 - **IdP:**
 
-	You must have the ability to create identities and issue JSON Web Token (JWT) formatted access tokens.
+	You must have the ability to create identities and issue access tokens formatted using JSON Web Token (JWT).
 
 	This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
 - **CockroachDB:**
 
-	- **Self-Hosted Customers**: You must have access to an cluster enabled with a valid [CockroachDB Enterprise license](enterprise-licensing.html).
+	- **Self-Hosted**: You must have access to a cluster enabled with a valid [CockroachDB Enterprise license](enterprise-licensing.html).
 
 		See [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html) for help enabling your cluster with you enterprise license.
 
-	- **Cloud Customers**: You must have access to a [**dedicated** cluster](../cockroachcloud/create-your-cluster.html).
+	- **{{ site.data.products.db }}**: You must have access to a [{{ site.data.products.dedicated }}cluster](../cockroachcloud/create-your-cluster.html).
 
 	- SQL users/credentials:
 
-		- In order to configure your cluster for SSO with JWTs, you must have access to a SQL user with either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges), in order to update cluster settings. This is required to add an external token issuer/IdP.
+		- Your SQL user must have the ability to update cluster settings. This permission is provided by either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges). This is required to designate an IdP as an external token issuer.
 	
-		- In order to access the cluster with a JWT access token, you must have a SQL user specifically corresponding to your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role](security-reference/authorization.html#admin-role).
+		- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role](security-reference/authorization.html#admin-role).
 
 ## Learn more
 
@@ -61,7 +61,7 @@ In order to authenticate a service account to a {{ site.data.products.db }} clus
 - [`audience`](#server-jwt_authentication-audience): A list of audiences (or targets) for authentication, most relevantly, clusters.
 
 {{site.data.alerts.callout_success}}
-Note that the required information for a given IdP is served up at that IdP's `.well-known/openid-configuration` path, for example `https://cockroachlabs.cloud/.well-known/openid-configuration` for {{ site.data.products.db }}, and `https://accounts.google.com/.well-known/openid-configuration` for Google cloud.
+The required information for a given IdP is published on that IdP's `.well-known/openid-configuration` path (for example, `https://cockroachlabs.cloud/.well-known/openid-configuration` for {{ site.data.products.db }} or `https://accounts.google.com/.well-known/openid-configuration` for GCP.
 {{site.data.alerts.end}}
 
 ### `server.jwt_authentication.enabled`
@@ -79,7 +79,7 @@ Add your IdP's public signing key to your cluster's list of accepted signing JSO
 By default, your cluster's configuration will contain the {{ site.data.products.db }}'s own public key, allowing {{ site.data.products.db }} to serve as an IdP. When modifying this cluster setting, you must include the {{ site.data.products.db }} public key in the key set. Failing to do so will lock out console SSO users and prevent maintenance access by the {{ site.data.products.db }} managed service, leading to unintended consequences.
 
 {{site.data.alerts.callout_success}}
-{{ site.data.products.db }}'s IdP configuration can be viewed publicly at: `https://cockroachlabs.cloud/.well-known/openid-configuration`.
+{{ site.data.products.db }}'s IdP configuration can be viewed publicly at: [`https://cockroachlabs.cloud/.well-known/openid-configuration`](https://cockroachlabs.cloud/.well-known/openid-configuration).
 The link specified for `jwks_uri` provides the IdP's public signing key. For {{ site.data.products.db }} this is `https://cockroachlabs.cloud/oauth2/keys`
 {{site.data.alerts.end}}
 
@@ -114,9 +114,9 @@ SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256",
 	The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience values here must match the `audience` claim of an access token, or it will be rejected.
 
 	{{site.data.alerts.callout_danger}}
-	Many third party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
+	Many third-party token issuers, including GCP and Azure, will by default create tokens with a generic default audience. It is best practice to limit the scope of access tokens as much as possible, so if possible, we recommend issuing tokens with only the required audience value corresponding to the `audience` configured on the cluster.
 
-	By extension, if your provider allows you to specify scopes or permissions on the token, you should specify these as restrictively as possible to what is necessary for the functions intended for the service account or user.
+	By extension, if your provider allows you to specify scopes or permissions on the token, you should specify these as restrictively as possible, while still allowing for the functions intended for the service account or user.
 	{{site.data.alerts.end}}
 
 ## Configure your cluster's identity mapping
