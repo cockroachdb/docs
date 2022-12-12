@@ -41,7 +41,7 @@ table tr td:nth-child(2) {
  `INT` | ✓ | Standard | [`INT` documentation](int.html)
  `INTERVAL` | ✓ | Standard | [`INTERVAL` documentation](interval.html)
  `JSON`/`JSONB` | ✓ | Common Extension | [`JSONB` documentation](jsonb.html)
- `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html)
+ `NULL` | ✓ | Standard | [`NULL`-handling documentation](null-handling.html)
  `OID` | ✓ | PostgreSQL Extension | [`OID` documentation](oid.html)
  `SERIAL`| ✓ | PostgreSQL Extension | [`SERIAL` documentation](serial.html)
  `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.

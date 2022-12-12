@@ -10,7 +10,7 @@ The `DEFAULT` value [constraint](constraints.html) specifies a value to write in
 ## Details
 
 - The [data type](data-types.html) of the Default Value must be the same as the data type of the column.
-- The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`](insert.html) statement. You can still insert a *NULL* into an optional (nullable) column by explicitly inserting *NULL*. For example, `INSERT INTO foo VALUES (1, NULL);`.
+- The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`](insert.html) statement. You can still insert a `NULL` into an optional (nullable) column by explicitly inserting `NULL`. For example, `INSERT INTO foo VALUES (1, NULL);`.
 
 ## Syntax
 
@@ -69,7 +69,7 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
 +------------+--------------+------------------+
 ~~~
 
-If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of *NULL* is assigned to the column.
+If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of `NULL` is assigned to the column.
 
 ## See also
 

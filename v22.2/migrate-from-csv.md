@@ -139,7 +139,11 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 
 ### Null strings
 
-The `nullif` option defines which string should be converted to `NULL`.
+The `nullif` option specifies a column value that should be converted to `NULL`. 
+
+{{site.data.alerts.callout_info}}
+To match the `nullif` setting, a CSV input value must be unquoted. For details, see [`IMPORT INTO`](import-into.html#import-options).
+{{site.data.alerts.end}}
 
 Example usage:
 
