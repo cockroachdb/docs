@@ -101,7 +101,9 @@ To learn how to manually generate statistics, see the [`CREATE STATISTICS` examp
 
 Statistics collection can be expensive for large tables, and you may prefer to defer collection until after data is finished loading or during off-peak hours. Tables that are frequently updated, including small tables, may trigger statistics collection more often, which can lead to unnecessary overhead and unpredictable query plan changes.
 
-You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` storage parameter. For example:
+You can enable and disable automatic statistics collection for individual tables using the `sql_stats_automatic_collection_enabled` storage parameter. This table setting **takes precedence** over the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html) described in [Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
+
+You can either configure this setting during table creation:
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -110,10 +112,7 @@ CREATE TABLE accounts (
 WITH (sql_stats_automatic_collection_enabled = false);
 ~~~
 
-The table setting **takes precedence** over the cluster setting described in
-[Enable and disable automatic statistics collection for clusters](#enable-and-disable-automatic-statistics-collection-for-clusters).
-
-You can set the table settings at table creation time or using [`ALTER TABLE ... SET`](set-storage-parameter.html):
+Or by using [`ALTER TABLE ... SET`](set-storage-parameter.html):
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -137,8 +136,7 @@ The current table settings are shown in the `WITH` clause output of `SHOW CREATE
 (1 row)
 ~~~
 
-`ALTER TABLE accounts RESET (sql_stats_automatic_collection_enabled)` removes the table setting, in which case
-the cluster setting is in effect for the table.
+`ALTER TABLE accounts RESET (sql_stats_automatic_collection_enabled)` removes the table setting, in which case the `sql.stats.automatic_collection.enabled` [cluster setting](cluster-settings.html) is in effect for the table.
 
 The "stale row" cluster settings discussed in [Control statistics refresh rate](#control-statistics-refresh-rate) have table
 setting counterparts `sql_stats_automatic_collection_fraction_stale_rows` and `sql_stats_automatic_collection_min_stale_rows`. For example:
@@ -158,6 +156,47 @@ sql_stats_automatic_collection_min_stale_rows = 2000);
 ~~~
 
 Automatic statistics rules are checked once per minute. While altered automatic statistics table settings take immediate effect for any subsequent DML statements on a table, running row mutations that started prior to modifying the table settings may still trigger statistics collection based on the settings that existed before you ran the `ALTER TABLE ... SET` statement.
+
+### Enable and disable forecasted statistics for tables
+
+You can enable and disable [forecasted statistics](show-statistics.html#display-forecasted-statistics) collection for individual tables using the `sql_stats_forecasts_enabled` table parameter. This table setting **takes precedence** over the `sql.stats.forecasts.enabled` [cluster setting](cluster-settings.html).
+
+You can either configure this setting during table creation:
+
+~~~ sql
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL)
+WITH (sql_stats_forecasts_enabled = false);
+~~~
+
+Or by using [`ALTER TABLE ... SET`](set-storage-parameter.html):
+
+~~~ sql
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    balance DECIMAL);
+
+ALTER TABLE accounts
+SET (sql_stats_forecasts_enabled = false);
+~~~
+
+The current table settings are shown in the `WITH` clause output of `SHOW CREATE TABLE`:
+
+~~~ sql
+  table_name |                 create_statement
+-------------+----------------------------------------------------
+  accounts   | CREATE TABLE public.accounts (
+             |     id INT8 NOT NULL,
+             |     balance DECIMAL NULL,
+             |     CONSTRAINT accounts_pkey PRIMARY KEY (id ASC)
+             | ) WITH (sql_stats_forecasts_enabled = false)
+(1 row)
+~~~
+
+`ALTER TABLE accounts RESET (sql_stats_forecasts_enabled)` removes the table setting, in which case the `sql.stats.forecasts.enabled` [cluster setting](cluster-settings.html) is in effect for the table.
+
+For details on forecasted statistics, see [Display forecasted statistics](show-statistics.html#display-forecasted-statistics).
 
 ### Control histogram collection
 
