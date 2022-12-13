@@ -234,6 +234,7 @@ EXPLAIN SELECT w, similarity(w, 'word')
   └── • render
       │
       └── • filter
+          │ estimated row count: 3,337
           │ filter: w % 'word'
           │
           └── • scan
