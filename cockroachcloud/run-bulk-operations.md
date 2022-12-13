@@ -1,16 +1,14 @@
 ---
-title: Run Bulk Operations from Your Cluster
-summary: Run backups, restores, and imports from your CockroachDB Cloud cluster.
+title: Manual Backups
+summary: Run backups and restores from your CockroachDB Cloud cluster.
 toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for backups and restores. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
 
 - [`BACKUP`](../{{site.current_cloud_version}}/backup.html)
 - [`RESTORE`](../{{site.current_cloud_version}}/restore.html)
-- [`IMPORT`](../{{site.current_cloud_version}}/import.html)
-- [`EXPORT`](../{{site.current_cloud_version}}/export.html)
 
 {% include cockroachcloud/ccloud/backup-types.md %}
 
@@ -37,7 +35,7 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 Before you begin, connect to your cluster. For guidance on connecting to your {{ site.data.products.db }} cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html) or [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
-### Backup and restore data
+### Backup data
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
@@ -59,22 +57,20 @@ Cockroach Labs runs the following managed-service backups:
 
 For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
 
-The following examples show how to run manual backups and restores:
+The following examples show how to run manual backups:
 
 {% include cockroachcloud/backup-examples.md %}
 
-{% include cockroachcloud/restore-examples.md %}
-
-For more information on taking backups and restoring to your cluster, read the following pages:
+For more information on taking backups, read the following pages:
 
 - [`BACKUP`](../{{site.current_cloud_version}}/backup.html)
-- [`RESTORE`](../{{site.current_cloud_version}}/restore.html)
 - [Full and incremental backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html)
 - [Scheduled backups](../{{site.current_cloud_version}}/manage-a-backup-schedule.html)
 
 </section>
 
-### Import data into your {{ site.data.products.db }} cluster
+
+### Restore data
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
@@ -83,49 +79,35 @@ For more information on taking backups and restoring to your cluster, read the f
 
 <section class="filter-content" markdown="1" data-scope="userfile">
 
-{% include cockroachcloud/userfile-examples/import-into-userfile.md %}
+{{site.data.alerts.callout_info}}
+Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
+{{site.data.alerts.end}}
+
+To restore from the most recent backup, use [`RESTORE FROM LATEST IN ...`](../{{site.current_cloud_version}}/restore.html#restore-the-most-recent-backup).
+
+Once the backup data is no longer needed, delete from the `userfile` storage:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+cockroach userfile delete bank-backup --url {CONNECTION STRING}
+~~~
+
+If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](../{{site.current_cloud_version}}/configure-replication-zones.html#gc-ttlseconds) to be removed from disk.
+
+To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](backups-page.html#troubleshooting).
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-To import a table into your cluster:
+The following examples show how to run manual restores:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
-;
-~~~
+{% include cockroachcloud/restore-examples.md %}
 
-Read the [`IMPORT`](../{{site.current_cloud_version}}/import.html) page for more examples and guidance.
+For more information on restoring to your cluster, read the [`RESTORE`](../{{site.current_cloud_version}}/restore.html) page. 
 
 </section>
 
-### Export data out of {{ site.data.products.db }}
-
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql \
---url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
---execute "SELECT * FROM db.table" --format=csv > /Users/{username}/{path/to/file}/table.csv
-~~~
-
-The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
-
-~~~sql
-EXPORT INTO CSV
-  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-  WITH delimiter = '|' FROM TABLE bank.customers;
-~~~
-
-Read the [`EXPORT`](../{{site.current_cloud_version}}/export.html) page for more examples and guidance.
 
 ## See also
 
