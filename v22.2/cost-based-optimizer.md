@@ -125,7 +125,7 @@ SET (sql_stats_automatic_collection_enabled = false);
 
 The current table settings are shown in the `WITH` clause output of `SHOW CREATE TABLE`:
 
-~~~ sql
+~~~
   table_name |                    create_statement
 -------------+---------------------------------------------------------
   accounts   | CREATE TABLE public.accounts (
@@ -183,7 +183,7 @@ SET (sql_stats_forecasts_enabled = false);
 
 The current table settings are shown in the `WITH` clause output of `SHOW CREATE TABLE`:
 
-~~~ sql
+~~~
   table_name |                 create_statement
 -------------+----------------------------------------------------
   accounts   | CREATE TABLE public.accounts (
