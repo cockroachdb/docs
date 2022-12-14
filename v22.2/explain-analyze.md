@@ -51,39 +51,39 @@ If you use the [`DEBUG` option](#debug-option), the statement will return only a
 
 Property        | Description
 ----------------|------------
-planning time | The total time the planner took to create a statement plan.
-execution time | The time it took for the final statement plan to complete.
-distribution | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
-vectorized | Whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.
-rows read from KV | The number of rows read from the [storage layer](architecture/storage-layer.html).
-cumulative time spent in KV | The total amount of time spent in the storage layer.
-cumulative time spent due to contention | The total amount of time this statement spent waiting in [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-maximum memory usage | The maximum amount of memory used by this statement anytime during its execution.
-network usage | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
-regions | The [regions](show-regions.html) where the affected nodes were located.
-max sql temp disk usage | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
+`planning time` | The total time the planner took to create a statement plan.
+`execution time` | The time it took for the final statement plan to complete.
+`distribution` | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+`vectorized` | Whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.
+`rows read from KV` | The number of rows read from the [storage layer](architecture/storage-layer.html).
+`cumulative time spent in KV` | The total amount of time spent in the storage layer.
+`cumulative time spent due to contention` | The total amount of time this statement spent waiting in [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+`maximum memory usage` | The maximum amount of memory used by this statement anytime during its execution.
+`network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
+`regions` | The [regions](show-regions.html) where the affected nodes were located.
+`max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 
 ### Statement plan tree properties
 
 Statement plan tree properties | Description
 -------------------------------|------------
-processor | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
-nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
-regions | The [regions](show-regions.html) where the affected nodes were located.
-actual row count | The actual number of rows affected by this processor during execution.
-vectorized batch count | When the [vectorized execution engine](vectorized-execution.html) is used, the number of batches of column data that are processed by the vectorized engine.
-KV time | The total time this phase of the statement was in the [storage layer](architecture/storage-layer.html).
-KV contention time | The time the [storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
-KV rows read | During scans, the number of rows in the [storage layer](architecture/storage-layer.html) read by this phase of the statement.
-KV bytes read | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
-KV gRPC calls | During scans, the number of [gRPC calls](architecture/distribution-layer.html#grpc) made between nodes during this phase of the statement.
-estimated max memory allocated | The estimated maximum allocated memory for a statement.
-estimated max sql temp disk usage | The estimated maximum temporary disk usage for a statement.
-MVCC step count (ext/int) | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over [MVCC keys](architecture/storage-layer.html#mvcc) that could not be used in the scan.
-MVCC seek count (ext/int) | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
-estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
-table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
-spans | The interval of the key space read by the processor. `FULL SCAN` indicates that the table is scanned on all key ranges of the index (also known as a "full table scan" or "unlimited full scan"). `FULL SCAN (SOFT LIMIT)` indicates that a full table scan can be performed, but will halt early once enough rows have been scanned. `LIMITED SCAN` indicates that the table will be scanned on a subset of key ranges of the index. `[/1 - /1]` indicates that only the key with value `1` is read by the processor.
+`processor` | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
+`nodes` | The names of the CockroachDB cluster nodes affected by this phase of the statement.
+`regions` | The [regions](show-regions.html) where the affected nodes were located.
+`actual row count` | The actual number of rows affected by this processor during execution.
+`vectorized batch count` | When the [vectorized execution engine](vectorized-execution.html) is used, the number of batches of column data that are processed by the vectorized engine.
+`KV time` | The total time this phase of the statement was in the [storage layer](architecture/storage-layer.html).
+`KV contention time` | The time the [storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
+`KV rows read` | During scans, the number of rows in the [storage layer](architecture/storage-layer.html) read by this phase of the statement.
+`KV bytes read` | During scans, the amount of data read from the [storage layer](architecture/storage-layer.html) during this phase of the statement.
+`KV gRPC calls` | During scans, the number of [gRPC calls](architecture/distribution-layer.html#grpc) made between nodes during this phase of the statement.
+`estimated max memory allocated` | The estimated maximum allocated memory for a statement.
+`estimated max sql temp disk usage` | The estimated maximum temporary disk usage for a statement.
+`MVCC step count (ext/int)` | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over [MVCC keys](architecture/storage-layer.html#mvcc) that could not be used in the scan.
+`MVCC seek count (ext/int)` | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
+`estimated row count` | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
+`table` | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
+`spans` | The interval of the key space read by the processor. `FULL SCAN` indicates that the table is scanned on all key ranges of the index (also known as a "full table scan" or "unlimited full scan"). `FULL SCAN (SOFT LIMIT)` indicates that a full table scan can be performed, but will halt early once enough rows have been scanned. `LIMITED SCAN` indicates that the table will be scanned on a subset of key ranges of the index. `[/1 - /1]` indicates that only the key with value `1` is read by the processor.
 
 ## `PLAN` option
 
