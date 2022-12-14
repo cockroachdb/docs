@@ -13,7 +13,7 @@ The `DROP OWNED BY` [statement](sql-statements.html) drops all objects owned by 
 
 The [role](security-reference/authorization.html#roles) must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified objects.
 
-`DROP OWNED BY` will result in an error if the user was granted a privilege using the [`GRANT SYSTEM ...`](grant.html#grant-global-privileges-on-the-entire-cluster) command. To work around this, use [`SHOW SYSTEM GRANTS FOR <role>`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-global-privileges-on-the-entire-cluster) for each privilege in the result.
+`DROP OWNED BY` will result in an error if the user was granted a [system-level privilege](security-reference/authorization.html#system-level-privileges) (i.e., using the [`GRANT SYSTEM ...`](grant.html#grant-system-level-privileges-on-the-entire-cluster) statement). To work around this, use [`SHOW SYSTEM GRANTS FOR <role>`](show-system-grants.html) and then use [`REVOKE SYSTEM ...`](revoke.html#revoke-system-level-privileges-on-the-entire-cluster) for each system-level privilege in the result.
 
 ## Synopsis
 
