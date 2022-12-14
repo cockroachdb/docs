@@ -168,7 +168,7 @@ This will create two accounts, one with $1000 and another with $250.
 
 ### Create a GraphQL query in the Hasura Cloud API Explorer
 
-In the Hasura Cloud Explorer, you will see the `accounts` table. You can expand `accounts` to construct a GraphQL query against the `accounts table.
+In the Hasura Cloud Explorer, you will see the `accounts` table. You can expand `accounts` to construct a GraphQL query against the `accounts` table.
 
 For example, to create a query that finds all accounts with balances greater than or equal to $500:
 
