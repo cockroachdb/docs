@@ -43,9 +43,11 @@ Before you start this tutorial, you need:
 
 1. Click **Create Free Project**.
 
-### Add envionment variables to your project
+### Add environment variables to your project
 
-You will store your cluster CA cert and connection string in your Hasura project's environment variables. Storing this connection information in envionment variables is considered a best practice.
+You will store your cluster CA cert in your Hasura project's environment variables. Storing this connection information in envionment variables is considered a best practice.
+<!-- Replace when env variables work for connection string. -->
+<!-- You will store your cluster CA cert and connection string in your Hasura project's environment variables. Storing this connection information in envionment variables is considered a best practice. -->
 
 Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
@@ -57,7 +59,7 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    pbcopy $HOME/Library/CockroachCloud/certs/fake-puppy-ca.crt
+    pbcopy < $HOME/Library/CockroachCloud/certs/fake-puppy-ca.crt
     ~~~
 
 1. Paste the contents of the CA certificate file under **Value**.
@@ -65,7 +67,8 @@ Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
     <img src="{{ 'images/v22.2/hasura-ca-cert.png' | relative_url }}" alt="Adding the SSL_ROOT_CERT environment variable to the Hasura project" style="border:1px solid #eee;max-width:50%" />
 1. Click **Add**.
 
-Now create a `CRDB_URL` environment variable to store the connection string.
+<!-- Replace when env variables work for connection string. -->
+<!-- Now create a `CRDB_URL` environment variable to store the connection string.
 
 1. Click **New Env Var**.
 1. Under **Key** type `CRDB_URL`, then press **Enter**.
@@ -83,7 +86,7 @@ Now create a `CRDB_URL` environment variable to store the connection string.
     ~~~
     postgresql://maxroach:NotAGoodPassword@fake-puppy-595.g95.cockroachlabs.cloud:26257/defaultdb
     ~~~
-1. Click **Add**.
+1. Click **Add**. -->
 
 ### Create a Data Source in Hasura Cloud
 
@@ -93,10 +96,25 @@ Now create a `CRDB_URL` environment variable to store the connection string.
 1. In the **Connect Existing Database** tab configure the connection to your cluster.
     1. Under **Database Display Name** type a name for your connection. Your cluster name is a good option. For example, `fake-puppy`.
     1. Set **Data Source Driver** to **CockroachDB**.
-    1. Select **Environment Variable**, then enter `CRDB_URL` in the **Environment Variable** input box.
-        <img src="{{ 'images/v22.2/hasura-data-source.png' | relative_url }}" alt="Adding the connection string to the Hasura Data Manager" style="border:1px solid #eee;max-width:100%" />
+    1. Select **Connection URL**, then paste the connection string for your cluster you copied earlier. Add your SQL user password if necessary to the connection string.
+    1. Remove the `sslmode` and `sslrootcert` query parameters from the end of the connection string. You will add the SSL settings later.
+
+        For example, if your connection string in the CockroachDB Cloud console is:
+
+        ~~~ 
+        postgresql://maxroach:NotAGoodPassword@fake-puppy-595.g95.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/fake-puppy-ca.crt
+        ~~~
+
+        You would modify the connection string to:
+
+        ~~~
+        postgresql://maxroach:NotAGoodPassword@fake-puppy-595.g95.cockroachlabs.cloud:26257/defaultdb
+        ~~~
+    <!-- Replace when env variables work for connection string. -->
+    <!-- 1. Select **Environment Variable**, then enter `CRDB_URL` in the **Environment Variable** input box.
+        <img src="{{ 'images/v22.2/hasura-data-source.png' | relative_url }}" alt="Adding the connection string to the Hasura Data Manager" style="border:1px solid #eee;max-width:100%" /> -->
    1. Expand **SSL Certificates Settings** and set **SSL Mode** to `verify-full`.
-   1. Note that **SSL Root Certificate** is set to the `SSL_ROOT_CERT` environment variable you configured earlier.
+   1. Enter `SSL_ROOT_CERT` under **SSL Root Certificate**, the environment variable you configured earlier.
 1. Click **Connect Database**.
 
 ## Add the Hasura Cloud network to your cluster allowlist
