@@ -52,10 +52,28 @@ A successful `EXPLAIN` statement returns a table with the following details in t
 
 Detail | Description
 -----------|-------------
-Global properties | Properties that apply to the entire query plan. Global properties include `distribution` and `vectorized`.
-Statement plan tree properties | A tree representation of the hierarchy of the statement plan.
-index recommendations: N | Number of index recommendations followed by a list of index actions and SQL statements to perform the actions.
+[Global properties](#global-properties) | The properties and statistics that apply to the entire statement plan. Global properties include `distribution` and `vectorized`.
+[Statement plan tree properties](#statement-plan-tree-properties) | A tree representation of the hierarchy of the statement plan.
+Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
+index recommendations | Number of index recommendations followed by a list of index actions and SQL statements to perform the actions.
 Time | The time details for the query. The total time is the planning and execution time of the query. The execution time is the time it took for the final statement plan to complete. The network time is the amount of time it took to distribute the query across the relevant nodes in the cluster. Some queries do not need to be distributed, so the network time is 0ms.
+
+### Global properties
+
+|   Property   |                                                                                                                                                                                                          Description                                                                                                                                                                                                          |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| distribution | Whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node. |
+| vectorized   | Whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.                                                                                                                                                                                                                                                                                                                              |
+
+
+### Statement plan tree properties
+
+|       Property      |                                                                                                                                                                                                                                                                   Description                                                                                                                                                                                                                                                                    |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| processor           | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.                                                                                                                                                                                                                                                              |
+| estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.                                                                                                                                                                                                                                                                                                                                              |
+| table               | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| spans               | The interval of the key space read by the processor. `FULL SCAN` indicates that the table is scanned on all key ranges of the index (also known as a "full table scan" or "unlimited full scan"). `FULL SCAN (SOFT LIMIT)` indicates that a full table scan can be performed, but will halt early once enough rows have been scanned. `LIMITED SCAN` indicates that the table will be scanned on a subset of key ranges of the index. `[/1 - /1]` indicates that only the key with value `1` is read by the processor. |
 
 ## Examples
 
@@ -124,7 +142,7 @@ The output also describes a set of properties, some global to the query, some sp
     The table is scanned on the `rides_pkey` index.
 - `spans`:`FULL SCAN`
 
-    The table is scanned on all key ranges of the `rides_pkey` index (i.e., a full table scan). For more information on indexes and key ranges, see the following [example](#find-the-indexes-and-key-ranges-a-query-uses).
+    The table is scanned on all key ranges of the `rides_pkey` index (also known as a "full table scan" or "unlimited full scan"). For more information on indexes and key ranges, see the following [example](#find-the-indexes-and-key-ranges-a-query-uses).
 
 - `index recommendations: 1`
 
