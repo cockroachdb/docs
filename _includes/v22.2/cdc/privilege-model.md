@@ -1,7 +1,7 @@
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new changefeed privilege model that provides finer control over a user's privilege to run changefeeds. 
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#system-level-privileges) that provides finer control over a user's privilege to work with the database, including creating and managing changefeeds. 
 
-There is continued support for the [legacy privilege model](#legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all changefeeds.
+There is continued support for the [legacy privilege model](#legacy-privilege-model) for changefeeds in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all changefeeds.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:

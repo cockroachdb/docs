@@ -20,7 +20,7 @@ You can also use the following SQL statements to work with external connections:
 
 ## Required privileges
 
-To create an external connection, a user must have the [`EXTERNALCONNECTION` system privilege](security-reference/authorization.html#supported-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system privilege by default and are capable of granting the `EXTERNALCONNECTION` privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
+To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#system-level-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
 
 For example: 
 
