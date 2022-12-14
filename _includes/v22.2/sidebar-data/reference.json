@@ -481,6 +481,12 @@
                 ]
               },
               {
+                 "title": "<code>DROP OWNED BY</code>",
+                 "urls": [
+                   "/${VERSION}/drop-owned-by.html"
+                 ]
+               },
+              {
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/drop-region.html"

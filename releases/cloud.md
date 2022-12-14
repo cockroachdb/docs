@@ -14,9 +14,7 @@ Get future release notes emailed to you:
 
 {% include marketo.html %}
 
-{{site.data.alerts.callout_version}}
-As of December 5, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.11](v22.1.html#v22-1-11) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.10](v22.1.html#v22-1-10).
-{{site.data.alerts.end}}
+{% include releases/current-cloud-version.md %}
 
 ## December 5, 2022
 
