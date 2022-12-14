@@ -106,13 +106,13 @@ When a {{ site.data.products.serverless }} cluster is idle, it will scale down t
 
 ### Is my cluster secure?
 
-Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.3.
+Yes, we authenticate each cluster internally using certificate authorities, and all connections to the cluster over the internet use TLS 1.3.
 
 ### What certificates do I need to connect to my cluster?
 
-All connections to {{ site.data.products.serverless }} require SSL encryption. When connecting to your cluster using the CockroachDB SQL client or many drivers and ORMs, you don't need to download a root certificate and configure your client to use that certificate because the client will connect using the system root certificates. If you configure your client to use SSL and to verify the certificates (for example, by setting `sslmode=verify-full` in your [connection string](../{{site.current_cloud_version}}/connection-parameters.html#additional-connection-parameters)), your connection will be encrypted.
+All connections to {{ site.data.products.serverless }} require SSL encryption. When connecting to your cluster using the CockroachDB SQL client or many drivers and ORMs, you don't need to download a root certificate and configure your client to use that certificate because the client will connect using the system root certificates.
 
-However, some drivers and ORMs don't use the system root certificates. In those cases, you need to download a root certificate file and configure your client to use that certificate when connecting to your cluster. You can [download the certificate](connect-to-a-serverless-cluster.html?filters=connection-string#step-2-connect-to-your-cluster) by following the instructions in the {{ site.data.products.db }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root certificate>` in your connection string) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster.
+However, some drivers and ORMs don't use the system root certificates. In those cases, you need to download a root certificate file and configure your client to use that certificate when connecting to your cluster. You can [download the certificate](connect-to-a-serverless-cluster.html?filters=connection-string#step-2-connect-to-your-cluster) by following the instructions in the {{ site.data.products.db }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root certificate>` in your connection string) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster. We recommend using `sslmode=verify-full` so that your cluster is not vulnerable to man-in-the-middle attacks.
 
 See [Connect to a CockroachDB Cluster](../{{site.current_cloud_version}}/connect-to-the-database.html) for detailed information on connecting to your cluster using CockroachDB supported languages, drivers, and ORMs
 
@@ -123,7 +123,7 @@ Yes. All data on {{ site.data.products.db }} is encrypted-at-rest using the tool
 - Data stored in clusters running in GCP are encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
 - Data stored in clusters running in AWS are encrypted-at-rest using [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.current_cloud_version}}/security-reference/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.current_cloud_version}}/ui-overview.html), since the console is unaware of cloud provider encryption.
+Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.current_cloud_version}}/security-reference/encryption.html#encryption-at-rest-enterprise).
 
 ### Is there a public API for {{ site.data.products.db }}?
 
