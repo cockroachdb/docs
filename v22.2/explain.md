@@ -52,7 +52,7 @@ A successful `EXPLAIN` statement returns a table with the following details in t
 
 Detail | Description
 -----------|-------------
-[Global properties](#global-properties) | The properties and statistics that apply to the entire statement plan. Global properties include `distribution` and `vectorized`.
+[Global properties](#global-properties) | The properties and statistics that apply to the entire statement plan.
 [Statement plan tree properties](#statement-plan-tree-properties) | A tree representation of the hierarchy of the statement plan.
 Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
 index recommendations | Number of index recommendations followed by a list of index actions and SQL statements to perform the actions.
