@@ -27,7 +27,7 @@ Before you start this tutorial, you need:
 ## Configure your {{ site.data.products.dedicated }} cluster
 
 1. In the [CockroachDB Cloud console](https://cockroachlabs.cloud/clusters), select your cluster and click **Connect**.
-1. If you have not set up IP Allowlists under **Network Security**, follow the instructions to add connections to your cluster from your machine.
+1. If you have not set up [IP Allowlists](../cockroachcloud/network-authorization.html#ip-allowlisting) under **Network Security**, follow the instructions to add connections to your cluster from your machine.
 1. Select the SQL user you want to use for the Hasura Cloud connection under **SQL User**. If you have not set up a SQL user for this cluster, follow the instructions to create a new SQL user. Be sure to copy and save the password to a secure location.
 1. Click **Next**.
 1. Select **Connection String** and run step 1 to download the CA certificate for your cluster.
