@@ -77,23 +77,23 @@ To create a trigram index, use the [`CREATE INDEX`](create-index.html) syntax th
 
 - Using the PostgreSQL-compatible syntax:
 
-  ~~~ sql
-  CREATE INDEX {optional name} ON {table} USING GIN({column} gin_trgm_ops);
-  ~~~
+    ~~~ sql
+    CREATE INDEX {optional name} ON {table} USING GIN({column} gin_trgm_ops);
+    ~~~
 
-  ~~~ sql
-  CREATE INDEX {optional name} ON {table} USING GIST({column} gist_trgm_ops);
-  ~~~
+    ~~~ sql
+    CREATE INDEX {optional name} ON {table} USING GIST({column} gist_trgm_ops);
+    ~~~
 
-  {{site.data.alerts.callout_info}}
-  GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
-  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
+    {{site.data.alerts.end}}
 
 - Using `CREATE INVERTED INDEX`:
 
-  ~~~ sql
-  CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
-  ~~~
+    ~~~ sql
+    CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
+    ~~~
 
 ### Comparisons
 
