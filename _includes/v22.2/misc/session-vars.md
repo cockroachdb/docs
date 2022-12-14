@@ -3,6 +3,7 @@
 | <a name="application-name"></a> `application_name` | The current application name for statistics collection. | Empty string, or `cockroach` for sessions from the [built-in SQL client](cockroach-sql.html). | Yes | Yes |
 | <a name="bytea-output"></a> `bytea_output` | The [mode for conversions from `STRING` to `BYTES`](bytes.html#supported-conversions). | hex | Yes | Yes |
 | <a name="client-min-messages"></a> `client_min_messages` | The severity level of notices displayed in the [SQL shell](cockroach-sql.html). Accepted values include `debug5`, `debug4`, `debug3`, `debug2`, `debug1`, `log`, `notice`, `warning`, and `error`. | `notice` | Yes | Yes |
+| <a name="copy-from-atomic-enabled"></a> `copy_from_atomic_enabled` | **New in v22.2:** If set to `on`, [`COPY FROM`](copy-from.html) statements are committed atomically, matching PostgreSQL behavior. If set to `off`, `COPY FROM` statements are segmented into batches of 100 rows unless issued within an explicit transaction, matching the CockroachDB behavior in versions prior to v22.2. | `on` | Yes | Yes |
 | <a name="cost-scans-with-default-col-size"></a> `cost_scans_with_default_col_size` | Whether to prevent the optimizer from considering column size when costing plans. | `false` | Yes | Yes |
 | <a name="crdb-version"></a> `crdb_version` | The version of CockroachDB. | <code>CockroachDB OSS <i>version</i></code> | No | Yes |
 | <a name="database"></a> `database` | The [current database](sql-name-resolution.html#current-database). | Database in connection string, or empty if not specified. | Yes | Yes |

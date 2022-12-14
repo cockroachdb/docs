@@ -7,8 +7,10 @@ docs_area: reference.sql
 
 The `COPY FROM` statement copies data from [`cockroach sql`](cockroach-sql.html) or other [third party clients](install-client-drivers.html) to tables in your cluster.
 
-{{site.data.alerts.callout_info}}
-To copy data from a file to your cluster, we recommend using an [`IMPORT`](import.html) statement instead.
+{{site.data.alerts.callout_danger}}
+By default, `COPY FROM` statements are segmented into batches of 100 rows. If any row encounters an error, only the rows that precede the failed row remain committed.
+
+If you need `COPY FROM` statements to commit atomically, issue the statements within an explicit transaction.
 {{site.data.alerts.end}}
 
 ## Syntax
