@@ -247,6 +247,7 @@ Name | Help
 `sql.txn.abort.count` | Number of SQL transaction ABORT statements
 `sql.txn.begin.count` | Number of SQL transaction BEGIN statements
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements
+`sql.txn.contended.count` | Number of SQL transactions experienced contention
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
 `storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.
