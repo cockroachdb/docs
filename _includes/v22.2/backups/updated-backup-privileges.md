@@ -1,14 +1,14 @@
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new backup privilege model that provides finer control over a user's privilege to take backups. 
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#system-level-privileges) that provides finer control over a user's privilege to work with the database, including taking and managing backups. 
 
-There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) for backups in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} You can grant the `BACKUP` privilege to a user or role depending on the type of backup:
+{% include_cached new-in.html version="v22.2" %} You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) the `BACKUP` privilege to a user or role depending on the type of backup:
 
 Backup | Privilege
 -------+-----------
-Cluster | Grant a user the system level `BACKUP` privilege. For example, `GRANT SYSTEM BACKUP TO user;`.
+Cluster | Grant a user the `BACKUP` [system-level privilege](security-reference/authorization.html#system-level-privileges). For example, `GRANT SYSTEM BACKUP TO user;`.
 Database | Grant a user the `BACKUP` privilege on the target database. For example, `GRANT BACKUP ON DATABASE test_db TO user;`.
 Table | Grant a user the `BACKUP` privilege at the table level. This gives the user the privilege to back up the schema and all user-defined types that are associated with the table. For example, `GRANT BACKUP ON TABLE test_db.table TO user;`.
 

@@ -33,7 +33,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 {{site.data.alerts.callout_info}}
 Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups. 
 
-There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all restores.
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all restores.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
@@ -52,7 +52,7 @@ See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ## Required privileges using the legacy privilege model
 
-The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release of CockroachDB:
 
 - [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other restores, the user must have [write access](security-reference/authorization.html#managing-privileges) (`CREATE` or `INSERT`) on all objects affected.
@@ -63,7 +63,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
 - To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
