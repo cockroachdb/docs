@@ -12,3 +12,4 @@
 - Removed the deprecated `GRANT` privilege. [#81310][#81310]
 - Removed the `ttl_automatic_column` storage parameter. The `crdb_internal_expiration` column is created when `ttl_expire_after` is set and removed when `ttl_expire_after` is reset. [#83134][#83134]
 - Removed the byte string parameter in the `crdb_internal.schedule_sql_stats_compaction` function. [#82560][#82560]
+- Changed the default value of the `enable_implicit_transaction_for_batch_statements` to `true`. This means that a [batch of statements](../v22.2/transactions.html#batched-statements) sent in one string separated by semicolons is treated as an implicit transaction. [#76834][#76834]
