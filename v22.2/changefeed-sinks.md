@@ -135,9 +135,13 @@ URI Parameter      | Description
 When using Pub/Sub as your downstream sink, consider the following:
 
 - It only supports `JSON` message format.
-- Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
 - You must specify the `region` parameter in the URI to maintain [ordering guarantees](changefeed-messages.html#ordering-guarantees). Unordered messages are not supported, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
+
+- To create topics on changefeed creation, you must use the Pub/Sub Editor role, which contains the permissions to create a topic.
+- {% include_cached new-in.html version="v22.2" %} If the topic the changefeed is writing to already exists, then you can use the more limited Pub/Sub Publisher role, which can only write to existing topics.
 
 For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 
