@@ -616,9 +616,38 @@
           ]
         },
         {
-          "title": "Node Shutdown",
-          "urls": [
-            "/${VERSION}/node-shutdown.html"
+          "title": "Node Shutdown and Maintenance",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/node-shutdown-maintenance-overview.html"
+              ]
+            },
+            {
+              "title": "Shut down a node",
+              "urls": [
+                "/${VERSION}/node-shutdown.html"
+              ]
+            },
+            {
+              "title": "Drain a node",
+              "urls": [
+                "/${VERSION}/node-drain.html"
+              ]
+            },
+            {
+              "title": "Decommission a node",
+              "urls": [
+                "/${VERSION}/node-decommission.html"
+              ]
+            },
+            {
+              "title": "Recommission a decommissioned node",
+              "urls": [
+                "/${VERSION}/node-recommission.html"
+              ]
+            }
           ]
         },
         {

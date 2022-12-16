@@ -1,127 +1,15 @@
 ---
-title: Node Shutdown
-summary: How to drain, decommission, and gracefully shut down a node.
+title: Show Down a Node
+summary: How to drain, decommission, and gracefully terminate a CockroachDB node.
 toc: true
 docs_area: manage
 ---
 
-A node **shutdown** terminates the `cockroach` process on the node.
-
-There are two ways to handle node shutdown:
-
-- To temporarily stop a node and restart it later, **drain** the node and terminate the `cockroach` process. This is done when [upgrading the cluster version](upgrade-cockroach-version.html) or performing cluster maintenance (e.g., upgrading system software). With a drain, the data stored on the node is preserved, and will be reused if the node restarts within a reasonable timeframe. There is little node-to-node traffic involved, which makes a drain lightweight.
-
-- To permanently remove the node from the cluster, **decommission** the node and then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
-
-This page describes:
-
-- The details of the [node shutdown sequence](#node-shutdown-sequence) from the point of view of the `cockroach` process on a CockroachDB node.
-- How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on {{ site.data.products.core }} clusters by implementing connection retry logic and coordinating load balancer, client application server, process manager, and cluster settings.
-- How to [perform node shutdown](#perform-node-shutdown) on {{ site.data.products.core }} deployments by manually draining or decommissioning a node.
-- How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [{{ site.data.products.dedicated }} cluster](#decommissioning-and-draining-on-cockroachdb-dedicated).
-
-{{site.data.alerts.callout_success}}
-This guidance applies to primarily to manual deployments. For more details about graceful termination when CockroachDB is deployed using Kubernetes, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes). For more details about graceful termination in a {{ site.data.products.dedicated }} cluster, refer to [Decommissioning and draining on {{ site.data.products.dedicated }}](#decommissioning-and-draining-on-cockroachdb-dedicated).
-{{site.data.alerts.end}}
-
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="drain">Drain</button>
-    <button class="filter-button" data-scope="decommission">Decommission</button>
-</div>
-
-## Node shutdown sequence
-
-<section class="filter-content" markdown="1" data-scope="drain">
-When a node is temporarily stopped, the following stages occur in sequence:
-</section>
-
-<section class="filter-content" markdown="1" data-scope="decommission">
-When a node is permanently removed, the following stages occur in sequence:
-</section>
-
-<section class="filter-content" markdown="1" data-scope="decommission">
-#### Decommissioning
-
-An operator [initiates the decommissioning process](#decommission-the-node) on the node.
-
-The node's [`is_decommissioning`](cockroach-node.html#node-status) field is set to `true` and its `membership` status is set to `decommissioning`, which causes its replicas to be rebalanced to other nodes. If the rebalancing stalls during decommissioning, replicas that have yet to move are printed to the [SQL shell](cockroach-sql.html) and written to the [`OPS` logging channel](logging-overview.html#logging-channels). [By default](configure-logs.html#default-logging-configuration), the `OPS` channel logs output to a `cockroach.log` file.
-
-The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) continues to consider the node "ready" so that the node can function as a gateway to route SQL client connections to relevant data.
-
-{{site.data.alerts.callout_info}}
-After this stage, the node is automatically drained. However, to avoid possible disruptions in query performance, we recommend manually draining before decommissioning. For more information, see [Perform node shutdown](#perform-node-shutdown).
-{{site.data.alerts.end}}
-</section>
-
-#### Draining
-
-<section class="filter-content" markdown="1" data-scope="drain">
-An operator [initiates the draining process](#drain-the-node-and-terminate-the-node-process) on the node. Draining a node disconnects clients after active queries are completed, and transfers any range leases and Raft leaderships to other nodes, but does not move replicas or data off of the node.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="decommission">
-After all replicas on a decommissioning node are rebalanced, the node is automatically drained.
-</section>
-
-Node drain consists of the following consecutive phases:
-
-1. **Unready phase:** The node's [`/health?ready=1` endpoint](monitoring-and-alerting.html#health-ready-1) returns an HTTP `503 Service Unavailable` response code, which causes load balancers and connection managers to reroute traffic to other nodes. This phase completes when the [fixed duration set by `server.shutdown.drain_wait`](#server-shutdown-drain_wait) is reached.
-
-1. **SQL wait phase:** New SQL client connections are no longer permitted, and any remaining SQL client connections are allowed to close or time out. This phase completes either when all SQL client connections are closed or the [maximum duration set by `server.shutdown.connection_wait`](#server-shutdown-connection_wait) is reached.
-
-1. **SQL drain phase:** All active transactions and statements for which the node is a [gateway](architecture/life-of-a-distributed-transaction.html#gateway) are allowed to complete, and CockroachDB closes the SQL client connections immediately afterward. After this phase completes, CockroachDB closes all remaining SQL client connections to the node. This phase completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
-
-1. **DistSQL drain phase**: All [distributed statements](architecture/sql-layer.html#distsql) initiated on other gateway nodes are allowed to complete, and DistSQL requests from other nodes are no longer accepted. This phase completes either when all transactions have been processed or the [maximum duration set by `server.shutdown.query_wait`](#server-shutdown-query_wait) is reached.
-
-1. **Lease transfer phase:** The node's [`is_draining`](cockroach-node.html#node-status) field is set to `true`, which removes the node as a candidate for replica rebalancing, lease transfers, and query planning. Any [range leases](architecture/replication-layer.html#leases) or [Raft leaderships](architecture/replication-layer.html#raft) must be transferred to other nodes. This phase completes when all range leases and Raft leaderships have been transferred.
-
-    <section class="filter-content" markdown="1" data-scope="decommission">
-    Since all range replicas were already removed from the node during the [decommissioning](#decommissioning) stage, this step immediately resolves.
-    </section>
-
-<section class="filter-content" markdown="1" data-scope="drain">
-When [draining manually](#drain-a-node-manually), if the above steps have not completed after 10 minutes by default, node draining will stop and must be restarted to continue. For more information, see [Drain timeout](#drain-timeout).
-</section>
-
-<section class="filter-content" markdown="1" data-scope="decommission">
-#### Status change
-
-After decommissioning and draining are both complete, the node membership changes from `decommissioning` to `decommissioned`.
-
-This node is now cut off from communicating with the rest of the cluster. A client attempting to connect to a `decommissioned` node and run a query will get an error.
-</section>
-
-At this point, the `cockroach` process is still running. It is only stopped by process termination.
-
-#### Process termination
-
-<section class="filter-content" markdown="1" data-scope="decommission">
-An operator [terminates the node process](#terminate-the-node-process).
-</section>
-
-<section class="filter-content" markdown="1" data-scope="drain">
-After draining completes, the node process is automatically terminated (unless the [node was manually drained](#drain-a-node-manually)).
-</section>
-
-A node **process termination** stops the `cockroach` process on the node. The node will stop updating its liveness record.
-
-<section class="filter-content" markdown="1" data-scope="drain">
-If the node then stays offline for the duration set by [`server.time_until_store_dead`](#server-time_until_store_dead) (5 minutes by default), the cluster considers the node "dead" and starts to rebalance its range replicas onto other nodes.
-
-If the node is brought back online, its remaining range replicas will determine whether or not they are still valid members of replica groups. If a range replica is still valid and any data in its range has changed, it will receive updates from another replica in the group. If a range replica is no longer valid, it will be removed from the node.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="decommission">
-A node that stays offline for the duration set by the `server.time_until_store_dead` [cluster setting](cluster-settings.html) (5 minutes by default) is usually considered "dead" by the cluster. However, a decommissioned node retains **decommissioned** status.
-</section>
-
-{{site.data.alerts.callout_info}}
-CockroachDB's node shutdown behavior does not match any of the [PostgreSQL server shutdown modes](https://www.postgresql.org/docs/current/server-shutdown.html).
-{{site.data.alerts.end}}
+This page explains how to gracefully terminate a CockroachDB node. For a descriptive overview of how node shutdown works, refer to [Node Shutdown Sequence](node-shutdown-sequence.html).
 
 ## Prepare for graceful shutdown
 
-Each of the [node shutdown steps](#node-shutdown-sequence) is performed in order, with each step commencing once the previous step has completed. However, because some steps can be interrupted, it's best to ensure that all steps complete gracefully.
+Review the [node shutdown steps](#node-shutdown-sequence) is performed in order, with each step commencing once the previous step has completed. However, because some steps can be interrupted, it's best to ensure that all steps complete gracefully.
 
 Before you [perform node shutdown](#perform-node-shutdown), review the following prerequisites to graceful shutdown:
 
