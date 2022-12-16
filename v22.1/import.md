@@ -316,7 +316,7 @@ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.h
 ### Import data into your {{ site.data.products.db }} cluster
 
 {{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
+For {{ site.data.products.serverless }} clusters, you must have [billing information](../cockroachcloud/billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
 {{site.data.alerts.end}}
 
 #### Import using a userfile
