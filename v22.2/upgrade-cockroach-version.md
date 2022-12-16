@@ -253,7 +253,7 @@ Once you are satisfied with the new version:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+    All [schema change](online-schema-changes.html) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
     {{site.data.alerts.end}}
 
 1. Check the cluster version to confirm that the finalize step has completed:
