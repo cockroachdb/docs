@@ -72,7 +72,7 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 
 {% include {{page.version.version}}/known-limitations/drop-owned-by-function-limitations.md %}
 
-#### `DROP OWNED BY` is not supported where role has synthetic privileges
+#### `DROP OWNED BY` is not supported where role has system-level privileges
 
 {% include {{page.version.version}}/known-limitations/drop-owned-by-role-limitations.md %}
 

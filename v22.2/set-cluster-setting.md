@@ -14,7 +14,7 @@ The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-w
 To use the `SET CLUSTER SETTING` statement, a user must have one of the following attributes:
 
 - Be a member of the `admin` role. (By default, the `root` user belongs to the `admin` role.)
-- Have the [`MODIFYCLUSTERSETTING` global privilege](security-reference/authorization.html#modifyclustersetting) granted. `root` and [`admin`](security-reference/authorization.html#admin-role) users have this global privilege by default and are capable of granting it to other users and roles using the [`GRANT`](grant.html) statement. For example to grant this privilege to user `maxroach`:
+- Have the `MODIFYCLUSTERSETTING` [system-level privilege](security-reference/authorization.html#system-level-privileges) granted. `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting it to other users and roles using the [`GRANT`](grant.html) statement. For example to grant this system-level privilege to user `maxroach`:
 
     ~~~ sql
     GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
