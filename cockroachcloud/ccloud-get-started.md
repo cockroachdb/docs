@@ -337,7 +337,7 @@ ccloud cluster sql --sso dim-dog
 
 This will open a browser window on the local machine where you will login to your organization if you are not already authenticated.
 
-If you are running `ccloud` on a remote machine, use the `ccloud cluster sql --sso --no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authentication code you received in the remote terminal to complete the login process.
+If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authentication code you received in the remote terminal to complete the login process.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -388,14 +388,12 @@ If the organization is incorrect:
     ccloud auth logout
     ~~~
 
-1. Log in to the SSO-enabled organization.
+1. Log in to the correct organization.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud auth login --org {organization label}
+    ccloud auth login --org {organization name}
     ~~~
-
-    Where `{organization label}` is the SSO-enabled organization name.
 
 {{site.data.alerts.end}}
 
