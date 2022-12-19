@@ -20,6 +20,12 @@ The CockroachDB Helm chart is currently not under active development, and no new
 
 A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
 
+#### Network
+
+Service Name Indication (SNI) is an extension to the TLS protocol which allows a client to indicate which hostname it is attempting to connect to at the start of the TCP handshaking process. The server can present multiple certificates on the same IP address and TCP port number, and one server can serve multiple secure websites or API services even if they use different certificates.
+
+Due to its order of operations, the PostgreSQL wire protocol's implementation of TLS is not compatible with SNI-based routing in the Kubernetes ingress controller. Instead, use a TCP load balancer for CockroachDB that is not shared with other services.
+
 #### Resources
 
 When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html#allocate-resources).
