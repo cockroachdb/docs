@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-A `JOIN` expression, also called a _join_, combines the results of two or more [table expressions](table-expressions.html) based on conditions on the values of particular columns (such as equality columns). A join is a particular kind of table expression.
+A `JOIN` expression, also called a _join_, combines the results of two or more [table expressions](table-expressions.html) based on conditions on the values of particular columns (such as equality conditions). A join is a particular kind of table expression.
 
 A `JOIN` expression defines a data source in the `FROM` sub-clause of a [`SELECT` clause](select-clause.html) or as parameter to a [`TABLE` clause](selection-queries.html#table-clause).
 
@@ -133,23 +133,17 @@ Hash joins are performed on two tables as follows:
 
 ### Lookup joins
 
-The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join usually requires that the right-hand (i.e., larger) table be indexed on an equality column. A [partial index](partial-indexes.html) can only be used if it contains the subset of rows being looked up.
+The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table be indexed on the columns involved in the join condition. A [partial index](partial-indexes.html) can only be used if it contains the subset of rows being looked up.
 
 Lookup joins are performed on two tables as follows:
 
 1. CockroachDB reads each row in the small table.
 1. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
 
-If the following conditions are met, the optimizer can perform a lookup join on a series of equalities followed by one inequality constraint:
+The optimizer imposes some restrictions on the usage of inequalities in lookup join conditions:
 
-1. The left and right sides of the inequality have identical [types](data-types.html).
-1. The inequality is between an index column and input column, or between an index column and a constant.
-1. If the index column is `DESC` and the inequality is of the form `idxCol < inputCol`, the column type must support `Datum.Prev` without any chance of failing other than for the minimum value for that type.
-
-If the following conditions are met, the optimizer can perform a lookup join without an equality filter:
-
-1. There is an inequality filter between an index column and an input column that can be used to perform lookups.
-1. Either the input has only one row or the join has a `LOOKUP` [hint](cost-based-optimizer.html#join-hints).
+1. If the lookup condition contains no equalities (i.e., is composed only of an inequality), either the input of the join must return only one row or the join must have a `LOOKUP` [hint](cost-based-optimizer.html#join-hints). This prevents poor performance of the current lookup join implementation.
+1. If the index column is `DESC` and the inequality is of the form `idxCol < inputCol` or equivalently `inputCol > idxCol`, the column type must be countable in order to support retrieving the immediate previous value. This allows types like [`BOOL`](bool.html), [`FLOAT`](float.html), and [`INT`](int.html), but disallows types like [`STRING`](string.html) or [`BYTES`](bytes.html).
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
