@@ -465,4 +465,5 @@ xcode
 yaml
 ycsb
 yugabyte
+ZSTD
 Zipkin
