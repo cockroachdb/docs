@@ -149,7 +149,7 @@ The error message will specify which part of your backup is causing the failure.
 
 To resolve this issue, take a new [full backup](take-full-and-incremental-backups.html) after doing either of the following:
 
-- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds). For example, we recommend setting the GC TTL to a time interval **greater** than `incremental_backup_interval` + `expected_runtime_of_full_backup` + `buffer_for_slowdowns`. To estimate the expected full backup runtime, it is necessary to perform testing or verify the past performance through the [jobs table](ui-jobs-page.html#jobs-list).
+- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds). For example, we recommend setting the GC TTL to a time interval **greater** than the sum of `incremental_backup_interval` + `expected_runtime_of_full_backup` + `buffer_for_slowdowns`. To estimate the expected full backup runtime, it is necessary to perform testing or verify the past performance through the [jobs table](ui-jobs-page.html#jobs-list).
 - [Increase the frequency of incremental backups](manage-a-backup-schedule.html).
 
 ## result is ambiguous
