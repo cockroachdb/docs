@@ -54,12 +54,6 @@ Large multi-row `INSERT` queries can lead to long-running transactions that resu
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
-## Bulk-update best practices
-
-### Use batch updates to delete a large number of rows
-
-To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-update Data](bulk-update-data.html).
-
 ## Bulk-delete best practices
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
