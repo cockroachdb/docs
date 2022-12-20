@@ -23,7 +23,6 @@ jobs:
     - name: Vale
       uses: errata-ai/vale-action@reviewdog
       with:
-        version: 2.17.0
         reporter: github-pr-check
         filter_mode: nofilter
         fail_on_error: false

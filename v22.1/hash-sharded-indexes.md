@@ -21,6 +21,10 @@ Hash-sharded indexes solve this problem by distributing sequential data across m
 
 Hash-sharded indexes contain a [virtual computed column](computed-columns.html#virtual-computed-columns), known as a shard column. CockroachDB uses this shard column, as opposed to the sequential column in the index, to control the distribution of values across the index. The shard column is hidden by default but can be seen with [`SHOW COLUMNS`](show-columns.html).
 
+{{site.data.alerts.callout_danger}}
+In v21.2 and earlier, hash-sharded indexes create a physical `STORED` [computed column](computed-columns.html) instead of a virtual computed column. If you are using a hash-sharded index that was created in v21.2 or earlier, the `STORED` column still exists in your database. When dropping a hash-sharded index that has created a physical shard column, the shard column will also be dropped. This will require a rewrite of the table.
+{{site.data.alerts.end}}
+
 For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
 {{site.data.alerts.callout_info}}
