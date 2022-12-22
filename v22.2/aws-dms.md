@@ -22,7 +22,7 @@ Complete the following items before starting this tutorial:
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Ensure you have a secure, publicly available CockroachDB cluster running v22.1.0 or later.
-- If you intend to migrate to a {{ site.data.products.db }} cluster, you must first **disable revision history** for cluster backups.
+- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable revision history** for cluster backups.
     - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](alter-backup-schedule.html) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
@@ -84,6 +84,10 @@ A database migration task, also known as a replication task, controls what data 
 1. Select the **Replication instance** and **Source database endpoint** you created prior to starting this tutorial.
 1. For the **Target database endpoint** dropdown, select the CockroachDB endpoint created in the previous section.
 1. Select the appropriate **Migration type** based on your needs.
+
+    {{site.data.alerts.callout_danger}}
+    If you choose **Migrate existing data and replicate ongoing changes** or **Replicate data changes only**, you must first [disable revision history for backups](#before-you-begin).
+    {{site.data.alerts.end}}
     <img src="{{ 'images/v22.2/aws-dms-task-configuration.png' | relative_url }}" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
 
 ### Step 2.2. Task settings
