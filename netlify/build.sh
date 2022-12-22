@@ -59,4 +59,4 @@ if [[ "$CONTEXT" = "production" ]]; then
 fi;
 
 # Run htmltest, but skip checking external links to speed things up
-./bin/htmltest --skip-external
+#./bin/htmltest --skip-external
