@@ -104,7 +104,7 @@ To specify that the column cannot contain `NULL` values, set the [`NOT NULL` con
 
 ### Remove `NOT NULL` constraint
 
-If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have *NULL* values written into it.
+If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you can remove the constraint, which means the column becomes optional and can have `NULL` values written into it.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

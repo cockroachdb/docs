@@ -55,6 +55,7 @@ codec
 codelab
 collatable
 collatedstring
+collectability
 colocated
 comms
 Comodo
@@ -87,6 +88,7 @@ deserializ(ation|ed?)
 dev
 distsql
 docstrings?
+downsamples?
 duplicative
 eastasia
 eastus
@@ -255,6 +257,7 @@ pgwire
 pgx
 pgxpool
 php
+PIDs?
 pingable
 pipelin(ed|ing)
 pipenv
@@ -426,6 +429,7 @@ unindexed
 uniquness
 unix
 unmarshalling
+unnested
 unpartition(ed|ing)?
 unported
 unredacted
@@ -465,4 +469,5 @@ xcode
 yaml
 ycsb
 yugabyte
+ZSTD
 Zipkin
