@@ -104,6 +104,10 @@ For each additional node you want to add to the cluster, complete the following 
     {% include {{ page.version.version }}/prod-deployment/insecurecockroachdb.service %}
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    Previously, the sample configuration file set `TimeoutStopSec` to 60 seconds. This recommendation has been lengthened to 300 seconds, to give the `cockroach` process more time to stop gracefully.
+    {{site.data.alerts.end}}
+
     Save the file in the `/etc/systemd/system/` directory
 
 8. Customize the sample configuration template for your deployment:
