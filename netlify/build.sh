@@ -60,6 +60,3 @@ fi;
 
 # Run htmltest, but skip checking external links to speed things up
 ./bin/htmltest --skip-external
-if [[ $? != 0 ]]; then
-  exit 1
-fi;
