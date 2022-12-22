@@ -63,7 +63,3 @@ fi;
 if [[ $? != 0 ]]; then
   exit 1
 fi;
-
-# Run tests defined in __tests__
-./node_modules/.bin/jest
-exit $?
