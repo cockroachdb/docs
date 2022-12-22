@@ -7,7 +7,7 @@ module JekyllVersions
     end
 
     def write(dest)
-      FileUtils.ln_sf(@target, destination(dest))
+      FileUtils.cp_r(@target, destination(dest))
     end
   end
 end

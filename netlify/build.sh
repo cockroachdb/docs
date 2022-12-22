@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Populate the site_url to be used by jekyll for generating sidebar and search links
-site_url="${DEPLOY_PRIME_URL}"
+site_url="${VERCEL_URL}"
 JEKYLL_ENV="preview"
 if [[ "$CONTEXT" = "production" ]]; then
 	site_url="https://www.cockroachlabs.com"
