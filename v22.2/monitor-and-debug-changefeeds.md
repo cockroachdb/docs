@@ -7,6 +7,21 @@ docs_area: stream_data
 
 Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB Console](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.
 
+<a name="changefeed-retry-errors"></a>
+
+{% include_cached new-in.html version="v22.2.1" %} By default, changefeeds treat errors as retryable except for some specific terminal errors that are non-retryable.
+
+- **retryable**: The changefeed will automatically retry whatever caused the error. (You may need to intervene so that the changefeed can resume.)
+- **non-retryable**: The changefeed has encountered a terminal error and fails.
+
+The following define the categories of non-retryable errors:
+
+- When the changefeed cannot verify the target table's schema. For example, the table is offline or there are types within the table that the changefeed cannot handle.
+- The changefeed cannot convert the data to the specified [output format](changefeed-messages.html). For example, there are [Avro](changefeed-messages.html#avro) types that changefeeds do not support, or a [CDC transformation](cdc-transformations.html) is using an unsupported or malformed expression.
+- The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option](create-changefeed.html#schema-policy) and a schema change happens.
+
+We recommend monitoring changefeeds to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with protected timestamps and garbage collection. The sections on this page describe the different monitoring and debugging tools for changefeeds.
+
 ## Monitor a changefeed
 
 {{site.data.alerts.callout_info}}
