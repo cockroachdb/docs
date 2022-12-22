@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Populate the site_url to be used by jekyll for generating sidebar and search links
-site_url="${VERCEL_URL}"
+site_url="https://${VERCEL_URL}"
 JEKYLL_ENV="preview"
 if [[ "$CONTEXT" = "production" ]]; then
 	site_url="https://www.cockroachlabs.com"
@@ -59,7 +59,7 @@ if [[ "$CONTEXT" = "production" ]]; then
 fi;
 
 # Run htmltest, but skip checking external links to speed things up
-#./bin/htmltest --skip-external
+./bin/htmltest --skip-external
 if [[ $? != 0 ]]; then
   exit 1
 fi;
