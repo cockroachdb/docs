@@ -65,7 +65,7 @@ URI Parameter      | Description
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If you create a changefeed on multiple tables, the changefeed will write to multiple topics corresponding to those table names. When you run `CREATE CHANGEFEED` to a Kafka sink, the output will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
-To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic-prefix-param), [an arbitrary topic name](create-changefeed.html#topic-name-param), or use the [`full_table_name` option](create-changefeed.html#full-table-option). Using the [`topic_name`](create-changefeed.html#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic_prefix), [an arbitrary topic name](create-changefeed.html#topic_name), or use the [`full_table_name` option](create-changefeed.html#full_table_name). Using the [`topic_name`](create-changefeed.html#topic_name) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
@@ -148,7 +148,7 @@ For more information, read about compatible changefeed [options](create-changefe
 
 ### Pub/Sub topic naming
 
-When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name. 
+When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic_name) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full_table_name) option to create a topic using the fully qualified table name. 
 
 The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
@@ -163,7 +163,7 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Some considerations when using cloud storage sinks:
 
 - Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
-- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](create-changefeed.html#partition_format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
@@ -242,7 +242,7 @@ URI Parameter      | Description
 
 The following are considerations when using the webhook sink:
 
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#insecure_tls_skip_verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Only supports JSON output format.
 * There is no concurrency configurability.
 

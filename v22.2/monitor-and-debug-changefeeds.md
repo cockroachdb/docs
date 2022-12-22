@@ -18,7 +18,7 @@ The following define the categories of non-retryable errors:
 
 - When the changefeed cannot verify the target table's schema. For example, the table is offline or there are types within the table that the changefeed cannot handle.
 - The changefeed cannot convert the data to the specified [output format](changefeed-messages.html). For example, there are [Avro](changefeed-messages.html#avro) types that changefeeds do not support, or a [CDC transformation](cdc-transformations.html) is using an unsupported or malformed expression.
-- The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option](create-changefeed.html#schema-policy) and a schema change happens.
+- The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option](create-changefeed.html#schema_change_policy) and a schema change happens.
 
 We recommend monitoring changefeeds to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with protected timestamps and garbage collection. The sections on this page describe the different monitoring and debugging tools for changefeeds.
 
@@ -117,7 +117,7 @@ changefeed_emitted_bytes{scope="vehicles"} 183557
 `changefeed_running` | Number of currently running changefeeds, including sinkless changefeeds. | Changefeeds
 `emitted_messages` | Number of messages emitted, which increments when messages are flushed. | Messages
 `emitted_bytes`    | Number of bytes emitted, which increments as messages are flushed. | Bytes
-`flushed_bytes`    | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`](create-changefeed.html#compression-opt) is enabled. | Bytes
+`flushed_bytes`    | Bytes emitted by all changefeeds. This may differ from `emitted_bytes` when [`compression`](create-changefeed.html#compression) is enabled. | Bytes
 `changefeed_flushes` | Total number of flushes for a changefeed. | Flushes
 `emit_latency`     | Difference between the event's [MVCC](architecture/storage-layer.html#mvcc) timestamp and the time the event was emitted by CockroachDB. | Nanoseconds
 `admit_latency`    | Difference between the event's MVCC timestamp and the time the event is put into the memory buffer. | Nanoseconds

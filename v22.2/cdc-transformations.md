@@ -163,7 +163,7 @@ CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS S
 
 You can use CDC transformations as a tool for debugging or investigating issues from the SQL shell. 
 
-For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`](create-changefeed.html#cursor-option) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell. 
+For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`](create-changefeed.html#cursor) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell. 
 
 First, find the start time. Use the [`cluster_logical_timestamp()`](functions-and-operators.html#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
 
@@ -185,7 +185,7 @@ Next, run the changefeed without a sink and pass the start time to the `cursor` 
 CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
 ~~~
 
-To find changes within a time period, use `cursor` with the [`end_time`](create-changefeed.html#end-time) option:
+To find changes within a time period, use `cursor` with the [`end_time`](create-changefeed.html#end_time) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

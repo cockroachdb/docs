@@ -33,7 +33,7 @@ Each node uses its aggregator processors to send back checkpoint progress to the
 
 <img src="{{ 'images/v22.2/changefeed-structure.png' | relative_url }}" alt="Changefeed process in a 3-node cluster" style="border:0px solid #eee;max-width:100%" />
 
-With [`resolved`](create-changefeed.html#resolved-option) specified when a changefeed is started, the coordinator will send the resolved timestamp (i.e., the high-water mark) to each endpoint in the sink. For example, when using [Kafka](changefeed-sinks.html#kafka) this will be sent as a message to each partition; for [cloud storage](changefeed-sinks.html#cloud-storage-sink), this will be emitted as a resolved timestamp file.
+With [`resolved`](create-changefeed.html#resolved) specified when a changefeed is started, the coordinator will send the resolved timestamp (i.e., the high-water mark) to each endpoint in the sink. For example, when using [Kafka](changefeed-sinks.html#kafka) this will be sent as a message to each partition; for [cloud storage](changefeed-sinks.html#cloud-storage-sink), this will be emitted as a resolved timestamp file.
 
 As rows are updated, added, and deleted in the targeted table(s), the node sends the row changes through the [rangefeed mechanism](create-and-configure-changefeeds.html#enable-rangefeeds) to the changefeed encoder, which encodes these changes into the [final message format](changefeed-messages.html#responses). The message is emitted from the encoder to the sink—it can emit to any endpoint in the sink. In the diagram example, this means that the messages can emit to any Kafka Broker.
 

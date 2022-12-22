@@ -15,7 +15,7 @@ For further detail, see the following sections:
 
 ## Syntax
 
-To target a table with multiple column families, set the [`split_column_families` option](create-changefeed.html#split-column-families) when creating a changefeed:
+To target a table with multiple column families, set the [`split_column_families` option](create-changefeed.html#split_column_families) when creating a changefeed:
 
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE {table} INTO {sink} WITH split_column_families;
@@ -260,7 +260,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
     `CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_dogs FAMILY dogs INTO {sink};`
     {{site.data.alerts.end}}
 
-1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`](create-changefeed.html#split-column-families) option:
+1. To create a changefeed that emits messages for all column families in a table, use the [`split_column_families`](create-changefeed.html#split_column_families) option:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

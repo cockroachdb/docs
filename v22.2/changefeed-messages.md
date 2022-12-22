@@ -41,7 +41,7 @@ To limit messages to just the changed key value, use the [`envelope`](create-cha
 
 When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. See [Tables with columns families in changefeeds](changefeeds-on-tables-with-column-families.html#message-format) for guidance.
 
-For webhook sinks, the response format arrives as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
+For webhook sinks, the response format arrives as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved):
 
 ~~~
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
@@ -90,7 +90,7 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
 
-- <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
@@ -165,7 +165,7 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema-policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
+When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema_change_policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
@@ -178,7 +178,7 @@ By default, [protected timestamps](architecture/storage-layer.html#protected-tim
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
-- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect_data_from_gc_on_pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
 
@@ -190,7 +190,7 @@ The only ways for changefeeds to **not** protect data are:
 
 - You pause the changefeed without `protect_data_from_gc_on_pause` set.
 - You cancel the changefeed.
-- The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
+- The changefeed fails without [`on_error=pause`](create-changefeed.html#on_error) set.
 
 ## Avro
 
@@ -238,8 +238,8 @@ The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 
 You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV format messages from your changefeed. However, there are the following limitations with this option:
 
-- It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
-- It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+- It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial_scan) option.
+- It does **not** work when used with the [`diff`](create-changefeed.html#diff) or [`resolved`](create-changefeed.html#resolved) options.
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
