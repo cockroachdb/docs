@@ -108,9 +108,14 @@ Read the [`IMPORT`](../{{site.current_cloud_version}}/import.html) page for more
 
 ### Export data out of {{ site.data.products.db }}
 
-{{site.data.alerts.callout_info}}
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your organization](billing-management.html) to access cloud storage or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
-{{site.data.alerts.end}}
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql \
+--url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
+--execute "SELECT * FROM db.table" --format=csv > /Users/{username}/{path/to/file}/table.csv
+~~~
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
 

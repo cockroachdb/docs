@@ -77,7 +77,7 @@ First, upload your {{ site.data.products.serverless }} data to a cloud storage l
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
     {{site.data.alerts.end}}
 
 ## Step 2. Import the CSV
