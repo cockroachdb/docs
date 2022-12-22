@@ -30,6 +30,8 @@ build _config_cockroachdb.yml,_config_url.yml
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
+cp -r _site/docs/v22.2 _site/docs/stable
+cp -r _site/docs/v22.2 _site/docs/dev
 
 # Set up htmltest
 
