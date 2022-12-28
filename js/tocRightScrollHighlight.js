@@ -6,7 +6,7 @@ $(document).ready(function() {
 
   $sections.each(function() {
       var id = $(this).attr('id');
-      sectionIdTonavigationLink[id] = $('#toc-right ul > li > a:not(.anchorjs-link)[href=#' + id + ']');
+      sectionIdTonavigationLink[id] = $(`#toc-right ul > li > a:not(.anchorjs-link)[href="#${id}]"`);
   });
 
   function highlightNavigation() {
