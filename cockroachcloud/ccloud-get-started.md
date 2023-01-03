@@ -50,6 +50,15 @@ ccloud auth login --org <organization label>
 
 The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
 
+### Log in to CockroachDB Cloud on a headless server
+
+If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve a token, and enter the token on the headless machine so `ccloud` can complete authentication.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login --no-redirect
+~~~
+
 ## Create a new cluster using `ccloud cluster create`
 
 There are two ways to create clusters using `ccloud`: `ccloud quickstart create` and `ccloud cluster create`.
@@ -317,6 +326,77 @@ warning: server version older than client! proceed with caution; some features m
 user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 ~~~
 
+### Connect to your cluster using SSO
+
+Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication](cloud-sso-sql.html), which will allow you to start a SQL shell without using a password.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql --sso dim-dog
+~~~
+
+This will open a browser window on the local machine where you will login to your organization if you are not already authenticated.
+
+If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authentication code you received in the remote terminal to complete the login process.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql --sso --no-redirect dim-dog
+~~~
+
+Using SSO login requires that a separate SSO SQL user for your account is created on the cluster you are connecting to. SSO SQL usernames are prefixed with `sso_`. The SSO SQL username you use must match the SSL SQL username generated for you.
+
+To create a SSO SQL user:
+
+1. Connect to the cluster using the `--sso` flag.
+   
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud cluster --sso dim-dog
+    ~~~
+
+1. Log in to your organization when prompted by `ccloud`.
+1. Copy the command in the error message to create the SSO SQL user with the correct username.
+   
+    You must have `admin` privileges to create the SSO SQL user.
+
+1. Create the SSO SQL user by pasting and running the command you copied.
+   
+    For example, if the command in the error message creates a `sso_maxroach` user:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud cluster user create dim-dog sso_maxroach
+    ~~~
+
+1. Re-run the SQL client command to login and connect to your cluster.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud cluster sql dim-dog --sso
+    ~~~
+
+{{site.data.alerts.callout_info}}
+The organization you are logged into must support SSO. To ensure you are logged into the correct organization, Use the `ccloud auth whoami` command to check that you are logged into the correct organization.
+
+If the organization is incorrect:
+
+1. Log out of the current organization.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud auth logout
+    ~~~
+
+1. Log in to the correct organization.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud auth login --org {organization name}
+    ~~~
+
+{{site.data.alerts.end}}
+
 ## Get the connection information for your cluster using `ccloud cluster sql`
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
@@ -417,3 +497,4 @@ Cockroach Labs collects anonymized telemetry events to improve the usability of 
 ~~~ shell
 ccloud settings set --disable-telemetry=true
 ~~~
+

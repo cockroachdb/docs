@@ -1,4 +1,4 @@
-{% assign ccloud_version = "0.2.5" %}
+{% assign ccloud_version = "0.3.6" %}
 
 Choose your OS:
 
