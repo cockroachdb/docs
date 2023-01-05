@@ -20,7 +20,7 @@ The following define the categories of non-retryable errors:
 - The changefeed cannot convert the data to the specified [output format](changefeed-messages.html). For example, there are [Avro](changefeed-messages.html#avro) types that changefeeds do not support, or a [CDC transformation](cdc-transformations.html) is using an unsupported or malformed expression.
 - The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option](create-changefeed.html#schema-policy) and a schema change happens.
 
-We recommend monitoring changefeeds with [Prometheus](monitoring-and-alerting.html#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with protected timestamps and garbage collection. In addition, see the [Recommended changefeed metrics](#recommended-changefeed-metrics) section for the essential metrics to track on a changefeed.
+We recommend monitoring changefeeds with [Prometheus](monitoring-and-alerting.html#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with protected timestamps and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
 
 ## Monitor a changefeed
 
@@ -45,13 +45,13 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     (1 row)
     ~~~
 
-- Using Prometheus and Alertmanager to track and alert on changefeed metrics. See the [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html) tutorial for steps to set up Prometheus. The following [Recommended changefeed metrics](#recommended-changefeed-metrics) section describes essential metrics to alert you when a changefeed encounters a retryable error, or enters a failed state.
+- Using Prometheus and Alertmanager to track and alert on changefeed metrics. See the [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html) tutorial for steps to set up Prometheus. See the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to alert you when a changefeed encounters a retryable error, or enters a failed state.
 
 {{site.data.alerts.callout_info}}
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
 
-### Recommended changefeed metrics
+### Recommended changefeed metrics to track
 
 By default, changefeeds will retry errors with [some exceptions](#changefeed-retry-errors). We recommend setting up monitoring for the following metrics to track retryable errors to avoid an over-accumulation of garbage, and non-retryable errors to alert on changefeeds in a failed state:
 
