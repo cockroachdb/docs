@@ -29,7 +29,7 @@ Method | Required permissions | Description
 --- | --- | ---
 `GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the log export configuration.
 `POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
-`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
+`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging. 
 
 See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
 
