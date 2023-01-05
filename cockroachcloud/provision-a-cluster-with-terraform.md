@@ -30,14 +30,14 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 In this tutorial, you will create a {{ site.data.products.serverless }} cluster with a spend limit of $0.
 
-1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.serverless }} `main.tf` example file.
+1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.serverless }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_serverless_cluster/main.tf
     ~~~
 
-1. In a text editor create a new file `terraform.tfvars` in `cockroach_serverless_cluster` with the following settings.
+1. In a text editor create a new file `terraform.tfvars` with the following settings:
     
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -60,7 +60,7 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster 
     sql_user_password = "NotAGoodPassword"
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](console-access-management.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable.
+1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](console-access-management.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -75,14 +75,14 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster 
 
 In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
 
-1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.dedicated }} `main.tf` example file.
+1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.dedicated }} `main.tf` example file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     wget https://raw.githubusercontent.com/cockroachdb/terraform-provider-cockroach/main/examples/workflows/cockroach_dedicated_cluster/main.tf
     ~~~
 
-1. In a text editor create a new file `terraform.tfvars` in `cockroach_serverless_cluster` with the following settings.
+1. In a text editor create a new file `terraform.tfvars` with the following settings:
 
     {% include_cached copy-clipboard.html %}
     ~~~
@@ -129,7 +129,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cidr_mask = 32
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](console-access-management.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable.
+1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](console-access-management.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -142,7 +142,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
 
 ## Provision the cluster
 
-1. Initialize the provider.
+1. Initialize the provider:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -151,14 +151,14 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
 
     This reads the `main.tf` configuration file and uses the `terraform.tfvars` file for settings specific to your cluster. The `-upgrade` flag ensures you are using the latest version of the provider.
 
-1. Create the Terraform plan. This shows the actions the provider will take, but won't perform them.
+1. Create the Terraform plan. This shows the actions the provider will take, but won't perform them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     terraform plan
     ~~~
 
-1. Create the cluster.
+1. Create the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
