@@ -154,10 +154,19 @@ A backup job will [pause](pause-job.html) instead of entering a `failed` state i
 
 Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:
 
-Setting    | Description
------------+-----------------
-`bulkio.backup.file_size` | Set a target for the amount of backup data written to each backup file.<br><br>**Default:** `128 MiB`
-`cloudstorage.azure.concurrent_upload_buffers` | Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. It is important to note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.<br><br>**Default:** `1`
+#### `bulkio.backup.file_size` 
+
+Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
+
+If `bulkio.backup.file_size` is set too low, it will cause the backup job to create many small SST files, which could impact a restore job's performance because it will need to keep track of so many small files.
+
+**Default:** `128 MiB`
+
+#### `cloudstorage.azure.concurrent_upload_buffers` 
+
+Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. Note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.
+
+**Default:** `1`
 
 For a complete list, including all cluster settings related to backups, see the [Cluster Settings](cluster-settings.html) page.
 
