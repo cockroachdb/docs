@@ -64,6 +64,10 @@ To observe the impact of an index without affecting a production workload, you c
 
 Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.callout_danger}}
+
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
 {{site.data.alerts.end}}

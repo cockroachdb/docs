@@ -19,6 +19,10 @@ Collated strings are important because different languages have [different rules
 
 - Collated strings that are indexed require additional disk space as compared to uncollated strings. In case of indexed collated strings, collation keys must be stored in addition to the strings from which they are derived, creating a constant factor overhead.
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.callout_danger}}
+
 ## Supported collations
 
 CockroachDB supports collations identified by [Unicode locale identifiers](https://cldr.unicode.org/development/core-specification#h.vgyyng33o798). For example, `en-US` identifies US English, `es` identifies Spanish, and `fr-CA` identifies Canadian French. Collation names are case-insensitive, and hyphens and underscores are interchangeable.
