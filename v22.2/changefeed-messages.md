@@ -245,6 +245,8 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 
 See [Export Data with Changefeeds](export-data-with-changefeeds.html) for detail on using changefeeds to export data from CockroachDB.
 
+The following shows example CSV format output:
+
 ~~~
 4ccccccc-cccc-4c00-8000-00000000000f,washington dc,Holly Williams,95153 Harvey Street Suite 5,2165526885
 51eb851e-b851-4c00-8000-000000000010,washington dc,Ryan Hickman,21187 Dennis Village,1635328127
