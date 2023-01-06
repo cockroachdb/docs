@@ -40,6 +40,12 @@
           "urls": [
             "/cockroachcloud/ccloud-get-started.html"
           ]
+        },
+        {
+          "title": "Provision a CockroachDB Cloud cluster using Terraform",
+          "urls": [
+            "/cockroachcloud/provision-a-cluster-with-terraform.html"
+          ]
         }
       ]
     },
