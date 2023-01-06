@@ -52,7 +52,7 @@ The organization label is found on the **Settings** page of the CockroachDB Clou
 
 ### Log in to CockroachDB Cloud on a headless server
 
-If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve a token, and enter the token on the headless machine so `ccloud` can complete authentication.
+If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve an authorization token, and enter the token on the headless machine so `ccloud` can complete authentication.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -335,16 +335,16 @@ Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) auth
 ccloud cluster sql --sso dim-dog
 ~~~
 
-This will open a browser window on the local machine where you will login to your organization if you are not already authenticated.
+This will open a browser window on the local machine where you will log in to your organization if you are not already authenticated.
 
-If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authentication code you received in the remote terminal to complete the login process.
+If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authorization code you received in the remote terminal to complete the login process.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 ccloud cluster sql --sso --no-redirect dim-dog
 ~~~
 
-Using SSO login requires that a separate SSO SQL user for your account is created on the cluster you are connecting to. SSO SQL usernames are prefixed with `sso_`. The SSO SQL username you use must match the SSL SQL username generated for you.
+Using SSO login requires that a separate SSO SQL user for your account is created on the cluster you are connecting to. SSO SQL usernames are prefixed with `sso_`. The SSO SQL username you use must match the SSO SQL username generated for you.
 
 To create a SSO SQL user:
 
@@ -377,7 +377,7 @@ To create a SSO SQL user:
     ~~~
 
 {{site.data.alerts.callout_info}}
-The organization you are logged into must support SSO. To ensure you are logged into the correct organization, Use the `ccloud auth whoami` command to check that you are logged into the correct organization.
+To ensure you are logged into the correct organization, use the `ccloud auth whoami` command to check that you are logged into the correct organization.
 
 If the organization is incorrect:
 
