@@ -316,7 +316,7 @@ See the following FAQs:
 You may encounter the following issues when your cluster nears 100% resource capacity:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
--   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance or stability issues.
+-   Running RAM at close to 100% utilization triggers Linux [OOM](#out-of-memory-oom-crash) and/or swapping that will result in poor performance or stability issues.
 -   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
 -   Running storage at 100% utilization read/write causes poor service time and [node shutdown](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space).
 -   Running network at 100% utilization causes response between databases and client to be poor.
@@ -483,6 +483,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
   - {% include {{ page.version.version }}/prod-deployment/resolution-oom-crash.md %}
 
 - [Check whether SQL queries may be responsible.](common-issues-to-monitor.html#sql-memory-usage)
+
 
 
 ## Decommissioning issues
