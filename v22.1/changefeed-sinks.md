@@ -106,6 +106,65 @@ Field              | Type                | Description      | Default
 <a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`](string.html) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](changefeed-messages.html#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. | `"ONE"`
 `"Compression"` | [`STRING`](string.html) | <span class="version-tag">New in v22.1.12:</span> Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"none"`, `"gzip"`, `"snappy"`, `"lz4"`, `"zstd"`. | `"none"`
 
+### Kafka sink messages
+
+The following shows the [Avro](changefeed-messages.html#avro) messages for a changefeed emitting to Kafka:
+
+~~~
+{
+    "after":{
+       "users":{
+          "name":{
+             "string":"Michael Clark"
+          },
+          "address":{
+             "string":"85957 Ashley Junctions"
+          },
+          "credit_card":{
+             "string":"4144089313"
+          },
+          "id":{
+             "string":"d84cf3b6-7029-4d4d-aa81-e5caa9cce09e"
+          },
+          "city":{
+             "string":"seattle"
+          }
+       }
+    },
+    "updated":{
+       "string":"1659643584586630201.0000000000"
+    }
+ }
+ {
+    "after":{
+       "users":{
+          "address":{
+             "string":"17068 Christopher Isle"
+          },
+          "credit_card":{
+             "string":"6664835435"
+          },
+          "id":{
+             "string":"11b99275-92ce-4244-be61-4dae21973f87"
+          },
+          "city":{
+             "string":"amsterdam"
+          },
+          "name":{
+             "string":"John Soto"
+          }
+       }
+    },
+    "updated":{
+       "string":"1659643585384406152.0000000000"
+    }
+ }
+~~~
+
+See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial for examples to set up a Kafka sink. 
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
+
 ## Google Cloud Pub/Sub
 
 {% include feature-phases/preview.md %}
@@ -148,6 +207,29 @@ The output from `CREATE CHANGEFEED` will display the job ID as well as the topic
 You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, see Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
 
 For a list of compatible parameters and options, see [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
+
+### Pub/Sub sink messages
+
+The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example: 
+
+~~~
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
+│                                                                                                                                 DATA                                                                                                                                 │    MESSAGE_ID    │                       ORDERING_KEY                      │ ATTRIBUTES │ DELIVERY_ATTEMPT │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼─────────────────────────────────────────────────────────┼────────────┼──────────────────┤
+│ {"key":["boston","40ef7cfa-5e16-4bd3-9e14-2f23407a66df"],"value":{"after":{"address":"14980 Gentry Plains Apt. 64","city":"boston","credit_card":"2466765790","id":"40ef7cfa-5e16-4bd3-9e14-2f23407a66df","name":"Vickie Fitzpatrick"}},"topic":"movr-users"}         │ 4466153049158588 │ ["boston", "40ef7cfa-5e16-4bd3-9e14-2f23407a66df"]      │            │                  │
+│ {"key":["los angeles","947ae147-ae14-4800-8000-00000000001d"],"value":{"after":{"address":"35627 Chelsey Tunnel Suite 94","city":"los angeles","credit_card":"2099932769","id":"947ae147-ae14-4800-8000-00000000001d","name":"Kenneth Barnes"}},"topic":"movr-users"} │ 4466144577818136 │ ["los angeles", "947ae147-ae14-4800-8000-00000000001d"] │            │                  │
+│ {"key":["amsterdam","c28f5c28-f5c2-4000-8000-000000000026"],"value":{"after":{"address":"14729 Karen Radial","city":"amsterdam","credit_card":"5844236997","id":"c28f5c28-f5c2-4000-8000-000000000026","name":"Maria Weber"}},"topic":"movr-users"}                   │ 4466151194002912 │ ["amsterdam", "c28f5c28-f5c2-4000-8000-000000000026"]   │            │                  │
+│ {"key":["new york","6c8ab772-584a-439d-b7b4-fda37767c74c"],"value":{"after":{"address":"34196 Roger Row Suite 6","city":"new york","credit_card":"3117945420","id":"6c8ab772-584a-439d-b7b4-fda37767c74c","name":"James Lang"}},"topic":"movr-users"}                 │ 4466147099992681 │ ["new york", "6c8ab772-584a-439d-b7b4-fda37767c74c"]    │            │                  │
+│ {"key":["boston","c56dab0a-63e7-4fbb-a9af-54362c481c41"],"value":{"after":{"address":"83781 Ross Overpass","city":"boston","credit_card":"7044597874","id":"c56dab0a-63e7-4fbb-a9af-54362c481c41","name":"Mark Butler"}},"topic":"movr-users"}                        │ 4466150752442731 │ ["boston", "c56dab0a-63e7-4fbb-a9af-54362c481c41"]      │            │                  │
+│ {"key":["amsterdam","f27e09d5-d7cd-4f88-8b65-abb910036f45"],"value":{"after":{"address":"77153 Donald Road Apt. 62","city":"amsterdam","credit_card":"7531160744","id":"f27e09d5-d7cd-4f88-8b65-abb910036f45","name":"Lisa Sandoval"}},"topic":"movr-users"}          │ 4466147182359256 │ ["amsterdam", "f27e09d5-d7cd-4f88-8b65-abb910036f45"]   │            │                  │
+│ {"key":["new york","46d200c0-6924-4cc7-b3c9-3398997acb84"],"value":{"after":{"address":"92843 Carlos Grove","city":"new york","credit_card":"8822366402","id":"46d200c0-6924-4cc7-b3c9-3398997acb84","name":"Mackenzie Malone"}},"topic":"movr-users"}                │ 4466142864542016 │ ["new york", "46d200c0-6924-4cc7-b3c9-3398997acb84"]    │            │                  │
+│ {"key":["boston","52ecbb26-0eab-4e0b-a160-90caa6a7d350"],"value":{"after":{"address":"95044 Eric Corner Suite 33","city":"boston","credit_card":"3982363300","id":"52ecbb26-0eab-4e0b-a160-90caa6a7d350","name":"Brett Porter"}},"topic":"movr-users"}                │ 4466152539161631 │ ["boston", "52ecbb26-0eab-4e0b-a160-90caa6a7d350"]      │            │                  │
+│ {"key":["amsterdam","ae147ae1-47ae-4800-8000-000000000022"],"value":{"after":{"address":"88194 Angela Gardens Suite 94","city":"amsterdam","credit_card":"4443538758","id":"ae147ae1-47ae-4800-8000-000000000022","name":"Tyler Dalton"}},"topic":"movr-users"}       │ 4466151398997150 │ ["amsterdam", "ae147ae1-47ae-4800-8000-000000000022"]   │            │                  │
+│ {"key":["paris","dc28f5c2-8f5c-4800-8000-00000000002b"],"value":{"after":{"address":"2058 Rodriguez Stream","city":"paris","credit_card":"9584502537","id":"dc28f5c2-8f5c-4800-8000-00000000002b","name":"Tony Ortiz"}},"topic":"movr-users"}                         │ 4466146372222914 │ ["paris", "dc28f5c2-8f5c-4800-8000-00000000002b"]       │            │                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────┴────────────┴──────────────────┘
+~~~
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## Cloud storage sink
 
@@ -200,6 +282,55 @@ URI Parameter      | Description
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
 [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
+
+### Cloud storage sink messages 
+
+The following shows the default JSON messages for a changefeed emitting to a cloud storage sink:
+ 
+~~~
+{
+    "after":{
+       "address":"51438 Janet Valleys",
+       "city":"boston",
+       "credit_card":"0904722368",
+       "id":"33333333-3333-4400-8000-00000000000a",
+       "name":"Daniel Hernandez MD"
+    },
+    "key":[
+       "boston",
+       "33333333-3333-4400-8000-00000000000a"
+    ]
+ }
+ {
+    "after":{
+       "address":"15074 Richard Falls",
+       "city":"boston",
+       "credit_card":"0866384459",
+       "id":"370117cf-d77d-4778-b0b9-01ac17c15a06",
+       "name":"Cheyenne Morales"
+    },
+    "key":[
+       "boston",
+       "370117cf-d77d-4778-b0b9-01ac17c15a06"
+    ]
+ }
+ {
+    "after":{
+       "address":"69687 Jessica Islands Apt. 68",
+       "city":"boston",
+       "credit_card":"6837062320",
+       "id":"3851eb85-1eb8-4200-8000-00000000000b",
+       "name":"Sarah Wang DDS"
+    },
+    "key":[
+       "boston",
+       "3851eb85-1eb8-4200-8000-00000000000b"
+    ]
+ }
+. . .
+~~~
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## Webhook sink
 
@@ -272,6 +403,69 @@ Some complexities to consider when setting `Flush` fields for batching:
   }
 }
 ~~~
+
+### Webhook sink messages
+
+The following shows the default JSON messages for a changefeed emitting to a webhook sink. These changefeed messages were emitted as part of the [Create a changefeed connected to a Webhook sink](changefeed-examples.html#create-a-changefeed-connected-to-a-webhook-sink) example:
+
+~~~
+"2021/08/24 14":"00":21
+{
+    "payload":[
+       {
+          "after":{
+             "city":"rome",
+             "creation_time":"2019-01-02T03:04:05",
+             "current_location":"39141 Travis Curve Suite 87",
+             "ext":{
+                "brand":"Schwinn",
+                "color":"red"
+             },
+             "id":"d7b18299-c0c4-4304-9ef7-05ae46fd5ee1",
+             "dog_owner_id":"5d0c85b5-8866-47cf-a6bc-d032f198e48f",
+             "status":"in_use",
+             "type":"bike"
+          },
+          "key":[
+             "rome",
+             "d7b18299-c0c4-4304-9ef7-05ae46fd5ee1"
+          ],
+          "topic":"vehicles",
+          "updated":"1629813621680097993.0000000000"
+       }
+    ],
+    "length":1
+ }
+
+ "2021/08/24 14":"00":22
+ {
+    "payload":[
+       {
+          "after":{
+             "city":"san francisco",
+             "creation_time":"2019-01-02T03:04:05",
+             "current_location":"84888 Wallace Wall",
+             "ext":{
+                "color":"black"
+             },
+             "id":"020cf7f4-6324-48a0-9f74-6c9010fb1ab4",
+             "dog_owner_id":"b74ea421-fcaf-4d80-9dcc-d222d49bdc17",
+             "status":"available",
+             "type":"scooter"
+          },
+          "key":[
+             "san francisco",
+             "020cf7f4-6324-48a0-9f74-6c9010fb1ab4"
+          ],
+          "topic":"vehicles",
+          "updated":"1629813621680097993.0000000000"
+       }
+    ],
+    "length":1
+ }
+~~~
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## See also
 
