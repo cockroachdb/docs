@@ -77,6 +77,10 @@ To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combine
 
 For best practices, see [Schema Design: Select primary key columns](schema-design-table.html#select-primary-key-columns).
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 ## Example
 
 {% include_cached copy-clipboard.html %}

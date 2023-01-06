@@ -101,6 +101,10 @@ The [`EXPLAIN`](explain.html#success-responses) command provides index recommend
 
     - If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 ### Index management
 
 - Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
