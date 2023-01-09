@@ -237,7 +237,7 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](../cockroachcloud/billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell

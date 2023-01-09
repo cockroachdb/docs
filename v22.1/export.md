@@ -218,7 +218,7 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 ### Export data out of {{ site.data.products.db }}
 
 {{site.data.alerts.callout_info}}
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your organization](../cockroachcloud/billing-management.html) to access cloud storage or [export data to a local CSV file](../cockroachcloud/migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](../cockroachcloud/billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). 
 {{site.data.alerts.end}}
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
