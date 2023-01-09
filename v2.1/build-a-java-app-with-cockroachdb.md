@@ -24,7 +24,7 @@ The examples on this page assume you are using a Java version <= 9. They do not 
 
 ## Step 1. Install the Java JDBC driver
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/).
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
