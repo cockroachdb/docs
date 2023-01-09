@@ -1,5 +1,5 @@
 ---
-title: Manual Backups
+title: Take and Restore Customer-Owned Backups 
 summary: Run backups and restores from your CockroachDB Cloud cluster.
 toc: true
 docs_area: manage
@@ -55,7 +55,7 @@ Cockroach Labs runs the following managed-service backups:
 - {{ site.data.products.dedicated }} clusters: [Full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 - {{ site.data.products.serverless }} clusters: [Full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) every hour that are retained for 30 days.
 
-For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
+For more information, read [Use Managed-Service Backups](../cockroachcloud/use-managed-service-backups.html).
 
 The following examples show how to run manual backups:
 
@@ -94,7 +94,7 @@ cockroach userfile delete bank-backup --url {CONNECTION STRING}
 
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](../{{site.current_cloud_version}}/configure-replication-zones.html#gc-ttlseconds) to be removed from disk.
 
-To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](backups-page.html#troubleshooting).
+To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](use-managed-service-backups.html#troubleshooting).
 
 </section>
 

@@ -17,9 +17,9 @@ You can't configure [alerts on changefeeds](../{{site.current_cloud_version}}/mo
 
 ## Backups
 
-{{ site.data.products.serverless }} only support automated full backups. Automated [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) and [revision history](../{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html) backups are not supported. However, [user managed incremental and revision history backups](run-bulk-operations.html#backup-data) using user provided storage locations are supported.
+{{ site.data.products.serverless }} only support automated full backups. Automated [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) and [revision history](../{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html) backups are not supported. However, [user managed incremental and revision history backups](take-and-restore-customer-owned-backups.html#backup-data) using user provided storage locations are supported.
 
-Automated database and table level backups are not supported in {{ site.data.products.serverless }}. However, [user managed database and table level backups](run-bulk-operations.html#backup-data) using user provided storage locations are supported.
+Automated database and table level backups are not supported in {{ site.data.products.serverless }}. However, [user managed database and table level backups](take-and-restore-customer-owned-backups.html#backup-data) using user provided storage locations are supported.
 
 Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](../{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.html). However, user managed locality-aware backups using user provided storage locations are supported in {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
 

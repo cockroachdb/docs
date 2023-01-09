@@ -32,7 +32,7 @@ Get future release notes emailed to you:
 <h3> Bug fixes </h3>
 
 - Trial coupon limits for {{ site.data.products.dedicated }} clusters' storage and compute are now enforced in the [**Edit cluster**](../cockroachcloud/cluster-management.html) dialog.
-- Fixed a bug where [backups](../cockroachcloud/backups-page.html) shown for a particular day included backups for midnight on the following day.
+- Fixed a bug where [backups](../cockroachcloud/use-managed-service-backups.html) shown for a particular day included backups for midnight on the following day.
 - Fixed a bug  on the [**Databases page**](../cockroachcloud/databases-page.html) where the number of index recommendations displayed for a database was inconsistent with the actual number of index recommendations for the database.
 - Fixed a bug that could break the [**Databases page**](../cockroachcloud/databases-page.html) when fetching index usage statistics for databases.
 
@@ -212,7 +212,7 @@ Get future release notes emailed to you:
 
 - {{ site.data.products.db }} clusters now have a **Databases** page in the Console, which shows your databases, tables, indexes, and grants.
 - When creating or editing a SQL user, passwords are now generated and saved automatically when users click the **Generate and save password** button. Previously, users had to enter passwords manually and remember to save them.
-- {{ site.data.products.dedicated }} users can now [restore](../cockroachcloud/backups-page.html) databases configured for multiple regions.
+- {{ site.data.products.dedicated }} users can now [restore](../cockroachcloud/use-managed-service-backups.html) databases configured for multiple regions.
 
 ## February 10, 2022
 
@@ -347,7 +347,7 @@ Get future release notes emailed to you:
 <h3>General changes</h3>
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.6](v21.1.html#v21-1-6).
-- CockroachCloud Free (beta) users can now perform [bulk operations](../cockroachcloud/run-bulk-operations.html) (`IMPORT`, `BACKUP`, `RESTORE` and CDC) with `userfile` storage.
+- CockroachCloud Free (beta) users can now perform [backups](../cockroachcloud/take-and-restore-customer-owned-backups.html) (`IMPORT`, `BACKUP`, `RESTORE` and CDC) with `userfile` storage.
 
 <h3>Console changes</h3>
 
@@ -473,7 +473,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.html#v20-2-
 
     You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
 
-- You can now [restore databases and tables](../cockroachcloud/backups-page.html) from backups of CockroachCloud clusters. This feature is only available to clusters running the paid version of CockroachCloud.
+- You can now [restore databases and tables](../cockroachcloud/use-managed-service-backups.html) from backups of CockroachCloud clusters. This feature is only available to clusters running the paid version of CockroachCloud.
 - [reCAPTCHA](https://www.google.com/recaptcha/about/) has been added to the sign up process for new users signing up with an email and password. Some users may need to complete an image challenge.
 - An email will now be sent to [Console Admins](../cockroachcloud/console-access-management.html#console-admin) when a [30-day free trial of CockroachCloud](../cockroachcloud/quickstart-trial-cluster.html) is nearing its end and once it has expired.
 
@@ -505,7 +505,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.0](v20.2.html#v20-2-
 - [Create a 30-day free CockroachCloud cluster](../cockroachcloud/quickstart.html).
 - [Add or remove nodes](../cockroachcloud/cluster-management.html#add-or-remove-nodes-from-a-cluster) through the {{ site.data.products.db }} Console.
 - [Set up VPC peering](../cockroachcloud/network-authorization.html) for clusters running on GCP.
-- [View backups](../cockroachcloud/backups-page.html) that Cockroach Labs has taken for your CockroachCloud cluster.
+- [View backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs has taken for your CockroachCloud cluster.
 
 
 ## July 6, 2020

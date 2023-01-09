@@ -40,4 +40,4 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](backups-page.html#troubleshooting).
+To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](use-managed-service-backups.html#troubleshooting).

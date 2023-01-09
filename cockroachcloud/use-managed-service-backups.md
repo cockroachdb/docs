@@ -1,5 +1,5 @@
 ---
-title: Restore Data from a Backup
+title: Use Managed-Service Backups
 summary: Restore data from a backup in CockroachDB Cloud.
 toc: true
 docs_area: manage
@@ -13,8 +13,6 @@ docs_area: manage
 
 This page describes the **Backups** page and how to restore your data.
 
-The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
-
 <section class="filter-content" markdown="1" data-scope="serverless">
 Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days.
 </section>
@@ -25,7 +23,7 @@ Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/tak
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
 
-In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
+In the meantime, you can [back up and restore data manually](take-and-restore-customer-owned-backups.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
 
 </section>
@@ -102,7 +100,7 @@ For each table in the database, the following details display:
 Additional ways to restore data:
 
 - [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster)
-- [Back up and restore data manually](run-bulk-operations.html)
+- [Back up and restore data manually](take-and-restore-customer-owned-backups.html)
 
 ### Restore a database
 
@@ -277,6 +275,6 @@ Find the cluster backup you want to restore, and click **Restore**.
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](run-bulk-operations.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](run-bulk-operations.html) location or a [cloud storage location](run-bulk-operations.html?filters=cloud), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit.
+You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit.
 
 </section>
