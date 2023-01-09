@@ -931,7 +931,7 @@ Parameter | Description
 
 <div class="filter-content" markdown="1" data-scope="jdbc">
 
-To connect to CockroachDB with the [JDBC](https://jdbc.postgresql.org) driver, create a `DataSource` object ([`PGSimpleDataSource` or `PGPoolingDataSource`](hhttps://jdbc.postgresql.org/documentation/datasource/#applications-datasource)), and set the connection string with the `setUrl` class method.
+To connect to CockroachDB with the [JDBC](https://jdbc.postgresql.org) driver, create a `DataSource` object ([`PGSimpleDataSource` or `PGPoolingDataSource`](https://jdbc.postgresql.org/documentation/datasource/#applications-datasource)), and set the connection string with the `setUrl` class method.
 
 For example:
 
