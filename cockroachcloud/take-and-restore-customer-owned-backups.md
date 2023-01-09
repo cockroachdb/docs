@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for backups and restores. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for backups and restores. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples. 
 
 - [`BACKUP`](../{{site.current_cloud_version}}/backup.html)
 - [`RESTORE`](../{{site.current_cloud_version}}/restore.html)
