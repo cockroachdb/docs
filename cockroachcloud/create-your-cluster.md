@@ -20,7 +20,7 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
-1. Selected the **Dedicated** plan.
+1. Selected the **Dedicated** or **Dedicated Advanced** plan.
 
 ## Step 2. Select the cloud provider
 

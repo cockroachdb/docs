@@ -16,7 +16,13 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Overview** page, click **Create Cluster**.
-1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
+1. On the **Create Cluster** page, select **Dedicated**.
+
+    {{site.data.alerts.callout_info}}
+    Free trials do not apply to **Dedicated Advanced** clusters.
+    {{site.data.alerts.end}}
+    
+1. For **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
     
     {{site.data.alerts.callout_info}}
