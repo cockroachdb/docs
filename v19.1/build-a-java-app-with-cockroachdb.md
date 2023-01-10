@@ -113,7 +113,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 To run it:
 
-1. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
+1. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download/).
 1. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}
