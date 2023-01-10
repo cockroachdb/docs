@@ -125,7 +125,21 @@ Active monitoring helps you spot problems early, but it is also essential to sen
       go version:       go1.17.8
     ~~~
 
-4. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `alertmanager.yml`, to specify the desired receivers for notifications.
+4. [Edit the Alertmanager configuration file](https://prometheus.io/docs/alerting/configuration/) that came with the binary, `alertmanager.yml`, to specify the desired receivers for notifications. For example, your configuration may resemble:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ ini
+    route:
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 1h
+      receiver: 'web.hook'
+    receivers:
+      - name: 'web.hook'
+        webhook_configs:
+          - url: 'http://127.0.0.1:5001/'
+    ~~~
 
 5. Start the Alertmanager server, with the `--config.file` flag pointing to the configuration file:
 
@@ -135,6 +149,8 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     ~~~
 
 6. Point your browser to `http://<hostname of machine running alertmanager>:9093`, where you can use the Alertmanager UI to define rules for [silencing alerts](https://prometheus.io/docs/alerting/alertmanager/#silences).
+
+7. Now that Alertmanager is configured and running, you can optionally [import pre-existing rules or create your own](monitoring-and-alerting.html#alertmanager) if you prefer.
 
 ## Step 5. Visualize metrics in Grafana
 

@@ -121,9 +121,9 @@ The following binaries are not suitable for production environments:
                 <td><span class="badge badge-gray">Withdrawn</span></td>
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
                 <td>
-                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">Full Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-arm64.tgz">Full Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                         {% if r.has_sql_only != "false" %}
-                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz">SQL shell Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-3.7.10-gnu-aarch64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-arm64.tgz">SQL shell Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                         {% endif %}
                 </td>
                     {% endif %}
@@ -171,9 +171,9 @@ The following binaries are not suitable for production environments:
             <td><span class="badge badge-gray">Withdrawn</span></td>
                   {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
-                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-aarch64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-aarch64.tgz.sha256sum">SHA256</a>)</div>
+                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-arm64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
                     {% if r.has_sql_only != "false" %}
-                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-aarch64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-aarch64.tgz.sha256sum">SHA256</a>)</div>
+                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-arm64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
                     {% endif %}
             </td>
                 {% endif %}
