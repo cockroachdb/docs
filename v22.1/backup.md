@@ -148,7 +148,7 @@ Cluster settings provide a means to tune a CockroachDB cluster. The following cl
 
 Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
 
-If `bulkio.backup.file_size` is set too low, it will cause the backup job to create many small SST files, which could impact a restore job's performance because it will need to keep track of so many small files.
+Note that if you lower `bulkio.backup.file_size` below the default, it will cause the backup job to create many small SST files, which could impact a restore job’s performance because it will need to keep track of so many small files.
 
 **Default:** `128 MiB`
 
