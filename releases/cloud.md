@@ -16,6 +16,19 @@ Get future release notes emailed to you:
 
 {% include releases/current-cloud-version.md %}
 
+## January 9, 2023
+
+<h3> Console changes </h3>
+
+- {{ site.data.products.dedicated }} clusters running CockroachDB [v22.1.8](../releases/v22.1.html#v22-1-8) or later now have a separate tab for incomplete backup jobs on the [**Backups** page](../cockroachcloud/backups-page.html#backups-page).
+
+<h3> Cloud API changes </h3>
+
+- The [create cluster](../cockroachcloud/cloud-api.html#create-a-new-cluster) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy](../cockroachcloud/egress-perimeter-controls.html#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters](../cockroachcloud/private-clusters.html), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
+
+<h3> Bug fixes </h3>
+- Fixed a bug for {{ site.data.products.dedicated }} clusters where the [**Datadog setup**](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) dialog was not rendering properly.
+
 ## December 5, 2022
 
 <h3> Console changes </h3>
