@@ -377,7 +377,7 @@ To create a SSO SQL user:
     ~~~
 
 {{site.data.alerts.callout_info}}
-To ensure you are logged into the correct organization, use the `ccloud auth whoami` command to check that you are logged into the correct organization.
+Use the `ccloud auth whoami` command to check that you are logged into the correct organization.
 
 If the organization is incorrect:
 
