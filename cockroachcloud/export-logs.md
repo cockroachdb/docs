@@ -33,6 +33,22 @@ Method | Required permissions | Description
 
 See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
 
+## Log name format
+
+When written to your chosen cloud log sink, logs have the following name format:
+
+{% include_cached copy-clipboard.html %}
+~~~
+{log-name}.{region}.cockroachdbcloud.{log-channel}.n{N}
+~~~
+
+Where:
+
+- `{log-name}` is a string of your choosing as you configure log export. For AWS CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
+- `{region}` is the cloud provider region where your {{ site.data.products.dedicated }} cluster resides.
+- `{log-channel}` is the CockroachDB [log channel](../{{site.versions["stable"]}}/logging-overview.html#logging-channels), such as `HEALTH` or `OPS`.
+- `{N}` is the node number of the {{ site.data.products.dedicated }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
+
 ## Enable log export
 
 <div class="filters clearfix">
@@ -310,6 +326,10 @@ Yes, the [SQL Audit Log](/docs/{{site.current_cloud_version}}/sql-audit-logging.
 ### Can I use an AWS External ID with the log export feature?
 
 No, the {{ site.data.products.dedicated }} log export feature does not support use of an AWS External ID. You must configure a cross-account IAM Role as described in the [Enable log export](#enable-log-export) instructions.
+
+### Why are some logs appearing without a node number in the name?
+
+Log messages received from {{ site.data.products.dedicated }} nodes that are not yet fully started may arrive without a node number appended to the log name, in the format `{logname}.n`. Node-specific log messages, as they are received, are written to node-specific logs in the format `{logname}.n1`, `{logname}.n2`, etc., where the number following the `n` characters is the node ID. See [Log Name Format](#log-name-format).
 
 ## Troubleshooting
 
