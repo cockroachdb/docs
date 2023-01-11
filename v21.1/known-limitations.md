@@ -399,6 +399,10 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/19464)
 
+### Dropping a single partition
+
+{% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
+
 ### Adding a column with sequence-based `DEFAULT` values
 
 It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:

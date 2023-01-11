@@ -58,7 +58,7 @@ Component | Description | Required
 `<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
 `<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
 `<directory-path>` |  The directory path to the client listening for a socket connection. | Required when specifying a Unix domain socket URI.
-`<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | [`options=--cluster=<cluster name>`](#supported-options-parameters) is required for {{ site.data.products.serverless }} clusters.
+`<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | ✗
 
 {{site.data.alerts.callout_info}}
 For cockroach commands that accept a URL, you can specify the URL with the command-line flag `--url`.
@@ -97,11 +97,11 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`.
+`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
 `-c <session_variable>=<value>` |  Sets a [session variable](set-vars.html) for the SQL session.
 
 {{site.data.alerts.callout_info}}
-Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters) must specified as `%20`.
+Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/use/#connection-parameters) must specified as `%20`.
 {{site.data.alerts.end}}
 
 ### Secure connections with URLs
@@ -188,7 +188,7 @@ This specifies a connection for the `root` user to an insecure cluster listening
 
 ## Connect using discrete parameters
 
-Most [`cockroach` Commands Overview](cockroach-commands.html) accept connection
+Most [`cockroach` commands](cockroach-commands.html) accept connection
 parameters as separate, discrete command-line flags, in addition (or
 in replacement) to `--url` which [specifies all parameters as a
 URL](#connect-using-a-url).

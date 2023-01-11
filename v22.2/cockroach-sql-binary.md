@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.cli
 ---
 
-{% assign release = site.data.releases | where_exp: "release", "release.major_version == page.version.version" | last %}
-
 The `cockroach-sql` command is a client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run `cockroach-sql` as described below.
 
 {{site.data.alerts.callout_info}}
@@ -35,16 +33,18 @@ curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version
 ~~~
 
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="mac">
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ r.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
+curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
 ~~~
 
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="windows">
@@ -64,7 +64,9 @@ Or you can download the [binary from the releases page](../releases/{{ page.vers
 
 ## Prerequisites
 
-The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user's role option has been set to `NOLOGIN` or `NOSQLLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
+- The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user's role option has been set to `NOLOGIN` or `NOSQLLOGIN`, the user cannot log in using the SQL CLI with any authentication method.
+- **macOS users only:** By default, macOS-based terminals do not enable handling of the Alt key modifier. This prevents access to many keyboard shortcuts in the unix shell and `cockroach sql`. See the section [macOS terminal configuration](#macos-terminal-configuration) below for details.
+
 
 ## Synopsis
 
@@ -76,12 +78,17 @@ $ cockroach-sql <flags>
 
 Execute SQL from the command line:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql -e="<sql statement>;<sql statement>" -e="<sql-statement>" <flags>
 ~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ echo "<sql statement>;<sql statement>" | cockroach-sql <flags>
 ~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach-sql <flags> -f file-containing-statements.sql
 ~~~
@@ -192,6 +199,10 @@ The **Version** and **Cluster ID** details are particularly noteworthy:
 ### Shortcuts
 
 {% include {{ page.version.version }}/sql/shell-shortcuts.md %}
+
+### macOS terminal configuration
+
+{% include {{ page.version.version }}/sql/macos-terminal-configuration.md %}
 
 ### Error messages and `SQLSTATE` codes
 

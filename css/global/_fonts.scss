@@ -5,16 +5,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin source_code_r($size) {font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif; font-size:$size; @include font-props;}
-@mixin adelle_b($size) {font-family: 'Adelle-Bold', serif; font-size:$size; @include font-props;}
-@mixin avenir_r($size) {font-family: 'AvenirLTStd-Roman', serif; font-size:$size; @include font-props;}
-@mixin avenir_o($size) {font-family: 'AvenirLTStd-Oblique', serif; font-size:$size; @include font-props;}
-@mixin avenir_h($size) {font-family: 'AvenirLTStd-Heavy', serif; font-size:$size; @include font-props;}
+@mixin source_code_r($size) {font-family: 'Source Code Pro', monospace, Arial, Helvetica, sans-serif; font-size:$size; @include font-props;}
 
-@mixin sourcesanspro_r($size) {font-family: 'SourceSansPro-Regular', sans-serif; font-size:$size; @include font-props;}
-@mixin sourcesanspro_m($size) {font-family: 'SourceSansPro-SemiBold', sans-serif; font-size:$size; @include font-props;}
-@mixin sourcesanspro_b($size) {font-family: 'SourceSansPro-Bold', sans-serif; font-size:$size; @include font-props;}
+@mixin sourcesanspro_r($size) {font-family: 'Source Sans Pro', sans-serif; font-size:$size; @include font-props;}
+@mixin sourcesanspro_m($size) {font-family: 'Source Sans Pro', sans-serif; font-size:$size; @include font-props; font-weight: 600;}
+@mixin sourcesanspro_b($size) {font-family: 'Source Sans Pro', sans-serif; font-size:$size; @include font-props; font-weight: bold;}
 
 // Poppins
 @mixin poppins($size) {font-family: 'Poppins', sans-serif; font-size:$size; @include font-props;}
-@mixin poppins_sb($size) {font-family: 'Poppins-SemiBold', sans-serif; font-size:$size; @include font-props;}
+@mixin poppins_sb($size) {font-family: 'Poppins', sans-serif; font-size:$size; @include font-props; font-weight: bold;}

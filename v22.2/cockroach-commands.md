@@ -51,8 +51,8 @@ For many common `cockroach` flags, such as `--port` and `--user`, you can set en
 CockroachDB prioritizes command flags, environment variables, and defaults as follows:
 
 1. If a flag is set for a command, CockroachDB uses it.
-2. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
-3. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
-4. If there's no flag default, CockroachDB gives an error.
+1. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
+1. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
+1. If there's no flag default, CockroachDB gives an error.
 
 For more details, see [Client Connection Parameters](connection-parameters.html).

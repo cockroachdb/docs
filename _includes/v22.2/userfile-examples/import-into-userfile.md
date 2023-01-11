@@ -28,4 +28,4 @@ IMPORT INTO customers (id, dob, first_name, last_name, joined)
 (1 row)
 ~~~
 
-For more import options, see [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html).
+For more import options, see [`IMPORT INTO`](import-into.html).

@@ -144,6 +144,12 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Restoring Backups Across Versions",
+          "urls": [
+            "/${VERSION}/restoring-backups-across-versions.html"
+          ]
         }
       ]
     },
@@ -177,17 +183,28 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Authenticating to CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/authentication.html"
-              ]
-            },
-            {
-              "title": "Single Sign-On (SSO) for CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/cloud-sso.html"
-              ]
-            },
+							"title": "Authentication",
+								"items": [
+									{
+										"title": "Authentication Overview",
+										"urls": [
+											"/cockroachcloud/authentication.html"
+										]
+									},
+									{
+										"title": "Single Sign-On (SSO)",
+										"urls": [
+											"/cockroachcloud/cloud-org-sso.html"
+										]
+									},
+									{
+										"title": "Configure Cloud Organization SSO",
+										"urls": [
+											"/cockroachcloud/configure-cloud-org-sso.html"
+										]
+									}
+								]
+      	    },
             {
               "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
               "urls": [
@@ -358,7 +375,7 @@
               ]
             },
             {
-              "title": "Monitor with Datadog",
+              "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]

@@ -81,6 +81,8 @@ CockroachDB automatically retries individual statements (implicit transactions) 
 
 You can change the results buffer size for all new sessions using the `sql.defaults.results_buffer.size` [cluster setting](cluster-settings.html), or for a specific session using the `results_buffer_size` [session variable](set-vars.html). Decreasing the buffer size can increase the number of transaction retry errors a client receives, whereas increasing the buffer size can increase the delay until the client receives the first result row.
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 #### Individual statements
 
 Individual statements are treated as implicit transactions, and so they fall
@@ -101,7 +103,7 @@ Batching is generally controlled by your driver or client's behavior. Technicall
 
 1. When the client/driver is using the [PostgreSQL Extended Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY), a batch is made up of all queries sent in between two `Sync` messages. Many drivers support such batches through explicit batching constructs.
 
-2. When the client/driver is using the [PostgreSQL Simple Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#id-1.10.5.7.4), a batch is made up of semicolon-separated strings sent as a unit to CockroachDB. For example, in Go, this code would send a single batch (which would be automatically retried):
+1. When the client/driver is using the [PostgreSQL Simple Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#id-1.10.5.7.4), a batch is made up of semicolon-separated strings sent as a unit to CockroachDB. For example, in Go, this code would send a single batch (which would be automatically retried):
 
     ~~~ go
     db.Exec(
@@ -125,6 +127,8 @@ already been delivered to the client by the time statement 2 is forcing the
 transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
 [client-side intervention](#client-side-intervention).
+
+**New in v22.2:** The [`enable_implicit_transaction_for_batch_statements` session variable](set-vars.html#enable-implicit-transaction-for-batch-statements) defaults to `true`. This means that any batch of statements is treated as an implicit transaction, so the `BEGIN`/`COMMIT` commands are not needed to group all the statements in one transaction.
 
 #### Bounded staleness reads
 
@@ -387,6 +391,8 @@ apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE
 {{site.data.alerts.callout_info}}
 Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
 {{site.data.alerts.end}}
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## See also
 

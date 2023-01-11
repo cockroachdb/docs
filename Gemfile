@@ -17,5 +17,7 @@ gem "jekyll-minifier"
 group :jekyll_plugins do
     gem "jekyll-include-cache"
     gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
-    gem 'jekyll-remote-include', github: 'ianjevans/jekyll-remote-include', tag: 'v1.1.6'
+    gem 'jekyll-remote-include', github: 'ianjevans/jekyll-remote-include', tag: 'v1.1.7'
+    gem "jekyll-last-modified-at"
+    gem "jekyll-get-json"
   end

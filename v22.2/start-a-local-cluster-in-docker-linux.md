@@ -1,6 +1,6 @@
 ---
 title: Start a Cluster in Docker (Insecure)
-summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
+summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single Linux host.
 toc: true
 docs_area: deploy
 ---
@@ -20,10 +20,17 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 ## Before you begin
 
 - Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
-- For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
+- For quick SQL testing or application development, consider running a [single-node cluster](cockroach-start-single-node.html). When you use Docker to run a single-node cluster, some additional features are available to assist you with testing and development. See [Start a single-node cluster](#start-a-single-node-cluster). Single-node clusters are not highly available or fault tolerant, and are not appropriate for production use.
+- Running multiple nodes on a single host is useful for testing CockroachDB, but it's not highly available or fault tolerant, and is not suitable for production. To run a physically-distributed cluster in containers, use an orchestration tool like Kubernetes. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
+
+## Start a multi-node cluster
 
 {% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
+
+## Start a single-node cluster
+
+{% include {{ page.version.version }}/start-in-docker/mac-linux-steps-single-node.md %}
+
 
 ## What's next?
 

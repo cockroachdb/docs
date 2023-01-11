@@ -6,8 +6,6 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-
-
 An _expression index_ is an index created by applying an [expression](scalar-expressions.html) to a column. For example, to facilitate fast, case insensitive lookups of user names you could create an index by applying the function `lower` to the `name` column: `CREATE INDEX users_name_idx ON users (lower(name))`. The value of the expression is stored only in the expression index, not in the primary family index.
 
 Both [standard indexes](create-index.html) and [GIN indexes](inverted-indexes.html) support expressions. You can use expressions in [unique indexes](create-index.html#unique-indexes) and [partial indexes](partial-indexes.html).
@@ -46,7 +44,7 @@ To view the expression used to generate the index, run `SHOW CREATE TABLE`:
 
 ## Examples
 
-### Simple examples
+### Create various expression indexes
 
 Suppose you have a table with the following columns:
 {% include_cached copy-clipboard.html %}
@@ -110,26 +108,24 @@ When you perform a query that filters on the `user_profile->'birthdate'` column:
 You can see that a full scan is performed:
 
 ~~~
-                                           info
--------------------------------------------------------------------------------------------
-  distribution: full
+                            info
+-------------------------------------------------------------
+  distribution: local
   vectorized: true
 
   • render
-  │ estimated row count: 0
   │
   └── • filter
-      │ estimated row count: 0
-      │ filter: (user_profile->'birthdate') = '2011-11-07'
+      │ filter: (user_profile->>'birthdate') = '2011-11-07'
       │
-      └── • index join
-          │ estimated row count: 3
-          │ table: users@users_pkey
-          │
-          └── • scan
-                missing stats
-                table: users@users_pkey
-                spans: FULL SCAN
+      └── • scan
+            missing stats
+            table: users@users_pkey
+            spans: FULL SCAN
+(12 rows)
+
+
+Time: 2ms total (execution 1ms / network 0ms)
 ~~~
 
 To limit the number of rows scanned, create an expression index on the `birthdate` field:
@@ -147,22 +143,24 @@ When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, 
 ~~~
 
 ~~~
-                                        info
--------------------------------------------------------------------------------------
+                                 info
+----------------------------------------------------------------------
   distribution: local
   vectorized: true
 
   • render
-  │ estimated row count: 1
   │
   └── • index join
-      │ estimated row count: 1
       │ table: users@users_pkey
       │
       └── • scan
             missing stats
             table: users@timestamp_idx
             spans: [/'2011-11-07 00:00:00' - /'2011-11-07 00:00:00']
+(12 rows)
+
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 As shown in this example, for an expression index to be used to service a query, the query must constrain the **same exact expression** in its filter.

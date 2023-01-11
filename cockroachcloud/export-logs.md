@@ -1,11 +1,14 @@
 ---
-title: Export Logs From a CockroachDB Dedicated Cluster
-summary: Export Logs From a CockroachDB Dedicated Cluster
+title: Export Logs From a CockroachDB dedicated Cluster
+summary: Export Logs From a CockroachDB dedicated Cluster
 toc: true
 docs_area: manage
 ---
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink.
+{{site.data.alerts.callout_danger}}
+The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+{{site.data.alerts.end}}
 
 {% include feature-phases/preview-opt-in.md %}
 
@@ -18,13 +21,17 @@ To configure and manage log export for your {{ site.data.products.dedicated }} c
 https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 ~~~
 
-The following methods are available:
+Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](console-access-management.html#service-accounts) with the appropriate permissions.
 
-Method | Description
---- | ---
-`GET` | Returns the current status of the log export configuration.
-`POST` | Enables log export, or updates an existing log export configuration.
-`DELETE` | Disables log export, halting all log export to the configured cloud log sink.
+The following methods are available for use with the `logexport` endpoint, and require the listed service account permissions:
+
+Method | Required permissions | Description
+--- | --- | ---
+`GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the log export configuration.
+`POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
+`DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
+
+See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
 
 ## Log name format
 
@@ -51,27 +58,27 @@ Where:
 
 <section class="filter-content" markdown="1" data-scope="aws-log-export">
 
+{{site.data.alerts.callout_danger}}
+The {{ site.data.products.dedicated }} log export feature is only available on AWS-hosted clusters created after August 11, 2022.
+{{site.data.alerts.end}}
+
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
 
 1. Create the desired target AWS CloudWatch log group by following the [Create a log group in CloudWatch logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step.
 
-1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
-
 1. Find your {{ site.data.products.dedicated }} cluster ID:
-	
+
 	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
 
-1. Find your {{ site.data.products.dedicated }} cluster's associated AWS Account ID.
-
-	You must find the Account ID of the AWS account that {{ site.data.products.dedicated }} will use for this purpose. To find the ID of the AWS account associated with your cluster, query the clusters endpoint of the {{ site.data.products.db }} API. The value is under the `account_id` field:
+1. Determine your {{ site.data.products.dedicated }} cluster's associated AWS Account ID. This command uses the third-party JSON parsing tool [`jq`](https://stedolan.github.io/jq/download/) to isolate just the needed `account_id` field from the results:
 
 	{% include_cached copy-clipboard.html %}
 	~~~shell
 	curl --request GET \
 	  --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-	  --header 'Authorization: Bearer {secret_key}'
+	  --header 'Authorization: Bearer {secret_key}' | jq .account_id
 	~~~
 
     See [API Access](console-access-management.html) for instructions on generating the `{secret_key}`.
@@ -82,7 +89,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
 	1. Choose **Another AWS account**.
-		1. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID that you found previously by querying your cluster's Cloud API.
+	1. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID from step 3.
 	1. Finish creating the IAM role with a suitable name. These instructions will use the role name `CockroachCloudLogExportRole`. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
@@ -146,10 +153,10 @@ Perform the following steps to enable log export from your {{ site.data.products
     ~~~
 
     Where:
-    - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 3.
+    - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 2.
     - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
     - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
-    - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 8.
+    - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
@@ -168,28 +175,39 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 <section class="filter-content" markdown="1" data-scope="gcp-log-export">
 
+{{site.data.alerts.callout_danger}}
+The {{ site.data.products.dedicated }} log export feature is only available on GCP-hosted clusters created after September 9, 2022.
+{{site.data.alerts.end}}
+
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to GCP Cloud Logging.
 
 1. Find your {{ site.data.products.dedicated }} organization ID in the {{ site.data.products.db }} [organization settings page](https://cockroachlabs.cloud/settings).
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
-	
+
 	1. Visit the {{ site.data.products.db }} console [cluster page](https://cockroachlabs.cloud/clusters).
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
 
-1. Find your {{ site.data.products.dedicated }} cluster's associated GCP Account ID.
+1. Determine the service account to use for exporting logs from your {{ site.data.products.dedicated }} cluster. This log export service account requires specific naming syntax to be recognized by the log export feature. This command uses the third-party JSON parsing tool [`jq`](https://stedolan.github.io/jq/download/) to isolate just the needed `id` (GCP cluster ID) and `account_id` (GCP account ID) fields, and combines them for you in the required form:
 
-	You must find the Account ID of the GCP account that {{ site.data.products.dedicated }} will use for this purpose. To find the ID of the GCP account associated with your cluster, query the clusters endpoint of the {{ site.data.products.db }} API. The value is under the `account_id` field:
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
+      --header 'Authorization: Bearer {secret_key}' | jq '("crl-logging-user-" + (.id | split("-"))[4] + "@" + .account_id + ".iam.gserviceaccount.com")'
+    ~~~
 
-	{% include_cached copy-clipboard.html %}
-	~~~shell
-	curl --request GET \
-	  --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-	  --header 'Authorization: Bearer {secret_key}'
-	~~~
+    Where:
+    - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 2.
+    - `{secret_key}` is your API access key. See [API Access](console-access-management.html) for more details.
 
-    See [API Access](console-access-management.html) for instructions on generating the `{secret_key}`.
+    The resulting log export service account should resemble the following example:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    crl-logging-user-a1c42be2e53b@crl-prod-abc.iam.gserviceaccount.com
+    ~~~
 
 1. Create a new role with the required permissions in your GCP project:
 
@@ -201,19 +219,9 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 1. Add your {{ site.data.products.dedicated }} cluster's service account principal to the role you just created.
 
-	1. In the GCP console, visit the [IAM service accounts page](https://console.cloud.google.com/iam-admin/serviceaccounts) for your project.
- 1. Click the **+ Add** button.
- 1. In the box labeled **New principals**, enter the service account ID for the {{ site.data.products.dedicated }}-managed service account to which you will grant access. The service account ID takes the following format:
-
-        {% include_cached copy-clipboard.html %}
-        ~~~
-        crl-logging-user-{cluster_id}@{project_id}.iam.gserviceaccount.com
-        ~~~
-
-        Where:
-        - `{cluster_id}` is the **last 12 digits** of your {{ site.data.products.dedicated }} cluster ID as determined in step 2.
-        - `{project_id}` is your {{ site.data.products.dedicated }} cluster's associated GCP `account_id` as determined in step 3.
-
+	1. In the GCP console, visit the [IAM admin page](https://console.cloud.google.com/iam-admin) for your project.
+ 1. Click the **+ Grant Access** button.
+ 1. In the box labeled **New principals**, enter the log export service account for the {{ site.data.products.dedicated }}-managed service account, as determined in step 3.
  1. In the **Select a role** dropdown, select the role you created in step 4.
 	1. Click **SAVE**.
 
@@ -284,12 +292,16 @@ Where:
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
 
+## Limitations
+
+- The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+- {{ site.data.products.dedicated }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, {{ site.data.products.dedicated }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
 
 ## {{ site.data.products.dedicated }} log export Frequently Asked Questions (FAQ)
 
 ### Is it possible to configure exported logs to be redacted at source?
 
-Logs exported in this fashion retain [`redactable`](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) markers, but are **not** themselves redacted. If you need to redact sensitive log data, you can use these `redactable` markers to do so once log entries have been written to your configured cloud log sink.
+Logs exported in this fashion retain [`redactable`](/docs/{{site.current_cloud_version}}/configure-logs.html#redact-logs) markers, but are **not** themselves redacted. If you need to redact sensitive log data, you can use these `redactable` markers to do so once log entries have been written to your configured cloud log sink.
 
 ### Is it possible to configure multiple log export configurations to send different log channels to different log groups in my cloud log sink?
 
@@ -305,11 +317,15 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-Currently, the following CockroachDB [log channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) are supported for export in this manner: `SESSIONS`,`OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
+Currently, the following CockroachDB [log channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) are supported for export in this manner: `SESSIONS`,`OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
 
 ### Is it possible to include SQL audit logs as part of the log export capability?
 
-Yes, the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.versions["stable"]}}/experimental-audit.html) statement.
+Yes, the [SQL Audit Log](/docs/{{site.current_cloud_version}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.current_cloud_version}}/experimental-audit.html) statement.
+
+### Can I use an AWS External ID with the log export feature?
+
+No, the {{ site.data.products.dedicated }} log export feature does not support use of an AWS External ID. You must configure a cross-account IAM Role as described in the [Enable log export](#enable-log-export) instructions.
 
 ### Why are some logs appearing without a node number in the name?
 
@@ -319,12 +335,10 @@ Log messages received from {{ site.data.products.dedicated }} nodes that are not
 
 ### AWS CloudWatch
 
-Most log export errors stem from incorrect AWS IAM configuration. Ensure you have followed steps 1 through 8 of the [Enable log export](#enable-log-export) instructions closely, and that you have a **cross-account** IAM role which trusts your {{ site.data.products.dedicated }} AWS account ID (as determined in step 4) and has permission to write to your specified log group in CloudWatch (as created in step 1).
+Most log export errors stem from incorrect AWS IAM configuration. Ensure you have followed steps 1 through 6 of the [Enable log export](#enable-log-export) instructions closely, and that you have a **cross-account** IAM role which trusts your {{ site.data.products.dedicated }} AWS account ID (as determined in step 3) and has permission to write to your specified log group in CloudWatch (as created in step 1).
 
-When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) to step 9, be sure you are supplying the ARN for the `CockroachCloudLogExportRole` role, **not** the ARN for the `CockroachCloudLogExportPolicy` policy.
+When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) to step 8, be sure you are supplying the ARN for the `CockroachCloudLogExportRole` role, **not** the ARN for the `CockroachCloudLogExportPolicy` policy.
 
 ### GCP Cloud Logging
 
-Be sure you are only supplying only the **last 12** digits of your {{ site.data.products.dedicated }} cluster ID when providing the service account ID in step 6.
-
-When supplying the GCP project ID in step 7, be sure you use the **Project ID**, and not the **Project Name**. Both are shown on the Google Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
+When supplying the GCP project ID in step 6, be sure you use the **Project ID**, and not the **Project Name**. Both are shown on the Google Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).

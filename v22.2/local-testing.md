@@ -1,11 +1,11 @@
 ---
-title: Test Your Application
+title: Test Your Application Locally
 summary: Best practices for locally testing an application built on CockroachDB
 toc: true
 docs_area: develop
 ---
 
-This page documents best practices for unit testing applications built on CockroachDB.
+This page documents best practices for unit testing applications built on CockroachDB in a local environment.
 
 If you are deploying a self-hosted cluster, see the [Production Checklist](recommended-production-settings.html) for information about preparing your cluster for production.
 
@@ -31,10 +31,9 @@ We recommend the following additional [cluster settings](cluster-settings.html) 
 | `jobs.registry.interval.gc`                                  | `30s`     | CockroachDB executes internal queries that scan the [jobs](show-jobs.html) table. More schema changes create more jobs, which we can delete faster to make internal job queries faster.                                   |
 | `jobs.registry.interval.cancel`                              | `180s`    | Timing of an internal task that queries the [jobs](show-jobs.html) table. For testing, the default is too fast.                                                                                                           |
 | `jobs.retention_time`                                        | `15s`     | More [schema changes](online-schema-changes.html) create more [jobs](show-jobs.html), which affects job query performance. We don’t need to retain jobs during testing and can set a more aggressive delete policy.       |
-| `schemachanger.backfiller.buffer_increment`                  | `128 KiB` | During table backfills, we fill up buffers which have a large default. A lower setting reduces memory usage.                                                                                                              |
 | `sql.stats.automatic_collection.enabled`                     | `false`   | Turn off [statistics](show-statistics.html) collection, since automatic statistics contribute to table contention alongside schema changes. Each schema change triggers an asynchronous auto statistics job.              |
-| `ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds"`   | `5`       | Faster descriptor cleanup. For more information, see [`ALTER RANGE`](alter-range.html).                                                                                                                                   |
-| `ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds"` | `5`       | Faster jobs table cleanup. For more information, see [`ALTER DATABASE`](alter-database.html).                                                                                                                             |
+| `ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds"`   | `600`       | Faster descriptor cleanup. For more information, see [`ALTER RANGE`](alter-range.html).                                                                                                                                   |
+| `ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds"` | `600`       | Faster jobs table cleanup. For more information, see [`ALTER DATABASE`](alter-database.html).                                                                                                                             |
 
 To change all of the settings described above at once, run the following SQL statements:
 
@@ -45,11 +44,10 @@ SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
 SET CLUSTER SETTING jobs.registry.interval.gc = '30s';
 SET CLUSTER SETTING jobs.registry.interval.cancel = '180s';
 SET CLUSTER SETTING jobs.retention_time = '15s';
-SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
 SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 SET CLUSTER SETTING kv.range_split.by_load_merge_delay = '5s';
-ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds" = 5;
-ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds" = 5;
+ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds" = 600;
+ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds" = 600;
 ~~~
 
 {{site.data.alerts.callout_danger}}
@@ -83,6 +81,11 @@ For more information about logging, see [Configure logs](configure-logs.html).
 To test bulk operations like [`IMPORT`](import.html), [`BACKUP`](backup.html), or [`RESTORE`](restore.html), we recommend using a local file server.
 
 For more details, see [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html).
+
+## Use Docker-specific testing and development tools
+
+When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, some additional features are available to help with testing and development. Refer to [Start a local cluster in Docker (Linux)](start-a-local-cluster-in-docker-linux.html) and [Start a local cluster in Docker (macOS)](start-a-local-cluster-in-docker-mac.html).
+
 
 ## See also
 

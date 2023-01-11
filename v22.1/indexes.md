@@ -58,6 +58,10 @@ Indexes create a trade-off: they greatly improve the speed of queries, but may s
 
 To maximize your indexes' performance, Cockroach Labs recommends following the [secondary index best practices](schema-design-indexes.html#best-practices).
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
 {{site.data.alerts.end}}

@@ -41,13 +41,20 @@ extra-config := $(if $(JEKYLLCONFIG),$(comma)$(JEKYLLCONFIG))
 
 jekyll-action := build
 
+GITHOOKSDIR := .git/hooks
+GITHOOKS := $(subst githooks/,$(GITHOOKSDIR)/,$(wildcard githooks/*))
+$(GITHOOKSDIR)/%: githooks/%
+	@rm -f $@
+	@mkdir -p $(dir $@)
+	@ln -s ../../$(basename $<) $(dir $@)
+
 .PHONY: cockroachdb-build
 cockroachdb-build: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: cockroachdb
 cockroachdb: jekyll-action := serve --port 4000
-cockroachdb: bootstrap
+cockroachdb: bootstrap $(GITHOOKS)
 	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
@@ -62,7 +69,7 @@ no-remote-cache: bootstrap
 .PHONY: profile
 profile: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
-	
+
 
 .PHONY: test
 test:
@@ -73,6 +80,10 @@ test:
 .PHONY: linkcheck
 linkcheck: cockroachdb-build
 	htmltest -s
+
+.PHONY: vale
+vale:
+	vale $(subst $(\n), $( ), $(shell git status --porcelain | cut -c 4- | egrep "\.md"))
 
 vendor:
 	gem install bundler

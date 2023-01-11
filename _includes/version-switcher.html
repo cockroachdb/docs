@@ -17,7 +17,7 @@
             class="version--mobile version--page-dne"
           {% endif %}>
             {{ v.version.name }}
-            {% if v.version.tag %}({{ v.version.tag | capitalize }}){% endif %}
+            {% if v.version.tag %}{% unless v.version.tag == "cloud" %}({{ v.version.tag | capitalize }}){% endunless %}{% endif %}
             {% unless v.url %}
               <span class="version-text--page-dne">
                 This page does not exist in {{ v.version.version }}

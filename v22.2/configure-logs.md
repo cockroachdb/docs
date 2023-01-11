@@ -11,6 +11,7 @@ This page describes how to configure CockroachDB logs with the [`--log` or `log-
 - The [logging channels](logging-overview.html#logging-channels) that are mapped to each sink.
 - The [format](log-formats.html) used by the log messages.
 - The [redaction](#redact-logs) of log messages.
+- The [buffering](#log-buffering-for-network-sinks) of log messages.
 
 For examples of how these settings can be used in practice, see [Logging Use Cases](logging-use-cases.html).
 
@@ -139,7 +140,7 @@ sinks:
 A file group name is arbitrary and is used to name the log files. The `default` file group is an exception. For details, see [Log file naming](#log-file-naming).
 {{site.data.alerts.end}}
 
-Along with the [common sink parameters](#common-sink-parameters), each file group accepts the following parameters:
+Along with the [common sink parameters](#common-sink-parameters), each file group accepts the following additional parameters:
 
 | Parameter          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -206,15 +207,14 @@ sinks:
 A Fluentd sink can be listed more than once with different `address` values. This routes the same logs to different Fluentd servers.
 {{site.data.alerts.end}}
 
-Along with the [common sink parameters](#common-sink-parameters), each Fluentd server accepts the following parameters:
+Along with the [common sink parameters](#common-sink-parameters), each Fluentd server accepts the following additional parameters:
 
 | Parameter | Description                                                                                                        |
 |-----------|--------------------------------------------------------------------------------------------------------------------|
 | `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
 | `address` | Network address and port of the log collector.                                                                     |
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
-
-A Fluentd sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the Fluentd collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
+| `buffering`     | **New in v22.2** Configures buffering of log messages for the sink, with the following sub-parameters:<br><br><ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs](logging-use-cases.html#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
 For an example network logging configuration, see [Logging use cases](logging-use-cases.html#network-logging).
 
@@ -242,7 +242,7 @@ sinks:
 An HTTP sink can be listed more than once with different `address` values. This routes the same logs to different HTTP servers.
 {{site.data.alerts.end}}
 
-Along with the [common sink parameters](#common-sink-parameters), each HTTP server accepts the following parameters:
+Along with the [common sink parameters](#common-sink-parameters), each HTTP server accepts the following additional parameters:
 
 | Parameter             | Description                                                                                                                                                                                                                                                                                                                                                        |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -252,8 +252,7 @@ Along with the [common sink parameters](#common-sink-parameters), each HTTP serv
 | `unsafe-tls`          | When `true`, bypasses TLS server validation.<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                           |
 | `timeout`             | Timeout before requests are abandoned.<br><br>**Default:** `0` (no timeout)                                                                                                                                                                                                                                                                                        |
 | `disable-keep-alives` | When `true`, disallows reuse of the server connection across requests.<br><br>**Default:** `false` (reuses connections)                                                                                                                                                                                                                                            |
-
-An HTTP sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the HTTP collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
+| `buffering`     | **New in v22.2** Configures buffering of log messages for the sink, with the following sub-parameters:<br><br><ul><li>`max-staleness`: The maximum time a log message will wait in the buffer before a flush is triggered. Set to `0` to disable flushing based on elapsed time. Default: `5s`</li><li>`flush-trigger-size`: The number of bytes that will trigger the buffer to flush. Set to `0` to disable flushing based on accumulated size. Default: `1MiB`</li><li>`max-buffer-size`: The maximum size of the buffer: new log messages received when the buffer is full cause older messages to be dropped. Default: `50MiB`</li></ul>When `max-staleness` and `flush-trigger-size` are used together, whichever is reached first will trigger the flush. `buffering` is enabled by default for [HTTP](#output-to-http-network-collectors) log sinks. To explicitly disable log buffering, specify `buffering: NONE` instead. This setting is typically disabled for [security-related logs](logging-use-cases.html#security-and-audit-monitoring). See [Log buffering](#log-buffering-for-network-sinks) for more details and usage.|
 
 For an example network logging configuration, see [Logging use cases](logging-use-cases.html#network-logging).
 
@@ -270,7 +269,7 @@ sinks:
     channels: [DEV]
 ~~~
 
-Along with the [common sink parameters](#common-sink-parameters), `stderr` accepts the following parameters:
+Along with the [common sink parameters](#common-sink-parameters), `stderr` accepts the following additional parameters:
 
 {{site.data.alerts.callout_info}}
 The `format` parameter for `stderr` is set to [`crdb-v2-tty`](log-formats.html#format-crdb-v2-tty) and cannot be changed.
@@ -535,6 +534,53 @@ sinks:
 {{site.data.alerts.callout_success}}
 To ensure that you are protecting sensitive information, also [redact your logs](#redact-logs).
 {{site.data.alerts.end}}
+
+## Log buffering for network sinks
+
+{% include_cached new-in.html version="v22.2" %} Both [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) and [HTTP](#output-to-http-network-collectors) log sinks support the buffering of log messages by default. Previous to version v22.2, log buffering was only available for the [log file](#output-to-files) log sink.
+
+With log buffering configured, log messages are held in a buffer for a configurable time period or accumulated message size threshold before being written to the target log sink together as a batch. Log buffering helps to ensure consistent low-latency log message writes over the network even in high-traffic, high-contention scenarios.
+
+The following shows a basic log configuration with buffering configured for a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sink:
+
+~~~ yaml
+fluent-defaults:
+  buffering:
+    max-staleness: 20s
+    flush-trigger-size: 2MiB
+    max-buffer-size: 100MiB
+sinks:
+  fluent-servers:
+    health:
+      channels: HEALTH
+      buffering:
+        max-staleness: 2s  # Override max-staleness for HEALTH channel only
+~~~
+
+With this logging configuration:
+
+- CockroachDB will hold log messages in a buffer for up to `20s` (the `max-staleness` setting), or up to a collected size of `2MiB` (the `flush-trigger-size` setting), before writing ("flushing") the buffer to the log file. When both settings are used, whichever case is met first triggers the buffer flush.
+- If at any point the accumulated message size of buffer flushes (as triggered by reaching either the configured `max-staleness` or `flush-trigger-size` value) exceeds `100MiB` (the `max-buffer-size` setting), all new incoming log messages received are dropped until the accumulated message size in the buffer once more falls below this value.
+- For the `HEALTH` [log channel](logging-overview.html#logging-channels) only, override the `file-defaults` value of `20s` for `max-staleness`, instead flushing messages to the log file within up to `2s`.
+
+Alternatively, you may explicitly disable log buffering by setting `buffering` to `NONE`. The following log configuration explicitly disables log buffering for just the `OPS` channel on a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) log sink:
+
+~~~ yaml
+file-defaults: ...
+fluent-defaults: ...
+sinks:
+  fluent-servers:
+    ops:
+      channels: OPS
+      buffering: NONE
+~~~
+
+The following disables log buffering completely for the [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) sink:
+
+~~~ yaml
+fluent-defaults:
+  buffering: NONE
+~~~
 
 ## Stray error capture
 

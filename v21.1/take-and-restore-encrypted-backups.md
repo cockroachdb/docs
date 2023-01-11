@@ -118,15 +118,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](re
 
 ### Examples
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
-
-<section class="filter-content" markdown="1" data-scope="s3">
 
 #### Take an encrypted backup using a passphrase
 
@@ -163,89 +155,6 @@ For example, the encrypted backup created in the previous example can be restore
 ~~~
 
 To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gcs">
-
-#### Take an encrypted backup using a passphrase
-
-To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
-
-#### Restore from an encrypted backup using a passphrase
-
-To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
-
-For example, the encrypted backup created in the previous example can be restored with:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-#### Take an encrypted backup using a passphrase
-
-To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
-
-#### Restore from an encrypted backup using a passphrase
-
-To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
-
-For example, the encrypted backup created in the previous example can be restored with:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
-
-</section>
-
 
 ## See also
 

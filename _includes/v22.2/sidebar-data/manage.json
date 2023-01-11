@@ -40,6 +40,12 @@
           "urls": [
             "/cockroachcloud/ccloud-get-started.html"
           ]
+        },
+        {
+          "title": "Provision a CockroachDB Cloud cluster using Terraform",
+          "urls": [
+            "/cockroachcloud/provision-a-cluster-with-terraform.html"
+          ]
         }
       ]
     },
@@ -156,6 +162,18 @@
               ]
             }
           ]
+        },
+        {
+          "title": "Backup Validation",
+          "urls": [
+            "/${VERSION}/backup-validation.html"
+          ]
+        },
+        {
+          "title": "Restoring Backups Across Versions",
+          "urls": [
+            "/${VERSION}/restoring-backups-across-versions.html"
+          ]
         }
       ]
     },
@@ -164,8 +182,19 @@
       "items": [
         {
           "title": "Cloud Storage",
-          "urls": [
-            "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+          "items": [
+            {
+              "title": "Use Cloud Storage for Bulk Operations",
+              "urls": [
+                "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+              ]
+            },
+            {
+              "title": "Cloud Storage Authentication",
+              "urls": [
+                "/${VERSION}/cloud-storage-authentication.html"
+              ]
+            }
           ]
         },
         {
@@ -219,17 +248,34 @@
               ]
             },
             {
-              "title": "Authenticating to CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/authentication.html"
-              ]
-            },
-            {
-              "title": "Single Sign-On (SSO) for CockroachDB Cloud",
-              "urls": [
-                "/cockroachcloud/cloud-sso.html"
-              ]
-            },
+							"title": "Authentication",
+								"items": [
+									{
+										"title": "Authentication Overview",
+										"urls": [
+											"/cockroachcloud/authentication.html"
+										]
+									},
+									{
+										"title": "Single Sign-On (SSO) for CockroachDB Cloud Organizations",
+										"urls": [
+											"/cockroachcloud/cloud-org-sso.html"
+										]
+									},
+									{
+										"title": "Configure Cloud Organization SSO",
+										"urls": [
+											"/cockroachcloud/configure-cloud-org-sso.html"
+										]
+									},
+                  {
+                    "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
+                    "urls": [
+                      "/cockroachcloud/cloud-sso-sql.html"
+                    ]
+                  }
+								]
+      	    },
             {
               "title": "User Authorization",
               "urls": [
@@ -246,6 +292,12 @@
               "title": "SQL Audit Logging",
               "urls": [
                 "/cockroachcloud/sql-audit-logging.html"
+              ]
+            },
+            {
+              "title": "Export Cloud Organization Audit Logs",
+              "urls": [
+                "/cockroachcloud/cloud-org-audit-logs.html"
               ]
             },
             {
@@ -319,9 +371,15 @@
               ]
             },
             {
-              "title": "Single Sign-on",
+              "title": "Cluster Single Sign-on (SSO) using JSON web tokens (JWT)",
               "urls": [
-                "/${VERSION}/sso.html"
+                "/${VERSION}/sso-sql.html"
+              ]
+            },
+            {
+              "title": "Single Sign-on (SSO) for DB Console",
+              "urls": [
+                "/${VERSION}/sso-db-console.html"
               ]
             },
             {
@@ -392,6 +450,18 @@
               "urls": [
                 "/cockroachcloud/transactions-page.html"
               ]
+            },
+            {
+              "title": "Databases Page",
+              "urls": [
+                "/cockroachcloud/databases-page.html"
+              ]
+            },
+            {
+              "title": "Jobs Page",
+              "urls": [
+                "/cockroachcloud/jobs-page.html"
+              ]
             }
           ]
         },
@@ -440,7 +510,7 @@
               ]
             },
             {
-              "title": "Monitor with Datadog",
+              "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]
@@ -504,6 +574,12 @@
                   "title": "Upgrade Policy",
                   "urls": [
                      "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v22.2",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v22.2.html"
                   ]
                 },
                 {

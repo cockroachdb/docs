@@ -19,24 +19,28 @@ Node-level settings are defined by [flags](#flags) passed to the `cockroach star
 
 Start a node to be part of a new multi-node cluster:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start <flags, including --join>
 ~~~
 
 Initialize a new multi-node cluster:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init <flags>
 ~~~
 
 Add a node to an existing cluster:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start <flags, including --join>
 ~~~
 
 View help:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --help
 ~~~
@@ -109,10 +113,11 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 - When there is high latency between nodes (e.g., cross-availability zone deployments), CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](topology-follow-the-workload.html). In a deployment across more than 3 availability zones, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of availability zones.
 
-- Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) Enterprise features.        
+- Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) Enterprise features.
 
 #### Example
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 # Locality flag for nodes in US East availability zone:
 --locality=region=us,zone=us-east
@@ -252,9 +257,11 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -284,26 +291,31 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 Then run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --certs-dir=certs \
 --host=<address of any node>
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init \
 --insecure \
 --host=<address of any node>
 ~~~
+
 </div>
 
 ### Start a multi-node cluster across private networks
@@ -362,6 +374,7 @@ $ cockroach init \
 To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the same addresses you used when [starting the cluster](#start-a-multi-node-cluster):
 
 <div class="filter-content" markdown="1" data-scope="secure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -371,9 +384,11 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
@@ -383,6 +398,7 @@ $ cockroach start \
 --cache=.25 \
 --max-sql-memory=.25
 ~~~
+
 </div>
 
 ### Create a table with node locality information
@@ -499,7 +515,7 @@ $ cockroach start --sql-addr=:26257 --listen-addr=:26258 --join=node1:26258,node
 
 Note the use of port `26258` (the value for `listen-addr`, not `sql-addr`) in the `--join` flag. Also, if your environment requires the use of the `--advertise-addr` flag, you should probably also use the `--advertise-sql-addr` flag when using a separate SQL address.
 
-Clusters using this configuration with client certificate authentication may also wish to use [split client CA certificates](https://www.cockroachlabs.com/docs/v20.1/create-security-certificates-custom-ca.html#split-ca-certificates).
+Clusters using this configuration with client certificate authentication may also wish to use [split client CA certificates](../v20.1/create-security-certificates-custom-ca.html#split-ca-certificates).
 
 ## See also
 

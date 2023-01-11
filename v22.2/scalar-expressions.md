@@ -397,14 +397,15 @@ SQL supports function overloading. See [Revisiting SQL Typing in CockroachDB](ht
 
 ## Subscripted expressions
 
-It is possible to access one item in an array value using the `[` ... `]` operator.
+It is possible to access one item in an [`ARRAY`](array.html) or [`JSONB`](jsonb.html) value using the `[` ... `]` operator. For example:
 
-For example, if the name `a` refers to an array of 10
-values, `a[3]` will retrieve the 3rd value. The first value has index
-1.
+- If the name `a` refers to an array of 10 values, `a[3]` will retrieve the 3rd value. The first value has index 1.
+- If the name `j` refers to a JSON object `{"a": {"b":1}}`, then `j['a']` will access key `a` and retrieve `{"b":1}`. `j['a']['b']` will access key `b` and retrieve `1`.
 
-If the index is smaller or equal to 0, or larger than the size of the array, then
-the result of the subscripted expression is `NULL`.
+The result of the subscripted expression is `NULL` if:
+
+- The index is smaller or equal to `0`, or larger than the size of the array.
+- The key or key path does not exist in the JSON object.
 
 #### Typing rule
 

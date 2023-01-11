@@ -27,6 +27,8 @@ Parameter | Description
 ----------|-------------
 `name` | The name of the user whose password or role options to alter.
 
+### Role options
+
 {% include {{page.version.version}}/sql/role-options.md %}
 
 ## Examples

@@ -91,4 +91,8 @@ ALTER DATABASE ADD SUPER REGION
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`ALTER DATABASE`](alter-database.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [Zone Config Extensions](zone-config-extensions.html)
 - [SQL Statements](sql-statements.html)

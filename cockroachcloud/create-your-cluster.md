@@ -26,6 +26,10 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 
 In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
+{{site.data.alerts.callout_info}}
+You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.dedicated }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+{{site.data.alerts.end}}
+
 {{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
 
 For GCP clusters, each GiB of storage costs  $0.0011986 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005088 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per IOPS per hour.
@@ -50,7 +54,7 @@ Multi-region clusters must contain at least 3 regions to ensure that data spread
 - Frankfurt (`europe-west3`)
 - Zurich (`europe-west6`)
 
-If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
+If you want to create a cluster in a disabled or unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
@@ -66,6 +70,8 @@ In the **Regions & nodes** section, select the number of nodes.
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## Step 5. Select the hardware per node
+
+{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
 
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
 
@@ -84,7 +90,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    We recommending choosing up to {{ cap_per_vcpu | strip_html }}. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
@@ -159,8 +165,8 @@ To start using your {{ site.data.products.db }} cluster, see the following pages
 
 If you created a multi-region cluster, it is important to carefully choose:
 
-- The right [survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#survival-goals) for each database.
-- The right [table locality](../{{site.versions["stable"]}}/multiregion-overview.html#table-locality) for each of your tables.
+- The right [survival goal](../{{site.current_cloud_version}}/multiregion-overview.html#survival-goals) for each database.
+- The right [table locality](../{{site.current_cloud_version}}/multiregion-overview.html#table-locality) for each of your tables.
 
 Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
 

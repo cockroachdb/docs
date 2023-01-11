@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-{% include_cached new-in.html version="v22.1" %} When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database.  
+When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database.  
 
 The benefits of using changefeeds for this function compared to an export, include:
 
@@ -18,6 +18,10 @@ Although this option offers an alternative way to export data out of your databa
 
 - Changefeeds do not offer any [filtering capabilities](export.html#export-using-a-select-statement).
 - Changefeeds can emit [duplicate messages](changefeed-messages.html#ordering-guarantees).
+
+{% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
+
+## Example
 
 To create a changefeed that will only complete an initial scan of a table(s), run the following:
 

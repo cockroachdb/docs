@@ -19,6 +19,8 @@ CockroachDB also supports using uninterpreted [string literals](sql-constants.ht
 
 To change the input format of truncated dates (e.g., `12-16-06`) from `MM-DD-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html).
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ## PostgreSQL compatibility
 
 `DATE` values in CockroachDB are fully [PostgreSQL-compatible](https://www.postgresql.org/docs/current/datatype-datetime.html), including support for special values (e.g., `+/- infinity`). Existing dates outside of the PostgreSQL date range (`4714-11-24 BC` to `5874897-12-31`) are converted to `+/- infinity` dates.

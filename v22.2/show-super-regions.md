@@ -91,4 +91,8 @@ The preceding example shows the super region that was added in [`ADD SUPER REGIO
 - [`ADD SUPER REGION`](add-super-region.html)
 - [`DROP SUPER REGION`](drop-super-region.html)
 - [`ALTER SUPER REGION`](alter-super-region.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [Zone Config Extensions](zone-config-extensions.html)
 - [SQL Statements](sql-statements.html)

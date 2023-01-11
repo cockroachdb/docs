@@ -31,9 +31,6 @@ Parameter | Description
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri) below.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
 
-<!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
-`name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers). -->
-
 ### Sink URI
 
 The sink URI follows the basic format of:
@@ -63,13 +60,16 @@ Example of a Kafka sink URI:
 
 #### Cloud Storage
 
-Example of a cloud storage sink URI with Amazon S3:
+The following are example file URLs for each of the cloud storage schemes:
 
-~~~
-'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-~~~
+Location     | Example                                                                          
+-------------+----------------------------------------------------------------------------------
+Amazon S3    | `'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'`  
+Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'`
+Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`                         
+HTTP         | `'http://localhost:8080/{PATH}'`
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage and example URIs for Google Cloud Storage and Azure Storage.
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
@@ -106,7 +106,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 Option | Value | Description
 -------|-------|------------
 `updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](use-changefeeds.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.
-<a name="resolved-option"></a>`resolved` | [`INTERVAL`](interval.html) | Emits [resolved timestamp](use-changefeeds.html#resolved-def) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
+<a name="resolved-option"></a>`resolved` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Emits [resolved timestamp](use-changefeeds.html#resolved-def) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
 <a name="format"></a>`format` | `json` / `avro` | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](use-changefeeds.html#avro-types) and detail on [Avro limitations](use-changefeeds.html#avro-limitations) below. <br><br>Default: `format=json`.

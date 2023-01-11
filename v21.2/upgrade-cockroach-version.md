@@ -1,11 +1,33 @@
 ---
 title: Upgrade to CockroachDB v21.2
-summary: Learn how to upgrade your CockroachDB cluster to a new version.
+summary: Learn how to upgrade your CockroachDB cluster to v21.2.
 toc: true
 docs_area: manage
 ---
 
+{% assign previous_version = site.data.versions | where_exp: "previous_version", "previous_version.major_version == page.version.version" | map: "previous_version" | first %}
+{% assign earliest = site.data.releases | where_exp: "earliest", "earliest.major_version == page.version.version" | sort: "release_date" | first %}
+{% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
+{% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
+{% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
+{% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
+
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
+
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.version }}**.
+
+## Terminology
+
+Before upgrading, review the CockroachDB [release](../releases/) terminology:
+
+- A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest_prod.major_version }} (also written as {{ actual_latest_prod.major_version }}.0).
+- Each [supported](../releases/release-support-policy.html) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
+- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.version }}.
+- Prior to an upcoming major release, alpha and beta releases and release candidates are made available. These "testing releases" are not suitable for production usage. They are intended for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.
+
+{{site.data.alerts.callout_info}}
+There are no "minor releases" of CockroachDB.
+{{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade
 
@@ -20,15 +42,22 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 If you are upgrading from any cluster version prior to v21.1, then **before upgrading from v20.2 to v21.1**, you must ensure that any previously decommissioned nodes are fully decommissioned. Otherwise, they will block the upgrade. For instructions, see [Check decommissioned nodes](#check-decommissioned-nodes).
 {{site.data.alerts.end}}
 
-To upgrade to a new version, you must first be on a production [release](../releases/) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a testing release (alpha/beta).
+To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
 
-Therefore, to upgrade to v21.2:
+{% if prior.version %}
+- **Any earlier {{ page.version.version }} release:** {{ earliest.version }} to {{ prior.version }}.
+{% endif %}
+- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}.
 
-- If your current CockroachDB version is a v20.2 release or earlier, or a v21.1 testing release (alpha/beta):
-    1. First [upgrade to a production release of v21.1](../v21.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
-    1. Return to this page and perform a second rolling upgrade to v21.2, starting from [step 2](#step-2-prepare-to-upgrade).
+If you are running any other version, take the following steps **before** continuing on this page:
 
-- If your current CockroachDB version is any v21.1 production release, or any earlier v21.2 release, you do not have to go through intermediate releases; continue to [step 2](#step-2-prepare-to-upgrade).
+|                    Version                     |                                                                           Action(s) before upgrading to any {{ page.version.version }} release                                                                          |
+|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Pre-{{ page.version.version }} testing release | Upgrade to a corresponding production release; then upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html). |
+| Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                     |
+| {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                                                                     |
+
+When you are ready to upgrade to {{ latest.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -54,11 +83,21 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 ### Check decommissioned nodes
 
-Check the `membership` field in the [output of `cockroach node status --decommission`](node-shutdown.html?filters=decommission#cockroach-node-status). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+If your cluster contains partially-decommissioned nodes, they will block an upgrade attempt.
 
-If you are upgrading from any cluster version prior to v21.1, then **before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](node-shutdown.html?filters=decommission#step-3-decommission-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+1. To check the status of decommissioned nodes, run  the [`cockroach node status --decommission`](node-shutdown.html?filters=decommission#cockroach-node-status) command:
 
-In case a decommissioning process is hung, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then [decommission those nodes](node-shutdown.html?filters=decommission#remove-nodes) again, and confirm that they update to `decommissioned`.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach node status --decommission
+    ~~~
+
+    In the output, verify that the value of the `membership` field of each node is `decommissioned`. If any node's `membership` value is `decommissioning`, that node is not fully decommissioned.
+
+1. If any node is not fully decommissioned, try the following:
+
+    1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
+    1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
 ### Review breaking changes
 
@@ -66,7 +105,7 @@ Review the [changes in v21.2](../releases/v21.2.html#v21-2-0). If any affect you
 
 - Interleaved tables and interleaved indexes have been removed. Before upgrading to v21.2, [convert interleaved tables](../v21.1/interleave-in-parent.html#convert-interleaved-tables) and [replace interleaved indexes](../v21.1/interleave-in-parent.html#replace-interleaved-indexes). Clusters with interleaved tables and indexes cannot finalize the v21.2 upgrade.
 - Previously, CockroachDB only supported the YMD format for parsing timestamps from strings. It now also supports the MDY format to better align with PostgreSQL. A timestamp such as `1-1-18`, which was previously interpreted as `2001-01-18`, will now be interpreted as `2018-01-01`. To continue interpreting the timestamp in the YMD format, the first number can be represented with 4 digits, `2001-1-18`.
-- The deprecated [cluster setting](cluster-settings.html) `cloudstorage.gs.default.key` has been removed, and the behavior of the `AUTH` parameter in Google Cloud Storage [`BACKUP`](../v21.2/backup.html) and `IMPORT` URIs has been changed. The default behavior is now that of `AUTH=specified`, which uses the credentials passed in the `CREDENTIALS` parameter, and the previous default behavior of using the node's implicit access (via its machine account or role) now requires explicitly passing `AUTH=implicit`.
+- The deprecated [cluster setting](cluster-settings.html) `cloudstorage.gs.default.key` has been removed, and the behavior of the `AUTH` parameter in Google Cloud Storage [`BACKUP`](backup.html) and `IMPORT` URIs has been changed. The default behavior is now that of `AUTH=specified`, which uses the credentials passed in the `CREDENTIALS` parameter, and the previous default behavior of using the node's implicit access (via its machine account or role) now requires explicitly passing `AUTH=implicit`.
 - We have switched types from `TEXT` to `"char"` for compatibility with PostgreSQL in the following columns: `pg_constraint` (`confdeltype`, `confmatchtype`, `confudptype`, `contype`) `pg_operator` (`oprkind`), `pg_prog` (`proargmodes`), `pg_rewrite` (`ev_enabled`, `ev_type`), and `pg_trigger` (`tgenabled`).
 
 ## Step 3. Decide how the upgrade will be finalized
@@ -110,6 +149,10 @@ For each node in your cluster, complete the following steps. Be sure to upgrade 
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](upgrade-cockroachdb-kubernetes.html) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.version}}**.
+{{site.data.alerts.end}}
+
 1. [Drain and shut down the node.](node-shutdown.html#perform-node-shutdown)
 
 1. Download and install the CockroachDB binary you want to use:
@@ -121,17 +164,21 @@ We recommend creating scripts to perform these steps instead of performing them 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz|tar -xzf -
+    $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
+
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz|tar -xzf -
+    $ curl https://binaries.cockroachdb.com/cockroach-{{latest.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
+
     </div>
 
 1. If you use `cockroach` in your `$PATH`, rename the outdated `cockroach` binary, and then move the new one into its place:
@@ -143,6 +190,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     <p></p>
 
     <div class="filter-content" markdown="1" data-scope="mac">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
@@ -150,11 +198,13 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{page.release_info.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
+    $ cp -i cockroach-{{latest.version}}.darwin-10.9-amd64/cockroach /usr/local/bin/cockroach
     ~~~
+
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     i="$(which cockroach)"; mv "$i" "$i"_old
@@ -162,8 +212,9 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{page.release_info.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
+    $ cp -i cockroach-{{latest.version}}.linux-amd64/cockroach /usr/local/bin/cockroach
     ~~~
+
     </div>
 
 1. Start the node to have it rejoin the cluster.
@@ -245,7 +296,7 @@ After the upgrade has finalized (whether manually or automatically), it is no lo
 
 1. Run the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster to capture your cluster's state.
 
-2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
+1. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
 In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 

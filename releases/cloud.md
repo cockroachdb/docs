@@ -14,9 +14,88 @@ Get future release notes emailed to you:
 
 {% include marketo.html %}
 
-{{site.data.alerts.callout_version}}
-As of August 29, 2022, {{ site.data.products.serverless }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6) and new {{ site.data.products.dedicated }} clusters are running CockroachDB [v22.1.6](v22.1.html#v22-1-6).
-{{site.data.alerts.end}}
+{% include releases/current-cloud-version.md %}
+
+## January 9, 2023
+
+<h3> Console changes </h3>
+
+- {{ site.data.products.dedicated }} clusters running CockroachDB [v22.1.8](../releases/v22.1.html#v22-1-8) or later now have a separate tab for incomplete backup jobs on the [**Backups** page](../cockroachcloud/backups-page.html#backups-page).
+
+<h3> Cloud API changes </h3>
+
+- The [create cluster](../cockroachcloud/cloud-api.html#create-a-new-cluster) request now exposes the `restrict-egress-traffic` boolean field to allow dedicated clusters to be created with a [deny-by-default egress traffic policy](../cockroachcloud/egress-perimeter-controls.html#use-a-deny-by-default-egress-traffic-policy). This field and the broader egress perimeter controls capability can be used only with [private dedicated clusters](../cockroachcloud/private-clusters.html), which require the `network-visibility` field to be set to `NETWORK_VISIBILITY_PRIVATE`.
+
+<h3> Bug fixes </h3>
+- Fixed a bug for {{ site.data.products.dedicated }} clusters where the [**Datadog setup**](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) dialog was not rendering properly.
+
+## December 5, 2022
+
+<h3> Console changes </h3>
+
+- {{ site.data.products.serverless }} clusters now have a [**Metrics** page](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html) in the Console with charts to **Monitor SQL Activity** and **Identify SQL Problems**.
+- The `p99.9` and `p99.99` latencies are now shown in the `SQL Connection Latency` and `SQL Statement Latency` charts on the [**Metrics** page](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html) for {{ site.data.products.serverless }} clusters.
+- The **Last used** column on the [**Table Details** page](../cockroachcloud/databases-page.html) now uses the UTC timezone.
+- The {{ site.data.products.serverless }} [**Cost estimator**](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) has been temporarily disabled while a bug is being fixed.
+
+<h3> Cloud API changes </h3>
+
+- A preview of [log export](../cockroachcloud/export-logs.html) for {{ site.data.products.dedicated }} users is now available. To enroll your organization in the preview, contact your Cockroach Labs account team.
+
+<h3> Bug fixes </h3>
+
+- Trial coupon limits for {{ site.data.products.dedicated }} clusters' storage and compute are now enforced in the [**Edit cluster**](../cockroachcloud/cluster-management.html) dialog.
+- Fixed a bug where [backups](../cockroachcloud/backups-page.html) shown for a particular day included backups for midnight on the following day.
+- Fixed a bug  on the [**Databases page**](../cockroachcloud/databases-page.html) where the number of index recommendations displayed for a database was inconsistent with the actual number of index recommendations for the database.
+- Fixed a bug that could break the [**Databases page**](../cockroachcloud/databases-page.html) when fetching index usage statistics for databases.
+
+## November 7, 2022
+
+<h3> General changes </h3>
+
+- The following new regions are now available for all {{ site.data.products.dedicated }} clusters:
+
+    GCP                                          | AWS
+    ---------------------------------------------|------
+    Frankfurt, Germany (`europe-west3`)          | Osaka, Japan (`ap-northeast-3`)
+                                                 | Montréal, Québec (`ca-central-1`)
+                                                 | Stockholm, Sweden (`eu-north-1`)
+
+<h3> Console changes </h3>
+
+- Added an icon next to a cluster's name on the [**Billing overview**](../cockroachcloud/billing-management.html) page to indicate when a cluster has been deleted.
+- The [**Database page**](../cockroachcloud/databases-page.html) in the {{ site.data.products.db }} Console now shows the last time table statistics were updated.
+- All new AWS clusters now use [`gp3` volumes](https://docs.amazonaws.cn/en_us/AWSEC2/latest/UserGuide/general-purpose.html#gp3-ebs-volume-type). Previously created AWS clusters still use `io1` volumes. AWS `gp3` volumes expose three parameters: storage amount, IOPS, and throughput.
+
+<h3> Cloud API changes </h3>
+
+- The [Cloud API](../api/cloud/v1.html) documentation now indicates which endpoints are in preview.
+
+<h3> Bug fixes </h3>
+
+- The **Sessions** link on the [**Overview**](../cockroachcloud/cluster-overview-page.html) page now redirects to the correct tab on the [**SQL Activity**](../cockroachcloud/sessions-page.html) page.
+- Fixed a bug where stale data caused **Connect** modal errors immediately after creating a {{ site.data.products.serverless }} cluster.
+- Fixed a bug where backup metadata payloads were limited to 4MiB instead of the desired 32MiB.
+- Fixed a bug where the node-aggregated low disk alert was not firing.
+
+## October 3, 2022
+
+<h3> Bug fixes </h3>
+
+- The {{ site.data.products.db }} Console now utilizes the same [cluster setting](../stable/cluster-settings.html) as the DB Console, `sql.index_recommendation.drop_unused_duration`, as a threshold value for dropping unused indexes.
+- Fixed a bug where [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoints could fail to create but display an error message that said they were still creating.
+
+## September 24, 2022
+
+<h3>Console changes</h3>
+
+- You can now [create a database](../cockroachcloud/serverless-cluster-management.html#create-a-database) directly from the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+
+## September 16, 2022
+
+<h3>Console changes</h3>
+
+- A tool to [estimate your monthly cost](../cockroachcloud/serverless-cluster-management.html#estimate-usage-cost) based on your workload is now available for {{ site.data.products.serverless }} clusters.
 
 ## September 8, 2022
 
@@ -61,9 +140,9 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3>Console changes</h3>
 
-- The [**Connect to your cluster**](../{{site.versions["stable"]}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.versions["stable"]}}/third-party-database-tools.html).
+- The [**Connect to your cluster**](../{{site.current_cloud_version}}/connect-to-the-database.html) dialog now includes code snippets for [supported languages and tools](../{{site.current_cloud_version}}/third-party-database-tools.html).
 - The [**Connect to your cluster**](../cockroachcloud/connect-to-a-serverless-cluster.html) dialog for clusters running CockroachDB [v22.1](v22.1.html) now loads more quickly.
-- If users log in using an [SSO](../cockroachcloud/cloud-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
+- If users log in using an [SSO](../cockroachcloud/cloud-org-sso.html) method other than the one they have used previously, they will now be asked if they want to switch to the new login method.
 - Previously, {{ site.data.products.dedicated }} users could only choose storage amounts within the [recommendations](../cockroachcloud/plan-your-cluster.html?filters=dedicated) for the selected machine size. Now, a warning message will appear if the storage is outside the recommended range, but any storage option can be selected.
 - The date and time selection on the [**Statements**](../cockroachcloud/statements-page.html) and [**Transactions**](../cockroachcloud/transactions-page.html) pages now defaults to UTC and has an improved design.
 
@@ -75,8 +154,8 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3>General changes</h3>
 
-- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
-- [Single Sign-On (SSO)](../cockroachcloud/cloud-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
+- [Datadog integration](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) is now available on the **Monitoring** page for all {{ site.data.products.dedicated }} users.
+- [Cloud Organization Single Sign-On (SSO)](../cockroachcloud/cloud-org-sso.html) for {{ site.data.products.db }} is now available with Google and Microsoft in addition to GitHub.
 
 <h3>Console changes</h3>
 
@@ -98,7 +177,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 <h3>Console changes</h3>
 
 - Added **Distributed execution** and **Vectorized execution** information to the **Overview** tab of the **Statement Details** page.
-- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.  
+- Added `FULL SCAN` information to the **Explain plan** tab of the **Statement Details** page.
 - Users without accounts can now accept invitations by creating a user using SSO-based authorization such as GitHub.
 - Timeseries charts are now displayed in UTC.
 
@@ -167,7 +246,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
     GCP                              | AWS
     ---------------------------------|------------
-    Oregon (`us-west2`)              | Mumbai (`ap-south-1`)
+    California (`us-west2`)              | Mumbai (`ap-south-1`)
     Sao Paulo (`southamerica-east1`) | Frankfurt (`eu-central-1`)
     South Carolina (`us-east1`)      | N. Virginia (`us-east-1`)
 
@@ -252,7 +331,7 @@ As of August 29, 2022, {{ site.data.products.serverless }} clusters are running 
 
 <h3>Bug fixes</h3>
 
-- Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-free-cluster.html) clusters.
+- Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-serverless-cluster.html) clusters.
 
 <h3>Miscellaneous changes</h3>
 
@@ -495,7 +574,7 @@ CockroachCloud now requires a user to have a CockroachCloud account before accep
 In addition to various updates, enhancements, and bug fixes, this beta release includes the following major highlights:
 
 - CockroachCloud pricing is now available on the [pricing page](https://www.cockroachlabs.com/pricing/).
-- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](https://www.cockroachlabs.com/docs/releases/v19.2.4.html). All new clusters will now be created with CockroachDB v19.2.4.
+- CockroachCloud clusters running CockroachDB v19.2 have been upgraded to [v19.2.4](v19.2.html#v19-2-4). All new clusters will now be created with CockroachDB v19.2.4.
 - CockroachCloud now offers two options for per-node hardware configuration instead of three options. The hardware configuration [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) has been updated accordingly.
 
 <h3>Security changes</h3>

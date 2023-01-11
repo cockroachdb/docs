@@ -136,7 +136,7 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 **Support level:** Full
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/). We recommend using the PostgreSQL JDBC 42.2.9 driver.
 
 For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 

@@ -28,7 +28,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 ## Step 3. Understand the upgrade process
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
-In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.versions["stable"]}}/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
 
 Approximately 72 hours after all nodes are running v22.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v21.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
@@ -41,7 +41,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, complete the following steps.
+Before starting the upgrade, complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
@@ -55,6 +55,7 @@ The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring
 
 ### Review breaking changes
 
+{% comment %} Be careful with this logic and the page-level variable page_version {% endcomment %}
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.page_version" | first %}
 
 Review the [backward-incompatible changes in {{ page.page_version }}](../releases/{{ page.page_version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.page_version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
@@ -65,11 +66,11 @@ To start the upgrade process:
 
 1. [Sign in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 
-2. In the **Clusters** list, select the cluster you want to upgrade.
+1. In the **Clusters** list, select the cluster you want to upgrade.
 
-3. Select **Actions > Upgrade major version**.
+1. Select **Actions > Upgrade major version**.
 
-4. In the **Upgrade your cluster** dialog, review the pre-upgrade message and then click **Start Upgrade**.
+1. In the **Upgrade your cluster** dialog, review the pre-upgrade message and then click **Start Upgrade**.
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 Your cluster will be upgraded one node at a time without interrupting the cluster's overall health and availability. This "rolling upgrade" will take approximately 4-5 minutes per node.

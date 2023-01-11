@@ -58,14 +58,14 @@ Alternatively, you may also request a token directly from the `/login` endpoint 
     https://localhost:8080/api/v2/login/
     ~~~
 
-2. Record the token (`session` value) that is returned.
+1. Record the token (`session` value) that is returned.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
     ~~~
 
-3. Pass the token with each call using the `X-Cockroach-API-Session` header. For example:
+1. Pass the token with each call using the `X-Cockroach-API-Session` header. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

@@ -245,7 +245,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 1 minute:
+1. Run the workload for 1 minute:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -288,7 +288,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 1 minute:
+1. Run the workload for 1 minute:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -331,7 +331,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Launch the built-in SQL client to view it:
+1. Launch the built-in SQL client to view it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -392,7 +392,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Launch the built-in SQL client to view it:
+1. Launch the built-in SQL client to view it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -447,7 +447,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Launch the built-in SQL client to view it:
+1. Launch the built-in SQL client to view it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -497,7 +497,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Initialize and run the workload for 1 minute:
+1. Initialize and run the workload for 1 minute:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -546,7 +546,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 10 minutes:
+1. Run the workload for 10 minutes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -589,7 +589,7 @@ $ cockroach start \
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 10 minutes:
+1. Run the workload for 10 minutes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -634,7 +634,7 @@ To customize the frequency of per-operation statistics, use the `--display-every
     'postgresql://root@localhost:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 1 minute, printing the output every 5 seconds as JSON:
+1. Run the workload for 1 minute, printing the output every 5 seconds as JSON:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

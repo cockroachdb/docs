@@ -29,7 +29,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
     CREATE TABLE tmp (ID UUID DEFAULT gen_random_uuid(), geom_text STRING);
     ~~~
 
-2. Insert the points with the following statement:
+1. Insert the points with the following statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -211,7 +211,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
     ('POINT (-73.957583 41.417974999999998)');
     ~~~
 
-3. Run the query below, which gathers the points into a single geometry using [`ST_Union`](st_union.html) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON](spatial-glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
+1. Run the query below, which gathers the points into a single geometry using [`ST_Union`](st_union.html) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON](spatial-glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql 
@@ -233,11 +233,11 @@ In this example, we will generate the convex hull of a single geometry.  The geo
     {"type":"Polygon","coordinates":[[[-73.937074,40.578499],[-79.326158,42.102457],[-79.052966,43.105055],[-75.64756,44.590586],[-74.987,44.6699],[-73.466729,44.708036],[-72.185677,40.963122],[-73.937074,40.578499]]]}
     ~~~
 
-4. Paste the JSON emitted in the previous step into [geojson.io](http://geojson.io) and you should see an image like the following, which shows the convex hull surrounding the locations of [most of the independent bookstores in New York State](https://www.bookweb.org/member_directory/search/ABAmember/results/0/0/ny/0):
+1. Paste the JSON emitted in the previous step into [geojson.io](http://geojson.io) and you should see an image like the following, which shows the convex hull surrounding the locations of [most of the independent bookstores in New York State](https://www.bookweb.org/member_directory/search/ABAmember/results/0/0/ny/0):
 
     <img src="{{ 'images/v22.2/geospatial/st_convexhull.png' | relative_url }}" alt="ST_ConvexHull example" style="border:1px solid #eee;max-width:100%" />
 
-5. Finally, drop the temporary table if you no longer need it:
+1. Finally, drop the temporary table if you no longer need it:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -1,11 +1,11 @@
-$(window).load(function(e) {
+$(window).on('load', function(e) {
   var docsContext = location.href.split('/')[4];
 
-  if (docsContext.indexOf("cockroachcloud") > -1) {
+  if (docsContext.indexOf('cockroachcloud') > -1) {
     return;
   }
 
-  if (docsContext.indexOf("search") > -1) {
+  if (docsContext.indexOf('search') > -1) {
     return;
   }
 

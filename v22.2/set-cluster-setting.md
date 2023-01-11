@@ -11,7 +11,14 @@ The `SET CLUSTER SETTING` [statement](sql-statements.html) modifies a [cluster-w
 
 ## Required privileges
 
-Only members of the `admin` role can modify cluster settings. By default, the `root` user belongs to the `admin` role.
+To use the `SET CLUSTER SETTING` statement, a user must have one of the following attributes:
+
+- Be a member of the `admin` role. (By default, the `root` user belongs to the `admin` role.)
+- Have the `MODIFYCLUSTERSETTING` [system-level privilege](security-reference/authorization.html#system-level-privileges) granted. `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting it to other users and roles using the [`GRANT`](grant.html) statement. For example to grant this system-level privilege to user `maxroach`:
+
+    ~~~ sql
+    GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
+    ~~~
 
 ## Synopsis
 
@@ -46,6 +53,8 @@ To disable distributed execution for all new sessions:
 ~~~ sql
 > SET CLUSTER SETTING sql.defaults.distsql = 0;
 ~~~
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ### Disable automatic diagnostic reporting
 

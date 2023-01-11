@@ -11,7 +11,9 @@ It also lists all of the currently active scheduled jobs for [Row-Level TTL](row
 
 ## Required privileges
 
-Only members of the [`admin` role](security-reference/authorization.html#default-roles) can resume a schedule. By default, the `root` user belongs to the `admin` role.
+The following users can show a schedule:
+
+{% include {{page.version.version}}/backups/control-schedule-privileges.md %}
 
 ## Synopsis
 

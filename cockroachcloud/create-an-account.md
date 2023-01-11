@@ -7,9 +7,13 @@ docs_area: deploy
 
 Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
 
+{{site.data.alerts.callout_info}}
+If your organization uses [Cloud Organization SSO](cloud-org-sso.html#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with a [console admin](console-access-management.html#console-admin). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
+{{site.data.alerts.end}}
+
 ## Choose an authentication method
 
-You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft.
+You may authenticate to {{ site.data.products.db }} console using an email and password, or with [Single Sign-on (SSO)](cloud-org-sso.html). The console supports SSO provided by GitHub, Google, and Microsoft, as well as identity providers with support for OIDC or SAML protocols..
 
 SSO provides security benefits. This includes not having to manage an additional credential, and perhaps most importantly, that SSO providers support multi-factor authentication (MFA). For best security, we recommend that all {{ site.data.products.db }} users authenticate with SSO, with MFA enabled.
 
@@ -26,7 +30,7 @@ To register a new account, navigate to the [{{ site.data.products.db }} registra
 <section class="filter-content" markdown="1" data-scope="github">
 
 1. Click **Sign up with...** for your chosen SSO Provider.
-1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Log in to your account with your SSO provider and respond to the email or other notification inviting you to  **Authorize {{ site.data.products.db }} by Cockroach Labs**
 
 {{site.data.alerts.callout_info}}
@@ -42,7 +46,7 @@ We highly recommend enabling multi-factor authentication (MFA) with your SSO pro
 
     This can be [changed](#change-your-organization-name) later.
 
-1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions/) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Click **Get Started**.
 
     A confirmation email will be sent. Click **Verify email** in the email to confirm your account.

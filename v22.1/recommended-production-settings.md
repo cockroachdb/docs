@@ -64,12 +64,39 @@ Once you have [sized your cluster](#sizing), derive the amount of RAM, storage c
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
-| Value | Recommendation | Reference
-|-------|----------------|----------
-| RAM per vCPU | 4 GiB | [Memory](#memory)
-| Capacity per vCPU | 150 GiB | [Storage](#storage)
-| IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
-| MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
+{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+
+<table>
+<thead>
+<tr>
+    <th>Value</th>
+    <th>Recommendation</th>
+    <th>Reference</th>
+</tr>
+</thead>
+<tbody>
+    <tr>
+      <td>RAM per vCPU</td>
+      <td>4 GiB</td>
+      <td><a href="#memory">Memory</a></td>
+    </tr>
+    <tr>
+      <td>Capacity per vCPU</td>
+      <td>{{ cap_per_vcpu | strip_html }}</td>
+      <td><a href="#storage">Storage</a></td>
+    </tr>
+    <tr>
+      <td>IOPS per vCPU</td>
+      <td>500</td>
+      <td><a href="#disk-i-o">Disk I/O</a></td>
+    </tr>
+    <tr>
+      <td>MB/s per vCPU</td>
+      <td>30</td>
+      <td><a href="#disk-i-o">Disk I/O</a></td>
+    </tr>
+</tbody>
+</table>
 
 Before deploying to production, test and tune your hardware setup for your application workload. For example, read-heavy and write-heavy workloads will place different emphases on [CPU](#sizing), [RAM](#memory), [storage](#storage), [I/O](#disk-i-o), and [network](#networking) capacity.
 
@@ -99,7 +126,7 @@ Under-provisioning RAM results in reduced performance (due to reduced caching an
 
 We recommend provisioning volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
-- The maximum recommended storage capacity per node is 2.5 TiB, regardless of the number of vCPUs.
+- The maximum recommended storage capacity per node is 10 TiB, regardless of the number of vCPUs.
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
 

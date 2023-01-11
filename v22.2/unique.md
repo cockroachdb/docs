@@ -15,11 +15,11 @@ The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value
 
 - Columns with the `UNIQUE` constraint automatically have an [index](indexes.html) created with the name `<table name>_<columns>_key`. To avoid having two identical indexes, you should not create indexes that exactly match the `UNIQUE` constraint's columns and order.
 
-    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint.
+    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint. Conversely, [dropping the `UNIQUE` constraint](drop-constraint.html) also drops the automatically created index.
 
 - When using the `UNIQUE` constraint on multiple columns, the collective values of the columns must be unique. This *does not* mean that each value in each column must be unique, as if you had applied the `UNIQUE` constraint to each column individually.
 
-- You can define the `UNIQUE` constraint when [creating a table](#syntax), or you can add it to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-unique-constraint).
+- You can define the `UNIQUE` constraint when you [create a table](#syntax), or you can add it to an existing table through [`ADD CONSTRAINT`](add-constraint.html#add-the-unique-constraint).
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
@@ -27,33 +27,7 @@ For an example that uses unique indexes, see [Add a unique index to a `REGIONAL 
 
 ## Syntax
 
-`UNIQUE` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
-
-### Column level
-
-<div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/unique_column_level.html %}
-</div>
-
-Parameter | Description
-----------|------------
-`table_name` | The name of the table you're creating.
-`column_name` | The name of the constrained column.
-`column_type` | The constrained column's [data type](data-types.html).
-`column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
-`column_def` | Definitions for any other columns in the table.
-`table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
-
-**Example**
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE warehouses (
-    warehouse_id    INT        PRIMARY KEY NOT NULL,
-    warehouse_name  STRING(35) UNIQUE,
-    location_id     INT
-  );
-~~~
+You can define `UNIQUE` constraints at the [table level](#table-level) and at the [column level](#column-level).
 
 ### Table level
 
@@ -63,7 +37,7 @@ Parameter | Description
 
 Parameter | Description
 ----------|------------
-`table_name` | The name of the table you're creating.
+`table_name` | The name of the table you are creating.
 `column_def` | Definitions for any other columns in the table.
 `name` | The name you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `column_name` | The name of the column you want to constrain.
@@ -78,6 +52,32 @@ Parameter | Description
     customer_id   INT,
     logon_date    TIMESTAMP,
     UNIQUE (customer_id, logon_date)
+  );
+~~~
+
+### Column level
+
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/unique_column_level.html %}
+</div>
+
+Parameter | Description
+----------|------------
+`table_name` | The name of the table you are creating.
+`column_name` | The name of the constrained column.
+`column_type` | The constrained column's [data type](data-types.html).
+`column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+`column_def` | Definitions for any other columns in the table.
+`table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
+
+**Example**
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE warehouses (
+    warehouse_id    INT        PRIMARY KEY NOT NULL,
+    warehouse_name  STRING(35) UNIQUE,
+    location_id     INT
   );
 ~~~
 
@@ -107,7 +107,7 @@ Parameter | Description
 duplicate key value (customer_id,sales_id)=(2,1) violates unique constraint "logon_customer_id_sales_id_key"
 ~~~
 
-As mentioned in the [details](#details) above, it is possible when using the `UNIQUE` constraint alone to insert *NULL* values in a way that causes rows to appear to have rows with duplicate values.
+As mentioned in the [details](#details) above, it is possible when using the `UNIQUE` constraint alone to insert `NULL` values in a way that causes rows to appear to have rows with duplicate values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

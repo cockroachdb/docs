@@ -118,7 +118,7 @@ If nodes have shut down, this can also be caused by [insufficient storage capaci
 
 ## Memory
 
-CockroachDB is [resilient](demo-fault-tolerance-and-recovery.html) to node crashes. However, frequent node restarts caused by out-of-memory (OOM) crashes can impact cluster stability and performance.
+CockroachDB is [resilient](demo-fault-tolerance-and-recovery.html) to node crashes. However, frequent node restarts caused by [out-of-memory (OOM) crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) can impact cluster stability and performance.
 
 ### Memory planning
 
@@ -130,7 +130,7 @@ Provision enough memory and allocate an appropriate portion for data caching:
 
 ### Memory monitoring
 
-Monitor memory usage and node behavior for OOM errors:
+Monitor memory usage and node behavior for [OOM errors](cluster-setup-troubleshooting.html#out-of-memory-oom-crash):
 
 | Metric or event                                 | Description                                 |
 |-------------------------------------------------|---------------------------------------------|
@@ -152,7 +152,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 ##### Verify OOM errors
 
-If you observe nodes frequently restarting, confirm that the crashes are caused by OOM errors:
+If you observe nodes frequently restarting, confirm that the crashes are caused by [OOM errors](cluster-setup-troubleshooting.html#out-of-memory-oom-crash):
 
 - Monitor `dmesg` to determine if a node crashed because it ran out of memory:
 
@@ -195,6 +195,10 @@ An untuned SQL query can consume significant resources and impact the performanc
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 #### Database memory usage
 
 CockroachDB memory usage includes both accounted memory, such as the amount allocated to `--cache` and `--max-sql-memory`; and unaccounted memory, such as uncollected Go garbage and process overhead.
@@ -213,10 +217,36 @@ The cluster will underperform if storage is not provisioned or configured correc
 
 Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O:
 
-| Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Storage  | <ul><li>Provision volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}</li><li>See additional storage recommendations in the [Production Checklist](recommended-production-settings.html#storage).</li> |
-| Disk I/O | <ul><li>Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}</li><li>See additional disk I/O recommendations in the [Production Checklist](recommended-production-settings.html#disk-i-o).</li>                                                                                              |
+<table>
+<thead>
+<tr>
+  <th>Category</th>
+  <th>Recommendations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Storage</td>
+  <td>
+    <ul>
+      <li>Provision volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}.</li>
+      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}</li>
+      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}</li>
+      <li>See additional storage recommendations in the <a href="recommended-production-settings.html#storage">Production Checklist</a>.</li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td>Disk I/O</td>
+  <td>
+    <ul>
+      <li>Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.</li>
+      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}</li>
+      <li>See additional disk I/O recommendations in the <a href="recommended-production-settings.html#disk-i-o">Production Checklist</a>.</li>
+    </ul>
+  </td>
+</tbody>
+</table>
 
 ### Storage and disk monitoring
 
@@ -266,7 +296,7 @@ With insufficient disk I/O, you may also see:
 
 Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed.
 
-- The **Node Heartbeat Latency: 99th percentile** and **Node Heartbeat Latency: 90th percentile** graphs on the Distributed Dashboard show the time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats.
+- The [**Node Heartbeat Latency: 99th percentile**](ui-distributed-dashboard.html#node-heartbeat-latency-99th-percentile) and [**Node Heartbeat Latency: 90th percentile**](ui-distributed-dashboard.html#node-heartbeat-latency-90th-percentile) graphs on the [Distributed Dashboard](ui-distributed-dashboard.html) show the time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats.
 
     {% include {{ page.version.version }}/prod-deployment/healthy-node-heartbeat-latency.md %}
 

@@ -122,6 +122,12 @@
                 ]
               },
               {
+                "title": "User-Defined Functions",
+                "urls": [
+                  "/${VERSION}/user-defined-functions.html"
+                ]
+              },
+              {
                 "title": "<code>NULL</code> Handling",
                 "urls": [
                   "/${VERSION}/null-handling.html"
@@ -169,6 +175,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/alter-backup-schedule.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-changefeed.html"
@@ -193,9 +205,21 @@
                 ]
               },
               {
+                "title": "<code>ALTER FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/alter-function.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER INDEX</code>",
                 "urls": [
                   "/${VERSION}/alter-index.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/alter-locality.html"
                 ]
               },
               {
@@ -343,6 +367,18 @@
                 ]
               },
               {
+                "title": "<code>CREATE EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/create-external-connection.html"
+                ]
+              },
+              {
+                "title": "<code>CREATE FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/create-function.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE INDEX</code>",
                 "urls": [
                   "/${VERSION}/create-index.html"
@@ -433,9 +469,33 @@
                 ]
               },
               {
+                "title": "<code>DROP EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/drop-external-connection.html"
+                ]
+              },
+              {
+                "title": "<code>DROP FUNCTION</code>",
+                "urls": [
+                  "/${VERSION}/drop-function.html"
+                ]
+              },
+              {
+                 "title": "<code>DROP OWNED BY</code>",
+                 "urls": [
+                   "/${VERSION}/drop-owned-by.html"
+                 ]
+               },
+              {
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
                   "/${VERSION}/drop-region.html"
+                ]
+              },
+              {
+                "title": "<code>DROP SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/drop-secondary-region.html"
                 ]
               },
               {
@@ -745,6 +805,12 @@
                 ]
               },
               {
+                "title": "<code>SET SECONDARY REGION</code> (Enterprise)",
+                "urls": [
+                  "/${VERSION}/set-secondary-region.html"
+                ]
+              },
+              {
                 "title": "<code>SET TRANSACTION</code>",
                 "urls": [
                   "/${VERSION}/set-transaction.html"
@@ -778,6 +844,12 @@
                 "title": "<code>SHOW CREATE</code>",
                 "urls": [
                   "/${VERSION}/show-create.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CREATE EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/show-create-external-connection.html"
                 ]
               },
               {
@@ -869,6 +941,12 @@
                 "urls": [
                   "/${VERSION}/show-super-regions.html"
                 ]
+              },
+              {
+               "title": "<code>SHOW SYSTEM GRANTS</code>",
+               "urls": [
+                 "/${VERSION}/show-system-grants.html"
+               ]
               },
               {
                 "title": "<code>SHOW ROLES</code>",
@@ -1678,6 +1756,24 @@
                 ]
               },
               {
+                "title": "Distributed Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-distributed-dashboard.html"
+                ]
+              },
+              {
+                "title": "Queues Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-queues-dashboard.html"
+                ]
+              },
+              {
+                "title": "Slow Requests Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-slow-requests-dashboard.html"
+                ]
+              },
+              {
                 "title": "Changefeeds Dashboard",
                 "urls": [
                   "/${VERSION}/ui-cdc-dashboard.html"
@@ -1687,6 +1783,12 @@
                 "title": "Overload Dashboard",
                 "urls": [
                   "/${VERSION}/ui-overload-dashboard.html"
+                ]
+              },
+              {
+                "title": "TTL Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-ttl-dashboard.html"
                 ]
               },
               {
@@ -1722,6 +1824,12 @@
             ]
           },
           {
+            "title": "Insights Page",
+            "urls": [
+              "/${VERSION}/ui-insights-page.html"
+            ]
+          },
+          {
             "title": "Network Latency Page",
             "urls": [
               "/${VERSION}/ui-network-latency-page.html"
@@ -1737,6 +1845,12 @@
             "title": "Jobs Page",
             "urls": [
               "/${VERSION}/ui-jobs-page.html"
+            ]
+          },
+          {
+            "title": "Schedules Page",
+            "urls": [
+              "/${VERSION}/ui-schedules-page.html"
             ]
           },
           {

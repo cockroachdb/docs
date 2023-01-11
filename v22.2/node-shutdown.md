@@ -13,17 +13,16 @@ There are two ways to handle node shutdown:
 
 - To permanently remove the node from the cluster, **decommission** the node and then terminate the `cockroach` process. This is done when scaling down a cluster or reacting to hardware failures. With a decommission, the data is moved out of the node. Replica rebalancing creates network traffic throughout the cluster, which makes a decommission heavyweight.
 
-{{site.data.alerts.callout_success}}
-This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
-
-Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
-{{site.data.alerts.end}}
-
 This page describes:
 
-- The details of the [node shutdown sequence](#node-shutdown-sequence).
-- How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) by implementing connection retry logic and coordinating load balancer, process manager, and cluster settings.
-- How to [perform node shutdown](#perform-node-shutdown) by draining or decommissioning the node.
+- The details of the [node shutdown sequence](#node-shutdown-sequence) from the point of view of the `cockroach` process on a CockroachDB node.
+- How to [prepare for graceful shutdown](#prepare-for-graceful-shutdown) on {{ site.data.products.core }} clusters by implementing connection retry logic and coordinating load balancer, client application server, process manager, and cluster settings.
+- How to [perform node shutdown](#perform-node-shutdown) on {{ site.data.products.core }} deployments by manually draining or decommissioning a node.
+- How to handle node shutdown when CockroachDB is deployed using [Kubernetes](#decommissioning-and-draining-on-kubernetes) or in a [{{ site.data.products.dedicated }} cluster](#decommissioning-and-draining-on-cockroachdb-dedicated).
+
+{{site.data.alerts.callout_success}}
+This guidance applies to primarily to manual deployments. For more details about graceful termination when CockroachDB is deployed using Kubernetes, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes). For more details about graceful termination in a {{ site.data.products.dedicated }} cluster, refer to [Decommissioning and draining on {{ site.data.products.dedicated }}](#decommissioning-and-draining-on-cockroachdb-dedicated).
+{{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="drain">Drain</button>
@@ -126,13 +125,15 @@ Each of the [node shutdown steps](#node-shutdown-sequence) is performed in order
 
 Before you [perform node shutdown](#perform-node-shutdown), review the following prerequisites to graceful shutdown:
 
-- Configure your [load balancer](#load-balancing) to monitor node health.
-- Review and adjust [cluster settings](#cluster-settings) and [drain timeout](#drain-timeout) as needed for your deployment.
-- Implement [connection retry logic](#connection-retry-loop) to handle closed connections.
-- Configure the [termination grace period](#termination-grace-period) of your process manager or orchestration system.
+<ul>
+<li>Configure your <a href="#load-balancing">load balancer</a> to monitor node health.</li>
+<li>Review and adjust <a href="#cluster-settings">cluster settings</a> and <a href="#drain-timeout">drain timeout</a> as needed for your deployment.</li>
+<li>Implement <a href="#connection-retry-loop">connection retry logic</a> to handle closed connections.</li>
+<li>Configure the <a href="#termination-grace-period">termination grace period</a> of your process manager or orchestration system.</li>
 <section class="filter-content" markdown="1" data-scope="decommission">
-- Ensure that the [size and replication factor](#size-and-replication-factor) of your cluster are sufficient to handle decommissioning.
+<li>Ensure that the <a href="#size-and-replication-factor">size and replication factor</a> of your cluster are sufficient to handle decommissioning.</li>
 </section>
+</ul>
 
 ### Load balancing
 
@@ -184,6 +185,8 @@ Ensure that `server.shutdown.query_wait` is greater than:
 If there are still open transactions on the draining node when the server closes its connections, you will encounter errors. Your application should handle these errors with a [connection retry loop](#connection-retry-loop).
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 #### `server.shutdown.lease_transfer_wait`
 
 In the ["lease transfer phase"](#draining) of node drain, the server attempts to transfer all range leases and Raft leaderships from the draining node. `server.shutdown.lease_transfer_wait` sets the maximum duration of each iteration of this attempt (`5s` by default). Because this phase does not exit until all transfers are completed, changing this value only affects the frequency at which drain progress messages are printed.
@@ -200,7 +203,14 @@ Since [decommissioning](#decommissioning) a node rebalances all of its range rep
 The sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait) should not be greater than the configured [drain timeout](#drain-timeout).
 {{site.data.alerts.end}}
 
+#### `kv.allocator.recovery_store_selector`
+
+When a node is dead or decommissioning and all of its range replicas are being up-replicated onto other nodes, this setting controls the algorithm used to select the new node for each range replica. Regardless of the algorithm, a node must satisfy all available constraints for replica placement and survivability to be eligible.
+
+Possible values are `good` (the default) and `best`. When set to `good`, a random node is selected from the list of all eligible nodes. When set to `best`, a node with a low range count is preferred.
+
 <section class="filter-content" markdown="1" data-scope="drain">
+
 #### `server.time_until_store_dead`
 
 `server.time_until_store_dead` sets the duration after which a node is considered "dead" and its data is rebalanced to other nodes (`5m0s` by default). In the node shutdown sequence, this follows [process termination](#node-shutdown-sequence).
@@ -228,9 +238,9 @@ RESET CLUSTER SETTING server.time_until_store_dead;
 
 When [draining manually](#drain-a-node-manually) with `cockroach node drain`, all [drain phases](#draining) must be completed within the duration of `--drain-wait` (`10m` by default) or the drain will stop. This can be observed with an `ERROR: drain timeout` message in the terminal output. To continue the drain, re-initiate the command.
 
-{{site.data.alerts.callout_info}}
 A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
-{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.2" %} CockroachDB automatically increases the verbosity of logging when it detects a stall in the range lease transfer stage of `node drain`. Messages logged during such a stall include the time an attempt occurred, the total duration stalled waiting for the transfer attempt to complete, and the lease that is being transferred.
 
 `--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
 
@@ -264,22 +274,21 @@ If the `cockroach` process has not terminated at the end of the grace period, a 
 
 - When using [`systemd`](https://www.freedesktop.org/wiki/Software/systemd/) to run CockroachDB as a service, set the termination grace period with [`TimeoutStopSec`](https://www.freedesktop.org/software/systemd/man/systemd.service.html#TimeoutStopSec=) setting in the service file.
 
-- When using [Kubernetes](kubernetes-overview.html) to orchestrate CockroachDB, set the termination grace period with `terminationGracePeriodSeconds` in the [StatefulSet manifest](deploy-cockroachdb-with-kubernetes.html?filters=manual#configure-the-cluster).
+- When using [Kubernetes](kubernetes-overview.html) to orchestrate CockroachDB, refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes).
 
 To determine an appropriate termination grace period:
 
 - [Run `cockroach node drain` with `--drain-wait`](#drain-a-node-manually) and observe the amount of time it takes node drain to successfully complete.
-
-- On Kubernetes deployments, it is helpful to set `terminationGracePeriodSeconds` to be 5 seconds longer than the configured [drain timeout](#drain-timeout). This allows Kubernetes to remove a pod only after node drain has completed.
 
 - In general, we recommend setting the termination grace period **between 5 and 10 minutes**. If a node requires more than 10 minutes to drain successfully, this may indicate a technical issue such as inadequate [cluster sizing](recommended-production-settings.html#sizing).
 
 - Increasing the termination grace period does not increase the duration of a node shutdown. However, the termination grace period should not be excessively long, in case an underlying hardware or software issue causes node shutdown to become "stuck".
 
 <section class="filter-content" markdown="1" data-scope="decommission">
+
 ### Size and replication factor
 
-Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommissioning process will hang indefinitely.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If fewer nodes are available than the replication factor, CockroachDB will automatically reduce the replication factor (for example, from 5 to 3) to try to allow the decommission to succeed. However, the replication factor will not be reduced lower than 3. If three nodes are not available, the decommissioning process will hang indefinitely until nodes are added or you update the zone configurations to use a replication factor of 1.
 
 #### 3-node cluster with 3-way replication
 
@@ -305,19 +314,6 @@ If you decommission a node, the process will run successfully because the cluste
 
 <div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-#### 5-node cluster with 5-way replication for a specific table
-
-In this scenario, a [custom replication zone](configure-replication-zones.html#create-a-replication-zone-for-a-table) has been set to replicate a specific table 5 times (range 6), while all other data is replicated 3 times:
-
-<div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommissioning process will hang indefinitely:
-
-<div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-To successfully decommission a node in this cluster, you need to **add a 6th node** (or reduce the replication factor on the table). The decommissioning process can then complete:
-
-<div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 </section>
 
 ## Perform node shutdown
@@ -331,9 +327,7 @@ After [preparing for graceful shutdown](#prepare-for-graceful-shutdown), do the 
 </section>
 
 {{site.data.alerts.callout_success}}
-This guidance applies to manual deployments. If you have a Kubernetes deployment, terminating the `cockroach` process is handled through the Kubernetes pods. The `kubectl drain` command is used for routine cluster maintenance. For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
-
-Also see our documentation for [cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [cluster scaling](scale-cockroachdb-kubernetes.html) on Kubernetes.
+This guidance applies to manual deployments. In a Kubernetes deployment or a {{ site.data.products.dedicated }} cluster, terminating the `cockroach` process is handled through Kubernetes. Refer to [Decommissioning and draining on Kubernetes](#decommissioning-and-draining-on-kubernetes) and [Decommissioning and draining on {{ site.data.products.dedicated }}](#decommissioning-and-draining-on-cockroachdb-dedicated).
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="decommission">
@@ -416,11 +410,11 @@ cockroach node status --decommission --certs-dir=certs --host={address of any li
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | true
-   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
+  id |     address     |   sql_address   |      build      |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-----------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.2.0-alpha.1 | 2022-09-01 02:11:55.07734  | 2022-09-01 02:17:28.202777 |          | true         | true    |                73 | false              | active         | true
+   2 | localhost:26258 | localhost:26258 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.203535 | 2022-09-01 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.406667 | 2022-09-01 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
 (3 rows)
 ~~~
 
@@ -436,13 +430,13 @@ cockroach node status --decommission --certs-dir=certs --host={address of any li
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
-   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
-   5 | localhost:26261 | localhost:26261 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:57.613508 | 2022-02-11 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
+  id |     address     |   sql_address   |      build      |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-----------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.2.0-alpha.1 | 2022-09-01 02:11:55.07734  | 2022-09-01 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
+   2 | localhost:26258 | localhost:26258 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.203535 | 2022-09-01 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.406667 | 2022-09-01 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.914003 | 2022-09-01 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
+   5 | localhost:26261 | localhost:26261 | v22.2.0-alpha.1 | 2022-09-01 02:11:57.613508 | 2022-09-01 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
 (5 rows)
 ~~~
 
@@ -523,16 +517,16 @@ To drain and shut down a node that was started in the foreground with [`cockroac
     ~~~
 
     ~~~
-    CockroachDB node starting at 2022-02-11 06:25:24.922474 +0000 UTC (took 5.1s)
-    build:               CCL v22.1.0-791-ga0f0df7927 @ 2022/02/02 20:08:24 (go1.17.6)
+    CockroachDB node starting at 2022-09-01 06:25:24.922474 +0000 UTC (took 5.1s)
+    build:               CCL v22.2.0-alpha.1 @ 2022/08/30 23:02:58 (go1.19.1)
     webui:               https://localhost:8080
     sql:                 postgresql://root@localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
     sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt&user=root
     RPC client flags:    cockroach <client cmd> --host=localhost:26257 --certs-dir=certs
-    logs:                /Users/ryankuo/node1/logs
-    temp dir:            /Users/ryankuo/node1/cockroach-temp2906330099
-    external I/O path:   /Users/ryankuo/node1/extern
-    store[0]:            path=/Users/ryankuo/node1
+    logs:                /Users/maxroach/node1/logs
+    temp dir:            /Users/maxroach/node1/cockroach-temp2906330099
+    external I/O path:   /Users/maxroach/node1/extern
+    store[0]:            path=/Users/maxroach/node1
     storage engine:      pebble
     clusterID:           b2b33385-bc77-4670-a7c8-79d79967bdd0
     status:              restarted pre-existing node
@@ -669,13 +663,13 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:55.07734  | 2022-02-11 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
-   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.203535 | 2022-02-11 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.406667 | 2022-02-11 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
-   5 | localhost:26261 | localhost:26261 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:57.613508 | 2022-02-11 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
+  id |     address     |   sql_address   |      build      |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-----------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.2.0-alpha.1 | 2022-09-01 02:11:55.07734 | 2022-09-01 02:17:28.202777 |          | true         | true    |                73 | false              | active         | false
+   2 | localhost:26258 | localhost:26258 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.203535 | 2022-09-01 02:17:29.465841 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.406667 | 2022-09-01 02:17:29.588486 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.914003 | 2022-09-01 02:16:39.032709 |          | false        | false   |                 0 | true               | decommissioned | true
+   5 | localhost:26261 | localhost:26261 | v22.2.0-alpha.1 | 2022-09-01 02:11:57.613508 | 2022-09-01 02:16:39.615783 |          | false        | false   |                 0 | true               | decommissioned | true
 (5 rows)
 ~~~
 
@@ -711,12 +705,12 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:45:45.970862 | 2022-02-11 05:32:43.233458 |          | false        | false   |                 0 | false              | active         | true
-   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:40.32999  | 2022-02-11 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:47.20388  | 2022-02-11 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
+  id |     address     |   sql_address   |      build      |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-----------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.2.0-alpha.1 | 2022-09-01 02:45:45.970862 | 2022-09-01 05:32:43.233458 |          | false        | false   |                 0 | false              | active         | true
+   2 | localhost:26258 | localhost:26258 | v22.2.0-alpha.1 | 2022-09-01 02:46:40.32999  | 2022-09-01 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.2.0-alpha.1 | 2022-09-01 02:46:47.20388  | 2022-09-01 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.914003 | 2022-09-01 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
 (4 rows)
 ~~~
 
@@ -752,12 +746,12 @@ $ cockroach node status --decommission --certs-dir=certs --host={address of any 
 ~~~
 
 ~~~
-  id |     address     |   sql_address   |          build          |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
------+-----------------+-----------------+-------------------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
-   1 | localhost:26257 | localhost:26257 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:45:45.970862 | 2022-02-11 06:07:40.697734 |          | false        | false   |                 0 | true               | decommissioned | true
-   2 | localhost:26258 | localhost:26258 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:40.32999  | 2022-02-11 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
-   3 | localhost:26259 | localhost:26259 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:46:47.20388  | 2022-02-11 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
-   4 | localhost:26260 | localhost:26260 | v22.1.0-791-ga0f0df7927 | 2022-02-11 02:11:56.914003 | 2022-02-11 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
+  id |     address     |   sql_address   |      build      |         started_at         |         updated_at         | locality | is_available | is_live | gossiped_replicas | is_decommissioning |   membership   | is_draining
+-----+-----------------+-----------------+-----------------+----------------------------+----------------------------+----------+--------------+---------+-------------------+--------------------+----------------+--------------
+   1 | localhost:26257 | localhost:26257 | v22.2.0-alpha.1 | 2022-09-01 02:45:45.970862 | 2022-09-01 06:07:40.697734 |          | false        | false   |                 0 | true               | decommissioned | true
+   2 | localhost:26258 | localhost:26258 | v22.2.0-alpha.1 | 2022-09-01 02:46:40.32999  | 2022-09-01 05:42:28.577662 |          | true         | true    |                73 | false              | active         | false
+   3 | localhost:26259 | localhost:26259 | v22.2.0-alpha.1 | 2022-09-01 02:46:47.20388  | 2022-09-01 05:42:27.467766 |          | true         | true    |                73 | false              | active         | false
+   4 | localhost:26260 | localhost:26260 | v22.2.0-alpha.1 | 2022-09-01 02:11:56.914003 | 2022-09-01 02:16:39.032709 |          | true         | true    |                73 | false              | active         | false
 (4 rows)
 ~~~
 
@@ -789,7 +783,7 @@ The value of `is_decommissioning` will change back to `false`:
 ~~~
   id | is_live | replicas | is_decommissioning | membership | is_draining
 -----+---------+----------+--------------------+------------+--------------
-   1 |  false  |       73 |       false        |   active   |    true  
+   1 |  false  |       73 |       false        |   active   |    true
 (1 row)
 ~~~
 
@@ -799,6 +793,62 @@ If the decommissioning node has already reached the [draining stage](#draining),
 
 On the **Cluster Overview** page of the DB Console, the [node status](ui-cluster-overview-page.html#node-status) of the node should be `LIVE`. After a few minutes, you should see replicas rebalanced to the nodes.
 </section>
+
+## Decommissioning and draining on Kubernetes
+
+Most of the guidance in this page is most relevant to manual deployments that don't use Kubernetes. If you use Kubernetes to deploy CockroachDB, draining and decommissioning work the same way for the `cockroach` process, but Kubernetes handles them on your behalf. In a deployment without Kubernetes, an administrator initiates decommissioning or draining directly. In a Kubernetes deployment, an administrator modifies the desired configuration of the Kubernetes cluster and Kubernetes makes the required changes to the cluster, including decommissioning or draining nodes as required.
+
+- Whether you deployed a cluster using the CockroachDB Operator, Helm, or a manual StatefulSet, the resulting deployment is a StatefulSet. Due to the nature of StatefulSets, it's safe to decommission **only** the Cockroach node with the highest StatefulSet ordinal in preparation for scaling down the StatefulSet. If you think you need to decommission any other node, consider the following recommendations and [contact Support](https://support.cockroachlabs.com/hc/en-us) for assistance.
+
+    - If you deployed a cluster using the [CockroachDB Kubernetes Operator](deploy-cockroachdb-with-kubernetes.html), the best way to scale down a cluster is to update the specification for the Kubernetes deployment to reduce the value of `nodes:` and apply the change using a [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/). Kubernetes will notice that there are now too many nodes and will reduce them and clean up their storage automatically.
+
+    - If you deployed the cluster using [Helm](deploy-cockroachdb-with-kubernetes.html?filters=helm) or a [manual StatefulSet](deploy-cockroachdb-with-kubernetes.html?filters=manual), the best way to scale down a cluster is to interactively decommission and drain the highest-order node. After that node is decommissioned, drained, and terminated, you can repeat the process to further reduce the cluster's size.
+
+    Refer to [Cluster Scaling](scale-cockroachdb-kubernetes.html).
+
+- There is generally no need to interactively drain a node that is not being decommissioned, regardless of how you deployed the cluster in Kubernetes. When you upgrade, downgrade, or change the configuration of a CockroachDB deployment on Kubernetes, you apply the changes using a [rolling update](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/), which applies the change to one node at a time. On a given node, Kubernetes sends a `SIGTERM` signal to the `cockroach` process. When the `cockroach` process receives this signal, it starts draining itself. After draining is complete or the [termination grace period](#termination-grace-period-on-kubernetes) expires (whichever happens first), Kubernetes terminates the `cockroach` process and then removes the node from the Kubernetes cluster. Kubernetes then applies the updated deployment to the cluster node, restarts the `cockroach` process, and re-joins the cluster. Refer to [Cluster Upgrades](upgrade-cockroachdb-kubernetes.html).
+
+- Although the `kubectl drain` command is used for manual maintenance of Kubernetes clusters, it has little direct relevance to the concept of draining a node in a CockroachDB cluster. The `kubectl drain` command gracefully terminates each pod running on a Kubernetes node so that the node can be shut down (in the case of physical hardware) or deleted (in the case of a virtual machine). For details on this command, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/).
+
+Refer to [Termination grace period on Kubernetes](#termination-grace-period-on-kubernetes). For more details about managing CockroachDB on Kubernetes, refer to [Cluster upgrades](upgrade-cockroachdb-kubernetes.html) and [Cluster scaling](scale-cockroachdb-kubernetes.html).
+
+### Termination grace period on Kubernetes
+
+After Kubernetes issues a termination request to the `cockroach` process on a cluster node, it waits for a maximum of the deployment's [`terminationGracePeriodSeconds`](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination) before forcibly terminating the process. If `terminationGracePeriodSeconds` is too short, the `cockroach` process may be terminated before it can shut down cleanly and client applications may be disrupted.
+
+If undefined, Kubernetes sets `terminationGracePeriodSeconds` to 30 seconds. This is too short for the `cockroach` process to stop gracefully before Kubernetes terminates it forcibly. Do not set `terminationGracePeriodSeconds` to `0`, which prevents Kubernetes from detecting and terminating a stuck pod.
+
+For clusters deployed using the CockroachDB Public Operator, `terminationGracePeriodSeconds` defaults to 300 seconds (5 minutes).
+For clusters deployed using the CockroachDB Helm chart or a manual StatefulSet, the default depends upon the values file or manifest you used when you created the cluster.
+
+Cockroach Labs recommends that you:
+
+- Set `terminationGracePeriodSeconds` to no shorter than 300 seconds (5 minutes). This recommendation has been validated over time for many production workloads. In most cases, a value higher than 600 seconds (10 minutes) is not required. If CockroachDB takes longer than 10 minutes to gracefully stop, this may indicate an underlying configuration problem. Test the value you select against representative workloads before rolling out the change to production clusters.
+- Set `terminationGracePeriodSeconds` to be at least 5 seconds longer than the configured [drain timeout](#server-shutdown-drain_wait), to allow the node to complete draining before Kubernetes removes the Kubernetes pod for the CockroachDB node.
+- Ensure that the **sum** of the following `server.shutdown.*` settings for the CockroachDB cluster do not exceed the deployment's `terminationGracePeriodSeconds`, to reduce the likelihood that a node must be terminated forcibly.
+
+  - [`server.shutdown.drain_wait`](#server-shutdown-drain_wait)
+  - [`server.shutdown.connection_wait`](#server-shutdown-connection_wait)
+  - [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two
+  - [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait)
+
+    For more information about these settings, refer to [Cluster settings](#cluster-settings). Refer also to the [Kubernetes documentation about pod termination](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination).
+
+- Client applications that connect to CockroachDB must handle disconnections gracefully, because from the point of view of the client, cluster maintenance is always a possibility.
+
+  - A client application's connection pool should have a maximum lifetime that is shorter than the Kubernetes deployment's `terminationGracePeriodSeconds` setting. Cockroach Labs recommends aligning the value for [server.shutdown.connection_wait](#server-shutdown-connection_wait) with the connection pool's maximum lifetime.
+  - If a client application is connected to a cluster node that is draining, it will be disconnected, and must include the ability to try to connect again. Refer to [Connection retry loop](#connection-retry-loop).
+
+<a id="decommissioning-and-draining-on-cockroachdb-dedicated"></a>
+
+## Decommissioning and draining on {{ site.data.products.dedicated }}
+
+Most of the guidance in this page is most relevant to manual deployments, although decommissioning and draining work the same way behind the scenes in a {{ site.data.products.dedicated }} cluster. {{ site.data.products.dedicated }} clusters have a termination grace period of 300 seconds (5 minutes). This setting is not configurable.
+
+Client applications that connect to CockroachDB must handle disconnections gracefully, because from the point of view of the client, cluster maintenance is always a possibility.
+
+- Client applications that connect to {{ site.data.products.dedicated }} should use connection pools that have a maximum lifetime that is shorter than 300 seconds (5 minutes).
+- If a client application is connected to a cluster node that is draining, it will be disconnected, and must include the ability to try to connect again. Refer to [Connection retry loop](#connection-retry-loop).
 
 ## See also
 

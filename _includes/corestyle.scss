@@ -898,7 +898,9 @@ a.btn-primary {
 .version-tag {
   &:before {
     margin-right: 5px;
-    background: url(#{$images-url}icon-megaphone.png) no-repeat center center;
+    background-image: url(#{$images-url}icon-megaphone.png);
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 }
 
@@ -938,7 +940,35 @@ a.btn-primary {
 	        }
 			}
 
+      &#mac-intel {
+
+				&:before {
+					background-image: url(#{$images-url}icon-apple.png);
+	        }
+			}
+
+      &#mac-arm {
+
+				&:before {
+					background-image: url(#{$images-url}icon-apple.png);
+	        }
+			}
+
 			&#linux {
+
+				&:before {
+					background-image: url(#{$images-url}icon-linux.png);
+	        }
+			}
+
+      &#linux-intel {
+
+				&:before {
+					background-image: url(#{$images-url}icon-linux.png);
+	        }
+			}
+
+      &#linux-arm {
 
 				&:before {
 					background-image: url(#{$images-url}icon-linux.png);

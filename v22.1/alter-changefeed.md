@@ -50,6 +50,7 @@ Consider the following when specifying options with `ALTER CHANGEFEED`:
 - <a name="option-exceptions"></a> The majority of [`CREATE CHANGEFEED`](create-changefeed.html#options) options are compatible with `SET`/`UNSET`. This excludes the following options, which you **cannot** use in an `ALTER CHANGEFEED` statement:
   - [`cursor`](create-changefeed.html#cursor-option)
   - [`end_time`](create-changefeed.html#end-time)
+  - [`full_table_name`](create-changefeed.html#full-table-option): This option will not apply to existing tables. To use the fully qualified table name, it is necessary to create a new changefeed.
   - [`initial_scan_only`](create-changefeed.html#initial-scan)
 
 - <a name="scan-details"></a> To use [`initial_scan`](create-changefeed.html#initial-scan) with `ALTER CHANGEFEED`, it is necessary to define a `WITH` clause when running `ADD`. This will set these options on the specific table(s):

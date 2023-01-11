@@ -54,12 +54,6 @@ Large multi-row `INSERT` queries can lead to long-running transactions that resu
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
-## Bulk-update best practices
-
-### Use batch updates to delete a large number of rows
-
-To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-update Data](bulk-update-data.html).
-
 ## Bulk-delete best practices
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
@@ -87,7 +81,7 @@ When a table is created, all columns are stored as a single column family. This 
 The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
 
 1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
-2. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](change-data-capture-overview.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
+1. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](change-data-capture-overview.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
 
 The approaches described above are likely to create hot spots for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
 
@@ -415,6 +409,6 @@ To maximize transaction performance, you'll need to maximize the performance of 
 
 ## See also
 
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
-
-For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
+- If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+- For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
+- To read more about SQL best practices, see our [SQL Performance Best Practices](https://www.cockroachlabs.com/blog/sql-performance-best-practices/) blog post.

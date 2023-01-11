@@ -295,7 +295,157 @@ SELECT * FROM cte LIMIT 10;
 (10 rows)
 ~~~
 
-While this practice works for testing and debugging, Cockroach Labs does not recommend it in production.
+While adding a limit to prevent infinite recursion works for testing and debugging, Cockroach Labs does not recommend it in production. It is best practice to ensure that recursive subqueries have an explicit end condition.
+
+### Loose index scan using a recursive CTE
+
+You can use a recursive CTE to perform a loose index scan, which speeds up certain queries that would otherwise require a full scan. A loose index scan reads noncontiguous ranges of an index by performing multiple shorter scans.
+
+In this example, compare the latencies when scanning an index with and without a recursive CTE:
+
+Create a table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE test (n INT);
+~~~
+
+Populate the table with many random values from 0 to 9:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO test SELECT floor(random() * 10)
+FROM generate_series(1, 1000000);
+~~~
+
+Create an index:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE INDEX ON test (n);
+~~~
+
+Issue a statement to count the number of distinct values, without using a recursive CTE:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT COUNT(DISTINCT n) FROM test;
+~~~
+
+~~~
+SELECT COUNT(DISTINCT n) FROM test;
+  count
+---------
+     10
+(1 row)
+
+
+Time: 273ms total (execution 273ms / network 0ms)
+~~~
+
+This statement has a high latency because it reads every row in the index. You can see this using [`EXPLAIN`](explain.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE SELECT COUNT(DISTINCT n) FROM test;
+~~~
+
+~~~
+                                              info
+------------------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • group (scalar)
+  │ estimated row count: 1
+  │
+  └── • distinct
+      │ estimated row count: 10
+      │ distinct on: n
+      │ order key: n
+      │
+      └── • scan
+            estimated row count: 1,000,000 (100% of the table; stats collected 37 minutes ago)
+            table: test@test_n_idx
+            spans: FULL SCAN
+~~~
+
+Instead, use a recursive CTE to perform a loose index scan:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH RECURSIVE temp (i) AS (
+    (SELECT n FROM test ORDER BY n ASC LIMIT 1) -- initial subquery
+  UNION ALL
+    (SELECT n FROM test INNER JOIN (SELECT i FROM temp LIMIT 1) ON n > i ORDER BY n ASC LIMIT 1) -- recursive subquery
+)
+SELECT COUNT(*) FROM temp;
+~~~
+
+The initial subquery uses the [`LIMIT`](limit-offset.html) and [`ORDER BY`](order-by.html) clauses to select the lowest value in the table. The recursive subquery uses an [inner join](joins.html#inner-joins) to select the next lowest value until all unique values are retrieved. To get the number of distinct values in table `test`, you only need to count the number of values returned by the recursive CTE:
+
+~~~
+  count
+---------
+     10
+(1 row)
+
+
+Time: 13ms total (execution 13ms / network 0ms)
+~~~
+
+The recursive CTE has a low latency because it performs 10 limited scans of the index, each reading only one row and skipping the rest. You can see this using [`EXPLAIN`](explain.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE WITH RECURSIVE temp (i) AS (
+    (SELECT n FROM test ORDER BY n ASC LIMIT 1)
+  UNION ALL
+    (SELECT n FROM test INNER JOIN (SELECT i FROM temp LIMIT 1) ON n > i ORDER BY n ASC LIMIT 1)
+)
+SELECT COUNT(*) FROM temp;
+~~~
+
+~~~
+                                           info
+------------------------------------------------------------------------------------------
+  planning time: 755µs
+  execution time: 22ms
+  distribution: local
+  vectorized: true
+  rows read from KV: 1 (39 B, 1 gRPC calls)
+  cumulative time spent in KV: 3ms
+  maximum memory usage: 100 KiB
+  network usage: 0 B (0 messages)
+
+  • group (scalar)
+  │ nodes: n1
+  │ actual row count: 1
+  │
+  └── • recursive cte
+      │ nodes: n1
+      │ actual row count: 10
+      │
+      └── • scan
+            nodes: n1
+            actual row count: 1
+            KV time: 3ms
+            KV contention time: 0µs
+            KV rows read: 1
+            KV bytes read: 39 B
+            KV gRPC calls: 1
+            estimated max memory allocated: 20 KiB
+            estimated row count: 1 (<0.01% of the table; stats collected 39 minutes ago)
+            table: test@test_n_idx
+            spans: LIMITED SCAN
+            limit: 1
+~~~
+
+Because this pattern incurs the overhead of a new scan for each iteration, it is slower per row than a full scan. It is therefore faster than a full scan in cases (such as this one) where many rows are skipped, but is slower if they are not.
+
+{{site.data.alerts.callout_info}}
+Some recursive CTEs are not not yet optimized. For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/89954).
+{{site.data.alerts.end}}
 
 ## Correlated common table expressions
 

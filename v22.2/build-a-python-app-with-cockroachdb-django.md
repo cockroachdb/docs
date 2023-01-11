@@ -117,14 +117,13 @@ DATABASES = {
         'HOST': '{host}',
         'PORT': '{port}',
         'OPTIONS': {
-            'sslmode': 'verify-full',
-            'options': '--cluster={routing-id}'
+            'sslmode': 'verify-full'
         },
     },
 }
 ~~~
 
-For more information about configuration a Django connection to {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database.html?filters=python&filters=django).
+For more information about configuration a Django connection to {{ site.data.products.serverless }}, see [Connect to a CockroachDB Cluster](connect-to-the-database.html?filters=python&filters=django).
 
 After you have configured the app's database connection, you can start building out the application.
 

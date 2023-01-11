@@ -2,6 +2,7 @@
 title: Duplicate Indexes Topology
 summary: Guidance on using the duplicate indexes topology in a multi-region deployment.
 toc: true
+sitemap: false
 docs_area: deploy
 ---
 
@@ -21,7 +22,7 @@ In general, this pattern is suited well for immutable/reference tables that are 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xde_Oz-dJxM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 {{site.data.alerts.callout_success}}
-**See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/case-studies/top-u-s-financial-software-company-turns-to-cockroachdb-to-improve-its-application-login-experience/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.
+**See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/guides/banking-guide-to-the-cloud/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -60,7 +61,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 1. If you do not already have one, [request a trial Enterprise license](licensing-faqs.html#obtain-a-license).
 
-2. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
+1. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -71,7 +72,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
           lease_preferences = '[[+region=us-west]]';
     ~~~
 
-3. [Create secondary indexes](create-index.html) on the table for each of your other regions, including all of the columns you wish to read either in the key or in the key and a [`STORING`](create-index.html#store-columns) clause:
+1. [Create secondary indexes](create-index.html) on the table for each of your other regions, including all of the columns you wish to read either in the key or in the key and a [`STORING`](create-index.html#store-columns) clause:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -85,7 +86,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
         STORING (code);
     ~~~
 
-4. [Create a replication zone](configure-zone.html) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
+1. [Create a replication zone](configure-zone.html) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -105,7 +106,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
           lease_preferences = '[[+region=us-east]]';
     ~~~
 
-5. To confirm that replication zones are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html):
+1. To confirm that replication zones are in effect, you can use the [`SHOW CREATE TABLE`](show-create.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -148,10 +149,10 @@ Reads access the local leaseholder and, therefore, never leave the region. This 
 For example, in the animation below:
 
 1. The read request in `us-central` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the relevant leaseholder. In `us-west`, the leaseholder is for the table itself. In the other regions, the leaseholder is for the relevant index, which the [cost-based optimizer](cost-based-optimizer.html) uses due to the leaseholder preferences.
-4. The leaseholder retrieves the results and returns to the gateway node.
-5. The gateway node returns the results to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the relevant leaseholder. In `us-west`, the leaseholder is for the table itself. In the other regions, the leaseholder is for the relevant index, which the [cost-based optimizer](cost-based-optimizer.html) uses due to the leaseholder preferences.
+1. The leaseholder retrieves the results and returns to the gateway node.
+1. The gateway node returns the results to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_duplicate_indexes_reads.png' | relative_url }}" alt="Pinned secondary indexes topology" style="max-width:100%" />
 
@@ -162,12 +163,12 @@ The replicas for the table and its secondary indexes are spread across all 3 reg
 For example, in the animation below:
 
 1. The write request in `us-central` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder replicas for the table and its secondary indexes.
-4. While each leaseholder appends the write to its Raft log, it notifies its follower replicas.
-5. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
-6. The leaseholders then return acknowledgement of the commit to the gateway node.
-7. The gateway node returns the acknowledgement to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder replicas for the table and its secondary indexes.
+1. While each leaseholder appends the write to its Raft log, it notifies its follower replicas.
+1. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
+1. The leaseholders then return acknowledgement of the commit to the gateway node.
+1. The gateway node returns the acknowledgement to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_duplicate_indexes_writes.gif' | relative_url }}" alt="Duplicate Indexes topology" style="max-width:100%" />
 
@@ -193,9 +194,9 @@ This feature enables scenarios such as:
 ### Prerequisites
 
 1. Acquire an [Enterprise license](enterprise-licensing.html).
-2. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
-3. Create multiple [secondary indexes](indexes.html) on the reference tables. **These indexes must include (in key or using [`STORED`](create-index.html#store-columns)) every column that you wish to query**. For example, if you run `SELECT * from db.table` and not every column of `db.table` is in the set of secondary indexes you created, the optimizer will have no choice but to fall back to the primary index.
-4. Create [replication zones](configure-replication-zones.html) for each index.
+1. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
+1. Create multiple [secondary indexes](indexes.html) on the reference tables. **These indexes must include (in key or using [`STORED`](create-index.html#store-columns)) every column that you wish to query**. For example, if you run `SELECT * from db.table` and not every column of `db.table` is in the set of secondary indexes you created, the optimizer will have no choice but to fall back to the primary index.
+1. Create [replication zones](configure-replication-zones.html) for each index.
 
 With the above pieces in place, the optimizer will automatically choose the index nearest the gateway node that is planning the query.
 

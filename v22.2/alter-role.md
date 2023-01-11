@@ -35,6 +35,8 @@ Parameter | Description
 `IN DATABASE database_name` | Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>In order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
 `ROLE ALL ...`/`USER ALL ...` |  Apply session variable settings to all roles.<br>Exception: The `root` user is exempt from session variable settings.
 
+### Role options
+
 {% include {{page.version.version}}/sql/role-options.md %}
 
 ## Examples
@@ -233,6 +235,21 @@ root@:26257/movr> SHOW timezone;
   America/New_York
 (1 row)
 ~~~
+
+### Set default session variable values for all users
+
+To set a default value for all users for any [session variable](set-vars.html) that applies during login, issue a statment like the following:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER ROLE ALL SET sql.spatial.experimental_box2d_comparison_operators.enabled = "on";
+~~~
+
+~~~
+ALTER ROLE
+~~~
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## See also
 

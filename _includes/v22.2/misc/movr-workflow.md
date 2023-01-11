@@ -9,7 +9,7 @@ The workflow for MovR is as follows:
     > SELECT id, city, status FROM vehicles WHERE city='amsterdam' limit 25;
     ~~~   
 
-2. The user signs up for the service.
+1. The user signs up for the service.
 
     For example:
 
@@ -21,7 +21,7 @@ The workflow for MovR is as follows:
     
     {{site.data.alerts.callout_info}}Usually for <a href="uuid.html#create-a-table-with-auto-generated-unique-row-ids">Universally Unique Identifier (UUID)</a> you would need to generate it automatically but for the sake of this follow up we will use predetermined UUID to keep track of them in our examples.{{site.data.alerts.end}}
 
-3. In some cases, the user adds their own vehicle to share.
+1. In some cases, the user adds their own vehicle to share.
 
     For example:
     
@@ -30,7 +30,7 @@ The workflow for MovR is as follows:
     > INSERT INTO vehicles (id, city, type, owner_id,creation_time,status, current_location, ext) 
       VALUES ('ffffffff-ffff-4400-8000-00000000000f', 'amsterdam', 'skateboard', '66666666-6666-4400-8000-00000000000f', current_timestamp(), 'available', '88194 Angela Gardens Suite 60', '{"color": "blue"}');
     ~~~   
-4. More often, the user reserves a vehicle and starts a ride, applying a promo code, if available and valid.
+1. More often, the user reserves a vehicle and starts a ride, applying a promo code, if available and valid.
    
     For example:
     
@@ -50,7 +50,7 @@ The workflow for MovR is as follows:
       VALUES ('cd032f56-cf1a-4800-8000-00000000066f', 'amsterdam', 'amsterdam', '66666666-6666-4400-8000-00000000000f', 'bbbbbbbb-bbbb-4800-8000-00000000000b', '70458 Mary Crest', '', TIMESTAMP '2020-10-01 10:00:00.123456', NULL, 0.0);
     ~~~    
 
-5. During the ride, MovR tracks the location of the vehicle.
+1. During the ride, MovR tracks the location of the vehicle.
 
     For example:
     
@@ -60,7 +60,7 @@ The workflow for MovR is as follows:
       VALUES ('amsterdam', 'cd032f56-cf1a-4800-8000-00000000066f', current_timestamp(), -101, 60);
     ~~~    
     
-6. The user ends the ride and releases the vehicle.
+1. The user ends the ride and releases the vehicle.
     
     For example:
     

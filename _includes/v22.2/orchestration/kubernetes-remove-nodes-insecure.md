@@ -7,6 +7,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 1. Launch a temporary interactive pod and use the `cockroach node status` command to get the internal IDs of nodes:
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
@@ -31,6 +32,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
@@ -51,15 +53,17 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
        4 | my-release-cockroachdb-3.my-release-cockroachdb.default.svc.cluster.local:26257 | {{page.release_info.version}} | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
     (4 rows)
     ~~~
+
     </section>
 
-2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](cockroach-node.html) command to decommission it:
+1. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](cockroach-node.html) command to decommission it:
 
     {{site.data.alerts.callout_info}}
     It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
@@ -70,9 +74,11 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     --insecure \
     --host=cockroachdb-public
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl run cockroachdb -it \
@@ -83,6 +89,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     --insecure \
     --host=my-release-cockroachdb-public
     ~~~    
+
     </section>
 
     You'll then see the decommissioning status print to `stderr` as it changes:
@@ -104,9 +111,10 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     No more data reported on target nodes. Please verify cluster health before removing the nodes.
     ~~~
 
-3. Once the node has been decommissioned, remove a pod from your StatefulSet:
+1. Once the node has been decommissioned, remove a pod from your StatefulSet:
 
     <section class="filter-content" markdown="1" data-scope="manual">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=3
@@ -115,9 +123,11 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
     statefulset "cockroachdb" scaled
     ~~~
+
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
+
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm upgrade \
@@ -126,4 +136,5 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     --set statefulset.replicas=3 \
     --reuse-values
     ~~~
+
     </section>

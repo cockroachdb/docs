@@ -14,7 +14,17 @@ The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an
 Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
 ~~~
 
-The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. 
+The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier.
+
+The CockroachDB Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
+
+A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
+
+#### Network
+
+Service Name Indication (SNI) is an extension to the TLS protocol which allows a client to indicate which hostname it is attempting to connect to at the start of the TCP handshake process. The server can present multiple certificates on the same IP address and TCP port number, and one server can serve multiple secure websites or API services even if they use different certificates.
+
+Due to its order of operations, the PostgreSQL wire protocol's implementation of TLS is not compatible with SNI-based routing in the Kubernetes ingress controller. Instead, use a TCP load balancer for CockroachDB that is not shared with other services.
 
 #### Resources
 

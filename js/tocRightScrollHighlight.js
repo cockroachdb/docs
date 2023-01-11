@@ -1,12 +1,12 @@
 /* setup highlight-on-scroll behavior for right-hand TOC */
-$(document).ready(function() {
+$(function() {
   var $navigationLinks = $('#toc-right ul > li > a:not(.anchorjs-link)');
   var $sections = $(".clickable-header");
   var sectionIdTonavigationLink = {};
 
   $sections.each(function() {
       var id = $(this).attr('id');
-      sectionIdTonavigationLink[id] = $('#toc-right ul > li > a:not(.anchorjs-link)[href=#' + id + ']');
+      sectionIdTonavigationLink[id] = $(`#toc-right ul > li > a:not(.anchorjs-link)[href="#${id}"]`);
   });
 
   function highlightNavigation() {
@@ -30,5 +30,5 @@ $(document).ready(function() {
     });
   }
 
-  $(window).scroll(highlightNavigation);
+  $(window).on('scroll', highlightNavigation);
 });

@@ -7,6 +7,12 @@ docs_area: reference.sql
 
 The `COPY FROM` statement copies data from third-party clients to tables in your cluster.
 
+{{site.data.alerts.callout_danger}}
+By default, `COPY FROM` statements are segmented into batches of 100 rows. If any row encounters an error, only the rows that precede the failed row remain committed.
+
+If you need `COPY FROM` statements to commit atomically, issue the statements within an explicit transaction.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
 CockroachDB currently only supports `COPY FROM` statements issued from third-party clients, for compatibility with PostgreSQL drivers and ORMs. `COPY FROM` statements cannot be issued from the [`cockroach` SQL shell](cockroach-sql.html). To copy data from a file to your cluster, we recommend using an [`IMPORT`](import.html) statement instead.
 {{site.data.alerts.end}}
@@ -33,6 +39,7 @@ Option | Description
 `NULL 'value'` |  The string that represents a `NULL` value in the input data.
 `BINARY` | Copy data from binary format. If `BINARY` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
 `CSV` |  Copy data from CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
+`ESCAPE` | Specify an escape character for quoting the fields in CSV data.
 
 ## Required privileges
 

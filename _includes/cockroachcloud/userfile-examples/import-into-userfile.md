@@ -19,4 +19,4 @@ IMPORT TABLE customers (
 (1 row)
 ~~~
 
-For more import options, see [`IMPORT`](../{{site.versions["stable"]}}/import-into.html).
+For more import options, see [`IMPORT`](../{{site.current_cloud_version}}/import-into.html).

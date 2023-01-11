@@ -70,7 +70,7 @@ The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDA
 The sample app uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 
 1. `BasicExample`, which is where the application logic lives.
-2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function (`runSql`) that runs SQL statements inside a transaction, [retrying statements](transactions.html#transaction-retries) as needed.
+1. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function (`runSql`) that runs SQL statements inside a transaction, [retrying statements](transactions.html#transaction-retries) as needed.
 
 The `main` method of the app performs the following steps which roughly correspond to method calls in the `BasicExample` class.
 
@@ -129,15 +129,16 @@ It does all of the above using the practices we recommend for using JDBC with Co
         ...
 
         # Connection URL for JDBC (Java and JVM-based languages):
-        jdbc:postgresql://{host}:{port}/{database}?options=--cluster%3D{routing-id}&password={password}&sslmode=verify-full&user={username}
+        jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
         ~~~
 
-    1. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
+    2. Set the `JDBC_DATABASE_URL` environment variable to the JDBC-compatible connection string:
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
         export JDBC_DATABASE_URL="{jdbc-connection-string}"
         ~~~
+
     </section>
 
 ## Step 4. Run the code
@@ -234,7 +235,7 @@ For more information about importing data from MySQL, see [Migrate from MySQL](m
 
 ### Use `reWriteBatchedInserts` for increased speed
 
-We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/use/#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 
@@ -250,6 +251,7 @@ Specifically, it does the following:
 2. Given an overall update size of 500 rows (for example), split it into batches of size 128 and execute each batch in turn.
 3. Finally, commit the batches of statements you've just executed.
 
+{% include_cached copy-clipboard.html %}
 ~~~ java
 int BATCH_SIZE = 128;
 connection.setAutoCommit(false);
@@ -274,7 +276,7 @@ try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts
 
 CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
 
-For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor) from the PGJDBC documentation.
+For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query/#getting-results-based-on-a-cursor) from the PGJDBC documentation.
 
 Note that interleaved execution (partial execution of multiple statements within the same connection and transaction) is not supported when [`Statement.setFetchSize()`](https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#setFetchSize-int-) is used.
 

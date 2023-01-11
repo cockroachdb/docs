@@ -5,13 +5,13 @@ toc: true
 docs_area: deploy
 ---
 
-This page describes how to migrate a multi-region cluster from using replication zones to using multi-region SQL abstractions.
+This page describes how to migrate a multi-region cluster from using [replication zones](configure-replication-zones.html) to using [multi-region SQL abstractions](multiregion-overview.html).
+
+{{site.data.alerts.callout_success}}
+If you are already using [multi-region SQL statements](multiregion-overview.html) to control your multi-region cluster, see [Scale to Multiple Regions](multiregion-scale-application.html) for instructions showing how to go from one region to multiple regions.
+{{site.data.alerts.end}}
 
 ## Overview
-
-{{site.data.alerts.callout_info}}
-If you are already using [multi-region SQL statements](multiregion-overview.html) to control your multi-region cluster, you can ignore this page.
-{{site.data.alerts.end}}
 
 CockroachDB v21.1 added support for [improved multi-region capabilities that make it easier to run global applications](multiregion-overview.html). Using high-level SQL statements, you can control where your data is stored and how it is accessed to provide good performance and tunable latency for your application's users.
 
@@ -300,6 +300,7 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 
 ## See also
 
+- [Scale to Multiple Regions](multiregion-scale-application.html)
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
@@ -308,6 +309,10 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`SET SECONDARY REGION`](set-secondary-region.html)
+- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [Zone Config Extensions](zone-config-extensions.html)
 
 <!-- Reference Links -->
 

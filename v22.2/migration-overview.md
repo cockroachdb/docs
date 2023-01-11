@@ -24,7 +24,10 @@ You will likely need to update your schema by converting the data definition sta
 - [Unimplemented features.](#unimplemented-features)
 - [Differences from other databases.](#differences-from-other-databases)
 
-If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database to which you can [move your data](#step-2-move-your-data-to-cockroachdb).
+If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, use the CockroachDB MOLT (Migrate Off Legacy Technology) tools:
+
+- [Use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console to analyze your schema for SQL incompatibilities. The tool will identify and help you resolve errors in your schema, and then create a new CockroachDB database with the converted schema.
+- [Move your data](#step-2-move-your-data-to-cockroachdb) to the new database using [AWS DMS](aws-dms.html).
 
 ### Unimplemented features
 
@@ -42,7 +45,7 @@ Consider the following CockroachDB attributes and best practices:
 
 - When importing data, we recommend that you always have an explicit primary key defined on every table. For more information, see [Primary key best practices](schema-design-table.html#primary-key-best-practices).
 
-- Instead of using a sequence to define a primary key column, we recommend that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or the [`UUID`](uuid.html) datatype for primary key columns. For more information, see [`CREATE SEQUENCE`](create-sequence.html#considerations).
+- Instead of using a sequence to define a primary key column, we recommend that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or [auto-generating unique IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for primary key columns. For more information, see [`CREATE SEQUENCE`](create-sequence.html#considerations).
 
 	- {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 
@@ -52,7 +55,7 @@ For additional considerations specific to other databases and data formats, see 
 
 ## Step 2. Move your data to CockroachDB
 
-We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from any database to CockroachDB.
+We recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from any database, such as PostgreSQL, MySQL, or Oracle, to CockroachDB.
 
 Alternatively, use `IMPORT` to [migrate CSV data](migrate-from-csv.html).
 
@@ -75,7 +78,7 @@ Unless you changed the integer size when [migrating the schema](#differences-fro
 We **strongly recommend testing your application against CockroachDB** to ensure that:
 
 1. The state of your data is what you expect post-migration.
-2. Performance is sufficient for your application's workloads. Follow the [SQL Performance Best Practices](performance-best-practices-overview.html) and implement [transaction retry logic](transactions.html#transaction-retries).
+1. Performance is sufficient for your application's workloads. Follow the [SQL Performance Best Practices](performance-best-practices-overview.html) and implement [transaction retry logic](transactions.html#transaction-retries).
 
 ## See also
 

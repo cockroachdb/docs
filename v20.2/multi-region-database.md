@@ -2,6 +2,7 @@
 title: Create a Multi-Region Database Schema
 summary: This page documents the database schema for the multi-region Flask application built on CockroachDB.
 toc: true
+canonical: /stable/movr-flask-database.html
 ---
 
 This page walks you through creating a database schema for an example multi-region application. It is the second section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.

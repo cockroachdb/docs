@@ -21,7 +21,7 @@ Note that enabling SQL audit logs can negatively impact performance. As a result
 For the best visibility into security-related events on your cluster, we recommend configuring `SENSITIVE_ACCESS` together with the `USER_ADMIN`, `PRIVILEGES`, and `SESSIONS` logging channels. To learn more, see [Logging Use Cases](logging-use-cases.html#security-and-audit-monitoring).
 {{site.data.alerts.end}}
 
-{% include common/experimental-warning.md %}
+{% include feature-phases/preview.md %}
 
 ## Step 1. Create sample tables
 

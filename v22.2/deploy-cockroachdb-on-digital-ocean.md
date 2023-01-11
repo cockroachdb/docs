@@ -54,7 +54,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
     - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
     - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
-2. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
+1. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}
 

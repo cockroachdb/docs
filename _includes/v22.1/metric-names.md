@@ -135,7 +135,7 @@ Name | Help
 `range.removes` | Number of range removals
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
-`range.snapshots.preemptive-applied` | Number of applied pre-emptive snapshots
+`range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
 `range.splits` | Number of range splits
@@ -151,6 +151,7 @@ Name | Help
 `replicas.commandqueue.maxsize` | Largest number of commands in any CommandQueue
 `replicas.commandqueue.maxtreesize` | Largest number of intervals in any CommandQueue's interval tree
 `replicas.commandqueue.maxwritecount` | Largest number of read-write commands in any CommandQueue
+`replicas.leaders_invalid_lease` | Number of replicas that are Raft leaders whose lease is invalid
 `replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
 `replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders

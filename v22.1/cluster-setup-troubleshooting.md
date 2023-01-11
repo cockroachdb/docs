@@ -29,7 +29,7 @@ When starting a node, the directory you choose to store the data in also contain
 
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
--   Choose a different directory to store the CockroachDB data:  
+-   Choose a different directory to store the CockroachDB data:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start-single-node --store=<new directory> --insecure
@@ -133,11 +133,11 @@ no resolvers found; use --join to specify a connected node
 node belongs to cluster {"cluster hash"} but is attempting to connect to a gossip network for cluster {"another cluster hash"}
 ~~~
 
-**Explanation:** When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit the `cockroach` process, and then tried to join another cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join it.  
+**Explanation:** When starting a node, the directory you choose to store the data in also contains metadata identifying the cluster the data came from. This causes conflicts when you've already started a node on the server, have quit the `cockroach` process, and then tried to join another cluster. Because the existing directory's cluster ID doesn't match the new cluster ID, the node cannot join it.
 
 **Solution:** Disassociate the node from the existing directory where you've stored CockroachDB data. For example, you can do either of the following:
 
--   Choose a different directory to store the CockroachDB data:  
+-   Choose a different directory to store the CockroachDB data:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach start --store=<new directory> --join=<cluster host> <other flags>
@@ -150,7 +150,7 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start --join=<cluster host>:26257 <other flags>  
+    $ cockroach start --join=<cluster host>:26257 <other flags>
     ~~~
 
 ###### Incorrect `--join` address
@@ -158,7 +158,7 @@ node belongs to cluster {"cluster hash"} but is attempting to connect to a gossi
 If you try to add another node to the cluster, but the `--join` address is not pointing at any of the existing nodes, then the process will never complete, and you'll see a continuous stream of warnings like this:
 
 ~~~
-W180817 17:01:56.506968 886 vendor/google.golang.org/grpc/clientconn.go:942 Failed to dial localhost:20000: grpc: the connection is closing; please retry.  
+W180817 17:01:56.506968 886 vendor/google.golang.org/grpc/clientconn.go:942 Failed to dial localhost:20000: grpc: the connection is closing; please retry.
 W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grpc: addrConn.createTransport failed to connect to {localhost:20000 0 <nil>}. Err :connection error: desc = "transport: Error while dialing dial tcp [::1]:20000: connect: connection refused". Reconnecting…
 ~~~
 
@@ -178,7 +178,7 @@ However, if the settings are too high when nodes are added to the cluster, this 
 
 **Solution:** [Check LSM health](common-issues-to-monitor.html#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
 
-After compaction has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS](common-issues-to-monitor.html#disk-iops) and [CPU](common-issues-to-monitor.html#cpu). 
+After compaction has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS](common-issues-to-monitor.html#disk-iops) and [CPU](common-issues-to-monitor.html#cpu).
 
 Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html).
 
@@ -250,13 +250,13 @@ To identify a network partition:
 If  you try to add a node to a secure cluster without providing the node's security certificate, you will get the following error:
 
 ~~~
-problem with CA certificate: not found  
-*  
-* ERROR: cannot load certificates.  
-* Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.  
-*  
-* problem with CA certificate: not found  
-*  
+problem with CA certificate: not found
+*
+* ERROR: cannot load certificates.
+* Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+*
+* problem with CA certificate: not found
+*
 Failed running "start"
 ~~~
 
@@ -279,7 +279,7 @@ To check the certificate expiration date:
 While connecting to a secure cluster as a user, CockroachDB first checks if the client certificate exists in the `cert` directory. If the client certificate doesn’t exist, it prompts for a password. If password is not set and you press Enter, the connection attempt fails, and the following error is printed to `stderr`:
 
 ~~~
-Error: pq: invalid password  
+Error: pq: invalid password
 Failed running "sql"
 ~~~
 
@@ -316,7 +316,7 @@ See the following FAQs:
 You may encounter the following issues when your cluster nears 100% resource capacity:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
--   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance or stability issues.
+-   Running RAM at close to 100% utilization triggers Linux [OOM](#out-of-memory-oom-crash) and/or swapping that will result in poor performance or stability issues.
 -   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
 -   Running storage at 100% utilization read/write causes poor service time and [node shutdown](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space).
 -   Running network at 100% utilization causes response between databases and client to be poor.
@@ -446,8 +446,6 @@ CockroachDB memory usage has the following components:
 - **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB.
 - **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the allocation specified with `--cache`. The size of CGo allocated memory is usually very close to the configured `--cache` size.
 - **Overhead**: The RSS (resident set size) minus Go/CGo allocated memory.
-
-If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
 
 **Solution:** To determine Go and CGo allocated memory:
 

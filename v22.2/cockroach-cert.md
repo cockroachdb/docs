@@ -22,9 +22,9 @@ To create these certificates and keys, use the `cockroach cert` [commands](cockr
 
 1. Using the `cockroach cert` command, you create a CA certificate and key and then node and client certificates that are signed by the CA certificate. Since you need access to a copy of the CA certificate and key to create node and client certs, it's best to create everything in one place.
 
-2. You then upload the appropriate node certificate and key and the CA certificate to each node, and you upload the appropriate client certificate and key and the CA certificate to each client.
+1. You then upload the appropriate node certificate and key and the CA certificate to each node, and you upload the appropriate client certificate and key and the CA certificate to each client.
 
-3. When nodes establish contact to each other, and when clients establish contact to nodes, they use the CA certificate to verify each other's identity.
+1. When nodes establish contact to each other, and when clients establish contact to nodes, they use the CA certificate to verify each other's identity.
 
 ## Subcommands
 
@@ -187,7 +187,7 @@ Flag | Description
     - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
     - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
 
-2. Generate the CA certificate and key:
+1. Generate the CA certificate and key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -232,7 +232,7 @@ Flag | Description
     -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:16 node.key
     ~~~
 
-2. Upload certificates to the first node:
+1. Upload certificates to the first node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -249,7 +249,7 @@ Flag | Description
     <username>@<node1 address>:~/certs
     ~~~
 
-3. Delete the local copy of the first node's certificate and key:
+1. Delete the local copy of the first node's certificate and key:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -258,7 +258,7 @@ Flag | Description
 
     {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
 
-4. Create the certificate and key for the second node:
+1. Create the certificate and key for the second node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -281,7 +281,7 @@ Flag | Description
     -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:17 node.key
     ~~~
 
-5. Upload certificates to the second node:
+1. Upload certificates to the second node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -298,7 +298,7 @@ Flag | Description
     <username>@<node2 address>:~/certs
     ~~~
 
-6. Repeat steps 3 - 5 for each additional node.
+1. Repeat steps 3 - 5 for each additional node.
 
 ### Create the certificate and key pair for a client
 

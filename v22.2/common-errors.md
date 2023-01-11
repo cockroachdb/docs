@@ -149,8 +149,10 @@ The error message will specify which part of your backup is causing the failure.
 
 To resolve this issue, take a new [full backup](take-full-and-incremental-backups.html) after doing either of the following:
 
-- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds), or
+- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds). For example, we recommend setting the GC TTL to a time interval **greater** than the sum of `incremental_backup_interval` + `expected_runtime_of_full_backup` + `buffer_for_slowdowns`. To estimate the expected full backup runtime, it is necessary to perform testing or verify the past performance through the [jobs table](ui-jobs-page.html#jobs-table).
 - [Increase the frequency of incremental backups](manage-a-backup-schedule.html).
+
+{% include_cached new-in.html version="v22.2" %} Also, consider using [scheduled backups](create-schedule-for-backup.html) that use [protected timestamps](architecture/storage-layer.html#protected-timestamps) to ensure that the data to be backed up is protected from garbage collection until it has been successfully backed up. This active management of protected timestamps means that you can run scheduled backups at a cadence independent from the [GC TTL](configure-replication-zones.html#gc-ttlseconds) of the data. For more detail, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
 
 ## result is ambiguous
 
@@ -189,7 +191,7 @@ When importing into an existing table with [`IMPORT INTO`](import-into.html), th
 
 ## memory budget exceeded
 
-This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an OOM crash, which might be prevented by failing the query.
+This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an [OOM crash](cluster-setup-troubleshooting.html#out-of-memory-oom-crash), which might be prevented by failing the query.
 
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 

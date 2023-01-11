@@ -53,6 +53,7 @@ Parameter | Description
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
 `opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html). As of CockroachDB v21.1 and later, most users should use [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables). Indexes against regional by row tables are automatically partitioned, so explicit index partitioning is not required.
 `opt_where_clause` |  An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
+`opt_index_visible` | An optional `VISIBLE` or `NOT VISIBLE` clause that indicates whether an index is visible to the [cost-based optimizer](cost-based-optimizer.html#control-whether-the-optimizer-uses-an-index). If `NOT VISIBLE`, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).<br><br>Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
 `USING HASH` |  Creates a [hash-sharded index](hash-sharded-indexes.html).
 `WITH storage_parameter` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
@@ -70,7 +71,7 @@ Parameter | Description
 To create the most efficient indexes, we recommend reviewing:
 
 - [Indexes: Best Practices](indexes.html#best-practices)
-- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
+- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)
 
 #### Single-column indexes
 
@@ -118,16 +119,36 @@ You can create [GIN indexes](inverted-indexes.html) on schemaless data in a [`JS
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE INVERTED INDEX ON promo_codes (rules);
-~~~
-
-The preceding example is equivalent to the following PostgreSQL-compatible syntax:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
+The following syntax is equivalent:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE INVERTED INDEX ON promo_codes (rules);
+~~~
+
+### Create trigram indexes
+
+You can create [trigram indexes](trigram-indexes.html) on `STRING` columns by specifying the `gin_trgm_ops` or `gist_trgm_ops` opclass:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INDEX ON rides USING GIN (vehicle_city gin_trgm_ops);
+~~~
+
+The following syntax is equivalent:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INVERTED INDEX ON rides(vehicle_city gin_trgm_ops);
+~~~
+
+{{site.data.alerts.callout_info}}
+GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
+{{site.data.alerts.end}}
+  
 ### Create spatial indexes
 
 You can create [spatial indexes](spatial-indexes.html) on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [GIN index](inverted-indexes.html).

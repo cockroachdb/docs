@@ -37,7 +37,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
-2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -321,9 +321,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
 
-{{site.data.alerts.callout_info}}
-The Google Cloud Pub/Sub sink is currently in **beta**.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
@@ -524,7 +522,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/cdc/webhook-beta.md %}
+{% include feature-phases/preview.md %}
 
  In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 

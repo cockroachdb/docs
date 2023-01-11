@@ -33,7 +33,7 @@ You will need to export one CSV file per table, with the following requirements:
 
 ## Step 2. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`][import-into.html] can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`](import-into.html) can pull from, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 - [Use Userfile for Bulk Operations](use-userfile-for-bulk-operations.html)

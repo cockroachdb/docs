@@ -188,7 +188,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-2. Initialize the cluster:
+1. Initialize the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -197,7 +197,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --host=localhost:26257
     ~~~
 
-3. Add 3 nodes in the German availability zone:
+1. Add 3 nodes in the German availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -238,7 +238,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-3. Add 3 nodes in the Australian availability zone:
+1. Add 3 nodes in the Australian availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -293,7 +293,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-2. Create the database and set it as current:
+1. Create the database and set it as current:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -305,7 +305,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
     > SET DATABASE = roachlearn;
     ~~~
 
-3. Create the table with the appropriate partitions:
+1. Create the table with the appropriate partitions:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -360,7 +360,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=us]';
     ~~~
 
-2. Create a replication zone for the `europe` partition and constrain its data to the German availability zone:
+1. Create a replication zone for the `europe` partition and constrain its data to the German availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -368,7 +368,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=de]';
     ~~~
 
-3. Create a replication zone for the `australia` partition and constrain its data to the Australian availability zone:
+1. Create a replication zone for the `australia` partition and constrain its data to the Australian availability zone:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -376,7 +376,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=aus]';
     ~~~
 
-4. After creating these replication zones, you can view them using the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
+1. After creating these replication zones, you can view them using the [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -475,7 +475,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
     --join=<node1 hostname>,<node2 hostname>
     ~~~
 
-2. Start the second node:
+1. Start the second node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -485,7 +485,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
     --join=<node1 hostname>,<node2 hostname>
     ~~~
 
-3. Initialize the cluster:
+1. Initialize the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -716,10 +716,13 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Changes to secondary indexes:** CockroachDB solves these changes through online schema changes. Online schema changes are a superior feature to partitioning because they require zero-downtime and eliminate the potential for consistency problems.
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
+- **Logical structure of partitions:** CockroachDB uses the partitioning concept to allow users to logically subdivide a single physical table to enable independent configuration of those partitions using zone configurations. Other databases sometimes implement partitioning as the logical union of physically separate tables. This difference means that CockroachDB is able to permit inexpensive repartitioning in contrast to other databases. Consequently, CockroachDB is unable to provide the same bulk data deletion operations over table partitions that other databases achieve by physically dropping the underlying table represented by the partition.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- {% include {{ page.version.version }}/known-limitations/drop-single-partition.md %}
 
 ## See also
 

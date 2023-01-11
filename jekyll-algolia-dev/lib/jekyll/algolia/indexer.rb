@@ -327,6 +327,12 @@ module Jekyll
           synonyms: ['postgresql', 'postgres']
         }, false)
 
+        index.save_synonym('not visible', {
+          objectID: 'not visible',
+          type: 'synonym',
+          synonyms: ['not visible', 'invisible']
+        }, false)        
+        
         return
       end
 

@@ -8,13 +8,20 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
+Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to open the SQL shell. Then check your current cluster version:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW CLUSTER SETTING version;
+~~~
+
 To upgrade to a new version, you must first be on a [production release](../releases/) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
 
 Therefore, if you are upgrading from v19.2 to v20.2, or from a testing release (alpha/beta) of v20.1 to v20.2:
 
 1. First [upgrade to a production release of v20.1](../v20.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
 
-2. Then return to this page and perform a second rolling upgrade to v20.2.
+1. Then return to this page and perform a second rolling upgrade to v20.2.
 
 If you are upgrading from any production release of v20.1, or from any earlier v20.2 release, you do not have to go through intermediate releases; continue to step 2.
 
@@ -52,9 +59,9 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 1. [Upgrade to v20.1](../v20.1/upgrade-cockroach-version.html), if you haven't already.
 
-2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
-3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -67,21 +74,21 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v20.1 to v20.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](spatial-indexes.html), and [spatial functions](functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](migrate-from-shapefiles.html), [GeoJSON](migrate-from-geojson.html), [GeoPackages](migrate-from-geopackage.html), and [OpenStreetMap](migrate-from-openstreetmap.html).
 
-- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
+- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](enum.html) consisting of sets of enumerated, static values.
 
-- **Altering column data types:** After finalization, it will be possible to [alter column data types](../v20.2/alter-column.html#altering-column-types) where column data must be rewritten.
+- **Altering column data types:** After finalization, it will be possible to [alter column data types](alter-column.html#altering-column-types) where column data must be rewritten.
 
-- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../v20.2/create-schema.html), as well [alter user-defined schemas](../v20.2/alter-schema.html), [drop user-defined schemas](../v20.2/drop-schema.html), [set the schema for a database object](../v20.2/set-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html). For details on migrating a cluster that does not use user-defined schemas in its naming hierarchy, see [Migrating namespaces from previous versions of CockroachDB](sql-name-resolution.html#migrating-namespaces-from-previous-versions-of-cockroachdb).
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](create-schema.html), as well [alter user-defined schemas](alter-schema.html), [drop user-defined schemas](drop-schema.html), [set the schema for a database object](set-schema.html), and [convert databases to user-defined schemas](convert-to-schema.html). For details on migrating a cluster that does not use user-defined schemas in its naming hierarchy, see [Migrating namespaces from previous versions of CockroachDB](sql-name-resolution.html#migrating-namespaces-from-previous-versions-of-cockroachdb).
 
-- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foreign-key.html) constraint.
+- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](foreign-key.html) constraint.
 
-- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) to set a minimum length for passwords.
+- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](cluster-settings.html) to set a minimum length for passwords.
 
-- **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
+- **Materialized views:** After finalization, it will be possible to create [materialized views](views.html#materialized-views), or views that store their selection query results on-disk.
 
-- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
+- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.
 
 ## Step 4. Perform the rolling upgrade
 
@@ -223,6 +230,10 @@ Once you are satisfied with the new version:
     ~~~ sql
     > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+    {{site.data.alerts.end}}
 
 1. Check the cluster version to confirm that the finalize step has completed:
 

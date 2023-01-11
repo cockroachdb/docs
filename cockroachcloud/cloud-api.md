@@ -23,11 +23,45 @@ To send the secret key when making an API call, add the secret key to the `Autho
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
   --url 'https://cockroachlabs.cloud/api/v1/clusters' \
   --header 'Authorization: Bearer {secret_key}'
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="raw">
+
+{% include_cached copy-clipboard.html %}
+~~~ text
+Authorization: Bearer {secret_key}
+~~~
+
+</section>
+
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
+
+## Set the API version
+
+The `Cc-Version` HTTP header specifies the version of the Cloud API to use. If you omit the `Cc-Version` header, the Cloud API will default to version `2022-03-31` (the initial release of the Cloud API). The Cloud API uses date-based versions of the form `YYYY-MM-DD`, in [ISO 8601 format](https://www.w3.org/TR/NOTE-datetime).
+
+If you set an invalid version, you will get an HTTP 400 response with the message "invalid Cc-Version."
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
+    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="curl">
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/clusters' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --header 'Cc-Version: {version}'
 ~~~
 </section>
 
@@ -35,10 +69,11 @@ curl --request GET \
 {% include_cached copy-clipboard.html %}
 ~~~ text
 Authorization: Bearer {secret_key}
+Cc-Version: {version}
 ~~~
 </section>
 
-Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
+Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys) and `{version}` is the version of the Cloud API.
 
 ## Create a new cluster
 
@@ -50,6 +85,7 @@ To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The s
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
@@ -57,9 +93,11 @@ curl --request POST \
   --header 'Authorization: Bearer {secret_key}' \
   --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
 ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
+
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
@@ -75,6 +113,7 @@ curl --request POST \
   }
 }
 ~~~
+
 </section>
 
 Where:
@@ -92,6 +131,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
@@ -99,9 +139,11 @@ curl --request POST \
   --header 'Authorization: Bearer {secret_key}' \
   --data '{"name":"notorious-moose","provider":"GCP","spec":{"serverless":{"regions":["us-central1"],"spendLimit":0}}}'
 ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
+
 {% include_cached copy-clipboard.html %}
 ~~~ JSON
 {
@@ -117,6 +159,7 @@ curl --request POST \
   }
 }
 ~~~
+
 </section>
 
 If the request was successful, the API will return information about the newly created cluster.
@@ -291,6 +334,7 @@ To set the maximum spend limit for a Serverless cluster, send a `PUT` request to
 </div>
 
 <section class="filter-content" markdown="1" data-scope="curl">
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request PUT \
@@ -298,15 +342,18 @@ curl --request PUT \
   --header 'Authorization: Bearer {secret_key}' \
   --data '{"spendLimit": {spend_limit}}'
 ~~~
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
+
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
   "spendLimit": {spend_limit}
 }
 ~~~
+
 </section>
 
 Where:
@@ -342,6 +389,52 @@ Where:
   - `{secret_key}` is the secret key for the service account.
 
 If the `DELETE` request was successful the client will not receive a response payload.
+
+<a id="cloud-audit-logs"></a>
+
+## Export Cloud Organization audit logs
+
+{% include feature-phases/preview-opt-in.md %}
+
+To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl --request GET \
+  --url 'https://cockroachlabs.cloud/api/v1/auditlogevents?starting_from={timestamp}&sort_order={sort_order}&limit={limit}' \
+  --header 'Authorization: Bearer {secret_key}' \
+  --header 'Cc-Version: {api_version}'
+~~~
+
+Where:
+
+  - `{timestamp}` is an [RFC3339 timestamp](https://www.ietf.org/rfc/rfc3339.txt) that indicates the first log entry to fetch. If unspecified, defaults to the time when the Cloud organization was created if `{sort_order}` is `ASC`, or the current time if `{sort_order}` is `DESC`.
+  - `{sort_order}` is either `ASC` (the default) or `DESC`.
+  - `{limit}` indicates roughly how many entries to return. If any entries would be returned for a timestamp, all entries for that timestamp are always returned. Defaults to `200`.
+  - `{api_version}` is the [Cloud API version](#set-the-api-version).
+
+A request that includes no parameters exports roughly 200 entries in ascending order, starting from when your {{ site.data.products.db }} organization was created.
+
+If the request was successful, the client will receive a JSON array consisting of a list of log `entries` and, depending on the circumstances, a `next_starting_from` field.
+
+- If `{sort_order}` is `ASC`, `next_starting_from` is always returned.
+- If `{sort_order}` is `DESC`, then `next_starting_from` is returned as long as earlier audit logs are available. It is not returned when the earliest log entry is reached (when the {{ site.data.products.db }} organization was created).
+
+
+{% include_cached copy-clipboard.html %}
+~~~ json
+{
+  "entries": [
+    "{entry_array}"
+  ],
+  "next_starting_from": "{timestamp}"
+}
+~~~
+
+Where:
+
+  - `{entry_array}` is a structured JSON array of audit log entries.
+  - `{timestamp}` indicates the timestamp to send to export the next batch of results.
 
 ## List all clusters in an organization
 
@@ -467,7 +560,7 @@ Where:
   {{site.data.alerts.callout_info}}
   The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
   {{site.data.alerts.end}}
-  
+
 If the request was successful, the client will receive a list of SQL users.
 
 ~~~ json

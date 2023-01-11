@@ -53,7 +53,7 @@ The AWS URI **requires** the following:
 ----------------------------+------------------------------------------------------------------------
 `aws:///`                   | The AWS scheme. Note the triple slash (`///`).
 `{key}`                     | The key identifiers used to reference the KMS key that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
-`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication](cloud-storage-authentication.html).
 `REGION=<region>`           | The region of the KMS key.
 
 See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) documentation for guidance on creating an AWS KMS key.
@@ -75,7 +75,7 @@ The Google Cloud URI **requires** the following:
 `locations/{location}`      | The location specified at key creation.
 `keyRings/{key ring}`       | The Google Cloud key ring created to group keys.
 `cryptoKeys/{key name}`     | The name of the key.
-`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, then you must include `&CREDENTIALS=` with your base-64 encoded key. To load credentials from your environment, use `AUTH=implicit`. For details on setting up and using the different authentication types, see [Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, then you must include `&CREDENTIALS=` with your base-64 encoded key. To load credentials from your environment, use `AUTH=implicit`. For details on setting up and using the different authentication types, see [Authentication](cloud-storage-authentication.html).
 
 See Google Cloud's [customer-managed encryption key](https://cloud.google.com/storage/docs/encryption/using-customer-managed-keys) documentation for guidance on creating a KMS key.
 
@@ -216,14 +216,6 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 {% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
 
-### Examples
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 <section class="filter-content" markdown="1" data-scope="s3">
@@ -263,87 +255,6 @@ For example, the encrypted backup created in the previous example can be restore
 ~~~
 
 To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gcs">
-
-#### Take an encrypted backup using a passphrase
-
-To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
-
-#### Restore from an encrypted backup using a passphrase
-
-To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
-
-For example, the encrypted backup created in the previous example can be restored with:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-#### Take an encrypted backup using a passphrase
-
-To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
-
-#### Restore from an encrypted backup using a passphrase
-
-To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
-
-For example, the encrypted backup created in the previous example can be restored with:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
-~~~
-
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
-
-</section>
-
 
 ## See also
 

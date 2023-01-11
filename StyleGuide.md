@@ -414,7 +414,7 @@ A release note helps users understand what they gain from upgrading to the versi
 #### Examples
 
 - [CockroachDB Cloud Release Notes](https://www.cockroachlabs.com/docs/releases/cloud.html)
-- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.5.html)
+- [What's New in v21.2.5](https://www.cockroachlabs.com/docs/releases/v21.2.html#v21-2-5)
 
 ## Components
 
@@ -476,7 +476,7 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
 
-Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](https://raw.githubusercontent.com/cockroachdb/docs/master/releases/v2.1.0-alpha.20180507.md)).
+Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
 
@@ -678,7 +678,6 @@ All product names except CockroachDB should be written as Liquid variables unles
 - **CockroachDB Serverless** : `{{ site.data.products.serverless }}`
 - **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
 - **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
-- **Enterprise** : `{{ site.data.products.enterprise }}`
 - **CockroachDB Cloud** : `{{ site.data.products.db }}`
 
 ### Code

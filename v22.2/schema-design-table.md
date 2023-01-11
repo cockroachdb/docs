@@ -115,6 +115,10 @@ Here are some best practices to follow when defining table columns:
 
 - Review the best practices and examples for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints to your columns.
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 #### Column definition examples
 
 In the `max_init.sql` file, add a few column definitions to the `users` table's `CREATE TABLE` statement, for user names and email addresses:
@@ -224,6 +228,12 @@ Here are some best practices to follow when selecting primary key columns:
 - For single-column primary keys, use [`UUID`](uuid.html)-typed columns with default values randomly-generated, using the `gen_random_uuid()` [SQL function](functions-and-operators.html#id-generation-functions).
 
     Randomly generating `UUID` values ensures that the primary key values will be unique and well-distributed across a cluster. For an example, see [below](#primary-key-examples).
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 #### Primary key examples
 

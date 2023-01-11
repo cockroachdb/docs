@@ -1,11 +1,11 @@
 ---
-title: Test Your Application
+title: Test Your Application Locally
 summary: Best practices for locally testing an application built on CockroachDB
 toc: true
 docs_area: develop
 ---
 
-This page documents best practices for unit testing applications built on CockroachDB.
+This page documents best practices for unit testing applications built on CockroachDB in a local environment.
 
 If you are deploying a self-hosted cluster, see the [Production Checklist](recommended-production-settings.html) for information about preparing your cluster for production.
 
@@ -33,8 +33,8 @@ We recommend the following additional [cluster settings](cluster-settings.html) 
 | `jobs.retention_time`                                        | `15s`     | More [schema changes](online-schema-changes.html) create more [jobs](show-jobs.html), which affects job query performance. We don’t need to retain jobs during testing and can set a more aggressive delete policy.       |
 | `schemachanger.backfiller.buffer_increment`                  | `128 KiB` | During table backfills, we fill up buffers which have a large default. A lower setting reduces memory usage.                                                                                                              |
 | `sql.stats.automatic_collection.enabled`                     | `false`   | Turn off [statistics](show-statistics.html) collection, since automatic statistics contribute to table contention alongside schema changes. Each schema change triggers an asynchronous auto statistics job.              |
-| `ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds"`   | `5`       | Faster descriptor cleanup. For more information, see [`ALTER RANGE`](alter-range.html).                                                                                                                                   |
-| `ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds"` | `5`       | Faster jobs table cleanup. For more information, see [`ALTER DATABASE`](alter-database.html).                                                                                                                             |
+| `ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds"`   | `600`       | Faster descriptor cleanup. For more information, see [`ALTER RANGE`](alter-range.html).                                                                                                                                   |
+| `ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds"` | `600`       | Faster jobs table cleanup. For more information, see [`ALTER DATABASE`](alter-database.html).                                                                                                                             |
 
 To change all of the settings described above at once, run the following SQL statements:
 
@@ -48,8 +48,8 @@ SET CLUSTER SETTING jobs.retention_time = '15s';
 SET CLUSTER SETTING schemachanger.backfiller.buffer_increment = '128 KiB';
 SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
 SET CLUSTER SETTING kv.range_split.by_load_merge_delay = '5s';
-ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds" = 5;
-ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds" = 5;
+ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds" = 600;
+ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds" = 600;
 ~~~
 
 {{site.data.alerts.callout_danger}}

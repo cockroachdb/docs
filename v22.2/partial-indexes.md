@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
- Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
+Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
 
 ## How do partial indexes work?
 
@@ -158,26 +158,32 @@ To limit the number of rows scanned to just the rows that you are querying, you 
 ~~~
 
 ~~~
-  table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
--------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | rides_pkey                                    |   false    |            1 | city          | ASC       |  false  |  false
-  rides      | rides_pkey                                    |   false    |            2 | id            | ASC       |  false  |  false
-  rides      | rides_pkey                                    |   false    |            3 | vehicle_city  | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            4 | rider_id      | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            5 | vehicle_id    | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            6 | start_address | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            7 | end_address   | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            8 | start_time    | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            9 | end_time      | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |           10 | revenue       | N/A       |  true   |  false
-  ...
-  rides      | rides_city_revenue_idx                        |    true    |            1 | city          | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue       | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            3 | id            | ASC       |  false  |   true
-  ...
-(24 rows)
+  table_name |                  index_name                   | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
+-------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            2 | vehicle_id    | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            3 | city          | ASC       |    f    |    t     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_city_revenue_idx                        |     t      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_city_revenue_idx                        |     t      |            2 | revenue       | ASC       |    f    |    f     |    t
+  rides      | rides_city_revenue_idx                        |     t      |            3 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            3 | vehicle_city  | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            4 | rider_id      | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            5 | vehicle_id    | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            6 | start_address | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            7 | end_address   | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
+(20 rows)
 
-Time: 8ms total (execution 8ms / network 0ms)
+
+Time: 15ms total (execution 14ms / network 1ms)
 ~~~
 
 Another `EXPLAIN` statement shows that the number of rows scanned by the original query decreases significantly with a partial index on the `rides` table:
@@ -349,24 +355,35 @@ You can create a partial index that excludes these rows, making queries that fil
 ~~~
 
 ~~~
-  table_name |                  index_name                   | non_unique | seq_in_index | column_name  | direction | storing | implicit
--------------+-----------------------------------------------+------------+--------------+--------------+-----------+---------+-----------
-  rides      | rides_pkey                                    |   false    |            1 | city          | ASC       |  false  |  false
-  rides      | rides_pkey                                    |   false    |            2 | id            | ASC       |  false  |  false
-  rides      | rides_pkey                                    |   false    |            3 | vehicle_city  | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            4 | rider_id      | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            5 | vehicle_id    | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            6 | start_address | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            7 | end_address   | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            8 | start_time    | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |            9 | end_time      | N/A       |  true   |  false
-  rides      | rides_pkey                                    |   false    |           10 | revenue       | N/A       |  true   |  false
-  ...
-  rides      | rides_city_revenue_idx                        |    true    |            1 | city          | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            2 | revenue       | ASC       |  false  |  false
-  rides      | rides_city_revenue_idx                        |    true    |            3 | id            | ASC       |  false  |   true
-  ...
-(27 rows)
+  table_name |                  index_name                   | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
+-------------+-----------------------------------------------+------------+--------------+---------------+-----------+---------+----------+----------
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            2 | rider_id      | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_city_ref_users            |     t      |            3 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            1 | vehicle_city  | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            2 | vehicle_id    | ASC       |    f    |    f     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            3 | city          | ASC       |    f    |    t     |    t
+  rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |     t      |            4 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_city_revenue_idx                        |     t      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_city_revenue_idx                        |     t      |            2 | revenue       | ASC       |    f    |    f     |    t
+  rides      | rides_city_revenue_idx                        |     t      |            3 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_city_revenue_idx1                       |     t      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_city_revenue_idx1                       |     t      |            2 | revenue       | ASC       |    f    |    f     |    t
+  rides      | rides_city_revenue_idx1                       |     t      |            3 | id            | ASC       |    f    |    t     |    t
+  rides      | rides_pkey                                    |     f      |            1 | city          | ASC       |    f    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            2 | id            | ASC       |    f    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            3 | vehicle_city  | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            4 | rider_id      | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            5 | vehicle_id    | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            6 | start_address | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            7 | end_address   | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
+  rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
+(23 rows)
+
+
+Time: 12ms total (execution 12ms / network 1ms)
 ~~~
 
 {% include_cached copy-clipboard.html %}

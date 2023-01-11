@@ -79,7 +79,7 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
     -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:16 node.key
     ~~~
 
-2. Upload certificates to the first node:
+1. Upload certificates to the first node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -96,7 +96,7 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
     <username>@<node1 address>:~/certs
     ~~~
 
-3. Delete the local copy of the first node's certificate and key:
+1. Delete the local copy of the first node's certificate and key:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -105,7 +105,7 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
 
     {{site.data.alerts.callout_info}}This is necessary because the certificates and keys for additional nodes will also be named <code>node.crt</code> and <code>node.key</code> As an alternative to deleting these files, you can run the next <code>cockroach cert create-node</code> commands with the <code>--overwrite</code> flag.{{site.data.alerts.end}}
 
-4. Create the certificate and key for the second node:
+1. Create the certificate and key for the second node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -128,7 +128,7 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
     -rw-------  1 maxroach  maxroach  1.6K Jul 10 14:17 node.key
     ~~~
 
-5. Upload certificates to the second node:
+1. Upload certificates to the second node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -145,7 +145,7 @@ Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp
     <username>@<node2 address>:~/certs
     ~~~
 
-6. Repeat steps 3 - 5 for each additional node.
+1. Repeat steps 3 - 5 for each additional node.
 
 ## Create the certificate and key pair for a client
 To create a certificate and a key pair for a client, use the `create-client` subcommand.

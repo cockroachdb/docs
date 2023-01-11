@@ -18,7 +18,7 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 This page has instructions for data domiciling in [multi-region clusters](multiregion-overview.html) using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. At a high level, this process involves:
 
 1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) clauses.
-1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the replicas for a partition or table to be stored in only the [home regions](set-locality.html#crdb_region) associated with those rows or tables.
+1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the voting and non-voting replicas for a partition or table to be stored in only the [home regions](multiregion-overview.html#table-localities) associated with those rows or tables.
 
 ## Prerequisites
 
@@ -84,7 +84,7 @@ Next, run a [replication report](query-replication-reports.html) to see which ra
 
 On a small demo cluster like this one, the data movement from the previous step should have finished almost instantly; on larger clusters, the rebalancing process may take longer. For more information about the performance considerations of rebalancing data in multi-region clusters, see [Performance considerations](migrate-to-multiregion-sql.html#performance-considerations).
 
-With the default settings, you should expect some replicas in the cluster to be violating this constraint. This is because [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) are enabled by default in [multi-region clusters](multiregion-overview.html) to enable stale reads of data in [regional tables](regional-tables.html) from outside those tables' [home regions](set-locality.html#crdb_region). For many use cases, this is preferred, but it keeps you from meeting the domiciling requirements for this example.
+With the default settings, you should expect some replicas in the cluster to be violating this constraint. This is because [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) are enabled by default in [multi-region clusters](multiregion-overview.html) to enable stale reads of data in [regional tables](regional-tables.html) from outside those tables' [home regions](multiregion-overview.html#table-localities). For many use cases, this is preferred, but it keeps you from meeting the domiciling requirements for this example.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -183,6 +183,8 @@ The restricted replica placement settings should start to apply immediately.
 [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) does not affect the replica placement for [global tables](global-tables.html), which are designed to provide fast, up-to-date reads from all [database regions](multiregion-overview.html#database-regions).
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
+
 ### Step 5. Verify updated replica placement
 
 Now that you have restricted the placement of non-voting replicas for all [regional tables](regional-tables.html), you can run another [replication report](query-replication-reports.html) to see the effects:
@@ -272,3 +274,7 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [`ADD REGION`](add-region.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [Zone Config Extensions](zone-config-extensions.html)
+- [`ALTER DATABASE ... SET SECONDARY REGION`](set-secondary-region.html)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](drop-secondary-region.html)

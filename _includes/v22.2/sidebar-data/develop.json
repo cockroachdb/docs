@@ -115,6 +115,12 @@
               ]
             },
             {
+              "title": "Index Trigrams",
+              "urls": [
+                "/${VERSION}/trigram-indexes.html"
+              ]
+            },
+            {
               "title": "Index Expressions",
               "urls": [
                 "/${VERSION}/expression-indexes.html"
@@ -253,7 +259,7 @@
       ]
     },
     {
-      "title": "Test Your Application",
+      "title": "Test Your Application Locally",
       "urls": [
         "/${VERSION}/local-testing.html"
       ]

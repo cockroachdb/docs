@@ -1,38 +1,43 @@
-## Step 1. Create a bridge network
+### Step 1. Create a bridge network
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ docker network create -d bridge roachnet
+docker network create -d bridge roachnet
 ~~~
 
 We've used `roachnet` as the network name here and in subsequent steps, but feel free to give your network any name you like.
 
-## Step 2. Start the cluster
+### Step 2: Create Docker volumes for each cluster node
 
-1. Create a [Docker volume](https://docs.docker.com/storage/volumes/) for each container:
+Cockroach Labs recommends that you store cluster data in Docker volumes rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    docker volume create roach1
-    ~~~
+Create a [Docker volume](https://docs.docker.com/storage/volumes/) for each container:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    docker volume create roach2
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker volume create roach1
+~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    docker volume create roach3
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker volume create roach2
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+docker volume create roach3
+~~~
+
+
+### Step 3. Start the cluster
 
 1. Start the first node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker run -d \
+    docker run -d \
     --name=roach1 \
     --hostname=roach1 \
     --net=roachnet \
@@ -57,7 +62,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker run -d \
+    docker run -d \
     --name=roach2 \
     --hostname=roach2 \
     --net=roachnet \
@@ -69,7 +74,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker run -d \
+    docker run -d \
     --name=roach3 \
     --hostname=roach3 \
     --net=roachnet \
@@ -83,16 +88,16 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker exec -it roach1 ./cockroach init --insecure
+    docker exec -it roach1 ./cockroach init --insecure
     ~~~
 
-    You'll see the following message:
+    The following message displays:
 
     ~~~
     Cluster successfully initialized
     ~~~
 
-    At this point, each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log. For example, the following command retrieves node 1's startup details:
+    Each node also prints helpful [startup details](cockroach-start.html#standard-output) to its log. For example, the following command retrieves the start-up details for `roach1`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -116,9 +121,9 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     nodeID:              1
     ~~~
 
-## Step 3. Use the built-in SQL client
+### Step 4. Use the built-in SQL client
 
-Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use the `docker exec` command to start the [built-in SQL shell](cockroach-sql.html) in the first container.
+Now that your cluster is live, you can use any node as a SQL gateway. To test this out, let's use the `docker exec` command to start the [built-in SQL shell](cockroach-sql.html) in the `roach1` container.
 
 1. Start the SQL shell in the first container:
 
@@ -127,7 +132,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     $ docker exec -it roach1 ./cockroach sql --insecure
     ~~~
 
-2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -156,7 +161,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-3. Now exit the SQL shell on node 1 and open a new shell on node 2:
+1. Exit the SQL shell on `roach1` and open a new shell on `roach2`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -168,7 +173,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     $ docker exec -it roach2 ./cockroach sql --insecure
     ~~~
 
-4. Run the same `SELECT` query as before:
+1. Run the same `SELECT` query as before:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -182,20 +187,20 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-    As you can see, node 1 and node 2 behaved identically as SQL gateways.
+    As you can see, `roach1` and `roach2` perform identically as SQL gateways.
 
-5. Exit the SQL shell on node 2:
+1. Exit the SQL shell on `roach2`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-## Step 4. Run a sample workload
+### Step 5. Run a sample workload
 
 CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's run the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).
 
-1. Load the initial dataset:
+1. Load the initial dataset on `roach1`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -203,7 +208,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for 5 minutes:
+1. Run the workload for five minutes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -212,13 +217,13 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
 
-## Step 5. Access the DB Console
+### Step 6. Access the DB Console
 
-The CockroachDB [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+The [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-1. When you started the first container/node, you mapped the node's default HTTP port `8080` to port `8080` on the host, so go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
+1. When you started the first node's container, you mapped the node's default HTTP port `8080` to port `8080` on the Docker host, so go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-2. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v22.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -228,29 +233,29 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-3. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v22.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-4. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
-## Step 6.  Stop the cluster
+### Step 7.  Stop the cluster
 
-Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
+1. Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ docker stop roach1 roach2 roach3
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ docker stop roach1 roach2 roach3
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ docker rm roach1 roach2 roach3
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ docker rm roach1 roach2 roach3
+    ~~~
 
-If you do not plan to restart the cluster, you may want to remove the Docker volumes:
+1. If you do not plan to restart the cluster, you can also remove the Docker volumes:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ docker volume rm roach1 roach2 roach3
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    docker volume rm roach1 roach2 roach3
+    ~~~

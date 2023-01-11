@@ -97,7 +97,7 @@ For more information about data domiciling using `PLACEMENT RESTRICTED`, see [Da
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Super regions rely on the underlying [replication zone system](configure-replication-zones.html), which was historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Configure Replication Zones](https://www.cockroachlabs.com/docs/v21.2/configure-replication-zones#types-of-constraints).
+Super regions rely on the underlying [replication zone system](configure-replication-zones.html), which was historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Configure Replication Zones](configure-replication-zones.html#types-of-constraints).
 {{site.data.alerts.end}}
 
 ## Survival goals
@@ -199,6 +199,7 @@ Regional by row tables can take advantage of [hash-sharded indexes](hash-sharded
 
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [Global Tables](global-tables.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Develop and Deploy a Global Application](movr-flask-overview.html)
