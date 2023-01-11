@@ -313,7 +313,7 @@ Yes, the [SQL Audit Log](/docs/{{site.versions["stable"]}}/sql-audit-logging.htm
 
 ### Why are some logs appearing without a node number in the name?
 
-Log messages received from {{ site.data.products.dedicated }} nodes that are not yet fully started may arrive without a node number appended to the log name, in the format `{logname}.n`. Node-specific log messages, as they are received, are written to node-specific logs in the format `{logname}.n1`, `{logname}.n2`, etc. where the number following the `n` characters is the node ID. See [Log Name Format](#log-name-format).
+Log messages received from {{ site.data.products.dedicated }} nodes that are not yet fully started may arrive without a node number appended to the log name, in the format `{logname}.n`. Node-specific log messages, as they are received, are written to node-specific logs in the format `{logname}.n1`, `{logname}.n2`, etc., where the number following the `n` characters is the node ID. See [Log Name Format](#log-name-format).
 
 ## Troubleshooting
 
