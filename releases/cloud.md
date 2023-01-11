@@ -2,7 +2,6 @@
 title: CockroachDB Cloud Releases
 summary: Changelog for CockroachDB Cloud.
 toc: true
-redirect-from: index-cockroachcloud.html
 docs_area: releases
 ---
 

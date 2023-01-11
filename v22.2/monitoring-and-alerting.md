@@ -332,6 +332,6 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [Third-Party Monitoring Integrations](third-party-monitoring-tools.html)

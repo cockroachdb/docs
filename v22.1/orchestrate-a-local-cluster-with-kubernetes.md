@@ -8,12 +8,12 @@ docs_area: deploy
 
 {% include {{ page.version.version }}/filter-tabs/crdb-kubernetes.md %}
 
-On top of CockroachDB's built-in automation, you can use a third-party [orchestration](orchestration.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
+On top of CockroachDB's built-in automation, you can use a third-party [orchestration](kubernetes-overview.html) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
 
 This page demonstrates a basic integration with the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either the CockroachDB [Helm](https://helm.sh/) chart or a few configuration files, you'll quickly create a 3-node local cluster. You'll run some SQL commands against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
 
 {{site.data.alerts.callout_info}}
-To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](orchestration.html). To deploy a 30-day free {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart](../cockroachcloud/quickstart.html).
+To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](kubernetes-overview.html). To deploy a 30-day free {{ site.data.products.dedicated }} cluster instead of running CockroachDB yourself, see the [Quickstart](../cockroachcloud/quickstart.html).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/orchestration/local-start-kubernetes.md %}
@@ -88,4 +88,4 @@ Explore other core CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
-You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html).
+You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html).

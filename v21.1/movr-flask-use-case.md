@@ -2,7 +2,6 @@
 title: MovR&#58; A Global Application Use-Case
 summary: This page covers an example use-case for global applications.
 toc: true
-redirect_from: multi-region-use-case.html
 ---
 
 This page guides you through an example use-case for global application development and deployment. It is the first section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.

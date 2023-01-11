@@ -419,7 +419,7 @@ For more information, see [Pod scheduling](schedule-cockroachdb-kubernetes.html)
 
 ## See also
 
-- [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+- [Orchestrate CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html)
 - [Production Checklist](recommended-production-settings.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Troubleshooting Performance Issues](query-behavior-troubleshooting.html)

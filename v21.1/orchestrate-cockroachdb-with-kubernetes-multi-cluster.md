@@ -13,7 +13,7 @@ toc_not_nested: true
 This page shows you how to orchestrate a secure CockroachDB deployment across three [Kubernetes](http://kubernetes.io/) clusters, each in a different geographic region, using [StatefulSets](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) to manage the containers within each cluster and linking them together via DNS. This will result in a single, multi-region CockroachDB cluster running on Kubernetes.
 
 {{site.data.alerts.callout_success}}
-To deploy CockroachDB in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+To deploy CockroachDB in a single Kubernetes cluster instead, see [Kubernetes Single-Cluster Deployment](deploy-cockroachdb-with-kubernetes.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -1308,6 +1308,6 @@ If you stop Kubernetes without first deleting the persistent volumes, they will 
 
 ## See also
 
-- [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes.html)
+- [Kubernetes Single-Cluster Deployment](deploy-cockroachdb-with-kubernetes.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

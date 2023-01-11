@@ -145,7 +145,7 @@ You might also be interested in the following pages:
 - [Start a Local Cluster][local_secure]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Optimize Statement Performance](make-queries-fast.html)
-- [Hello World example apps](hello-world-example-apps.html)
+- [Hello World example apps](example-apps.html)
 
 <!-- Reference Links -->
 

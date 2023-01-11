@@ -89,7 +89,7 @@ Other common tasks:
 - [Delete Data](delete-data.html)
 - [Optimize Query Performance][fast]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Hello World Example apps](example-apps.html)
 
 <!-- Reference Links -->
 

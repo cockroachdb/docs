@@ -147,4 +147,4 @@ Explore other core CockroachDB benefits and features:
 
 {% include {{ page.version.version }}/misc/explore-benefits-see-also.md %}
 
-You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html).
+You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html).

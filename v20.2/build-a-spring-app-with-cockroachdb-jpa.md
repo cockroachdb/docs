@@ -704,5 +704,5 @@ CockroachDB documentation:
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 - [Client Connection Parameters](connection-parameters.html)
 - [CockroachDB Developer Guide](developer-guide-overview.html)
-- [Hello World Example Apps](hello-world-example-apps.html)
+- [Hello World Example Apps](example-apps.html)
 - [Transactions](transactions.html)
