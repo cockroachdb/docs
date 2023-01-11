@@ -52,7 +52,7 @@ The organization label is found on the **Settings** page of the CockroachDB Clou
 
 ### Log in to CockroachDB Cloud on a headless server
 
-If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve an authorization token, and enter the token on the headless machine so `ccloud` can complete authentication.
+If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve an authorization code, and enter the code on the headless machine so `ccloud` can complete authentication.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
