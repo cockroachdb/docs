@@ -5,6 +5,12 @@ toc: true
 docs_area: manage
 ---
 
+{% include cockroachcloud/ccloud/backup-types.md %}
+
+This page describes how to use managed-service backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
+
+You can access your managed-service backups from the Backups page in the {{ site.data.products.db }} Console.
+
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
@@ -42,12 +48,17 @@ For each backup, the following details display:
 - The remaining number of days the backup will be retained (**Expires In**)
 - The number of [**Databases**](#databases) included in the backup
 
-    To view the databases included in the backup and initiate a restore, click the number in the [**Databases**](#databases) column
+<img src="{{ 'images/cockroachcloud/backups-dedicated.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
+
 </div>
+
 <div class="filter-content" markdown="1" data-scope="serverless">
 - The date and time the backup was taken (**Data From**)
 - The **Status** of the backup
 - The remaining number of days the backup will be retained (**Expires In**)
+
+<img src="{{ 'images/cockroachcloud/backups-serverless.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">

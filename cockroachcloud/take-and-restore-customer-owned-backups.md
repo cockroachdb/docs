@@ -5,27 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for backups and restores. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
-
-- [`BACKUP`](../{{site.current_cloud_version}}/backup.html)
-- [`RESTORE`](../{{site.current_cloud_version}}/restore.html)
-
 {% include cockroachcloud/ccloud/backup-types.md %}
 
-The examples on this page demonstrate how to take customer-owned backups.
+This page describes how to take and restore customer-owned backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
 
-{{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
-{{site.data.alerts.end}}
-
-For information on `userfile` commands, visit the following pages:
-
-- [`cockroach userfile upload`](../{{site.current_cloud_version}}/cockroach-userfile-upload.html)
-- [`cockroach userfile list`](../{{site.current_cloud_version}}/cockroach-userfile-list.html)
-- [`cockroach userfile get`](../{{site.current_cloud_version}}/cockroach-userfile-get.html)
-- [`cockroach userfile delete`](../{{site.current_cloud_version}}/cockroach-userfile-delete.html)
-
-The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
+The examples demonstrate how to back up and restore from cloud storage and userfile storage. We recommend using cloud storage for your backups, however, if you don't have [billing information](billing-management.html) on file, [userfile](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for backup operations. 
 
 {{site.data.alerts.callout_danger}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -35,7 +19,9 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 Before you begin, connect to your cluster. For guidance on connecting to your {{ site.data.products.db }} cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html) or [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
-### Backup data
+The examples on this page demonstrate how to take customer-owned backups.
+
+### Back up data
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
@@ -44,20 +30,24 @@ Before you begin, connect to your cluster. For guidance on connecting to your {{
 
 <section class="filter-content" markdown="1" data-scope="userfile">
 
+For information on `userfile` commands, visit the following pages:
+
+- [`cockroach userfile upload`](../{{site.current_cloud_version}}/cockroach-userfile-upload.html)
+- [`cockroach userfile list`](../{{site.current_cloud_version}}/cockroach-userfile-list.html)
+- [`cockroach userfile get`](../{{site.current_cloud_version}}/cockroach-userfile-get.html)
+- [`cockroach userfile delete`](../{{site.current_cloud_version}}/cockroach-userfile-delete.html)
+
 {% include cockroachcloud/userfile-examples/backup-userfile.md %}
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-Cockroach Labs runs the following managed-service backups:
+{{site.data.alerts.callout_info}}
+For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
+{{site.data.alerts.end}}
 
-- {{ site.data.products.dedicated }} clusters: [Full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
-- {{ site.data.products.serverless }} clusters: [Full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) every hour that are retained for 30 days.
-
-For more information, read [Use Managed-Service Backups](../cockroachcloud/use-managed-service-backups.html).
-
-The following examples show how to run manual backups:
+The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
 
 {% include cockroachcloud/backup-examples.md %}
 
@@ -83,7 +73,21 @@ For more information on taking backups, read the following pages:
 Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
 {{site.data.alerts.end}}
 
-To restore from the most recent backup, use [`RESTORE FROM LATEST IN ...`](../{{site.current_cloud_version}}/restore.html#restore-the-most-recent-backup).
+In cases when you need to restore a specific backup, add the backup subdirectory to the `RESTORE` statement:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+RESTORE DATABASE bank FROM '2021/03/24-210532.53' IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+~~~
+
+It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
+
+To restore from the most recent backup, use [`RESTORE FROM LATEST IN ...`](../{{site.current_cloud_version}}/restore.html#restore-the-most-recent-backup):
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+RESTORE FROM LATEST IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+~~~
 
 Once the backup data is no longer needed, delete from the `userfile` storage:
 

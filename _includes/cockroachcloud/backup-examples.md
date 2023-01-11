@@ -1,4 +1,4 @@
-#### Backup a cluster
+#### Back up a cluster
 
 To take a [full backup](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) of a cluster:
 
@@ -9,7 +9,7 @@ To take a [full backup](../{{site.current_cloud_version}}/take-full-and-incremen
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-#### Backup a database
+#### Back up a database
 
 To take a [full backup](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) of a single database:
 
@@ -29,7 +29,7 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-#### Backup a table or view
+#### Back up a table or view
 
 To take a [full backup](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) of a single table or view:
 

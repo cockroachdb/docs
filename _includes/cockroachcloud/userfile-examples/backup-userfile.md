@@ -36,12 +36,3 @@ When backing up from a cluster and restoring a database or table that is stored 
 2021/03/24-210532.53
 (3 rows)
 ~~~
-
-In cases when your database needs to be restored, run the following:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-RESTORE DATABASE bank FROM '2021/03/24-210532.53' IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
-~~~
-
-It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
