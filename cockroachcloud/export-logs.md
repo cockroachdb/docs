@@ -47,7 +47,7 @@ Where:
 
 - `{log-name}` is a string of your choosing as you configure log export. For AWS CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
 - `{region}` is the cloud provider region where your {{ site.data.products.dedicated }} cluster resides.
-- `{log-channel}` is the CockroachDB [log channel](../{{site.versions["stable"]}}/logging-overview.html#logging-channels), such as `HEALTH` or `OPS`.
+- `{log-channel}` is the CockroachDB [log channel](../{{site.current_cloud_version}}/logging-overview.html#logging-channels), such as `HEALTH` or `OPS`.
 - `{N}` is the node number of the {{ site.data.products.dedicated }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
 
 ## Enable log export
@@ -191,9 +191,9 @@ Perform the following steps to enable log export from your {{ site.data.products
             ~~~
 
             This configuration:
-            - Enables [redaction](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) globally for all log entries emitted to AWS CloudWatch.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.versions["stable"]}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Enables [redaction](/docs/{{site.current_cloud_version}}/configure-logs.html#redact-logs) globally for all log entries emitted to AWS CloudWatch.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other logging channels to the `default` AWS CloudWatch log group.
 
         1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
@@ -333,9 +333,9 @@ Perform the following steps to enable log export from your {{ site.data.products
             ~~~
 
             This configuration:
-            - Enables [redaction](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.versions["stable"]}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.versions["stable"]}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Enables [redaction](/docs/{{site.current_cloud_version}}/configure-logs.html#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}}/logging.html#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other logging channels to the `default` GCP Cloud Logging log group.
 
         1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
@@ -420,7 +420,7 @@ Where:
 
 ### Is it possible to configure exported logs to be redacted at source?
 
-Yes, use the `redact: true` log configuration option. See [Redact logs](/docs/{{site.versions["stable"]}}/configure-logs.html#redact-logs) for more information.
+Yes, use the `redact: true` log configuration option. See [Redact logs](/docs/{{site.current_cloud_version}}/configure-logs.html#redact-logs) for more information.
 
 ### Is it possible to send different log channels to different log groups in my cloud log sink?
 
@@ -448,7 +448,7 @@ No, the {{ site.data.products.dedicated }} log export feature does not support u
 
 ### Does log export configuration use the same syntax as CockroachDB log configuration?
 
-No, log export configuration uses the [Cockroach Cloud API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels](/docs/{{site.versions["stable"]}}/logging.html#logging-levels-severities), while CockroachDB uses `filter`.
+No, log export configuration uses the [Cockroach Cloud API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities), while CockroachDB uses `filter`.
 
 ### Why are some logs appearing without a node number in the name?
 
