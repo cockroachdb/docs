@@ -220,6 +220,19 @@ REVOKE DELETE ON movr.public.* FROM max;
 (22 rows)
 ~~~
 
+### Revoke system-level privileges on the entire cluster
+
+[System-level privileges](security-reference/authorization.html#system-level-privileges) live above the database level and apply to the entire cluster.
+
+`root` and [`admin`](security-reference/authorization.html#admin-role) users have system-level privileges by default, and are capable of revoking it from other users and roles using the `REVOKE` statement.
+
+For example, the following statement removes the ability to use the [`SET CLUSTER SETTING`](set-cluster-setting.html) statement from the user `maxroach` by revoking the `MODIFYCLUSTERSETTING` system privilege:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+REVOKE SYSTEM MODIFYCLUSTERSETTING FROM maxroach;
+~~~
+
 ### Revoke privileges on schemas
 
 {% include_cached copy-clipboard.html %}

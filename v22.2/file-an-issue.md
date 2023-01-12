@@ -11,13 +11,13 @@ To file an issue in GitHub, we need the following information:
 
 1. A summary of the issue.
 
-2. The steps to reproduce the issue.
+1. The steps to reproduce the issue.
 
-3. The result you expected.
+1. The result you expected.
 
-4. The result that actually occurred.
+1. The result that actually occurred.
 
-5. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
+1. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

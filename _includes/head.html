@@ -5,14 +5,22 @@
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {%- capture stable_pages_names -%}{%- include_cached stable_page_names.md -%}{%- endcapture -%}
 {%- comment -%} Fetch all the names of all the stable pages to compare against the dev pages {%- endcomment -%}
-{%- if page.url contains '404' or page.sitemap == false or page.url contains site.versions["dev"] and stable_pages_names contains page.name %}
+{%- assign dev_page_has_matching_stable_page = false -%}
+{%- if page.url contains site.versions["dev"] and site.versions["dev"] != site.versions["stable"] and stable_pages_names contains page.name -%}
+{%- assign dev_page_has_matching_stable_page = true -%}
+{%- endif -%}
+{%- assign non_dev_stable_version = true -%}
+{%- if page.url contains site.versions["dev"] or page.url contains site.versions["stable"] or page.main_homepage == true -%}
+{%- assign non_dev_stable_version = false -%}
+{%- endif -%}
+{%- if page.url contains '404' or page.sitemap == false or dev_page_has_matching_stable_page == true or non_dev_stable_version == true %}
 <meta name="robots" content="noindex">
 <meta name="robots" content="nofollow">
 <meta name="robots" content="noarchive">
 <meta name="robots" content="nocache">
 {%- comment -%} Inject robots tags for all 404 pages, all pages where the sitemap is false, or all pages in dev that are also in stable {%- endcomment -%}
-{% else %}
-{%- unless page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' or page.path == "index.md" -%}
+{%- else -%}
+{%- unless page.url contains site.versions["stable"] or dev_page_has_matching_stable_page == false or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' or page.sitemap == true -%}
 {%- comment -%} Otherwise, inject robots tags for all pages that are not in stable, cockroachcloud, releases, advisories, or any pages in dev that are not in stable. {%- endcomment -%}
 <meta name="robots" content="noindex">
 <meta name="robots" content="nofollow">
@@ -32,7 +40,6 @@
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
-<link rel="stylesheet" href="{{ 'css/fonts.css' | relative_url }}">
 {% include_cached corestyles.css.html %}
 <link rel="preload" href="{{ 'css/customstyles.css' | relative_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{{ 'css/customstyles.css' | relative_url }}"></noscript>
@@ -56,7 +63,7 @@ var pageConfig = {
   }
 </script>
 
-<script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
 {%- comment -%} Add the Brand Website segment source and fire a page impression. {%- endcomment -%}
 <script>
@@ -101,14 +108,11 @@ var pageConfig = {
 
 <link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
 
-<link rel="preload" href="{{ "/fonts/SourceSansPro-Regular.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
-<link rel="preload" href="{{ "/fonts/SourceSansPro-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Source+Code+Pro&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"></noscript>
 
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Poppins:wght@200;300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Poppins:wght@200;300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"></noscript>
 
 <link rel="preconnect dns-prefetch" href="https://app.convertflow.co/" >
 <link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" data-proofer-ignore>

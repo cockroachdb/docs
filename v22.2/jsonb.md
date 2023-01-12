@@ -43,19 +43,25 @@ Examples:
 
 The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 ## Operators
 
-Operator | Description | Example |
+Operator | Description | Example Query and Output |
 ---------|-------------|---------|
-`->` | Access a `JSONB` field, returning a `JSONB` value. | `SELECT '[{"foo":"bar"}]'::JSONB->0->'foo'; = "bar"::JSONB`
-`->>` | Access a `JSONB` field, returning a string. | `SELECT '{"foo":"bar"}'::JSONB->>'foo'; = bar::STRING;`
-`@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `SELECT ('{"foo": {"baz": 3}, "bar": 2}'::JSONB@>'{"foo": {"baz":3}}'::JSONB ); = true;`
-`>@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB); = true;`
-`#> ` | Access a `JSONB` field at the specified path, returning a `JSONB` value.  | `SELECT '[{"foo":"bar"}]'::JSONB#>'{0,foo}'; = "bar"::JSONB`
-`#>>` | Access a `JSONB` field at the specified path, returning a string. | `SELECT '[{"foo":"bar"}]'::JSONB#>>'{0,foo}'; = bar::STRING`
-`?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar'); = true;`
-`?&` | Do all the key or element strings exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?&array['foo','bar']); = true;`
-<code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | <code>SELECT('{"foo":1, "bar":2}'::JSONB?&#124;array['bar']); = true;</code>
+`->` | Access a `JSONB` field, returning a `JSONB` value. | `SELECT '[{"foo":"bar"}]'::JSONB->0->'foo';`<br><br>`"bar"::JSONB`
+`->>` | Access a `JSONB` field, returning a string. | `SELECT '{"foo":"bar"}'::JSONB->>'foo';`<br><br>`bar::STRING`
+`@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `SELECT ('{"foo": {"baz": 3}, "bar": 2}'::JSONB@>'{"foo": {"baz":3}}'::JSONB );`<br><br>`true`
+`>@` | Tests whether the left `JSONB` field is contained by the right `JSONB` field. | `SELECT('{"bar":2}'::JSONB<@'{"foo":1, "bar":2}'::JSONB);`<br><br>`true`
+`#>` | Access a `JSONB` field at the specified path, returning a `JSONB` value.  | `SELECT '[{"foo":"bar"}]'::JSONB#>'{0,foo}';`<br><br>`"bar"::JSONB`
+`#>>` | Access a `JSONB` field at the specified path, returning a string. | `SELECT '[{"foo":"bar"}]'::JSONB#>>'{0,foo}';`<br><br>`bar::STRING`
+`?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar');`<br><br>`true`
+`?&` | Do all the key or element strings exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?&array['foo','bar']);`<br><br>`true`
+<code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | <code>SELECT('{"foo":1, "bar":2}'::JSONB?&#124;array['bar']);</code><br><br><code>true</code>
+`[` ... `]` | Access a `JSONB` key, returning a `JSONB` value or object. For details, see [Subscripted expressions](scalar-expressions.html#subscripted-expressions). | `SELECT('{"foo": {"bar":1}}'::JSONB)['foo']['bar'];`<br><br>`1`
+
 For the full list of supported `JSONB` operators, see [Operators](functions-and-operators.html#operators).
 
 ## Functions
@@ -97,7 +103,7 @@ This section shows how to create tables with `JSONB` columns and use operators a
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE users (
+CREATE TABLE users (
     profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     last_updated TIMESTAMP DEFAULT now(),
     user_profile JSONB
@@ -106,7 +112,7 @@ This section shows how to create tables with `JSONB` columns and use operators a
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW COLUMNS FROM users;
+SHOW COLUMNS FROM users;
 ~~~
 
 ~~~
@@ -120,14 +126,14 @@ This section shows how to create tables with `JSONB` columns and use operators a
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users (user_profile) VALUES
+INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
     ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM users;
+SELECT * FROM users;
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
@@ -144,7 +150,7 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
+SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
 ~~~
 ~~~
 +--------------------------------------+----------------------------------+------------------------------------+
@@ -167,63 +173,71 @@ To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()
 
 ### Retrieve a specific field from `JSONB` data
 
-To retrieve a specific field from `JSONB` data, use the `->` operator. For example, retrieve a field from the table you created in [Create a table with a `JSONB` column](#create-a-table-with-a-jsonb-column), run:
+To retrieve a specific field from `JSONB` data, use the `->` operator. For example, to retrieve a field from the table you created in [Create a table with a `JSONB` column](#create-a-table-with-a-jsonb-column), run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->'first_name',user_profile->'location' FROM users;
+SELECT user_profile->'first_name',user_profile->'location' FROM users;
 ~~~
 
 ~~~
-+----------------------------+--------------------------+
-| user_profile->'first_name' | user_profile->'location' |
-+----------------------------+--------------------------+
-| "Lola"                     | "NYC"                    |
-| "Ernie"                    | "Brooklyn"               |
-+----------------------------+--------------------------+
+  ?column? |  ?column?
+-----------+-------------
+  "Ernie"  | "Brooklyn"
+  "Lola"   | "NYC"
+~~~
+
+You can also use a [subscripted expression](scalar-expressions.html#subscripted-expressions) for an equivalent result:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT (user_profile)['first_name'],(user_profile)['location'] FROM users;
+~~~
+
+~~~
+  user_profile | user_profile
+---------------+---------------
+  "Ernie"      | "Brooklyn"
+  "Lola"       | "NYC"
 ~~~
 
 Use the `->>` operator to return `JSONB` fields as `STRING` values:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
+SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
 ~~~
 ~~~
-+-----------------------------+---------------------------+
-| user_profile->>'first_name' | user_profile->>'location' |
-+-----------------------------+---------------------------+
-| Lola                        | NYC                       |
-| Ernie                       | Brooklyn                  |
-+-----------------------------+---------------------------+
+  ?column? | ?column?
+-----------+-----------
+  Ernie    | Brooklyn
+  Lola     | NYC
 ~~~
 
 Use the `@>` operator to filter the values in a field in a `JSONB` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
+SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
 ~~~
 ~~~
-+-----------------------------+---------------------------+
-| user_profile->>'first_name' | user_profile->>'location' |
-+-----------------------------+---------------------------+
-| Lola                        | NYC                       |
-+-----------------------------+---------------------------+
+  ?column? | ?column?
+-----------+-----------
+  "Lola"   | "NYC"
 ~~~
 
 Use the `#>>` operator with a path to return all first names:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-select user_profile#>>'{first_name}' as "first name" from users;
+SELECT user_profile#>>'{first_name}' as "first name" from users;
 ~~~
 
 ~~~
   first name
 --------------
-  Lola
   Ernie
+  Lola
 (2 rows)
 ~~~
 
@@ -275,14 +289,14 @@ For this example, we will add a few more records to the existing table. This wil
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users (user_profile) VALUES
+INSERT INTO users (user_profile) VALUES
     ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
     ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
+SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
 ~~~
 
 ~~~
@@ -298,7 +312,7 @@ Group and order the data.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
+SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
 ~~~
 
 ~~~
@@ -412,7 +426,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT '100'::JSONB::INT;
+SELECT '100'::JSONB::INT;
 ~~~
 
 ~~~
@@ -424,7 +438,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT '100000'::JSONB::FLOAT;
+SELECT '100000'::JSONB::FLOAT;
 ~~~
 
 ~~~
@@ -436,7 +450,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT '100.50'::JSONB::DECIMAL;
+SELECT '100.50'::JSONB::DECIMAL;
 ~~~
 
 ~~~

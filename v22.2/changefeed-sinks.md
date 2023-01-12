@@ -9,7 +9,7 @@ docs_area: stream_data
 
 - [Kafka](#kafka)
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
-- [Cloud Storage](#cloud-storage-sink)
+- [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 
 See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed.
@@ -89,7 +89,7 @@ Each of the following settings have significant impact on a changefeed's behavio
 {{site.data.alerts.end}}
 
 ~~~
-kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE" }'
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE". "Compression": "gzip" }'
 ~~~
 
 <a name ="kafka-flush"></a>`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
@@ -106,6 +106,66 @@ Field              | Type                | Description      | Default
 `Flush.Frequency`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
 `"Version"`        | [`STRING`](string.html) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
 <a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`](string.html) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](changefeed-messages.html#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. | `"ONE"`
+`"Compression"` | [`STRING`](string.html) | <span class="version-tag">New in v22.2.1:</span> Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"none"`, `"gzip"`, `"snappy"`, `"lz4"`, `"zstd"`. | `"none"`
+
+### Kafka sink messages
+
+The following shows the [Avro](changefeed-messages.html#avro) messages for a changefeed emitting to Kafka:
+
+~~~
+{
+    "after":{
+       "users":{
+          "name":{
+             "string":"Michael Clark"
+          },
+          "address":{
+             "string":"85957 Ashley Junctions"
+          },
+          "credit_card":{
+             "string":"4144089313"
+          },
+          "id":{
+             "string":"d84cf3b6-7029-4d4d-aa81-e5caa9cce09e"
+          },
+          "city":{
+             "string":"seattle"
+          }
+       }
+    },
+    "updated":{
+       "string":"1659643584586630201.0000000000"
+    }
+ }
+ {
+    "after":{
+       "users":{
+          "address":{
+             "string":"17068 Christopher Isle"
+          },
+          "credit_card":{
+             "string":"6664835435"
+          },
+          "id":{
+             "string":"11b99275-92ce-4244-be61-4dae21973f87"
+          },
+          "city":{
+             "string":"amsterdam"
+          },
+          "name":{
+             "string":"John Soto"
+          }
+       }
+    },
+    "updated":{
+       "string":"1659643585384406152.0000000000"
+    }
+ }
+~~~
+
+See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial for examples to set up a Kafka sink. 
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## Google Cloud Pub/Sub
 
@@ -126,7 +186,7 @@ URI Parameter      | Description
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
 `region`           | (Required) The single region to which all output will be sent.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
 
@@ -134,10 +194,14 @@ URI Parameter      | Description
 
 When using Pub/Sub as your downstream sink, consider the following:
 
-- It only supports `JSON` message format.
-- Your Google Service Account must have the [Pub/Sub Editor](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) role assigned at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles).
+- Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
 - You must specify the `region` parameter in the URI to maintain [ordering guarantees](changefeed-messages.html#ordering-guarantees). Unordered messages are not supported, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
+
+- To create topics on changefeed creation, you must use the Pub/Sub Editor role, which contains the permissions to create a topic.
+- {% include_cached new-in.html version="v22.2" %} If the topic the changefeed is writing to already exists, then you can use the more limited Pub/Sub Publisher role, which can only write to existing topics.
 
 For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 
@@ -151,18 +215,41 @@ You can manually create a topic in your Pub/Sub sink before starting the changef
 
 For a list of compatible parameters and options, see [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
 
+### Pub/Sub sink messages
+
+The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example: 
+
+~~~
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
+│                                                                                                                                 DATA                                                                                                                                 │    MESSAGE_ID    │                       ORDERING_KEY                      │ ATTRIBUTES │ DELIVERY_ATTEMPT │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼──────────────────┼─────────────────────────────────────────────────────────┼────────────┼──────────────────┤
+│ {"key":["boston","40ef7cfa-5e16-4bd3-9e14-2f23407a66df"],"value":{"after":{"address":"14980 Gentry Plains Apt. 64","city":"boston","credit_card":"2466765790","id":"40ef7cfa-5e16-4bd3-9e14-2f23407a66df","name":"Vickie Fitzpatrick"}},"topic":"movr-users"}         │ 4466153049158588 │ ["boston", "40ef7cfa-5e16-4bd3-9e14-2f23407a66df"]      │            │                  │
+│ {"key":["los angeles","947ae147-ae14-4800-8000-00000000001d"],"value":{"after":{"address":"35627 Chelsey Tunnel Suite 94","city":"los angeles","credit_card":"2099932769","id":"947ae147-ae14-4800-8000-00000000001d","name":"Kenneth Barnes"}},"topic":"movr-users"} │ 4466144577818136 │ ["los angeles", "947ae147-ae14-4800-8000-00000000001d"] │            │                  │
+│ {"key":["amsterdam","c28f5c28-f5c2-4000-8000-000000000026"],"value":{"after":{"address":"14729 Karen Radial","city":"amsterdam","credit_card":"5844236997","id":"c28f5c28-f5c2-4000-8000-000000000026","name":"Maria Weber"}},"topic":"movr-users"}                   │ 4466151194002912 │ ["amsterdam", "c28f5c28-f5c2-4000-8000-000000000026"]   │            │                  │
+│ {"key":["new york","6c8ab772-584a-439d-b7b4-fda37767c74c"],"value":{"after":{"address":"34196 Roger Row Suite 6","city":"new york","credit_card":"3117945420","id":"6c8ab772-584a-439d-b7b4-fda37767c74c","name":"James Lang"}},"topic":"movr-users"}                 │ 4466147099992681 │ ["new york", "6c8ab772-584a-439d-b7b4-fda37767c74c"]    │            │                  │
+│ {"key":["boston","c56dab0a-63e7-4fbb-a9af-54362c481c41"],"value":{"after":{"address":"83781 Ross Overpass","city":"boston","credit_card":"7044597874","id":"c56dab0a-63e7-4fbb-a9af-54362c481c41","name":"Mark Butler"}},"topic":"movr-users"}                        │ 4466150752442731 │ ["boston", "c56dab0a-63e7-4fbb-a9af-54362c481c41"]      │            │                  │
+│ {"key":["amsterdam","f27e09d5-d7cd-4f88-8b65-abb910036f45"],"value":{"after":{"address":"77153 Donald Road Apt. 62","city":"amsterdam","credit_card":"7531160744","id":"f27e09d5-d7cd-4f88-8b65-abb910036f45","name":"Lisa Sandoval"}},"topic":"movr-users"}          │ 4466147182359256 │ ["amsterdam", "f27e09d5-d7cd-4f88-8b65-abb910036f45"]   │            │                  │
+│ {"key":["new york","46d200c0-6924-4cc7-b3c9-3398997acb84"],"value":{"after":{"address":"92843 Carlos Grove","city":"new york","credit_card":"8822366402","id":"46d200c0-6924-4cc7-b3c9-3398997acb84","name":"Mackenzie Malone"}},"topic":"movr-users"}                │ 4466142864542016 │ ["new york", "46d200c0-6924-4cc7-b3c9-3398997acb84"]    │            │                  │
+│ {"key":["boston","52ecbb26-0eab-4e0b-a160-90caa6a7d350"],"value":{"after":{"address":"95044 Eric Corner Suite 33","city":"boston","credit_card":"3982363300","id":"52ecbb26-0eab-4e0b-a160-90caa6a7d350","name":"Brett Porter"}},"topic":"movr-users"}                │ 4466152539161631 │ ["boston", "52ecbb26-0eab-4e0b-a160-90caa6a7d350"]      │            │                  │
+│ {"key":["amsterdam","ae147ae1-47ae-4800-8000-000000000022"],"value":{"after":{"address":"88194 Angela Gardens Suite 94","city":"amsterdam","credit_card":"4443538758","id":"ae147ae1-47ae-4800-8000-000000000022","name":"Tyler Dalton"}},"topic":"movr-users"}       │ 4466151398997150 │ ["amsterdam", "ae147ae1-47ae-4800-8000-000000000022"]   │            │                  │
+│ {"key":["paris","dc28f5c2-8f5c-4800-8000-00000000002b"],"value":{"after":{"address":"2058 Rodriguez Stream","city":"paris","credit_card":"9584502537","id":"dc28f5c2-8f5c-4800-8000-00000000002b","name":"Tony Ortiz"}},"topic":"movr-users"}                         │ 4466146372222914 │ ["paris", "dc28f5c2-8f5c-4800-8000-00000000002b"]       │            │                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴─────────────────────────────────────────────────────────┴────────────┴──────────────────┘
+~~~
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
+
 ## Cloud storage sink
 
 Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
 
 Some considerations when using cloud storage sinks:
 
-- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
+- Cloud storage sinks work with `JSON` and emit newline-delimited `JSON` files. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
 - Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
-You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication). 
+You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](cloud-storage-authentication.html). 
 
 Examples of supported cloud storage sink URIs:
 
@@ -184,6 +271,12 @@ Examples of supported cloud storage sink URIs:
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
 ~~~
 
+### HTTP
+
+~~~
+'http://localhost:8080/{PATH}'
+~~~
+
 ### Cloud storage parameters
 
 The following table lists the available parameters for cloud storage sink URIs:
@@ -193,7 +286,7 @@ URI Parameter      | Storage | Description
 `AWS_ACCESS_KEY_ID` | AWS | The access key to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
 `ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
-`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) for examples of each of these. 
+`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these. 
 `AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure | The URL-encoded account key for your Azure account.
 `CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
@@ -204,7 +297,56 @@ URI Parameter      | Storage | Description
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#authentication) provides more detail on authentication to cloud storage sinks.
+[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) provides more detail on authentication to cloud storage sinks.
+
+### Cloud storage sink messages 
+
+The following shows the default JSON messages for a changefeed emitting to a cloud storage sink:
+ 
+~~~
+{
+    "after":{
+       "address":"51438 Janet Valleys",
+       "city":"boston",
+       "credit_card":"0904722368",
+       "id":"33333333-3333-4400-8000-00000000000a",
+       "name":"Daniel Hernandez MD"
+    },
+    "key":[
+       "boston",
+       "33333333-3333-4400-8000-00000000000a"
+    ]
+ }
+ {
+    "after":{
+       "address":"15074 Richard Falls",
+       "city":"boston",
+       "credit_card":"0866384459",
+       "id":"370117cf-d77d-4778-b0b9-01ac17c15a06",
+       "name":"Cheyenne Morales"
+    },
+    "key":[
+       "boston",
+       "370117cf-d77d-4778-b0b9-01ac17c15a06"
+    ]
+ }
+ {
+    "after":{
+       "address":"69687 Jessica Islands Apt. 68",
+       "city":"boston",
+       "credit_card":"6837062320",
+       "id":"3851eb85-1eb8-4200-8000-00000000000b",
+       "name":"Sarah Wang DDS"
+    },
+    "key":[
+       "boston",
+       "3851eb85-1eb8-4200-8000-00000000000b"
+    ]
+ }
+. . .
+~~~
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## Webhook sink
 
@@ -232,7 +374,7 @@ URI Parameter      | Description
 The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
-* Only supports JSON output format.
+* Supports JSON output format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
 * There is no concurrency configurability.
 
 ### Webhook sink configuration
@@ -277,6 +419,69 @@ Some complexities to consider when setting `Flush` fields for batching:
   }
 }
 ~~~
+
+### Webhook sink messages
+
+The following shows the default JSON messages for a changefeed emitting to a webhook sink. These changefeed messages were emitted as part of the [Create a changefeed connected to a Webhook sink](changefeed-examples.html#create-a-changefeed-connected-to-a-webhook-sink) example:
+
+~~~
+"2021/08/24 14":"00":21
+{
+    "payload":[
+       {
+          "after":{
+             "city":"rome",
+             "creation_time":"2019-01-02T03:04:05",
+             "current_location":"39141 Travis Curve Suite 87",
+             "ext":{
+                "brand":"Schwinn",
+                "color":"red"
+             },
+             "id":"d7b18299-c0c4-4304-9ef7-05ae46fd5ee1",
+             "dog_owner_id":"5d0c85b5-8866-47cf-a6bc-d032f198e48f",
+             "status":"in_use",
+             "type":"bike"
+          },
+          "key":[
+             "rome",
+             "d7b18299-c0c4-4304-9ef7-05ae46fd5ee1"
+          ],
+          "topic":"vehicles",
+          "updated":"1629813621680097993.0000000000"
+       }
+    ],
+    "length":1
+ }
+
+ "2021/08/24 14":"00":22
+ {
+    "payload":[
+       {
+          "after":{
+             "city":"san francisco",
+             "creation_time":"2019-01-02T03:04:05",
+             "current_location":"84888 Wallace Wall",
+             "ext":{
+                "color":"black"
+             },
+             "id":"020cf7f4-6324-48a0-9f74-6c9010fb1ab4",
+             "dog_owner_id":"b74ea421-fcaf-4d80-9dcc-d222d49bdc17",
+             "status":"available",
+             "type":"scooter"
+          },
+          "key":[
+             "san francisco",
+             "020cf7f4-6324-48a0-9f74-6c9010fb1ab4"
+          ],
+          "topic":"vehicles",
+          "updated":"1629813621680097993.0000000000"
+       }
+    ],
+    "length":1
+ }
+~~~
+
+{% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
 ## See also
 

@@ -12,6 +12,7 @@ Name | Help
 `changefeed.running` | Number of currently running changefeeds, including sinkless
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
+`cluster.preserve-downgrade-option.last-updated` | Unix timestamp of last updated time for cluster.preserve_downgrade_option
 `compactor.compactingnanos` | Number of nanoseconds spent compacting ranges
 `compactor.compactions.failure` | Number of failed compaction requests sent to the storage engine
 `compactor.compactions.success` | Number of successful compaction requests sent to the storage engine
@@ -38,6 +39,8 @@ Name | Help
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
+`jobs.row_level_ttl.num_active_spans` | Number of active spans the TTL job is deleting from
+`jobs.row_level_ttl.span_total_duration` | Duration for processing a span during row level TTL
 `keybytes` | Number of bytes taken up by keys
 `keycount` | Count of all keys
 `lastupdatenanos` | Time in nanoseconds since Unix epoch at which bytes/keys/intents metrics were last updated
@@ -90,6 +93,8 @@ Name | Help
 `queue.replicagc.processingnanos` | Nanoseconds spent processing replicas in the replica GC queue
 `queue.replicagc.removereplica` | Number of replica removals attempted by the replica gc queue
 `queue.replicate.addreplica` | Number of replica additions attempted by the replicate queue
+`queue.replicate.addreplica.error` | Number of failed replica additions processed by the replicate queue
+`queue.replicate.addreplica.success` | Number of successful replica additions processed by the replicate queue
 `queue.replicate.pending` | Number of pending replicas in the replicate queue
 `queue.replicate.process.failure` | Number of replicas which failed processing in the replicate queue
 `queue.replicate.process.success` | Number of replicas successfully processed by the replicate queue
@@ -97,7 +102,17 @@ Name | Help
 `queue.replicate.purgatory` | Number of replicas in the replicate queue's purgatory, awaiting allocation options
 `queue.replicate.rebalancereplica` | Number of replica rebalancer-initiated additions attempted by the replicate queue
 `queue.replicate.removedeadreplica` | Number of dead replica removals attempted by the replicate queue (typically in response to a node outage)
+`queue.replicate.removedeadreplica.error` | Number of failed dead replica removals processed by the replicate queue
+`queue.replicate.removedeadreplica.success` | Number of successful dead replica removals processed by the replicate queue
+`queue.replicate.removedecommissioningreplica.error` | Number of failed decommissioning replica removals processed by the replicate queue
+`queue.replicate.removedecommissioningreplica.success` | Number of successful decommissioning replica removals processed by the replicate queue
 `queue.replicate.removereplica` | Number of replica removals attempted by the replicate queue (typically in response to a rebalancer-initiated addition)
+`queue.replicate.removereplica.error` | Number of failed replica removals processed by the replicate queue
+`queue.replicate.removereplica.success` | Number of successful replica removals processed by the replicate queue
+`queue.replicate.replacedeadreplica.error` | Number of failed dead replica replacements processed by the replicate queue
+`queue.replicate.replacedeadreplica.success` | Number of successful dead replica replacements processed by the replicate queue
+`queue.replicate.replacedecommissioningreplica.error` | Number of failed decommissioning replica replacements processed by the replicate queue
+`queue.replicate.replacedecommissioningreplica.success` | Number of successful decommissioning replica replacements processed by the replicate queue
 `queue.replicate.transferlease` | Number of range lease transfers attempted by the replicate queue
 `queue.split.pending` | Number of pending replicas in the split queue
 `queue.split.process.failure` | Number of replicas which failed processing in the split queue
@@ -143,7 +158,13 @@ Name | Help
 `range.snapshots.normal-applied` | Number of applied snapshots
 `range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
 `range.snapshots.rcvd-bytes` | Number of snapshot bytes received
+`range.snapshots.rebalancing.rcvd-bytes` | Number of rebalancing snapshot bytes received
+`range.snapshots.rebalancing.sent-bytes` | Number of rebalancing snapshot bytes sent
+`range.snapshots.recovery.rcvd-bytes` | Number of recovery snapshot bytes received
+`range.snapshots.recovery.sent-bytes` | Number of recovery snapshot bytes sent
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
+`range.snapshots.unknown.rcvd-bytes` | Number of unknown snapshot bytes received
+`range.snapshots.unknown.sent-bytes` | Number of unknown snapshot bytes sent
 `range.splits` | Number of range splits
 `rangekeybytes` | Number of bytes taken up by range keys (e.g., MVCC range tombstones)
 `rangekeycount` | Count of all range keys (e.g., MVCC range tombstones)
@@ -153,6 +174,8 @@ Name | Help
 `rangevalbytes` | Number of bytes taken up by range key values (e.g., MVCC range tombstones)
 `rangevalcount` | Count of all range key values (e.g., MVCC range tombstones)
 `rebalancing.readbytespersecond` | Average number of bytes written recently per second
+`rebalancing.readspersecond` | Average number of keys read recently per second
+`rebalancing.requestspersecond` | Average number of requests received recently per second
 `rebalancing.writebytespersecond` | Average number of bytes read recently per second
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
@@ -163,6 +186,7 @@ Name | Help
 `replicas.commandqueue.maxsize` | Largest number of commands in any CommandQueue
 `replicas.commandqueue.maxtreesize` | Largest number of intervals in any CommandQueue's interval tree
 `replicas.commandqueue.maxwritecount` | Largest number of read-write commands in any CommandQueue
+`replicas.leaders_invalid_lease` | Number of replicas that are Raft leaders whose lease is invalid
 `replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
 `replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders
@@ -223,6 +247,7 @@ Name | Help
 `sql.txn.abort.count` | Number of SQL transaction ABORT statements
 `sql.txn.begin.count` | Number of SQL transaction BEGIN statements
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements
+`sql.txn.contended.count` | Number of SQL transactions that experienced contention
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
 `storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.

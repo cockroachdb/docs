@@ -15,6 +15,8 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+For details on restoring across versions of CockroachDB, see [Restoring Backups Across Versions](restoring-backups-across-versions.html).
+
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
 ## Considerations
@@ -31,7 +33,7 @@ You can restore:
 {{site.data.alerts.callout_info}}
 Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups. 
 
-There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release. We recommend implementing the new privilege model that follows in this section for all restores.
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all restores.
 {{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
@@ -50,7 +52,7 @@ See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ## Required privileges using the legacy privilege model
 
-The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release of CockroachDB:
 
 - [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other restores, the user must have [write access](security-reference/authorization.html#managing-privileges) (`CREATE` or `INSERT`) on all objects affected.
@@ -61,9 +63,9 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-- To interact with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - [Nodelocal](cockroach-nodelocal-upload.html)
 
@@ -89,7 +91,7 @@ No special privilege is required for:
  `table_pattern` | The table or [view](views.html) you want to restore.
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `collectionURI` | The [collection](take-full-and-incremental-backups.html#backup-collections) URI where the [full backup](take-full-and-incremental-backups.html#full-backups) (and appended [incremental backups](take-full-and-incremental-backups.html#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-from-the-most-recent-backup) example.
+ `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-backup) example.
  <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `localityURI` | The URI where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
@@ -277,24 +279,12 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
-{% include {{ page.version.version }}/misc/external-connection-note.md %}
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
 There are two ways to specify a backup to restore:
 
-- [Restoring from the most recent backup](#restore-from-the-most-recent-backup)
-- [Restoring from a specific backup](#restore-from-a-specific-backup)
+- [Restoring from the most recent backup](#restore-the-most-recent-backup)
+- [Restoring from a specific backup](#restore-a-specific-backup)
 
 The examples in this section demonstrate restoring from the most recent backup using the `LATEST` syntax.
-
-<section class="filter-content" markdown="1" data-scope="s3">
-
-{% include {{ page.version.version }}/misc/auth-intro-examples.md %}
 
 ### View the backup subdirectories
 
@@ -520,454 +510,6 @@ RESTORE TABLE movr.users FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={k
 ~~~
 
 For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-### View the backup subdirectories
-
-`BACKUP ... INTO` adds a backup to a [backup collection](take-full-and-incremental-backups.html#backup-collections) location. To view the backup paths in a given collection location, use [`SHOW BACKUPS`](show-backup.html):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUPS IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-~~~
-       path
--------------------------
-/2021/12/14-190909.83
-/2021/12/20-155249.37
-/2021/12/21-142943.73
-(3 rows)
-~~~
-
-When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
-
-### Restore from the most recent backup
-
-To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-### Restore from a specific backup
-
-To restore a specific backup, use the backup's subdirectory in the collection's location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE FROM '2021/03/23-213101.37' IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-### Restore a cluster
-
-To restore a full cluster:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-### Restore a database
-
-To restore a database:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-{{site.data.alerts.callout_info}}
-`RESTORE DATABASE` can only be used if the entire database was backed up.
-{{site.data.alerts.end}}
-
-### Restore a table
-
-To restore a single table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE TABLE bank.customers FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-To restore multiple tables:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-### Restore from incremental backups
-
-To restore the most recent [incremental backup](take-full-and-incremental-backups.html#incremental-backups) from a location containing the full and incremental backup:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
-~~~
-
-{{site.data.alerts.callout_info}}
- `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
-{{site.data.alerts.end}}
-
-### Restore a backup asynchronously
-
-Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH DETACHED;
-~~~
-
-The job ID is returned after the restore job creation completes:
-
-~~~
-        job_id
-----------------------
-  592786066399264769
-(1 row)
-~~~
-
-**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
-
-~~~
-job_id             |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
-(1 row)
-~~~
-
-### Other restore usages
-
-#### Restore tables into a different database
-
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
-
-First, create the new database that you'll restore the table or view into:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.customers FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH into_db = 'newdb';
-~~~
-
-#### Rename a database on restore
-
-To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}'
-WITH new_db_name = 'new_bank';
-~~~
-
-When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
-
-~~~
-database_name
---------------+
-defaultdb
-bank
-new_bank
-postgres
-system
-~~~
-
-#### Remove the foreign key before restore
-
-By default, tables with [foreign key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.accounts FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH skip_missing_foreign_keys;
-~~~
-
-#### Restoring users from `system.users` backup
-
-The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
-
-After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
-
-First, create the new database that you'll restore the `system.users` table into:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE system.users FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH into_db = 'newdb';
-~~~
-
-After the restore completes, add the `users` to the existing `system.users` table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO system.users SELECT * FROM newdb.users;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> DROP TABLE newdb.users;
-~~~
-
-#### Restore from incremental backups in a different location
-
-To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
-
-- the collection URI of the full backup
-- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE TABLE movr.users FROM LATEST IN 'azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH incremental_location = '{incremental_backup_URI}';
-~~~
-
-For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gcs">
-
-{{site.data.alerts.callout_info}}
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
-
-### View the backup subdirectories
-
-`BACKUP ... INTO` adds a backup to a [backup collection](take-full-and-incremental-backups.html#backup-collections) location. To view the backup paths in a given collection location, use [`SHOW BACKUPS`](show-backup.html):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUPS IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-~~~
-       path
--------------------------
-/2021/12/14-190909.83
-/2021/12/20-155249.37
-/2021/12/21-142943.73
-(3 rows)
-~~~
-
-When you want restore a specific backup, add the backup's subdirectory path (e.g., `/2021/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](show-backup.html#show-the-most-recent-backup).
-
-### Restore from the most recent backup
-
-To restore from the most recent backup in the collection's location, use the `LATEST` syntax:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-### Restore from a specific backup
-
-To restore a specific backup, use the backup's subdirectory in the collection's location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE FROM '2021/03/23-213101.37' IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-### Restore a cluster
-
-To restore a full cluster:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-### Restore a database
-
-To restore a database:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-{{site.data.alerts.callout_info}}
-`RESTORE DATABASE` can only be used if the entire database was backed up.
-{{site.data.alerts.end}}
-
-### Restore a table
-
-To restore a single table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE TABLE bank.customers FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-To restore multiple tables:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
-
-### Restore from incremental backups
-
-To restore the most recent [incremental backup](take-full-and-incremental-backups.html#incremental-backups) from a location containing the full and incremental backup:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-{{site.data.alerts.callout_info}}
- `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
-{{site.data.alerts.end}}
-
-### Restore a backup asynchronously
-
-Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH DETACHED;
-~~~
-
-The job ID is returned after the restore job creation completes:
-
-~~~
-        job_id
-----------------------
-  592786066399264769
-(1 row)
-~~~
-
-**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
-
-~~~
-job_id             |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
-(1 row)
-~~~
-
-### Other restore usages
-
-#### Restore tables into a different database
-
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
-
-First, create the new database that you'll restore the table or view into:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.customers FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH into_db = 'newdb';
-~~~
-
-#### Rename a database on restore
-
-To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}'
-WITH new_db_name = 'new_bank';
-~~~
-
-When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
-
-~~~
-database_name
---------------+
-defaultdb
-bank
-new_bank
-postgres
-system
-~~~
-
-#### Remove the foreign key before restore
-
-By default, tables with [foreign key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.accounts FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH skip_missing_foreign_keys;
-~~~
-
-#### Restoring users from `system.users` backup
-
-The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
-
-After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
-
-First, create the new database that you'll restore the `system.users` table into:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE system.users FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH into_db = 'newdb';
-~~~
-
-After the restore completes, add the `users` to the existing `system.users` table:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO system.users SELECT * FROM newdb.users;
-~~~
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> DROP TABLE newdb.users;
-~~~
-
-#### Restore from incremental backups in a different location
-
-To restore an incremental backup that was taken using the [`incremental_location` option](backup.html#incr-location), you must run the `RESTORE` statement with both:
-
-- the collection URI of the full backup
-- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-RESTORE TABLE movr.users FROM LATEST IN 'gs://{bucket name}?AUTH=specified&CREDENTIALS={encoded key}' WITH incremental_location = '{incremental_backup_location}';
-~~~
-
-For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).
-
-</section>
 
 ## Known limitations
 

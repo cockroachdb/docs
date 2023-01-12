@@ -118,7 +118,7 @@ If nodes have shut down, this can also be caused by [insufficient storage capaci
 
 ## Memory
 
-CockroachDB is [resilient](demo-fault-tolerance-and-recovery.html) to node crashes. However, frequent node restarts caused by out-of-memory (OOM) crashes can impact cluster stability and performance.
+CockroachDB is [resilient](demo-fault-tolerance-and-recovery.html) to node crashes. However, frequent node restarts caused by [out-of-memory (OOM) crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) can impact cluster stability and performance.
 
 ### Memory planning
 
@@ -130,7 +130,7 @@ Provision enough memory and allocate an appropriate portion for data caching:
 
 ### Memory monitoring
 
-Monitor memory usage and node behavior for OOM errors:
+Monitor memory usage and node behavior for [OOM errors](cluster-setup-troubleshooting.html#out-of-memory-oom-crash):
 
 | Metric or event                                 | Description                                 |
 |-------------------------------------------------|---------------------------------------------|
@@ -152,7 +152,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 ##### Verify OOM errors
 
-If you observe nodes frequently restarting, confirm that the crashes are caused by OOM errors:
+If you observe nodes frequently restarting, confirm that the crashes are caused by [OOM errors](cluster-setup-troubleshooting.html#out-of-memory-oom-crash):
 
 - Monitor `dmesg` to determine if a node crashed because it ran out of memory:
 
@@ -193,6 +193,10 @@ An untuned SQL query can consume significant resources and impact the performanc
 
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
 {{site.data.alerts.end}}
 
 #### Database memory usage

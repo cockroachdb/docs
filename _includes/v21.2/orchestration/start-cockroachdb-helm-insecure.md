@@ -63,10 +63,10 @@ The CockroachDB Helm chart is undergoing maintenance for compatibility with Kube
     1. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
 
         {{site.data.alerts.callout_info}}
-        If necessary, you can [expand disk size](/docs/{{site.versions["stable"]}}/configure-cockroachdb-kubernetes.html?filters=helm#expand-disk-size) after the cluster is live.
+        If necessary, you can [expand disk size](/docs/{{ page.version.version }}/configure-cockroachdb-kubernetes.html?filters=helm#expand-disk-size) after the cluster is live.
         {{site.data.alerts.end}}
 
-1. Install the CockroachDB Helm chart. 
+1. Install the CockroachDB Helm chart.
 
     Provide a "release" name to identify and track this particular deployment of the chart, and override the default values with those in `my-values.yaml`.
 
@@ -107,7 +107,7 @@ The CockroachDB Helm chart is undergoing maintenance for compatibility with Kube
     NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                                      STORAGECLASS   REASON    AGE
     pvc-71019b3a-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-0   standard                 11m
     pvc-7108e172-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-1   standard                 11m
-    pvc-710dcb66-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-2   standard                 11m    
+    pvc-710dcb66-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-2   standard                 11m
     ~~~
 
 {{site.data.alerts.callout_success}}

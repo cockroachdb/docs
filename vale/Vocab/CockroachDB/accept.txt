@@ -55,6 +55,7 @@ codec
 codelab
 collatable
 collatedstring
+collectability
 colocated
 comms
 Comodo
@@ -87,6 +88,7 @@ deserializ(ation|ed?)
 dev
 distsql
 docstrings?
+downsamples?
 duplicative
 eastasia
 eastus
@@ -103,6 +105,7 @@ favicons
 filepath
 fillfactor
 firewall(ed|ing)
+Flowable
 fluentd
 forecasted
 francecentral
@@ -160,7 +163,7 @@ ints
 io
 japaneast
 japanwest
-javascript
+JavaScript
 jdbc
 Jepsen
 johnstown
@@ -255,11 +258,13 @@ pgwire
 pgx
 pgxpool
 php
+PIDs?
 pingable
 pipelin(ed|ing)
 pipenv
 plaintext
 pointcut
+Postgres
 PostgreSQL
 Postgrex
 Postico
@@ -317,9 +322,8 @@ schemaless
 scrollable
 scrollbars
 seeked
-selinux
-SELinux
-sequelize
+[sS][eE][lL]inux
+Sequelize
 serializab(ility|le)
 serverless
 servlet
@@ -341,7 +345,7 @@ spammy
 spinny
 Splunk
 SQL
-sqlalchemy
+SQLAlchemy
 sqlx
 src
 SSDs?
@@ -426,6 +430,7 @@ unindexed
 uniquness
 unix
 unmarshalling
+unnested
 unpartition(ed|ing)?
 unported
 unredacted
@@ -465,4 +470,5 @@ xcode
 yaml
 ycsb
 yugabyte
+ZSTD
 Zipkin

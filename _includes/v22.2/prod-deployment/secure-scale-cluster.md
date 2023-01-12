@@ -12,7 +12,7 @@ For each additional node you want to add to the cluster, complete the following 
 
 1. SSH to the machine where you want the node to run.
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -20,7 +20,7 @@ For each additional node you want to add to the cluster, complete the following 
     | tar -xz
     ~~~
 
-3. Copy the binary into the `PATH`:
+1. Copy the binary into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -29,7 +29,7 @@ For each additional node you want to add to the cluster, complete the following 
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. Run the [`cockroach start`](cockroach-start.html) command, passing the new node's address as the `--advertise-addr` flag and pointing `--join` to the three existing nodes (also include `--locality` if you set it earlier).
+1. Run the [`cockroach start`](cockroach-start.html) command, passing the new node's address as the `--advertise-addr` flag and pointing `--join` to the three existing nodes (also include `--locality` if you set it earlier).
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -42,7 +42,7 @@ For each additional node you want to add to the cluster, complete the following 
     --background
     ~~~
 
-5. Update your load balancer to recognize the new node.
+1. Update your load balancer to recognize the new node.
 
 </section>
 
@@ -52,7 +52,7 @@ For each additional node you want to add to the cluster, complete the following 
 
 1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.
 
-2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, and extract the binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -60,7 +60,7 @@ For each additional node you want to add to the cluster, complete the following 
     | tar -xz
     ~~~
 
-3. Copy the binary into the `PATH`:
+1. Copy the binary into the `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -69,35 +69,35 @@ For each additional node you want to add to the cluster, complete the following 
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. Create the Cockroach directory:
+1. Create the Cockroach directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir /var/lib/cockroach
     ~~~
 
-5. Create a Unix user named `cockroach`:
+1. Create a Unix user named `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ useradd cockroach
     ~~~
 
-6.  Move the `certs` directory to the `cockroach` directory.
+1.  Move the `certs` directory to the `cockroach` directory.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv certs /var/lib/cockroach/
     ~~~
 
-7.  Change the ownership of the `cockroach` directory to the user `cockroach`:
+1.  Change the ownership of the `cockroach` directory to the user `cockroach`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ chown -R cockroach /var/lib/cockroach
     ~~~
 
-8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
+1.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -113,12 +113,12 @@ For each additional node you want to add to the cluster, complete the following 
 
     Save the file in the `/etc/systemd/system/` directory.
 
-9.  Customize the sample configuration template for your deployment:
+1.  Customize the sample configuration template for your deployment:
 
     Specify values for the following flags in the sample configuration template:
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
      
-10.  Repeat these steps for each additional node that you want in your cluster.
+1.  Repeat these steps for each additional node that you want in your cluster.
 
 </section>

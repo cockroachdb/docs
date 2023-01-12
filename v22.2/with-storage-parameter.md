@@ -40,6 +40,10 @@ The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage p
 
 {% include {{ page.version.version }}/misc/table-storage-parameters.md %}
 
+### Row-level TTL parameters
+
+For the list of storage parameters that affect how [Row-Level TTL](row-level-ttl.html) works, see the list of [TTL storage parameters](row-level-ttl.html#ttl-storage-parameters).
+
 ## Required privileges
 
 The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the table.
@@ -63,19 +67,19 @@ SHOW CREATE TABLE ttl_test;
 ~~~
 
 ~~~
-  table_name |                                                                                           create_statement
--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  table_name |                                                                                         create_statement
+-------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   ttl_test   | CREATE TABLE public.ttl_test (
              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
              |     description STRING NULL,
              |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
              |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
              |     CONSTRAINT ttl_test_pkey PRIMARY KEY (id ASC)
-             | ) WITH (ttl = 'on', ttl_automatic_column = 'on', ttl_expire_after = '3 mons':::INTERVAL)
+             | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@hourly')
 (1 row)
 ~~~
 
-In this case, CockroachDB implicitly added the `ttl` and `ttl_automatic_column` storage parameters.
+In this case, CockroachDB implicitly added the `ttl` and `ttl_job_cron` [TTL storage parameters](row-level-ttl.html#ttl-storage-parameters).
 
 ## See also
 
@@ -85,3 +89,4 @@ In this case, CockroachDB implicitly added the `ttl` and `ttl_automatic_column` 
 - [`RESTORE`](restore.html)
 - [`SET` (storage parameter)](set-storage-parameter.html)
 - [`RESET` (storage parameter)](reset-storage-parameter.html)
+- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)

@@ -16,3 +16,4 @@ Privilege | Levels
 `BACKUP` | System, Database, Table
 `RESTORE` | System, Database
 `EXTERNALIOIMPLICITACCESS` | System
+`MODIFYCLUSTERSETTING` | System

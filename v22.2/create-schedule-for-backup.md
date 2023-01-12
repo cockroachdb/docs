@@ -21,7 +21,7 @@ To use the other backup features, you need an [Enterprise license](enterprise-li
 
 ## Required privileges using the legacy privilege model
 
-The following details the legacy privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release:
+The following details the legacy privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release of CockroachDB:
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - For all other backups, the user must have [read access](security-reference/authorization.html#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
@@ -58,7 +58,7 @@ Targets:
 `database_name`                         | The name of the [database(s)](create-database.html) you want to back up (i.e., create backups of all tables and views in the database).
 `location`                              | The URI where you want to store the backup. The backup files will be stored in year > month > day subdirectories. The location can be [cloud storage](use-cloud-storage-for-bulk-operations.html), or `nodelocal`.<br><br><b>Note:</b> If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 `backup_options`                        | Control the backup behavior with a comma-separated list of [options](#backup-options).
-`RECURRING crontab`                     | Specifies when the backup should be taken. By default, these are incremental backups that capture changes since the last backup and append to the current full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
+`RECURRING crontab`                     | Specifies when the backup should be taken. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with [`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html). The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
 <a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. For free users, `ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
 `WITH SCHEDULE OPTIONS schedule_option` | _Experimental feature._ Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
@@ -68,18 +68,13 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 
 ### Backup options
 
-{% include {{ page.version.version }}/backups/backup-options.md %}
+{% include {{ page.version.version }}/backups/backup-options-for-schedules.md %}
 
 ### Schedule options
 
 {% include feature-phases/preview.md %}
 
- Option                     | Value                                   | Description
-----------------------------+-----------------------------------------+------------------------------
-`first_run`                 | [`TIMESTAMPTZ`](timestamp.html) / `now` | Execute the schedule at the specified time in the future. If not specified, the default behavior is to execute the schedule based on its next `RECURRING` time.
-`on_execution_failure`      | `retry` / `reschedule` / `pause`        | If an error occurs during the backup execution, do the following: <ul><li>`retry`: Retry the backup right away.</li><li>`reschedule`: Retry the backup by rescheduling it based on the `RECURRING` expression.</li><li>`pause`: Pause the schedule. This requires manual intervention to [resume the schedule](resume-schedules.html).</li></ul><br>**Default**: `reschedule`
-<a name="on-previous-running-option"></a>`on_previous_running`       | `start` / `skip` / `wait`               | If the previous backup started by the schedule is still running, do the following: <ul><li>`start`: Start the new backup anyway, even if the previous one still running.</li><li>`skip`: Skip the new backup and run the next backup based on the `RECURRING` expression.</li><li>`wait`: Wait for the previous backup to complete.</li></ul><br>**Default**: `wait`
-`ignore_existing_backups`   | N/A                                     | If backups were already created in the [destination](use-cloud-storage-for-bulk-operations.html) that the new schedule references, this option must be passed to acknowledge that the new schedule may be backing up different objects.
+{% include {{ page.version.version }}/backups/schedule-options.md %}
 
 ## Considerations
 
@@ -109,6 +104,7 @@ View the schedule      | [`SHOW SCHEDULES`](show-schedules.html)
 Pause the schedule     | [`PAUSE SCHEDULES`](pause-schedules.html)
 Resume the schedule    | [`RESUME SCHEDULES`](resume-schedules.html)
 Drop the schedule      | [`DROP SCHEDULES`](drop-schedules.html)
+Alter the schedule     | [`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html)
 
 ## View and control a backup initiated by a schedule
 
@@ -249,6 +245,7 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, Cockro
 - [`PAUSE SCHEDULES`](pause-schedules.html)
 - [`RESUME SCHEDULES`](resume-schedules.html)
 - [`DROP SCHEDULES`](drop-schedules.html)
+- [`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html)
 - [`PAUSE JOB`](pause-job.html)
 - [`RESUME JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)

@@ -266,7 +266,7 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 **Support level:** Full
 
-Download and set up the latest Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the latest Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/).
 
 For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
@@ -393,7 +393,7 @@ Install the C libpq driver as described in the [official documentation](https://
 
     The `dotnet` command creates a new app of type `console`. The `-o` parameter creates a directory named `cockroachdb-test-app` where your app will be stored and populates it with the required files. The `cd cockroachdb-test-app` command puts you into the newly created app directory.
 
-2. Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
+1. Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

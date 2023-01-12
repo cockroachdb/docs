@@ -77,23 +77,23 @@ To create a trigram index, use the [`CREATE INDEX`](create-index.html) syntax th
 
 - Using the PostgreSQL-compatible syntax:
 
-  ~~~ sql
-  CREATE INDEX {optional name} ON {table} USING GIN({column} gin_trgm_ops);
-  ~~~
+    ~~~ sql
+    CREATE INDEX {optional name} ON {table} USING GIN({column} gin_trgm_ops);
+    ~~~
 
-  ~~~ sql
-  CREATE INDEX {optional name} ON {table} USING GIST({column} gist_trgm_ops);
-  ~~~
+    ~~~ sql
+    CREATE INDEX {optional name} ON {table} USING GIST({column} gist_trgm_ops);
+    ~~~
 
-  {{site.data.alerts.callout_info}}
-  GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
-  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
+    {{site.data.alerts.end}}
 
 - Using `CREATE INVERTED INDEX`:
 
-  ~~~ sql
-  CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
-  ~~~
+    ~~~ sql
+    CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
+    ~~~
 
 ### Comparisons
 
@@ -261,8 +261,8 @@ EXPLAIN SELECT w, similarity(w, 'word')
 ~~~
 
 ~~~
-                                                                         info
--------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                 info
+------------------------------------------------------------------------------------------------------
   distribution: local
   vectorized: true
 
@@ -277,16 +277,16 @@ EXPLAIN SELECT w, similarity(w, 'word')
           │ filter: w % 'word'
           │
           └── • index join
-              │ estimated row count: 6
+              │ estimated row count: 1,112
               │ table: t@t_pkey
               │
               └── • inverted filter
-                  │ estimated row count: 6
+                  │ estimated row count: 1,112
                   │ inverted column: w_inverted_key
                   │ num spans: 2
                   │
                   └── • scan
-                        estimated row count: 6 (0.06% of the table; stats collected 8 minutes ago; using stats forecast for 24 minutes in the future)
+                        estimated row count: 1,112 (11% of the table; stats collected 4 minutes ago)
                         table: t@t_w_idx
                         spans: 2 spans
 ~~~
@@ -324,8 +324,8 @@ EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
 ~~~
 
 ~~~
-                                                                    info
----------------------------------------------------------------------------------------------------------------------------------------------
+                                           info
+------------------------------------------------------------------------------------------
   distribution: local
   vectorized: true
 
@@ -334,11 +334,11 @@ EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
   │ filter: w LIKE '%foo%'
   │
   └── • index join
-      │ estimated row count: 0
+      │ estimated row count: 1,112
       │ table: t@t_pkey
       │
       └── • scan
-            estimated row count: 0 (<0.01% of the table; stats collected 15 minutes ago; using stats forecast for 42 minutes in the future)
+            estimated row count: 1,112 (11% of the table; stats collected 3 minutes ago)
             table: t@t_w_idx
             spans: 1 span
 ~~~

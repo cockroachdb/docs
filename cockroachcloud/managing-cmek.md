@@ -14,7 +14,7 @@ To follow this procedure requires admin access to your {{ site.data.products.ded
 See also:
 
 - [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek-faq.html)
-- [Encryption at Rest (Enterprise)](../{{site.versions["stable"]}}/security-reference/encryption.html#encryption-at-rest)
+- [Encryption at Rest (Enterprise)](../{{site.current_cloud_version}}/security-reference/encryption.html#encryption-at-rest)
 
 ## Prerequisites
 

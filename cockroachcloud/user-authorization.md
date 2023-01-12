@@ -37,7 +37,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 <section class="filter-content" markdown="1" data-scope="client">
 Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html), you can create a new user.
 
-To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../{{site.versions["stable"]}}/create-user.html) statement:
+To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../{{site.current_cloud_version}}/create-user.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -45,7 +45,7 @@ To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../{{site.versio
 ~~~
 
 {{site.data.alerts.callout_info}}
-Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](../{{site.versions["stable"]}}/alter-user.html) statement.
+Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](../{{site.current_cloud_version}}/alter-user.html) statement.
 {{site.data.alerts.end}}
 </section>
 
@@ -77,7 +77,7 @@ On the **SQL Users** page, you can do the following:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-To list all the users in your cluster, use the [`SHOW USERS`](../{{site.versions["stable"]}}/show-users.html) statement:
+To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_cloud_version}}/show-users.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -112,7 +112,7 @@ To change a user's password:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-To change a user's password, use the [`ALTER USER`](../{{site.versions["stable"]}}/alter-user.html) statement:
+To change a user's password, use the [`ALTER USER`](../{{site.current_cloud_version}}/alter-user.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -143,7 +143,7 @@ To remove a user:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-To remove a user, use the [`DROP USER`](../{{site.versions["stable"]}}/drop-user.html) statement:
+To remove a user, use the [`DROP USER`](../{{site.current_cloud_version}}/drop-user.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -157,9 +157,9 @@ All of a user's privileges must be [revoked](#revoke-a-users-privileges) before 
 
 ## Grant privileges
 
-Access to the data in your cluster is controlled by [privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+Access to the data in your cluster is controlled by [privileges](../{{site.current_cloud_version}}/security-reference/authorization.html#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
-To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../{{site.versions["stable"]}}/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
+To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../{{site.current_cloud_version}}/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -173,7 +173,7 @@ To assign a user more limited privileges for one table in a database:
 > GRANT SELECT, INSERT ON TABLE <database>.<table> TO <user>;
 ~~~
 
-For more details, see [Privileges](../{{site.versions["stable"]}}/security-reference/authorization.html#managing-privileges) and [`GRANT`](../{{site.versions["stable"]}}/grant.html).
+For more details, see [Privileges](../{{site.current_cloud_version}}/security-reference/authorization.html#managing-privileges) and [`GRANT`](../{{site.current_cloud_version}}/grant.html).
 
 ## Manage privileges
 
@@ -182,7 +182,7 @@ For more details, see [Privileges](../{{site.versions["stable"]}}/security-refer
 
 ### View a user's privileges
 
-To show privileges granted to a user, use the [`SHOW GRANTS`](../{{site.versions["stable"]}}/show-grants.html) statement:
+To show privileges granted to a user, use the [`SHOW GRANTS`](../{{site.current_cloud_version}}/show-grants.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -191,7 +191,7 @@ To show privileges granted to a user, use the [`SHOW GRANTS`](../{{site.versions
 
 ### Revoke a user's privileges
 
-To revoke privileges from a user, use the [`REVOKE`](../{{site.versions["stable"]}}/revoke.html) statement:
+To revoke privileges from a user, use the [`REVOKE`](../{{site.current_cloud_version}}/revoke.html) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -204,49 +204,49 @@ Role-based access control lets you simplify how you manage privileges. In essenc
 
 Once you have [connected to the cluster](connect-to-your-cluster.html), you can set up roles:
 
-- To create a role, use the [`CREATE ROLE`](../{{site.versions["stable"]}}/create-role.html) statement:
+- To create a role, use the [`CREATE ROLE`](../{{site.current_cloud_version}}/create-role.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE <role>;
     ~~~
 
-- To grant privileges to a role, use the [`GRANT <privilege>`](../{{site.versions["stable"]}}/grant.html) statement:
+- To grant privileges to a role, use the [`GRANT <privilege>`](../{{site.current_cloud_version}}/grant.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT <privilege> ON DATABASE <database> TO <role>;
     ~~~
 
-- To add a user (or another role) to a role, use the [`GRANT <role>`](../{{site.versions["stable"]}}/grant.html) statement:
+- To add a user (or another role) to a role, use the [`GRANT <role>`](../{{site.current_cloud_version}}/grant.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT <role> TO <user or role>;
     ~~~
 
-- To revoke privileges from a role, use the [`REVOKE <privilege>`](../{{site.versions["stable"]}}/revoke.html) statement:
+- To revoke privileges from a role, use the [`REVOKE <privilege>`](../{{site.current_cloud_version}}/revoke.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE INSERT ON TABLE <database>.<table> FROM <role>;
     ~~~
 
-- To remove a user (or another role) from a role, use the [`REVOKE <role>`](../{{site.versions["stable"]}}/revoke.html) statement:
+- To remove a user (or another role) from a role, use the [`REVOKE <role>`](../{{site.current_cloud_version}}/revoke.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE <role> FROM <user or role>;
     ~~~
 
-- To list all roles in your cluster, use the [`SHOW ROLES`](../{{site.versions["stable"]}}/show-roles.html) statement:
+- To list all roles in your cluster, use the [`SHOW ROLES`](../{{site.current_cloud_version}}/show-roles.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
 
-- To remove a role, use the [`DROP ROLE`](../{{site.versions["stable"]}}/drop-role.html) statement:
+- To remove a role, use the [`DROP ROLE`](../{{site.current_cloud_version}}/drop-role.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -259,5 +259,5 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
 
 ## See also
 
-- [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
+- [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
 - [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

@@ -5,7 +5,7 @@ The CockroachDB Helm chart is currently not under active development, and no new
 A deprecation notice for the Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
 
 {{site.data.alerts.callout_danger}}
-If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](/docs/{{site.versions["stable"]}}/secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
+If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -56,7 +56,7 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
         The Helm chart defaults to a secure deployment by automatically setting `tls.enabled` to `true`.
 
         {{site.data.alerts.callout_info}}
-        By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Certificate management](/docs/{{site.versions["stable"]}}/secure-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
+        By default, the Helm chart will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Certificate management](/docs/{{ page.version.version }}/secure-cockroachdb-kubernetes.html?filters=helm#use-a-custom-ca).
         {{site.data.alerts.end}}
 
 1. Install the CockroachDB Helm chart, specifying your custom values file.

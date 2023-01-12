@@ -166,6 +166,19 @@ SHOW GRANTS ON TABLE movr.public.*;
 (24 rows)
 ~~~
 
+### Grant system-level privileges on the entire cluster
+
+[System-level privileges](security-reference/authorization.html#system-level-privileges) live above the database level and apply to the entire cluster.
+
+`root` and [`admin`](security-reference/authorization.html#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
+
+For example, the following statement allows the user `maxroach` to use the [`SET CLUSTER SETTING`](set-cluster-setting.html) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
+~~~
+
 ### Make a table readable to every user in the system
 
 {% include_cached copy-clipboard.html %}

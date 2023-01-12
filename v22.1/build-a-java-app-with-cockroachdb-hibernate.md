@@ -65,7 +65,7 @@ Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.u
 
 {% include_cached copy-clipboard.html %}
 ~~~ xml
-<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?options=--cluster%3D{routing-id}&amp;sslmode=verify-full</property>
+<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?sslmode=verify-full</property>
 <property name="hibernate.connection.username">{username}</property>
 <property name="hibernate.connection.password">{password}</property>
 ~~~
@@ -136,7 +136,7 @@ For more information about importing data from MySQL, see [Migrate from MySQL](m
 
 ### Use `reWriteBatchedInserts` for increased speed
 
-We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/use/#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 
@@ -144,7 +144,7 @@ We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x pe
 
 CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
 
-For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor) from the PGJDBC documentation.
+For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query/#getting-results-based-on-a-cursor) from the PGJDBC documentation.
 
 Note that interleaved execution (partial execution of multiple statements within the same connection and transaction) is not supported when [`Statement.setFetchSize()`](https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#setFetchSize-int-) is used.
 

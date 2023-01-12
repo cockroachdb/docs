@@ -257,7 +257,7 @@ To check the [default values](default-value.html) for columns in a table, use th
 (1 row)
 ~~~
 
-If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of *NULL* is assigned to the column.
+If the `DEFAULT` value constraint is not specified and an explicit value is not given, a value of `NULL` is assigned to the column.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -282,7 +282,7 @@ If the `DEFAULT` value constraint is not specified and an explicit value is not 
 (2 rows)
 ~~~
 
-To create a new row with only default values, use `INSERT INTO <table> DEFAULT VALUES`. Running this command on the `drivers` table results in an error because the `city` column in `drivers` cannot be *NULL*, and has no default value specified.
+To create a new row with only default values, use `INSERT INTO <table> DEFAULT VALUES`. Running this command on the `drivers` table results in an error because the `city` column in `drivers` cannot be `NULL`, and has no default value specified.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -156,5 +156,5 @@ After a short (less than 5 minute) delay, the status will change to Available. Y
 
 ## See also
 
-- [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
+- [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
 - [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

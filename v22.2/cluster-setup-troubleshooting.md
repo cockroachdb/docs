@@ -210,7 +210,7 @@ To check your networking setup:
 
 1.  Use `ping`. Every machine you are using as a CockroachDB node should be able to ping every other machine, using the hostnames or IP addresses used in the `--join` flags (and the `--advertise-host` flag if you are using it).
 
-2.  If the machines are all pingable, check if you can connect to the appropriate ports. With your CockroachDB nodes still running, log in to each node and use `telnet` or` nc` to verify machine to machine connectivity on the desired port. For instance, if you are running CockroachDB on the default port of 26257, run either:
+1.  If the machines are all pingable, check if you can connect to the appropriate ports. With your CockroachDB nodes still running, log in to each node and use `telnet` or` nc` to verify machine to machine connectivity on the desired port. For instance, if you are running CockroachDB on the default port of 26257, run either:
   -   `telnet <other-machine> 26257`
   -   `nc <other-machine> 26257`
 
@@ -241,7 +241,7 @@ The effect of a network partition depends on which nodes are partitioned, where 
 To identify a network partition:
 
 1.  Access the [Network Latency](ui-network-latency-page.html) page of the DB Console.
-2.  In the **Latencies** table, check for nodes with [no connections](ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
+1.  In the **Latencies** table, check for nodes with [no connections](ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
 
 ## Authentication issues
 
@@ -271,8 +271,8 @@ If you’re running a secure cluster, be sure to monitor your certificate expira
 To check the certificate expiration date:
 
 1. [Access the DB Console](ui-overview.html#db-console-access).
-2. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-3. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
+1. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
+1. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
 
 #### Client password not set
 
@@ -316,7 +316,7 @@ See the following FAQs:
 You may encounter the following issues when your cluster nears 100% resource capacity:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
--   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance or stability issues.
+-   Running RAM at close to 100% utilization triggers Linux [OOM](#out-of-memory-oom-crash) and/or swapping that will result in poor performance or stability issues.
 -   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
 -   Running storage at 100% utilization read/write causes poor service time and [node shutdown](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space).
 -   Running network at 100% utilization causes response between databases and client to be poor.
@@ -522,9 +522,9 @@ To identify under-replicated/unavailable ranges:
 
 1.  [Access the DB Console](ui-overview.html#db-console-access).
 
-2.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
+1.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-3. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](file-an-issue.html).
+1. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](file-an-issue.html).
 
 **Add nodes to the cluster:**
 
@@ -533,11 +533,11 @@ On the DB Console’s Cluster Overview page, check if any nodes are down. If the
 If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
 1.  [Access the DB Console](ui-overview.html#db-console-access)
-2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
-2.  Click **Problem Ranges**.
-3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
-4.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-5. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full Range Report and error message when you submit the issue.
+1.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
+1.  Click **Problem Ranges**.
+1.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
+1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
+1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full Range Report and error message when you submit the issue.
 
 ## Node liveness issues
 

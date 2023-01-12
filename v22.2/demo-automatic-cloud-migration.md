@@ -135,7 +135,7 @@ Now that you have a load balancer running in front of your cluster, lets use the
     'postgresql://root@localhost:26000?sslmode=disable'
     ~~~
 
-2. Run the `ycsb` workload, pointing it at HAProxy's port:
+1. Run the `ycsb` workload, pointing it at HAProxy's port:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

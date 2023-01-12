@@ -149,7 +149,7 @@ The error message will specify which part of your backup is causing the failure.
 
 To resolve this issue, take a new [full backup](take-full-and-incremental-backups.html) after doing either of the following:
 
-- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds), or
+- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds). For example, we recommend setting the GC TTL to a time interval **greater** than the sum of `incremental_backup_interval` + `expected_runtime_of_full_backup` + `buffer_for_slowdowns`. To estimate the expected full backup runtime, it is necessary to perform testing or verify the past performance through the [jobs table](ui-jobs-page.html#jobs-list).
 - [Increase the frequency of incremental backups](manage-a-backup-schedule.html).
 
 ## result is ambiguous
@@ -189,7 +189,7 @@ When importing into an existing table with [`IMPORT INTO`](import-into.html), th
 
 ## memory budget exceeded
 
-This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an OOM crash, which might be prevented by failing the query.
+This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an [OOM crash](cluster-setup-troubleshooting.html#out-of-memory-oom-crash), which might be prevented by failing the query.
 
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 

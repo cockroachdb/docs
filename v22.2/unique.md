@@ -107,7 +107,7 @@ Parameter | Description
 duplicate key value (customer_id,sales_id)=(2,1) violates unique constraint "logon_customer_id_sales_id_key"
 ~~~
 
-As mentioned in the [details](#details) above, it is possible when using the `UNIQUE` constraint alone to insert *NULL* values in a way that causes rows to appear to have rows with duplicate values.
+As mentioned in the [details](#details) above, it is possible when using the `UNIQUE` constraint alone to insert `NULL` values in a way that causes rows to appear to have rows with duplicate values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -45,7 +45,7 @@ Given the above, if a table contains a column with a default-sized `INT` value, 
 If your application needs to use an integer size that is different than the CockroachDB default (for these or other reasons), you can change one or both of the settings below. For example, you can set either of the below to `4` to cause `INT` and `SERIAL` to become aliases for `INT4` and `SERIAL4`, which use 32-bit integers.
 
 1. The `default_int_size` [session variable](set-vars.html).
-2. The `sql.defaults.default_int_size` [cluster setting](cluster-settings.html).
+1. The `sql.defaults.default_int_size` [cluster setting](cluster-settings.html).
 
 {{site.data.alerts.callout_success}}
 If your application requires arbitrary precision numbers, use the [`DECIMAL`](decimal.html) data type.

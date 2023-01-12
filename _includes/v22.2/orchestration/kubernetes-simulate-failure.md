@@ -44,9 +44,9 @@ To see this in action:
     </section>
 
 
-2. In the DB Console, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+1. In the DB Console, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
 
-3. Back in the terminal, verify that the pod was automatically restarted:
+1. Back in the terminal, verify that the pod was automatically restarted:
 
     <section class="filter-content" markdown="1" data-scope="operator">
 

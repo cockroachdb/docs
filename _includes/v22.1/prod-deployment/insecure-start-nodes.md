@@ -164,6 +164,10 @@ After completing these steps, nodes will not yet be live. They will complete the
     {% include {{ page.version.version }}/prod-deployment/insecurecockroachdb.service %}
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    Previously, the sample configuration file set `TimeoutStopSec` to 60 seconds. This recommendation has been lengthened to 300 seconds, to give the `cockroach` process more time to stop gracefully.
+    {{site.data.alerts.end}}
+
 9. In the sample configuration template, specify values for the following flags:
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}

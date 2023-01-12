@@ -10,7 +10,7 @@ docs_area: manage
 {% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
 {% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
 {% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
-{% assign actual_latest_prod = site.data.releases | where: "release_type", "Production" | sort: "release_date" | last %}
+{% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
@@ -41,10 +41,6 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 ~~~ sql
 > SHOW CLUSTER SETTING version;
 ~~~
-
-{{site.data.alerts.callout_info}}
-If you are upgrading from any cluster version prior to v21.1, then **before upgrading from v20.2 to v21.1**, you must ensure that any previously decommissioned nodes are fully decommissioned. Otherwise, they will block the upgrade. For instructions, see [Check decommissioned nodes](#check-decommissioned-nodes).
-{{site.data.alerts.end}}
 
 To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
 
@@ -87,11 +83,21 @@ Verify the overall health of your cluster using the [DB Console](ui-cluster-over
 
 ### Check decommissioned nodes
 
-Check the `membership` field in the [output of `cockroach node status --decommission`](node-shutdown.html?filters=decommission#cockroach-node-status). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+If your cluster contains partially-decommissioned nodes, they will block an upgrade attempt.
 
-If you are upgrading from any cluster version prior to v21.1, then **before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](node-shutdown.html?filters=decommission#step-3-decommission-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+1. To check the status of decommissioned nodes, run  the [`cockroach node status --decommission`](cockroach-node.html#show-the-status-of-all-nodes) command:
 
-In case a decommissioning process is hung, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then [decommission those nodes](node-shutdown.html?filters=decommission#remove-nodes) again, and confirm that they update to `decommissioned`.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach node status --decommission
+    ~~~
+
+    In the output, verify that the value of the `membership` field of each node is `decommissioned`. If any node's `membership` value is `decommissioning`, that node is not fully decommissioned.
+
+1. If any node is not fully decommissioned, try the following:
+
+    1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
+    1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
 ### Review breaking changes
 
@@ -115,7 +121,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.2';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
@@ -124,8 +130,10 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **SCRAM-SHA-256 authentication:** CockroachDB supports [SCRAM-SHA-256](security-reference/scram-authentication.html) authentication for clients in both CockroachDB Cloud and CockroachDB Self-Hosted. For SQL client sessions, it is now possible to use the authentication methods `password` (cleartext passwords), and `cert-password` (TLS client cert or cleartext password) with either CRDB-BCRYPT or SCRAM-SHA-256 stored credentials.
-- **Row-Level Time to Live (TTL):** CockroachDB has preview support for Time to Live ("TTL") expiration on table rows, also known as [Row-Level TTL](row-level-ttl.html). Row-Level TTL is a mechanism whereby rows from a table are considered "expired" and can be automatically deleted once those rows have been stored longer than a specified expiration time.
+- The [`CREATE FUNCTION`](create-function.html) statement creates [user-defined functions](user-defined-functions.html).
+- [Trigram indexes](trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
+- [Predicates and projections in `CREATE CHANGEFEED` statements](create-changefeed.html). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
+
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 
@@ -251,7 +259,7 @@ Once you are satisfied with the new version:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    This statement can take up to a minute to complete, depending on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+    All [schema change](online-schema-changes.html) jobs must reach a terminal state before finalization can complete. Finalization can therefore take as long as the longest-running schema change. Otherwise, the amount of time required for finalization depends on the amount of data in the cluster, as it kicks off various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
     {{site.data.alerts.end}}
 
 1. Check the cluster version to confirm that the finalize step has completed:
@@ -260,6 +268,8 @@ Once you are satisfied with the new version:
     ~~~ sql
     > SHOW CLUSTER SETTING version;
     ~~~
+
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
 ## Troubleshooting
 

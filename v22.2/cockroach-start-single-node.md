@@ -162,7 +162,7 @@ Field | Description
     `certs` | You'll generate your CA certificate and all node and client certificates and keys in this directory.
     `my-safe-directory` | You'll generate your CA key in this directory and then reference the key when generating node and client certificates.
 
-2. Create the CA (Certificate Authority) certificate and key pair:
+1. Create the CA (Certificate Authority) certificate and key pair:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -171,7 +171,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Create the certificate and key pair for the node:
+1. Create the certificate and key pair for the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -182,7 +182,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-4. Create a client certificate and key pair for the `root` user:
+1. Create a client certificate and key pair for the `root` user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -192,7 +192,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-5. Start the single-node cluster:
+1. Start the single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -251,7 +251,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 	server drained and shutdown completed
 	~~~
 
-2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
+1. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -267,7 +267,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
 
-3. Add two more nodes:
+1. Add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -293,14 +293,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine. Also, since all nodes use the same hostname (`localhost`), you can use the first node's certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
 
-4. Open the [built-in SQL shell](cockroach-sql.html):
+1. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
-5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
+1. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -343,7 +343,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 	server drained and shutdown completed
 	~~~
 
-2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
+1. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -357,7 +357,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     The new flag to note is `--join`, which specifies the addresses and ports of the nodes that will comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
-3. Add two more nodes:
+1. Add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -383,14 +383,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine.
 
-4. Open the [built-in SQL shell](cockroach-sql.html):
+1. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
+1. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

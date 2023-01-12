@@ -47,7 +47,7 @@ For instructions on starting a secure cluster, see [Start a Local Cluster (Secur
 
 <div class="filter-content" markdown="1" data-scope="node-postgres">
 
-To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Client`](https://node-postgres.com/api/client) object with a connection string.
+To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Client`](https://node-postgres.com/apis/client) object with a connection string.
 
 For example:
 
@@ -931,7 +931,7 @@ Parameter | Description
 
 <div class="filter-content" markdown="1" data-scope="jdbc">
 
-To connect to CockroachDB with the [JDBC](https://jdbc.postgresql.org) driver, create a `DataSource` object ([`PGSimpleDataSource` or `PGPoolingDataSource`](https://jdbc.postgresql.org/documentation/head/ds-ds.html)), and set the connection string with the `setUrl` class method.
+To connect to CockroachDB with the [JDBC](https://jdbc.postgresql.org) driver, create a `DataSource` object ([`PGSimpleDataSource` or `PGPoolingDataSource`](https://jdbc.postgresql.org/documentation/datasource/#applications-datasource)), and set the connection string with the `setUrl` class method.
 
 For example:
 
@@ -972,7 +972,7 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&s
 
 </div>
 
-For more information about connecting with JDBC, see the [official JDBC documentation](https://jdbc.postgresql.org/documentation/head/index.html).
+For more information about connecting with JDBC, see the [official JDBC documentation](https://jdbc.postgresql.org/documentation/).
 
 </div>
 
