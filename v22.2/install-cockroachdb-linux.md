@@ -17,12 +17,10 @@ docs_area: deploy
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-<h2>Install options</h2>
-
 Use one of the options below to install CockroachDB.
 
 <div id="download-the-binary-linux" class="install-option">
-  <h3>Download the binary</h3>
+  <h2 id="install-binary">Download the binary</h2>
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
   <ol>
     <li>
@@ -42,7 +40,7 @@ Use one of the options below to install CockroachDB.
           </div>
           <div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> /usr/local/lib/cockroach</code></pre></div>
         </li>
-        <li>Copy the library files to the directory. In the following commands, replace `{ARCHITECTURE}` with `linux-amd64` for Intel, or with `linux-3.7.10-gnu-aarch64` for ARM.</p>
+        <li>Copy the library files to the directory. In the following commands, replace `{ARCHITECTURE}` with `linux-amd64` for Intel, or with `linux-arm64` for ARM.</p>
           <div class="copy-clipboard">
             <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
             <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
@@ -101,7 +99,7 @@ true
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h3>Use Kubernetes</h3>
+  <h2 id="install-kubernetes">Use Kubernetes</h2>
 
   <p>To orchestrate CockroachDB using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, use the following tutorials:</p>
 
@@ -113,9 +111,11 @@ true
 </div>
 
 <div id="use-docker-linux" class="install-option">
-  <h3>Use Docker</h3>
+  <h2 id="install-docker">Use Docker</h2>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
+
+  <p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contains binaries for both Intel and ARM. CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use. Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>
 
   <ol>
     <li>
@@ -151,7 +151,7 @@ true
 </div>
 
 <div id="build-from-source-linux" class="install-option">
-  <h3>Build from Source</h3>
+  <h2 id="install-source">Build from Source</h2>
   <p>See the <a href="https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source">public wiki</a> for guidance.</p>
 </div>
 

@@ -64,12 +64,39 @@ Once you have [sized your cluster](#sizing), derive the amount of RAM, storage c
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
-| Value | Recommendation | Reference
-|-------|----------------|----------
-| RAM per vCPU | 4 GiB | [Memory](#memory)
-| Capacity per vCPU | 150 GiB | [Storage](#storage)
-| IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
-| MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
+{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+
+<table>
+<thead>
+<tr>
+    <th>Value</th>
+    <th>Recommendation</th>
+    <th>Reference</th>
+</tr>
+</thead>
+<tbody>
+    <tr>
+      <td>RAM per vCPU</td>
+      <td>4 GiB</td>
+      <td><a href="#memory">Memory</a></td>
+    </tr>
+    <tr>
+      <td>Capacity per vCPU</td>
+      <td>{{ cap_per_vcpu | strip_html }}</td>
+      <td><a href="#storage">Storage</a></td>
+    </tr>
+    <tr>
+      <td>IOPS per vCPU</td>
+      <td>500</td>
+      <td><a href="#disk-i-o">Disk I/O</a></td>
+    </tr>
+    <tr>
+      <td>MB/s per vCPU</td>
+      <td>30</td>
+      <td><a href="#disk-i-o">Disk I/O</a></td>
+    </tr>
+</tbody>
+</table>
 
 Before deploying to production, test and tune your hardware setup for your application workload. For example, read-heavy and write-heavy workloads will place different emphases on [CPU](#sizing), [RAM](#memory), [storage](#storage), [I/O](#disk-i-o), and [network](#networking) capacity.
 
@@ -94,6 +121,8 @@ The benefits to having more RAM decrease as the [number of vCPUs](#sizing) incre
 {{site.data.alerts.callout_info}}
 Under-provisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause [OOM crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash). For more information, see [memory issues](cluster-setup-troubleshooting.html#memory-issues).
 {{site.data.alerts.end}}
+
+<a id="storage"></a>
 
 #### Storage
 
@@ -440,7 +469,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
 
-2.  Create `/Library/LaunchDaemons/limit.maxfiles.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 35000:
+1.  Create `/Library/LaunchDaemons/limit.maxfiles.plist` and add the following contents, with the final strings in the `ProgramArguments` array set to 35000:
 
     ~~~ xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -467,9 +496,9 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     Make sure the plist file is owned by `root:wheel` and has permissions `-rw-r--r--`. These permissions should be in place by default.
 
-3.  Restart the system for the new limits to take effect.
+1.  Restart the system for the new limits to take effect.
 
-4.  Check the current limits:
+1.  Check the current limits:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -497,15 +526,15 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     The last two columns are the soft and hard limits, respectively. If `unlimited` is listed as the hard limit, note that the hidden default limit for a single process is actually 10240.
 
-2.  Edit (or create) `/etc/launchd.conf` and add a line that looks like the following, with the last value set to the new hard limit:
+1.  Edit (or create) `/etc/launchd.conf` and add a line that looks like the following, with the last value set to the new hard limit:
 
     ~~~
     limit maxfiles 35000 35000
     ~~~
 
-3.  Save the file, and restart the system for the new limits to take effect.
+1.  Save the file, and restart the system for the new limits to take effect.
 
-4.  Verify the new limits:
+1.  Verify the new limits:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -534,7 +563,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     session    required   pam_limits.so
     ~~~
 
-2.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
 
     ~~~
     *              soft     nofile          35000
@@ -543,11 +572,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     Note that `*` can be replaced with the username that will be running the CockroachDB server.
 
-4.  Save and close the file.
+1.  Save and close the file.
 
-5.  Restart the system for the new limits to take effect.
+1.  Restart the system for the new limits to take effect.
 
-6.  Verify the new limits:
+1.  Verify the new limits:
 
     ~~~ shell
     $ ulimit -a
@@ -567,7 +596,7 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
     {{site.data.alerts.end}}
 
-2.  Reload Systemd for the new limit to take effect:
+1.  Reload Systemd for the new limit to take effect:
 
     ~~~ shell
     $ systemctl daemon-reload
@@ -583,7 +612,7 @@ You should also confirm that the file descriptors limit for the entire Linux sys
     $ cat /proc/sys/fs/file-max
     ~~~
 
-2. If necessary, increase the system-wide limit in the `proc` file system:
+1. If necessary, increase the system-wide limit in the `proc` file system:
 
     ~~~ shell
     $ echo 150000 > /proc/sys/fs/file-max

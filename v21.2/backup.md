@@ -95,7 +95,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Authentication parameters](use-cloud-storage-for-bulk-operations.html#authentication)
 
 {{site.data.alerts.callout_success}}
-Backups support [Amazon S3 storage classes](#backup-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+Backups support [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
 
 ## Functional details
@@ -151,19 +151,9 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 
 ## Examples
 
-Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
+Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="s3">
-
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
 
 {{site.data.alerts.callout_info}}
 The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
@@ -276,7 +266,7 @@ AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
 
-The job ID is returned immediately without waiting for the job to finish:
+The job ID is returned after the backup job creation completes: 
 
 ~~~
         job_id
@@ -294,7 +284,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 (1 row)
 ~~~
 
-### Backup with an S3 storage class
+### Back up with an S3 storage class
 
 {% include_cached new-in.html version="v21.2.6" %} To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
@@ -305,275 +295,7 @@ BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SEC
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-{{site.data.alerts.callout_info}}
-The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
-
-We recommend using the `BACKUP ... INTO {collectionURI}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collectionURI}` with `{backup}` being [`LATEST`](restore.html#restore-the-most-recent-backup) or a specific [subdirectory](restore.html#subdir-param).
-
-For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.html#examples) and [`RESTORE`](restore.html#examples) examples.
-{{site.data.alerts.end}}
-
-### Backup a cluster
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO \
-'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Backup a database
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP DATABASE bank \
-INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP DATABASE bank, employees \
-INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Backup a table or view
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP bank.customers \
-INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP bank.customers, bank.accounts \
-INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Backup all tables in a schema
-
-{% include_cached new-in.html version="v21.2" %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP test_schema.*
-INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
-
-With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
-
-If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
-
-See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
-
-### Create incremental backups
-
-If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO LATEST IN \
-'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Run a backup asynchronously
-
-Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO \
-'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s'
-WITH DETACHED;
-~~~
-
-The job ID is returned immediately without waiting for the job to finish:
-
-~~~
-        job_id
-----------------------
-  592786066399264769
-(1 row)
-~~~
-
-**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
-
-~~~
-job_id             |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
-(1 row)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gcs">
-
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-
-{{site.data.alerts.callout_info}}
-The [`BACKUP ... TO`](../v20.2/backup.html) and [`RESTORE ... FROM`](../v20.2/restore.html) syntax is **deprecated** as of v22.1 and will be removed in a future release.
-
-We recommend using the `BACKUP ... INTO {collectionURI}` syntax, which creates or adds to a [backup collection](take-full-and-incremental-backups.html#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collectionURI}` with `{backup}` being [`LATEST`](restore.html#restore-the-most-recent-backup) or a specific [subdirectory](restore.html#subdir-param).
-
-For guidance on the syntax for backups and restores, see the [`BACKUP`](backup.html#examples) and [`RESTORE`](restore.html#examples) examples.
-{{site.data.alerts.end}}
-
-### Backup a cluster
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO \
-'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Backup a database
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP DATABASE bank \
-INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP DATABASE bank, employees \
-INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Backup a table or view
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP bank.customers \
-INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP bank.customers, bank.accounts \
-INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Specify a subdirectory for backups
-
-To store the backup in a specific subdirectory in the storage location:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Backup all tables in a schema
-
-{% include_cached new-in.html version="v21.2" %} To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP test_schema.*
-INTO 'azure://{CONTAINER NAME}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
-
-With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
-
-If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
-
-See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
-
-### Create incremental backups
-
-If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO LATEST IN \
-'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s';
-~~~
-
-### Run a backup asynchronously
-
-Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BACKUP INTO \
-'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
-AS OF SYSTEM TIME '-10s'
-WITH DETACHED;
-~~~
-
-The job ID is returned immediately without waiting for the job to finish:
-
-~~~
-        job_id
-----------------------
-  592786066399264769
-(1 row)
-~~~
-
-**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
-
-~~~
-job_id             |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
-(1 row)
-~~~
-
-</section>
+{% include {{ page.version.version }}/misc/storage-class-glacier-incremental.md %}
 
 ### Advanced examples
 

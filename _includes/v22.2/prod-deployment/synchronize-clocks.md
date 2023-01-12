@@ -6,7 +6,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
 1. SSH to the first machine.
 
-2. Disable `timesyncd`, which tends to be active by default on some Linux distributions:
+1. Disable `timesyncd`, which tends to be active by default on some Linux distributions:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -22,21 +22,21 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
     Look for `Network time on: no` or `NTP enabled: no` in the output.
 
-3. Install the `ntp` package:
+1. Install the `ntp` package:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install ntp
     ~~~
 
-4. Stop the NTP daemon:
+1. Stop the NTP daemon:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo service ntp stop
     ~~~
 
-5. Sync the machine's clock with Google's NTP service:
+1. Sync the machine's clock with Google's NTP service:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -64,7 +64,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
     We recommend Google's NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, be sure to configure client-side smearing in the same way on each machine. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
     {{site.data.alerts.end}}
 
-6. Verify that the machine is using a Google NTP server:
+1. Verify that the machine is using a Google NTP server:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -73,7 +73,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 
     The active NTP server will be marked with an asterisk.
 
-7. Repeat these steps for each machine where a CockroachDB node will run.
+1. Repeat these steps for each machine where a CockroachDB node will run.
 
 {% elsif page.title contains "Google" %} 
 
@@ -97,7 +97,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
 1. SSH to the first machine.
 
-2. Find the ID of the Hyper-V Time Synchronization device:
+1. Find the ID of the Hyper-V Time Synchronization device:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -116,28 +116,28 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
         Rel_ID=12, target_cpu=0
     ~~~
 
-3. Unbind the device, using the `Device_ID` from the previous command's output:
+1. Unbind the device, using the `Device_ID` from the previous command's output:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ echo <DEVICE_ID> | sudo tee /sys/bus/vmbus/drivers/hv_util/unbind
     ~~~
 
-4. Install the `ntp` package:
+1. Install the `ntp` package:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo apt-get install ntp
     ~~~
 
-5. Stop the NTP daemon:
+1. Stop the NTP daemon:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo service ntp stop
     ~~~
 
-6. Sync the machine's clock with Google's NTP service:
+1. Sync the machine's clock with Google's NTP service:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -165,7 +165,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
     We recommend Google's NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, be sure to configure client-side smearing in the same way on each machine. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
     {{site.data.alerts.end}}
 
-7. Verify that the machine is using a Google NTP server:
+1. Verify that the machine is using a Google NTP server:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -174,6 +174,6 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
     The active NTP server will be marked with an asterisk.
 
-8. Repeat these steps for each machine where a CockroachDB node will run.
+1. Repeat these steps for each machine where a CockroachDB node will run.
 
 {% endif %}

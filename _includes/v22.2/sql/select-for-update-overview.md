@@ -6,7 +6,9 @@ Because this queueing happens during the read operation, the [thrashing](https:/
 
 As a result, using `SELECT FOR UPDATE` leads to increased throughput and decreased tail latency for contended operations.
 
-CockroachDB does not support the `FOR SHARE` or `FOR KEY SHARE` [locking strengths](select-for-update.html#locking-strengths), or the `SKIP LOCKED` [wait policy](select-for-update.html#wait-policies).
+Note that using `SELECT FOR UPDATE` does not completely eliminate the chance of [serialization errors](transaction-retry-error-reference.html), which use the `SQLSTATE` error code `40001`, and emit error messages with the string `restart transaction`. These errors can also arise due to [time uncertainty](architecture/transaction-layer.html#transaction-conflicts). To eliminate the need for application-level retry logic, in addition to `SELECT FOR UPDATE` your application also needs to use a [driver that implements automatic retry handling](transactions.html#client-side-intervention).
+
+CockroachDB does not support the `FOR SHARE` or `FOR KEY SHARE` [locking strengths](select-for-update.html#locking-strengths).
 
 {{site.data.alerts.callout_info}}
 By default, CockroachDB uses the `SELECT FOR UPDATE` locking mechanism during the initial row scan performed in [`UPDATE`](update.html) and [`UPSERT`](upsert.html) statement execution. To turn off implicit `SELECT FOR UPDATE` locking for `UPDATE` and `UPSERT` statements, set the `enable_implicit_select_for_update` [session variable](set-vars.html) to `false`.

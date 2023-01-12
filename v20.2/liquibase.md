@@ -93,7 +93,7 @@ The Liquibase command-line tool uses the PostgreSQL JDBC driver to connect to Co
 
 To install the driver for Liquibase:
 
-1. Download the JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download.html).
+1. Download the JDBC driver from [the PostgreSQL website](https://jdbc.postgresql.org/download/).
 1. Place the driver in the `lib` directory of the Liquibase binary. For example:
 
     {% include copy-clipboard.html %}

@@ -15,9 +15,27 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
-### In what clouds and regions is {{ site.data.products.db }} available?
+### In what clouds and regions is {{ site.data.products.dedicated }} available?
 
-The  {{ site.data.products.db }} Console will always show the latest available cloud infrastructure providers and regions. Open the [**Create Cluster**](https://cockroachlabs.cloud/cluster/create) page and select a Plan to see which providers and regions are currently available.
+The following regions are available for {{ site.data.products.dedicated }}:
+
+ GCP                                 | AWS                             
+-------------------------------------|---------------------------------
+ `asia-east1` (Changhua County)      | `ap-northeast-1` (Tokyo)        
+ `asia-east2` (Hong Kong)            | `ap-northeast-2` (Seoul)        
+ `asia-northeast1` (Tokyo)           | `ap-northeast-3` (Osaka)        
+ `asia-southeast1` (Jurong West)     | `ap-south-1` (Mumbai)           
+ `australia-southeast1` (Australia)  | `ap-southeast-1` (Singapore)    
+ `europe-west1` (St. Ghislain)       | `ap-southeast-2` (Sydney)       
+ `europe-west2` (London)             | `ca-central-1` (Central Canada) 
+ `europe-west3` (Frankfurt)          | `eu-central-1` (Frankfurt)      
+ `europe-west4` (Eemshaven)          | `eu-north-1` (Stockholm)        
+ `northamerica-northeast1` (Montréal)| `eu-west-1` (Ireland)           
+ `southamerica-east1` (São Paulo)    | `eu-west-2` (London)            
+ `us-central1` (Iowa)                | `eu-west-3` (Paris)             
+ `us-east1` (South Carolina)         | `sa-east-1` (São Paulo)         
+ `us-west1` (Oregon)                 | `us-east-2` (Ohio)              
+ `us-west2` (California)             | `us-west-2` (Oregon)            
 
 We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions in which their offerings are available. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting EKS or GKE in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
@@ -39,6 +57,7 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 - Create the first cluster in your organization
 - Select 9 or fewer nodes (we recommend starting with 3 so you can try scaling)
 - Select up to 4 vCPUs of compute and 150 GiB of storage (the trial code will not apply to larger clusters)
+- Select a single region or 3 regions
 - Don't remove the pre-applied trial code at check out
 
 Once the 30-day period is over, your cluster can be scaled beyond the trial period hardware limitations. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
@@ -57,7 +76,7 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
 
-See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page](../{{site.current_cloud_version}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
@@ -66,11 +85,11 @@ All data in {{ site.data.products.serverless }} and {{ site.data.products.dedica
 {{site.data.alerts.callout_info}}
 {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available with an Enterprise license and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
 
-As a result, encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since the console is unaware of cloud provider encryption.
+As a result, encryption will appear to be disabled in the [DB Console](../{{site.current_cloud_version}}/ui-overview.html), since the console is unaware of cloud provider encryption.
 {{site.data.alerts.end}}
 
 
-See the [Security Overview page](../{{site.versions["stable"]}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
+See the [Security Overview page](../{{site.current_cloud_version}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 
 
@@ -80,7 +99,7 @@ See the [Security Overview page](../{{site.versions["stable"]}}/security-referen
 
 ### Who has access to my cluster data?
 
-The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions).
+The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions/).
 
 ## Cluster maintenance
 
@@ -100,7 +119,7 @@ Today, we do not automatically scale nodes based on your capacity usage. To add 
 
 ### Who is responsible for backup?
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days. Only {{ site.data.products.dedicated }} cluster backups are available to users at this time.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days. Only {{ site.data.products.dedicated }} cluster backups are available to users at this time.
 
 The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
 
@@ -112,11 +131,11 @@ You can also [backup and restore](run-bulk-operations.html) data on your own. If
 
 ### Can I download the backups that {{ site.data.products.db }} takes for me?
 
-{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.current_cloud_version}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to {{ site.data.products.dedicated }}?
 
-Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster.
+Yes. You can [backup](../{{site.current_cloud_version}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.current_cloud_version}}/backup.html#backup-file-urls) and then [restore](../{{site.current_cloud_version}}/restore.html) to your {{ site.data.products.db }} cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -150,10 +169,10 @@ Response times are under 10ms for public access but typically much lower. Additi
 
 ### Where can I find the Support Policy and Service Level Agreement (SLA) for {{ site.data.products.dedicated }}?
 
-The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions):
+The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions/):
 
-- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
-- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
+- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy/)
+- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/)
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
@@ -175,7 +194,7 @@ The [**{{ site.data.products.db }} Status** page](https://status.cockroachlabs.c
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["stable"]}}/make-queries-fast.html) docs for more information.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.current_cloud_version}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.current_cloud_version}}/make-queries-fast.html) docs for more information.
 
 ### Can I monitor my cluster with third-party tools?
 

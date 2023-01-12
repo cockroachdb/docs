@@ -117,8 +117,7 @@ DATABASES = {
         'HOST': '{host}',
         'PORT': '{port}',
         'OPTIONS': {
-            'sslmode': 'verify-full',
-            'options': '--cluster={routing-id}'
+            'sslmode': 'verify-full'
         },
     },
 }

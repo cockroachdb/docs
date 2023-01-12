@@ -73,6 +73,12 @@
           "urls": [
             "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
           ]
+        },
+        {
+          "title": "Hasura (GraphQL)",
+          "urls": [
+            "/${VERSION}/hasura-getting-started.html"
+          ]
         }
       ]
     },

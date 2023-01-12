@@ -132,7 +132,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     $ docker exec -it roach1 ./cockroach sql --insecure
     ~~~
 
-2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -161,7 +161,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-3. Exit the SQL shell on `roach1` and open a new shell on `roach2`:
+1. Exit the SQL shell on `roach1` and open a new shell on `roach2`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -173,7 +173,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     $ docker exec -it roach2 ./cockroach sql --insecure
     ~~~
 
-4. Run the same `SELECT` query as before:
+1. Run the same `SELECT` query as before:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -189,7 +189,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, `roach1` and `roach2` perform identically as SQL gateways.
 
-5. Exit the SQL shell on `roach2`:
+1. Exit the SQL shell on `roach2`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -208,7 +208,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     'postgresql://root@roach1:26257?sslmode=disable'
     ~~~
 
-2. Run the workload for five minutes:
+1. Run the workload for five minutes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

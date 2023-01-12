@@ -53,6 +53,7 @@ body.sidenav-open{
   top: 0;
   // Desktop fix sidebar lower to show search
   @include at-query($min, $screen-md) {
+    max-width: 290px;
     top: 118px;
   }
 }

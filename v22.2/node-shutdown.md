@@ -125,13 +125,15 @@ Each of the [node shutdown steps](#node-shutdown-sequence) is performed in order
 
 Before you [perform node shutdown](#perform-node-shutdown), review the following prerequisites to graceful shutdown:
 
-- Configure your [load balancer](#load-balancing) to monitor node health.
-- Review and adjust [cluster settings](#cluster-settings) and [drain timeout](#drain-timeout) as needed for your deployment.
-- Implement [connection retry logic](#connection-retry-loop) to handle closed connections.
-- Configure the [termination grace period](#termination-grace-period) of your process manager or orchestration system.
+<ul>
+<li>Configure your <a href="#load-balancing">load balancer</a> to monitor node health.</li>
+<li>Review and adjust <a href="#cluster-settings">cluster settings</a> and <a href="#drain-timeout">drain timeout</a> as needed for your deployment.</li>
+<li>Implement <a href="#connection-retry-loop">connection retry logic</a> to handle closed connections.</li>
+<li>Configure the <a href="#termination-grace-period">termination grace period</a> of your process manager or orchestration system.</li>
 <section class="filter-content" markdown="1" data-scope="decommission">
-- Ensure that the [size and replication factor](#size-and-replication-factor) of your cluster are sufficient to handle decommissioning.
+<li>Ensure that the <a href="#size-and-replication-factor">size and replication factor</a> of your cluster are sufficient to handle decommissioning.</li>
 </section>
+</ul>
 
 ### Load balancing
 
@@ -201,7 +203,14 @@ Since [decommissioning](#decommissioning) a node rebalances all of its range rep
 The sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait) should not be greater than the configured [drain timeout](#drain-timeout).
 {{site.data.alerts.end}}
 
+#### `kv.allocator.recovery_store_selector`
+
+When a node is dead or decommissioning and all of its range replicas are being up-replicated onto other nodes, this setting controls the algorithm used to select the new node for each range replica. Regardless of the algorithm, a node must satisfy all available constraints for replica placement and survivability to be eligible.
+
+Possible values are `good` (the default) and `best`. When set to `good`, a random node is selected from the list of all eligible nodes. When set to `best`, a node with a low range count is preferred.
+
 <section class="filter-content" markdown="1" data-scope="drain">
+
 #### `server.time_until_store_dead`
 
 `server.time_until_store_dead` sets the duration after which a node is considered "dead" and its data is rebalanced to other nodes (`5m0s` by default). In the node shutdown sequence, this follows [process termination](#node-shutdown-sequence).
@@ -229,9 +238,9 @@ RESET CLUSTER SETTING server.time_until_store_dead;
 
 When [draining manually](#drain-a-node-manually) with `cockroach node drain`, all [drain phases](#draining) must be completed within the duration of `--drain-wait` (`10m` by default) or the drain will stop. This can be observed with an `ERROR: drain timeout` message in the terminal output. To continue the drain, re-initiate the command.
 
-{{site.data.alerts.callout_info}}
 A very long drain may indicate an anomaly, and you should manually inspect the server to determine what blocks the drain.
-{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v22.2" %} CockroachDB automatically increases the verbosity of logging when it detects a stall in the range lease transfer stage of `node drain`. Messages logged during such a stall include the time an attempt occurred, the total duration stalled waiting for the transfer attempt to complete, and the lease that is being transferred.
 
 `--drain-wait` sets the timeout for [all draining phases](#draining) and is **not** related to the `server.shutdown.drain_wait` cluster setting, which configures the "unready phase" of draining. The value of `--drain-wait` should be greater than the sum of [`server.shutdown.drain_wait`](#server-shutdown-drain_wait), [`server.shutdown.connection_wait`](#server-shutdown-connection_wait), [`server.shutdown.query_wait`](#server-shutdown-query_wait) times two, and [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait).
 
@@ -279,7 +288,7 @@ To determine an appropriate termination grace period:
 
 ### Size and replication factor
 
-Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommissioning process will hang indefinitely.
+Before decommissioning a node, make sure other nodes are available to take over the range replicas from the node. If fewer nodes are available than the replication factor, CockroachDB will automatically reduce the replication factor (for example, from 5 to 3) to try to allow the decommission to succeed. However, the replication factor will not be reduced lower than 3. If three nodes are not available, the decommissioning process will hang indefinitely until nodes are added or you update the zone configurations to use a replication factor of 1.
 
 #### 3-node cluster with 3-way replication
 
@@ -305,19 +314,6 @@ If you decommission a node, the process will run successfully because the cluste
 
 <div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario2.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 
-#### 5-node cluster with 5-way replication for a specific table
-
-In this scenario, a [custom replication zone](configure-replication-zones.html#create-a-replication-zone-for-a-table) has been set to replicate a specific table 5 times (range 6), while all other data is replicated 3 times:
-
-<div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario3.1.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-If you try to decommission a node, the cluster will successfully rebalance all ranges but range 6. Since range 6 requires 5 replicas (based on the table-specific replication zone), and since CockroachDB will not allow more than a single replica of any range on a single node, the decommissioning process will hang indefinitely:
-
-<div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario3.2.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
-
-To successfully decommission a node in this cluster, you need to **add a 6th node** (or reduce the replication factor on the table). The decommissioning process can then complete:
-
-<div style="text-align: center;"><img src="{{ 'images/v22.2/decommission-scenario3.3.png' | relative_url }}" alt="Decommission Scenario 1" style="max-width:50%" /></div>
 </section>
 
 ## Perform node shutdown
@@ -522,7 +518,7 @@ To drain and shut down a node that was started in the foreground with [`cockroac
 
     ~~~
     CockroachDB node starting at 2022-09-01 06:25:24.922474 +0000 UTC (took 5.1s)
-    build:               CCL v22.2.0-alpha.1 @ 2022/08/30 23:02:58 (go1.18.4)
+    build:               CCL v22.2.0-alpha.1 @ 2022/08/30 23:02:58 (go1.19.1)
     webui:               https://localhost:8080
     sql:                 postgresql://root@localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt
     sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt&user=root

@@ -30,7 +30,7 @@
 
     </section>
 
-2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -68,7 +68,7 @@
     (5 rows)
     ~~~
 
-3. Exit the SQL shell and delete the temporary pod:
+1. Exit the SQL shell and delete the temporary pod:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

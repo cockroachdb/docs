@@ -7,6 +7,21 @@ docs_area: stream_data
 
 Changefeeds work as jobs in CockroachDB, which allows for [monitoring](#monitor-a-changefeed) and [debugging](#debug-a-changefeed) through the [DB Console](ui-overview.html) [**Jobs**](ui-jobs-page.html) page and [`SHOW JOBS`](show-jobs.html) SQL statements using the job ID.
 
+<a name="changefeed-retry-errors"></a>
+
+{% include_cached new-in.html version="v22.2.1" %} By default, changefeeds treat errors as retryable except for some specific terminal errors that are non-retryable.
+
+- **retryable**: The changefeed will automatically retry whatever caused the error. (You may need to intervene so that the changefeed can resume.)
+- **non-retryable**: The changefeed has encountered a terminal error and fails.
+
+The following define the categories of non-retryable errors:
+
+- When the changefeed cannot verify the target table's schema. For example, the table is offline or there are types within the table that the changefeed cannot handle.
+- The changefeed cannot convert the data to the specified [output format](changefeed-messages.html). For example, there are [Avro](changefeed-messages.html#avro) types that changefeeds do not support, or a [CDC transformation](cdc-transformations.html) is using an unsupported or malformed expression.
+- The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option](create-changefeed.html#schema-policy) and a schema change happens.
+
+We recommend monitoring changefeeds with [Prometheus](monitoring-and-alerting.html#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with protected timestamps and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
+
 ## Monitor a changefeed
 
 {{site.data.alerts.callout_info}}
@@ -30,15 +45,23 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
     (1 row)
     ~~~
 
-- Setting up an alert on the `changefeed.max_behind_nanos` metric to track when a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). For more information, see [Monitoring and Alerting](monitoring-and-alerting.html#changefeed-is-experiencing-high-latency).
+- Using Prometheus and Alertmanager to track and alert on changefeed metrics. See the [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html) tutorial for steps to set up Prometheus. See the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to alert you when a changefeed encounters a retryable error, or enters a failed state.
 
 {{site.data.alerts.callout_info}}
 You can use the high-water timestamp to [start a new changefeed where another ended](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 {{site.data.alerts.end}}
 
+### Recommended changefeed metrics to track
+
+By default, changefeeds will retry errors with [some exceptions](#changefeed-retry-errors). We recommend setting up monitoring for the following metrics to track retryable errors to avoid an over-accumulation of garbage, and non-retryable errors to alert on changefeeds in a failed state:
+
+- `changefeed.max_behind_nanos`: When a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables).
+- `changefeed.error_retries`: The total number of retryable errors encountered by all changefeeds.
+- `changefeed.failures`: The total number of changefeed jobs that have failed.
+
 ### Using changefeed metrics labels
 
-{% include common/experimental-warning.md %}
+{% include feature-phases/preview.md %}
 
 {{site.data.alerts.callout_info}}
 An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.
@@ -152,7 +175,7 @@ For more information, see [`SHOW JOBS`](show-jobs.html).
  On the [**Custom Chart** debug page](ui-custom-chart-debug-page.html) of the DB Console:
 
 1. To add a chart, click **Add Chart**.
-2. Select `changefeed.error_retries` from the **Metric Name** dropdown menu.
+1. Select `changefeed.error_retries` from the **Metric Name** dropdown menu.
 
     A graph of changefeed restarts due to retryable errors will display.
 

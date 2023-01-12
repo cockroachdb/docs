@@ -24,7 +24,7 @@ The examples on this page assume you are using a Java version <= 9. They do not 
 
 ## Step 1. Install the Java JDBC driver
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/).
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
@@ -68,7 +68,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 To run it:
 
 1. Download [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/BasicSample.java), or create the file yourself and copy the code below.
-2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
+2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download/).
 3. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}
@@ -179,7 +179,7 @@ First, use the following code to connect as the `maxroach` user and execute some
 To run it:
 
 1. Download [`BasicSample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.0/app/insecure/BasicSample.java), or create the file yourself and copy the code below.
-2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
+2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download/).
 3. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}

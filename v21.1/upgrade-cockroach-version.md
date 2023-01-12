@@ -10,7 +10,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 {% assign latest = site.data.releases | where_exp: "latest", "latest.major_version == page.version.version" | sort: "release_date" | last %}
 {% assign prior = site.data.releases | where_exp: "prior", "prior.major_version == page.version.version" | sort: "release_date" | pop | last %}
 {% assign previous_latest_prod = site.data.releases | where_exp: "previous_latest_prod", "previous_latest_prod.major_version == previous_version" | where: "release_type", "Production" | sort: "release_date" | last %}
-{% assign actual_latest_prod = site.data.releases | where: "release_type", "Production" | sort: "release_date" | last %}
+{% assign actual_latest_prod = site.data.releases | where: "major_version", site.versions["stable"] | where: "release_type", "Production" | sort: "release_date" | last %}
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
@@ -81,11 +81,23 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Check decommissioned nodes
 
-Check the `membership` field in the [output of `cockroach node status --decommission`](cockroach-node.html). Nodes with `decommissioned` membership are fully decommissioned, while nodes with `decommissioning` membership have not completed the process. If there are `decommissioning` nodes in your cluster, this will block the upgrade.
+If your cluster contains partially-decommissioned nodes, they will block an upgrade attempt.
 
-**Before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](remove-nodes.html#step-2-start-the-decommissioning-process-on-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+1. To check the status of decommissioned nodes, run  the [`cockroach node status --decommission`](cockroach-node.html) command:
 
-In case a decommissioning process is hung, [recommission](remove-nodes.html#recommission-nodes) and then [decommission those nodes](remove-nodes.html#remove-multiple-nodes) again, and confirm that they update to `decommissioned`.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach node status --decommission
+    ~~~
+
+    In the output, verify that the value of the `membership` field of each node is `decommissioned`. If any node's `membership` value is `decommissioning`, that node is not fully decommissioned.
+
+1. If any node is not fully decommissioned, try the following:
+
+    1. **Before upgrading from v20.2 to v21.1**, you must manually change the status of any `decommissioning` nodes to `decommissioned`. To do this, [run `cockroach node decommission`](remove-nodes.html#step-2-start-the-decommissioning-process-on-the-nodes) on these nodes and confirm that they update to `decommissioned`.
+    1. For a cluster running v21.1 and above:
+       1. First, reissue the [decommission command](remove-nodes.html). The second command typically succeeds within a few minutes.
+       1. If the second decommission command does not succeed, [recommission](remove-nodes.html#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
 ### Review breaking changes
 
@@ -109,9 +121,9 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 1. [Upgrade to v20.2](../v20.2/upgrade-cockroach-version.html), if you haven't already.
 
-2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
+1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
-3. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -278,7 +290,7 @@ Once you are satisfied with the new version:
 
 1. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
-2. Re-enable auto-finalization:
+1. Re-enable auto-finalization:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -302,7 +314,7 @@ After the upgrade has finalized (whether manually or automatically), it is no lo
 
 1. Run the [`cockroach debug zip`](cockroach-debug-zip.html) command against any node in the cluster to capture your cluster's state.
 
-2. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
+1. [Reach out for support](support-resources.html) from Cockroach Labs, sharing your debug zip.
 
 In the event of catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade.
 

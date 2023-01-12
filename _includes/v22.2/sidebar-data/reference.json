@@ -175,6 +175,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER BACKUP SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/alter-backup-schedule.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-changefeed.html"
@@ -208,6 +214,12 @@
                 "title": "<code>ALTER INDEX</code>",
                 "urls": [
                   "/${VERSION}/alter-index.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER LOCALITY</code>",
+                "urls": [
+                  "/${VERSION}/alter-locality.html"
                 ]
               },
               {
@@ -355,6 +367,12 @@
                 ]
               },
               {
+                "title": "<code>CREATE EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/create-external-connection.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE FUNCTION</code>",
                 "urls": [
                   "/${VERSION}/create-function.html"
@@ -451,11 +469,23 @@
                 ]
               },
               {
+                "title": "<code>DROP EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/drop-external-connection.html"
+                ]
+              },
+              {
                 "title": "<code>DROP FUNCTION</code>",
                 "urls": [
                   "/${VERSION}/drop-function.html"
                 ]
               },
+              {
+                 "title": "<code>DROP OWNED BY</code>",
+                 "urls": [
+                   "/${VERSION}/drop-owned-by.html"
+                 ]
+               },
               {
                 "title": "<code>DROP REGION (Enterprise)</code>",
                 "urls": [
@@ -817,6 +847,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW CREATE EXTERNAL CONNECTION</code>",
+                "urls": [
+                  "/${VERSION}/show-create-external-connection.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW CREATE SCHEDULE</code>",
                 "urls": [
                   "/${VERSION}/show-create-schedule.html"
@@ -905,6 +941,12 @@
                 "urls": [
                   "/${VERSION}/show-super-regions.html"
                 ]
+              },
+              {
+               "title": "<code>SHOW SYSTEM GRANTS</code>",
+               "urls": [
+                 "/${VERSION}/show-system-grants.html"
+               ]
               },
               {
                 "title": "<code>SHOW ROLES</code>",
@@ -1744,6 +1786,12 @@
                 ]
               },
               {
+                "title": "TTL Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-ttl-dashboard.html"
+                ]
+              },
+              {
                 "title": "Custom Chart",
                 "urls": [
                   "/${VERSION}/ui-custom-chart-debug-page.html"
@@ -1797,6 +1845,12 @@
             "title": "Jobs Page",
             "urls": [
               "/${VERSION}/ui-jobs-page.html"
+            ]
+          },
+          {
+            "title": "Schedules Page",
+            "urls": [
+              "/${VERSION}/ui-schedules-page.html"
             ]
           },
           {

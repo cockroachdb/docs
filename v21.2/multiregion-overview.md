@@ -163,6 +163,7 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [Global Tables](global-tables.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Develop and Deploy a Global Application](movr-flask-overview.html)

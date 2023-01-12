@@ -54,7 +54,7 @@ Multi-region clusters must contain at least 3 regions to ensure that data spread
 - Frankfurt (`europe-west3`)
 - Zurich (`europe-west6`)
 
-If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
+If you want to create a cluster in a disabled or unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
@@ -70,6 +70,8 @@ In the **Regions & nodes** section, select the number of nodes.
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## Step 5. Select the hardware per node
+
+{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
 
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
 
@@ -88,7 +90,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to 150 GiB per vCPU. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    We recommending choosing up to {{ cap_per_vcpu | strip_html }}. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
@@ -163,8 +165,8 @@ To start using your {{ site.data.products.db }} cluster, see the following pages
 
 If you created a multi-region cluster, it is important to carefully choose:
 
-- The right [survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#survival-goals) for each database.
-- The right [table locality](../{{site.versions["stable"]}}/multiregion-overview.html#table-locality) for each of your tables.
+- The right [survival goal](../{{site.current_cloud_version}}/multiregion-overview.html#survival-goals) for each database.
+- The right [table locality](../{{site.current_cloud_version}}/multiregion-overview.html#table-locality) for each of your tables.
 
 Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
 

@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 Constraints offer additional data integrity by enforcing conditions on the data within a column. Whenever values are manipulated (inserted, deleted, or updated), constraints are checked and modifications that violate constraints are rejected.
 
-For example, the `UNIQUE` constraint requires that all values in a column be unique from one another (except *NULL* values). If you attempt to write a duplicate value, the constraint rejects the entire statement.
+For example, the `UNIQUE` constraint requires that all values in a column be unique from one another (except `NULL` values). If you attempt to write a duplicate value, the constraint rejects the entire statement.
 
 
 ## Supported constraints
@@ -17,9 +17,9 @@ For example, the `UNIQUE` constraint requires that all values in a column be uni
  [`CHECK`](check.html) | Values must return `TRUE` or `NULL` for a Boolean expression.
  [`DEFAULT` value](default-value.html) | If a value is not defined for the constrained column in an `INSERT` statement, the `DEFAULT` value is written to the column.
  [`FOREIGN KEY`](foreign-key.html) | Values must exactly match existing values from the column it references.
- [`NOT NULL`](not-null.html) | Values may not be *NULL*.
+ [`NOT NULL`](not-null.html) | Values may not be `NULL`.
  [`PRIMARY KEY`](primary-key.html) | Values must uniquely identify each row *(one per table)*. This behaves as if the `NOT NULL` and `UNIQUE` constraints are applied, as well as automatically creates an [index](indexes.html) for the table using the constrained columns.
- [`UNIQUE`](unique.html) | Each non-*NULL* value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns.
+ [`UNIQUE`](unique.html) | Each non-`NULL` value must be unique. This also automatically creates an [index](indexes.html) for the table using the constrained columns.
 
 ## Using constraints
 

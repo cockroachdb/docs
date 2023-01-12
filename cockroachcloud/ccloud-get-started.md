@@ -26,7 +26,7 @@ The `ccloud quickstart` command will open a browser window to log you in to Cock
 
 In order to use the `ccloud` commands to configure and manage your clusters, you first need to log in to CockroachDB Cloud. Use the `ccloud auth login` command to open a browser window to log in to CockroachDB Cloud.
 
-1. Run the `ccloud auth login` command and hit **Enter** to open a browser window:
+1. Run the `ccloud auth login` command and press **Enter** to open a browser window:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -49,6 +49,15 @@ ccloud auth login --org <organization label>
 ~~~
 
 The organization label is found on the **Settings** page of the CockroachDB Cloud Console.
+
+### Log in to CockroachDB Cloud on a headless server
+
+If you are using `ccloud` on a headless machine, use the `--no-redirect` flag to log in. This allows you to log in to CockroachDB Cloud on a different machine, retrieve an authorization code, and enter the code on the headless machine so `ccloud` can complete authentication.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud auth login --no-redirect
+~~~
 
 ## Create a new cluster using `ccloud cluster create`
 
@@ -317,11 +326,82 @@ warning: server version older than client! proceed with caution; some features m
 user@free-tier7.gcp-us-central1.crdb.io:26257/defaultdb>
 ~~~
 
+### Connect to your cluster using SSO
+
+Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) authentication](cloud-sso-sql.html), which will allow you to start a SQL shell without using a password.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql --sso dim-dog
+~~~
+
+This will open a browser window on the local machine where you will log in to your organization if you are not already authenticated.
+
+If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `ccloud` will output a URL that you must copy and paste in your local machine's browser in order to authenticate. After authentication, paste in the authorization code you received in the remote terminal to complete the login process.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql --sso --no-redirect dim-dog
+~~~
+
+Using SSO login requires that a separate SSO SQL user for your account is created on the cluster you are connecting to. SSO SQL usernames are prefixed with `sso_`. The SSO SQL username you use must match the SSO SQL username generated for you.
+
+To create a SSO SQL user:
+
+1. Connect to the cluster using the `--sso` flag.
+   
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud cluster --sso dim-dog
+    ~~~
+
+1. Log in to your organization when prompted by `ccloud`.
+1. Copy the command in the error message to create the SSO SQL user with the correct username.
+   
+    You must have `admin` privileges to create the SSO SQL user.
+
+1. Create the SSO SQL user by pasting and running the command you copied.
+   
+    For example, if the command in the error message creates a `sso_maxroach` user:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud cluster user create dim-dog sso_maxroach
+    ~~~
+
+1. Re-run the SQL client command to login and connect to your cluster.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud cluster sql dim-dog --sso
+    ~~~
+
+{{site.data.alerts.callout_info}}
+Use the `ccloud auth whoami` command to check that you are logged into the correct organization.
+
+If the organization is incorrect:
+
+1. Log out of the current organization.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud auth logout
+    ~~~
+
+1. Log in to the correct organization.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    ccloud auth login --org {organization name}
+    ~~~
+
+{{site.data.alerts.end}}
+
 ## Get the connection information for your cluster using `ccloud cluster sql`
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
 
-To get the [connection URL](../{{site.versions["stable"]}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
+To get the [connection URL](../{{site.current_cloud_version}}/connection-parameters.html#connect-using-a-url), use the `--connection-url` option.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -332,7 +412,7 @@ ccloud cluster sql --connection-url dim-dog
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluster%3Ddim-dog-1567&sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
+postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
 ~~~
 
 </section>
@@ -341,7 +421,7 @@ postgresql://free-tier7.gcp-us-central1.crdb.io:26257/defaultdb?options=--cluste
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-5bct.gcp-us-east4.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
+postgresql://dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
 ~~~
 
 </section>
@@ -358,8 +438,7 @@ ccloud cluster sql --connection-params dim-dog
 ~~~
 Connection parameters
  Database:  defaultdb
- Host:      free-tier7.gcp-us-central1.crdb.io
- Options:   --cluster=dim-dog-1567
+ Host:      dim-dog-147.6wr.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -371,7 +450,7 @@ Connection parameters
 ∙∙∙ Retrieving cluster info...
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-5bct.gcp-us-east4.crdb.io
+ Host:      dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -386,12 +465,10 @@ Use the `ccloud cluster user create` command to create a new SQL user by passing
 ccloud cluster user create dim-dog maxroach
 ~~~
 
-{% comment %}
 ~~~
 Password: ****************
 ∙∙∙ Creating SQL user...
 ~~~
-{% endcomment %}
 
 ## Delete a cluster using `ccloud cluster delete`
 
@@ -411,4 +488,13 @@ Success! Deleted cluster
 {{site.data.alerts.callout_info}}
 If the cluster state is `CLUSTER_STATE_CREATING` you cannot delete the cluster. You must wait until the cluster has been provisioned and started, with a status of `CLUSTER_STATE_CREATED`, before you can delete the cluster. {{ site.data.products.serverless }} clusters are created in less than a minute. {{ site.data.products.dedicated }} clusters can take an hour or more to provision and start.
 {{site.data.alerts.end}}
+
+## Turn off telemetry events for `ccloud`
+
+Cockroach Labs collects anonymized telemetry events to improve the usability of `ccloud`. Use the `ccloud settings set` command and disable sending telemetry events to Cockroach Labs.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud settings set --disable-telemetry=true
+~~~
 

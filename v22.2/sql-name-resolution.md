@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 This page documents **name resolution** in CockroachDB.
 
-To reference an object (e.g., a table) in a query, you can specify a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following the rules in [How name resolution works](#how-name-resolution-works).
+To reference an object (e.g., a table) in a query, you can specify the [identifier](keywords-and-identifiers.html#identifiers) that refers to a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following the rules in [How name resolution works](#how-name-resolution-works).
 
 ## Naming hierarchy
 
@@ -47,14 +47,14 @@ Name resolution occurs separately to **look up existing objects** and to
 The rules to look up an existing object are as follows:
 
 1. If the name already fully specifies the database and schema, use that information.
-2. If the name has a single-component prefix (e.g., a schema name), try to find a schema with the prefix name in the [current database](#current-database) and [current schema](#current-schema). If that fails, try to find the object in the `public` schema of a database with the prefix name.
-3. If the name has no prefix, use the [search path](#search-path) with the [current database](#current-database).
+1. If the name has a single-component prefix (e.g., a schema name), try to find a schema with the prefix name in the [current database](#current-database) and [current schema](#current-schema). If that fails, try to find the object in the `public` schema of a database with the prefix name.
+1. If the name has no prefix, use the [search path](#search-path) with the [current database](#current-database).
 
 Similarly, the rules to decide the full name of a new object are as follows:
 
 1. If the name already fully specifies the database and schema, use that.
-2. If the name has a single-component prefix (e.g., a schema name), try to find a schema with that name. If no such schema exists, use the `public` schema in the database with the prefix name.
-3. If the name has no prefix, use the [current schema](#current-schema) in the [current database](#current-database).
+1. If the name has a single-component prefix (e.g., a schema name), try to find a schema with that name. If no such schema exists, use the `public` schema in the database with the prefix name.
+1. If the name has no prefix, use the [current schema](#current-schema) in the [current database](#current-database).
 
 ## Parameters for name resolution
 
@@ -92,7 +92,7 @@ The current schema is used as target schema when creating a new object if the na
 CockroachDB supports the following ways to specify an index name for statements that require one (e.g., [`DROP INDEX`](drop-index.html), [`ALTER INDEX ... RENAME`](alter-index.html), etc.):
 
 1. Index names are resolved relative to a table name using the `@` character, e.g., `DROP INDEX tbl@idx;`.  This is the default and most common syntax.
-2. Index names are resolved by searching all tables in the current schema to find a table with an index named `idx`, e.g., `DROP INDEX idx;` or (with optional schema prefix) `DROP INDEX public.idx;`.  This syntax is necessary for PostgreSQL compatibility because PostgreSQL index names live in the schema namespace such that e.g., `public.idx` will resolve to the index `idx` of some table in the public schema.  This capability is used by some ORMs.
+1. Index names are resolved by searching all tables in the current schema to find a table with an index named `idx`, e.g., `DROP INDEX idx;` or (with optional schema prefix) `DROP INDEX public.idx;`.  This syntax is necessary for PostgreSQL compatibility because PostgreSQL index names live in the schema namespace such that e.g., `public.idx` will resolve to the index `idx` of some table in the public schema.  This capability is used by some ORMs.
 
 The name resolution algorithm for index names supports both partial and complete qualification, using the same [name resolution rules](#how-name-resolution-works) as other objects.
 
@@ -275,3 +275,4 @@ fully qualified name, as follows:
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [Information Schema](information-schema.html)
+- [Keywords and Identifiers](keywords-and-identifiers.html)

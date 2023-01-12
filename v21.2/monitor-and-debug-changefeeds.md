@@ -38,7 +38,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Using changefeed metrics labels
 
-{% include common/experimental-warning.md %}
+{% include feature-phases/preview.md %}
 
 {{site.data.alerts.callout_info}}
 An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.

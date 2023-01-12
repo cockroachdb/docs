@@ -165,7 +165,7 @@ Use the following command to specify regions and survival goals at database crea
 (3 rows)
 ~~~
 
-## Create a multi-region database with a secondary region
+### Create a multi-region database with a secondary region
 
 {% include enterprise-feature.md %}
 
@@ -175,7 +175,7 @@ To add a secondary region during database creation, use the following steps:
 
 1. Start a `cockroach demo` cluster as described in the example [Create a multi-region database](#create-a-multi-region-database).
 
-2. Issue a `CREATE DATABASE` statement like the following.  It is the same as in the [Create a multi-region database](#create-a-multi-region-database) example, except that it adds a `SECONDARY REGION {region}` clause:
+1. Issue a `CREATE DATABASE` statement like the following.  It is the same as in the [Create a multi-region database](#create-a-multi-region-database) example, except that it adds a `SECONDARY REGION {region}` clause:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

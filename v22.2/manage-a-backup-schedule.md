@@ -13,6 +13,8 @@ docs_area: manage
 - [View and control a backup initiated by a schedule](#view-and-control-a-backup-initiated-by-a-schedule)
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
+For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:
@@ -62,12 +64,7 @@ For a tutorial on how to use Prometheus to set up monitoring and alerting, see [
 
 ## View scheduled backup details
 
- When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
-
-- `SHOW BACKUPS IN collectionURI` statement to [view a list of the full backup's subdirectories](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories).
-- `SHOW BACKUP FROM subdirectory IN collectionURI` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
-
-For more details, see [`SHOW BACKUP`](show-backup.html).
+{% include {{ page.version.version }}/backups/view-scheduled-backups.md %}
 
 ## View and control the backup schedule
 

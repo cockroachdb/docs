@@ -82,7 +82,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 ## Configure the CockroachDB node
 1. Copy the keytab file to a location accessible by the `cockroach` binary.
 
-2. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
+1. [Create certificates](cockroach-cert.html) for inter-node and `root` user authentication:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -113,11 +113,11 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Provide the path to the keytab in the `KRB5_KTNAME` environment variable.
+1. Provide the path to the keytab in the `KRB5_KTNAME` environment variable.
 
     Example: `export KRB5_KTNAME=/home/cockroach/postgres.keytab`
 
-4. Start a CockroachDB node:
+1. Start a CockroachDB node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -126,17 +126,17 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     --listen-addr=0.0.0.0
     ~~~
 
-5. Connect to CockroachDB as `root` using the `root` client certificate generated above:
+1. Connect to CockroachDB as `root` using the `root` client certificate generated above:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. [Enable an Enterprise license](licensing-faqs.html#obtain-a-license).
+1. [Enable an Enterprise license](licensing-faqs.html#obtain-a-license).
     {{site.data.alerts.callout_info}} You need the Enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you do not need to enable an Enterprise license. {{site.data.alerts.end}}
 
-7. Enable GSSAPI authentication:
+1. Enable GSSAPI authentication:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -149,7 +149,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
       The syntax is based on the `pg_hba.conf` standard for PostgreSQL which is documented [here](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html). It can be used to exclude other users from Kerberos authentication.
 
-8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos users has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
+1. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos users has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -216,29 +216,29 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     		}
     ~~~
 
-2. Get a ticket for the db user:
+1. Get a ticket for the db user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kinit carl
     ~~~
 
-3. Verify if a valid ticket has been generated:
+1. Verify if a valid ticket has been generated:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ klist
     ~~~
 
-4. Install the PostgreSQL client (for example, postgresql-client-10 Debian package from postgresql.org).
-5. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
+1. Install the PostgreSQL client (for example, postgresql-client-10 Debian package from postgresql.org).
+1. Use the `psql` client, which supports GSSAPI authentication, to connect to CockroachDB:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ psql "postgresql://localhost:26257/defaultdb?sslmode=verify-full&sslrootcert=/certs/ca.crt" -U carl
     ~~~
 
-4. If you specified an Enterprise license earlier, you should now have a PostgreSQL shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an Enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an Enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
+1. If you specified an Enterprise license earlier, you should now have a PostgreSQL shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an Enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an Enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
 
 ## See also
 

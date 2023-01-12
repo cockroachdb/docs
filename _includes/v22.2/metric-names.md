@@ -12,6 +12,7 @@ Name | Help
 `changefeed.running` | Number of currently running changefeeds, including sinkless
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
+`cluster.preserve-downgrade-option.last-updated` | Unix timestamp of last updated time for cluster.preserve_downgrade_option
 `compactor.compactingnanos` | Number of nanoseconds spent compacting ranges
 `compactor.compactions.failure` | Number of failed compaction requests sent to the storage engine
 `compactor.compactions.success` | Number of successful compaction requests sent to the storage engine
@@ -38,6 +39,8 @@ Name | Help
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
+`jobs.row_level_ttl.num_active_spans` | Number of active spans the TTL job is deleting from
+`jobs.row_level_ttl.span_total_duration` | Duration for processing a span during row level TTL
 `keybytes` | Number of bytes taken up by keys
 `keycount` | Count of all keys
 `lastupdatenanos` | Time in nanoseconds since Unix epoch at which bytes/keys/intents metrics were last updated
@@ -59,10 +62,10 @@ Name | Help
 `queue.consistency.process.failure` | Number of replicas which failed processing in the consistency checker queue
 `queue.consistency.process.success` | Number of replicas successfully processed by the consistency checker queue
 `queue.consistency.processingnanos` | Nanoseconds spent processing replicas in the consistency checker queue
-`queue.gc.info.abortspanconsidered` | Number of AbortSpan entries old enough to be considered for removal
+`queue.gc.info.abortspanconsidered` | Number of AbortSpan entries eligible for removal based on their ages
 `queue.gc.info.abortspangcnum` | Number of AbortSpan entries fit for removal
 `queue.gc.info.abortspanscanned` | Number of transactions present in the AbortSpan scanned from the engine
-`queue.gc.info.intentsconsidered` | Number of 'old' intents
+`queue.gc.info.intentsconsidered` | Number of intents eligible to be considered because they are at least two hours old
 `queue.gc.info.intenttxns` | Number of associated distinct transactions
 `queue.gc.info.numkeysaffected` | Number of keys with GC'able data
 `queue.gc.info.pushtxn` | Number of attempted pushes
@@ -145,6 +148,12 @@ Name | Help
 `range.adds` | Number of range additions
 `range.raftleadertransfers` | Number of Raft leader transfers
 `range.removes` | Number of range removals
+`range.snapshots.recv-in-progress` | Number of non-empty snapshots in progress on a receiver store
+`range.snapshots.recv-queue` | Number of queued non-empty snapshots on a receiver store
+`range.snapshots.recv-total-in-progress` | Number of empty and non-empty snapshots in progress on a receiver store
+`range.snapshots.send-in-progress` | Number of non-empty snapshots in progress on a sender store
+`range.snapshots.send-queue` | Number of queued non-empty snapshots on a sender store
+`range.snapshots.send-total-in-progress` | Number of empty and non-empty in-progress snapshots on a sender store
 `range.snapshots.generated` | Number of generated snapshots
 `range.snapshots.normal-applied` | Number of applied snapshots
 `range.snapshots.preemptive-applied` | Number of applied preemptive snapshots
@@ -163,9 +172,17 @@ Name | Help
 `range.snapshots.unknown.rcvd-bytes` | Number of unknown snapshot bytes received
 `range.snapshots.unknown.sent-bytes` | Number of unknown snapshot bytes sent
 `range.splits` | Number of range splits
+`rangekeybytes` | Number of bytes taken up by range keys (e.g., MVCC range tombstones)
+`rangekeycount` | Count of all range keys (e.g., MVCC range tombstones)
 `ranges.unavailable` | Number of ranges with fewer live replicas than needed for quorum
 `ranges.underreplicated` | Number of ranges with fewer live replicas than the replication target
 `ranges` | Number of ranges
+`rangevalbytes` | Number of bytes taken up by range key values (e.g., MVCC range tombstones)
+`rangevalcount` | Count of all range key values (e.g., MVCC range tombstones)
+`rebalancing.readbytespersecond` | Average number of bytes written recently per second
+`rebalancing.readspersecond` | Average number of keys read recently per second
+`rebalancing.requestspersecond` | Average number of requests received recently per second
+`rebalancing.writebytespersecond` | Average number of bytes read recently per second
 `rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
@@ -175,6 +192,7 @@ Name | Help
 `replicas.commandqueue.maxsize` | Largest number of commands in any CommandQueue
 `replicas.commandqueue.maxtreesize` | Largest number of intervals in any CommandQueue's interval tree
 `replicas.commandqueue.maxwritecount` | Largest number of read-write commands in any CommandQueue
+`replicas.leaders_invalid_lease` | Number of replicas that are Raft leaders whose lease is invalid
 `replicas.leaders_not_leaseholders` | Number of replicas that are Raft leaders whose range lease is held by another store
 `replicas.leaders` | Number of Raft leaders
 `replicas.leaseholders` | Number of lease holders
@@ -235,8 +253,11 @@ Name | Help
 `sql.txn.abort.count` | Number of SQL transaction ABORT statements
 `sql.txn.begin.count` | Number of SQL transaction BEGIN statements
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements
+`sql.txn.contended.count` | Number of SQL transactions that experienced contention
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
+`storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.
+`storage.marked-for-compaction-files` | Count of SSTables marked for compaction
 `sys.cgo.allocbytes` | Current bytes of memory allocated by cgo
 `sys.cgo.totalbytes` | Total bytes of memory allocated by cgo, but not released
 `sys.cgocalls` | Total number of cgo call

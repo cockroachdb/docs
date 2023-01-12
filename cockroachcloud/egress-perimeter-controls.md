@@ -3,7 +3,7 @@ title: Egress Perimeter Controls for CockroachDB dedicated (Preview)
 summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a {{ site.data.products.dedicated }} cluster.
 toc: true
 toc_not_nested: true
-docs_area: security 
+docs_area: security
 ---
 
 {% include feature-phases/preview-opt-in.md %}
@@ -14,28 +14,26 @@ This page describes how Egress Perimeter Controls can enhance the security of {{
 
 {{ site.data.products.dedicated }} clusters must access external resources for many purposes:
 
-- Managing [backups](../{{site.versions["stable"]}}/backup-and-restore-overview.html) as part of a disaster recovery plan
-- Using [Change data capture (CDC) changefeeds](../{{site.versions["stable"]}}/change-data-capture-overview.html)
-- [Exporting data](../{{site.versions["stable"]}}/export.html)
+- Managing [backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html) as part of a disaster recovery plan
+- Using [Change data capture (CDC) changefeeds](../{{site.current_cloud_version}}/change-data-capture-overview.html)
+- [Exporting data](../{{site.current_cloud_version}}/export.html)
 - [Exporting logs](export-logs.html)
 
-By default, clusters can access external resources via the internet without restriction, and even [private clusters](private-clusters.html) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control. 
+By default, clusters can access external resources via the internet without restriction, and even [private clusters](private-clusters.html) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control.
 
 Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable cluster administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
-Further reading: [review how CockroachDB products differs in advanced security features](../{{site.versions["stable"]}}/security-reference/security-overview.html).
+Further reading: [review how CockroachDB products differs in advanced security features](../{{site.current_cloud_version}}/security-reference/security-overview.html).
 
 {{site.data.alerts.callout_info}}
 Regardless of user-specific Egress Perimeter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality and ongoing operations.
 {{site.data.alerts.end}}
 
-## Prerequisites to using Egress Perimeter Controls with the Cloud Console API
+## Prerequisites
 
-- You need a {{ site.data.products.db }} account with billing enabled. Egress Perimeter Controls are available only for {{ site.data.products.dedicated }}, not {{ site.data.products.serverless }} clusters, and {{ site.data.products.dedicated }} have a non-zero operating cost that must be billed.
-
-- Egress Perimeter Controls require your cluster to be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
-
-- An API key with `admin` privilege on clusters in your org is required. You can provision API keys in the cloud console: [Create API Keys](console-access-management.html#create-api-keys)
+- You need a {{ site.data.products.dedicated }} cluster. Egress Perimeter Controls are not supported for {{ site.data.products.serverless }} clusters.
+- Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
+- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts](console-access-management.html#service-accounts).
 
 {{site.data.alerts.callout_danger}}
 The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
@@ -67,7 +65,7 @@ The operations described in this page require an API key with very broad permiss
     ~~~
 
     ~~~json
-    
+
     {
       "id": "21f474d5-3e65-4a54-9317-e8d8803ef917",
       "name": "docstest",
@@ -164,7 +162,7 @@ The following steps create one FQDN rule and one CIDR rule.
     destination: "123.34.62.123/32" # replace with Kafka cluster CIDR range
     ports: [443]
     paths: []
-    description: 'egress for Kafka'    
+    description: 'egress for Kafka'
     ~~~
 
 1. Use Ruby (or another technique), to compile human-editable YAML into API-parsable JSON:
@@ -176,7 +174,7 @@ The following steps create one FQDN rule and one CIDR rule.
     ~~~
 
 1. Use the shell utility `jq` to inspect the JSON payload:
-    
+
     {{site.data.alerts.callout_info}}
     On macOS, you can install `jq` from Homebrew: `brew install jq`
     {{site.data.alerts.end}}
@@ -319,7 +317,7 @@ curl --request GET \
 --header "Authorization: Bearer $CC_API_KEY" \
 --header  'Cc-Version: 2022-09-20' \
 --url "https://management-staging.crdb.io/api/v1/clusters/$CLUSTER_ID/networking/egress-rules"
-  
+
 ~~~
 
 ~~~txt

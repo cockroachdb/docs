@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
- Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
+Partial indexes allow you to specify a subset of rows and columns to add to an [index](indexes.html). Partial indexes include the subset of rows in a table that evaluate to true on a boolean *predicate expression* (i.e., a `WHERE` filter) defined at [index creation](#creation).
 
 ## How do partial indexes work?
 
@@ -180,13 +180,10 @@ To limit the number of rows scanned to just the rows that you are querying, you 
   rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
   rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
   rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
-  rides      | start_end_idx                                 |     t      |            1 | start_time    | ASC       |    f    |    f     |    t
-  rides      | start_end_idx                                 |     t      |            2 | end_time      | ASC       |    f    |    f     |    t
-  rides      | start_end_idx                                 |     t      |            3 | city          | ASC       |    f    |    t     |    t
-  rides      | start_end_idx                                 |     t      |            4 | id            | ASC       |    f    |    t     |    t
-(24 rows)
+(20 rows)
 
-Time: 8ms total (execution 8ms / network 0ms)
+
+Time: 15ms total (execution 14ms / network 1ms)
 ~~~
 
 Another `EXPLAIN` statement shows that the number of rows scanned by the original query decreases significantly with a partial index on the `rides` table:
@@ -383,11 +380,10 @@ You can create a partial index that excludes these rows, making queries that fil
   rides      | rides_pkey                                    |     f      |            8 | start_time    | N/A       |    t    |    f     |    t
   rides      | rides_pkey                                    |     f      |            9 | end_time      | N/A       |    t    |    f     |    t
   rides      | rides_pkey                                    |     f      |           10 | revenue       | N/A       |    t    |    f     |    t
-  rides      | start_end_idx                                 |     t      |            1 | start_time    | ASC       |    f    |    f     |    t
-  rides      | start_end_idx                                 |     t      |            2 | end_time      | ASC       |    f    |    f     |    t
-  rides      | start_end_idx                                 |     t      |            3 | city          | ASC       |    f    |    t     |    t
-  rides      | start_end_idx                                 |     t      |            4 | id            | ASC       |    f    |    t     |    t
-(27 rows)
+(23 rows)
+
+
+Time: 12ms total (execution 12ms / network 1ms)
 ~~~
 
 {% include_cached copy-clipboard.html %}

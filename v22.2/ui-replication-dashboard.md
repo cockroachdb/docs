@@ -142,13 +142,29 @@ Metric | Description
 
 When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](architecture/replication-layer.html#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
 
-- In the node view, the graph shows the total number of `ReplicaUnavailableError` events logged since the `cockroach` process started, for the selected node.
+- In the node view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for the selected node.
 
-- In the cluster view, the graph shows the total number of `ReplicaUnavailableError` events logged since the `cockroach` process started, for each node in the cluster.
+- In the cluster view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for each node in the cluster.
 
 Metric | Description
 -------|------------
-`{node}` | The number of `ReplicaUnavailableError` events on that node since the `cockroach` process started.
+`{node}` | The rate of `ReplicaUnavailableError` events that have occurred per aggregated interval of time on that node since the `cockroach` process started.
+
+## Paused Follower
+
+<img src="{{ 'images/v22.2/ui_replica_paused_follower.png' | relative_url }}" alt="DB Console Paused Follower" style="border:1px solid #eee;max-width:100%" />
+
+The **Paused Follower** graphs displays the number of nonessential replicas in the cluster that have replication paused. A value of `0` represents that a node is replicating as normal, while a value of `1` represents that replication has been paused for the listed node.
+
+- In the node view, the graph shows whether replication has been paused, for the selected node.
+
+- In the cluster view, the graph shows each node in the cluster and indicates whether replication has been paused for each node.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+Metric | Description
+-------|------------
+`{node}` | Whether replication is paused on that node. A value of `0` represents that the node is replicating as normal, while a value of `1` represents that replication has been paused for the listed node.
 
 ## Replicate Queue Actions: Successes
 

@@ -23,12 +23,11 @@ Parameter                 | Description
 --------------------------|------------
 `ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
 `targets`                 | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`               | A comma-separated list of [users](security-reference/authorization.html#create-and-manage-users) and/or [roles](security-reference/authorization.html#users-and-roles).
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
+`ALL TABLES IN SCHEMA`    | Grant privileges on all tables in a schema or list of schemas.
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
-`ALL TABLES IN SCHEMA`    |  Grant privileges on all tables in a schema or list of schemas.
+`role_spec_list`          | A comma-separated list of [roles](security-reference/authorization.html#users-and-roles).
 `privilege_list`          | A comma-separated list of [privileges](security-reference/authorization.html#managing-privileges) to grant.
-`role_spec_list`          | A comma-separated list of source roles.
 `WITH ADMIN OPTION`       | Designate the user as a role admin. Role admins can grant or [revoke](revoke.html) membership for the specified role.
 `WITH GRANT OPTION`       | **New in v22.1:** Allow the user to grant the specified privilege to others.
 

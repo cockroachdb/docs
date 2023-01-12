@@ -96,7 +96,7 @@ To experience this for yourself, run through the following example in PostgreSQL
     > CREATE TABLE increment (a SERIAL PRIMARY KEY);
     ~~~
 
-2. Run four transactions for inserting rows:
+1. Run four transactions for inserting rows:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -126,7 +126,7 @@ To experience this for yourself, run through the following example in PostgreSQL
     > COMMIT;
     ~~~
 
-3. View the rows created:
+1. View the rows created:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

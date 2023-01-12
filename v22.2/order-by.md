@@ -29,8 +29,8 @@ Each **column selection** can take one of the following forms:
 
 - A simple column selection, determined as follows:
   1. The name of a column label configured with `AS` earlier in the [`SELECT` clause](select-clause.html). This uses the value computed by the `SELECT` clause as the sorting key.
-  2. A positive integer number, designating one of the columns in the data source, either the `FROM` clause of the `SELECT` clause where it happens or the table being written to by `DELETE` or `UPDATE`. This uses the corresponding input value from the data source to use as the sorting key.
-  3. An arbitrary [scalar expression](scalar-expressions.html). This uses the result of evaluating that expression as the sorting key.
+  1. A positive integer number, designating one of the columns in the data source, either the `FROM` clause of the `SELECT` clause where it happens or the table being written to by `DELETE` or `UPDATE`. This uses the corresponding input value from the data source to use as the sorting key.
+  1. An arbitrary [scalar expression](scalar-expressions.html). This uses the result of evaluating that expression as the sorting key.
 - The notation `PRIMARY KEY <table_name>`. This uses the primary key column(s) of the given table as sorting key. This table must be part of the data source.
 - The notation `INDEX <table_name>@<index_name>`. This uses the columns indexed by the given index as sorting key. This table must be part of the data source.
 
@@ -64,17 +64,17 @@ significant:
 1. The ordering of the operand of a `WITH ORDINALITY` clause
    (within the `FROM` operand of a `SELECT` clause) is preserved,
    to control the numbering of the rows.
-2. The ordering of the operand of a stand-alone `LIMIT` or `OFFSET` clause (within
+1. The ordering of the operand of a stand-alone `LIMIT` or `OFFSET` clause (within
    a `FROM` operand of a `SELECT` clause) is preserved, to determine
    which rows are kept in the result.
-3. The ordering of the data source for an [`INSERT`](insert.html)
+1. The ordering of the data source for an [`INSERT`](insert.html)
    statement or an [`UPSERT`](upsert.html) statement that also uses
    `LIMIT` is preserved, to determine [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
-4. The ordering indicated for an [`UPDATE`](update.html) or [`DELETE`](delete.html)
+1. The ordering indicated for an [`UPDATE`](update.html) or [`DELETE`](delete.html)
    statement that also uses `LIMIT` is used to determine
    [which rows are processed, but not their order](#ordering-rows-in-dml-statements).
    (This is a CockroachDB extension.)
-5. The ordering of a sub-query used in a scalar expression
+1. The ordering of a sub-query used in a scalar expression
    is preserved.
 
 For example, using `WITH ORDINALITY`:

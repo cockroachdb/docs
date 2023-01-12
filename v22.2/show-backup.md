@@ -21,9 +21,9 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-- Interacting with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
 
@@ -37,7 +37,7 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/show_backup.html %}
+{% include {{ page.version.version }}/backups/show-backup-replace-diagram.html %}
 </div>
 
 ## Parameters

@@ -10,7 +10,7 @@ The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-m
 - All [SQL shell](#sql-shell) commands, client-side options, help, and shortcuts supported by the [`cockroach sql`](cockroach-sql.html) command are also supported by `cockroach demo`.
 - The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 - By default, `cockroach demo` starts in secure mode using TLS certificates to encrypt network communication. It also serves a local [DB Console](#connection-parameters) that does not use TLS encryption.
-- Each instance of `cockroach demo` loads a temporary [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after 24 hours. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
+- Each instance of `cockroach demo` loads a temporary [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) that expires after 24 hours. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
 -  `cockroach demo` opens the SQL shell with a new [SQL user](security-reference/authorization.html#sql-users) named `demo`. The `demo` user is assigned a random password and granted the [`admin` role](security-reference/authorization.html#admin-role).
 
 {{site.data.alerts.callout_danger}}
@@ -113,7 +113,7 @@ Flag | Description
 `--auto-enable-rangefeeds` | Override the default behavior of `cockroach demo`, which has rangefeeds enabled on startup.  If you do not need to use [changefeeds](create-and-configure-changefeeds.html) with your demo cluster, use `--auto-enable-rangefeeds=false` to disable rangefeeds and improve performance. See [Enable rangefeeds](create-and-configure-changefeeds.html#enable-rangefeeds) for more detail. <br><br>**Default:** `true`
 `--cache` | For each demo node, the total size for caches. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example: <br><br>`--cache=.25`<br>`--cache=25%`<br>`--cache=1000000000 ----> 1000000000 bytes`<br>`--cache=1GB ----> 1000000000 bytes`<br>`--cache=1GiB ----> 1073741824 bytes` <br><br>**Default:** `64MiB`
 `--demo-locality` | Specify [locality](cockroach-start.html#locality) information for each demo node. The input is a colon-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1` and availability zone to `1`, node 2's region to `us-east2` and availability zone to `2`, and node 3's region to `us-east3` and availability zone to `3`:<br><br>`--demo-locality=region=us-east1,az=1:region=us-east1,az=2:region=us-east1,az=3`<br><br>By default, `cockroach demo` uses sample region (`region`) and availability zone (`az`) replica localities for each node specified with the `--nodes` flag.
-`--disable-demo-license` |  Start the demo cluster without loading a temporary [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after 24 hours.<br><br>Setting the `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING` environment variable will also prevent the loading of a temporary license, along with preventing the sharing of anonymized [diagnostic details](diagnostics-reporting.html) with Cockroach Labs.
+`--disable-demo-license` |  Start the demo cluster without loading a temporary [Enterprise license](https://www.cockroachlabs.com/get-started-cockroachdb/) that expires after 24 hours.<br><br>Setting the `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING` environment variable will also prevent the loading of a temporary license, along with preventing the sharing of anonymized [diagnostic details](diagnostics-reporting.html) with Cockroach Labs.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#commands).
 `--embedded` |  Minimizes the SQL shell [welcome text](#welcome-text) to be appropriate for embedding in playground-type environments. Specifically, this flag removes details that users in an embedded environment have no control over (e.g., networking information).
 `--no-example-database` |  Start the demo cluster without a pre-loaded dataset.<br>To obtain this behavior automatically in every new `cockroach demo` session, set the `COCKROACH_NO_EXAMPLE_DATABASE` environment variable to `true`.
@@ -265,6 +265,10 @@ Command | Usage
 ### Shortcuts
 
 {% include {{ page.version.version }}/sql/shell-shortcuts.md %}
+
+### macOS terminal configuration
+
+{% include {{ page.version.version }}/sql/macos-terminal-configuration.md %}
 
 ## Diagnostics reporting
 

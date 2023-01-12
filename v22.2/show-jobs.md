@@ -63,7 +63,7 @@ Field | Description
 `description` | The statement that started the job, or a textual description of the job.
 `statement` | When `description` is a textual description of the job, the statement that started the job is returned in this column. Currently, this field is populated only for the automatic table statistics jobs.
 `user_name` | The name of the [user](security-reference/authorization.html#create-and-manage-users) who started the job.
-`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `failed`, `retrying`, `reverting`, `succeeded`, and `canceled`.
+`status` | The job's current state. Possible values: `pending`, `running`, `paused`, `pause-requested`, `failed`, `retrying`, `reverting`, `revert-failed`, `succeeded`, `canceled`, and `cancel-requested`. <br><br>See [Jobs status](#job-status) for a description of each status.
 `running_status` | The job's detailed running status, which provides visibility into the progress of the dropping or truncating of tables (i.e., [`DROP TABLE`](drop-table.html), [`DROP DATABASE`](drop-database.html), or [`TRUNCATE`](truncate.html)). For dropping or truncating jobs, the detailed running status is determined by the status of the table at the earliest stage of the schema change. The job is completed when the GC TTL expires and both the table data and ID is deleted for each of the tables involved. Possible values: `waiting for MVCC GC`, `deleting data`, `waiting for GC TTL`, `waiting in DELETE-ONLY`, `waiting in DELETE-AND-WRITE_ONLY`, `waiting in MERGING`, `populating schema`, `validating schema`, or `NULL` (when the status cannot be determined). <br><br>For the `SHOW AUTOMATIC JOBS` statement, the value of this field is `NULL`.
 `created` | The `TIMESTAMP` when the job was created.
 `started` | The `TIMESTAMP` when the job began running first.
@@ -79,6 +79,22 @@ Field | Description
 `execution_errors` |  A list of any execution errors that the job encountered.
 
 For details of changefeed-specific responses, see [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
+
+### Job status
+
+Status | Description
+-------|------------
+`pending` | Job is created but has not started running.
+`paused` | Job is [paused]({{ link_prefix }}pause-job.html).
+`pause-requested` | A request has been issued to pause the job. The status will move to `paused` when the node running the job registers the request.
+`failed` | Job failed to complete.
+`succeeded` | Job successfully completed.
+`canceled` | Job was [canceled]({{ link_prefix }}cancel-job.html).
+`cancel-requested` | A request has been issued to cancel the job. The status will move to `canceled` when the node running the job registers the request.
+`running`  | Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the `RUNNING` status.
+`reverting`| Job failed or was canceled and its changes are being reverted.
+`revert-failed` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
+`retrying` | Job is retrying another job that failed.
 
 ## Examples
 

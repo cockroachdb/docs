@@ -266,7 +266,7 @@ For a simple but complete example app, see [Build a Go App with CockroachDB and 
 
 **Support level:** Full
 
-Download and set up the latest Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the latest Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/).
 
 For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 

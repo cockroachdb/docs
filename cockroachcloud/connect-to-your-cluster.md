@@ -51,7 +51,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 
 1. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
 
-    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
+    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.current_cloud_version}}/ui-overview.html).
 
 1. Click **Apply**.
 
@@ -117,7 +117,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
 1. From the **Database** dropdown, select the database you want to connect to.
 
-    The default database is `defaultdb`. For more information, see [Default databases](../{{site.versions["stable"]}}/show-databases.html#preloaded-databases).
+    The default database is `defaultdb`. For more information, see [Default databases](../{{site.current_cloud_version}}/show-databases.html#preloaded-databases).
 
 1. Click **Next**.
 
@@ -133,7 +133,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 
-To connect to your cluster with the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html):
+To connect to your cluster with the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html):
 
 1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
 
@@ -151,11 +151,11 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
     {% include cockroachcloud/download-the-cert.md %}
 
-1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
+1. Copy the [`cockroach sql`](../{{site.current_cloud_version}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
 
     {% include cockroachcloud/sql-connection-string.md %}
 
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
 
@@ -224,17 +224,17 @@ To connect to your cluster with your application, use the connection string prov
 
 For examples, see the following:
 
-- [Build a Python App with CockroachDB](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb.html)
-- [Build a Go App with CockroachDB](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb.html)
-- [Build a Java App with CockroachDB](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb.html)
+- [Build a Python App with CockroachDB](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html)
+- [Build a Go App with CockroachDB](../{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.html)
+- [Build a Java App with CockroachDB](../{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.html)
 
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
-To connect to your cluster with a [CockroachDB-compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html), use the connection parameters provided in the Console.
+To connect to your cluster with a [CockroachDB-compatible tool](../{{site.current_cloud_version}}/third-party-database-tools.html), use the connection parameters provided in the Console.
   </section>
 
 ## What's next
 
-- [Build a "Hello, World" app](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)
+- [Build a "Hello, World" app](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb-django.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)

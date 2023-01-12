@@ -95,7 +95,7 @@ Type | Details
 -----|--------
 `INT` | Converts to number of seconds (second precision)
 `DECIMAL` | Converts to number of seconds (nanosecond precision)
-`FLOAT` | Converts to number of picoseconds
+`FLOAT` | Converts to number of seconds (microsecond precision)
 `STRING` | Converts to `h-m-s` format (nanosecond precision)
 `TIME` | Converts to `HH:MM:SS.SSSSSS`, the time equivalent to the interval after midnight (microsecond precision)
 

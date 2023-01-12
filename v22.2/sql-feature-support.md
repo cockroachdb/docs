@@ -41,7 +41,8 @@ table tr td:nth-child(2) {
  `INT` | ✓ | Standard | [`INT` documentation](int.html)
  `INTERVAL` | ✓ | Standard | [`INTERVAL` documentation](interval.html)
  `JSON`/`JSONB` | ✓ | Common Extension | [`JSONB` documentation](jsonb.html)
- `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html)
+ `NULL` | ✓ | Standard | [`NULL`-handling documentation](null-handling.html)
+ `OID` | ✓ | PostgreSQL Extension | [`OID` documentation](oid.html)
  `SERIAL`| ✓ | PostgreSQL Extension | [`SERIAL` documentation](serial.html)
  `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.
  `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html)
@@ -49,7 +50,7 @@ table tr td:nth-child(2) {
  `TIMESTAMP`/`TIMESTAMPTZ` | ✓ | Standard | [`TIMESTAMP` documentation](timestamp.html)
  `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we do not plan to support it.
  `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html)
-  Identifiers | ✓ | Standard | [Identifiers documentation](keywords-and-identifiers.html#identifiers)
+  Identifiers | ✓ | Standard | [Identifiers documentation](keywords-and-identifiers.html#identifiers).  See also [SQL Name Resolution](sql-name-resolution.html).
   Key-value pairs | Alternative | Extension | [Key-Value FAQ](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store)
   XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing.
 
@@ -81,7 +82,8 @@ table tr td:nth-child(2) {
  Indexes | ✓ | Common Extension | [Indexes documentation](indexes.html)
  Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
- GIN indexes | ✓ | Common Extension | [GIN Indexes documentation](inverted-indexes.html)
+ GIN indexes | ✓ | Common Extension | [GIN indexes documentation](inverted-indexes.html)
+ Trigram indexes | ✓ | PostgreSQL Extension | [Trigram indexes documentation](trigram-indexes.html)
  Partial indexes | ✓ | Common Extension | [Partial indexes documentation](partial-indexes.html)
  Spatial indexes | ✓ | Common Extension | [Spatial indexes documentation](spatial-indexes.html)
  Multiple indexes per query | Partial | Common Extension | [Index selection](indexes.html#selection)
@@ -127,9 +129,9 @@ table tr td:nth-child(2) {
  Component | Supported | Type | Details
 -----------|-----------|------|---------
  Common clauses | ✓ | Standard | [SQL Grammar documentation](sql-grammar.html)
- `LIMIT` | ✓ | Common Extension | Limit the number of rows a statement returns.
- `LIMIT` with `OFFSET` | ✓ | Common Extension | Skip a number of rows, and then limit the size of the return set.
- `RETURNING` | ✓ | Common Extension | Retrieve a table of rows statements affect.
+ `LIMIT` | ✓ | Common Extension | Limit the number of rows a statement returns. For more information, see [Limit Query Results](limit-offset.html).
+ `LIMIT` with `OFFSET` | ✓ | Common Extension | Skip a number of rows, and then limit the size of the return set. For more information, see [Limit Query Results](limit-offset.html).
+ `RETURNING` | ✓ | Common Extension | Retrieve a table of rows statements affect. For examples, see the [`INSERT`](insert.html) and [`DELETE`](delete.html) documentation.
 
 ### Table expressions
 
@@ -188,7 +190,7 @@ table tr td:nth-child(2) {
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
  Stored procedures | ✗ | Common Extension | Execute a procedure explicitly. [GitHub issue tracking stored procedures support](https://github.com/cockroachdb/cockroach/issues/17511).
- Cursors | ✗ | Standard | Traverse a table's rows.
+ Cursors | ✗ | Standard | Traverse a table's rows. To support a cursor-like use case, see the example in [Paginate Results](pagination.html).
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs. [GitHub issue tracking trigger support](https://github.com/cockroachdb/cockroach/issues/28296).
  Row-level TTL | ✓ | Common Extension | Automatically delete expired rows.  For more information, see [Batch-delete expired data with Row-Level TTL](row-level-ttl.html).
  User-defined functions | Partial | Standard | [User-Defined Functions documentation](user-defined-functions.html)

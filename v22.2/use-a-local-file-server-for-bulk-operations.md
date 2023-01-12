@@ -75,7 +75,7 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 
 1. Install `nginx` with the `webdav` module (often included in `-full` or similarly named packages in various distributions).
 
-2. In the `nginx.conf` file, add a `dav_methods PUT DELETE` directive. For example:
+1. In the `nginx.conf` file, add a `dav_methods PUT DELETE` directive. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ nginx

@@ -299,43 +299,17 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
+    ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
+    ALTER DATABASE system CONFIGURE ZONE USING num_replicas = 5;
+    ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 5;
+    ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
+    ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
+    ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE DISCARD;
+    ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING gc.ttlseconds = 600, constraints = '[]', lease_preferences = '[]';
+    ALTER TABLE system.public.replication_stats CONFIGURE ZONE DISCARD;
+    ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING gc.ttlseconds = 600, constraints = '[]', lease_preferences = '[]';
     ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER database system CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE system.public.jobs CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">

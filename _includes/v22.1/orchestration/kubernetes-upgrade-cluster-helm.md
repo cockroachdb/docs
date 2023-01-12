@@ -64,7 +64,7 @@
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.2';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '{{ previous_version }}';
         ~~~
 
     1. Exit the SQL shell and delete the temporary pod:
@@ -161,7 +161,7 @@
       ranges_underreplicated
     --------------------------
                            0
-    (1 row)        
+    (1 row)
     ~~~
 
     This indicates that it is safe to proceed to the next pod.

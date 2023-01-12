@@ -8,7 +8,7 @@ docs_area: stream_data
 {{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
-- [Cloud Storage](#cloud-storage-sink)
+- [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 
 See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed.
@@ -130,6 +130,14 @@ Examples of supported cloud storage sink URIs:
 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
 ~~~
 
+### HTTP
+
+~~~
+'http://localhost:8080/{PATH}'
+~~~
+
+### Cloud storage parameters
+
 <a name ="cloud-parameters"></a>The following table lists the available parameters for cloud storage sink URIs:
 
 URI Parameter      | Description
@@ -143,9 +151,7 @@ URI Parameter      | Description
 
 ## Webhook sink
 
-{{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. For more information, read about its usage considerations, available [parameters](create-changefeed.html#parameters), and [options](create-changefeed.html#options) below.
-{{site.data.alerts.end}}
+{% include feature-phases/preview.md %}
 
 {% include_cached new-in.html version="v21.2" %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 

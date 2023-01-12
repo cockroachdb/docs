@@ -18,7 +18,7 @@ Type | Description
 
 ## Obtain a trial or enterprise license key
 
-To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise) and receive your trial license key via email within a few minutes.
+To obtain a trial license key, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license key via email within a few minutes.
 
 To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 

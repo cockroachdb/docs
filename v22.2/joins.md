@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-A `JOIN` expression, also called a _join_, combines the results of two or more [table expressions](table-expressions.html) based on conditions on the values of particular columns (i.e., equality columns). A join is a particular kind of table expression.
+A `JOIN` expression, also called a _join_, combines the results of two or more [table expressions](table-expressions.html) based on conditions on the values of particular columns (such as equality conditions). A join is a particular kind of table expression.
 
 A `JOIN` expression defines a data source in the `FROM` sub-clause of a [`SELECT` clause](select-clause.html) or as parameter to a [`TABLE` clause](selection-queries.html#table-clause).
 
@@ -111,7 +111,7 @@ To perform a [merge join](https://en.wikipedia.org/wiki/Sort-merge_join) of two 
 Merge joins are performed on the indexed columns of two tables as follows:
 
 1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC`).
-2. CockroachDB takes one row from each table and compares them.
+1. CockroachDB takes one row from each table and compares them.
     - For inner joins:
         - If the rows are equal, CockroachDB returns the rows.
         - If there are multiple matches, the cartesian product of the matches is returned.
@@ -128,17 +128,22 @@ If a merge join cannot be used, CockroachDB uses a [hash join](https://en.wikipe
 Hash joins are performed on two tables as follows:
 
 1. CockroachDB reads both tables and attempts to pick the smaller table.
-2. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
-3. CockroachDB then scans the large table, looking up each row in the hash table.
+1. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
+1. CockroachDB then scans the large table, looking up each row in the hash table.
 
 ### Lookup joins
 
-The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table be indexed on the equality column. A [partial index](partial-indexes.html) can only be used if it contains the subset of rows being looked up.
+The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table be indexed on the columns involved in the join condition. A [partial index](partial-indexes.html) can only be used if it contains the subset of rows being looked up.
 
 Lookup joins are performed on two tables as follows:
 
 1. CockroachDB reads each row in the small table.
-2. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
+1. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
+
+The optimizer imposes some restrictions on the usage of inequalities in lookup join conditions:
+
+1. If the lookup condition contains no equalities (i.e., is composed only of an inequality), either the input of the join must return only one row or the join must have a `LOOKUP` [hint](cost-based-optimizer.html#join-hints). This prevents poor performance of the current lookup join implementation.
+1. If the index column is `DESC` and the inequality is of the form `idxCol < inputCol` or equivalently `inputCol > idxCol`, the column type must be countable in order to support retrieving the immediate previous value. This allows types like [`BOOL`](bool.html), [`FLOAT`](float.html), and [`INT`](int.html), but disallows types like [`STRING`](string.html) or [`BYTES`](bytes.html).
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 

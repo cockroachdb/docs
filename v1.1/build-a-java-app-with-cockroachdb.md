@@ -21,7 +21,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 1. Install the Java jdbc driver
 
-Download and set up the Java jdbc driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the Java jdbc driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/).
 
 {% include {{ page.version.version }}/app/common-steps.md %}
 

@@ -81,7 +81,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --background
     ~~~
 
-2. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -116,7 +116,7 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
     ~~~
     </div>
 
-2. Run the [`cockroach gen haproxy`](cockroach-gen.html) command, specifying the port of any node:
+1. Run the [`cockroach gen haproxy`](cockroach-gen.html) command, specifying the port of any node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -125,14 +125,14 @@ In this tutorial, you run a sample workload to simulate multiple client connecti
 
     This command generates an `haproxy.cfg` file automatically configured to work with the nodes of your running cluster.
 
-3. In `haproxy.cfg`, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
+1. In `haproxy.cfg`, change `bind :26257` to `bind :26000`. This changes the port on which HAProxy accepts requests to a port that is not already in use by a node.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     sed -i.saved 's/^    bind :26257/    bind :26000/' haproxy.cfg
     ~~~
 
-4. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
+1. Start HAProxy, with the `-f` flag pointing to the `haproxy.cfg` file:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -152,7 +152,7 @@ Use the [`cockroach workload`](cockroach-workload.html) command to run Cockroach
 
     The `--splits` flag tells the workload to manually split ranges a number of times. This is not something you'd normally do, but for the purpose of this tutorial, it makes it easier to visualize the movement of data in the cluster.
 
-2. Run the `ycsb` workload, pointing it at HAProxy's port:
+1. Run the `ycsb` workload, pointing it at HAProxy's port:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -191,17 +191,17 @@ Initially, the workload creates a new database called `ycsb`, creates the table 
 
 1. Go to the DB Console at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-2. To check the SQL queries getting executed, click **Metrics** on the left, and hover over the **SQL Statements** graph at the top:
+1. To check the SQL queries getting executed, click **Metrics** on the left, and hover over the **SQL Statements** graph at the top:
 
     <img src="{{ 'images/v22.2/fault-tolerance-1.png' | relative_url }}" alt="DB Console SQL Statements" style="border:1px solid #eee;max-width:100%" />
 
-3. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **Open SQL Sessions** graph:
+1. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **Open SQL Sessions** graph:
 
     <img src="{{ 'images/v22.2/fault-tolerance-2.png' | relative_url }}" alt="DB Console Open Sessions" style="border:1px solid #eee;max-width:100%" />
 
     You'll notice 3 client connections from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to specific nodes.
 
-4. To see more details about the `ycsb` database and the `public.usertable` table, click **Databases** in the upper left and click **ycsb**:
+1. To see more details about the `ycsb` database and the `public.usertable` table, click **Databases** in the upper left and click **ycsb**:
 
     <img src="{{ 'images/v22.2/fault-tolerance-3.png' | relative_url }}" alt="DB Console Databases" style="border:1px solid #eee;max-width:100%" />
 
@@ -209,7 +209,7 @@ Initially, the workload creates a new database called `ycsb`, creates the table 
 
     <img src="{{ 'images/v22.2/fault-tolerance-4.png' | relative_url }}" alt="DB Console usertable" style="border:1px solid #eee;max-width:100%" />
 
-5. By default, CockroachDB replicates all data 3 times and balances it across all nodes. To see this balance, click **Overview** and check the replica count across all nodes:
+1. By default, CockroachDB replicates all data 3 times and balances it across all nodes. To see this balance, click **Overview** and check the replica count across all nodes:
 
     <img src="{{ 'images/v22.2/fault-tolerance-6.png' | relative_url }}" alt="DB Console Overview" style="border:1px solid #eee;max-width:100%" />
 
@@ -354,14 +354,14 @@ kill -TERM {process IDs}
 
 1. In the terminal where the YCSB workload is running, press **CTRL + c**.
 
-2. Terminate HAProxy:
+1. Terminate HAProxy:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ pkill haproxy
     ~~~
 
-3. Gracefully shut down the remaining **4 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure) and the new process ID for the node stored in `fault-node5`:
+1. Gracefully shut down the remaining **4 nodes**, specifying the [process IDs you retrieved earlier](#step-5-simulate-a-single-node-failure) and the new process ID for the node stored in `fault-node5`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -372,7 +372,7 @@ kill -TERM {process IDs}
     For the final 2 nodes, the shutdown process will take longer (about a minute each) and will eventually force the nodes to stop. This is because, with only 2 of 5 nodes left, a majority of replicas are not available, and so the cluster is no longer operational.
     {{site.data.alerts.end}}
 
-4. To restart the cluster at a later time, run the same `cockroach start` commands as in [Step 1. Start a 6-node cluster](#step-1-start-a-6-node-cluster) from the directory containing the nodes' data stores.
+1. To restart the cluster at a later time, run the same `cockroach start` commands as in [Step 1. Start a 6-node cluster](#step-1-start-a-6-node-cluster) from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores and the HAProxy config files:
 

@@ -71,7 +71,7 @@ Parameter | Description
 To create the most efficient indexes, we recommend reviewing:
 
 - [Indexes: Best Practices](indexes.html#best-practices)
-- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
+- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)
 
 #### Single-column indexes
 
@@ -119,16 +119,36 @@ You can create [GIN indexes](inverted-indexes.html) on schemaless data in a [`JS
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE INVERTED INDEX ON promo_codes (rules);
-~~~
-
-The preceding example is equivalent to the following PostgreSQL-compatible syntax:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
+The following syntax is equivalent:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE INVERTED INDEX ON promo_codes (rules);
+~~~
+
+### Create trigram indexes
+
+You can create [trigram indexes](trigram-indexes.html) on `STRING` columns by specifying the `gin_trgm_ops` or `gist_trgm_ops` opclass:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INDEX ON rides USING GIN (vehicle_city gin_trgm_ops);
+~~~
+
+The following syntax is equivalent:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INVERTED INDEX ON rides(vehicle_city gin_trgm_ops);
+~~~
+
+{{site.data.alerts.callout_info}}
+GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when defining a trigram index.
+{{site.data.alerts.end}}
+  
 ### Create spatial indexes
 
 You can create [spatial indexes](spatial-indexes.html) on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [GIN index](inverted-indexes.html).

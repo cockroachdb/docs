@@ -16,7 +16,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | C# (.NET) | [Npgsql](build-a-csharp-app-with-cockroachdb.html) | [4.1.3.1](https://www.nuget.org/packages/Npgsql/) | Beta |
 | Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | [0.7.11](https://search.maven.org/search?q=g:org.clojure%20AND%20a:java.jdbc) | Beta |
 | Go | [pgx](build-a-go-app-with-cockroachdb.html)<hr>[pq](build-a-go-app-with-cockroachdb-pq.html) | [4.6.0](https://github.com/jackc/pgx/releases)<hr>[1.5.2](https://github.com/lib/pq/releases) | Full<hr>Full |
-| Java | [JDBC](build-a-java-app-with-cockroachdb.html) | [42.2.9](https://jdbc.postgresql.org/download.html#others) | Full |
+| Java | [JDBC](build-a-java-app-with-cockroachdb.html) | [42.2.9](https://jdbc.postgresql.org/download/) | Full |
 | Node.js | [pg](build-a-nodejs-app-with-cockroachdb.html) | [8.2.1](https://www.npmjs.com/package/pg) | Beta |
 | PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | [PHP 7.4.6](https://www.php.net/downloads) | Beta |
 | Python | [psycopg2](build-a-python-app-with-cockroachdb.html) | [2.8.6](https://www.psycopg.org/docs/install.html) | Full |

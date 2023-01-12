@@ -51,7 +51,7 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. In the AWS Console, open **AWS DMS**.
 1. Open **Endpoints** in the sidebar. A list of endpoints will display, if any exist.
 1. In the top-right portion of the window, select **Create endpoint**.
-    <img src="{{ 'images/v22.1/aws-dms-create-endpoint.png' | relative_url }}" alt="AWS-DMS-Create-Endpoint" style="max-width:100%" />
+    <img src="{{ 'images/v22.2/aws-dms-create-endpoint.png' | relative_url }}" alt="AWS-DMS-Create-Endpoint" style="max-width:100%" />
 
     A configuration page will open.
 1. In the **Endpoint type** section, select **Target endpoint**.
@@ -61,12 +61,12 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. Enter the **Server name** and **Port** of your CockroachDB cluster.
 1. Supply a **User name**, **Password**, and **Database name** from your CockroachDB cluster.
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{routing-id}.{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
+    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
     {{site.data.alerts.end}}
-    <img src="{{ 'images/v22.1/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
+    <img src="{{ 'images/v22.2/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. If needed, you can test the connection under **Test endpoint connection (optional)**.
 1. To create the endpoint, select **Create endpoint**.
-    <img src="{{ 'images/v22.1/aws-dms-test-endpoint.png' | relative_url }}" alt="AWS-DMS-Test-Endpoint" style="max-width:100%" />
+    <img src="{{ 'images/v22.2/aws-dms-test-endpoint.png' | relative_url }}" alt="AWS-DMS-Test-Endpoint" style="max-width:100%" />
 
 ## Step 2. Create a database migration task
 
@@ -76,27 +76,23 @@ A database migration task, also known as a replication task, controls what data 
 
 1. While in **AWS DMS**, select **Database migration tasks** in the sidebar. A list of database migration tasks will display, if any exist.
 1. In the top-right portion of the window, select **Create task**.
-    <img src="{{ 'images/v22.1/aws-dms-create-db-migration-task.png' | relative_url }}" alt="AWS-DMS-Create-DB-Migration-Task" style="max-width:100%" />
+    <img src="{{ 'images/v22.2/aws-dms-create-db-migration-task.png' | relative_url }}" alt="AWS-DMS-Create-DB-Migration-Task" style="max-width:100%" />
 
     A configuration page will open.
 1. Supply a **Task identifier** to identify the replication task.
 1. Select the **Replication instance** and **Source database endpoint** you created prior to starting this tutorial.
 1. For the **Target database endpoint** dropdown, select the CockroachDB endpoint created in the previous section.
 1. Select the appropriate **Migration type** based on your needs.
-    <img src="{{ 'images/v22.1/aws-dms-task-configuration.png' | relative_url }}" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
+    <img src="{{ 'images/v22.2/aws-dms-task-configuration.png' | relative_url }}" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-1. For the **Target table preparation mode**, select **Truncate** or **Do nothing**.
-    <img src="{{ 'images/v22.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
+1. For the **Target table preparation mode**, select **Truncate**, **Drop tables on target**, or **Do nothing**.
+    <img src="{{ 'images/v22.2/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
 1. For the **Target Load**, select **Detailed debug**.
-    <img src="{{ 'images/v22.1/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
-
-{{site.data.alerts.callout_info}}
-**Drop tables on target** is unsupported at this time.
-{{site.data.alerts.end}}
+    <img src="{{ 'images/v22.2/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
 
 ### Step 2.3. Table mappings
 
@@ -112,7 +108,7 @@ When specifying a range of tables to migrate, the following aspects of the sourc
 1. Select **Add new selection rule**.
 1. In the **Schema** dropdown, select **Enter a schema**.
 1. Supply the appropriate **Source name** (schema name), **Table name**, and **Action**.
-    <img src="{{ 'images/v22.1/aws-dms-table-mappings.png' | relative_url }}" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
+    <img src="{{ 'images/v22.2/aws-dms-table-mappings.png' | relative_url }}" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 Use `%` as an example of a wildcard for all schemas in a PostgreSQL database. However, in MySQL, using `%` as a schema name imports all the databases, including the metadata/system ones, as MySQL treats schemas and databases as the same.
@@ -128,7 +124,7 @@ Data should now be moving from source to target. You can analyze the **Table Sta
 
 If your migration failed for some reason, you can check the checkbox next to the table(s) you wish to re-migrate and select **Reload table data**.
 
-<img src="{{ 'images/v22.1/aws-dms-reload-table-data.png' | relative_url }}" alt="AWS-DMS-Reload-Table-Data" style="max-width:100%" />
+<img src="{{ 'images/v22.2/aws-dms-reload-table-data.png' | relative_url }}" alt="AWS-DMS-Reload-Table-Data" style="max-width:100%" />
 
 ## Optional configurations
 
@@ -144,20 +140,28 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 1. Choose your task, and then choose **Modify**.
 1. From the **Task settings** section, switch the **Editing mode** from **Wizard** to **JSON editor**. Locate the `BatchApplyEnabled` setting and change its value to `true`. Information about the `BatchApplyEnabled` setting can be found [here](https://aws.amazon.com/premiumsupport/knowledge-center/dms-batch-apply-cdc-replication/).
 
-<img src="{{ 'images/v22.1/aws-dms-batchapplyenabled.png' | relative_url }}" alt="AWS-DMS-BatchApplyEnabled" style="max-width:100%" />
+<img src="{{ 'images/v22.2/aws-dms-batchapplyenabled.png' | relative_url }}" alt="AWS-DMS-BatchApplyEnabled" style="max-width:100%" />
+
+{{site.data.alerts.callout_info}}
+`BatchApplyEnabled` does not work when using **Drop tables on target** as a target table preparation mode. Thus, all schema-related changes must be manually copied over if using `BatchApplyEnabled`.
+{{site.data.alerts.end}}
 
 ## Known limitations
 
 - When using **Truncate** or **Do nothing** as a target table preparation mode, you cannot include tables with any hidden columns. You can verify which tables contain hidden columns by executing the following SQL query:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
+    ~~~
 
-- **Drop tables on target** is not supported on v22.1 and earlier, and will error on initial load.
+- If you select **Enable validation** in your [task settings](#step-2-2-task-settings) and have a [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html) column in your database, the migration will fail with the following error:
 
-- On v22.1.0 to v22.1.6, a migration may fail if there is an odd number of `"` characters in a row. AWS DMS will return an error message like the following: `[TARGET_LOAD ]D: Command failed to load data with exit error code 0.`. This is resolved in [v22.1.7 and later](../releases/v22.1.html).
+    ~~~
+    Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
+    ~~~
+
+    This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
 
 ## Troubleshooting common issues
 
@@ -165,6 +169,14 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     - Check the `SQL_EXEC` [logging channel](logging-overview.html#logging-channels) for log messages related to `COPY` statements and the tables you are migrating.
     - Check the [Amazon CloudWatch logs that you configured](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
+
+- If you encounter errors like the following:
+
+    ~~~
+    2022-10-21T13:24:07 [SOURCE_UNLOAD   ]W:  Value of column 'metadata' in table 'integrations.integration' was truncated to 32768 bytes, actual length: 116664 bytes  (postgres_endpoint_unload.c:1072)
+    ~~~
+
+    Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 
