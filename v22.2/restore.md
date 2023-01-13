@@ -159,7 +159,7 @@ Also, a full cluster restore will:
 
 - Restore [temporary tables](temporary-tables.html) to their original database during a full cluster restore.
 - Drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
-- When the cluster is in a mixed-version state during an [upgrade](upgrade-cockroach-version.html), a full cluster restore will fail. To perform a full cluster restore, it is necessary to [finalize the upgrade](upgrade-to-v22.2.html#finalize-the-upgrade).
+- When the cluster is in a mixed-version state during an [upgrade](upgrade-cockroach-version.html), a full cluster restore will fail. To perform a full cluster restore, it is necessary to [finalize the upgrade](upgrade-cockroach-version.html#step-3-decide-how-the-upgrade-will-be-finalized).
 
 {{site.data.alerts.callout_info}}
 When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) **after** the restore is complete.
