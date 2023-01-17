@@ -69,20 +69,58 @@ For more information about how to troubleshoot cluster-level issues, see [Troubl
 
 ## Troubleshoot SQL client application problems
 
-### High client CPU load or connection pool exhaustion when SCRAM Password-based Authentication is enabled
+<a name="scram-client-troubleshooting"></a>
 
-When [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degradation, CPU starvation, and connection pool exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
+### High client CPU load, connection pool exhaustion, or increased connection latency when SCRAM Password-based Authentication is enabled
 
-1. SCRAM Authentication is enabled on the cluster.
-1. The client driver's connection pool has no defined maximum number of connections.
-1. The client application issues transactions concurrently.
++ [Overview](#overview)
++ [Mitigation steps while keeping SCRAM enabled](#mitigation-steps-while-keeping-scram-enabled)
++ [Downgrade from SCRAM authentication](#downgrade-from-scram-authentication)
+
+#### Overview
+
+When [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degradation, CPU starvation, and [connection pool](connection-pooling.html) exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
+
+1. SCRAM Authentication is enabled on the cluster (the `server.user_login.password_encryption` [cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) is set to `scram-sha-256`).
+1. The client driver's [connection pool](connection-pooling.html) has no defined maximum number of connections, or is configured to close idle connections eagerly.
+1. The client application issues [transactions](transactions.html) concurrently.
 
 In this situation, each new connection uses more CPU on the client application server than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each concurrent transaction is slower, and a larger quantity of concurrent transactions can accumulate, in conjunction with a larger number of concurrent connections. In this situation, it can be difficult for the client application server to recover.
 
-To mitigate against this situation, Cockroach Labs recommends that you:
+Some applications may also see increased connection latency. This can happen because SCRAM incurs additional round trips during authentication which can add latency to the initial connection.
+
+For more information about how SCRAM works, see [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html).
+
+#### Mitigation steps while keeping SCRAM enabled
+
+To mitigate against this situation while keeping SCRAM authentication enabled, Cockroach Labs recommends that you:
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
+#### Downgrade from SCRAM authentication
+
+As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication by taking the following steps.
+
+1. Turn off the `server.user_login.cert_password_method.auto_scram_promotion.enabled` [cluster setting](cluster-settings.html#setting-server-user-login-cert-password-method-auto-scram-promotion-enabled):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = false;
+    ~~~
+
+1. Change the user password encryption algorithm to [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) by setting the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET server.user_login.password_encryption='crdb-bcrypt'
+    ~~~
+
+1. For each [SQL user](create-user.html) in the system, run [`ALTER USER {user} .. WITH PASSWORD`](alter-user.html#change-a-users-password) to encode the user's password using bcrypt.  Note that this can be the same password as the user's current password.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER USER {user} WITH PASSWORD {password};
+    ~~~
 
 ## See also
 

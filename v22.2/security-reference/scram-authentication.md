@@ -125,7 +125,25 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 #### Immediate migration
 
-It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts simultaneously, use [`ALTER USER <USERNAME> WITH PASSWORD`](../alter-user.html) statements instead.
+It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts, take the following steps:
+
+1. Turn on the `server.user_login.cert_password_method.auto_scram_promotion.enabled` [cluster setting](../cluster-settings.html#setting-server-user-login-cert-password-method-auto-scram-promotion-enabled):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = true;
+    ~~~
+
+1. For each [SQL user](../create-user.html) in the system, run [`ALTER USER {user} .. WITH PASSWORD`](../alter-user.html#change-a-users-password) as shown below. This will cause each user's password to be encoded using SCRAM:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER USER {user} WITH PASSWORD {password};
+    ~~~
+
+{{site.data.alerts.callout_info}}
+Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion](../error-handling-and-troubleshooting.html#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled](../error-handling-and-troubleshooting.html#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
+{{site.data.alerts.end}}
 
 ## Implement strict isolation of cleartext credentials
 
