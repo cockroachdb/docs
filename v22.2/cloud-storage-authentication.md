@@ -49,7 +49,7 @@ Assume role authentication allows you to use temporary short-lived credentials t
 ## Amazon S3 implicit
 
 {{site.data.alerts.callout_info}}
-To use `implicit` authentication on a {{ site.data.products.db }} cluster, it is necessary to authenticate using assume role authentication. See [GAmazon S3 assume role](#amazon-s3-assume-role) for more details.
+To use `implicit` authentication on a {{ site.data.products.db }} cluster, it is necessary to authenticate using assume role authentication. See [Amazon S3 assume role](#amazon-s3-assume-role) for more details.
 {{site.data.alerts.end}}
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
@@ -215,9 +215,9 @@ The first step to setting up workload identity authentication is different for {
 
 #### Set up the identity role for CockroachDB dedicated clusters
 
-Each {{ site.data.products.dedicated }} cluster has a pre-configured IAM role for [Amazon EKS](https://aws.amazon.com/eks/) service accounts that act as the cluster's identity. In addition, the clusters have a unique built-in, functional IAM role, which you can configure as a trusted identity within the Trust Policy of your cloud IAM roles. This allows you to have the built-in IAM role assume another role (or roles as part of a [chain](#amazon-s3-role-chaining)).
+Each {{ site.data.products.dedicated }} cluster has a pre-configured IAM role for [Amazon EKS](https://aws.amazon.com/eks/) service accounts that act as the cluster's identity. In addition, the clusters have a unique built-in, functionality IAM role, which you can configure as a trusted identity within the Trust Policy of your cloud IAM roles. This allows you to have the built-in IAM role assume another role (or roles as part of a [chain](#amazon-s3-role-chaining)).
 
-The built-in IAM identity roles are as follows:
+The prefixes for the built-in IAM identity roles are as follows:
 
 IAM role name | Operation
 --------------+------------
@@ -502,9 +502,9 @@ The first step to setting up workload identity authentication is different for {
 
 #### Set up the identity service account for dedicated clusters
 
-Each {{ site.data.products.dedicated }} cluster has a pre-configured IAM role for [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs) service accounts that act as the cluster's identity. In addition, the clusters have a unique, built-in functional IAM role, which you can configure as a trusted identity by giving it access to an operation service account. This allows you to have the built-in IAM role assume another role (or roles as part of a [chain](#google-cloud-storage-role-chaining)).
+Each {{ site.data.products.dedicated }} cluster has a pre-configured IAM role for [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs) service accounts that act as the cluster's identity. In addition, the clusters have a unique, built-in functionality IAM role, which you can configure as a trusted identity by giving it access to an operation service account. This allows you to have the built-in IAM role assume another role (or roles as part of a [chain](#google-cloud-storage-role-chaining)).
 
-The built-in IAM identity roles are as follows, which become part of your Google identity service account name:
+The prefixes for the built-in IAM identity roles are as follows, which become part of your Google identity service account name:
 
 IAM role name | Operation
 --------------+------------
@@ -516,7 +516,7 @@ Construct the service account name for your identity service account. You will n
 
 {% include_cached copy-clipboard.html %}
 ~~~
-crl-dr-store-user-{cluster id suffix}@{account id}.iam.gserviceaccount.com
+crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
 ~~~
 
 You can find the GCP account ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
@@ -530,7 +530,7 @@ Use the last 12 digits of your cluster's `id` and the `account_id` to form the s
 
 {% include_cached copy-clipboard.html %}
 ~~~
-crl-dr-store-user-d1234567891d@crl-cluster-6tc8.iam.gserviceaccount.com
+crl-dr-store-user-d1234567891d@crl-prod-6tc.iam.gserviceaccount.com
 ~~~
 
 See [Step 2](#step-2-create-the-operation-service-account) to create an operation service account that your identity role can assume.
@@ -590,7 +590,7 @@ For a backup to Google Cloud Storage:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql 
-BACKUP DATABASE defaultdb INTO "gs://{bucket name}?AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{cluster ID suffix}@{account ID}.iam.gserviceaccount.com,{operation service account name}@{project name}.iam.gserviceaccount.com" AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE defaultdb INTO "gs://{bucket name}?AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{cluster ID suffix}@{project ID}.iam.gserviceaccount.com,{operation service account name}@{project name}.iam.gserviceaccount.com" AS OF SYSTEM TIME '-10s';
 ~~~
 
 In this SQL statement, the identity service account assumes the operation service account that has permission to write a backup to the GCS bucket.
