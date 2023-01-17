@@ -125,7 +125,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 ## See also
 
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [`cockroach start`](cockroach-start.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

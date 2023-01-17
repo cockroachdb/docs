@@ -4,7 +4,7 @@ summary: How running CockroachDB in Kubernetes affects its performance and how t
 toc: true
 ---
 
-Kubernetes provides many useful abstractions for deploying and operating distributed systems, but some of the abstractions come with a performance overhead and an increase in underlying system complexity. This page explains potential bottlenecks to be aware of when [running CockroachDB in Kubernetes](orchestrate-cockroachdb-with-kubernetes.html) and shows you how to optimize your deployment for better performance.
+Kubernetes provides many useful abstractions for deploying and operating distributed systems, but some of the abstractions come with a performance overhead and an increase in underlying system complexity. This page explains potential bottlenecks to be aware of when [running CockroachDB in Kubernetes](deploy-cockroachdb-with-kubernetes.html) and shows you how to optimize your deployment for better performance.
 
 <div id="toc"></div>
 
@@ -12,7 +12,7 @@ Kubernetes provides many useful abstractions for deploying and operating distrib
 
 Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
-1. Go through the documentation for [running a CockroachDB cluster on Kubernetes](orchestrate-cockroachdb-with-kubernetes.html) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
+1. Go through the documentation for [running a CockroachDB cluster on Kubernetes](deploy-cockroachdb-with-kubernetes.html) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
 2. Verify that CockroachDB performs up to your requirements for your workload on identical hardware without Kubernetes. You may find that you need to [modify your workload](performance-best-practices-overview.html) or use [different machine specs](recommended-production-settings.html#hardware) to achieve the performance you need, and it's better to determine that up front than after spending a bunch of time trying to optimize your Kubernetes deployment.
 
 ## Performance factors
@@ -595,7 +595,7 @@ See [the Kubernetes documentation on in-place updates](https://kubernetes.io/doc
 
 ## See also
 
-- [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+- [Orchestrate CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html)
 - [Production Checklist](recommended-production-settings.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Troubleshooting Performance Issues](query-behavior-troubleshooting.html)

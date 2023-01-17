@@ -471,7 +471,7 @@ Specific tasks:
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Hello World Example apps](example-apps.html)
 
 <!-- Reference Links -->
 

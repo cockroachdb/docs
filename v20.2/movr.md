@@ -101,5 +101,5 @@ For a tutorial on developing and deploying a multi-region web application for Mo
 ## See also
 
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Build an App with CockroachDB](hello-world-example-apps.html)
+- [Build an App with CockroachDB](example-apps.html)
 - [Experimental Features](experimental-features.html)

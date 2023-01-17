@@ -127,7 +127,7 @@ Other common tasks:
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Optimize Statement Performance](make-queries-fast.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Hello World Example apps](example-apps.html)
 
 <!-- Reference Links -->
 

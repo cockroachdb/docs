@@ -639,6 +639,6 @@ Clusters using this configuration with client certificate authentication may als
 
 - [Initialize a Cluster](cockroach-init.html)
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

@@ -1,6 +1,6 @@
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [Performance Benchmarking](performance-benchmarking-with-tpcc-small.html)
 - [Performance Tuning](performance-best-practices-overview.html)

@@ -20,8 +20,13 @@ This guide shows you how to develop an application on CockroachDB. After reading
 
 Before you start using CockroachDB, you should understand a couple important mechanics of the database:
 
-- [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb)
-- [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
+- [Guide contents](#guide-contents)
+- [CockroachDB basics](#cockroachdb-basics)
+  - [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb)
+    - [Serializability and transaction contention](#serializability-and-transaction-contention)
+    - [Transaction retries](#transaction-retries)
+  - [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
+- [What's next?](#whats-next)
 
 Note that the sections that follow were written for the purposes of orienting application developers. For more detailed technical documentation on CockroachDB's architecture, see our [architecture documentation](architecture/overview.html).
 
@@ -61,7 +66,7 @@ You might also be interested in the following pages:
 - [Transactions](transactions.html)
 - [CockroachDB Migration](migration-overview.html)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
-- [Hello World Example Apps](hello-world-example-apps.html)
+- [Hello World Example Apps](example-apps.html)
 - [Build a Spring App with CockroachDB](build-a-spring-app-with-cockroachdb-jdbc.html)
 - [Develop and Deploy a Global Application](movr-flask-overview.html)
 

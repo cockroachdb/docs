@@ -96,7 +96,7 @@ If you’re not seeing the output above, check for the following:
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
 {{site.data.alerts.callout_info}}
-Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 If you are trying to run all nodes on the same machine, you might get the following errors:
