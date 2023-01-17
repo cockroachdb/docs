@@ -519,14 +519,16 @@ Construct the service account name for your identity service account. You will n
 crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
 ~~~
 
-You can find the GCP account ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
+You can find the GCP project ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
 ~~~
 
-Use the last 12 digits of your cluster's `id` and the `account_id` to form the service account. It will look similar to:
+Use the last 12 digits of your cluster's `id` and the `account_id` to form the service account. (Note that the `account_id` in your cluster's details becomes the GCP `{project id}`.) 
+
+This will look similar to:
 
 {% include_cached copy-clipboard.html %}
 ~~~
