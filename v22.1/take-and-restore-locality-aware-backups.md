@@ -130,12 +130,10 @@ There is different syntax for taking an incremental backup depending on where yo
 	~~~
 
 	{{site.data.alerts.callout_info}}
-	When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once.
-
-	It is necessary that the same localities be included for every incremental backup in the series of backups; however, only the `default` locality is required.
+	When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include **every** locality ever used, even if it was only used once. At least one `COCKROACH_LOCALITY` must be the `default`.
 	{{site.data.alerts.end}}
 
-- If you want to explicitly control the subdirectory for your incremental backups:
+- To explicitly control the subdirectory for your incremental backup:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
@@ -145,7 +143,7 @@ There is different syntax for taking an incremental backup depending on where yo
 
 	To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
 
-- If you are creating an incremental backup using the [`incremental_location`](backup.html#options) option to send your incremental backups to a different location, you must include the same number of locality-aware URIs for the full backup destination and the `incremental_location` option:
+- To append your incremental backup to the full backup using the [`incremental_location`](backup.html#options) option to send your incremental backups to a different location, you must include the same number of locality-aware URIs for the full backup destination and the `incremental_location` option:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ sql
