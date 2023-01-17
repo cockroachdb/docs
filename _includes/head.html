@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
+{% comment %}
 {%- capture stable_pages_names -%}{%- include_cached stable_page_names.md -%}{%- endcapture -%}
 {%- comment -%} Fetch all the names of all the stable pages to compare against the dev pages {%- endcomment -%}
 {%- assign dev_page_has_matching_stable_page = false -%}
@@ -28,6 +29,7 @@
 <meta name="robots" content="nocache">
 {% endunless -%}
 {%- endif -%}
+{% endcomment %}
 {% comment %} The below if block helps prove ownership of the cockroachlabs.com/docs website for Google Search Console. {% endcomment %}
 {% if page.layout == "homepage" %}
 <meta name="google-site-verification" content="Du_z8l1I9HPqQS022xQn6UTRhDWYQRJZchcoUhYfQaM" /> {% comment %} Nick Vigilante {% endcomment %}
