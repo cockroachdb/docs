@@ -36,7 +36,7 @@ In the meantime, you can [back up and restore data manually](take-and-restore-cu
 
 ## Backups page
 
-A list of your full cluster backups displays on your cluster's **Backups** page.
+A list of your full and incremental cluster backups displays on your cluster's **Backups** page.
 
 For each backup, the following details display:
 
