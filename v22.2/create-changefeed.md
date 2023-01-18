@@ -38,7 +38,7 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.<br><br>**Note:** Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. See [Create and Configure Changefeeds](create-and-configure-changefeeds.html) for more detail.
-`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).
+`sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink and the [`format=csv` option](#format), your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL session. If you do not specify a sink or the `format` option, then the changefeed will hang until canceled.
 `option` / `value` | For a list of available options and their values, see [Options](#options).
 
 ### CDC transformation parameters

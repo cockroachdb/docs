@@ -63,10 +63,21 @@ To create an {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
+CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
 ~~~
 
 {% include {{ page.version.version }}/cdc/url-encoding.md %}
+
+When you create a changefeed **without** specifying a sink, CockroachDB sends the changefeed events to the SQL client. Consider the following regarding the [display format](cockroach-sql.html#sql-flag-format) in your SQL client:
+
+- If you do not define a display format, the CockroachDB SQL client will automatically use `ndjson` format.
+- If you specify a format, the client will use that format (e.g., `--format=csv`).
+- If you set the client display format to `ndjson` and set the changefeed [`format`](create-changefeed.html#format) to `csv`, you'll receive JSON format with CSV nested inside. In the reverse situation, you'll receive a comma-separated list of JSON values.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR TABLE table_name, table_name2 WITH format=csv;
+~~~
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
@@ -76,7 +87,7 @@ To pause an {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> PAUSE JOB job_id;
+PAUSE JOB job_id;
 ~~~
 
 For more information, see [`PAUSE JOB`](pause-job.html).
@@ -87,7 +98,7 @@ To resume a paused {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESUME JOB job_id;
+RESUME JOB job_id;
 ~~~
 
 For more information, see [`RESUME JOB`](resume-job.html).
@@ -98,7 +109,7 @@ To cancel an {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOB job_id;
+CANCEL JOB job_id;
 ~~~
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
@@ -123,7 +134,7 @@ To create a core changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR table_name;
+EXPERIMENTAL CHANGEFEED FOR table_name;
 ~~~
 
 For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
