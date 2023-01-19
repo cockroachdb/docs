@@ -63,7 +63,7 @@ The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. Th
 
 Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
 
-You can use the [`EXPLAIN ANALYZE` SQL command](../{{site.versions["stable"]}}/explain-analyze.html) with your statements to estimate the RU usage of that statement. For example, the prepend `EXPLAIN ANALYZE` to the `INSERT` statement above:
+You can use the [`EXPLAIN ANALYZE` SQL command](../{{site.versions["stable"]}}/explain-analyze.html) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -93,7 +93,7 @@ EXPLAIN ANALYZE INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...'
 Time: 71ms total (execution 20ms / network 50ms)
 ~~~
 
-This will insert the data, but also output information from the optimizer about the execution of the statement, including the optimzer's estimate of RU consumption on the `estimated RUs consumed:` line. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs we made earlier.
+This will insert the data, and also output information from the optimizer about the execution of the statement. The `estimated RUs consumed` field represents the optimizer's estimate of RU consumption for the statement. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs we made earlier.
 
 ## Understanding which queries to optimize
 
