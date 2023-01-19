@@ -463,7 +463,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    EXPLAIN UPDATE employee SET email = 'joe1@exaple.com' WHERE id = 1;
+    EXPLAIN UPDATE employee SET email = 'joe1@example.com' WHERE id = 1;
     ~~~
 
     In the `EXPLAIN` output below, the optimizer performs a uniqueness check for `email` since we're not updating any other columns (see the `constraint-check` section).

@@ -21,7 +21,7 @@ This tutorial will show you how to configure a Hasura project with a CockroachDB
 
 Before you start this tutorial, you need:
 
-- An existing [{{ site.data.products.dedicated }}](../cockroachcloud/quickstart-trial-cluster.html) cluster, runnning CockroachDB v22.2 or later.
+- An existing [{{ site.data.products.dedicated }}](../cockroachcloud/quickstart-trial-cluster.html) cluster, running CockroachDB v22.2 or later.
 - A [Hasura Cloud account](https://hasura.io/docs/latest/getting-started/getting-started-cloud/).
 
 ## Configure your {{ site.data.products.dedicated }} cluster
@@ -39,15 +39,15 @@ Before you start this tutorial, you need:
 
 1. In the **Create Project** panel select the cloud infrastructure provider and region. 
 
-    The cloud infrastructure provider and region should match your cluster. For example, if you created a {{ site.data.products.dedicated }} cluser in GCP's `us-east1` region, choose a GCP region closest to `us-east1`.
+    The cloud infrastructure provider and region should match your cluster. For example, if you created a {{ site.data.products.dedicated }} cluster in GCP's `us-east1` region, choose a GCP region closest to `us-east1`.
 
 1. Click **Create Free Project**.
 
 ### Add environment variables to your project
 
-You will store your cluster CA cert in your Hasura project's environment variables. Storing this connection information in envionment variables is considered a best practice.
+You will store your cluster CA cert in your Hasura project's environment variables. Storing this connection information in environment variables is considered a best practice.
 <!-- Replace when env variables work for connection string. -->
-<!-- You will store your cluster CA cert and connection string in your Hasura project's environment variables. Storing this connection information in envionment variables is considered a best practice. -->
+<!-- You will store your cluster CA cert and connection string in your Hasura project's environment variables. Storing this connection information in environment variables is considered a best practice. -->
 
 Create a `SSL_ROOT_CERT` environment variable for your cluster's CA cert.
 
