@@ -39,6 +39,7 @@ $(function() {
           htmlToAppend += `</li>`;
         });
         htmlToAppend += '</ul>';
+        mainItem.alreadyIterated = true;
         $(currentElement.currentTarget).parent().append(htmlToAppend);
         var currentTiers = $(currentElement.currentTarget).parent().find('.tier-' + nextTier);
         generateSideBar(mainItem.items, currentTiers, nextTier);
