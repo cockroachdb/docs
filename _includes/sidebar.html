@@ -15,7 +15,7 @@
             {% if currentVersion == site.versions.stable %}
               {% assign currentVersion = "stable" %}
             {% endif %}
-            <a href="{{site.url}}/docs{{option.url | replace: "VERSION", currentVersion }}">{{option.title}}</a>
+            <a href="{{site.url}}{{site.baseurl}}{{option.url | replace: "VERSION", currentVersion }}">{{option.title}}</a>
           {% else %}
             <a href="#">{{option.title}}</a>
           {% endif %}

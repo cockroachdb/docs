@@ -30,7 +30,7 @@ $(function() {
           var currentAnchorUrl = '#';
           var subsectionArrow = '<div class="nav-expand"></div>';
           if (childItem.urls) {
-            currentAnchorUrl = childItem.urls[0].replace('${VERSION}', pageVersion);
+            currentAnchorUrl = childItem.urls.includes('https') ? childItem.urls[0] : window.location.origin + sidebarData.baseUrl + childItem.urls[0].replace('${VERSION}', pageVersion);
             subsectionArrow = '';
           }
           htmlToAppend += `
