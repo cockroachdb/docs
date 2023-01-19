@@ -15,7 +15,7 @@ This page describes how to tune your {{ site.data.products.serverless }} workloa
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A Serverless cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A {{ site.data.products.serverless }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
 **SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units](learn-about-request-units.html) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
@@ -23,13 +23,13 @@ To understand these resources, you need to understand a bit about the {{ site.da
 
 **Storage layer I/O** includes the read and write requests sent by the SQL layer to the storage layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using these equivalencies:
 
-  - 1 RU = 2 storage read batches
-  - 1 RU = 8 storage read requests
-  - 1 RU = 64 KiB read request payload (prorated)
+- 1 RU = 2 storage read batches
+- 1 RU = 8 storage read requests
+- 1 RU = 64 KiB read request payload (prorated)
 
-  - 1 RU = 1 storage write batch
-  - 1 RU = 1 storage write request
-  - 1 RU = 1 KiB write request payload (prorated)
+- 1 RU = 1 storage write batch
+- 1 RU = 1 storage write request
+- 1 RU = 1 KiB write request payload (prorated)
 
 ### Example Request Unit calculation
 
