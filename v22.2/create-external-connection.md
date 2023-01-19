@@ -64,9 +64,12 @@ Storage or sink      | Operation support
 
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
 
-{{site.data.alerts.callout_info}}
-When you create an external connection for a Kafka sink, you can only include the query parameters and options that Kafka sinks support. See the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
-{{site.data.alerts.end}}
+### Changefeed sinks as external connections
+
+Consider the following when you create an external connection for:
+
+- Kafka sinks: You can only include the query parameters and options that Kafka sinks support. See the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
+- Cloud storage sinks: {% include {{ page.version.version }}/cdc/cloud-storage-external-connection.md %}
 
 ## External connection URI format
 
