@@ -1,3 +1,5 @@
+require 'json'
+
 module JekyllVersions
  class VersionedPage
     attr_reader :page, :key, :version
@@ -41,6 +43,10 @@ module JekyllVersions
       s << demand_version
       s << ".cockroachcloud" if @config.cockroachcloud
       s << ".json"
+    end
+
+    def sidebar_data_titles
+      JSON.parse(File.read("_includes/titles-#{sidebar_data}"))
     end
 
     private

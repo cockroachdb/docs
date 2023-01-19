@@ -1,0 +1,21 @@
+[
+  {
+    "title": "Docs Home",
+    "url": "/"
+  },
+  {
+    "title": "Quickstart",
+    "url": "/cockroachcloud/quickstart.html"
+  },
+  {
+    "title": "CockroachDB Cloud",
+    "url": "/cockroachcloud/index.html"
+  },
+  {
+    "title": "CockroachDB Self-Hosted",
+    "url": "/VERSION/index.html"
+  },
+  {
+    "title": "Reference"
+  }
+]

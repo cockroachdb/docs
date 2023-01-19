@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Docs Home",
+    "url": "/"
+  },
+  {
+    "title": "Get Started"
+  },
+  {
+    "title": "Develop"
+  },
+  {
+    "title": "Deploy"
+  },
+  {
+    "title": "Manage"
+  },
+  {
+    "title": "Migrate"
+  },
+  {
+    "title": "Stream Data"
+  },
+  {
+    "title": "Reference"
+  },
+  {
+    "title": "Releases"
+  },
+  {
+    "title": "Online Courses",
+    "url": "https://www.cockroachlabs.com/cockroach-university/",
+    "isExternal": true
+  }
+]

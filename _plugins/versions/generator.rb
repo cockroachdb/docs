@@ -28,6 +28,7 @@ module JekyllVersions
         page.data['version'] = vp.version
         page.data['release_info'] = vp.release_info
         page.data['sidebar_data'] ||= vp.sidebar_data
+        page.data['sidebar_data_titles'] ||= vp.sidebar_data_titles
         if page.data['canonical'].nil?
           page.data['canonical'] = stable_vp(vp.key)&.url || page.url
         end
