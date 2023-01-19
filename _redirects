@@ -548,12 +548,6 @@ layout: null
 /docs/releases/v22.1.0-alpha.1.html /docs/releases/v22.1.html#v22-1-0-alpha-1 301
 /docs/releases/v22.1.0-alpha.1 /docs/releases/v22.1.html#v22-1-0-alpha-1 301
 
-{% comment %} Delete the if block below as soon as v22.2 becomes GA {% endcomment %}
-{% if site.versions["stable"] == "v22.1" %}
-/docs/stable/ui-insights-page.html /docs/dev/ui-insights-page.html 301
-/docs/stable/ui-insights-page /docs/dev/ui-insights-page.html 301
-{% endif %}
-
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
 
