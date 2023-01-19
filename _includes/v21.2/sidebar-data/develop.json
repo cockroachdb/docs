@@ -265,8 +265,7 @@
     },
     {
       "title": "Optimize Statement Performance",
-      "items":
-      [
+      "items": [
         {
           "title": "Overview",
           "urls": [
@@ -274,7 +273,7 @@
           ]
         },
         {
-          "title": "Statement Tuning with <code>EXPLAIN</code>",
+          "title": "Statement Tuning with <code>EXPLAIN<\/code>",
           "urls": [
             "/${VERSION}/sql-tuning-with-explain.html"
           ]
@@ -299,8 +298,7 @@
         },
         {
           "title": "Performance Features",
-          "items":
-          [
+          "items": [
             {
               "title": "Overview",
               "urls": [
@@ -414,11 +412,11 @@
           ]
         },
         {
-      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
-      	  "urls": [
-      	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
-      	  ]
-      	}
+          "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
+          "urls": [
+            "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+          ]
+        }
       ]
     },
     {

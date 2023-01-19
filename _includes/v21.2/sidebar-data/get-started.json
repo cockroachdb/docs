@@ -1,7 +1,8 @@
 {
   "title": "Get Started",
   "is_top_level": true,
-  "items": [{
+  "items": [
+    {
       "title": "Quickstart",
       "urls": [
         "/cockroachcloud/quickstart.html"
