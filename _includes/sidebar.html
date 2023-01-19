@@ -5,8 +5,22 @@
         <input class="form-control" name="query" type="text" placeholder="Search">
       </form>
     </div>
-    <ul id="sidebar" class="js-sidebar nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}  pt-0" style="display: none">
-      <div class="sidenav-arrow mr-4"></div>
+    <ul id="sidebar" class="js-sidebar nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}  pt-0">
+      {% for option in page.sidebar_data_titles %}
+        <li class="tier-1">
+          {% if option.isExternal %}
+            <a href="{{option.url}}">{{option.title}}</a>
+          {% elsif option.url %}
+            {% assign currentVersion = page.dir | replace: "/", "" %}
+            {% if currentVersion == site.versions.stable %}
+              {% assign currentVersion = "stable" %}
+            {% endif %}
+            <a href="{{site.url}}/docs{{option.url | replace: "VERSION", currentVersion }}">{{option.title}}</a>
+          {% else %}
+            <a href="#">{{option.title}}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
     </ul>
   </div>
   <div class="stiky-spacer"></div>

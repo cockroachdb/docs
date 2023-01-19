@@ -30,8 +30,6 @@
         }
       }));
 
-      $sidebar.show();
-
       // Loop over the left sidebar and top nav mobile version
       $sidebars.each((k, sidebar)=>{
         // console.log(sidebar);
@@ -166,8 +164,7 @@
       items: {%- include {{ page.sidebar_data }} -%}
     };
 
-    // implemented in initSidebar.js
-    renderSidebar(sidebar);
+    window.sidebar = sidebar;
   })();
 </script>
 
