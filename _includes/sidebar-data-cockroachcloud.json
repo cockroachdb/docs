@@ -3,37 +3,37 @@
   "is_top_level": true,
   "urls": [
     "/cockroachcloud/index.html"
-    ],
+  ],
   "items": [
     {
       "title": "Get Started",
       "items": [
         {
-      	  "title": "Create an Account",
-      	  "urls": [
-      	    "/cockroachcloud/create-an-account.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Create a CockroachDB Cloud Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/create-a-serverless-cluster.html",
-            "/cockroachcloud/create-your-cluster.html"
-      	  ]
-      	},
+          "title": "Create an Account",
+          "urls": [
+            "/cockroachcloud/create-an-account.html"
+          ]
+        },
         {
-      	  "title": "Connect to Your Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/connect-to-a-serverless-cluster.html",
+          "title": "Create a CockroachDB Cloud Cluster",
+          "urls": [
+            "/cockroachcloud/create-a-serverless-cluster.html",
+            "/cockroachcloud/create-your-cluster.html"
+          ]
+        },
+        {
+          "title": "Connect to Your Cluster",
+          "urls": [
+            "/cockroachcloud/connect-to-a-serverless-cluster.html",
             "/cockroachcloud/connect-to-your-cluster.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Learn CockroachDB SQL",
-      	  "urls": [
-      	    "/cockroachcloud/learn-cockroachdb-sql.html"
-      	  ]
-      	},
+          ]
+        },
+        {
+          "title": "Learn CockroachDB SQL",
+          "urls": [
+            "/cockroachcloud/learn-cockroachdb-sql.html"
+          ]
+        },
         {
           "title": "Use the Cloud API",
           "urls": [
@@ -52,68 +52,68 @@
             "/cockroachcloud/cluster-management.html"
           ]
         },
-      	{
-      	  "title": "Secure Your Cluster",
-      	  "items": [
-      	    {
-      	      "title": "Security Overview",
-      	      "urls": [
-      		      "/cockroachcloud/security-overview.html"
-      	      ]
-      	    },
-						{
-							"title": "Authentication",
-								"items": [
-									{
-										"title": "Authentication Overview",
-										"urls": [
-											"/cockroachcloud/authentication.html"
-										]
-									},
-									{
-										"title": "Single Sign-On (SSO)",
-										"urls": [
-											"/cockroachcloud/cloud-org-sso.html"
-										]
-									},
-									{
-										"title": "Configure Cloud Organization SSO",
-										"urls": [
-											"/cockroachcloud/configure-cloud-org-sso.html"
-										]
-									}
-								]
-      	    },
-      	    {
-      	      "title": "User Authorization",
-      	      "urls": [
-      		      "/cockroachcloud/user-authorization.html"
-      	      ]
-      	    },
+        {
+          "title": "Secure Your Cluster",
+          "items": [
             {
-      	      "title": "Network Authorization",
-      	      "urls": [
-      		      "/cockroachcloud/network-authorization.html"
-      	      ]
-      	    },
-						{
-      	      "title": "Private clusters (Preview)",
-      	      "urls": [
-      		      "/cockroachcloud/private-clusters.html"
-      	      ]
-      	    },
+              "title": "Security Overview",
+              "urls": [
+                "/cockroachcloud/security-overview.html"
+              ]
+            },
+            {
+              "title": "Authentication",
+              "items": [
+                {
+                  "title": "Authentication Overview",
+                  "urls": [
+                    "/cockroachcloud/authentication.html"
+                  ]
+                },
+                {
+                  "title": "Single Sign-On (SSO)",
+                  "urls": [
+                    "/cockroachcloud/cloud-org-sso.html"
+                  ]
+                },
+                {
+                  "title": "Configure Cloud Organization SSO",
+                  "urls": [
+                    "/cockroachcloud/configure-cloud-org-sso.html"
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "User Authorization",
+              "urls": [
+                "/cockroachcloud/user-authorization.html"
+              ]
+            },
+            {
+              "title": "Network Authorization",
+              "urls": [
+                "/cockroachcloud/network-authorization.html"
+              ]
+            },
+            {
+              "title": "Private clusters (Preview)",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
             {
               "title": "Egress Perimeter Controls (Preview)",
               "urls": [
                 "/cockroachcloud/private-clusters.html"
               ]
             },
-      	    {
-      	      "title": "SQL Audit Logging",
-      	      "urls": [
-      		      "/cockroachcloud/sql-audit-logging.html"
-      	      ]
-      	    },
+            {
+              "title": "SQL Audit Logging",
+              "urls": [
+                "/cockroachcloud/sql-audit-logging.html"
+              ]
+            },
             {
               "title": "Export Cloud Organization Audit Logs",
               "urls": [
@@ -122,15 +122,15 @@
             }
           ]
         },
-      	{
-      	  "title": "Migrate Data",
-      	  "items": [
-      	    {
-      	      "title": "Migration Overview",
-      	      "urls": [
-      		      "/{{site.current_cloud_version}}/migration-overview.html"
-      	      ]
-      	    },
+        {
+          "title": "Migrate Data",
+          "items": [
+            {
+              "title": "Migration Overview",
+              "urls": [
+                "/{{site.current_cloud_version}}/migration-overview.html"
+              ]
+            },
             {
               "title": "Migrate from Serverless to Dedicated",
               "urls": [
@@ -138,52 +138,52 @@
               ]
             },
             {
-      	      "title": "Migrate from Oracle",
-      	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-oracle.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Migrate from PostgreSQL",
-      	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-postgres.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Migrate from MySQL",
-      	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-mysql.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Migrate from CSV",
-      	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-csv.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Migrate from Avro",
-      	      "urls": [
-      		      "/{{site.current_cloud_version}}/migrate-from-avro.html"
-      	      ]
-      	    },
+              "title": "Migrate from Oracle",
+              "urls": [
+                "/{{site.current_cloud_version}}/migrate-from-oracle.html"
+              ]
+            },
+            {
+              "title": "Migrate from PostgreSQL",
+              "urls": [
+                "/{{site.current_cloud_version}}/migrate-from-postgres.html"
+              ]
+            },
+            {
+              "title": "Migrate from MySQL",
+              "urls": [
+                "/{{site.current_cloud_version}}/migrate-from-mysql.html"
+              ]
+            },
+            {
+              "title": "Migrate from CSV",
+              "urls": [
+                "/{{site.current_cloud_version}}/migrate-from-csv.html"
+              ]
+            },
+            {
+              "title": "Migrate from Avro",
+              "urls": [
+                "/{{site.current_cloud_version}}/migrate-from-avro.html"
+              ]
+            },
             {
               "title": "Import Performance Best Practices",
               "urls": [
                 "/{{site.current_cloud_version}}/import-performance-best-practices.html"
               ]
             }
-      	  ]
-      	},
+          ]
+        },
         {
           "title": "Performance",
           "items": [
-          	{
-          	  "title": "Tune Performance",
-          	  "urls": [
-          	    "/{{site.current_cloud_version}}/performance-best-practices-overview.html"
-          	  ]
-          	},
+            {
+              "title": "Tune Performance",
+              "urls": [
+                "/{{site.current_cloud_version}}/performance-best-practices-overview.html"
+              ]
+            },
             {
               "title": "Serverless Performance Benchmarking",
               "urls": [
@@ -192,12 +192,12 @@
             }
           ]
         },
-      	{
-      	  "title": "Move into Production",
-      	  "urls": [
-      	    "/cockroachcloud/production-checklist.html"
-      	  ]
-      	},
+        {
+          "title": "Move into Production",
+          "urls": [
+            "/cockroachcloud/production-checklist.html"
+          ]
+        },
         {
           "title": "Monitor Your Cluster",
           "items": [
@@ -245,94 +245,94 @@
             }
           ]
         },
-      	{
-      	  "title": "Troubleshoot Your Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/troubleshooting-page.html"
-      	  ]
-      	},
+        {
+          "title": "Troubleshoot Your Cluster",
+          "urls": [
+            "/cockroachcloud/troubleshooting-page.html"
+          ]
+        },
         {
           "title": "Run Bulk Operations",
           "urls": [
             "/cockroachcloud/run-bulk-operations.html"
           ]
         },
-      	{
-      	  "title": "Restore Data from a Backup",
-      	  "urls": [
-      	    "/cockroachcloud/backups-page.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Upgrade Your Cluster",
-      	  "items": [
-      	    {
-      	      "title": "Upgrade Policy",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-policy.html"
-      	      ]
-      	    },
+        {
+          "title": "Restore Data from a Backup",
+          "urls": [
+            "/cockroachcloud/backups-page.html"
+          ]
+        },
+        {
+          "title": "Upgrade Your Cluster",
+          "items": [
             {
-              "title": "Upgrade to v21.2",
+              "title": "Upgrade Policy",
               "urls": [
-                 "/cockroachcloud/upgrade-to-v21.2.html"
+                "/cockroachcloud/upgrade-policy.html"
               ]
             },
             {
-      	      "title": "Upgrade to v21.1",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-to-v21.1.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Upgrade to v20.2",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-to-v20.2.html"
-      	      ]
-      	    },
-      	    {
-      	      "title": "Upgrade to v20.1",
-      	      "urls": [
-      		       "/cockroachcloud/upgrade-to-v20.1.html"
-      	      ]
-      	    }
-      	  ]
-      	}
+              "title": "Upgrade to v21.2",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v21.2.html"
+              ]
+            },
+            {
+              "title": "Upgrade to v21.1",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v21.1.html"
+              ]
+            },
+            {
+              "title": "Upgrade to v20.2",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v20.2.html"
+              ]
+            },
+            {
+              "title": "Upgrade to v20.1",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v20.1.html"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "title": "Manage Console Access",
       "urls": [
-	       "/cockroachcloud/console-access-management.html"
+        "/cockroachcloud/console-access-management.html"
       ]
     },
     {
       "title": "Manage Billing",
       "urls": [
-         "/cockroachcloud/billing-management.html"
+        "/cockroachcloud/billing-management.html"
       ]
     },
     {
       "title": "Architecture",
       "urls": [
-         "/cockroachcloud/architecture.html"
+        "/cockroachcloud/architecture.html"
       ]
     },
     {
       "title": "Tutorials",
       "items": [
-      	{
-      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
-      	  "urls": [
-      	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Stream a Changefeed to Snowflake",
-      	  "urls": [
-      	    "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
-      	  ]
-      	}
+        {
+          "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
+          "urls": [
+            "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+          ]
+        },
+        {
+          "title": "Stream a Changefeed to Snowflake",
+          "urls": [
+            "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+          ]
+        }
       ]
     },
     {

@@ -125,7 +125,7 @@
                 ]
               },
               {
-                "title": "SQL Tuning with <code>EXPLAIN</code>",
+                "title": "SQL Tuning with <code>EXPLAIN<\/code>",
                 "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
                 ]
@@ -378,8 +378,7 @@
           },
           {
             "title": "Debug Your Application",
-            "items":
-            [
+            "items": [
               {
                 "title": "Log Events",
                 "urls": [
@@ -402,8 +401,7 @@
           },
           {
             "title": "Optimize Performance",
-            "items":
-            [
+            "items": [
               {
                 "title": "Overview",
                 "urls": [
