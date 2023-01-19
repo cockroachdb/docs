@@ -44,7 +44,7 @@ Now you insert a row into the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...')
+INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
 ~~~
 
 The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
