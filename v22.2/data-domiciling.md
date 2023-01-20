@@ -7,7 +7,7 @@ docs_area: deploy
 
 As you scale your usage of [multi-region clusters](multiregion-overview.html), you may need to keep certain subsets of data in specific localities. Keeping specific data on servers in specific geographic locations is also known as _data domiciling_.
 
-CockroachDB has basic support for data domiciling in multi-region clusters using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
+CockroachDB has basic support for data domiciling in multi-region clusters using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement.
 
 {{site.data.alerts.callout_danger}}
 Using CockroachDB as part of your approach to data domiciling has several limitations. For more information, see [Limitations](#limitations).
@@ -15,10 +15,10 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 
 ## Overview
 
-This page has instructions for data domiciling in [multi-region clusters](multiregion-overview.html) using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. At a high level, this process involves:
+This page has instructions for data domiciling in [multi-region clusters](multiregion-overview.html) using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement. At a high level, this process involves:
 
 1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) clauses.
-1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the voting and non-voting replicas for a partition or table to be stored in only the [home regions](multiregion-overview.html#table-localities) associated with those rows or tables.
+1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement, which constrains the voting and non-voting replicas for a partition or table to be stored in only the [home regions](multiregion-overview.html#table-localities) associated with those rows or tables.
 
 ## Before you begin
 
@@ -29,7 +29,7 @@ This page assumes you are already familiar with:
 
 ## Example
 
-In the following example, you will go through the process of configuring the [MovR](movr.html) data set using [multi-region SQL statements](multiregion-overview.html). Then, as part of implementing a data domiciling strategy, you will apply restricted replica settings using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement. Finally, you will verify that the resulting replica placements are as expected using [replication reports](query-replication-reports.html).
+In the following example, you will go through the process of configuring the [MovR](movr.html) data set using [multi-region SQL statements](multiregion-overview.html). Then, as part of implementing a data domiciling strategy, you will apply restricted replica settings using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement. Finally, you will verify that the resulting replica placements are as expected using [replication reports](query-replication-reports.html).
 
 For the purposes of this example, the data domiciling requirement is to configure a multi-region deployment of the [MovR database](movr.html) such that data for EU-based users, vehicles, etc. is being stored on CockroachDB nodes running in EU localities.
 
@@ -153,7 +153,7 @@ This output shows that the `movr` database has ranges out of compliance, which y
 
 ### Step 4. Apply stricter replica placement settings
 
-To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of the [regional tables](regional-tables.html) in this database. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement.
+To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](regional-tables.html#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) on all of the [regional tables](regional-tables.html) in this database. You can do this using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement.
 
 To use this statement, you must set the `enable_multiregion_placement_policy` [session setting](set-vars.html) or the `sql.defaults.multiregion_placement_policy.enabled` [cluster setting](cluster-settings.html):
 
@@ -166,7 +166,7 @@ SET enable_multiregion_placement_policy=on;
 SET
 ~~~
 
-Next, use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement to disable non-voting replicas for regional tables:
+Next, use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement to disable non-voting replicas for regional tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -180,7 +180,7 @@ ALTER DATABASE PLACEMENT
 The restricted replica placement settings should start to apply immediately.
 
 {{site.data.alerts.callout_info}}
-[`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) does not affect the replica placement for [global tables](global-tables.html), which are designed to provide fast, up-to-date reads from all [database regions](multiregion-overview.html#database-regions).
+[`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) does not affect the replica placement for [global tables](global-tables.html), which are designed to provide fast, up-to-date reads from all [database regions](multiregion-overview.html#database-regions).
 {{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
@@ -201,7 +201,7 @@ SELECT * FROM system.replication_constraint_stats WHERE violating_ranges > 0;
        57 |          0 | constraint | +region=us-west1:1 |         1 | 2022-01-19 19:09:00.235247+00 |                1
 ~~~
 
-The output above shows that there are now far fewer replicas that do not meet the data domiciling goal. As described above, [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) does not affect the replica placement for [`GLOBAL` tables](global-tables.html), so it's likely that these few replicas are part of a global table.
+The output above shows that there are now far fewer replicas that do not meet the data domiciling goal. As described above, [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) does not affect the replica placement for [`GLOBAL` tables](global-tables.html), so it's likely that these few replicas are part of a global table.
 
 To verify that the constraint violating replicas are indeed part of a `GLOBAL` table, run the replication report query from [Step 3](#step-3-view-noncompliant-replicas) again as shown below. This will display the database and table names of these replicas.
 
@@ -273,8 +273,8 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
 - [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
 - [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
-- [`ADD REGION`](add-region.html)
+- [`ADD REGION`](alter-database.html#add-region)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [Zone Config Extensions](zone-config-extensions.html)
-- [`ALTER DATABASE ... SET SECONDARY REGION`](set-secondary-region.html)
-- [`ALTER DATABASE ... DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`ALTER DATABASE ... SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)

@@ -151,6 +151,6 @@ In this example, the columns where the value of the `index_name` column is `us
 - [`CREATE INDEX`](create-index.html)
 - [`COMMENT ON`](comment-on.html)
 - [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
+- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
 - [Information Schema](information-schema.html)
 - [SQL Statements](sql-statements.html)

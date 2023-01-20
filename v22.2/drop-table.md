@@ -196,7 +196,7 @@ Use a `SHOW CREATE TABLE` statement to verify that the foreign key constraint ha
 - [`ALTER TABLE`](alter-table.html)
 - [`CREATE TABLE`](create-table.html)
 - [`INSERT`](insert.html)
-- [`RENAME TABLE`](rename-table.html)
+- [`ALTER TABLE ... RENAME TO`](alter-table.html#rename-to)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW TABLES`](show-tables.html)
 - [`UPDATE`](update.html)

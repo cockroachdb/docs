@@ -30,7 +30,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a virtual [computed column](computed-columns.html), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
-- A foreign key column can reference the [`crdb_region` column](set-locality.html#crdb_region) in [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
+- A foreign key column can reference the [`crdb_region` column](alter-table.html#crdb_region) in [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
 **Referenced Columns**
 
@@ -121,7 +121,7 @@ To improve query performance, we recommend doing the following:
 - For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
 
     {{site.data.alerts.callout_danger}}
-    Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+    Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](alter-table.html#validate-constraint) statement.
     {{site.data.alerts.end}}
 
 ## Syntax
@@ -129,7 +129,7 @@ To improve query performance, we recommend doing the following:
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
 
 {{site.data.alerts.callout_info}}
-You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD CONSTRAINT`](alter-table.html#add-the-foreign-key-constraint-with-cascade).
 {{site.data.alerts.end}}
 
 ### Column level
@@ -911,8 +911,8 @@ Inserting values into the table using the `MATCH FULL` algorithm (described [abo
 ## See also
 
 - [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](drop-constraint.html)
-- [`ADD CONSTRAINT`](add-constraint.html)
+- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
+- [`ADD CONSTRAINT`](alter-table.html#add-constraint)
 - [`CHECK` constraint](check.html)
 - [`DEFAULT` constraint](default-value.html)
 - [`NOT NULL` constraint](not-null.html)

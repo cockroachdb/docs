@@ -40,10 +40,6 @@ The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage p
 
 {% include {{ page.version.version }}/misc/table-storage-parameters.md %}
 
-### Row-level TTL parameters
-
-For the list of storage parameters that affect how [Row-Level TTL](row-level-ttl.html) works, see the list of [TTL storage parameters](row-level-ttl.html#ttl-storage-parameters).
-
 ## Required privileges
 
 The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the table.
@@ -87,6 +83,6 @@ In this case, CockroachDB implicitly added the `ttl` and `ttl_job_cron` [TTL sto
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
-- [`SET` (storage parameter)](set-storage-parameter.html)
-- [`RESET` (storage parameter)](reset-storage-parameter.html)
+- [`SET` (storage parameter)](alter-table.html#set-storage-parameter)
+- [`RESET` (storage parameter)](alter-table.html#reset-storage-parameter)
 - [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)

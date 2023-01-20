@@ -2,7 +2,7 @@
 
     * The [regions](multiregion-overview.html#database-regions) of the source database and the regions of the destination database have the same set of regions.
     * The regions were added to each of the databases in the same order.
-    * The databases have the same [primary region](set-primary-region.html).
+    * The databases have the same [primary region](alter-database.html#set-primary-region).
 
     The following example would be considered as having **mismatched** regions because the database regions were not added in the same order and the primary regions do not match.
 

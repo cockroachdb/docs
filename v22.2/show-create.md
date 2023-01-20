@@ -272,7 +272,7 @@ Use the `SHOW CREATE TABLE` command to view [multi-region-defined](multiregion-o
 
 {% include enterprise-feature.md %}
 
-To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](set-primary-region.html) statement:
+To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](alter-database.html#set-primary-region) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -286,7 +286,7 @@ ALTER DATABASE PRIMARY REGION
 Time: 49ms total (execution 48ms / network 0ms)
 ~~~
 
-All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in `us-east` by default. Configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#regional-by-row) instead:
+All tables will be [`REGIONAL BY TABLE`](alter-table.html#regional-by-table) in `us-east` by default. Configure the `users` table to be [`REGIONAL BY ROW`](alter-table.html#regional-by-row) instead:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -469,7 +469,7 @@ In a new terminal, start a virtual multi-region demo cluster:
 $ cockroach demo --global --nodes 9
 ~~~
 
-In the SQL shell, [add regions to the database](add-region.html):
+In the SQL shell, [add regions to the database](alter-database.html#add-region):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

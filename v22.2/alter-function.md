@@ -6,24 +6,11 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `ALTER FUNCTION` [statement](sql-statements.html) alters a [user-defined function](user-defined-functions.html).
-
-{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
-
-## Subcommands
-
-Subcommand | Description
------------|------------
-`OWNER TO` | Change the [owner](owner-to.html) of a function.
-`RENAME TO` | Change the name of a function.
-`SET SCHEMA` | [Set schema](set-schema.html) of a function.
+The `ALTER FUNCTION` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a [user-defined function](user-defined-functions.html).
 
 ## Required privileges
 
-- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
-- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
-- To alter the owner of a function, the new owner must have `CREATE` privilege on the schema of the function.
-- To change the schema of a function, a user must have `CREATE` privilege on the new schema.
+Refer to the respective [subcommands](#subcommands).
 
 ## Synopsis
 
@@ -36,11 +23,92 @@ Subcommand | Description
 Parameter | Description
 ----------|------------
 `function_with_argtypes` | The name of the function, with optional function arguments to alter.
-`name` | The new name of the function.
+
+## Subcommands
+
+Subcommand | Description
+-----------|------------
+[`OWNER TO`](#owner-to) | Change the owner of a function.
+[`RENAME TO`](#rename-to) | Change the name of a function.
+[`SET SCHEMA`](#set-schema) | Change the [schema](sql-name-resolution.html) of a function.
+
+### `OWNER TO`
+
+`ALTER FUNCTION ... OWNER TO` is used to change the owner of a function.
+
+#### Required privileges
+
+- To alter the owner of a function, the new owner must have `CREATE` privilege on the schema of the function.
+- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+
+#### Parameters
+
+Parameter | Description |
+----------|-------------|
 `role_spec` | The role to set as the owner of the function.
-`schema_name` | The name of the new schema.
+
+### `RENAME TO`
+
+`ALTER FUNCTION ... RENAME TO` changes the name of a function.
+
+#### Required privileges
+
+- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+
+#### Parameters
+
+Parameter | Description |
+----------|-------------|
+`function_new_name` | The new name of the function.
+
+### `SET SCHEMA`
+
+`ALTER FUNCTION ... SET SCHEMA` changes the [schema](sql-name-resolution.html) of a function.
+
+{{site.data.alerts.callout_info}}
+CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` session variable](set-vars.html#supported-variables).
+{{site.data.alerts.end}}
+
+#### Required privileges
+
+- To change the schema of a function, a user must have `CREATE` privilege on the new schema.
+- To alter a function, a user must [own](security-reference/authorization.html#object-ownership) the function.
+- To alter a function, a user must have `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the schema of the function.
+
+#### Parameters
+
+Parameter | Description |
+----------|-------------|
+`schema_name` | The name of the new schema for the function.
 
 ## Examples
+
+### Change the owner of a function
+
+Suppose that the current owner of a `sq` function is `root` and you want to change the owner to a new user named `max`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER FUNCTION sq OWNER TO max;
+~~~
+
+To verify that the owner is now `max`, run a join query against the `pg_catalog.pg_proc` and `pg_catalog.pg_roles` tables:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT rolname FROM pg_catalog.pg_proc f
+JOIN pg_catalog.pg_roles r ON f.proowner = r.oid
+WHERE proname = 'sq';
+~~~
+
+~~~
+  rolname
+-----------
+  max
+(1 row)
+~~~
 
 ### Rename a function
 
@@ -48,19 +116,19 @@ The following statement defines a function that computes the sum of two argument
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
+CREATE FUNCTION add(a INT, b INT) RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 'SELECT $1 + $2';
 ~~~
 
 The following statement renames the `add` function to `sum`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER FUNCTION add(a INT, b INT) RENAME TO sum;
+ALTER FUNCTION add(a INT, b INT) RENAME TO sum;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE FUNCTION sum;
+SHOW CREATE FUNCTION sum;
 ~~~
 
 The default schema for the function `sum` is `public`:
@@ -80,11 +148,11 @@ The default schema for the function `sum` is `public`:
 (1 row)
 ~~~
 
-Since `sum` is a [built-in function](functions-and-operators.html#aggregate-functions), you must specify the `public` schema to invoke your user-defined `sum` function:
+Since there is also a [built-in function](functions-and-operators.html#aggregate-functions) named `sum`, you must specify the `public` schema to invoke your user-defined `sum` function:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT public.sum(1,2);
+SELECT public.sum(1,2);
 ~~~
 
 ~~~
@@ -93,7 +161,7 @@ Since `sum` is a [built-in function](functions-and-operators.html#aggregate-func
     3
 ~~~
 
-If you do not specify `public`, you will get an error when invoking a built-in function:
+If you do not specify `public` when invoking a user-defined function, you will get an error when invoking a built-in function with the same name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -103,6 +171,66 @@ SELECT sum(1,2);
 ~~~
 ERROR: ambiguous function class on sum
 SQLSTATE: 42725
+~~~
+
+### Change the schema of a function
+
+Suppose you want to add the user-defined `sum` function from the [preceding example](#rename-a-function) to a new schema called `cockroach_labs`.
+
+By default, [unqualified functions](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE FUNCTION public.sum;
+~~~
+
+~~~
+  function_name |                 create_statement
+----------------+---------------------------------------------------
+  sum           | CREATE FUNCTION public.sum(IN a INT8, IN b INT8)
+                |     RETURNS INT8
+                |     IMMUTABLE
+                |     LEAKPROOF
+                |     CALLED ON NULL INPUT
+                |     LANGUAGE SQL
+                |     AS $$
+                |     SELECT $1 + $2;
+                | $$
+(1 row)
+~~~
+
+If the new schema does not already exist, [create it](create-schema.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE SCHEMA IF NOT EXISTS cockroach_labs;
+~~~
+
+Then, change the function's schema:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER FUNCTION public.sum SET SCHEMA cockroach_labs;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE FUNCTION cockroach_labs.sum;
+~~~
+
+~~~
+  function_name |                     create_statement
+----------------+-----------------------------------------------------------
+  sum           | CREATE FUNCTION cockroach_labs.sum(IN a INT8, IN b INT8)
+                |     RETURNS INT8
+                |     IMMUTABLE
+                |     LEAKPROOF
+                |     CALLED ON NULL INPUT
+                |     LANGUAGE SQL
+                |     AS $$
+                |     SELECT $1 + $2;
+                | $$
+(1 row)
 ~~~
 
 ## See also

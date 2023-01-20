@@ -84,7 +84,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
                  | ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION
     ~~~
 
-1. Set the table's locality to [`REGIONAL BY ROW`](#regional-by-row-tables) using the [`ALTER TABLE ... SET LOCALITY`](set-locality.html) statement:
+1. Set the table's locality to [`REGIONAL BY ROW`](#regional-by-row-tables) using the [`ALTER TABLE ... SET LOCALITY`](alter-table.html#set-locality) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -96,7 +96,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
     ALTER TABLE SET LOCALITY
     ~~~
 
-1.  Identify which rows need to be optimized for access from which regions. Issue [`UPDATE`](update.html) statements that modify the automatically created [`crdb_region`](set-locality.html#crdb_region) column. Issue the statements below to associate each row with a home region that depends on its `city` column:
+1.  Identify which rows need to be optimized for access from which regions. Issue [`UPDATE`](update.html) statements that modify the automatically created [`crdb_region`](alter-table.html#crdb_region) column. Issue the statements below to associate each row with a home region that depends on its `city` column:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -105,7 +105,7 @@ By default, all tables in a multi-region database are [regional tables](#regiona
     UPDATE users SET crdb_region = 'us-west'      WHERE city IN ('los angeles', 'san francisco', 'seattle');
     ~~~
 
-    By default, the region column will get auto-assigned on insert; this is also known as "auto-homing".  For more information about how the `crdb_region` column works, see [`ALTER TABLE ... SET LOCALITY REGIONAL BY ROW`](set-locality.html#regional-by-row).
+    By default, the region column will get auto-assigned on insert; this is also known as "auto-homing".  For more information about how the `crdb_region` column works, see [`ALTER TABLE ... SET LOCALITY REGIONAL BY ROW`](alter-table.html#regional-by-row).
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
