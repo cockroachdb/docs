@@ -23,11 +23,15 @@ For instructions on starting a secure cluster, see [Start a Local Cluster (Secur
 
 </div>
 
+## Select your deployment
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
   <button class="filter-button page-level" data-scope="core">{{ site.data.products.core }}</button>
 </div>
+
+## Select your language
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
@@ -36,6 +40,8 @@ For instructions on starting a secure cluster, see [Start a Local Cluster (Secur
   <button class="filter-button page-level" data-scope="java">Java</button>
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
 </div>
+
+## Select your driver or ORM
 
 <div class="filter-content" markdown="1" data-scope="js-ts">
 
