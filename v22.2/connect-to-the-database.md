@@ -520,17 +520,6 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}
 ~~~
 
-{{site.data.alerts.callout_info}}
-In order for SQLAlchemy to use the CockroachDB adapter, the connection string must begin with `cockroachdb://`. You can use the following code to modify the general connection string, which begins with `postgresql://`, to the format that works with SQLAlchemy and the CockroachDB adapter:
-
-{% include_cached copy-clipboard.html %}
-~~~ python
-engine = create_engine(os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://"))
-engine.connect()
-~~~
-
-{{site.data.alerts.end}}
-
 </div>
 
 <div class="filter-content" markdown="1" data-scope="core">
@@ -547,6 +536,17 @@ To connect to CockroachDB with SQLAlchemy, you must install the [CockroachDB SQL
 {{site.data.alerts.end}}
 
 For more information about connecting with SQLAlchemy, see the [official SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/core/engines_connections.html).
+
+{{site.data.alerts.callout_info}}
+In order for SQLAlchemy to use the CockroachDB adapter, the connection string must begin with `cockroachdb://`. You can use the following code to modify the general connection string, which begins with `postgresql://`, to the format that works with SQLAlchemy and the CockroachDB adapter:
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+engine = create_engine(os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://"))
+engine.connect()
+~~~
+
+{{site.data.alerts.end}}
 
 </div>
 
