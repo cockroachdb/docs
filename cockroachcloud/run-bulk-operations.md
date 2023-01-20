@@ -16,10 +16,6 @@ docs_area: manage
 
 The examples on this page demonstrate how to take customer-owned backups.
 
-{{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
-{{site.data.alerts.end}}
-
 For information on `userfile` commands, visit the following pages:
 
 - [`cockroach userfile upload`](../{{site.current_cloud_version}}/cockroach-userfile-upload.html)
@@ -108,7 +104,7 @@ Read the [`IMPORT`](../{{site.current_cloud_version}}/import.html) page for more
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+Using `EXPORT` with `userfile` is not recommended. If you want to export data to a local CSV file, you can use [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell

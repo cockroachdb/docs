@@ -15,7 +15,7 @@ These instructions assume you already have the following:
 
 - A [{{ site.data.products.serverless }} cluster](quickstart.html) from which you want to migrate data.
 - A [paid {{ site.data.products.dedicated }} cluster](quickstart-trial-cluster.html). Your first paid {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
-- [Cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). To access cloud storage, you must have [billing information](billing-management.html) on file for your organization. You provided this when you created your {{ site.data.products.dedicated }} cluster.
+- [Cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
 
 ## Step 1. Export data to cloud storage
 
