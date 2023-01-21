@@ -11,18 +11,6 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
 
 For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](community-tooling.html). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
-<div class="filter-content" markdown="1" data-scope="core">
-
-{{site.data.alerts.callout_info}}
-The connection information shown on this page uses [client certificate and key authentication](authentication.html#client-authentication) to connect to a secure, {{ site.data.products.core }} cluster.
-
-To connect to a {{ site.data.products.core }} cluster with client certificate and key authentication, you must first [generate server and client certificates](authentication.html#using-digital-certificates-with-cockroachdb).
-
-For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](secure-a-cluster.html).
-{{site.data.alerts.end}}
-
-</div>
-
 ## Select your deployment
 
 <div class="filters clearfix">
@@ -96,6 +84,8 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
@@ -144,6 +134,8 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 ~~~
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -251,6 +243,8 @@ Where:
 - `CLIENT_KEY` is an environment variable set to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 - `CLIENT_CERT` is an environment variable set to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 TypeORM accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
@@ -325,6 +319,8 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with Prisma, see the [official Prisma documentation](https://www.prisma.io/cockroachdb).
@@ -369,6 +365,8 @@ Parameter | Description
 `<root-cert>`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
 `<client-cert>`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `<client-key>`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -435,6 +433,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/docs).
@@ -485,6 +485,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/psycopg3/docs/basic/index.html).
@@ -534,6 +536,8 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -637,6 +641,8 @@ DATABASES = {
 ...
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -688,6 +694,8 @@ Parameter | Description
 `{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
 `{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -754,6 +762,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with pgx, see the [official pgx documentation](https://pkg.go.dev/github.com/jackc/pgx).
@@ -812,6 +822,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 ~~~
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -872,6 +884,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with GORM, see the [official GORM documentation](https://gorm.io/docs).
@@ -916,6 +930,8 @@ Parameter | Description
 `{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
 `{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -969,6 +985,8 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 ~~~
 jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -1025,6 +1043,8 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -1073,6 +1093,8 @@ Parameter | Description
 `{root-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
 `{client-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -1133,6 +1155,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with pg, see the [official pg documentation](https://www.rubydoc.info/gems/pg).
@@ -1184,6 +1208,8 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -1232,6 +1258,8 @@ Parameter | Description
 `{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
 `{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
