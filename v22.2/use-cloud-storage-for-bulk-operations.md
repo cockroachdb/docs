@@ -1,6 +1,6 @@
 ---
-title: Use Cloud Storage for Bulk Operations
-summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
+title: Use Cloud Storage
+summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to various operation statements.
 toc: true
 docs_area: manage
 ---
@@ -43,7 +43,7 @@ The location parameters often contain special characters that need to be URI-enc
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-You can disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
+You can disable the use of implicit credentials when accessing external cloud storage services for various operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>
@@ -97,9 +97,9 @@ CockroachDB also provides client-side encryption of backup data, for more inform
 
 ## Storage permissions
 
-This section describes the minimum permissions required to run CockroachDB bulk operations. While we provide the required permissions for Amazon S3 and Google Cloud Storage, the provider's documentation provides detail on the setup process and different options regarding access management.
+This section describes the minimum permissions required to run CockroachDB operations. While we provide the required permissions for Amazon S3 and Google Cloud Storage, the provider's documentation provides detail on the setup process and different options regarding access management.
 
-Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket.
+Depending on the actions a operation performs, it will require different access permissions to a cloud storage bucket.
 
 This table outlines the actions that each operation performs against the storage bucket:
 
