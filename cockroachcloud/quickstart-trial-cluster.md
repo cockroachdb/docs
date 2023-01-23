@@ -19,7 +19,7 @@ For this tutorial, you will create a 3-node GCP cluster in the `us-west2` region
 1. On the **Create Cluster** page, select **Dedicated**.
 
     {{site.data.alerts.callout_info}}
-    Free trials do not apply to **Dedicated Advanced** clusters.
+    Free trials do not apply to **Dedicated advanced** clusters.
     {{site.data.alerts.end}}
     
 1. For **Cloud provider**, select **Google Cloud**.

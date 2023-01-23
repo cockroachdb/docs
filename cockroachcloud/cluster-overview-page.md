@@ -5,7 +5,14 @@ toc: true
 docs_area: manage
 ---
 
-The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster.
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
+    <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+</div>
+
+The **Cluster Overview** page displays key metrics about your {{ site.data.products.db }} cluster.
+
+<section class="filter-content" markdown="1" data-scope="serverless">
 
 ## Cluster settings
 
@@ -54,3 +61,34 @@ The **Request Units** graph displays the CPU and I/O resources being used by que
 ### SQL Statements
 
 The **SQL Statements** graph displays an average of the number of [`SELECT`](../{{site.current_cloud_version}}/select-clause.html), [`INSERT`](../{{site.current_cloud_version}}/insert.html), [`UPDATE`](../{{site.current_cloud_version}}/update.html), and [`DELETE`](../{{site.current_cloud_version}}/delete.html) statements successfully executed per second.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
+## Cluster configuration
+
+The **Cluster configuration** panel displays the settings you chose during [cluster creation](create-your-cluster.html).
+
+| Field     | Description                                                                                             |
+|-----------|---------------------------------------------------------------------------------------------------------|
+| Cloud     | The cluster's [cloud provider](create-a-serverless-cluster.html#step-2-select-the-cloud-provider). |
+| Plan type | The [plan type](create-your-cluster.html#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
+| Region(s) | The cluster's [region(s)](create-your-cluster.html#step-3-select-the-region-s).         |
+| Nodes     | The [number of nodes](create-your-cluster.html#step-4-select-the-number-of-nodes) the cluster has and how many are live. |
+| Compute   | The cluster's [compute power per node](create-your-cluster.html#step-5-select-the-hardware-per-node).         |
+| Storage   | The cluster's [storage per node](create-your-cluster.html#step-5-select-the-hardware-per-node).         |
+
+## PCI ready (Dedicated advanced)
+
+{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for PCI compliance. Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+
+- [Audit logs](cloud-org-audit-logs.html)
+- [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)
+- [Egress Perimeter Controls](egress-perimeter-controls.html)
+- Single Sign-On (SSO) for both your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and the [DB Console](../{{site.versions["stable"]}}/sso-db-console.html)
+- [Network security](network-authorization.html)
+
+You can also check the status of these features on the [**PCI ready**](cluster-overview.html#pci-ready) page of the {{ site.data.products.db }} Console.
+
+</section>
