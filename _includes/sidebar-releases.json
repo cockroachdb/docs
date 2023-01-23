@@ -43,16 +43,6 @@
       "urls": [
         "/${VERSION}/known-limitations.html"
       ]
-    },
-    {
-      "title": "Technical Advisories",
-      "urls": [
-        "/advisories/index.html",
-        {% for x in site.data.advisories %}
-          "/advisories/{{ x.advisory }}.html",
-        {% endfor %}
-        "/advisories/index.html"
-      ]
     }
   ]
 },
@@ -67,4 +57,14 @@
   "urls": [
     "/releases/kubernetes-operator.html"
   ]
+},
+{
+ "title": "Technical Advisories",
+ "urls": [
+   "/advisories/index.html",
+   {% for x in site.data.advisories %}
+     "/advisories/{{ x.advisory }}.html",
+   {% endfor %}
+   "/advisories/index.html"
+ ]
 }

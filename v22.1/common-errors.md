@@ -189,7 +189,7 @@ When importing into an existing table with [`IMPORT INTO`](import-into.html), th
 
 ## memory budget exceeded
 
-This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an OOM crash, which might be prevented by failing the query.
+This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an [OOM crash](cluster-setup-troubleshooting.html#out-of-memory-oom-crash), which might be prevented by failing the query.
 
 {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 

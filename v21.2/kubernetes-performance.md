@@ -168,7 +168,7 @@ When you ask Kubernetes to run a pod, either directly or indirectly through anot
 
 #### Resource requests
 
-Resource requests allow you to reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and will ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is very strongly recommended to ensure good performance, because if you do not set them then CockroachDB could be starved of CPU cycles or OOM stopped before less important processes.
+Resource requests allow you to reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and will ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is very strongly recommended to ensure good performance, because if you do not set them then CockroachDB could be starved of CPU cycles or [OOM stopped](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) before less important processes.
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
@@ -419,7 +419,7 @@ For more information, see [Pod scheduling](schedule-cockroachdb-kubernetes.html)
 
 ## See also
 
-- [Orchestrate CockroachDB with Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+- [Orchestrate CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html)
 - [Production Checklist](recommended-production-settings.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Troubleshooting Performance Issues](query-behavior-troubleshooting.html)

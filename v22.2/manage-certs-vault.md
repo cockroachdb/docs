@@ -22,7 +22,7 @@ PKI involves careful management of the certificates used for authentication and 
 
 - Review [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](security-reference/transport-layer-security.html).
 - Vault:
-  - You must have access to a Vault cluster. This can be a, a) cluster provisioned online through [HachiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault), b) a Vault cluster deployed by your organization, or even c) a quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
+  - You must have access to a Vault cluster. This can be a, a) cluster provisioned online through [HashiCorp Cloud Platform (HCP)](https://portal.cloud.hashicorp.com/services/vault), b) a Vault cluster deployed by your organization, or even c) a quickstart Vault cluster you deploy yourself in ["dev" mode](https://learn.hashicorp.com/tutorials/vault/getting-started-dev-server?in=vault/getting-started).
   - Sufficient permissions on the cluster to enable secrets engines and create policies, either via the root access token for this cluster or through a [custom policy](https://learn.hashicorp.com/tutorials/vault/policies).
 - Google Cloud Platform (GCP):
   - Create a GCP account and project.
@@ -64,7 +64,7 @@ The work described here can be divided up into three chunks, each of which might
 
 persona | tasks | Vault permissions | GCP Permissions
 ----|------|-------|---
-`ca-admin` | <ul><li>Manage CA lifecyle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node SSH access</li><li>Client SSH access</li></ul>
+`ca-admin` | <ul><li>Manage CA lifecycle</li><li>Issue node certificates</li><li>Issue client certificates</li></ul>| <ul><li>Admin</li></ul>|<ul><li>CA jumpbox access</li><li>Node SSH access</li><li>Client SSH access</li></ul>
 `node-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on nodes</li></ul>|   |<ul><li>Node SSH access</li></ul>
 `client-operator` | <ul><li>Install, configure and run CockroachDB and dependencies on clients</li></ul>| |<ul><li>Client SSH access</li></ul>
 

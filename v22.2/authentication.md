@@ -271,7 +271,7 @@ Asymmetric encryption involves a pair of keys instead of a single key. The two k
 
 So going back to our example, Amy and Rosa both have their own public-private key pairs. They keep their private keys safe with themselves and publicly distribute their public keys. Now when Amy wants to send a message to Rosa, she requests Rosa's public key, encrypts the message using Rosa’s public key, and sends the encrypted message. Rosa uses her own private key to decrypt the message.
 
-But what if a malicious imposter intercepts the communication? The imposter might pose as Rosa and send their public key instead of Rosa’s. There's no way for Amy to know that the public key she received isn’t Rosa’s, so she would end up using the imposter's public key to encrypt the message and send it to the imposter. The imposter can use their own private key and decrypt and read the message, thus compromising the secure communication channel between Amy and Rosa.
+But what if a malicious imposter intercepts the communication? The imposter might pose as Rosa and send their public key instead of Rosa’s. There's no way for Amy to know that the public key she received isn’t Rosa’s, so she would end up using the impostor's public key to encrypt the message and send it to the imposter. The imposter can use their own private key and decrypt and read the message, thus compromising the secure communication channel between Amy and Rosa.
 
 To prevent this security risk, Amy needs to be sure that the public key she received was indeed Rosa’s. That’s where the Certificate Authority (CA) comes into the picture.
 
@@ -305,6 +305,6 @@ Let's see how the digital certificate is used in client-server communication: Th
 
 - [Client Connection Parameters](connection-parameters.html)
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](secure-a-cluster.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

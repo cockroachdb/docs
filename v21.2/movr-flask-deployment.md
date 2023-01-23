@@ -2,7 +2,6 @@
 title: Deploy a Global, Serverless Application
 summary: This page includes instructions for deploying a multi-region web application using CockroachDB Cloud and Google Cloud services.
 toc: true
-redirect_from: multi-region-deployment.html
 docs_area:
 ---
 

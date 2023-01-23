@@ -2,7 +2,6 @@
 title: MovR&#58; A Global Application Use-Case
 summary: This page covers an example use-case for global applications.
 toc: true
-redirect_from: multi-region-use-case.html
 docs_area: develop
 ---
 

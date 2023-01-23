@@ -162,6 +162,12 @@ Name | Help
 `range.snapshots.rebalancing.sent-bytes` | Number of rebalancing snapshot bytes sent
 `range.snapshots.recovery.rcvd-bytes` | Number of recovery snapshot bytes received
 `range.snapshots.recovery.sent-bytes` | Number of recovery snapshot bytes sent
+`range.snapshots.recv-in-progress` | Number of non-empty snapshots being received
+`range.snapshots.recv-queue` | Number of snapshots queued to receive
+`range.snapshots.recv-total-in-progress` | Number of total snapshots being received
+`range.snapshots.send-in-progress` | Number of non-empty snapshots being sent
+`range.snapshots.send-queue` | Number of snapshots queued to send
+`range.snapshots.send-total-in-progress` | Number of total snapshots being sent
 `range.snapshots.sent-bytes` | Number of snapshot bytes sent
 `range.snapshots.unknown.rcvd-bytes` | Number of unknown snapshot bytes received
 `range.snapshots.unknown.sent-bytes` | Number of unknown snapshot bytes sent

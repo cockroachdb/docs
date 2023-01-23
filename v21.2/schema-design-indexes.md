@@ -139,6 +139,10 @@ Here are some best practices for creating and using indexes:
 
 - {% include {{page.version.version}}/sql/dev-schema-change-limits.md %}
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
+
 ## Example
 
 Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.

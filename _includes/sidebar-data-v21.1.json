@@ -808,7 +808,7 @@
                 "title": "Kubernetes Single-Cluster Deployment",
                 "urls": [
                   "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
                 ]
               },
               {
