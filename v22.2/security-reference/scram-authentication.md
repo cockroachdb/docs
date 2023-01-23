@@ -194,7 +194,7 @@ SET CLUSTER SETTING server.user_login.password_encryption = 'scram-sha-256';
 
 #### `server.user_login.store_client_pre_hashed_passwords.enabled`
 
-Enable the CockroachDB cluster to accept pre-computed SCRAM-SCHA-256 salted password hashes, rather than accepting a cleartext password and computing the hash itself. In CockroachDB v22.2.x and above, this cluster setting is enabled by default.
+Enable the CockroachDB cluster to accept pre-computed SCRAM-SHA-256 salted password hashes, rather than accepting a cleartext password and computing the hash itself. In CockroachDB v22.2.x and above, this cluster setting is enabled by default.
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -224,7 +224,7 @@ SET CLUSTER SETTING server.host_based_authentication.configuration TO '
 
 ### Handle cleartext credentials securely
 
-Using SCRAM authentication, a CockroachdDB cluster need not store or handle the cleartext passwords used by clients to authenticate. However, to achieve full separation of concerns, the cleartext credentials must be isolated so that they are exposed as little as possible in transit, storage, and during computation.
+Using SCRAM authentication, a CockroachDB cluster need not store or handle the cleartext passwords used by clients to authenticate. However, to achieve full separation of concerns, the cleartext credentials must be isolated so that they are exposed as little as possible in transit, storage, and during computation.
 
 Generally, this can be best achieved by handling cleartext credentials only in a dedicated credential management environment, such as a secure compute instance or secure physical workstation.
 
@@ -234,7 +234,7 @@ That environment must be provisioned with:
 - A CockroachDB client with ['USER CREATE/ALTER privileges'](../create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users).
 - Access, with write privileges, to a secrets store where the cleartext passwords will be persisted.
 
-On that instance, [generate SCRAM salted password hashes](#manage-users-with-pre-hashed-passwords), manage the users via CockroachdDB client, as described in the following section, and persist the secrets in the secrets store.
+On that instance, [generate SCRAM salted password hashes](#manage-users-with-pre-hashed-passwords), manage the users via CockroachDB client, as described in the following section, and persist the secrets in the secrets store.
 
 ## Manage users with pre-hashed passwords
 

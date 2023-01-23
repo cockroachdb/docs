@@ -1,6 +1,6 @@
 ---
 title: Using Online Certificate Status Protocol (OCSP) with CockroachDB
-summary: Using Online Certirifcate Status Protocol (OCSP) with CockroachDB
+summary: Using Online Certificate Status Protocol (OCSP) with CockroachDB
 toc: true
 docs_area: manage.security
 ---

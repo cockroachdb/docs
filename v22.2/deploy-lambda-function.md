@@ -168,7 +168,7 @@ This step is optional, as you do not need to create a new deployment package to 
     $ aws configure
     ~~~
 
-    Follow the prompts to authenticate as a user with administrator priviliges. We do not recommend using the root user.
+    Follow the prompts to authenticate as a user with administrator privileges. We do not recommend using the root user.
 
 1. Create an execution role for the Lambda function and attach the `AWSLambdaBasicExecutionRole` policy to the role:
 
