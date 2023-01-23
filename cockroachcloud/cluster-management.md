@@ -20,7 +20,7 @@ On [logging in to the {{ site.data.products.db }} Console](https://cockroachlabs
 For each cluster, the following details display:
 
 - The cluster's **Name**
-- The cluster's **Plan Type**, either Serverless or Dedicated
+- The cluster's **Plan Type** (Serverless, Dedicated base, or Dedicated advanced)
 - The date and time the cluster was **Created**
 - The cluster's current **State**
 - The cluster's **Cloud** provider, either GCP or AWS
@@ -37,7 +37,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The **Overview** page displays details about the selected {{ site.data.products.db }} cluster:
+The [**Overview** page](cluster-overview-page.html?filter=dedicated) displays details about the selected {{ site.data.products.db }} cluster:
 
 - The **Current Charges** and next billing date for the cluster
 - The cluster's **Cloud** provider
@@ -45,6 +45,8 @@ The **Overview** page displays details about the selected {{ site.data.products.
 - A list of the selected cluster's nodes.
 
     For each node, the page displays the node's `Name` and `Status`, nested under its region.
+
+- The status of security features required for [PCI compliance](#pci-compliance).
 
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
@@ -168,6 +170,19 @@ All databases are not backed up at the same time. Each database is backed up eve
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
 Additionally, you can [backup and restore](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) data on your own.
+
+## Configure PCI compliant features (Dedicated advanced)
+
+{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for PCI compliance. Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+
+- [Audit logs](cloud-org-audit-logs.html)
+- [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)
+- [Egress Perimeter Controls](egress-perimeter-controls.html)
+- Single Sign-On (SSO) for both your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and the [DB Console](../{{site.versions["stable"]}}/sso-db-console.html)
+- [Network security](network-authorization.html)
+
+You can also check the status of these features on the [**PCI ready**](cluster-overview.html#pci-ready) page of the {{ site.data.products.db }} Console.
+
 
 ## Delete cluster
 
