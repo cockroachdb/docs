@@ -25,6 +25,10 @@ Complete the following items before starting this tutorial:
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Ensure you have a secure, publicly available CockroachDB cluster running v21.2.16 or later.
 - If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+    {{site.data.alerts.callout_danger}}
+    You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
+    {{site.data.alerts.end}}
+
     - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](../{{site.current_cloud_version}}/alter-backup-schedule.html) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
@@ -133,7 +137,7 @@ Data should now be moving from source to target. You can analyze the **Table Sta
 1. Select the task you created in Step 2.
 1. Select **Table statistics** below the **Summary** section.
 
-If your migration succeeded, you can now [re-enable revision history](#before-you-begin) for cluster backups.
+If your migration succeeded, you should now [re-enable revision history](#before-you-begin) for cluster backups.
 
 If your migration failed for some reason, you can check the checkbox next to the table(s) you wish to re-migrate and select **Reload table data**.
 
