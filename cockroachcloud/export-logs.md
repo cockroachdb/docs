@@ -1,6 +1,6 @@
 ---
-title: Export Logs From a CockroachDB dedicated Cluster
-summary: Export Logs From a CockroachDB dedicated Cluster
+title: Export Logs From a CockroachDB Dedicated Cluster
+summary: Export Logs From a CockroachDB Dedicated Cluster
 toc: true
 docs_area: manage
 ---
