@@ -42,8 +42,8 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 ### Storage considerations
 
 - [HTTP storage](use-a-local-file-server-for-bulk-operations.html) is not supported for `BACKUP` and `RESTORE`.
-- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) in your cloud storage bucket.**
-- While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](use-cloud-storage-for-bulk-operations.html) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
+- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage.html#object-locking) in your cloud storage bucket.**
+- While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](use-cloud-storage.html) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
 
 ## Required privileges
 
@@ -100,14 +100,14 @@ N/A                                | Backup the cluster. For an example of a ful
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [URL format](use-cloud-storage-for-bulk-operations.html#url-format)
-- [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
+- [URL format](use-cloud-storage.html#url-format)
+- [Example file URLs](use-cloud-storage.html#example-file-urls)
 - [Authentication parameters](cloud-storage-authentication.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 {{site.data.alerts.callout_success}}
-Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
 
 ## Functional details
@@ -328,7 +328,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 ### Back up with an S3 storage class
 
-To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+To associate your backup objects with a [specific storage class](use-cloud-storage.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

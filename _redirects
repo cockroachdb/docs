@@ -377,6 +377,7 @@ layout: null
 /docs/cockroachcloud/planning-your-serverless-cluster /docs/cockroachcloud/learn-about-pricing.html 301
 /docs/cockroachcloud/migrate-from-free-to-dedicated /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
 /docs/cockroachcloud/free-faqs /docs/cockroachcloud/serverless-faqs.html 301
+/docs/v22.2/use-cloud-storage-for-bulk-operations.html /docs/v22.2/use-cloud-storage.html 301
 
 # Removed pages
 /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestration.html 301

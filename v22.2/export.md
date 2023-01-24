@@ -75,7 +75,7 @@ A hexadecimal hash code (`abc123...` in the file names) uniquely identifies each
 
 For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
@@ -223,7 +223,7 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 
 ### Export tabular data with an S3 storage class
 
-To associate your export objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+To associate your export objects with a [specific storage class](use-cloud-storage.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -261,4 +261,4 @@ Use [`SHOW STATEMENTS`](show-statements.html) to get a running export's `query_i
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)

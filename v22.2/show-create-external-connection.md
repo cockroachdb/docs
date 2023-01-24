@@ -68,5 +68,5 @@ backup_bucket_1   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket_n
 
 ## See also
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Changefeed Sinks](changefeed-sinks.html)

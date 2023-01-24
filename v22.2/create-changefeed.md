@@ -105,7 +105,7 @@ Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOU
 Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`                         
 HTTP         | `'http://localhost:8080/{PATH}'`
 
-[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
+[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
@@ -291,7 +291,7 @@ For step-by-step guidance on creating a changefeed connected to a cloud storage 
 
 ### Create a changefeed with an S3 storage class
 
-To associate the changefeed message files with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+To associate the changefeed message files with a [specific storage class](use-cloud-storage.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

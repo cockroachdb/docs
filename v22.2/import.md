@@ -89,7 +89,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** `Off`. May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  |  Ignore SQL statements in the dump file that are unsupported by CockroachDB.
-`log_ignored_statements` | `PGDUMP` |  Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html)).
+`log_ignored_statements` | `PGDUMP` |  Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile-for-bulk-operations.html)).
 <a name="options-detached"></a>`DETACHED`             | N/A            |  When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
@@ -138,7 +138,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
@@ -334,7 +334,7 @@ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.h
 
 ## See also
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
