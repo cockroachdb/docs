@@ -372,7 +372,7 @@ In Docker-based deployments of CockroachDB, these dependencies do not need to be
 
 ## File descriptors limit
 
-CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
+CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, note the following recommendations.
 
 For each CockroachDB node:
 
