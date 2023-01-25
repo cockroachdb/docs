@@ -35,7 +35,7 @@ See [`CREATE ROLE`: Synopsis](create-role.html#synopsis).
 ### User names
 
 - Are case-insensitive.
-- Must start with either a letter or underscore.
+- Must start with a letter. 
 - Must contain only letters, numbers, periods, or underscores.
 - Must be between 1 and 63 characters.
 - Cannot be `none`.

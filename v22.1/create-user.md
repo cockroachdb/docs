@@ -19,7 +19,7 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 
 - Usernames:
     - Are case-insensitive
-    - Must start with a letter, number, or underscore
+    - Must start with a letter. 
     - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
     -  Cannot be `none`.
