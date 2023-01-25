@@ -717,7 +717,7 @@ Start shell code samples with `~~~ shell` followed by a line break. The first ch
 
 SQL code samples are broken into two sections: commands and responses.
 
-- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`. Commands should be properly capitalized, and there should be only one command per code sample.
+- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. Commands should be properly capitalized, and there should be only one command per code sample.
 
 - **Responses** (e.g., retrieved tables) should begin with `~~~` but should **not** be syntax highlighted.
 
