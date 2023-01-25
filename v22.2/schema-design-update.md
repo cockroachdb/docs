@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
 
 ## Before you begin
 
