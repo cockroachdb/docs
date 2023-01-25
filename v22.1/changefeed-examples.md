@@ -399,6 +399,13 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     cat key.json | base64
     ~~~
 
+    If you're working on Linux, run the following to ensure that lines are not wrapped in the output:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cat key.json | base64 -w 0
+    ~~~
+
     Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
 
 1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account and add your topic's region:
