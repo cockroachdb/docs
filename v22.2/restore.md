@@ -94,7 +94,7 @@ No special privilege is required for:
  `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-backup) example.
  <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `localityURI` | The URI where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+ <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html). If the backup was not taken with `revision_history`, you can use `SHOW BACKUP` to restore to a time that the backup covers (including in the full or incremental backup). See the [example](#restore-with-as-of-system-time).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
 
 ### Options
@@ -385,6 +385,52 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_
 {{site.data.alerts.callout_info}}
  `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
+
+### Restore with `AS OF SYSTEM TIME`
+
+If you did **not** run a backup with `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. 
+
+This is different to a backup with revision history that captures every change made within the garbage collection period leading up to and including the given timestamp. See [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for more detail.
+
+In the case where there is no backed up revision history, use the following example to restore to a particular time.
+
+First, find the times that are available for a point-in-time-restore by listing the available backup directories in your storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+~~~
+~~~
+          path
+------------------------
+  2023/01/18-141753.98
+  2023/01/23-184816.10
+  2023/01/23-185448.11
+(3 rows)
+~~~
+
+From the output use the required date directory and run the following to get the details of the backup:
+
+~~~sql
+SHOW BACKUP '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+~~~
+~~~
+  database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+----------------------------+----------------------------+------------+------+------------------
+  movr          | public             | vehicle_location_histories | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |      85430 | 1092 |        t
+  movr          | public             | promo_codes                | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |     225775 | 1003 |        t
+  movr          | public             | user_promo_codes           | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |       1009 |   11 |        t
+  NULL          | NULL               | system                     | database    | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |       NULL | NULL |        t
+  system        | public             | users                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |        t
+  system        | public             | zones                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |
+~~~
+
+Use the `start_time` and `end_time` detail to define the required time as part of the `AS OF SYSTEM TIME` clause. Run the restore, passing the directory and the timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' AS OF SYSTEM TIME '2023-01-23 18:56:48';
+~~~
 
 ### Restore a backup asynchronously
 
