@@ -82,7 +82,7 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 
 ### Option B: Use the Vault AWS-KMS secrets engine to create the CMEK key
 
-#### Prerequisites
+#### Before you begin
 
 - [Vault enterprise license](https://www.vaultproject.io/docs/enterprise)
 - [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise)

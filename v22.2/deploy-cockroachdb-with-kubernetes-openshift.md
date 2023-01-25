@@ -8,7 +8,7 @@ docs_area:
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [CockroachDB Kubernetes Operator](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
 
-## Prerequisites
+## Before you begin
 
 - A running OpenShift cluster
 

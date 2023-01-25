@@ -9,7 +9,7 @@ docs_area: get_started
 
 This tutorial shows you how to create an [AWS Lambda](https://aws.amazon.com/lambda) function that communicates with a {{ site.data.products.serverless }} cluster.
 
-## Prerequisites
+## Before you begin
 
 Before starting the tutorial, do the following:
 

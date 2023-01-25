@@ -15,7 +15,7 @@ For more information about the integration, see the [Cockroach Labs blog post](h
 For more information about using DBmarlin, see the [DBmarlin documentation](https://docs.dbmarlin.com/).
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 - [DBmarlin installation on a supported platform](https://docs.dbmarlin.com/docs/Getting-Started/supported-platforms#supported-installation-platforms)
 - [Supported version of CockroachDB](https://docs.dbmarlin.com/docs/Getting-Started/supported-platforms#supported-database-platforms)

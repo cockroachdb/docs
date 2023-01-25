@@ -98,7 +98,7 @@ For instructions and working examples showing how to migrate data from other dat
 
 ## Requirements
 
-### Prerequisites
+### Before you begin
 
 Before using `IMPORT`, you should have:
 

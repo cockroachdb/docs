@@ -132,7 +132,7 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 ### Option B: Use the Vault GCP-KMS secrets engine to create the CMEK key
 
-#### Prerequisites
+#### Before you begin
 
 - [Vault enterprise license](https://www.vaultproject.io/docs/enterprise)
 - [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise)

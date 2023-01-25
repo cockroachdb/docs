@@ -18,7 +18,7 @@ If read performance is your main focus for a table, but you want low-latency rea
 Note that if you start using the [multi-region SQL abstractions](multiregion-overview.html) for a database, CockroachDB will no longer provide the follow-the-workload behavior described on this page for that database.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 ### Fundamentals
 
