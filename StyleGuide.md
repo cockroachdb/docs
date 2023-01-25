@@ -67,6 +67,11 @@ Other general guidance about language and tone:
 
     **Example:** Now that you have a database, user, and a table, run the following code to insert rows into the table.
 
+- Do not use the personal pronoun “we.” Instead, use:
+
+    - “CockroachDB” for when you are talking about something the _product_ does or supports.
+    - “Cockroach Labs” for when you are talking about something “we” (as the group of people developing CockroachDB) support or recommend.
+
 - For [tutorials and examples](#tutorials-and-examples), we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
 
     **Example:** In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
