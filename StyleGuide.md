@@ -680,6 +680,9 @@ All product names except CockroachDB should be written as Liquid variables unles
 - **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
 - **CockroachDB Cloud** : `{{ site.data.products.db }}`
 
+
+The first occurrence of a product name within a docs page should use full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
+
 ### Code
 
 You can mark up code [inline](#inline-code) or as a [code block](#code-blocks).
