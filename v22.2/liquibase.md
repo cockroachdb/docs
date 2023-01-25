@@ -501,7 +501,7 @@ For documentation on running Liquibase with other tooling, see [the Liquibase do
 
 ## Report Issues with Liquibase and CockroachDB
 
-If you run into problems, please file an issue on the [Liquibase issue tracker](https://github.com/liquibase/liquibase/issues), including the following details about the environment where you encountered the issue:
+If you run into problems, file an issue on the [Liquibase issue tracker](https://github.com/liquibase/liquibase/issues), including the following details about the environment where you encountered the issue:
 
 - CockroachDB version ([`cockroach version`](cockroach-version.html))
 - Liquibase version

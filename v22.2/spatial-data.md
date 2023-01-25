@@ -53,7 +53,7 @@ Most PostGIS-compatible client libraries are incompatible with CockroachDB's spa
 
 For general CockroachDB troubleshooting information, see [Troubleshooting Overview](troubleshooting-overview.html).
 
-If you need help troubleshooting an issue with our spatial support, please get in touch using our [Support resources](support-resources.html).
+If you need help troubleshooting an issue with our spatial support, get in touch using our [Support resources](support-resources.html).
 
 ## Performance
 
@@ -91,7 +91,7 @@ Because CockroachDB is a scale-out, multi-node database, our spatial indexing st
 
 For more detailed information about how CockroachDB's spatial indexes work, see [Spatial indexes](spatial-indexes.html).
 
-If you encounter behavior that you think is due to a performance issue, please get in touch using our [Support resources](support-resources.html).
+If you encounter behavior that you think is due to a performance issue, get in touch using our [Support resources](support-resources.html).
 
 ## Example: Load NYC data for the PostGIS tutorial
 

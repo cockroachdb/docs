@@ -12,7 +12,7 @@ In this tutorial, you will enable the CockroachDB module for Metricbeat and visu
 {{site.data.alerts.callout_success}}
 For more information about using the CockroachDB module for Metricbeat, see the [Elastic documentation](https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb.html).
 
-If you run into problems with this integration, please file an issue on the [Beats issue tracker](https://github.com/elastic/beats).
+If you run into problems with this integration, file an issue on the [Beats issue tracker](https://github.com/elastic/beats).
 {{site.data.alerts.end}}
 
 ## Prerequisites

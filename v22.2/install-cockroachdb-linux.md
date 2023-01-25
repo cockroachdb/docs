@@ -119,7 +119,7 @@ true
 
   <ol>
     <li>
-      <p>Install <a href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/">Docker for Linux</a>. Please carefully check that you meet all prerequisites.</p>
+      <p>Install <a href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/">Docker for Linux</a>. Carefully check that you meet all prerequisites.</p>
     </li>
     <li>
       <p>Confirm that the Docker daemon is running in the background:</p>

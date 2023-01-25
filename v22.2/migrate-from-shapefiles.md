@@ -19,7 +19,7 @@ We are using `shp2pgsql` in the example below, but [`ogr2ogr`](https://gdal.org/
 In the example below we will import a [tornadoes data set](http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip) that is [available from the US National Weather Service](https://www.spc.noaa.gov/gis/svrgis/) (NWS).
 
 {{site.data.alerts.callout_info}}
-Please refer to the documentation of your GIS software for instructions on exporting GIS data to Shapefiles.
+Refer to the documentation of your GIS software for instructions on exporting GIS data to Shapefiles.
 {{site.data.alerts.end}}
 
 ## Before You Begin

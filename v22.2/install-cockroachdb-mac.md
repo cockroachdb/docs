@@ -168,7 +168,7 @@ true
 
   <ol>
     <li>
-      <p>Install <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a>. Please carefully check that you meet all prerequisites.</p>
+      <p>Install <a href="https://docs.docker.com/docker-for-mac/install/">Docker for Mac</a>. Carefully check that you meet all prerequisites.</p>
     </li>
     <li>
       <p>Confirm that the Docker daemon is running in the background:</p>

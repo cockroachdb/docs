@@ -16,7 +16,7 @@ In this tutorial, you'll work through the process of using DBeaver with a secure
 {{site.data.alerts.callout_success}}
 For more information about using DBeaver, see the [DBeaver documentation](https://dbeaver.io/docs/).
 
-If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues).
+If you run into problems, file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues).
 
 For information on using DBeaver with {{ site.data.products.db }}, see [this blog post](https://paul-logston.medium.com/setting-up-a-sql-gui-with-cockroachdb-a9fd5fe15d9d).
 {{site.data.alerts.end}}
@@ -81,7 +81,7 @@ For more information about using DBeaver, see the [DBeaver documentation](https:
 
 ## Report Issues with DBeaver & CockroachDB
 
-If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues), including the following details about the environment where you encountered the issue:
+If you run into problems, file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues), including the following details about the environment where you encountered the issue:
 
 - CockroachDB version ([`cockroach version`](cockroach-version.html))
 - DBeaver version

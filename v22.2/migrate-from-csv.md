@@ -17,7 +17,7 @@ The examples pull real data from [Amazon S3](https://aws.amazon.com/s3/). They u
 
 ## Step 1. Export data to CSV
 
-Please refer to the documentation of your database for instructions on exporting data to CSV.
+Refer to the documentation of your database for instructions on exporting data to CSV.
 
 You will need to export one CSV file per table, with the following requirements:
 

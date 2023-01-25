@@ -8,7 +8,7 @@ docs_area: develop
 CockroachDB supports both native drivers and the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORM frameworks should work with CockroachDB. Choose a language for supported clients, and follow the installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
 
 {{site.data.alerts.callout_info}}
-Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM framework with **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM framework with **beta-level** support. If you encounter problems, [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

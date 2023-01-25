@@ -65,7 +65,7 @@ Use one of the options below to install CockroachDB.
   <ol>
     <li>
       <p>Install <a href="https://docs.docker.com/docker-for-windows/install/">Docker for Windows</a>.</p>
-      <div class="bs-callout bs-callout-info">Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. Please see the <a href="https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install">official documentation</a> for more details. Note that if your system does not satisfy the stated requirements, you can try using <a href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>.</div>
+      <div class="bs-callout bs-callout-info">Docker for Windows requires 64bit Windows 10 Pro and Microsoft Hyper-V. See the <a href="https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install">official documentation</a> for more details. Note that if your system does not satisfy the stated requirements, you can try using <a href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>.</div>
     </li>
     <li>
       <p>Open PowerShell and confirm that the Docker daemon is running in the background:</p>

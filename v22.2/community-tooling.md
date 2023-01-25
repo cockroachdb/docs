@@ -7,10 +7,10 @@ docs_area: reference.third_party_support
 
 The following tools have been tested or developed by the CockroachDB community, but are not officially supported by Cockroach Labs.
 
-If you encounter problems with using these tools, please contact the maintainer of the tool with details.
+If you encounter problems with using these tools, contact the maintainer of the tool with details.
 
 {{site.data.alerts.callout_success}}
-If you have a tested or developed a third-party tool with CockroachDB, and would like it listed on this page, please [open a pull request to our docs GitHub repository](https://github.com/cockroachdb/docs/edit/master/v21.2/community-tooling.md).
+If you have a tested or developed a third-party tool with CockroachDB, and would like it listed on this page, [open a pull request to our docs GitHub repository](https://github.com/cockroachdb/docs/edit/master/v21.2/community-tooling.md).
 {{site.data.alerts.end}}
 
 ## Drivers and data access frameworks

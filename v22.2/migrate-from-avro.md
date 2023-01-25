@@ -13,7 +13,7 @@ This page has instructions for migrating data from Avro files into CockroachDB u
 
 ## Step 1. Export data to Avro
 
-Please refer to the documentation of your database for instructions on exporting data to Avro.
+Refer to the documentation of your database for instructions on exporting data to Avro.
 
 You will need to export one file per table, with the following requirements:
 

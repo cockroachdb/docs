@@ -11,7 +11,7 @@ This page lists the experimental features that are available in CockroachDB {{ p
 **This page describes experimental features.**  Their interfaces and outputs are subject to change, and there may be bugs.
 <br />
 <br />
-If you encounter a bug, please [file an issue](file-an-issue.html).
+If you encounter a bug, [file an issue](file-an-issue.html).
 {{site.data.alerts.end}}
 
 ## Session variables

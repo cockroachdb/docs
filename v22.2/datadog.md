@@ -15,7 +15,7 @@ The {{ site.data.products.core }} integration with Datadog is powered by the [Da
 
 - For more information about the integration, see the [Datadog blog post](https://www.datadoghq.com/blog/monitor-cockroachdb-performance-metrics-with-datadog/).
 - For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
-- If you run into problems with this integration, please file an issue on the [Datadog Agent issue tracker](https://github.com/DataDog/datadog-agent).
+- If you run into problems with this integration, file an issue on the [Datadog Agent issue tracker](https://github.com/DataDog/datadog-agent).
 
 In this tutorial, you will enable the CockroachDB integration in Datadog, configure logging and alerting, and visualize data.
 

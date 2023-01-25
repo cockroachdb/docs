@@ -968,7 +968,7 @@ Time: 1.447s total (execution 1.446s / network 0.000s)
 Unfortunately, this query is a bit slower than you would like: about 1.5 seconds on a single-node [`cockroach demo`](cockroach-demo.html) cluster on a laptop. There are several reasons for this:
 
 1. You haven't created any indexes at all yet. The query is likely to be doing full table scans, which you will need to hunt down with [`EXPLAIN`](explain.html).
-1. CockroachDB does not yet have built-in support for index-based nearest neighbor queries. If this feature is important to you, please comment with some information about your use case on [cockroachdb/cockroach#55227](https://github.com/cockroachdb/cockroach/issues/55227).
+1. CockroachDB does not yet have built-in support for index-based nearest neighbor queries. If this feature is important to you, comment with some information about your use case on [cockroachdb/cockroach#55227](https://github.com/cockroachdb/cockroach/issues/55227).
 
 Let's look at the `EXPLAIN` output to see if there is something that can be done to improve this query's performance:
 

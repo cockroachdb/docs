@@ -174,7 +174,7 @@ Note that this limitation also applies to single [`ALTER TABLE`](alter-table.htm
 
 ## Report Issues with Flyway and CockroachDB
 
-If you run into problems, please file an issue on the [Flyway issue tracker](https://github.com/flyway/flyway/issues), including the following details about the environment where you encountered the issue:
+If you run into problems, file an issue on the [Flyway issue tracker](https://github.com/flyway/flyway/issues), including the following details about the environment where you encountered the issue:
 
 - CockroachDB version ([`cockroach version`](cockroach-version.html))
 - Flyway version
