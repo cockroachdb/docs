@@ -203,7 +203,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
-    --node-ami auto \
     --region <aws-region-1> \
     --vpc-cidr <ip-range-1>
     ~~~
@@ -215,7 +214,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
-    --node-ami auto \
     --region <aws-region-2> \
     --vpc-cidr <ip-range-2>
     ~~~
@@ -227,7 +225,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
-    --node-ami auto \
     --region <aws-region-3> \
     --vpc-cidr <ip-range-3>
     ~~~
