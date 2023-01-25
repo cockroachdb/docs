@@ -392,7 +392,9 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     gcloud iam service-accounts keys create key.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
     ~~~
 
-    Next, base64 encode your credentials key:
+    Next, base64 encode your credentials key using the command specific to your platform.
+
+    If you're working on macOS:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
