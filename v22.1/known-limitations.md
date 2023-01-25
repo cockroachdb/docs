@@ -54,6 +54,10 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
+### `SHOW BACKUP` does not work with locality-aware backups and the `incremental_location` option
+
+{% include {{ page.version.version }}/known-limitations/show-backup-locality-incremental-location.md %}
+
 ## Unresolved limitations
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes

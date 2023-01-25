@@ -184,7 +184,7 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CANCEL QUERY (WIH x as (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
+> CANCEL QUERY (WITH x as (SHOW CLUSTER STATEMENTS) SELECT query_id FROM x
       WHERE client_address = '192.168.0.72:56194'
           AND user_name = 'mroach'
           AND query = 'SELECT * FROM test.kv ORDER BY k');

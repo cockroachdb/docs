@@ -47,7 +47,7 @@ For instructions on starting a secure cluster, see [Start a Local Cluster (Secur
 
 <div class="filter-content" markdown="1" data-scope="node-postgres">
 
-To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Client`](https://node-postgres.com/api/client) object with a connection string.
+To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Client`](https://node-postgres.com/apis/client) object with a connection string.
 
 For example:
 

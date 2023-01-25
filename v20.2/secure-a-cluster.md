@@ -444,4 +444,4 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 You might also be interested in the following pages:
 
 - [CockroachDB SQL client](cockroach-sql.html)
-- [Hello World Example Apps](hello-world-example-apps.html)
+- [Hello World Example Apps](example-apps.html)

@@ -81,5 +81,5 @@ For a more extensive example, see [Create a table with node locality information
 
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Locality](cockroach-start.html#locality)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Manual Deployment](manual-deployment.html)

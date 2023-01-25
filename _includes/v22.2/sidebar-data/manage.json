@@ -510,19 +510,25 @@
               ]
             },
             {
+             "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
+             "urls": [
+               "/cockroachcloud/export-metrics.html"
+             ]
+           },
+            {
               "title": "Monitor {{ site.data.products.core }} with Datadog",
               "urls": [
                 "/${VERSION}/datadog.html"
               ]
             },
             {
-              "title": "Monitor with DBmarlin",
+              "title": "Monitor {{ site.data.products.core }} with DBmarlin",
               "urls": [
                 "/${VERSION}/dbmarlin.html"
               ]
             },
             {
-              "title": "Monitor with Kibana",
+              "title": "Monitor {{ site.data.products.core }} with Kibana",
               "urls": [
                 "/${VERSION}/kibana.html"
               ]

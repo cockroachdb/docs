@@ -8,7 +8,11 @@ IgnoreDirs:
   - ^docs/v1.2
   - ^docs/v2.0
   - ^docs/v2.1
-  - ^docs/advisories
+  - ^docs/v19.1
+  - ^docs/v19.2
+  - ^docs/v20.1
+  - ^docs/v20.2
+  - ^docs/v21.1
 IgnoreURLs:
   - "http://localhost:*"
   - "http://roach-single/*"
@@ -26,6 +30,7 @@ IgnoreURLs:
   - "https://fonts.googleapis.com/*"
   - "https://fonts.gstatic.com/*"
   - "https://typeorm.io/*"
+  - "https://www.googleadservices.com/*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
 DocumentConcurrencyLimit: 16

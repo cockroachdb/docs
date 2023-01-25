@@ -9,8 +9,6 @@ docs_area: reference
 
 ## Change data capture
 
-[Distributed SQL (DistSQL)](../{{site.current_cloud_version}}/architecture/sql-layer.html#distsql) is not supported, which improves the performance of changefeeds.
-
 You can't collect [metrics per changefeed](../{{site.current_cloud_version}}/monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels).
 
 You can't configure [alerts on changefeeds](../{{site.current_cloud_version}}/monitoring-and-alerting.html#changefeed-is-experiencing-high-latency).
@@ -22,10 +20,6 @@ You can't configure [alerts on changefeeds](../{{site.current_cloud_version}}/mo
 Automated database and table level backups are not supported in {{ site.data.products.serverless }}. However, [user managed database and table level backups](take-and-restore-customer-owned-backups.html#back-up-data) using user provided storage locations are supported.
 
 Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](../{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.html). However, user managed locality-aware backups using user provided storage locations are supported in {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
-
-## Performance
-
-[Distributed SQL (DistSQL)](../{{site.current_cloud_version}}/architecture/sql-layer.html#distsql) is not supported in {{ site.data.products.serverless }} clusters, so users do not benefit from the improved query performance that DistSQL offers, especially for online analytical processing (OLAP) queries and bulk operations like [`IMPORT`](../{{site.current_cloud_version}}/import.html).
 
 ## Multi-region clusters
 

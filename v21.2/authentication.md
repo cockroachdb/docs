@@ -297,6 +297,6 @@ Let's see how the digital certificate is used in client-server communication: Th
 
 - [Client Connection Parameters](connection-parameters.html)
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](secure-a-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

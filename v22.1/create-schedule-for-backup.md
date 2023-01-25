@@ -10,7 +10,7 @@ docs_area: reference.sql
 For more information about creating, managing, monitoring, and restoring from a scheduled backup, see [Manage a Backup Schedule](manage-a-backup-schedule.html).
 
 {{site.data.alerts.callout_info}}
-Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables.
+Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables. If you do not specify the `FULL BACKUP ALWAYS` clause when you schedule a backup, you will receive a warning that the schedule will only run full backups. 
 
 To use the other backup features, you need an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
@@ -47,7 +47,7 @@ Targets:
 `location`                              | The URI where you want to store the backup. The backup files will be stored in year > month > day subdirectories. The location can be [cloud storage](use-cloud-storage-for-bulk-operations.html), or `nodelocal`.<br><br><b>Note:</b> If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 `backup_options`                        | Control the backup behavior with a comma-separated list of [options](#backup-options).
 `RECURRING crontab`                     | Specifies when the backup should be taken. By default, these are incremental backups that capture changes since the last backup and append to the current full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
-<a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. For free users, `ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
+<a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. <br>**Note:** If you do not have an Enterprise license then you can only take full backups. `ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
 `WITH SCHEDULE OPTIONS schedule_option` | _Experimental feature._ Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
 {{site.data.alerts.callout_info}}

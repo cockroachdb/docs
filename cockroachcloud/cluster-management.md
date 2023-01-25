@@ -29,7 +29,7 @@ For each cluster, the following details display:
     - [**Add or remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster)
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
-    - [**Upgrade major version**](upgrade-to-v21.2.html)
+    - [**Upgrade major version**](upgrade-to-{{site.current_cloud_version}}.html)
     - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     - [**Delete cluster**](#delete-cluster)
 

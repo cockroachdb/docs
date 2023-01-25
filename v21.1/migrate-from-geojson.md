@@ -8,7 +8,7 @@ toc: true
 
 This page has instructions for migrating data from the [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
 
-In the example below we will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96) that is made available via [data.gov](https://catalog.data.gov/sr_Latn/dataset/underground-storage-tanks-usts-facility-and-tank-details).
+In the example below we will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96).
 
 ## Before You Begin
 

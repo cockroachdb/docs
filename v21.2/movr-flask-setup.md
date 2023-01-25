@@ -2,7 +2,6 @@
 title: Set up a Virtual Environment for Developing Global Applications
 summary: This page guides you through setting up a demo multi-region CockroachDB cluster, and a virtual development environment.
 toc: true
-redirect_from: multi-region-setup.html
 docs_area: develop
 ---
 

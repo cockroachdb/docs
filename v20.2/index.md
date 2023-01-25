@@ -25,7 +25,7 @@ cta: false
       </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
-        <a href="hello-world-example-apps.html" class="h-100">
+        <a href="example-apps.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="mt-2 mt-0 text-black">Sample <br>apps</h6>
             <p class="text-black">Examples that show you how to build a simple "Hello World" application with CockroachDB</p>
@@ -71,7 +71,7 @@ cta: false
         <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
         <li><a href="secure-a-cluster.html">Start a Local Cluster</a></li>
         <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-        <li><a href="hello-world-example-apps.html">Hello, World!</a></li>
+        <li><a href="example-apps.html">Hello, World!</a></li>
         <li><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
       </ul>
     </div>
@@ -79,7 +79,7 @@ cta: false
       <p class="landing-column-title">Develop</p>
       <ul>
         <li><a href="developer-guide-overview.html">Common Dev Tasks</a></li>
-        <li><a href="hello-world-example-apps.html">Sample Apps</a></li>
+        <li><a href="example-apps.html">Sample Apps</a></li>
         <li><a href="sql-feature-support.html">SQL Reference</a></li>
         <li><a href="performance-best-practices-overview.html">SQL Best Practices</a></li>
         <li><a href="error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>

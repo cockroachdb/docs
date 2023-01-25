@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached feature-phases/preview-opt-in.md %}
-
 {% include_cached cockroachcloud/sso-intro.md %}
 
 This page describes how to enable [Cloud Organization SSO](cloud-org-sso.html) and manage your SSO configuration.

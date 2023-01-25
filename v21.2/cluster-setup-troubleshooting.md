@@ -96,7 +96,7 @@ If you’re not seeing the output above, check for the following:
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
 {{site.data.alerts.callout_info}}
-Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+Running multiple nodes on a single host is useful for testing out CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 If you are trying to run all nodes on the same machine, you might get the following errors:
@@ -288,7 +288,7 @@ See the following FAQs:
 You may encounter the following issues when your cluster nears 100% resource capacity:
 
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
--   Running RAM at close to 100% utilization triggers Linux OOM and/or swapping that will result in poor performance or stability issues.
+-   Running RAM at close to 100% utilization triggers Linux [OOM](#out-of-memory-oom-crash) and/or swapping that will result in poor performance or stability issues.
 -   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
 -   Running storage at 100% utilization read/write causes poor service time and [node shutdown](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space).
 -   Running network at 100% utilization causes response between databases and client to be poor.

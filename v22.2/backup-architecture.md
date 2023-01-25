@@ -57,7 +57,7 @@ Once one of the nodes has claimed the job from the system jobs table, it will ta
 - Determine the [leaseholder](architecture/overview.html#architecture-leaseholder) nodes for the keys to back up. 
 - Provide a plan to the nodes that will execute the data export (typically the leaseholder node).
 
-To map out the storage location's directory to which the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-types) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup after any existing incremental layers discovered in it. 
+To map out the storage location's directory to which the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-product-support) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup after any existing incremental layers discovered in it. 
 
 For more information on how CockroachDB structures backups in storage, see [Backup collections](take-full-and-incremental-backups.html#backup-collections).
 

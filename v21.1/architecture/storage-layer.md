@@ -93,4 +93,4 @@ The storage layer commits writes from the Raft log to disk, as well as returns r
 
 ## What's next?
 
-Now that you've learned about our architecture, [start a local cluster](../install-cockroachdb.html) and start [building an app with CockroachDB](../hello-world-example-apps.html).
+Now that you've learned about our architecture, [start a local cluster](../install-cockroachdb.html) and start [building an app with CockroachDB](../example-apps.html).

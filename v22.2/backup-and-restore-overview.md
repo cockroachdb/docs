@@ -8,7 +8,7 @@ docs_area: manage
 This page provides an overview of the backup and restore features available in CockroachDB:
 
 - [Types of backups supported](#cockroachdb-cloud-backup-types) in {{ site.data.products.db }} 
-- [Backup and restore types](#backup-and-restore-types) and their product availability
+- [Backup and restore product support](#backup-and-restore-product-support)
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
 
@@ -20,20 +20,19 @@ For an explanation of how a backup works, see [Backup Architecture](backup-archi
 
 {% include cockroachcloud/ccloud/backup-types.md %} 
 
-## Backup and restore types
+## Backup and restore product support
 
-The following table outlines the available backup and restore types in CockroachDB. See each of the pages linked in the table for usage examples:
+This table outlines the level of product support for backup and restore features in CockroachDB. See each of the pages linked in the table for usage examples:
 
-Backup / Restore Type             | Description                                                                                                                                                  | Product                                                                                                                                                                                                                                                                                    |
------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-[Full backup](take-full-and-incremental-backups.html)                       | An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups.                                         | All products
-[Incremental backup](take-full-and-incremental-backups.html)               | A copy of the changes in your data since the specified base backup (a full or full and incremental).                                                         | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
-[Backups with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)     | A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
-[Point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)             | A restore from an arbitrary point in time within the revision history of a backup.                                                                           | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)   
-[Encrypted backup and restore](take-and-restore-encrypted-backups.html)      | An encrypted backup using a KMS or passphrase.                                                                                                               | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
-[Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup.                              | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)
-[Scheduled backup](manage-a-backup-schedule.html)                  | A schedule for periodic backups.                                                                                                                             | {{ site.data.products.dedicated }}<br>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)  
-[Automated backup](../cockroachcloud/use-managed-service-backups.html)                 | Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachDB Cloud cluster.                                                   | {{ site.data.products.db }} clusters    
+Backup / Restore  | Description  | Product Support 
+------------------+--------------+-----------------
+[Full backup](take-full-and-incremental-backups.html) | An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups. | <ul><li>All products (Enterprise license not required)</li><ul>
+[Incremental backup](take-full-and-incremental-backups.html) | A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup). | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — managed-service backups and customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
+[Scheduled backup](manage-a-backup-schedule.html) | A schedule for periodic backups. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
+[Backups with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) | A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
+[Point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) | A restore from an arbitrary point in time within the revision history of a backup. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
+[Encrypted backup and restore](take-and-restore-encrypted-backups.html) | An encrypted backup using a KMS or passphrase. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
+[Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul> 
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 

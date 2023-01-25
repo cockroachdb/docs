@@ -15,7 +15,7 @@ This page describes how to tune your {{ site.data.products.serverless }} workloa
 - Network egress
 - Storage layer I/O
 
-To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A Serverless cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
+To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A {{ site.data.products.serverless }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
 **SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units](learn-about-request-units.html) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
@@ -23,23 +23,29 @@ To understand these resources, you need to understand a bit about the {{ site.da
 
 **Storage layer I/O** includes the read and write requests sent by the SQL layer to the storage layer. These operations are sent in batches containing any number of requests. Requests can have a payload containing any number of bytes. Write operations are replicated to multiple storage processes (3 by default), with each replica counted as a separate write operation. Storage layer I/O is converted to Request Units using these equivalencies:
 
-  - 1 RU = 2 storage read batches
-  - 1 RU = 8 storage read requests
-  - 1 RU = 64 KiB read request payload (prorated)
+- 1 RU = 2 storage read batches
+- 1 RU = 8 storage read requests
+- 1 RU = 64 KiB read request payload (prorated)
 
-  - 1 RU = 1 storage write batch
-  - 1 RU = 1 storage write request
-  - 1 RU = 1 KiB write request payload (prorated)
+- 1 RU = 1 storage write batch
+- 1 RU = 1 storage write request
+- 1 RU = 1 KiB write request payload (prorated)
 
 ### Example Request Unit calculation
 
 Say you have a simple key-value pair table with a secondary index:
 
-`CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v))`
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE kv (k INT PRIMARY KEY, v STRING, INDEX (v));
+~~~
 
 Now you insert a row into the table:
 
-`INSERT INTO kv VALUES (1, “...imagine this is a 1 KiB string…”)`
+{% include_cached copy-clipboard.html %}
+~~~ sql
+INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
+~~~
 
 The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. The network egress is also minimal, around 50 bytes. Most of the cost comes from 6 write requests to the storage layer with about 6K in request payload (plus a bit of extra overhead). The `INSERT` needs to be made first for the primary index on the `k` column and again for the secondary index on the `v` column. Each of those writes is replicated 3 times to different storage locations, which is a total of 6 requests. All of these costs add up to a total number of RUs:
 
@@ -56,6 +62,38 @@ The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. Th
 **Total cost** = 18.55 RU
 
 Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
+
+You can use the [`EXPLAIN ANALYZE` SQL command](../{{site.versions["stable"]}}/explain-analyze.html) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE INSERT INTO kv VALUES (1, '...imagine this is a 1 KiB string...');
+~~~
+
+~~~
+               info
+-----------------------------------
+  planning time: 13ms
+  execution time: 6ms
+  distribution: local
+  vectorized: true
+  maximum memory usage: 10 KiB
+  network usage: 0 B (0 messages)
+  estimated RUs consumed: 15
+
+  • insert fast path
+    nodes: n1
+    actual row count: 1
+    into: kv(k, v)
+    auto commit
+    size: 2 columns, 1 row
+(14 rows)
+
+
+Time: 71ms total (execution 20ms / network 50ms)
+~~~
+
+This will insert the data, and also output information from the optimizer about the execution of the statement. The `estimated RUs consumed` field represents the optimizer's estimate of RU consumption for the statement. In this case, the optimizer estimated the `INSERT` statement would consume 15 RUs, which is similar to the estimate of 18.5 RUs we made earlier.
 
 ## Understanding which queries to optimize
 

@@ -1,6 +1,6 @@
 ---
 title: Cloud Storage Authentication
-summary: Learn how to use the different authenication options for authentication to cloud storage.
+summary: Learn how to use the different authentication options for authentication to cloud storage.
 toc: true
 docs_area: manage
 ---
@@ -43,7 +43,7 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS
 See Amazon's documentation [Managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) for more details on S3 credentials.
 
 {{site.data.alerts.callout_success}}
-Assume role authentication allows you to use temporary short-lived credentials to autheticate to an Amazon S3 buckets. For more detail, see [Amazon S3 assume role](#amazon-s3-assume-role).
+Assume role authentication allows you to use temporary short-lived credentials to authenticate to an Amazon S3 buckets. For more detail, see [Amazon S3 assume role](#amazon-s3-assume-role).
 {{site.data.alerts.end}}
 
 ## Amazon S3 implicit

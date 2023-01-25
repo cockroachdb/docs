@@ -261,7 +261,7 @@ To serve a secure web application, you also need a public domain name!
 
 ### Develop your own application
 
-This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform, Docker, and Kubernetes. CockroachDB supports [many more drivers and ORM's for development](hello-world-example-apps.html). You can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
+This tutorial demonstrates how to develop and deploy an example multi-region application. Most of the development instructions are specific to Python, Flask, and SQLAlchemy, and most of the deployment instructions are specific to Google Cloud Platform, Docker, and Kubernetes. CockroachDB supports [many more drivers and ORM's for development](example-apps.html). You can deploy applications using a number of cloud provider orchestration tools and networking services. We encourage you to modify the code and deployments to fit your framework and use case.
 
 ### Upgrade your deployment
 

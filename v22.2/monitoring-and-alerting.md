@@ -151,15 +151,15 @@ In addition to using the exported time-series data to monitor a cluster via an e
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus' Alertmanager.
+This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's Alertmanager.
 
 ### Alertmanager
 
-If you have configured [Prometheus](monitor-cockroachdb-with-prometheus.html) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Prometheus' Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
+If you have configured [Prometheus](monitor-cockroachdb-with-prometheus.html) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Prometheus's Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
 
 #### Prometheus alerting rules endpoint
 
-Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Prometheus' Alertmanager.
+Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Prometheus's Alertmanager.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -332,6 +332,6 @@ Currently, not all events listed have corresponding alert rule definitions avail
 
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [Third-Party Monitoring Integrations](third-party-monitoring-tools.html)

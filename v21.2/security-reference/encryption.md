@@ -149,6 +149,6 @@ Enabling Encryption at Rest might result in a higher CPU utilization. We estimat
 - [Customer-Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek.html)
 - [Client Connection Parameters](../connection-parameters.html)
 - [Manual Deployment](../manual-deployment.html)
-- [Orchestrated Deployment](../orchestration.html)
+- [Orchestrated Deployment](../kubernetes-overview.html)
 - [Local Deployment](../secure-a-cluster.html)
 - [Other Cockroach Commands](../cockroach-commands.html)

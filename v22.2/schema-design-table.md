@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
 
 {{site.data.alerts.callout_success}}
 For detailed reference documentation on the `CREATE TABLE` statement, including additional examples, see the [`CREATE TABLE` syntax page](create-table.html).
@@ -114,6 +114,10 @@ Here are some best practices to follow when defining table columns:
 - Review the [primary key best practices](#select-primary-key-columns) and [examples](#primary-key-examples), decide if you need to define any dedicated primary key columns.
 
 - Review the best practices and examples for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints to your columns.
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
 
 #### Column definition examples
 
@@ -224,6 +228,10 @@ Here are some best practices to follow when selecting primary key columns:
 - For single-column primary keys, use [`UUID`](uuid.html)-typed columns with default values randomly-generated, using the `gen_random_uuid()` [SQL function](functions-and-operators.html#id-generation-functions).
 
     Randomly generating `UUID` values ensures that the primary key values will be unique and well-distributed across a cluster. For an example, see [below](#primary-key-examples).
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
+{{site.data.alerts.end}}
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
