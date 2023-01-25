@@ -152,7 +152,7 @@ For more information about the difficulty of selecting an optimal join ordering,
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
-- `CROSS MERGE JOIN`
+- `CROSS HASH JOIN`
 
 Note that the hint cannot be specified with a bare hint keyword (e.g., `MERGE`) - in that case, the `INNER` keyword must be added. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
 
