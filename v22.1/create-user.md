@@ -19,7 +19,7 @@ The keywords `ROLE` and `USER` can be used interchangeably in SQL statements for
 
 - Usernames:
     - Are case-insensitive
-    - Must start with a letter. 
+    - Must start with a letter or underscore. 
     - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
     -  Cannot be `none`.
@@ -46,7 +46,7 @@ table td:first-child {
 
  Parameter | Description
 -----------|-------------
-`name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+`name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 
 ## Role options
@@ -111,7 +111,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Create a user
 
-Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+Usernames are case-insensitive; must start with a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
 
 ~~~ sql
 root@:26257/defaultdb> CREATE USER no_options;
