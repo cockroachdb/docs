@@ -231,43 +231,43 @@ SET
 
     1. First, pick a row at random from the `us-east1` region:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT * FROM vehicles WHERE region = 'us-east1' LIMIT 1;
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM vehicles WHERE region = 'us-east1' LIMIT 1;
+        ~~~
 
-    ~~~
-                        id                  |  city  | type |               owner_id               |       creation_time        |  status   |       current_location       |                    ext                     |  region
-    ----------------------------------------+--------+------+--------------------------------------+----------------------------+-----------+------------------------------+--------------------------------------------+-----------
-       3e127e68-a3f9-487d-aa56-bf705beca05a | boston | bike | 2f057d6b-ba8d-4f56-8fd9-894b7c082713 | 2021-10-28 16:19:22.309834 | available | 039 Stacey Plain             | {"brand": "FujiCervelo", "color": "green"} | us-east1
-                                            |        |      |                                      |                            |           | Lake Brittanymouth, LA 09374 |                                            |
-    (1 row)
-    ~~~
+        ~~~
+                            id                  |  city  | type |               owner_id               |       creation_time        |  status   |       current_location       |                    ext                     |  region
+        ----------------------------------------+--------+------+--------------------------------------+----------------------------+-----------+------------------------------+--------------------------------------------+-----------
+          3e127e68-a3f9-487d-aa56-bf705beca05a  | boston | bike | 2f057d6b-ba8d-4f56-8fd9-894b7c082713 | 2021-10-28 16:19:22.309834 | available | 039 Stacey Plain             | {"brand": "FujiCervelo", "color": "green"} | us-east1
+                                                |        |      |                                      |                            |           | Lake Brittanymouth, LA 09374 |                                            |
+        (1 row)
+        ~~~
 
     1. Next, update that row's `city` and `current_location` to addresses in Seattle, WA (USA). Note that this UUID is different than what you will see in your cluster, so you'll have to update the query accordingly.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    UPDATE vehicles SET (city, current_location) = ('seattle', '2604 1st Ave, Seattle, WA 98121-1305') WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        UPDATE vehicles SET (city, current_location) = ('seattle', '2604 1st Ave, Seattle, WA 98121-1305') WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
+        ~~~
 
-    ~~~
-    UPDATE 1
-    ~~~
+        ~~~
+        UPDATE 1
+        ~~~
 
     1. Finally, verify that the row has been auto-rehomed in this gateway's region by running the following statement and checking that the `region` column is now `us-west1` as shown below.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SELECT * FROM vehicles WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
-    ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        SELECT * FROM vehicles WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
+        ~~~
 
-    ~~~
-                      id                  |  city   | type |               owner_id               |       creation_time        |  status   |           current_location           |                    ext                     |  region
-    --------------------------------------+---------+------+--------------------------------------+----------------------------+-----------+--------------------------------------+--------------------------------------------+-----------
-     3e127e68-a3f9-487d-aa56-bf705beca05a | seattle | bike | 2f057d6b-ba8d-4f56-8fd9-894b7c082713 | 2021-10-28 16:19:22.309834 | available | 2604 1st Ave, Seattle, WA 98121-1305 | {"brand": "FujiCervelo", "color": "green"} | us-west1
-    (1 row)
-    ~~~
+        ~~~
+                          id                 |  city   | type |               owner_id               |       creation_time        |  status   |           current_location           |                    ext                     |  region
+        -------------------------------------+---------+------+--------------------------------------+----------------------------+-----------+--------------------------------------+--------------------------------------------+-----------
+        3e127e68-a3f9-487d-aa56-bf705beca05a | seattle | bike | 2f057d6b-ba8d-4f56-8fd9-894b7c082713 | 2021-10-28 16:19:22.309834 | available | 2604 1st Ave, Seattle, WA 98121-1305 | {"brand": "FujiCervelo", "color": "green"} | us-west1
+        (1 row)
+        ~~~
 
 <a name="global"></a>
 
