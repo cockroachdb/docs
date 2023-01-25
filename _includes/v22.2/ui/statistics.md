@@ -4,4 +4,4 @@ Aggregated statistics are flushed from memory to statistics tables in the [`crdb
 
 The default retention period of the statistics tables is based on the number of rows up to 10 million records. When this threshold is reached, the oldest records are deleted. The `diagnostics.forced_sql_stat_reset.interval` [cluster setting]({{ link_prefix }}cluster-settings.html) controls when persisted statistics are deleted only if the internal cleanup service experiences a failure.
 
-To reset SQL statistics in the DB Console UI and `crdb_internal` system catalog, click **clear SQL stats**.
+To reset SQL statistics in the DB Console UI and `crdb_internal` system catalog, click **reset SQL stats**.
