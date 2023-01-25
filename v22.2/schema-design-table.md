@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
 
 {{site.data.alerts.callout_success}}
 For detailed reference documentation on the `CREATE TABLE` statement, including additional examples, see the [`CREATE TABLE` syntax page](create-table.html).

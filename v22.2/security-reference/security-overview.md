@@ -24,7 +24,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
 
 {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
-{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs' {{ site.data.products.enterprise }} Support staff.
+{{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs's {{ site.data.products.enterprise }} Support staff.
 
 - See the [list of {{ site.data.products.enterprise }} features](../enterprise-licensing.html)
 - Read the [licensing FAQ](../licensing-faqs.html)
@@ -132,7 +132,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td>Cockroach Labs' proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AED)</a></td>
+  <td>Cockroach Labs's proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AED)</a></td>
  </tr>
  <tr>
    <td rowspan="2" ><a href="authorization.html">Authorization</a></td>

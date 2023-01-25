@@ -31,7 +31,7 @@ Use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) statement.
 
 Use the [`SET CLUSTER SETTING`](set-cluster-setting.html) statement.
 
-Before changing a cluster setting, please note the following:
+Before changing a cluster setting, note the following:
 
 - 	Changing a cluster setting is not instantaneous, as the change must be propagated to other nodes in the cluster.
 
