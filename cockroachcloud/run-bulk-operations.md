@@ -104,7 +104,7 @@ Read the [`IMPORT`](../{{site.current_cloud_version}}/import.html) page for more
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with `userfile` is not recommended. If you want to export data to a local CSV file, you can use [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+Using [`EXPORT`](../{{site.current_cloud_version}}/export.html) with [`userfile`](../{{site.current_cloud_version}}//use-userfile-for-bulk-operations.html) is not recommended. You can either use [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html) or export data to a local CSV file with [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
 
 {% include copy-clipboard.html %}
 ~~~ shell

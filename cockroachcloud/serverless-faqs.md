@@ -157,7 +157,7 @@ There are some features of CockroachDB that are unsupported or partially support
 
 Yes, you can [run bulk operations on {{ site.data.products.serverless }} clusters](run-bulk-operations.html). You can run bulk operations using cloud storage providers or set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) location for bulk operations.
 
-We don't recommend `userfile` for `EXPORT` operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+We don't recommend [`userfile`](../{{site.current_cloud_version}}//use-userfile-for-bulk-operations.html) for [`EXPORT`](../{{site.current_cloud_version}}/export.html) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -174,4 +174,4 @@ You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENT
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-The [**Backups** page](backups-page.html) allows you to restore your cluster from automatic full cluster backups, which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also backup and restore your {{ site.data.products.serverless }} cluster manually. You can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile` or [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+The [**Backups** page](backups-page.html) allows you to [restore](backups-page.html#restore-a-cluster) your cluster from automatic full cluster backups, which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups). However, you can also backup and restore your {{ site.data.products.serverless }} cluster manually. You can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) or [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
