@@ -137,6 +137,8 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 
 ### Remove a region from your cluster
 
+When you remove a region from a [multi-region](plan-your-cluster.html#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](../{{site.versions["stable"]}}/node-shutdown.html?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](../{{site.versions["stable"]}}/ui-replication-dashboard.html#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. To remove a region from your cluster:
+
 1. Navigate to the cluster's **Overview** page.
 1. Select **Actions > Edit cluster**.
 
