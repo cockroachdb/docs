@@ -74,11 +74,6 @@ When you create a changefeed **without** specifying a sink, CockroachDB sends th
 - If you specify a format, the client will use that format (e.g., `--format=csv`).
 - If you set the client display format to `ndjson` and set the changefeed [`format`](create-changefeed.html#format) to `csv`, you'll receive JSON format with CSV nested inside. In the reverse situation, you'll receive a comma-separated list of JSON values.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED FOR TABLE table_name, table_name2 WITH format=csv;
-~~~
-
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
 ### Pause

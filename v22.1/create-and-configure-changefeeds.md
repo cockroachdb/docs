@@ -73,11 +73,6 @@ When you create a changefeed **without** specifying a sink, CockroachDB sends th
 - If you do not define a display format, the client will buffer forever waiting for the query to finish because the default format needs to know the maximum row length. 
 - If you create a changefeed without a sink but specify a display format (e.g., `--format=csv`), it will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE CHANGEFEED FOR TABLE table_name, table_name2 WITH format=csv;
-~~~
-
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
 ### Pause
