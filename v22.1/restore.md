@@ -341,12 +341,10 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_
 {{site.data.alerts.end}}
 
 ### Restore with `AS OF SYSTEM TIME`
+ 
+Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history. 
 
-If you did **not** run a backup with `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. 
-
-This is different to a backup with revision history that captures every change made within the garbage collection period leading up to and including the given timestamp. See [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for more detail.
-
-In the case where there is no backed up revision history, use the following example to restore to a particular time.
+If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
 
 First, find the times that are available for a point-in-time-restore by listing the available backup directories in your storage location:
 
@@ -379,7 +377,7 @@ SHOW BACKUP '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key
   system        | public             | zones                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |
 ~~~
 
-Use the `start_time` and `end_time` detail to define the required time as part of the `AS OF SYSTEM TIME` clause. Run the restore, passing the directory and the timestamp:
+Finally, use the `start_time` and `end_time` detail to define the required time as part of the `AS OF SYSTEM TIME` clause. Run the restore, passing the directory and the timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
