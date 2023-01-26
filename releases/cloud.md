@@ -19,7 +19,7 @@ Get future release notes emailed to you:
 
 <h3> Console changes </h3>
 
-- {{ site.data.products.dedicated }} clusters running CockroachDB [v22.1.8](../releases/v22.1.html#v22-1-8) or later now have a separate tab for incomplete backup jobs on the [**Backups** page](../cockroachcloud/backups-page.html#backups-page).
+- {{ site.data.products.dedicated }} clusters running CockroachDB [v22.1.8](../releases/v22.1.html#v22-1-8) or later now have a separate tab for incomplete backup jobs on the [**Backups** page](../cockroachcloud/use-managed-service-backups.html).
 
 <h3> Cloud API changes </h3>
 
