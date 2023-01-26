@@ -24,6 +24,15 @@ Complete the following items before starting this tutorial:
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Ensure you have a secure, publicly available CockroachDB cluster running v22.1.8 or later.
+    - If your CockroachDB cluster is running v22.1.14 or later, set the following session variable using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        ALTER ROLE {username} SET copy_from_retries_enabled = true;
+        ~~~
+
+        This prevents a potential issue when migrating especially large tables.
+
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
     - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
@@ -177,6 +186,15 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     ~~~
 
     Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
+
+- If you encounter an `ABORT_REASON_CLIENT_REJECT` error when migrating an especially large table, and are running v22.1.14 or later, set the following session variable using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER ROLE {username} SET copy_from_retries_enabled = true;
+    ~~~
+
+    Then retry the migration.
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 
