@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-placeholder for merge conflict
-
 {% include cockroachcloud/ccloud/backup-types.md %}
 
 This page describes how to use managed-service backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 

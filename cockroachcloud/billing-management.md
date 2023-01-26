@@ -10,7 +10,7 @@ The **Billing** page contains an overview of your charges and the payment detail
 [Console Admins](console-access-management.html#console-admin) can set up and manage billing for the organization.
 
 {{site.data.alerts.callout_info}}
-Setting up billing information for your organization allows you to use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](run-bulk-operations.html).
+Setting up billing information for your organization allows you to use [cloud storage for backups](take-and-restore-customer-owned-backups.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](take-and-restore-customer-owned-backups.html).
 {{site.data.alerts.end}}
 
 ## Set up billing for an organization

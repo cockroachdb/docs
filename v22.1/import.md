@@ -312,6 +312,32 @@ IMPORT TABLE customers FROM PGDUMP 'nodelocal://2/customers.sql';
 
 You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command to upload a file to the external IO directory on a node's (the gateway node, by default) local file system.
 
+
+### Import data into your {{ site.data.products.db }} cluster
+
+{{site.data.alerts.callout_info}}
+For {{ site.data.products.serverless }} clusters, you must have [billing information](../cockroachcloud/billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
+{{site.data.alerts.end}}
+
+#### Import using a userfile
+
+{% include cockroachcloud/userfile-examples/import-into-userfile.md %}
+
+#### Import using Cloud storage
+
+To import a table into your cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
+;
+~~~
+
 ## Known limitation
 
 {% include {{ page.version.version }}/known-limitations/import-high-disk-contention.md %}

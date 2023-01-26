@@ -139,7 +139,7 @@ ERROR: external network access is disabled
 
 <h4>Solution</h4>
 
-You must [set up billing information](billing-management.html) for your organization to use cloud storage, but you can leave your spend limit at the $0 default. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
+You must [set up billing information](billing-management.html) for your organization to use cloud storage, but you can leave your spend limit at the $0 default. If you don't have a credit card on file, you will be limited to `userfile` storage for [backups](take-and-restore-customer-owned-backups.html).
 
 ### Outbound I/O is disabled
 
