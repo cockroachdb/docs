@@ -10,6 +10,8 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster on
 
 ## Before you begin
 
+You must have the following set up before proceeding with this tutorial:
+
 - A running OpenShift cluster
 
 {{site.data.alerts.callout_info}}

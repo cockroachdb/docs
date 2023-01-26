@@ -22,7 +22,7 @@ This page has instructions for data domiciling in [multi-region clusters](multir
 
 ## Before you begin
 
-This page assumes you are already familiar with:
+You should ideally be familiar with the following topics before proceeding with this tutorial:
 
 - CockroachDB's [multi-region SQL abstractions](multiregion-overview.html). If you are not using them, the instructions on this page will not apply.
 - The fact that CockroachDB stores your data in [a distributed key-value store, which is split into chunks called ranges](architecture/distribution-layer.html#overview).

@@ -17,6 +17,8 @@ For more information about using DBmarlin, see the [DBmarlin documentation](http
 
 ## Before you begin
 
+You must have the following set up before proceeding with this tutorial:
+
 - [DBmarlin installation on a supported platform](https://docs.dbmarlin.com/docs/Getting-Started/supported-platforms#supported-installation-platforms)
 - [Supported version of CockroachDB](https://docs.dbmarlin.com/docs/Getting-Started/supported-platforms#supported-database-platforms)
 

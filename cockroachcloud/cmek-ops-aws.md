@@ -84,8 +84,8 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 
 #### Before you begin
 
-- [Vault enterprise license](https://www.vaultproject.io/docs/enterprise)
-- [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise)
+- You must have a [Vault enterprise license](https://www.vaultproject.io/docs/enterprise).
+- You must have [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise).
 
 1. Initialize your shell for Vault:
 	{% include_cached copy-clipboard.html %}

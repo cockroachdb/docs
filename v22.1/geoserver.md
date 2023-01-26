@@ -17,6 +17,8 @@ Many of the instructions on this page come from the following GeoServer document
 
 ## Before you begin
 
+You must have the following set up before proceeding with this tutorial:
+
 1. CockroachDB [installed on the local machine](install-cockroachdb.html)
 1. GeoServer [installed on the local machine](https://docs.geoserver.org/stable/en/user/installation/index.html#installation).
 

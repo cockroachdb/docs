@@ -134,6 +134,8 @@ Here we will create a cross-tenant service account that can be temporarily assum
 
 #### Before you begin
 
+You must have the following set up before proceeding with this tutorial:
+
 - [Vault enterprise license](https://www.vaultproject.io/docs/enterprise)
 - [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise)
 
