@@ -112,7 +112,7 @@ As an alternative to the [mitigation steps listed above](#mitigation-steps-while
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET server.user_login.password_encryption='crdb-bcrypt'
+    SET CLUSTER SETTING server.user_login.password_encryption='crdb-bcrypt';
     ~~~
 
 1. For each [SQL user](create-user.html) in the system, run [`ALTER USER {user} .. WITH PASSWORD`](alter-user.html#change-a-users-password) to encode the user's password using bcrypt.  Note that this can be the same password as the user's current password.

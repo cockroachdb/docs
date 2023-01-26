@@ -147,7 +147,7 @@ See [Revoking Certificates in CockroachDB](#revoking-certificates-in-cockroachdb
 
 In a CockroachDB cluster, each node must be able to initiate HTTP requests to any of the others. In a normal operating mode, these requests are be TLS encrypted with mutual authentication, requiring that each node present its own certificate, signed by the same CA.
 
-In addition, SQL clients and DB Console clients must be able to reach the nodes. The client must authenticate the server with a certificate signed by a trusted CA, and the server mustu authenticate the client, either with its own certificate, or with another method, such as username/password.
+In addition, SQL clients and DB Console clients must be able to reach the nodes. The client must authenticate the server with a certificate signed by a trusted CA, and the server must authenticate the client, either with its own certificate, or with another method, such as username/password.
 
 Therefore, the nodes must each have a [private key/public certificate pair](#key-pairs) where the public certificates have been signed by a common CA (called the **node CA** here).
 
@@ -213,7 +213,7 @@ Choosing a strategy for maintaining solid private PKI is important and complex, 
 - Contact our <a href="mailto:sales@cockroachlabs.com">sales team</a> to discuss your needs and the range of solutions offered by Cockroach Labs.
 {{site.data.alerts.end}}
 
-By default, a CockroachDB node makes double use of a single key pair, using it to authenticate both as client when initiating a connection to another node, and as server when recieving requests.
+By default, a CockroachDB node makes double use of a single key pair, using it to authenticate both as client when initiating a connection to another node, and as server when receiving requests.
 
 The node must also have a trust store containing the public certificate of at least one trusted CA&mdash;the one that issued the public certificates of any nodes it must connect with.
 
@@ -227,7 +227,7 @@ In turn, which authentication methods are available depends on the sort of envir
 
 {{ site.data.products.db }} does not support certificate-authenticated client requests. TLS is used to authenticate the server and encrypt all traffic, but the user must authenticate to the database with a username/password combination.
 
-Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
+Because the server must still be TLS-authenticated, the client must know to trust the certificate authority that signed the public certificate identifying the server. The path to the CA's public certificate is passed as the `sslrootcert` parameter in a [database connection string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
 ### Self-Hosted CockroachDB
 
@@ -245,7 +245,7 @@ Choosing a strategy for maintaining solid private PKI is important and complex, 
 
 #### Non-TLS client authentication
 
-When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS-authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connecton string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
+When using a non-TLS client authentication method, such as username/password or GSSAPI/Kerberos (Enterprise only), the server must still be TLS-authenticated. Therefore, the client must know to trust the certificate authority that signed the public certificate identifying the server. Therefore, the root CA certificate, called `ca.crt`, must be provided to client authentication attempts. This can be passed as the `sslrootcert` parameter in a [database connection string](../connect-to-the-database.html), or by being placed in the directory specified by the `certs-dir` argument in a connection made with the [`cockroach sql`](../cockroach-sql.html) CLI command.
 
 #### TLS client authentication
 
@@ -278,9 +278,9 @@ CockroachDB can be [configured to check an OCSP responder](../manage-certs-revok
 
 #### Short-lived certificates
 
-For many self-hosted customers, we recommend a strategy of relying on a short "lifetime", i.e., validity duration, for credentials (private key/public certificate pairs) issued to CRDB nodes and SQL clients. This strategy is relatively easy to implement in an automated pipeline using cloud native secrets management tools such as GCP secrets manager or Hashicorp Vault to securely propagate certificates, and synergizes with the use of cloud native CA tools, such as GCP's Certficiate Authority Service (CAS). Using these tools, an operator can create an automation pipeline to generate and propagate certificates.
+For many self-hosted customers, we recommend a strategy of relying on a short "lifetime", i.e., validity duration, for credentials (private key/public certificate pairs) issued to CRDB nodes and SQL clients. This strategy is relatively easy to implement in an automated pipeline using cloud native secrets management tools such as GCP secrets manager or Hashicorp Vault to securely propagate certificates, and synergizes with the use of cloud native CA tools, such as GCP's Certificate Authority Service (CAS). Using these tools, an operator can create an automation pipeline to generate and propagate certificates.
 
-By relying on certficiates with a short validity duration, we can greatly reduce the threat posed by such a certificate being leaked, since the certificate's value to an attacker is limited by its validity duration.
+By relying on certificates with a short validity duration, we can greatly reduce the threat posed by such a certificate being leaked, since the certificate's value to an attacker is limited by its validity duration.
 To maintain connection to a network secured by short-lived credentials, a would-be-attacker must maintain access to the secret manager used to propagate the credentials. This consolidates the risk surface of the certificate itself into the shadow of access to the secrets manager.
 
 The trade-off with short-lived certificates (or requiring any low-latency revocation system), is that it can become a single point of failure for service availability. If network connections depend on hourly propagation of fresh credentials, then a leaked credential only offers an attacker a one hour window of exploitation, but taking the credential automation offline for more than an hour can take the entire system offline. Fine tuning the validity duration to meet your threat model and available resources is an important component of designing a minimally secure private PKI without using another revocation mechanism.

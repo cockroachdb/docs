@@ -1,6 +1,6 @@
 ---
 title: Changefeeds in Multi-Region Deployments
-summary: Understand limitations and usage of changefeeds in multi-region delpoyments.
+summary: Understand limitations and usage of changefeeds in multi-region deployments.
 toc: true
 docs_area: stream_data
 ---
