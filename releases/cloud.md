@@ -19,7 +19,7 @@ Get future release notes emailed to you:
 
 <h3> General changes </h3>
 
-- {{ site.data.products.serverless }} users can now access [cloud storage for bulk operations](../cockroachcloud/run-bulk-operations.html) without entering billing information.
+- {{ site.data.products.serverless }} users can now access [cloud storage for bulk operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) without entering billing information.
 
 ## January 9, 2023
 
