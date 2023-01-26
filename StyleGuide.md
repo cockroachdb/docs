@@ -30,7 +30,7 @@ Included in this guide:
 - [Standard sections](#standard-sections)
   - [Glossary](#glossary)
   - [See also](#see-also)
-  - [Prerequisites](#prerequisites)
+  - [Before you begin](#before-you-begin)
 - [Page types](#page-types)
   - [Tutorial](#tutorials)
   - [Best practice](#best-practice)
@@ -326,9 +326,9 @@ A _glossary_ is a collection (usually in tabular form) of [definitions](#definit
 - [Architecture Glossary](https://www.cockroachlabs.com/docs/v21.2/architecture/overview.html#glossary)
 - [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#cockroachdb-cloud-terms)
 
-### Prerequisites
+### Before you begin
 
-A _prerequisites_ section describes conditions that must be satisfied before starting a [task](#task) or [tutorial](#tutorial).
+The "Before you begin" section describes any knowledge, consideration, or conditions that the user should be aware of before starting a [task](#task) or [tutorial](#tutorial). These may be setup requirements or contextual information that's helpful to the task.
 
 ### See also
 
@@ -358,7 +358,7 @@ A tutorial helps users quickly achieve competence in a CockroachDB feature or un
 
   **Example:** Stream a Changefeed to Snowflake
 
-- The first section describes [prerequisites](#prerequisites). Heading title: **Before you begin** or **Prerequisites**.
+- The first section describes requirements and knowledge necessary or helpful for the user [before starting the tutorial](#before-you-begin). Heading title: **Before you begin**.
 - Subsequent headings are **Step 1. \<Imperative verb\> a \<noun\>**, **Step 2. \<Imperative verb\> a \<noun\>**, etc., each containing a small ordered list of steps. Within each **Step**, limit the number of steps. Aim for the heuristic maximum of 10 steps.
 - Tutorials should be written in a conversational [tone](#language-and-tone), as if it is teaching the user.
 - The instructions should be prescriptive (i.e., tell the user exactly what to do).

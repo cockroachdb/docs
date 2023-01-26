@@ -17,7 +17,7 @@ An overview of the workflow involves creating and connecting the following:
 1. Confluent Schema Registry
 1. Changefeed streaming to your Confluent Cloud Kafka cluster 
 
-## Prerequisites 
+## Before you begin 
 
 You will need the following set up before starting this tutorial:
 
