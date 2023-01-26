@@ -12,7 +12,7 @@ CockroachDB automatically creates an index on the table's [primary key](primary-
 
 *Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
 
-This page provides best-practice guidance on creating secondary indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides best-practice guidance on creating secondary indexes, with a simple example based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
 
 ## Before you begin
 

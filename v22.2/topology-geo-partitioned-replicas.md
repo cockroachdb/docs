@@ -20,7 +20,7 @@ In a multi-region deployment, the geo-partitioned replicas topology is a good ch
 **See It In Action** - Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/case-studies/european-electronic-lock-manufacturer-modernizes-iam-system-with-managed-cockroachdb/) and [multi-national bank](https://www.cockroachlabs.com/case-studies/top-five-multinational-bank-modernizes-its-european-core-banking-services-migrating-from-oracle-to-cockroachdb/) are using the Geo-Partitioned Replicas topology in production for improved performance and regulatory compliance.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 ### Fundamentals
 

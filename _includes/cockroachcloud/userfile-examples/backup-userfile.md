@@ -36,25 +36,3 @@ When backing up from a cluster and restoring a database or table that is stored 
 2021/03/24-210532.53
 (3 rows)
 ~~~
-
-In cases when your database needs to be restored, run the following:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-RESTORE DATABASE bank FROM '2021/03/24-210532.53' IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
-~~~
-
-It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
-
-To restore from the most recent backup, use [`RESTORE FROM LATEST IN ...`](../{{site.current_cloud_version}}/restore.html#restore-the-most-recent-backup).
-
-Once the backup data is no longer needed, delete from the `userfile` storage:
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach userfile delete bank-backup --url {CONNECTION STRING}
-~~~
-
-If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](../{{site.current_cloud_version}}/configure-replication-zones.html#gc-ttlseconds) to be removed from disk.
-
-To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](backups-page.html#troubleshooting).

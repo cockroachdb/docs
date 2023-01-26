@@ -14,7 +14,7 @@ This tutorial shows you how to use [Vercel](https://vercel.com/) to deploy a web
     <button class="filter-button page-level" data-scope="local"><strong>Use the command line</strong></button>
 </div>
 
-## Prerequisites
+## Before you begin
 
 Before starting the tutorial, do the following:
 

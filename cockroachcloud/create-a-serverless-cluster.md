@@ -41,7 +41,7 @@ If you set a spend limit, your cluster will not be throttled to baseline perform
 {% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
 
 {{site.data.alerts.callout_info}}
-Regardless of whether you set a spend limit, [adding billing information](billing-management.html) for your organization allows you to use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](run-bulk-operations.html).
+Regardless of whether you set a spend limit, [adding billing information](billing-management.html) for your organization allows you to use [cloud storage for backups](take-and-restore-customer-owned-backups.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](take-and-restore-customer-owned-backups.html).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

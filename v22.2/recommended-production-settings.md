@@ -320,7 +320,7 @@ CockroachDB is purpose-built to be fault-tolerant and to recover automatically, 
 
 Taking regular backups of your data in production is an operational best practice. You can create [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage](use-cloud-storage-for-bulk-operations.html) and enabling [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
-For details about available backup and restore types in CockroachDB, see [Backup and restore types](backup-and-restore-overview.html#backup-and-restore-types).
+For details about available backup and restore types in CockroachDB, see [Backup and restore types](backup-and-restore-overview.html#backup-and-restore-product-support).
 
 ## Clock synchronization
 
@@ -372,7 +372,7 @@ In Docker-based deployments of CockroachDB, these dependencies do not need to be
 
 ## File descriptors limit
 
-CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, please note the following recommendations.
+CockroachDB can use a large number of open file descriptors, often more than is available by default. Therefore, note the following recommendations.
 
 For each CockroachDB node:
 

@@ -16,7 +16,7 @@ If you are an application developer who needs to implement an application-level 
 To improve the performance of transactions that fail due to [contention](performance-best-practices-overview.html#transaction-contention), CockroachDB includes a set of statements (listed below) that let you retry those transactions. Retrying transactions using these statements has the following benefits:
 
 1. When you use savepoints, you "hold your place in line" between attempts. Without savepoints, you're starting from scratch every time.
-2. Transactions increase their priority each time they're retried, increasing the likelihood they will succeed. This has a lesser effect than #1.
+1. Transactions increase their priority each time they're retried, increasing the likelihood they will succeed. This has a lesser effect than #1.
 
 ## How transaction retries work
 
@@ -33,17 +33,17 @@ A retryable transaction goes through the process described below, which maps to 
 
 1. The transaction starts with the [`BEGIN`](begin-transaction.html) statement.
 
-2. The [`SAVEPOINT`](savepoint.html) statement shown here is a [retry savepoint](#retry-savepoints); that is, it declares the intention to retry the transaction in the case of contention errors. It must be executed after [`BEGIN`](begin-transaction.html), but before the first statement that manipulates a database. Although [nested transactions](savepoint.html#savepoints-for-nested-transactions) are supported in versions of CockroachDB 20.1 and later, a retry savepoint must be the outermost savepoint in a transaction.
+1. The [`SAVEPOINT`](savepoint.html) statement shown here is a [retry savepoint](#retry-savepoints); that is, it declares the intention to retry the transaction in the case of contention errors. It must be executed after [`BEGIN`](begin-transaction.html), but before the first statement that manipulates a database. Although [nested transactions](savepoint.html#savepoints-for-nested-transactions) are supported in versions of CockroachDB 20.1 and later, a retry savepoint must be the outermost savepoint in a transaction.
 
-3. The statements in the transaction are executed.
+1. The statements in the transaction are executed.
 
-4. If a statement returns a retry error (identified via the `40001` error code or `"retry transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction and increase the transaction's priority. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
+1. If a statement returns a retry error (identified via the `40001` error code or `"restart transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction and increase the transaction's priority. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
 
     You must now issue the statements in the transaction again.
 
     In cases where you do not want the application to retry the transaction, you can issue [`ROLLBACK`](rollback-transaction.html) at this point. Any other statements will be rejected by the server, as is generally the case after an error has been encountered and the transaction has not been closed.
 
-5. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT`](release-savepoint.html) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
+1. Once the transaction executes all statements without encountering contention errors, execute [`RELEASE SAVEPOINT`](release-savepoint.html) to commit the changes. If this succeeds, all changes made by the transaction become visible to subsequent transactions and are guaranteed to be durable if a crash occurs.
 
     In some cases, the [`RELEASE SAVEPOINT`](release-savepoint.html) statement itself can fail with a retry error, mainly because transactions in CockroachDB only realize that they need to be restarted when they attempt to commit. If this happens, the retry error is handled as described in step 4.
 

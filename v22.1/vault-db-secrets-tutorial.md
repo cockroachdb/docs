@@ -16,7 +16,7 @@ See also:
 - [CockroachDB - HashiCorp Vault Integration overview page](hashicorp-integration.html)
 - [HashiCorp Vault database secrets engine tutorial](https://learn.hashicorp.com/tutorials/vault/database-secrets).
 
-## Prerequisites
+## Before you begin
 
 To follow along with this tutorial you will need the following:
 
