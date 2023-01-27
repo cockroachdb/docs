@@ -316,4 +316,5 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
 - [Admission Control](admission-control.html)
+- [Metrics](metrics.html)
 - [Alerts Page](../cockroachcloud/alerts-page.html) ({{ site.data.products.dedicated }})

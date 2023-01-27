@@ -1862,6 +1862,12 @@
         ]
       },
       {
+        "title": "Metrics",
+        "urls": [
+          "/${VERSION}/metrics.html"
+        ]
+      },
+      {
         "title": "Transaction Retry Error Reference",
         "urls": [
           "/${VERSION}/transaction-retry-error-reference.html"
