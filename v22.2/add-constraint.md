@@ -191,45 +191,49 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 (1 row)
 ~~~
 
-First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
+To drop and add a primary key constraint:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users ALTER COLUMN name SET NOT NULL;
-~~~
+1. Add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
 
-Then, in the same transaction, [`DROP`](drop-constraint.html) the existing `"primary"` constraint and `ADD` the new one:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE users ALTER COLUMN name SET NOT NULL;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BEGIN;
-> ALTER TABLE users DROP CONSTRAINT "primary";
-> ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
-> COMMIT;
-~~~
+1. In the same transaction, [`DROP`](drop-constraint.html) the existing `"primary"` constraint and `ADD` the new one:
 
-~~~
-NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    BEGIN;
+    ALTER TABLE users DROP CONSTRAINT "primary";
+    ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
+    COMMIT;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE users;
-~~~
+    ~~~
+    NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
+    ~~~
 
-~~~
-  table_name |                          create_statement
--------------+---------------------------------------------------------------------
-  users      | CREATE TABLE users (
-             |     id UUID NOT NULL,
-             |     city VARCHAR NOT NULL,
-             |     name VARCHAR NOT NULL,
-             |     address VARCHAR NULL,
-             |     credit_card VARCHAR NULL,
-             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, name ASC, id ASC),
-             | )
-(1 row)
-~~~
+1. View the updated table structure:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CREATE TABLE users;
+    ~~~
+
+    ~~~
+     table_name |                          create_statement
+    -------------+---------------------------------------------------------------------
+      users      | CREATE TABLE users (
+                 |     id UUID NOT NULL,
+                 |     city VARCHAR NOT NULL,
+                 |     name VARCHAR NOT NULL,
+                 |     address VARCHAR NULL,
+                 |     credit_card VARCHAR NULL,
+                 |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, name ASC, id ASC),
+                 | )
+    (1 row)
+    ~~~
 
 Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
@@ -241,62 +245,66 @@ This example assumes you have a simulated multi-region database running on your 
 
 To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables works, we will:
 
-1. [Add a column](add-column.html) to the `users` table in the [MovR dataset](movr.html).
-1. Add a [`UNIQUE` constraint](unique.html) to that column.
-1. Verify that the index is automatically partitioned for better multi-region performance by using [`SHOW INDEXES`](show-index.html) and [`SHOW PARTITIONS`](show-partitions.html).
+1. [Add a column](add-column.html) to the `users` table in the [MovR dataset](movr.html):
 
-First, add a column and its unique constraint. We'll use `email` since that is something that should be unique per user.
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE users ADD COLUMN email STRING;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER TABLE users ADD COLUMN email STRING;
-~~~
+    We'll use `email` since that is something that should be unique per user.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
-~~~
+1. Add a [`UNIQUE` constraint](unique.html) to that column:
 
-Next, issue the [`SHOW INDEXES`](show-index.html) statement. You will see that [the implicit region column](set-locality.html#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables) is now indexed:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW INDEXES FROM users;
-~~~
+1. Verify that the index is automatically partitioned for better multi-region performance by using [`SHOW INDEXES`](show-index.html):
 
-~~~
-  table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit| visible
--------------+-------------------+------------+--------------+-------------+-----------+---------+---------+--------
-  users      | users_pkey        |     f      |            1 | region      | ASC       |   f     |   t     |   t
-  users      | users_pkey        |     f      |            2 | id          | ASC       |   f     |   f     |   t
-  users      | users_pkey        |     f      |            3 | city        | N/A       |   t     |   f     |   t
-  users      | users_pkey        |     f      |            4 | name        | N/A       |   t     |   f     |   t
-  users      | users_pkey        |     f      |            5 | address     | N/A       |   t     |   f     |   t
-  users      | users_pkey        |     f      |            6 | credit_card | N/A       |   t     |   f     |   t
-  users      | users_pkey        |     f      |            7 | email       | N/A       |   t     |   f     |   t
-  users      | user_email_unique |     f      |            1 | region      | ASC       |   f     |   t     |   t
-  users      | user_email_unique |     f      |            2 | email       | ASC       |   f     |   f     |   t
-  users      | user_email_unique |     f      |            3 | id          | ASC       |   f     |   t     |   t
-  users      | users_city_idx    |     t      |            1 | region      | ASC       |   f     |   t     |   t
-  users      | users_city_idx    |     t      |            2 | city        | ASC       |   f     |   f     |   t
-  users      | users_city_idx    |     t      |            3 | id          | ASC       |   f     |   t     |   t
-(13 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW INDEXES FROM users;
+    ~~~
 
-Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
+    Note that [the implicit region column](set-locality.html#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables) is now indexed:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW PARTITIONS FROM TABLE users;
-~~~
+    ~~~
+      table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit| visible
+    -------------+-------------------+------------+--------------+-------------+-----------+---------+---------+--------
+      users      | users_pkey        |     f      |            1 | region      | ASC       |   f     |   t     |   t
+      users      | users_pkey        |     f      |            2 | id          | ASC       |   f     |   f     |   t
+      users      | users_pkey        |     f      |            3 | city        | N/A       |   t     |   f     |   t
+      users      | users_pkey        |     f      |            4 | name        | N/A       |   t     |   f     |   t
+      users      | users_pkey        |     f      |            5 | address     | N/A       |   t     |   f     |   t
+      users      | users_pkey        |     f      |            6 | credit_card | N/A       |   t     |   f     |   t
+      users      | users_pkey        |     f      |            7 | email       | N/A       |   t     |   f     |   t
+      users      | user_email_unique |     f      |            1 | region      | ASC       |   f     |   t     |   t
+      users      | user_email_unique |     f      |            2 | email       | ASC       |   f     |   f     |   t
+      users      | user_email_unique |     f      |            3 | id          | ASC       |   f     |   t     |   t
+      users      | users_city_idx    |     t      |            1 | region      | ASC       |   f     |   t     |   t
+      users      | users_city_idx    |     t      |            2 | city        | ASC       |   f     |   f     |   t
+      users      | users_city_idx    |     t      |            3 | id          | ASC       |   f     |   t     |   t
+    (13 rows)
+    ~~~
 
-~~~
-  database_name | table_name | partition_name | column_names |       index_name        | partition_value  |  ...
-----------------+------------+----------------+--------------+-------------------------+------------------+-----
-  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1') |  ...
-  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')     |  ...
-  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |  ...
-~~~
+1. Verify that the index was partitioned correctly using the [`SHOW PARTITIONS`](show-partitions.html) statement:
+  
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW PARTITIONS FROM TABLE users;
+    ~~~
+
+    The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
+
+    ~~~
+      database_name | table_name | partition_name | column_names |       index_name        | partition_value  |  ...
+    ----------------+------------+----------------+--------------+-------------------------+------------------+-----
+      movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1') |  ...
+      movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')     |  ...
+      movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |  ...
+    ~~~
 
 To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned as shown above:
 

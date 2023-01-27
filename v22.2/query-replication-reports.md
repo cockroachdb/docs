@@ -176,43 +176,43 @@ By default, this geo-distributed demo cluster will not have any constraint viola
 
 To introduce a violation that we can then query for, we'll modify the zone configuration of the `users` table.
 
-First, let's see what existing zone configurations are attached to the `users` table, so we know what to modify.
+1. Let's see what existing zone configurations are attached to the `users` table, so we know what to modify.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW CREATE TABLE users;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW CREATE TABLE users;
+    ~~~
 
-~~~
-  table_name |                                  create_statement
-+------------+-------------------------------------------------------------------------------------+
-  users      | CREATE TABLE users (
-             |     id UUID NOT NULL,
-             |     city VARCHAR NOT NULL,
-             |     name VARCHAR NULL,
-             |     address VARCHAR NULL,
-             |     credit_card VARCHAR NULL,
-             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
-             | ) PARTITION BY LIST (city) (
-             |     PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-             |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-             |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-             | );
-             | ALTER PARTITION europe_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
-             |     constraints = '[+region=europe-west1]';
-             | ALTER PARTITION us_east OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
-             |     constraints = '[+region=us-east1]';
-             | ALTER PARTITION us_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
-             |     constraints = '[+region=us-west1]'
-(1 row)
-~~~
+    ~~~
+      table_name |                                  create_statement
+    +------------+-------------------------------------------------------------------------------------+
+      users      | CREATE TABLE users (
+                |     id UUID NOT NULL,
+                |     city VARCHAR NOT NULL,
+                |     name VARCHAR NULL,
+                |     address VARCHAR NULL,
+                |     credit_card VARCHAR NULL,
+                |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
+                | ) PARTITION BY LIST (city) (
+                |     PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
+                |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
+                |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
+                | );
+                | ALTER PARTITION europe_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
+                |     constraints = '[+region=europe-west1]';
+                | ALTER PARTITION us_east OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
+                |     constraints = '[+region=us-east1]';
+                | ALTER PARTITION us_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
+                |     constraints = '[+region=us-west1]'
+    (1 row)
+    ~~~
 
-To create a constraint violation, let's tell the ranges in the `europe_west` partition that they are explicitly supposed to *not* be in the `region=europe-west1` locality by issuing the following statement:
+1. To create a constraint violation, let's tell the ranges in the `europe_west` partition that they are explicitly supposed to *not* be in the `region=europe-west1` locality by issuing the following statement:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER PARTITION europe_west of INDEX movr.public.users@users_pkey CONFIGURE ZONE USING constraints = '[-region=europe-west1]';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER PARTITION europe_west of INDEX movr.public.users@users_pkey CONFIGURE ZONE USING constraints = '[-region=europe-west1]';
+    ~~~
 
 Once the statement above executes, the ranges currently stored in that locality will now be in a state where they are explicitly not supposed to be in that locality, and are thus in violation of a constraint.
 

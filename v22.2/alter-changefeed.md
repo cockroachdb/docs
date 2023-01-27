@@ -71,7 +71,7 @@ To use the `ALTER CHANGEFEED` statement to modify a changefeed, it is necessary 
 For more information on enabling changefeeds, see [Create and Configure Changefeeds](create-and-configure-changefeeds.html).
 {{site.data.alerts.end}}
 
-1. First, create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`](create-changefeed.html#resolved-option), [`updated`](create-changefeed.html#updated-option), and [`schema_change_policy`](create-changefeed.html#schema-policy) options:
+1. Create the changefeed. This example changefeed will emit change messages to a cloud storage sink on two watched tables. The emitted messages will include the [`resolved`](create-changefeed.html#resolved-option), [`updated`](create-changefeed.html#updated-option), and [`schema_change_policy`](create-changefeed.html#schema-policy) options:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

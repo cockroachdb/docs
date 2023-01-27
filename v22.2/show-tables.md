@@ -229,42 +229,42 @@ For [multi-region](multiregion-overview.html) tables, you can display the locali
 
 {% include enterprise-feature.md %}
 
-First, [set the primary region](set-primary-region.html) on `movr` to `us-east`:
+1. [Set the primary region](set-primary-region.html) on `movr` to `us-east`:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER DATABASE movr SET PRIMARY REGION "us-east";
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > ALTER DATABASE movr SET PRIMARY REGION "us-east";
+    ~~~
 
-All tables will be [`REGIONAL BY TABLE`](set-locality.html#set-the-table-locality-to-regional-by-table) in the primary region by default.
+    All tables will be [`REGIONAL BY TABLE`](set-locality.html#set-the-table-locality-to-regional-by-table) in the primary region by default.
 
-Next, configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row):
+1. Configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW TABLES;
+    ~~~
 
-~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count |              locality
---------------+----------------------------+-------+-------+---------------------+--------------------------------------
-  public      | promo_codes                | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
-  public      | rides                      | table | demo  |                 500 | REGIONAL BY TABLE IN PRIMARY REGION
-  public      | user_promo_codes           | table | demo  |                   0 | REGIONAL BY TABLE IN PRIMARY REGION
-  public      | users                      | table | demo  |                  50 | REGIONAL BY ROW
-  public      | vehicle_location_histories | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
-  public      | vehicles                   | table | demo  |                  15 | REGIONAL BY TABLE IN PRIMARY REGION
-(6 rows)
-~~~
+    ~~~
+      schema_name |         table_name         | type  | owner | estimated_row_count |              locality
+    --------------+----------------------------+-------+-------+---------------------+--------------------------------------
+      public      | promo_codes                | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
+      public      | rides                      | table | demo  |                 500 | REGIONAL BY TABLE IN PRIMARY REGION
+      public      | user_promo_codes           | table | demo  |                   0 | REGIONAL BY TABLE IN PRIMARY REGION
+      public      | users                      | table | demo  |                  50 | REGIONAL BY ROW
+      public      | vehicle_location_histories | table | demo  |                1000 | REGIONAL BY TABLE IN PRIMARY REGION
+      public      | vehicles                   | table | demo  |                  15 | REGIONAL BY TABLE IN PRIMARY REGION
+    (6 rows)
+    ~~~
 
-{{site.data.alerts.callout_info}}
-Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`](crdb-internal.html) table.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`](crdb-internal.html) table.
+    {{site.data.alerts.end}}
 
 ## See also
 

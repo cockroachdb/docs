@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
+CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
 
 This page has instructions for migrating data from ESRI [Shapefiles](spatial-glossary.html#shapefile) into CockroachDB using [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html) and [`IMPORT`][import].
 
@@ -32,22 +32,26 @@ To follow along with the example below, you will need the following prerequisite
 
 ## Step 1. Download the Shapefile data
 
-First, download and unzip the tornado data:
+1. Download the tornado data:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-wget http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    wget http://web.archive.org/web/20201018170120/https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-unzip 1950-2018-torn-initpoint.zip
-~~~
+1. Unzip the data file:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cd 1950-2018-torn-initpoint/
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    unzip 1950-2018-torn-initpoint.zip
+    ~~~
+
+1. Change to the data folder:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd 1950-2018-torn-initpoint/
+    ~~~
 
 ## Step 2. Convert the Shapefile data to SQL
 

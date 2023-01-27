@@ -162,92 +162,91 @@ In this example we will use Zone Config Extensions to configure a multi-region [
 This functionality is already provided by the built-in [Secondary regions](multiregion-overview.html#secondary-regions) feature. It is used here to show the flexibility of Zone Config Extensions. We strongly recommend using the [built-in multi-region features](multiregion-overview.html) whenever possible.
 {{site.data.alerts.end}}
 
-First, set the database to have a `REGION` survival goal using [`ALTER DATABASE ... SURVIVE REGION FAILURE`](survive-failure.html):
+1. Set the database to have a `REGION` survival goal using [`ALTER DATABASE ... SURVIVE REGION FAILURE`](survive-failure.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE movr SURVIVE REGION FAILURE;
-~~~
+     {% include_cached copy-clipboard.html %}
+     ~~~ sql
+     ALTER DATABASE movr SURVIVE REGION FAILURE;
+     ~~~
 
-Next, apply the `REGIONAL BY ROW` locality to the `movr.rides` table using the following statement.
+1. Apply the `REGIONAL BY ROW` locality to the `movr.rides` table using the following statement:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
- CASE WHEN city = 'amsterdam' THEN 'europe-west1'
-      WHEN city = 'paris' THEN 'europe-west1'
-      WHEN city = 'rome' THEN 'europe-west1'
-      WHEN city = 'new york' THEN 'us-east1'
-      WHEN city = 'boston' THEN 'us-east1'
-      WHEN city = 'washington dc' THEN 'us-east1'
-      WHEN city = 'san francisco' THEN 'us-west1'
-      WHEN city = 'seattle' THEN 'us-west1'
-      WHEN city = 'los angeles' THEN 'us-west1'
- END
-) STORED;
-ALTER TABLE rides ALTER COLUMN REGION SET NOT NULL;
-ALTER TABLE rides SET LOCALITY REGIONAL BY ROW AS "region";
-~~~
+     {% include_cached copy-clipboard.html %}
+     ~~~ sql
+     ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
+      END
+     ) STORED;
+     ALTER TABLE rides ALTER COLUMN REGION SET NOT NULL;
+     ALTER TABLE rides SET LOCALITY REGIONAL BY ROW AS "region";
+     ~~~
 
-Next, view the [zone configs](configure-replication-zones.html) for the `movr.rides` table using [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html):
+1. View the [zone configs](configure-replication-zones.html) for the `movr.rides` table using [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW ZONE CONFIGURATION FROM TABLE movr.rides;
-~~~
+     {% include_cached copy-clipboard.html %}
+     ~~~ sql
+     SHOW ZONE CONFIGURATION FROM TABLE movr.rides;
+     ~~~
 
-~~~
-     target     |                                      raw_config_sql
-----------------+-------------------------------------------------------------------------------------------
-  DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
-                |     range_min_bytes = 134217728,
-                |     range_max_bytes = 536870912,
-                |     gc.ttlseconds = 90000,
-                |     num_replicas = 5,
-                |     num_voters = 5,
-                |     constraints = '{+region=europe-west1: 1, +region=us-east1: 1, +region=us-west1: 1}',
-                |     voter_constraints = '{+region=us-east1: 2}',
-                |     lease_preferences = '[[+region=us-east1]]'
-(1 row)
-~~~
+     ~~~
+          target     |                                      raw_config_sql
+     ----------------+-------------------------------------------------------------------------------------------
+       DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
+                     |     range_min_bytes = 134217728,
+                     |     range_max_bytes = 536870912,
+                     |     gc.ttlseconds = 90000,
+                     |     num_replicas = 5,
+                     |     num_voters = 5,
+                     |     constraints = '{+region=europe-west1: 1, +region=us-east1: 1, +region=us-west1: 1}',
+                     |     voter_constraints = '{+region=us-east1: 2}',
+                     |     lease_preferences = '[[+region=us-east1]]'
+     (1 row)
+     ~~~
 
-Remember that [we configured `us-east1` to be our primary region during cluster setup](#setup). The output above confirms that `us-east1` is the primary region based on the values of the [`voter_constraints`](configure-replication-zones.html#voter_constraints) and [`lease_preferences`](configure-replication-zones.html#lease_preferences) keys.
+     Remember that [we configured `us-east1` to be our primary region during cluster setup](#setup). The output above confirms that `us-east1` is the primary region based on the values of the [`voter_constraints`](configure-replication-zones.html#voter_constraints) and [`lease_preferences`](configure-replication-zones.html#lease_preferences) keys.
+ 
+1. Update the configuration to keep additional voting replicas and leaseholders in `us-west1`. We do this because we would like to configure `us-west1` to be the failover region for `us-east1`. The following SQL statement accomplishes this by configuring `us-east1` to keep additional voting replicas and leaseholders in `us-west1`. This means that if `us-east1` fails, it will fail over to `us-west1`.
 
-Next, we would like to configure `us-west1` to be the failover region for `us-east1`, so we will update the configuration to keep additional voting replicas and leaseholders in `us-west1`. The following SQL statement accomplishes this by configuring `us-east1` to keep additional voting replicas and leaseholders in `us-west1`. This means that if `us-east1` fails, it will fail over to `us-west1`.
+     {% include_cached copy-clipboard.html %}
+     ~~~ sql
+     ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING voter_constraints = '{+region=us-east1: 2, +region=us-west1: 2}', lease_preferences = '[[+region=us-east1], [+region=us-west1]]';
+     ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE movr ALTER LOCALITY REGIONAL IN "us-east1" CONFIGURE ZONE USING voter_constraints = '{+region=us-east1: 2, +region=us-west1: 2}', lease_preferences = '[[+region=us-east1], [+region=us-west1]]';
-~~~
+1. View the [zone configs](configure-replication-zones.html) for the `movr.rides` table using [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html):
 
-After updating the configuration as shown above, view the [zone configs](configure-replication-zones.html) for the `movr.rides` table using [`SHOW ZONE CONFIGURATION`](show-zone-configurations.html):
+     {% include_cached copy-clipboard.html %}
+     ~~~ sql
+     SHOW ZONE CONFIGURATION FROM TABLE movr.rides;
+     ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW ZONE CONFIGURATION FROM TABLE movr.rides;
-~~~
+     ~~~
+          target     |                                      raw_config_sql
+     ----------------+-------------------------------------------------------------------------------------------
+       DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
+                     |     range_min_bytes = 134217728,
+                     |     range_max_bytes = 536870912,
+                     |     gc.ttlseconds = 90000,
+                     |     num_replicas = 5,
+                     |     num_voters = 5,
+                     |     constraints = '{+region=europe-west1: 1, +region=us-east1: 1, +region=us-west1: 1}',
+                     |     voter_constraints = '{+region=us-east1: 2, +region=us-west1: 2}',
+                     |     lease_preferences = '[[+region=us-east1], [+region=us-west1]]'
+     (1 row)
+     ~~~
 
-~~~
-     target     |                                      raw_config_sql
-----------------+-------------------------------------------------------------------------------------------
-  DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
-                |     range_min_bytes = 134217728,
-                |     range_max_bytes = 536870912,
-                |     gc.ttlseconds = 90000,
-                |     num_replicas = 5,
-                |     num_voters = 5,
-                |     constraints = '{+region=europe-west1: 1, +region=us-east1: 1, +region=us-west1: 1}',
-                |     voter_constraints = '{+region=us-east1: 2, +region=us-west1: 2}',
-                |     lease_preferences = '[[+region=us-east1], [+region=us-west1]]'
-(1 row)
-~~~
+     The following changes are shown:
+        - There are now 2 voting replicas stored in `us-west1`.
+        - There is now a preference that if leases cannot be placed in `us-east1`, they should be placed in `us-west1`.
 
-The following changes are shown:
-
-- There are now 2 voting replicas stored in `us-west1`.
-- There is now a preference that if leases cannot be placed in `us-east1`, they should be placed in `us-west1`.
-
-Both of these changes combine to ensure that if `us-east1` goes down, the cluster will still be able to operate until some mitigation is in place.
+     Both of these changes combine to ensure that if `us-east1` goes down, the cluster will still be able to operate until some mitigation is in place.
 
 To remove the zone config changes made in this example, [reset the Zone Config Extensions](#reset-a-regions-zone-config-extensions).
 

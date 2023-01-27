@@ -448,38 +448,38 @@ INSERT 1
 
 In addition to the interactive SQL shell that opens when you run `cockroach demo`, you can use the [connection parameters](#connection-parameters) in the welcome text to connect additional SQL clients to the cluster.
 
-First, use `\demo ls` to list the connection parameters for each node in the demo cluster:
+1. Use `\demo ls` to list the connection parameters for each node in the demo cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> \demo ls
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    \demo ls
+    ~~~
 
-~~~
-node 1:
-  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
-  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
-  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ~~~
+    node 1:
+      (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+      (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+      (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
-node 2:
-  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
-  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
-  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
+    node 2:
+      (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+      (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+      (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
 
-node 3:
-  (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
-  (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
-  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
-~~~
+    node 3:
+      (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
+      (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
+      (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
+    ~~~
 
-Then open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the `--url` flag set to the `sql` connection URL of the node to which you want to connect:
+1. Open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the `--url` flag set to the `sql` connection URL of the node to which you want to connect:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --url='postgres://demo:demo53628@127.0.0.1:26259?sslmode=require'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --url='postgres://demo:demo53628@127.0.0.1:26259?sslmode=require'
+    ~~~
 
-You can also use this URL to connect an application to the demo cluster as the `demo` user.
+    You can also use this URL to connect an application to the demo cluster as the `demo` user.
 
 ### Start a multi-region demo cluster
 

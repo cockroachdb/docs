@@ -102,46 +102,48 @@ Suppose that you want to add `name` to the composite primary key of the `users` 
 (1 row)
 ~~~
 
-First, add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
+1. Add a [`NOT NULL`](not-null.html) constraint to the `name` column with [`ALTER COLUMN`](alter-column.html).
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE users ALTER COLUMN name SET NOT NULL;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE users ALTER COLUMN name SET NOT NULL;
+    ~~~
 
-Then, in the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](add-constraint.html) the new one:
+1. In the same transaction, `DROP` the old `"primary"` constraint and [`ADD`](add-constraint.html) the new one:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BEGIN;
-> ALTER TABLE users DROP CONSTRAINT "primary";
-> ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
-> COMMIT;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > BEGIN;
+    > ALTER TABLE users DROP CONSTRAINT "primary";
+    > ALTER TABLE users ADD CONSTRAINT "primary" PRIMARY KEY (city, name, id);
+    > COMMIT;
+    ~~~
 
-~~~
-NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
-~~~
+    ~~~
+    NOTICE: primary key changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE users;
-~~~
+1. View the table structure: 
 
-~~~
-  table_name |                          create_statement
--------------+---------------------------------------------------------------------
-  users      | CREATE TABLE users (
-             |     id UUID NOT NULL,
-             |     city VARCHAR NOT NULL,
-             |     name VARCHAR NOT NULL,
-             |     address VARCHAR NULL,
-             |     credit_card VARCHAR NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
-             |     FAMILY "primary" (id, city, name, address, credit_card)
-             | )
-(1 row)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CREATE TABLE users;
+    ~~~
+
+    ~~~
+      table_name |                          create_statement
+    -------------+---------------------------------------------------------------------
+      users      | CREATE TABLE users (
+                |     id UUID NOT NULL,
+                |     city VARCHAR NOT NULL,
+                |     name VARCHAR NOT NULL,
+                |     address VARCHAR NULL,
+                |     credit_card VARCHAR NULL,
+                |     CONSTRAINT "primary" PRIMARY KEY (city ASC, name ASC, id ASC),
+                |     FAMILY "primary" (id, city, name, address, credit_card)
+                | )
+    (1 row)
+    ~~~
 
 Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
