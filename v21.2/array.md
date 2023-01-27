@@ -139,6 +139,44 @@ You can use the [operators](functions-and-operators.html#supported-operations) `
 (1 row)
 ~~~
 
+### Using the overlaps operator
+
+You can use the `&&` (overlaps) [operator](functions-and-operators.html#supported-operations) to select array columns by checking if another array overlaps the column array. Arrays overlap if they have any elements in common.
+
+1. Create the table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE a (b STRING[]);
+    ~~~
+
+1. Insert two new arrays:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    INSERT INTO a VALUES (ARRAY['runway', 'houses', 'city', 'clouds']);
+    INSERT INTO a VALUES (ARRAY['runway', 'houses', 'city']);
+    INSERT INTO a VALUES (ARRAY['sun','moon']);
+    ~~~
+
+1. Use the `&&` operator in a where clause to a query:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM a WHERE b && ARRAY['clouds','moon'];
+    ~~~
+
+    ~~~
+                      b
+    -------------------------------
+      {runway,houses,city,clouds}
+      {sun,moon}
+    (2 rows)
+
+
+    Time: 30ms total (execution 2ms / network 28ms)
+    ~~~
+
 ### Appending an element to an array
 
 #### Using the `array_append` function
