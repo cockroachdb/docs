@@ -37,7 +37,7 @@ A retryable transaction goes through the process described below, which maps to 
 
 1. The statements in the transaction are executed.
 
-1. If a statement returns a retry error (identified via the `40001` error code or `"retry transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction and increase the transaction's priority. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
+1. If a statement returns a retry error (identified via the `40001` error code or `"restart transaction"` string at the start of the error message), you can issue the [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) statement to restart the transaction and increase the transaction's priority. Alternately, the original [`SAVEPOINT`](savepoint.html) statement can be reissued to restart the transaction.
 
     You must now issue the statements in the transaction again.
 

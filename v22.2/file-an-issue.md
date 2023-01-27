@@ -24,7 +24,7 @@ To file an issue in GitHub, we need the following information:
     $ grep -F '[config]' cockroach-data/logs/cockroach.log
     ~~~
     {{site.data.alerts.callout_info}}You might need to replace <code>cockroach-data/logs</code> with the location of your <a href="logging-overview.html">logs</a>.{{site.data.alerts.end}}
-    If the logs are not available, please include the output of `cockroach version` for each node in the cluster.
+    If the logs are not available, include the output of `cockroach version` for each node in the cluster.
 
 ### Template
 

@@ -346,7 +346,7 @@ To force the use of a specific join algorithm even if the optimizer determines t
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
-- `CROSS MERGE JOIN`
+- `CROSS HASH JOIN`
 - `INNER INVERTED JOIN`
 - `LEFT INVERTED JOIN`
 

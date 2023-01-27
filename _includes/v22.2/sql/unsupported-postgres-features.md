@@ -1,7 +1,9 @@
-- Stored procedures and functions.
+- Stored procedures
+  - {% include_cached new-in.html version="v22.2" %} CockroachDB has support for [user-defined functions](user-defined-functions.html).
 - Triggers.
 - Events.
 - `FULLTEXT` functions and indexes.
+  - Depending on your use case, you may be able to get by using [trigram indexes](trigram-indexes.html) to do fuzzy string matching and pattern matching.
 - Drop primary key.
 
     {{site.data.alerts.callout_info}}

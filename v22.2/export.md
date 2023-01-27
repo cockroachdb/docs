@@ -234,6 +234,27 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
+
+### Export data out of {{ site.data.products.db }}
+
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](../cockroachcloud/billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql \
+--url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
+--execute "SELECT * FROM db.table" --format=csv > /Users/{username}/{path/to/file}/table.csv
+~~~
+
+The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
+
+~~~sql
+EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+
 ### View a running export
 
 View running exports by using [`SHOW STATEMENTS`](show-statements.html):

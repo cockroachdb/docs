@@ -20,7 +20,7 @@ This page has instructions for data domiciling in [multi-region clusters](multir
 1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) clauses.
 1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement, which constrains the voting and non-voting replicas for a partition or table to be stored in only the [home regions](multiregion-overview.html#table-localities) associated with those rows or tables.
 
-## Prerequisites
+## Before you begin
 
 This page assumes you are already familiar with:
 

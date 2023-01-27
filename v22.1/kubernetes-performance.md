@@ -9,7 +9,7 @@ Kubernetes provides many useful abstractions for deploying and operating distrib
 
 <div id="toc"></div>
 
-## Prerequisites
+## Before you begin
 
 Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 

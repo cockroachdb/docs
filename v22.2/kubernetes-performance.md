@@ -9,7 +9,7 @@ Kubernetes provides many useful abstractions for deploying and operating distrib
 
 <div id="toc"></div>
 
-## Prerequisites
+## Before you begin
 
 Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
@@ -201,7 +201,7 @@ Allocated resources:
   360m (9%)     0 (0%)      110Mi (0%)       170Mi (1%)
 ~~~
 
-This will output a lot of information for each of the nodes in your cluster, but if you focus in on the right parts you'll see how many "allocatable" resources are available on each node and how many resources are already being used by other pods. The "allocatable" resources are how much CPU and memory Kubernetes is willing to provide to pods running on the machine. The difference between the node's "capacity" and its "allocatable" resources is taken up by the operating system and Kubernetes' management processes. The "m" in "3920m" stands for "milli-CPUs", meaning "thousandths of a CPU".
+This will output a lot of information for each of the nodes in your cluster, but if you focus in on the right parts you'll see how many "allocatable" resources are available on each node and how many resources are already being used by other pods. The "allocatable" resources are how much CPU and memory Kubernetes is willing to provide to pods running on the machine. The difference between the node's "capacity" and its "allocatable" resources is taken up by the operating system and Kubernetes's management processes. The "m" in "3920m" stands for "milli-CPUs", meaning "thousandths of a CPU".
 
 You'll also see a number of pods running here that you may not have realized were in your cluster. Kubernetes runs a handful of pods in the `kube-system` namespace that are part of the cluster infrastructure. These may make it tough to attempt to reserve all the allocatable space on your nodes for CockroachDB, since some of them are essential for the Kubernetes cluster's health. If you want to run CockroachDB on every node in your cluster, you'll have to leave room for these processes. If you are only running CockroachDB on a subset of the nodes in your cluster, you can choose to take up all the "allocatable" space other than what is being used by the `kube-system` pods that are on all the nodes in the cluster, such as `kube-proxy` or the `fluentd` logging agent.
 
@@ -371,7 +371,7 @@ This configuration will first prefer to put the `loadgen` pods on different node
 
 ### Networking
 
-[Kubernetes asks a lot of the network that it runs on](https://kubernetes.io/docs/concepts/cluster-administration/networking/) in order to provide a routable IP address and an isolated Linux network namespace to each pod in the cluster, among its other requirements. While this document isn't nearly large enough to properly explain the details, and those details themselves can depend heavily on specifically how you have set up the network for your cluster, it suffices to say that Docker and Kubernetes' networking abstractions often come with a performance penalty for high-throughput distributed applications such as CockroachDB.
+[Kubernetes asks a lot of the network that it runs on](https://kubernetes.io/docs/concepts/cluster-administration/networking/) in order to provide a routable IP address and an isolated Linux network namespace to each pod in the cluster, among its other requirements. While this document isn't nearly large enough to properly explain the details, and those details themselves can depend heavily on specifically how you have set up the network for your cluster, it suffices to say that Docker and Kubernetes's networking abstractions often come with a performance penalty for high-throughput distributed applications such as CockroachDB.
 
 If you really want to eke more performance out of your cluster, networking is a good target to at least experiment with. You can either replace your cluster's networking solution with a more performant one or bypass most of the networking overhead by using the host machines' networks directly.
 
@@ -408,7 +408,7 @@ A [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonse
 {{site.data.alerts.callout_danger}}
 We strongly recommend **against** using DaemonSets due to their weaker fault tolerance and data survivability capabilities, in comparison to StatefulSets. In most Kubernetes environments, nodes are considered ephemeral. However, a DaemonSet pod ties a CockroachDB node to a specific Kubernetes node, and cannot be rescheduled to another Kubernetes node in the event of an automatic upgrade or hardware failure. Unless you have manually set up persistent volumes, DaemonSet deployments will lose all their data when Kubernetes nodes are replaced in a cluster.
 
-This limits Kubernetes' ability to help your cluster recover from failures, and matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
+This limits Kubernetes's ability to help your cluster recover from failures, and matches the behavior of running CockroachDB directly on a set of physical machines that are only manually replaced by human operators.
 {{site.data.alerts.end}}
 
 ### Dedicated nodes

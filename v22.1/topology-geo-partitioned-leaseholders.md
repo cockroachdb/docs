@@ -21,7 +21,7 @@ In a multi-region deployment, the geo-partitioned [leaseholders](architecture/re
 **See It In Action** - Read about how a [large telecom provider](https://www.cockroachlabs.com/case-studies/telecom-provider-replaces-amazon-aurora-with-cockroachdb-to-attain-analways-on-customer-experience/) with millions of customers across the United States is using the geo-partitioned leaseholders topology in production for strong resiliency and performance.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 ### Fundamentals
 
