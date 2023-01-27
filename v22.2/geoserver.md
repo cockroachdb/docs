@@ -15,7 +15,9 @@ Many of the instructions on this page come from the following GeoServer document
 - [Using the web administration interface](https://docs.geoserver.org/stable/en/user/gettingstarted/web-admin-quickstart/index.html)
 - [Publishing a PostGIS table](https://docs.geoserver.org/stable/en/user/gettingstarted/postgis-quickstart/index.html).
 
-## Prerequisites
+## Before you begin
+
+You must have the following set up before proceeding with this tutorial:
 
 1. CockroachDB [installed on the local machine](install-cockroachdb.html)
 1. GeoServer [installed on the local machine](https://docs.geoserver.org/stable/en/user/installation/index.html#installation).

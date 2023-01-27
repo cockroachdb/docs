@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page provides best-practice guidance on creating databases, with a couple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides best-practice guidance on creating databases, with a couple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
 
 {{site.data.alerts.callout_success}}
 For reference documentation on the `CREATE DATABASE` statement, including additional examples, see the [`CREATE DATABASE` syntax page](create-database.html).

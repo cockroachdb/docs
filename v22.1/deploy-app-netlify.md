@@ -13,7 +13,7 @@ The sample app used in this tutorial simulates [a gaming leaderboard](https://ww
 
 The source code for the completed app is available on GitHub at [https://github.com/cockroachdb/cockroachdb-typescript](https://github.com/cockroachdb/cockroachdb-typescript).
 
-## Prerequisites
+## Before you begin
 
 Before starting the tutorial, do the following:
 

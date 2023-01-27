@@ -78,6 +78,7 @@ Each rule definition contains up to 6 values.
 ## The unstated, unchangeable `root` access rule
 
 The `root` SQL user can always authenticate using username/password or certificate, as if the first rule of the configuration were:
+
 ```
 # TYPE    DATABASE      USER           ADDRESS             METHOD
   host    all           root           all                 root

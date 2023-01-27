@@ -11,7 +11,7 @@ When you're ready to run CockroachDB in production in a single region, it's impo
 If you haven't already, [review the full range of topology patterns](topology-patterns.html) to ensure you choose the right one for your use case.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 {% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 
