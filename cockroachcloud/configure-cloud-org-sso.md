@@ -48,21 +48,21 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
-### Ensure that at least one org admin belongs to no other CockroachDB Cloud Organization
+### Ensure that at least one organization admin belongs to no other CockroachDB Cloud Organization
 
 {{site.data.alerts.callout_success}}
-Troubleshooting tip: If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that at least one org admin belongs to no other CockroachDB Cloud Organization.
+Troubleshooting tip: If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that at least one organization admin belongs to no other CockroachDB Cloud Organization.
 {{site.data.alerts.end}}
 
 <!--  @jason-crl I know this isn't quite right, plz help me phrase this stuff more accurately -->
 
-Under the hood, when an Organization migrates to Cloud Organization SSO from basic SSO, the identity of each member must be migrated to the new domain. If an org members *also belongs to other CockroachDB Cloud Organizations*, their identity must be split, to create an identity on the new org at the new SSO domain, while maintaining their identity on their other orgs at the basic SSO shared domain. This is all done automatically by the platform, and requires no action by customer org administrators.
+Under the hood, when an Organization migrates to Cloud Organization SSO from basic SSO, the identity of each member must be migrated to the new domain. If an organization members *also belongs to other CockroachDB Cloud Organizations*, their identity must be split, to create an identity on the new organization at the new SSO domain, while maintaining their identity on their other orgs at the basic SSO shared domain. This is all done automatically by the platform, and requires no action by customer organization administrators.
 
 However, this aspect of the migration can cause problems in a situation where *all members with the admin role belong to other orgs*. Theoretically, a migration that succeeded *except for the migration of the admin identities* could lead to the organization being unrecoverably orphaned without admin access. To prevent this unlikely but serious failure scenario, the migration will instead abort. However, there is currently no specific error message that will indicate the cause of the failure, and you will see the generic error `Cloud Organization SSO cannot be enabled`.
 
 *For your migration to succeed, you must ensure that at least one admin belongs to no other CockroachDB Cloud Organization than the one to be migrated.*
 
-If all of your administrator belongs to multiple orgs, you must create a temporary admin user without SSO (authenticating with username/password) to perform the migration. This powerful but weakly secured admin user should be deleted after the migration, in keeping with the general practices of minimizing unnecessary and weakly secured (without SSO) access.
+If all of your administrators belongs to multiple orgs, you must create a temporary admin user without SSO (authenticating with username/password) to perform the migration. This powerful but weakly secured admin user should be deleted after the migration, in keeping with the general practices of minimizing unnecessary and weakly secured (without SSO) access.
 
 ## Enable Cloud Organization SSO
 
@@ -225,5 +225,5 @@ Members must still sign in using your organization's custom URL.
 
 ## What's next?
 
-- Read the [Cloud Org SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
+- Read the [Cloud Organization SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
 - Learn more about [authenticating to {{ site.data.products.db }}](authentication.html).
