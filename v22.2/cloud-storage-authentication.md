@@ -624,6 +624,7 @@ To access Azure storage containers, use the following parameters:
 
 - `AZURE_ACCOUNT_NAME`
 - `AZURE_ACCOUNT_KEY`
+- (optional) `AZURE_ENVIRONMENT`
 
 It is necessary to [url encode](https://en.wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. 
 
@@ -631,7 +632,7 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT={AzureSandboxEnvironment}';
 ~~~
 
 </section>

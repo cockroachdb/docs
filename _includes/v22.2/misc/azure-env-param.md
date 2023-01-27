@@ -1,0 +1,1 @@
+The [Azure environment](https://learn.microsoft.com/en-us/azure/deployment-environments/concept-environments-key-concepts#environments) the storage account belongs to. If the parameter is not specified, it will default to `AzurePublicCloud`.
