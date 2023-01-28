@@ -79,28 +79,28 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </tgroup>
 </table>
 
-{{ site.data.products.dedicated }} is certified by a PCI Qualified Security Assessor (QSA) to be compliant with PCI DSS [Self-Assessment Questionnaire D (SAQ-D)](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf), as long as you take the actions outlined in [How To Ensure Your Cluster's Compliance with PCI DSS](#how-to-ensure-your-clusters-compliance-with-pci-dss). SAQ-D has more stringent requirements than [SAQ-A](https://listings.pcisecuritystandards.org/documents/SAQ_A_v3.pdf), and many organizations require compliance with SAQ-D.
+{{ site.data.products.dedicated }} is certified by a PCI Qualified Security Assessor (QSA) to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf), as long as you take the actions outlined in [How To Ensure Your Cluster's Compliance with PCI DSS](#how-to-ensure-your-clusters-compliance-with-pci-dss).
 
 ## Responsibilities of Cockroach Labs
 
-Cockroach Labs takes actions to ensure that our operating procedures and the deployment environment for {{ site.data.products.dedicated }} clusters meet or exceed the requirements of PCI DSS SAQ-D. Some of these actions include:
+Cockroach Labs takes actions to ensure that our operating procedures and the deployment environment for {{ site.data.products.dedicated }} clusters meet or exceed the requirements of PCI DSS 3.2.1. Some of these actions include:
 
 - Enforcing comprehensive security policies and standards.
 - Providing periodic security training for all Cockroach Labs employees.
 - Hardening our operating environments and networks according to industry standards and recommended practices, to ensure that they are secure and resilient against vulnerabilities and attacks.
 - Encrypting cluster data and metadata at rest and in transit.
-- Regularly scanning our environment using vendors designated by PCI as [Approved Scanning Vendors (ASVs)](https://www.pcidssguide.com/what-is-a-pci-approved-scanning-vendor-asv/) to ensure our continued compliance with PCI DSS SAQ-D, and correcting issues as quickly as possible.
+- Regularly scanning our environment using vendors designated by PCI as [Approved Scanning Vendors (ASVs)](https://www.pcidssguide.com/what-is-a-pci-approved-scanning-vendor-asv/) to ensure our continued compliance with PCI DSS 3.2.1, and correcting issues as quickly as possible.
 - Regularly scanning our environment and software for known security vulnerabilities and applying updates and security patches in a timely manner.
 - Implementing [data loss prevention (DLP)](https://pcidss.com/listing-category/data-loss-protection-dlp).
-- Logging cluster actions and events, redacting sensitive information in audit logs, and retaining audit logs according to the [logging requirements of PCI DSS SAQ-D](https://listings.pcisecuritystandards.org/documents/Effective-Daily-Log-Monitoring-Guidance.pdf).
+- Logging cluster actions and events, redacting sensitive information in audit logs, and retaining audit logs according to the [logging requirements of PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/Effective-Daily-Log-Monitoring-Guidance.pdf).
 
-A comprehensive list of all actions that Cockroach Labs takes to ensure compliance with PCI DSS SAQ-D is beyond the scope of this document. For more information, contact your Cockroach Labs account team.
+A comprehensive list of all actions that Cockroach Labs takes to ensure compliance with PCI DSS 3.2.1 is beyond the scope of this document. For more information, contact your Cockroach Labs account team.
 
 Compliance is a shared responsibility. Be sure to read [Responsibilities of the customer](#responsibilities-of-the-customer) to ensure that your cluster is compliant.
 
 ## Responsibilities of the customer
 
-To ensure that a {{ site.data.products.dedicated }} cluster complies with PCI DSS SAQ-D, you must take additional steps, such as implementing security recommendations and carefully choosing business partners and vendors and ensuring that cardholder data is protected throughout its journey into and out of your {{ site.data.products.dedicated }} clusters.
+To ensure that a {{ site.data.products.dedicated }} cluster complies with PCI DSS 3.2.1, you must take additional steps, such as implementing security recommendations and carefully choosing business partners and vendors and ensuring that cardholder data is protected throughout its journey into and out of your {{ site.data.products.dedicated }} clusters.
 
 Cockroach Labs cannot provide specific advice about what is required for compliance with PCI DSS or how to implement a specific requirement. The following points help to illustrate some steps that organizations might take to help to ensure compliance.
 
@@ -121,7 +121,7 @@ The following list is provided only to illustrate a small subset of the measures
   - [Cloud Organization audit log export](cloud-org-audit-logs.html), which captures audit logs when many types of events occur in your {{ site.data.products.db }} organization, such as when a cluster is created or when a user is added to or removed from an organization.
   - Your cloud provider's [IAM roles](../stable/cloud-storage-authentication.html), which provide an extra layer of authentication when your cluster or {{ site.data.products.db }} write data to your cloud provider, such as managed backups or [change data capture (CDC)](../stable/change-data-capture-overview.html) operations.
 
-In addition, follow these guidelines to ensure that your cluster is compliant with PCI DSS:
+In addition, follow these guidelines to ensure that your cluster is compliant with PCI DSS 3.2.1:
 
 - Before you insert cardholder data into the cluster, you must first protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate {{ site.data.products.dedicated }} with Satori](/docs/{{site.versions["stable"]}}/satori-integration.html).
 - The cryptographic materials used to protect cardholder data must themselves be protected at rest and in transit, and access to the unencrypted key materials must be strictly limited only to approved individuals.
