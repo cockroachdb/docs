@@ -82,7 +82,7 @@ This hardware guidance is meant to be platform agnostic and can apply to bare-me
     </tr>
     <tr>
       <td>Capacity per vCPU</td>
-      <td>{{ cap_per_vcpu | strip_html }}</td>
+      <td><b>{{ cap_per_vcpu }}</b></td>
       <td><a href="#storage">Storage</a></td>
     </tr>
     <tr>
@@ -124,7 +124,7 @@ Under-provisioning RAM results in reduced performance (due to reduced caching an
 
 #### Storage
 
-We recommend provisioning volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
+We recommend provisioning volumes with <b>{% include {{ page.version.version }}/prod-deployment/provision-storage.md %}</b>. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
 - The maximum recommended storage capacity per node is 10 TiB, regardless of the number of vCPUs.
 
@@ -150,7 +150,7 @@ Under-provisioning storage leads to node crashes when the disks fill up. Once th
 
 ##### Disk I/O
 
-Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.
+Disks must be able to achieve <b>{% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}</b>.
 
 - [Monitor IOPS](common-issues-to-monitor.html#disk-iops) using the DB Console and `iostat`. Ensure that they remain within acceptable values.
 
