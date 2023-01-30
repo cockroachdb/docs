@@ -217,7 +217,7 @@ After Cloud Organization SSO is enabled, it cannot be disabled. To emulate the b
 
 Members must still sign in using your organization's custom URL.
 
-## What's next?
+## What next?
 
-- Read the [Cloud Organization SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
+- [Cloud Organization SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
 - Learn more about [authenticating to {{ site.data.products.db }}](authentication.html).
