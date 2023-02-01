@@ -71,8 +71,9 @@ CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{por
 When you create a changefeed **without** specifying a sink, CockroachDB sends the changefeed events to the SQL client. Consider the following regarding the [display format](cockroach-sql.html#sql-flag-format) in your SQL client:
 
 - If you do not define a display format, the CockroachDB SQL client will automatically use `ndjson` format.
-- If you specify a format, the client will use that format (e.g., `--format=csv`).
-- If you set the client display format to `ndjson` and set the changefeed [`format`](create-changefeed.html#format) to `csv`, you'll receive JSON format with CSV nested inside. In the reverse situation, you'll receive a comma-separated list of JSON values.
+- If you specify a display format, the client will use that format (e.g., `--format=csv`).
+- If you set the client display format to `ndjson` and set the changefeed [`format`](create-changefeed.html#format) to `csv`, you'll receive JSON format with CSV nested inside.
+- If you set the client display format to `csv` and set the changefeed [`format`](create-changefeed.html#format) to `json`, you'll receive a comma-separated list of JSON values.
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
