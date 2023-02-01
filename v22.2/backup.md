@@ -150,6 +150,8 @@ This improves performance by decreasing the likelihood that the `BACKUP` will be
 
 A backup job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the backup has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
 
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for detail on monitoring backup and restore jobs and a list of the available metrics.
+
 ### Backup performance configuration
 
 Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:

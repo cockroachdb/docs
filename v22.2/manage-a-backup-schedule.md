@@ -40,6 +40,8 @@ Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage
 
 We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time&mdash; at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
 
+{% include {{ page.version.version }}/backups/metrics-per-node.md %}
+
 Metrics for scheduled backups fall into two categories:
 
 - Backup schedule-specific metrics, aggregated across all schedules:
