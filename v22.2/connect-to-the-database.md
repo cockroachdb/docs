@@ -11,7 +11,7 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
 
 For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](community-tooling.html). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
-## Select your deployment
+## Step 1. Select your deployment
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
@@ -19,7 +19,25 @@ For a list of community-supported third-party tools, see [Third-Party Tools Supp
   <button class="filter-button page-level" data-scope="core">{{ site.data.products.core }}</button>
 </div>
 
-## Select your language
+<div class="filter-content" markdown="1" data-scope="serverless dedicated">
+To connect to CockroachDB Cloud clusters you will need a general connection string or connection parameters. You can find these in the **Connect** dialog for your cluster in the [CockroachDB Cloud Console](https://cockroachlabs.cloud).
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+To connect to a {{ site.data.products.core }} cluster, you need the [general connection string](connection-parameters.html#connect-using-a-url) or [connection parameters](connection-parameters.html#connect-using-discrete-parameters) for your cluster.
+
+The connection strings and parameters for your cluster are output when you [start the cluster](cockroach-start.html#standard-output).
+</div>
+
+## Step 2. Select your OS
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
+    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
+    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
+</div>
+
+## Step 3. Select your language
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
@@ -29,16 +47,94 @@ For a list of community-supported third-party tools, see [Third-Party Tools Supp
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
 </div>
 
-## Select your driver or ORM
+## Step 4. Select your driver or ORM
 
 <div class="filter-content" markdown="1" data-scope="js-ts">
-
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="node-postgres">node-postgres</button>
   <button class="filter-button page-level" data-scope="sequelize">Sequelize</button>
   <button class="filter-button page-level" data-scope="typeorm">TypeORM</button>
   <button class="filter-button page-level" data-scope="prisma">Prisma</button>
 </div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="python">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="psycopg2">Psycopg2</button>
+  <button class="filter-button page-level" data-scope="psycopg3">Psycopg3</button>
+  <button class="filter-button page-level" data-scope="sqlalchemy">SQLAlchemy</button>
+  <button class="filter-button page-level" data-scope="django">Django</button>
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="go">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="pgx">pgx</button>
+  <button class="filter-button page-level" data-scope="pq">pq</button>
+  <button class="filter-button page-level" data-scope="gorm">GORM</button>
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="java">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="jdbc">JDBC</button>
+  <button class="filter-button page-level" data-scope="hibernate">Hibernate</button>
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="ruby">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="ruby-pg">pg</button>
+  <button class="filter-button page-level" data-scope="activerecord">Active Record</button>
+</div>
+</div>
+
+## Step 5. Connect to the cluster
+
+<div class="filter-content" markdown="1" data-scope="node-postgres sequelize typeorm prisma psycopg2 psycopg3 sqlalchemy pgx pq gorm ruby-pq activerecord">
+
+<div class="filter-content" markdown="1" data-scope="mac linux">
+
+Set a `DATABASE_URL` environment variable to your connection string.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+export DATABASE_URL="{connection string}"
+~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="windows">
+
+Set a `DATABASE_URL` environment variable to your connection string.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$env:DATABASE_URL = "{connection string}"
+~~~
+
+</div>
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="java">
+
+<div class="filter-content" markdown="1" data-scope="serverless dedicated">
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **Java** from the **Select option** dropdown.
+1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+Copy the JDBC connection string from the `sql (JDBC)` field in the output from when you started the cluster.
+</div>
+
+{% include {{ page.version.version }}/connect/jdbc-connection-url.md %}
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="js-ts">
 
 <div class="filter-content" markdown="1" data-scope="node-postgres">
 
@@ -374,14 +470,6 @@ Parameter | Description
 
 <div class="filter-content" markdown="1" data-scope="python">
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="psycopg2">Psycopg2</button>
-  <button class="filter-button page-level" data-scope="psycopg3">Psycopg3</button>
-  <button class="filter-button page-level" data-scope="sqlalchemy">SQLAlchemy</button>
-  <button class="filter-button page-level" data-scope="django">Django</button>
-</div>
-
-
 <div class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_info}}
@@ -703,12 +791,6 @@ Parameter | Description
 
 <div class="filter-content" markdown="1" data-scope="go">
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="pgx">pgx</button>
-  <button class="filter-button page-level" data-scope="pq">pq</button>
-  <button class="filter-button page-level" data-scope="gorm">GORM</button>
-</div>
-
 <div class="filter-content" markdown="1" data-scope="pgx">
 
 To connect to CockroachDB with [pgx](https://github.com/jackc/pgx), use the `pgx.Connect` function.
@@ -939,12 +1021,6 @@ Parameter | Description
 
 <div class="filter-content" markdown="1" data-scope="java">
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="jdbc">JDBC</button>
-  <button class="filter-button page-level" data-scope="hibernate">Hibernate</button>
-</div>
-
-
 <div class="filter-content" markdown="1" data-scope="jdbc">
 
 To connect to CockroachDB with the [JDBC](https://jdbc.postgresql.org) driver, create a `DataSource` object ([`PGSimpleDataSource` or `PGPoolingDataSource`](https://jdbc.postgresql.org/documentation/datasource/#applications-datasource)), and set the connection string with the `setUrl` class method.
@@ -1101,11 +1177,6 @@ Parameter | Description
 </div>
 
 <div class="filter-content" markdown="1" data-scope="ruby">
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="ruby-pg">pg</button>
-  <button class="filter-button page-level" data-scope="activerecord">Active Record</button>
-</div>
 
 {{site.data.alerts.callout_info}}
 To connect to a {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
