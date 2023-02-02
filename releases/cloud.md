@@ -34,7 +34,7 @@ Get future release notes emailed to you:
 
 - Support for [Customer-Managed Encryption Keys (CMEK)](../cockroachcloud/cmek.html) has been added to the [{{ site.data.products.db }} Terraform Provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). Contact your Cockroach Labs account team to enroll in the CMEK preview.
 - When [using Terraform to provision {{ site.data.products.db }} clusters](../cockroachcloud/provision-a-cluster-with-terraform.html), you can now manage [database connections](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/data-sources/connection_string) and [SSL certificates](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/data-sources/cluster_cert) directly in your Terraform workflow.
-- The Cloud API now provides [formatted connection string information](../api/cloud/v1.html#get-/api/v1/clusters/-cluster_id-/connection-string).
+- The Cloud API now provides [formatted connection string information](https://www.cockroachlabs.com/docs/api/cloud/v1.html#get-/api/v1/clusters/-cluster_id-/connection-string).
 
 <h3> Security updates </h3>
 
