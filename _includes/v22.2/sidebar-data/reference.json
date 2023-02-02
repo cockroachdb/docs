@@ -1463,9 +1463,9 @@
             ]
           },
           {
-            "title": "Experimental Features",
+            "title": "Features in Preview",
             "urls": [
-              "/${VERSION}/experimental-features.html"
+              "/${VERSION}/features-in-preview.html"
             ]
           }
         ]
