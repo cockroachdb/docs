@@ -23,7 +23,7 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.8 or later. If you are migrating especially large tables with millions of rows, upgrade to v22.1.14 or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.14 or later.
     - If your CockroachDB cluster is running v22.1.14 or later, set the following session variable using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
