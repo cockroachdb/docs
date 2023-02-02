@@ -15,7 +15,7 @@ Get future release notes emailed to you:
 
 {% include releases/current-cloud-version.md %}
 
-## January 25, 2023
+## February 2, 2023
 
 <h3> General changes </h3>
 
