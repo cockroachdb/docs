@@ -49,6 +49,12 @@ Get future release notes emailed to you:
 
 -  Fixed a bug where users granted the [Developer role](../cockroachcloud/console-access-management.html#developer) in a {{ site.data.products.db }} organization incorrectly had certain permissions for any cluster in the organization. Refer to [this technical advisory](../advisories/c20230118.html) for more information.
 
+## February 2, 2023
+
+<h3> General changes </h3>
+
+- {{ site.data.products.serverless }} users can now access [cloud storage for bulk operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) without entering billing information.
+
 ## January 9, 2023
 
 <h3> Console changes </h3>
