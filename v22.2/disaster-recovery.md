@@ -1,6 +1,6 @@
 ---
 title: Disaster Recovery
-summary: Learn how about CockrachDB disaster recovery capabilities and what to do if you encounter an issue.
+summary: Learn how about CockroachDB disaster recovery capabilities and what to do if you encounter an issue.
 toc: true
 docs_area: manage
 ---

@@ -24,7 +24,7 @@ jobs:
       uses: errata-ai/vale-action@reviewdog
       with:
         reporter: github-pr-check
-        filter_mode: nofilter
+        filter_mode: added
         fail_on_error: false
         files: '${{ env.files_to_change }}'
         vale_flags: "--no-exit"

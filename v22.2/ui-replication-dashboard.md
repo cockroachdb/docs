@@ -110,7 +110,7 @@ Metric | Description
 
 ## Receiver Snapshots Queued
 
-<img src="{{ 'images/v22.2/ui_replica_snapshots_queued.png' | relative_url }}" alt="DB Console Replica Receiever Snapshots Queued" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/ui_replica_snapshots_queued.png' | relative_url }}" alt="DB Console Replica Receiver Snapshots Queued" style="border:1px solid #eee;max-width:100%" />
 
 The **Receiver Snapshots Queued** graph shows the number of [Raft snapshot transfers](architecture/replication-layer.html#snapshots) queued to be applied on a receiving node, which can only accept one snapshot at a time per store.
 

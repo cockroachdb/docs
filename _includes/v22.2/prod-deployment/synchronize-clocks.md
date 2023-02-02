@@ -120,7 +120,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ echo <DEVICE_ID> | sudo tee /sys/bus/vmbus/drivers/hv_util/unbind
+    $ echo <DEVICE_ID> | sudo tee /sys/bus/vmbus/drivers/hv_utils/unbind
     ~~~
 
 1. Install the `ntp` package:

@@ -11,7 +11,7 @@ While developing an application against CockroachDB, it's sufficient to deploy a
 If you haven't already, [review the full range of topology patterns](topology-patterns.html) to ensure you choose the right one for your use case.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 {% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 

@@ -31,7 +31,7 @@ The `SHOW` statement for session variables is unrelated to the other `SHOW` stat
 
 {% include {{ page.version.version }}/misc/session-vars.md %}
 
-For session variables on experimental features, see [Experimental Features](experimental-features.html).
+For session variables on features in preview, see [Features in Preview](features-in-preview.html).
 
 Special syntax cases supported for compatibility:
 

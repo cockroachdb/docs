@@ -238,7 +238,7 @@ root@:26257/movr> SHOW timezone;
 
 ### Set default session variable values for all users
 
-To set a default value for all users for any [session variable](set-vars.html) that applies during login, issue a statment like the following:
+To set a default value for all users for any [session variable](set-vars.html) that applies during login, issue a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
