@@ -10,6 +10,8 @@ fi;
 
 echo "url: ${site_url}" > _config_url.yml
 
+gem update --system ">= 3.3.22"
+
 function build {
 	bundle exec jekyll build --trace --config _config_base.yml,$1
 	if [[ $? != 0 ]]; then
