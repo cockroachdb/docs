@@ -19,6 +19,10 @@
     border: 1px solid $cl_gray_medium;
   }
 
+  .highlight code {
+    border: none;
+  }
+
   + .bs-callout {
     margin-top: -5px;
   }
