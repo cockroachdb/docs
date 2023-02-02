@@ -13,6 +13,8 @@ CockroachDB constructs a secure API call to the cloud storage specified in a URL
 - [`EXPORT`](export.html)
 - [`CREATE CHANGEFEED`](create-changefeed.html)
 
+{% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
+
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud/remote storage.
 {{site.data.alerts.end}}

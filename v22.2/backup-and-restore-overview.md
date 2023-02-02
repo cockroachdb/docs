@@ -69,6 +69,8 @@ For detail on additional cloud storage features CockroachDB supports:
 - [Object locking](use-cloud-storage-for-bulk-operations.html#object-locking) to prevent backups from being overwritten or deleted.
 - [Storage Class (AWS S3 only)](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
 
+{% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
+
 ## See also
 
 - Considerations for using [backup](backup.html#considerations) and [restore](restore.html#considerations)
