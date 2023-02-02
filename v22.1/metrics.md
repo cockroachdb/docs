@@ -9,7 +9,7 @@ As part of normal operation, CockroachDB continuously records metrics that track
 
 ## Available metrics
 
-Select your CockroachDB deployment to see the metrics available:
+Select your CockroachDB deployment to see the metrics available: 
 
 {{site.data.alerts.callout_info}}
 This list is taken directly from the source code and is subject to change.
