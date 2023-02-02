@@ -21,6 +21,10 @@ This section shows how to start a single-node cluster that uses these features.
 
 Cockroach Labs recommends that you store cluster data in a Docker volume rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
 
+{{site.data.alerts.callout_danger}}
+Avoid using the `-v` / `--volume` command to mount a local macOS filesystem into the container. Use Docker volumes or a [`tmpfs` mount](https://docs.docker.com/storage/tmpfs/).
+{{site.data.alerts.end}}
+
 To create the [Docker volume](https://docs.docker.com/storage/volumes/) where the cluster will store its data, run the following:
 
 {% include_cached copy-clipboard.html %}

@@ -33,6 +33,8 @@ URI Component      | Description
 
 To set a different sink URI to an existing changefeed, use the [`sink` option](alter-changefeed.html#sink-example) with `ALTER CHANGEFEED`.
 
+{% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
+
 ## Kafka
 
 Example of a Kafka sink URI:

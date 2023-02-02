@@ -1,22 +1,15 @@
 ---
-title: Experimental Features
-summary: Learn about the experimental features available in CockroachDB
+title: Features in Preview
+summary: Learn about the features available in preview in CockroachDB
 toc: true
 docs_area: reference.sql
 ---
 
-This page lists the experimental features that are available in CockroachDB {{ page.version.version }}.
-
-{{site.data.alerts.callout_danger}}
-**This page describes experimental features.**  Their interfaces and outputs are subject to change, and there may be bugs.
-<br />
-<br />
-If you encounter a bug, please [file an issue](file-an-issue.html).
-{{site.data.alerts.end}}
+This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 
 ## Session variables
 
-The table below lists the experimental session settings that are available.  For a complete list of session variables, see [`SHOW {session variable}`](show-vars.html).
+The table below lists the session settings that are available in preview. For a complete list of session variables, see [`SHOW {session variable}`](show-vars.html).
 
 | Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
 |-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -75,7 +68,7 @@ Example:
 
 ### Check for constraint violations with `SCRUB`
 
-Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html) constraints, and more.  Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
+Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html) constraints, and more. Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
 
 {{site.data.alerts.callout_info}}
 This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
@@ -106,7 +99,7 @@ The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows informat
 
 ## Functions and Operators
 
-The table below lists the experimental SQL functions and operators available in CockroachDB.  For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
+The table below lists the SQL functions and operators available in preview in CockroachDB. For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
 
 | Function                                                                         | Description                                     |
 |----------------------------------------------------------------------------------+-------------------------------------------------|
@@ -116,15 +109,15 @@ The table below lists the experimental SQL functions and operators available in 
 
 ## Alter column types
 
- CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#altering-column-data-types).
+CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#altering-column-data-types).
 
 ## Temporary objects
 
- Support for [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) is currently experimental in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+[Temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
 ## Password authentication without TLS
 
-   For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
+   For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` (in preview) for [`cockroach start`](cockroach-start.html#security).
 
   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 

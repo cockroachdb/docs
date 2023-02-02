@@ -152,7 +152,8 @@ This page shows you how the key features of CockroachDB stack up against other d
     </td>
     <td class="comparison-chart__column-one">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>No</span>
-      <span class="support " data-dbs='["MongoDB", "Cassandra"]'>Lightweight transactions only</span>
+      <span class="support " data-dbs='["Cassandra"]'>Lightweight transactions only</span>
+      <span class="support " data-dbs='["MongoDB"]'>Multi-document</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
@@ -279,9 +280,9 @@ This page shows you how the key features of CockroachDB stack up against other d
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora","MongoDB"]'>No</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora"]'>No</span>
       <span class="support " data-dbs='[ "Cassandra"]'>Yes, object level</span>
-      <span class="support " data-dbs='["Spanner"]'>Yes</span>
+      <span class="support " data-dbs='["MongoDB", "Spanner"]'>Yes</span>
       <span class="support " data-dbs='["Yugabyte"]'>No</span>
     </td>
     <td class="comparison-chart__column-two">
@@ -339,8 +340,8 @@ This page shows you how the key features of CockroachDB stack up against other d
       </a>
     </td>
     <td class="comparison-chart__column-one">
-      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
-      <span class="support " data-dbs='["Cassandra"]'>Yes</span>
+      <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "Spanner","Yugabyte"]'>No</span>
+      <span class="support " data-dbs='["Cassandra", "MongoDB"]'>Yes</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle","AWS Aurora", "MongoDB", "Spanner","Yugabyte"]'>No</span>
