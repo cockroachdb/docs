@@ -107,7 +107,7 @@ Select **Threshold Alert** as the detection method, which configures an alert th
 
     - Select the `otel.datadog_exporter.metrics.running` metric.
 
-    - Export the metric **from** your {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/).
+    - Export the metric **from** your {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/)).
 
 - To **Set alert conditions**:
 
