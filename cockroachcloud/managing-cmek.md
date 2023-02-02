@@ -16,7 +16,7 @@ See also:
 - [Customer-Managed Encryption Key (CMEK) frequently asked questions (FAQ)](cmek-faq.html)
 - [Encryption at Rest (Enterprise)](../{{site.current_cloud_version}}/security-reference/encryption.html#encryption-at-rest)
 
-## Prerequisites
+## Before you begin
 
 - You need a {{ site.data.products.dedicated }} cluster. CMEK is not supported for {{ site.data.products.serverless }} clusters.
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).

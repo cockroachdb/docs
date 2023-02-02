@@ -5,6 +5,8 @@ toc: true
 docs_area: reference.sql
 ---
 
+<a id="experimental_audit"></a>
+
 The `ALTER TABLE` [statement](sql-statements.html) changes the definition of a table. For information on using `ALTER TABLE`, see the pages for its [subcommands](#subcommands).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}

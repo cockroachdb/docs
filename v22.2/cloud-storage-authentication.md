@@ -1,11 +1,15 @@
 ---
 title: Cloud Storage Authentication
-summary: Learn how to use the different authenication options for authentication to cloud storage.
+summary: Learn how to use the different authentication options for authentication to cloud storage.
 toc: true
 docs_area: manage
 ---
 
 Cockroach Labs supports different levels of authentication to cloud storage. When running disaster recovery or change data capture operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. Select the tab appropriate to your cloud storage provider to see the available authentication options for your platform.
+
+{{site.data.alerts.callout_info}}
+We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3](cloud-storage-authentication.html#amazon-s3-assume-role) and [Google Cloud Storage](cloud-storage-authentication.html?filters=gcs#google-cloud-storage-assume-role).
+{{site.data.alerts.end}}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
@@ -43,13 +47,13 @@ BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS
 See Amazon's documentation [Managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) for more details on S3 credentials.
 
 {{site.data.alerts.callout_success}}
-Assume role authentication allows you to use temporary short-lived credentials to autheticate to an Amazon S3 buckets. For more detail, see [Amazon S3 assume role](#amazon-s3-assume-role).
+Assume role authentication allows you to use temporary short-lived credentials to authenticate to an Amazon S3 buckets. For more detail, see [Amazon S3 assume role](#amazon-s3-assume-role).
 {{site.data.alerts.end}}
 
 ## Amazon S3 implicit
 
 {{site.data.alerts.callout_info}}
-`implicit` authentication **cannot** be used to run bulk operations from {{ site.data.products.db }} clusters—instead, use `AUTH=specified`.
+To use `implicit` authentication on a {{ site.data.products.db }} cluster, it is necessary to authenticate using assume role authentication. See [Amazon S3 assume role](#amazon-s3-assume-role) for more details.
 {{site.data.alerts.end}}
 
 If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/) (i.e., the machines running the backup).
@@ -201,30 +205,78 @@ You can use workload identities with assume role authentication to run the follo
 
 To use assume role authentication, you will need at least two IAM roles:
 
-- An _identity role_: the IAM role you have associated with your Kubernetes service account.
+- An _identity role_: the IAM role associated with your Kubernetes service account.
 - An _operation role_: the IAM role to be assumed. This contains the permissions required to complete a CockroachDB operation.
 
-### Set up Amazon S3 workload identity
+For a walkthrough on how to set this up for {{ site.data.products.core }} and {{ site.data.products.dedicated }} clusters, see the following steps.
+
+### Step 1. Set up the identity role
+
+The first step to setting up workload identity authentication is different for {{ site.data.products.core }} and {{ site.data.products.dedicated }} clusters. As you work through the step, ensure you use the relevant section for your cluster:
+
+- [{{ site.data.products.dedicated }}](#set-up-the-identity-role-for-cockroachdb-dedicated-clusters)
+- [{{ site.data.products.core }}](#set-up-the-identity-role-for-cockroachdb-self-hosted-clusters)
+
+#### Set up the identity role for CockroachDB Dedicated clusters
+
+Each {{ site.data.products.dedicated }} cluster has a pre-configured IAM role for [Amazon EKS](https://aws.amazon.com/eks/) service accounts that acts as the cluster's identity. In addition, the clusters have a unique built-in, functionality IAM role, which you can configure as a trusted identity within the Trust Policy of your cloud IAM roles. This allows you to have the built-in IAM role assume another role (or roles as part of a [chain](#amazon-s3-role-chaining)). This section will refer to the built-in IAM role as the "identity role".
+
+The prefixes for the built-in IAM identity roles are as follows:
+
+IAM role name | Operation
+--------------+------------
+`crl-dr-store-user` | Backup, Restore, Import, Export
+`crl-cdc-sink-user` | Changefeeds
+`crl-kms-user` | Encrypted backups and restores
+
+Construct the ARN for your identity role. You will need this to add into the Trust Policy of an operation role or intermediary role. The IAM role's ARN follows this pattern (in this example the `crl-dr-store-user` role name is used for a backup):
+
+{% include_cached copy-clipboard.html %}
+~~~
+arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix}
+~~~
+
+You can find the AWS account ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
+~~~
+
+Combine the last 12 digits of your cluster's `id` and the full 12-digit `account_id` in the following fashion to form the ARN:
+
+{% include_cached copy-clipboard.html %}
+~~~
+arn:aws:iam::{123456789123}:role/crl-dr-store-user-{123456789123}
+~~~
+
+See [Step 2. Trust the identity role](#step-2-trust-the-identity-role) to add this ARN to an operation role's Trust Policy. 
+
+#### Set up the identity role for CockroachDB Self-hosted clusters
 
 First, create an IAM role for your Kubernetes service account to assume, and then configure your CockroachDB pods to use the service account. We will refer to this IAM role as an "identity role". You can complete all of these steps with Amazon's guide on [IAM roles for service accounts](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
 
 Once you have an identity role that your CockroachDB nodes can assume, you can configure the identity role to assume another IAM role that contains the permissions to perform a bulk operation. 
 
-1. Copy the ARN of the identity role. In the Amazon management console, click on **IAM**, then **Roles**, and select the name of your identity role. From the **Summary** page, copy your ARN. You will need this later when configuring the Trust Policy for the IAM role to be assumed.
+Copy the ARN of the identity role. In the Amazon management console, click on **IAM**, then **Roles**, and select the name of your identity role. From the **Summary** page, copy your ARN. You will need this when configuring the Trust Policy for the IAM role to be assumed.
 
-    <img src="{{ 'images/v22.2/aws-wi-arn-copy.png' | relative_url }}" alt="Role summary page showing the ARN copied" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v22.2/aws-wi-arn-copy.png' | relative_url }}" alt="Role summary page showing the ARN copied" style="border:1px solid #eee;max-width:100%" />
 
-1. Create or open the operation role that your identity role will assume.
+See [Step 2. Trust the identity role](#step-2-trust-the-identity-role) to add this ARN to an operation role's Trust Policy. 
 
-    {{site.data.alerts.callout_info}}
-    If you already have the role that contains permissions for the bulk operation, ensure that you add the identity role ARN to the role's **Trust Relationships** tab on the **Summary** page.
-    {{site.data.alerts.end}}
+### Step 2. Trust the identity role
 
-    a. To create a role, click **Create Role** under the **Roles** menu. Select **Custom trust policy** and then add the ARN of your identity role to the JSON by clicking `Principal`. This will open a dialog box. Select **IAM Roles** for **Principal Type** and paste the ARN. Click **Add Principal** and then **Next**.
+Create or open the operation role that your identity role will assume.
+
+{{site.data.alerts.callout_info}}
+If you already have the role that contains permissions for the operation, ensure that you add the identity role ARN to the role's **Trust Relationships** tab on the **Summary** page.
+{{site.data.alerts.end}}
+
+1. To create an operation role, click **Create Role** under the **Roles** menu. Select **Custom trust policy** and then add the ARN of your identity role (from [Step 1](#step-1-set-up-the-identity-role)) to the JSON by clicking `Principal`. This will open a dialog box. Select **IAM Roles** for **Principal Type** and paste the ARN. Click **Add Principal** and then **Next**.
 
     <img src="{{ 'images/v22.2/aws-wi-principal.png' | relative_url }}" alt="Dialog box to add principal with IAM roles selected" style="border:1px solid #eee;max-width:100%" />
 
-    b. On the **Add Permissions** page, search for the permission policies that the role will need to complete the bulk operation. 
+2. On the **Add Permissions** page, search for the permission policies that the role will need to complete the bulk operation. 
     
     <img src="{{ 'images/v22.2/aws-add-permissions.png' | relative_url }}" alt="Filter list to add permissions to IAM roles" style="border:1px solid #eee;max-width:100%" />
     
@@ -234,17 +286,40 @@ Once you have an identity role that your CockroachDB nodes can assume, you can c
     
     Or, use the JSON tab to specify the policy. For the JSON editor, see [Storage Permissions](use-cloud-storage-for-bulk-operations.html#storage-permissions) for an example and detail on the minimum permissions required for each operation to complete. Click **Next**. 
 
-    c. Finally, give the role a name on the **Name, review, and create** page. The following screenshot shows the selected trust policy and permissions:
+3. Finally, give the role a name on the **Name, review, and create** page. The following screenshot shows the selected trust policy and permissions:
 
     <img src="{{ 'images/v22.2/aws-wi-review-page.png' | relative_url }}" alt="Final screen in the create role process to review permissions and name role" style="border:1px solid #eee;max-width:100%" />
 
-1. To run the bulk operation, you can use [`implicit` authentication](#google-cloud-storage-implicit) for your identity role and pass the `ASSUME_ROLE` parameter for your operation role. For a backup to Amazon S3:
+### Step 3. Run the operation by assuming the role
 
-    ~~~sql
-    BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
-    ~~~
+Finally, you'll use the `ASSUME_ROLE` parameter in your SQL statement to assume a role that contains the necessary permissions. In this step, ensure you read the section for your cluster type:
 
-    In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to the S3 bucket. The identity role then assumes the operation role that has permission to write a backup to the S3 bucket.
+- [{{ site.data.products.dedicated }}](#run-the-operation-from-a-cockroachdb-dedicated-cluster)
+- [{{ site.data.products.core }}](#run-the-operation-from-a-cockroachdb-self-hosted-cluster)
+
+#### Run the operation from a CockroachDB Dedicated cluster
+
+To run an operation, use [`implicit` authentication](#google-cloud-storage-implicit) so that your AWS cluster can authenticate directly. To the `ASSUME_ROLE` parameter, pass the pre-configured identity role from [Step 1](#set-up-the-identity-role-for-cockroachdb-dedicated-clusters) followed by a comma, and finally the operation role(s) you need the identity to assume.
+
+For a backup to Amazon S3:
+
+~~~sql
+BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix},arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
+~~~
+
+In this SQL statement, the identity role assumes the operation role that has permission to write a backup to the S3 bucket.
+
+#### Run the operation from a CockroachDB Self-hosted cluster
+
+To run an operation, you can use [`implicit` authentication](#google-cloud-storage-implicit) for your identity role and pass the `ASSUME_ROLE` parameter for your operation role. 
+
+For a backup to Amazon S3:
+
+~~~sql
+BACKUP DATABASE {database} INTO 's3://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE=arn:aws:iam::{account ID}:role/{operation role name}' AS OF SYSTEM TIME '-10s';
+~~~
+
+In this SQL statement, `AUTH=implicit` uses the identity role to authenticate to the S3 bucket. The identity role then assumes the operation role that has permission to write a backup to the S3 bucket.
 
 </section>
 
@@ -278,7 +353,7 @@ BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDEN
 ## Google Cloud Storage implicit
 
 {{site.data.alerts.callout_info}}
-`implicit` authentication **cannot** be used to run bulk operations from {{ site.data.products.db }} clusters. Use `AUTH=specified` instead.
+To use `implicit` authentication on a {{ site.data.products.db }} cluster, it is necessary to authenticate using assume role authentication. See [Google Cloud Storage assume role](#google-cloud-storage-assume-role) for more details.
 {{site.data.alerts.end}}
 
 For CockroachDB instances that are running within a Google Cloud Environment, [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) can be used from the [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to implicitly access resources within the storage bucket.
@@ -417,41 +492,127 @@ Service accounts in Google and Kubernetes refer to different resources. See [Goo
 
 To use assume role authentication, you will need at least two IAM roles:
 
-- An _identity service account_: the IAM service account you have associated with your Kubernetes service account.
+- An _identity service account_: the IAM service account associated with your Kubernetes service account.
 - An _operation service account_: the IAM service account to be assumed. This contains the permissions required to complete a CockroachDB operation.
 
-### Set up Google Cloud Storage workload identity
+For a walkthrough on how to set this up for {{ site.data.products.core }} and {{ site.data.products.dedicated }} clusters, see the following steps.
 
-Before completing the steps to run a bulk operation with assume role, it is necessary to create a identity service account for your Kubernetes service account to assume. Then, you must configure your CockroachDB pods to use the Kubernetes service account. You can complete all of these steps with Google's guide [Use Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
+### Step 1. Set up the Google Cloud workload identity
+
+The first step to setting up workload identity authentication is different for {{ site.data.products.core }} and {{ site.data.products.dedicated }} clusters. As you work through the step, ensure you use the relevant section for your cluster:
+
+- [{{ site.data.products.dedicated }}](#set-up-the-identity-service-account-for-dedicated-clusters)
+- [{{ site.data.products.core }}](#set-up-the-identity-service-account-for-self-hosted-clusters)
+
+#### Set up the identity service account for Dedicated clusters
+
+Each {{ site.data.products.dedicated }} cluster has a pre-configured IAM role for [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/docs) service accounts that acts as the cluster's identity. In addition, the clusters have a unique, built-in functionality IAM role, which you can configure as a trusted identity by giving it access to an operation service account. This allows you to have the built-in IAM role assume another role (or roles as part of a [chain](#google-cloud-storage-role-chaining)). This section will refer to the built-in IAM role as the "identity service account".
+
+The prefixes for the built-in IAM identity roles are as follows, which become part of your Google identity service account name:
+
+IAM role name | Operation
+--------------+------------
+`crl-dr-store-user` | Backup, Restore, Import, Export
+`crl-cdc-sink-user` | Changefeeds
+`crl-kms-user` | Encrypted backups and restores
+
+Construct the service account name for your identity service account. You will need this to add to the operation role or intermediary role. The identity service account name follows this pattern (in this example the `crl-dr-store-user` role name is used for a backup):
+
+{% include_cached copy-clipboard.html %}
+~~~
+crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
+~~~
+
+You can find the GCP project ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request GET --url 'https://cockroachlabs.cloud/api/v1/clusters' --header 'Authorization: Bearer {secret key}'
+~~~
+
+Use the last 12 digits of your cluster's `id` and the `account_id` to form the service account. (Note that the `account_id` in your cluster's details becomes the GCP `{project id}`.)
+
+This will look similar to:
+
+{% include_cached copy-clipboard.html %}
+~~~
+crl-dr-store-user-d1234567891d@crl-prod-6tc.iam.gserviceaccount.com
+~~~
+
+See [Step 2](#step-2-create-the-operation-service-account) to create an operation service account that your identity role can assume.
+
+{% include {{ page.version.version }}/backups/existing-operation-service-account.md %}
+
+#### Set up the identity service account for Self-hosted clusters
+
+Before completing the steps to run a bulk operation with assume role, it is necessary to create an identity service account for your Kubernetes service account to assume. Then, you must configure your CockroachDB pods to use the Kubernetes service account. You can complete all of these steps with Google's guide [Use Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
 
 Once you have an identity service account that your CockroachDB nodes can assume, you can configure the identity role to assume another service account role that contains the permissions to perform the bulk operation.
 
-1. Copy the service account name of the identity service account. In the Google Cloud Console, navigate to the **IAM** section, **Service Accounts**, and then the name of your identity service account. From the list view, copy the name of your identity service account. You will need to add this to the operation service account to be assumed.
+Before moving on to the next step, copy the service account name of the identity service account. In the Google Cloud Console, navigate to the **IAM** section, **Service Accounts**, and then the name of your identity service account. From the list view, copy the name of your identity service account. You will need to add this to the operation service account to be assumed.
 
-1. Create or open the operation service account that your identity service account will assume.
+See [Step 2](#step-2-create-the-operation-service-account) to create an operation service account that your identity role can assume.
+
+{% include {{ page.version.version }}/backups/existing-operation-service-account.md %}
+
+### Step 2. Create the operation service account
+
+1. Create the operation service account that your identity service account will assume.
 
     a. To create a service account, click **Create Service Account** under the **Service Accounts** menu. Enter a name for the service account and click **Create and Continue**.
 
     b. In the **Grant this service account access to project** section, select the role you require for the bulk operation, e.g., "Storage Object Creator". See [Storage Permissions](use-cloud-storage-for-bulk-operations.html#storage-permissions) for detail on the minimum permissions required for each operation to complete. Click **Continue**. 
 
-    <img src="{{ 'images/v22.2/gcs-wi-grant-users.png' | relative_url }}" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v22.2/gcs-wi-role-grant.png' | relative_url }}" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
+
+    <a name="grant-access-identity-operation-sa"></a>
 
     c. In the **Grant users access to this service account** section, paste the name of the identity service account. Then, click **Done**.
 
     <img src="{{ 'images/v22.2/gcs-wi-grant-users.png' | relative_url }}" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
 
-    {{site.data.alerts.callout_info}}
-    If you already have the service account that contains permissions for the bulk operation, ensure that you give the identity service account access to this service account. Click on your service account and navigate to the **Permissions** tab. Then, use the process in step 2 to complete this. 
-    {{site.data.alerts.end}}
+### Step 3. Give the identity service account the token creator role
 
-1. To run the bulk operation, you can use [`implicit` authentication](#google-cloud-storage-implicit) for your identity service account and pass the `ASSUME_ROLE` parameter for your operation service account. For a backup to your Google Cloud Storage bucket:
+Next, the operation service account needs to contain the "Service Account Token Creator" role for the identity service account. This enables the operation service account to create short-lived tokens for the identity service account.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~sql
-    BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={operation service account}@{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
-    ~~~
+1. Go to the **Service Accounts** menu in the Google Cloud Console. 
+1. Select the operation service account from the list, then the **Permissions** tab, and click **Grant Access** under **Principals with access to this service account**. 
+1. Enter the name of the identity service account into the **New principals** box and select "Service Account Token Creator" under the **Assign roles** dropdown. Click **Save** to complete.
 
-    In this SQL statement, `AUTH=implicit` uses the workload identity service account to authenticate to the bucket. The workload identity role then assumes the operation service account that has permission to write a backup to the bucket.
+    <img src="{{ 'images/v22.2/gcs-wi-service-token.png' | relative_url }}" alt="Granting the identity service account access to the operation service account with the token creator role." style="border:1px solid #eee;max-width:100%" />
+
+### Step 4. Run the operation by assuming the service account
+
+Finally, you'll use the `ASSUME_ROLE` parameter in your SQL statement to assume a role that contains the necessary permissions. In this step, ensure you read the section for your cluster type:
+
+- [{{ site.data.products.dedicated }}](#run-the-operation-from-a-cockroachdb-dedicated-cluster-on-gcp)
+- [{{ site.data.products.core }}](#run-the-operation-from-a-cockroachdb-self-hosted-cluster-on-gcp)
+
+#### Run the operation from a CockroachDB Dedicated cluster on GCP
+
+To run an operation, use [`implicit` authentication](#google-cloud-storage-implicit) so that your GCP cluster can authenticate directly. To the `ASSUME_ROLE` parameter, pass the pre-configured identity role from [Step 1](#set-up-the-identity-service-account-for-dedicated-clusters) followed by a comma, and finally the operation role(s) you need the identity to assume.
+
+For a backup to Google Cloud Storage:
+
+{% include_cached copy-clipboard.html %}
+~~~sql 
+BACKUP DATABASE defaultdb INTO "gs://{bucket name}?AUTH=implicit&ASSUME_ROLE=crl-dr-store-user-{cluster ID suffix}@{project ID}.iam.gserviceaccount.com,{operation service account name}@{project name}.iam.gserviceaccount.com" AS OF SYSTEM TIME '-10s';
+~~~
+
+In this SQL statement, the identity service account assumes the operation service account that has permission to write a backup to the GCS bucket.
+
+#### Run the operation from a CockroachDB Self-hosted cluster on GCP
+
+To run the bulk operation, you can use [`implicit` authentication](#google-cloud-storage-implicit) for your identity service account and pass the `ASSUME_ROLE` parameter for your operation service account. 
+
+For a backup to your Google Cloud Storage bucket:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+BACKUP DATABASE {database} INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={operation service account}@{project name}.iam.gserviceaccount.com'; AS OF SYSTEM TIME '-10s';
+~~~
+
+In this SQL statement, `AUTH=implicit` uses the workload identity service account to authenticate to the bucket. The workload identity role then assumes the operation service account that has permission to write a backup to the bucket.
 
 </section>
 

@@ -16,7 +16,7 @@ Note for {{ site.data.products.dedicated }} customers:
 Currently, this flow will not work for service accounts provisioned in {{ site.data.products.db }} console. You must [create the service account manually](#provision-a-service-account), as detailed below.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 - **IdP:**
 

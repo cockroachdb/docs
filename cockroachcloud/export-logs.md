@@ -1,6 +1,6 @@
 ---
-title: Export Logs From a CockroachDB dedicated Cluster
-summary: Export Logs From a CockroachDB dedicated Cluster
+title: Export Logs From a CockroachDB Dedicated Cluster
+summary: Export Logs From a CockroachDB Dedicated Cluster
 toc: true
 docs_area: manage
 ---
@@ -281,7 +281,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 	1. In the GCP console, visit the [IAM admin page](https://console.cloud.google.com/iam-admin) for your project.
  1. Click the **+ Grant Access** button.
- 1. In the box labeled **New principals**, enter the log export service account for the {{ site.data.products.dedicated }}-managed service account, as determined in step 3.
+ 1. In the box labeled **New principals**, enter the name of the {{ site.data.products.db }} service account you determined in step 3.
  1. In the **Select a role** dropdown, select the role you created in step 4.
 	1. Click **SAVE**.
 

@@ -97,15 +97,15 @@
           "title": "Back Up and Restore CockroachDB Cloud Clusters",
           "items": [
             {
-              "title": "Run Bulk Operations",
+              "title": "Take and Restore Customer-Owned Backups",
               "urls": [
-                "/cockroachcloud/run-bulk-operations.html"
+                "/cockroachcloud/take-and-restore-customer-owned-backups.html"
               ]
             },
             {
-              "title": "Restore Data from a Backup",
+              "title": "Use Managed-Service Backups",
               "urls": [
-                "/cockroachcloud/backups-page.html"
+                "/cockroachcloud/use-managed-service-backups.html"
               ]
             }
           ]

@@ -36,7 +36,7 @@ Setting up a VPC peering connection between your {{ site.data.products.dedicated
 1. [Establish a VPC Peering connection after creating the cluster](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](use-managed-service-backups.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
 {{site.data.alerts.end}}
 
 ## AWS PrivateLink

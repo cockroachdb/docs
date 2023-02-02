@@ -19,7 +19,7 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 {% include enterprise-feature.md %}
 

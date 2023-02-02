@@ -42,7 +42,7 @@ Name | Description
 `intentage` | Cumulative age of intents
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
-`jobs.changefeed.resume_retry_error` | Number of changefeed jobs which failed with a retriable error
+`jobs.changefeed.resume_retry_error` | Number of changefeed jobs which failed with a retryable error
 `keybytes` | Number of bytes taken up by keys
 `keycount` | Count of all keys
 `leases.epoch` | Number of replica leaseholders using epoch-based leases

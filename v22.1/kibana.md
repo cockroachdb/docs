@@ -15,7 +15,7 @@ For more information about using the CockroachDB module for Metricbeat, see the 
 If you run into problems with this integration, please file an issue on the [Beats issue tracker](https://github.com/elastic/beats).
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 Either of the following:
 
