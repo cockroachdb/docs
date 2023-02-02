@@ -224,7 +224,7 @@ Provision enough storage capacity for CockroachDB data, and configure your volum
 
 ### Storage and disk monitoring
 
-Monitor storage capacity and disk performance: 
+Monitor storage capacity and disk performance:
 
 | Metric or event                                   | Description                                                                                                          |
 |---------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
