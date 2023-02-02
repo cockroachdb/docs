@@ -348,7 +348,7 @@ You can import data into your {{ site.data.products.db }} cluster using either [
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-#### Import using Cloud storage
+#### Import using cloud storage
 
 To import a table into your cluster:
 
