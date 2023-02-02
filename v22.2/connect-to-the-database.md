@@ -91,30 +91,36 @@ The connection strings and parameters for your cluster are output when you [star
 
 ## Step 5. Connect to the cluster
 
-<div class="filter-content" markdown="1" data-scope="node-postgres sequelize typeorm prisma psycopg2 psycopg3 sqlalchemy pgx pq gorm ruby-pq activerecord">
+<div class="filter-content" markdown="1" data-scope="js-ts">
+<div class="filter-content" markdown="1" data-scope="node-postgres sequelize typeorm prisma">
 
-<div class="filter-content" markdown="1" data-scope="mac linux">
-
-Set a `DATABASE_URL` environment variable to your connection string.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-export DATABASE_URL="{connection string}"
-~~~
+{% include {{ page.version.version }}/connect/connection-url.md %}
 
 </div>
-
-<div class="filter-content" markdown="1" data-scope="windows">
-
-Set a `DATABASE_URL` environment variable to your connection string.
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$env:DATABASE_URL = "{connection string}"
-~~~
-
 </div>
 
+<div class="filter-content" markdown="1" data-scope="python">
+<div class="filter-content" markdown="1" data-scope="psycopg2 psycopg3 sqlalchemy">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="go">
+<div class="filter-content" markdown="1" data-scope="pgx pq gorm">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="ruby">
+<div class="filter-content" markdown="1" data-scope="ruby-pg activerecord">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
 </div>
 
 <div class="filter-content" markdown="1" data-scope="java">
