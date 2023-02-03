@@ -431,3 +431,8 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
     $ kubectl exec cockroachdb-2 -- cat cockroach-data/logs/cockroach-dev.log
     ~~~  
 </section>
+
+## See also
+
+- [Monitoring and Alerting](monitoring-and-alerting.html)
+- [Metrics](metrics.html)

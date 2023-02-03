@@ -237,14 +237,27 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a {{ site.data.products.serverless }} cluster, you can either [set up billing for your organization](../cockroachcloud/billing-management.html) to access cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage-for-bulk-operations.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="local">local CSV</button>
+  <button class="filter-button" data-scope="cloud">Cloud storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+The following example exports the `customers` table from the `bank` database into a local CSV file:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
---execute "SELECT * FROM db.table" --format=csv > /Users/{username}/{path/to/file}/table.csv
+--execute "SELECT * FROM bank.customers" --format=csv > /Users/{username}/{path/to/file}/customers.csv
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cloud">
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
 
@@ -254,6 +267,7 @@ EXPORT INTO CSV
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
+</section>
 
 ### View a running export
 

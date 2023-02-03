@@ -28,6 +28,10 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     docker volume create roach3
     ~~~
 
+    {{site.data.alerts.callout_danger}}
+    Avoid using the `-v` / `--volume` command to mount a local macOS filesystem into the container. Use Docker volumes or a [`tmpfs` mount](https://docs.docker.com/storage/tmpfs/).
+    {{site.data.alerts.end}}
+
 1. Start the first node:
 
     {% include_cached copy-clipboard.html %}
