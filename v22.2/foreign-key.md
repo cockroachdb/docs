@@ -376,7 +376,7 @@ In this example, we'll create a table with a foreign key constraint with the [fo
 
     When `id = 1` was updated to `id = 23` in `customers_2`, the update propagated to the referencing table `orders_2`.
 
-Similarly, a deletion will cascade. 
+    Similarly, a deletion will cascade. 
 
 1. Delete `id = 23` from `customers_2`:
 
@@ -628,7 +628,7 @@ In this example, we'll create a table with a `FOREIGN` constraint with the [fore
 
     When `id = 1` was updated to `id = 23` in `customers_4`, the referencing `customer_id` was set to `DEFAULT` (i.e., `9999`). You can see this in the first and last rows of `orders_4`, where `id = 100` and the `customer_id` is now `9999`
 
-Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. 
+    Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` value. 
 
 1. Delete `id = 2` from `customers_4`:
 
@@ -667,16 +667,16 @@ Similarly, a deletion will set the referencing `customer_id` to the `DEFAULT` va
     (4 rows)
     ~~~
 
-If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`](not-null.html) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
+    If the default value for the `customer_id` column is not set, and the column does not have a [`NOT NULL`](not-null.html) constraint, `ON UPDATE SET DEFAULT` and `ON DELETE SET DEFAULT` actions set referenced column values to `NULL`.
 
 1. Create a new `customers_5` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE customers_5 (
-    id INT PRIMARY KEY
-  );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE customers_5 (
+        id INT PRIMARY KEY
+      );
+    ~~~
 
 1. Insert some values:
 
@@ -732,110 +732,110 @@ If the default value for the `customer_id` column is not set, and the column doe
 
 You can add more than one foreign key constraint to a single column.
 
-For example, if you create the following tables:
+1. Create the following tables:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE customers (
-    id INT PRIMARY KEY,
-    name STRING,
-    email STRING
-);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE customers (
+        id INT PRIMARY KEY,
+        name STRING,
+        email STRING
+    );
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE orders (
-    id INT PRIMARY KEY,
-    customer_id INT UNIQUE,
-    item_number INT
- );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE orders (
+        id INT PRIMARY KEY,
+        customer_id INT UNIQUE,
+        item_number INT
+    );
+    ~~~
 
-You can create a table with a column that references columns in both the `customers` and `orders` tables:
+1. Create a table with a column that references columns in both the `customers` and `orders` tables:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE shipments (
-    tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    carrier STRING,
-    status STRING,
-    customer_id INT,
-    CONSTRAINT fk_customers FOREIGN KEY (customer_id) REFERENCES customers(id),
-    CONSTRAINT fk_orders FOREIGN KEY (customer_id) REFERENCES orders(customer_id)
-  );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE TABLE shipments (
+        tracking_number UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        carrier STRING,
+        status STRING,
+        customer_id INT,
+        CONSTRAINT fk_customers FOREIGN KEY (customer_id) REFERENCES customers(id),
+        CONSTRAINT fk_orders FOREIGN KEY (customer_id) REFERENCES orders(customer_id)
+      );
+    ~~~
 
-Inserts into the `shipments` table must fulfill both foreign key constraints on `customer_id` (`fk_customers` and `fk_customers_2`).
+    Inserts into the `shipments` table must fulfill both foreign key constraints on `customer_id` (`fk_customers` and `fk_customers_2`).
 
-Let's insert a record into each table:
+1. Insert a record into each table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO customers VALUES (1001, 'Alexa', 'a@co.tld'), (1234, 'Evan', 'info@cockroachlabs.com');
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO orders VALUES (1, 1001, 25), (2, 1234, 15), (3, 2000, 5);
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO shipments (carrier, status, customer_id) VALUES ('USPS', 'Out for delivery', 1001);
+    ~~~
 
-The last statement succeeds because `1001` matches a unique `id` value in the `customers` table and a unique `customer_id` value in the `orders` table. If `1001` was in neither of the referenced columns, or in just one of them, the statement would return an error.
+    The last statement succeeds because `1001` matches a unique `id` value in the `customers` table and a unique `customer_id` value in the `orders` table. If `1001` was in neither of the referenced columns, or in just one of them, the statement would return an error.
 
-For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
+    For instance, the following statement fulfills just one of the foreign key constraints and returns an error:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
+    ~~~
 
-~~~
-ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"
-SQLSTATE: 23503
-DETAIL: Key (customer_id)=(2000) is not present in table "customers".
-~~~
+    ~~~
+    ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"
+    SQLSTATE: 23503
+    DETAIL: Key (customer_id)=(2000) is not present in table "customers".
+    ~~~
 
-CockroachDB allows you to add multiple foreign key constraints on the same column, that reference the same column:
+1. Add multiple foreign key constraints on the same column, that reference the same column:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE shipments ADD CONSTRAINT fk_customers_2 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CONSTRAINTS FROM shipments;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW CONSTRAINTS FROM shipments;
+    ~~~
 
-~~~
-  table_name | constraint_name | constraint_type |                               details                                | validated
--------------+-----------------+-----------------+----------------------------------------------------------------------+------------
-  shipments  | fk_customers    | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id)                   |   true
-  shipments  | fk_customers_2  | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE |   true
-  shipments  | fk_orders       | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES orders(customer_id)             |   true
-  shipments  | shipments_pkey  | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
-(4 rows)
-~~~
+    ~~~
+      table_name | constraint_name | constraint_type |                               details                                | validated
+    -------------+-----------------+-----------------+----------------------------------------------------------------------+------------
+      shipments  | fk_customers    | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id)                   |   true
+      shipments  | fk_customers_2  | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE |   true
+      shipments  | fk_orders       | FOREIGN KEY     | FOREIGN KEY (customer_id) REFERENCES orders(customer_id)             |   true
+      shipments  | shipments_pkey  | PRIMARY KEY     | PRIMARY KEY (tracking_number ASC)                                    |   true
+    (4 rows)
+    ~~~
 
-There are now two foreign key constraints on `customer_id` that reference the `customers(id)` column (i.e., `fk_customers` and `fk_customers_2`).
+    There are now two foreign key constraints on `customer_id` that reference the `customers(id)` column (i.e., `fk_customers` and `fk_customers_2`).
 
-In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
+1. In the event of a `DELETE` or `UPDATE` to the referenced column (`customers(id)`), the action for the first foreign key specified takes precedence. In this case, that will be the default [action](#foreign-key-actions) (`ON UPDATE NO ACTION ON DELETE NO ACTION`) on the first foreign key constraint (`fk_customers`). This means that `DELETE`s on referenced columns will fail, even though the second foreign key constraint (`fk_customer_2`) is defined with the `ON DELETE CASCADE` action.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> DELETE FROM orders WHERE customer_id = 1001;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > DELETE FROM orders WHERE customer_id = 1001;
+    ~~~
 
-~~~
-ERROR: delete on table "orders" violates foreign key constraint "fk_orders" on table "shipments"
-SQLSTATE: 23503
-DETAIL: Key (customer_id)=(1001) is still referenced from table "shipments".
-~~~
+    ~~~
+    ERROR: delete on table "orders" violates foreign key constraint "fk_orders" on table "shipments"
+    SQLSTATE: 23503
+    DETAIL: Key (customer_id)=(1001) is still referenced from table "shipments".
+    ~~~
 
 ### Match composite foreign keys with `MATCH SIMPLE` and `MATCH FULL`
 

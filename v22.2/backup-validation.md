@@ -41,7 +41,7 @@ Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST a
     (2 rows)
     ~~~
 
-    {% include {{ page.version.version }}/backups/check-files-validate.md %}
+{% include {{ page.version.version }}/backups/check-files-validate.md %}
 
 ## Validate a backup is restorable
 

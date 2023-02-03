@@ -469,35 +469,35 @@ The instructions below assume that you are already familiar with:
    - For the "East" index, store 2 replicas in the East, 2 in Central, and 1 in the West. Further, prefer that the leaseholders for that index live in the East or, failing that, in the Central region.
    - Follow the same replica and leaseholder patterns for each of the Central and West regions.
 
-   The idea is that, for example, `token_id_east_idx` will have sufficient replicas (2/5) so that even if one replica goes down, the leaseholder will stay in the East region. That way, if a query comes in that accesses the columns covered by that index from the East gateway node, the optimizer will select `token_id_east_idx` for fast reads.
+        The idea is that, for example, `token_id_east_idx` will have sufficient replicas (2/5) so that even if one replica goes down, the leaseholder will stay in the East region. That way, if a query comes in that accesses the columns covered by that index from the East gateway node, the optimizer will select `token_id_east_idx` for fast reads.
 
-   {{site.data.alerts.callout_info}}
-   The `ALTER TABLE` statement below is not required since it's later made redundant by the `token_id_west_idx` index. In production, you might go with the `ALTER TABLE` to put your table's lease preferences in the West, and then create only 2 indexes (for East and Central); however, the use of 3 indexes makes the example easier to understand.
-   {{site.data.alerts.end}}
+        {{site.data.alerts.callout_info}}
+        The `ALTER TABLE` statement below is not required since it's later made redundant by the `token_id_west_idx` index. In production, you might go with the `ALTER TABLE` to put your table's lease preferences in the West, and then create only 2 indexes (for East and Central); however, the use of 3 indexes makes the example easier to understand.
+        {{site.data.alerts.end}}
 
-   {% include_cached copy-clipboard.html %}
-   ~~~ sql
-   > ALTER TABLE token CONFIGURE ZONE USING
-           num_replicas = 5, constraints = '{+region=us-east: 1, +region=us-central: 2, +region=us-west: 2}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
-   ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        > ALTER TABLE token CONFIGURE ZONE USING
+                num_replicas = 5, constraints = '{+region=us-east: 1, +region=us-central: 2, +region=us-west: 2}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
+        ~~~
 
-   {% include_cached copy-clipboard.html %}
-   ~~~ sql
-   > ALTER INDEX token_id_east_idx CONFIGURE ZONE USING num_replicas = 5,
-           constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-east], [+region=us-central]]';
-   ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        > ALTER INDEX token_id_east_idx CONFIGURE ZONE USING num_replicas = 5,
+                constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-east], [+region=us-central]]';
+        ~~~
 
-   {% include_cached copy-clipboard.html %}
-   ~~~ sql
-   > ALTER INDEX token_id_central_idx CONFIGURE ZONE USING num_replicas = 5,
-           constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-central], [+region=us-east]]';
-   ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        > ALTER INDEX token_id_central_idx CONFIGURE ZONE USING num_replicas = 5,
+                constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-central], [+region=us-east]]';
+        ~~~
 
-   {% include_cached copy-clipboard.html %}
-   ~~~ sql
-   > ALTER INDEX token_id_west_idx CONFIGURE ZONE USING num_replicas = 5,
-           constraints = '{+region=us-west: 2, +region=us-central: 2, +region=us-east: 1}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
-   ~~~
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        > ALTER INDEX token_id_west_idx CONFIGURE ZONE USING num_replicas = 5,
+                constraints = '{+region=us-west: 2, +region=us-central: 2, +region=us-east: 1}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
+        ~~~
 
 1. [Check our zone configurations](show-zone-configurations.html) to make sure they match our expectation:
 
