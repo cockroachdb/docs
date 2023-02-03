@@ -109,7 +109,7 @@ The table below lists the SQL functions and operators available in preview in Co
 
 ## Alter column types
 
- CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#alter-column-data-types).
+ CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#altering-column-data-types).
 
 ## Temporary objects
 

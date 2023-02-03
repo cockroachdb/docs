@@ -44,7 +44,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Alter column data types
+## Altering column data types
 
 Support for altering column data types is [in preview](features-in-preview.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
 
