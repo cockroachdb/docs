@@ -269,7 +269,7 @@ If the table's name is already in use, either [drop the existing table](../{{sit
 > DROP TABLE target_database.example_table;
 ~~~
 
-Or [change the existing table's name](../{{site.current_cloud_version}}/alter-table.html#rename-table):
+Or [change the existing table's name](../{{site.current_cloud_version}}/alter-table.html#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
