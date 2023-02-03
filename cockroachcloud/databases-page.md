@@ -22,7 +22,7 @@ The **Databases** page of the {{ site.data.products.db }} Console allows you to 
 - The tables in each database and the indexes on each table.
 - The grants assigned to each user.
 
-To view this page, select a cluster from the **Clusters** page, and click **Databases** in the **Data** section of the left side navigation.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Databases** in the **Data** section of the left side navigation.
 
 {% include {{version_prefix}}ui/databases.md %}
 

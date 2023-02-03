@@ -10,7 +10,7 @@ The **Monitoring** page is accessible on {{ site.data.products.dedicated }} clus
 - Set up cluster [monitoring with Datadog](#monitor-cockroachdb-dedicated-with-datadog).
 - Access the cluster's [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
-To view this page, select a cluster from the **Clusters** page, and click **Tools** in the **Monitoring** section of the left side navigation.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Tools** in the **Monitoring** section of the left side navigation.
 
 ## Monitor {{ site.data.products.dedicated }} with Datadog
 

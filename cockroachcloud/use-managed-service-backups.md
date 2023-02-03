@@ -9,7 +9,7 @@ docs_area: manage
 
 This page describes how to use managed-service backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
 
-You can access your managed-service backups from the Backups page in the {{ site.data.products.db }} Console.
+To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backups** in the **Data** section of the left side navigation.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>

@@ -21,7 +21,7 @@ In contrast to the [**Statements** page]({{ link_prefix }}statements-page.html),
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. Click the **Transactions** tab.
 {% else %}
-To view this page, select a cluster from the **Clusters** page, and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
 {% endif %}
 
 ## Search and filter
