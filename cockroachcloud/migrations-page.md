@@ -17,7 +17,7 @@ The **Migrations** page on the {{ site.data.products.db }} Console features a **
 On the **Migrations** page, a *migration* refers to converting a schema for use with CockroachDB and creating a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).
 {{site.data.alerts.end}}
 
-To view this page, click **Migrations** in the left navigation of the {{ site.data.products.db }} Console. The **Migrations** tab is selected.
+To view this page, select a cluster from the **Clusters** page, and click **Migration** in the **Data** section of the left side navigation.
 
 ## Upload a SQL dump
 

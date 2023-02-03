@@ -17,7 +17,7 @@ The **Statements** page helps you:
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Statements** tab is selected.
+To view this page, select a cluster from the **Clusters** page, and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Statements** tab.
 {% endif %}
 
 {{site.data.alerts.callout_success}}
