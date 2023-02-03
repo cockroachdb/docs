@@ -79,7 +79,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </tgroup>
 </table>
 
-{{ site.data.products.dedicated }} is certified by a PCI Qualified Security Assessor (QSA) to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf), as long as you take the actions outlined in [How To Ensure Your Cluster's Compliance with PCI DSS](#how-to-ensure-your-clusters-compliance-with-pci-dss).
+{{ site.data.products.dedicated }} is certified by a PCI Qualified Security Assessor (QSA) to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf), as long as you take the actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer).
 
 ## Responsibilities of Cockroach Labs
 
