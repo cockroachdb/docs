@@ -24,6 +24,8 @@ Parameter | Description
 ----------|------------
 `function_with_argtypes` | The name of the function, with optional function arguments to alter.
 
+For more information about the statement syntax, see [User-Defined Functions](user-defined-functions.html#overview).
+
 ## Subcommands
 
 Subcommand | Description
