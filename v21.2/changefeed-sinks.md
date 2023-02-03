@@ -142,7 +142,7 @@ Examples of supported cloud storage sink URIs:
 
 URI Parameter      | Storage | Description
 -------------------+------------------------+---------------------------
-`AWS_ACCESS_KEY_ID` | AWS | The access key to your AWS account.
+`AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
 `AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for examples of each of these. 
 `AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
