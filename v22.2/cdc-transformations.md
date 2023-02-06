@@ -121,7 +121,7 @@ Filtering delete messages from your changefeed is helpful for certain outbox tab
 
 ### Geofilter a changefeed
 
-When you are working with a [`REGIONAL BY ROW` table](set-locality.html#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
+When you are working with a [`REGIONAL BY ROW` table](alter-table.html#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

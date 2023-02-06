@@ -13,7 +13,7 @@ CockroachDB does not support materialized views that are refreshed on [transacti
 
 ## Required privileges
 
-The user must be the [owner](owner-to.html) of the materialized view or have [admin](security-reference/authorization.html#admin-role) privileges.
+The user must be the [owner](alter-view.html) of the materialized view or have [admin](security-reference/authorization.html#admin-role) privileges.
 
 ## Synopsis
 

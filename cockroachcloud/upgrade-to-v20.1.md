@@ -125,7 +125,7 @@ Before your upgrade has been finalized, remember to prevent new schema changes a
 
 Also, most v20.1 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../{{site.current_cloud_version}}/alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
+- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../{{site.current_cloud_version}}/alter-table.html#alter-primary-key) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
 
 - **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](https://www.cockroachlabs.com/docs/v20.1/foreign-key.html#rules-for-creating-foreign-keys).
 

@@ -185,7 +185,7 @@ Flag | Description
 `--scatter` | Scatter ranges.<br><br>**Applicable commands:** `init` or `run`
 `--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
 `--serializable` | Force serializable mode. CockroachDB only supports `SERIALIZABLE` isolation, so this flag is not necessary.<br><br>**Applicable command:** `init`
-`--split` | [Split tables](split-at.html).<br><br>**Applicable commands:** `init` or `run`
+`--split` | [Split tables](alter-table.html#split-at).<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 `--wait` | Run in wait mode, i.e., include think/keying sleeps.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--warehouses` | The number of warehouses for loading initial data, at approximately 200 MB per warehouse.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
@@ -214,7 +214,7 @@ Flag | Description
 `--ramp` | The duration over which to ramp up load.<br><br>**Applicable command:** `run`
 `--request-distribution` | Distribution for the random number generator (`zipfian`, `uniform`).<br><br>**Applicable commands:** `init` or `run`.<br>**Default:** `zipfian`
 `--seed` | The random number generator seed.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `1`
-`--splits` | Number of [splits](split-at.html) to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
+`--splits` | Number of [splits](alter-table.html#split-at) to perform before starting normal operations.<br><br>**Applicable commands:** `init` or `run`
 `--tolerate-errors` | Keep running on error.<br><br>**Applicable command:** `run`
 `--workload` | The type of workload to run (`A`, `B`, `C`, `D`, or `F`). For details about these workloads, see [YCSB Workloads](https://github.com/brianfrankcooper/YCSB/wiki/Core-Workloads).<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `B`
 

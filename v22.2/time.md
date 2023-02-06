@@ -68,7 +68,7 @@ A `TIMETZ` column supports values up to 12 bytes in width, but the total storage
 
  CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIME`/`TIMETZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. For example, specifying a `TIME` value as `TIME(3)` truncates the time precision to milliseconds. By default, `TIME`/`TIMETZ` values have a precision of 6 (microseconds).
 
-You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIME`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIME`-typed column, with precision](#create-a-table-with-a-time-typed-column-with-precision).
+You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-table.html#alter-column) statement to change the precision level of a `TIME`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIME`-typed column, with precision](#create-a-table-with-a-time-typed-column-with-precision).
 
 ## Examples
 
@@ -167,7 +167,7 @@ Comparing `TIME` values:
 (2 rows)
 ~~~
 
-To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement:
+To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-table.html#alter-column) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

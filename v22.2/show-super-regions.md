@@ -81,18 +81,18 @@ SHOW SUPER REGIONS FROM DATABASE movr;
 ~~~
 
 {{site.data.alerts.callout_info}}
-The preceding example shows the super region that was added in [`ADD SUPER REGION`](add-super-region.html#add-a-super-region-to-a-database).
+The preceding example shows the super region that was added in [`ADD SUPER REGION`](alter-database.html#add-a-super-region-to-a-database).
 {{site.data.alerts.end}}
 
 ## See also
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [Super regions](multiregion-overview.html#super-regions)
-- [`ADD SUPER REGION`](add-super-region.html)
-- [`DROP SUPER REGION`](drop-super-region.html)
-- [`ALTER SUPER REGION`](alter-super-region.html)
+- [`ADD SUPER REGION`](alter-database.html#add-super-region)
+- [`DROP SUPER REGION`](alter-database.html#drop-super-region)
+- [`ALTER SUPER REGION`](alter-database.html#alter-super-region)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
 - [Zone Config Extensions](zone-config-extensions.html)
 - [SQL Statements](sql-statements.html)

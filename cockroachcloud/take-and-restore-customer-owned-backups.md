@@ -9,7 +9,7 @@ docs_area: manage
 
 This page describes how to take and restore customer-owned backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
 
-The examples demonstrate how to back up and restore from cloud storage and userfile storage. We recommend using cloud storage for your backups, however, if you don't have [billing information](billing-management.html) on file, [userfile](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for backup operations. 
+The examples demonstrate how to back up and restore from cloud storage and `userfile` storage. We recommend using cloud storage for your backups.
 
 {{site.data.alerts.callout_danger}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -111,7 +111,6 @@ The following examples show how to run manual restores:
 For more information on restoring to your cluster, read the [`RESTORE`](../{{site.current_cloud_version}}/restore.html) page. 
 
 </section>
-
 
 ## See also
 

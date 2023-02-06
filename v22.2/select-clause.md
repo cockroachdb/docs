@@ -240,7 +240,7 @@ Instead of outputting a column's name in the retrieved table, you can change its
 (2 rows)
 ~~~
 
-This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`](rename-column.html).
+This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`](alter-table.html#rename-column).
 
 ### Search for string values
 

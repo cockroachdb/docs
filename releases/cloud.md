@@ -15,6 +15,12 @@ Get future release notes emailed to you:
 
 {% include releases/current-cloud-version.md %}
 
+## February 2, 2023
+
+<h3> General changes </h3>
+
+- {{ site.data.products.serverless }} users can now access [cloud storage for bulk operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) without entering billing information.
+
 ## January 9, 2023
 
 <h3> Console changes </h3>

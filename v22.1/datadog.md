@@ -180,3 +180,4 @@ The timeseries graph at the top of the page indicates the configured metric and 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)
 - [Logging Overview](logging-overview.html)
+- [Metrics](metrics.html)

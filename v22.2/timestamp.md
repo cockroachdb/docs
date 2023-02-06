@@ -64,7 +64,7 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. For example, specifying a `TIMESTAMPTZ` value as `TIMESTAMPTZ(3)` truncates the time component to milliseconds. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
 
-You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
+You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-table.html#alter-column) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
 
 ## Examples
 
@@ -144,7 +144,7 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 (2 rows)
 ~~~
 
-To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement:
+To change the precision level of a column, you can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-table.html#alter-column) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

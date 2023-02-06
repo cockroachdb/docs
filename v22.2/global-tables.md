@@ -53,7 +53,7 @@ To use this pattern, set the [table locality](multiregion-overview.html#table-lo
     ) LOCALITY GLOBAL;
     ~~~
 
-    Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
+    Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](alter-table.html#set-locality):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -62,7 +62,7 @@ root@:26257/defaultdb> ALTER USER carl WITH CREATEROLE CREATELOGIN;
 
 ### Allow a user to create and rename databases
 
-The following example allows the user to [create](create-database.html) or [rename](rename-database.html) databases:
+The following example allows the user to [create](create-database.html) or [rename](alter-database.html#rename-to) databases:
 
 ~~~ sql
 root@:26257/defaultdb> ALTER USER carl WITH CREATEDB;

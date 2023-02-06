@@ -9,7 +9,9 @@ The `DELETE` [statement](sql-statements.html) deletes rows from a table.
 
 {{site.data.alerts.callout_danger}}If you delete a row that is referenced by a <a href="foreign-key.html">foreign key constraint</a> and has an <a href="foreign-key.html#foreign-key-actions"><code>ON DELETE</code> action</a>, all of the dependent rows will also be deleted or updated.{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}To delete columns, see <a href="drop-column.html"><code>DROP COLUMN</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+To delete columns, see [`ALTER TABLE ... DROP COLUMN`](alter-table.html#drop-column).
+{{site.data.alerts.end}}
 
 ## Required privileges
 

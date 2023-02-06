@@ -58,7 +58,7 @@ For example, let's say we want to create a table to store an immutable blob of d
 
 ### Assign column families when adding columns
 
-When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a column to a table, you can assign the column to a new or existing column family.
+When using the [`ALTER TABLE .. ADD COLUMN`](alter-table.html#add-column) statement to add a column to a table, you can assign the column to a new or existing column family.
 
 - Use the `CREATE FAMILY` keyword to assign a new column to a **new family**. For example, the following would add a `data2 BYTES` column to the `test` table above and assign it to a new column family:
 
@@ -91,5 +91,5 @@ When using the [`ALTER TABLE .. ADD COLUMN`](add-column.html) statement to add a
 ## See also
 
 - [`CREATE TABLE`](create-table.html)
-- [`ADD COLUMN`](add-column.html)
+- [`ADD COLUMN`](alter-table.html#add-column)
 - [SQL Statements](sql-statements.html)

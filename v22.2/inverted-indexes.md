@@ -174,7 +174,7 @@ CREATE TABLE test (
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](alter-table.html#add-a-unique-index-to-a-regional-by-row-table).
 
 ## Multi-column GIN indexes
 
