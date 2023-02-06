@@ -104,6 +104,15 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 
 `main.py` uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
+{{site.data.alerts.callout_info}}
+The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter. 
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
+~~~
+{{site.data.alerts.end}}
+
 Run the app:
 
 {% include_cached copy-clipboard.html %}
