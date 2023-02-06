@@ -159,7 +159,7 @@ You can use the `&&` (overlaps) [operator](functions-and-operators.html#supporte
     INSERT INTO a VALUES (ARRAY['sun','moon']);
     ~~~
 
-1. Use the `&&` operator in a where clause to a query:
+1. Use the `&&` operator in a `WHERE` clause to a query:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
