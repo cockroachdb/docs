@@ -35,7 +35,7 @@ See [`CREATE ROLE`: Synopsis](create-role.html#synopsis).
 ### User names
 
 - Are case-insensitive.
-- Must start with either a letter or underscore.
+- Must start with a letter or underscore. 
 - Must contain only letters, numbers, periods, or underscores.
 - Must be between 1 and 63 characters.
 - Cannot be `none`.
@@ -86,7 +86,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Create a user
 
-Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+Usernames are case-insensitive; must start with a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
 
 ~~~ sql
 root@:26257/defaultdb> CREATE USER no_options;
