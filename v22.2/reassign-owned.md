@@ -10,7 +10,7 @@ The `REASSIGN OWNED` statement changes the [ownership](security-reference/author
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_success}}
-To change the ownership of any single object (e.g., a table or a database), use the [`OWNER TO`](owner-to.html) subcommand of the object's [`ALTER` statement](sql-statements.html).
+To change the ownership of any single object (e.g., a table or a database), use the `OWNER TO` subcommand of the object's [`ALTER` statement](sql-statements.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -110,6 +110,6 @@ Now suppose you want to change the owner for all of the tables owned by `cockroa
 ## See also
 
 - [Authorization](authorization.html)
-- [`OWNER TO`](owner-to.html)
+- [`ALTER TABLE ... OWNER TO`](alter-table.html#owner-to)
 - [`SHOW TABLES`](show-tables.html)
 - [SQL Statements](sql-statements.html)

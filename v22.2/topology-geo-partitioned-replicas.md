@@ -95,7 +95,7 @@ A geo-partitioned table does not require a secondary index. However, if the tabl
 
     This creates distinct ranges for each partition of the secondary index.
 
-1. For each partition of the table and its secondary index, [create a replication zone](configure-zone.html) that constrains the partition's replicas to nodes in the relevant region:
+1. For each partition of the table and its secondary index, [create a replication zone](alter-partition.html#create-a-replication-zone-for-a-partition) that constrains the partition's replicas to nodes in the relevant region:
 
     {{site.data.alerts.callout_success}}
     The `<table>@*` syntax lets you create zone configurations for all identically named partitions of a table, saving you multiple steps.

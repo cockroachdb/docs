@@ -97,6 +97,8 @@ To preview the metrics being collected, you can:
 - Click on your cluster's entry in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/) to display time-series graphs for each available metric.
 - Use the [Metrics Explorer](https://docs.datadoghq.com/metrics/explorer/) to search for and view `crdb_dedicated` metrics.
 
+See [Metrics](../{{site.current_cloud_version}}/metrics.html) for the full list of metrics available in CockroachDB.
+
 ### Monitor health of metrics export
 
 To monitor the health of metrics export, we recommend that you [create a new Monitor](https://docs.datadoghq.com/monitors/create/types/metric/?tab=threshold).
@@ -107,7 +109,7 @@ Select **Threshold Alert** as the detection method, which configures an alert th
 
     - Select the `otel.datadog_exporter.metrics.running` metric.
 
-    - Export the metric **from** your {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/).
+    - Export the metric **from** your {{ site.data.products.dedicated }} cluster (the cluster name in the [Infrastructure List](https://docs.datadoghq.com/infrastructure/list/)).
 
 - To **Set alert conditions**:
 

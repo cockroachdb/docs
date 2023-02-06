@@ -124,7 +124,7 @@ All objects that do not have owners (for example, objects created before upgradi
 
 To allow another user to use the object, the owner can [assign privileges](#managing-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 
-Users that own objects cannot be dropped until the [ownership is transferred to another user](../owner-to.html#change-a-databases-owner).
+Users that own objects cannot be dropped until the [ownership is transferred to another user](../alter-database.html#change-a-databases-owner).
 
 ## Privileges
 

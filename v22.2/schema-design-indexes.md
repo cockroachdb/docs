@@ -99,7 +99,7 @@ The [`EXPLAIN`](explain.html#success-responses) command provides index recommend
 
     - Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can use the index, so you don't need to also index `(A)`.
 
-    - If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+    - If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](alter-table.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
 
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}

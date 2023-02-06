@@ -31,7 +31,7 @@ Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} 
 
 ## Range management
 
-The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/split-at.html) and [`ALTER RANGE ... RELOCATE`](../{{site.current_cloud_version}}/alter-range-relocate.html) statements are not supported in {{ site.data.products.serverless }}.
+The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/alter-table.html#split-at) and [`ALTER RANGE ... RELOCATE`](../{{site.current_cloud_version}}/alter-range.html#relocate) statements are not supported in {{ site.data.products.serverless }}.
 
 ## Query cancellation using pgwire
 

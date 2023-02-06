@@ -120,7 +120,8 @@ If both `start_key` and `end_key` show `NULL`, the range is empty and has no spl
 ## See also
 
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)
-- [`SPLIT AT`](split-at.html)
+- [`ALTER TABLE ... SPLIT AT`](alter-table.html#split-at)
+- [`ALTER INDEX ... SPLIT AT`](alter-index.html#split-at)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)

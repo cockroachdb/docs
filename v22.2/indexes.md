@@ -62,7 +62,7 @@ To maximize your indexes' performance, Cockroach Labs recommends following the [
 
 To observe the impact of an index without affecting a production workload, you can [create an index](create-index.html) using the `NOT VISIBLE` clause. The index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection) or the property is overridden with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible). 
 
-Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
+Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#not-visible).
 
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
@@ -149,7 +149,7 @@ For best practices, see [Secondary Indexes: Best practices](schema-design-indexe
 
 This behavior also applies to [GIN indexes](inverted-indexes.html).
 
-For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](alter-table.html#add-a-unique-index-to-a-regional-by-row-table).
 
 ## See also
 
@@ -162,6 +162,6 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 - [Expression Indexes](expression-indexes.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
+- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
 - [`SHOW INDEX`](show-index.html)
 - [SQL Statements](sql-statements.html)

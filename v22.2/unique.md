@@ -15,15 +15,15 @@ The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value
 
 - Columns with the `UNIQUE` constraint automatically have an [index](indexes.html) created with the name `<table name>_<columns>_key`. To avoid having two identical indexes, you should not create indexes that exactly match the `UNIQUE` constraint's columns and order.
 
-    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint. Conversely, [dropping the `UNIQUE` constraint](drop-constraint.html) also drops the automatically created index.
+    The `UNIQUE` constraint depends on the automatically created index, so dropping the index also drops the `UNIQUE` constraint. Conversely, [dropping the `UNIQUE` constraint](alter-table.html#drop-constraint) also drops the automatically created index.
 
 - When using the `UNIQUE` constraint on multiple columns, the collective values of the columns must be unique. This *does not* mean that each value in each column must be unique, as if you had applied the `UNIQUE` constraint to each column individually.
 
-- You can define the `UNIQUE` constraint when you [create a table](#syntax), or you can add it to an existing table through [`ADD CONSTRAINT`](add-constraint.html#add-the-unique-constraint).
+- You can define the `UNIQUE` constraint when you [create a table](#syntax), or you can add it to an existing table through [`ADD CONSTRAINT`](alter-table.html#add-the-unique-constraint).
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table](alter-table.html#add-a-unique-index-to-a-regional-by-row-table).
 
 ## Syntax
 
@@ -137,7 +137,7 @@ As mentioned in the [details](#details) above, it is possible when using the `UN
 ## See also
 
 - [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](drop-constraint.html)
+- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
 - [`CHECK` constraint](check.html)
 - [`DEFAULT` value constraint](default-value.html)
 - [Foreign key constraint](foreign-key.html)

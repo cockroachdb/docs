@@ -20,15 +20,15 @@ The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [sch
 Parameter | Description
 ----------|------------
 `name`<br>`name.name` | The name of the schema to alter, or the name of the database containing the schema and the schema name, separated by a "`.`".
-`RENAME TO schema_name` | Rename the schema to `schema_name`. The new schema name must be unique within the database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`OWNER TO role_spec` | Change the owner of the schema to `role_spec`.
+`schema_new_name` | The name of the new schema. The new schema name must be unique within the database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`role_spec` |  The role to set as the owner of the schema.
 
 ## Required privileges
 
 - To rename a schema, the user must be the owner of the schema.
 - To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](security-reference/authorization.html#roles). The new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database to which the schema belongs.
 
-## Example
+## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
 
@@ -42,17 +42,17 @@ Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max;
+CREATE USER max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEMA org_one AUTHORIZATION max;
+CREATE SCHEMA org_one AUTHORIZATION max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW SCHEMAS;
+SHOW SCHEMAS;
 ~~~
 
 ~~~
@@ -71,7 +71,7 @@ Now, suppose you want to rename the schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER SCHEMA org_one RENAME TO org_two;
+ALTER SCHEMA org_one RENAME TO org_two;
 ~~~
 
 ~~~
@@ -85,19 +85,19 @@ Because you are executing the `ALTER SCHEMA` command as a non-owner of the schem
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DROP SCHEMA org_one;
+DROP SCHEMA org_one;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEMA org_one;
+CREATE SCHEMA org_one;
 ~~~
 
 To verify that the owner is now `root`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT
+SELECT
   nspname, usename
 FROM
   pg_catalog.pg_namespace
@@ -117,12 +117,12 @@ As its owner, you can rename the schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER SCHEMA org_one RENAME TO org_two;
+ALTER SCHEMA org_one RENAME TO org_two;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW SCHEMAS;
+SHOW SCHEMAS;
 ~~~
 
 ~~~
@@ -137,18 +137,18 @@ As its owner, you can rename the schema:
 (6 rows)
 ~~~
 
-### Change a schema's owner
+### Change the owner of a schema
 
 Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and [create a new schema](create-schema.html) named `org_one`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEMA org_one;
+CREATE SCHEMA org_one;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW SCHEMAS;
+SHOW SCHEMAS;
 ~~~
 
 ~~~
@@ -167,24 +167,24 @@ Now, suppose that you want to change the owner of the schema `org_one` to an exi
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT max TO root;
+GRANT max TO root;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> GRANT CREATE ON DATABASE defaultdb TO max;
+GRANT CREATE ON DATABASE defaultdb TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER SCHEMA org_one OWNER TO max;
+ALTER SCHEMA org_one OWNER TO max;
 ~~~
 
 To verify that the owner is now `max`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT
+SELECT
   nspname, usename
 FROM
   pg_catalog.pg_namespace

@@ -38,5 +38,5 @@ Use a [`GLOBAL` table locality](multiregion-overview.html#global-tables) if:
 - [Disaster Recovery](disaster-recovery.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)

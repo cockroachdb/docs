@@ -61,7 +61,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 1. If you do not already have one, [request a trial Enterprise license](licensing-faqs.html#obtain-a-license).
 
-1. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
+1. [Create a replication zone](alter-table.html#configure-zone) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -86,7 +86,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
         STORING (code);
     ~~~
 
-1. [Create a replication zone](configure-zone.html) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
+1. [Create a replication zone](alter-index.html#configure-zone) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

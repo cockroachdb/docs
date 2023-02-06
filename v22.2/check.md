@@ -11,7 +11,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 - You can specify `CHECK` constraints at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
 
-- You can add `CHECK` constraints to columns that were created earlier in the same transaction. For an example, see [Add the `CHECK` constraint](add-constraint.html#add-constraints-to-columns-created-during-a-transaction).
+- You can add `CHECK` constraints to columns that were created earlier in the same transaction. For an example, see [Add the `CHECK` constraint](alter-table.html#add-constraints-to-columns-created-during-a-transaction).
 
 - You can have multiple `CHECK` constraints on a single column but for performance optimization you should combine them using logical operators. For example, you should specify:
 
@@ -31,7 +31,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 
 You can define `CHECK` constraints at the [column level](#column-level), where the constraint applies only to a single column, and at the [table level](#table-level).
 
-You can also add `CHECK` constraints to a table using [`ADD CONSTRAINT`](add-constraint.html#add-the-check-constraint).
+You can also add `CHECK` constraints to a table using [`ADD CONSTRAINT`](alter-table.html#add-the-check-constraint).
 
 ### Column level
 
@@ -112,7 +112,7 @@ pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
 ## See also
 
 - [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](drop-constraint.html)
+- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
 - [`DEFAULT` constraint](default-value.html)
 - [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
 - [`NOT NULL` constraint](not-null.html)

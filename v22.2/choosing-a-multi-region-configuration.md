@@ -27,7 +27,7 @@ The options for configuring your multi-region cluster include:
 - _Change only [table localities](multiregion-overview.html#table-localities)_: This is useful for multi-region apps that require different read and write latency guarantees for different tables in the database, and are not concerned with surviving a region failure. In this configuration, you get:
   - Zone survival (the default).
   - For [global tables](multiregion-overview.html#global-tables), low-latency reads from all regions.
-  - For [regional by row tables](multiregion-overview.html#regional-by-row-tables), low-latency reads and writes from each row's [home region](set-locality.html#crdb_region), and low-latency [follower reads](follower-reads.html) from all other regions.
+  - For [regional by row tables](multiregion-overview.html#regional-by-row-tables), low-latency reads and writes from each row's [home region](alter-table.html#crdb_region), and low-latency [follower reads](follower-reads.html) from all other regions.
 
 - _Change both [survival goals](multiregion-overview.html#survival-goals) and [table localities](multiregion-overview.html#table-localities)_: This is useful for multi-region apps that want a high level of survival. In this configuration, you move from zone survival and get:
   - Region survival.
@@ -67,5 +67,5 @@ Different databases and tables within the same cluster can each use different co
 - [Disaster Recovery](disaster-recovery.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)

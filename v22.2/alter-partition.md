@@ -5,7 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER PARTITION` [statement](sql-statements.html) is used to configure replication zones for [partitioning](partitioning.html). See the [`CONFIGURE ZONE`](configure-zone.html) subcommand for more details.
+`ALTER PARTITION` is used to add, modify, reset, or remove replication zones for [partitioning](partitioning.html). It is combined with the `CONFIGURE ZONE` subcommand.
+
+To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+
+You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 {% include enterprise-feature.md %}
 
@@ -27,7 +31,7 @@ The user must have the [`CREATE`](grant.html#supported-privileges) privilege on 
 `partition_name` | The name of the [partition](partitioning.html) with the [replication zone configurations](configure-replication-zones.html) to modify.
 `index_name` | The name of the [index](indexes.html) with the [replication zone configurations](configure-replication-zones.html) to modify.
 `variable` | The name of the [variable](#variables) to change.
-`value` | The value of the variable to change.
+`value` | The value of the [variable](#variables) to change.
 
 ### Variables
 

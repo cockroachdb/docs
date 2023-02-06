@@ -306,7 +306,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
 
 {% include {{ page.version.version }}/sql/use-import-into.md %}
 
-Then add the [computed columns](computed-columns.html), [constraints](add-constraint.html), and [function-based indexes](create-index.html). For example:
+Then add the [computed columns](computed-columns.html), [constraints](alter-table.html#add-constraint), and [function-based indexes](create-index.html). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

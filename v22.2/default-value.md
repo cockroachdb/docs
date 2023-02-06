@@ -17,7 +17,7 @@ The `DEFAULT` value [constraint](constraints.html) specifies a value to write in
 You can only apply the `DEFAULT` value constraint to individual columns.
 
 {{site.data.alerts.callout_info}}
-You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](alter-column.html#set-or-change-a-default-value).
+You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](alter-table.html#set-or-change-a-default-value).
 {{site.data.alerts.end}}
 
 <div>
@@ -74,7 +74,7 @@ If the `DEFAULT` value constraint is not specified and an explicit value is not 
 ## See also
 
 - [Constraints](constraints.html)
-- [`ALTER COLUMN`](alter-column.html)
+- [`ALTER COLUMN`](alter-table.html#alter-column)
 - [`CHECK` constraint](check.html)
 - [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
 - [`NOT NULL` constraint](not-null.html)
