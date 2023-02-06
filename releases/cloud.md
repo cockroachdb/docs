@@ -24,7 +24,7 @@ Get future release notes emailed to you:
   - [`EXPLAIN ANALYZE`](../{{site.versions["stable"]}}/explain-analyze.html) now gives an estimate of the [Request Units (RUs)](../cockroachcloud/learn-about-request-units.html) consumed by a query.
   - All {{ site.data.products.serverless }} users can now use cloud storage for [`IMPORT`](../{{site.versions["stable"]}}/import.html), [`BACKUP`](../{{site.versions["stable"]}}/backup.html), and [change data capture (CDC)](../{{site.versions["stable"]}}/change-data-capture-overview.html) without entering billing information.
   - [`SHOW RANGES`](../{{site.versions["stable"]}}/show-ranges.html) is now supported on {{ site.data.products.serverless }}.
-  - The [GC TTL](../{{site.versions["stable"]}}/row-level-ttl.html) for deleted values is lowered from 24 hours to 1.25 hours.
+  - The [GC TTL](../{{site.versions["stable"]}}/configure-replication-zones.html#gc-ttlseconds) for deleted values is lowered from 24 hours to 1.25 hours.
 
 <h3> Console changes </h3>
 
