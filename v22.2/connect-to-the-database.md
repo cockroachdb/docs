@@ -11,23 +11,33 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
 
 For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](community-tooling.html). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
-<div class="filter-content" markdown="1" data-scope="core">
-
-{{site.data.alerts.callout_info}}
-The connection information shown on this page uses [client certificate and key authentication](authentication.html#client-authentication) to connect to a secure, {{ site.data.products.core }} cluster.
-
-To connect to a {{ site.data.products.core }} cluster with client certificate and key authentication, you must first [generate server and client certificates](authentication.html#using-digital-certificates-with-cockroachdb).
-
-For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](secure-a-cluster.html).
-{{site.data.alerts.end}}
-
-</div>
+## Step 1. Select your deployment
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
   <button class="filter-button page-level" data-scope="core">{{ site.data.products.core }}</button>
 </div>
+
+<div class="filter-content" markdown="1" data-scope="serverless dedicated">
+To connect to CockroachDB Cloud clusters you will need a general connection string or connection parameters. You can find these in the **Connect** dialog for your cluster in the [CockroachDB Cloud Console](https://cockroachlabs.cloud).
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+To connect to a {{ site.data.products.core }} cluster, you need the [general connection string](connection-parameters.html#connect-using-a-url) or [connection parameters](connection-parameters.html#connect-using-discrete-parameters) for your cluster.
+
+The connection strings and parameters for your cluster are output when you [start the cluster](cockroach-start.html#standard-output).
+</div>
+
+## Step 2. Select your OS
+
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
+    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
+    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
+</div>
+
+## Step 3. Select your language
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
@@ -37,14 +47,100 @@ For instructions on starting a secure cluster, see [Start a Local Cluster (Secur
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
 </div>
 
-<div class="filter-content" markdown="1" data-scope="js-ts">
+## Step 4. Select your driver or ORM
 
+<div class="filter-content" markdown="1" data-scope="js-ts">
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="node-postgres">node-postgres</button>
   <button class="filter-button page-level" data-scope="sequelize">Sequelize</button>
   <button class="filter-button page-level" data-scope="typeorm">TypeORM</button>
   <button class="filter-button page-level" data-scope="prisma">Prisma</button>
 </div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="python">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="psycopg2">Psycopg2</button>
+  <button class="filter-button page-level" data-scope="psycopg3">Psycopg3</button>
+  <button class="filter-button page-level" data-scope="sqlalchemy">SQLAlchemy</button>
+  <button class="filter-button page-level" data-scope="django">Django</button>
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="go">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="pgx">pgx</button>
+  <button class="filter-button page-level" data-scope="pq">pq</button>
+  <button class="filter-button page-level" data-scope="gorm">GORM</button>
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="java">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="jdbc">JDBC</button>
+  <button class="filter-button page-level" data-scope="hibernate">Hibernate</button>
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="ruby">
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="ruby-pg">pg</button>
+  <button class="filter-button page-level" data-scope="activerecord">Active Record</button>
+</div>
+</div>
+
+## Step 5. Connect to the cluster
+
+<div class="filter-content" markdown="1" data-scope="js-ts">
+<div class="filter-content" markdown="1" data-scope="node-postgres sequelize typeorm prisma">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="python">
+<div class="filter-content" markdown="1" data-scope="psycopg2 psycopg3 sqlalchemy">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="go">
+<div class="filter-content" markdown="1" data-scope="pgx pq gorm">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="ruby">
+<div class="filter-content" markdown="1" data-scope="ruby-pg activerecord">
+
+{% include {{ page.version.version }}/connect/connection-url.md %}
+
+</div>
+</div>
+
+<div class="filter-content" markdown="1" data-scope="java">
+
+<div class="filter-content" markdown="1" data-scope="serverless dedicated">
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **Java** from the **Select option** dropdown.
+1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
+</div>
+
+<div class="filter-content" markdown="1" data-scope="core">
+Copy the JDBC connection string from the `sql (JDBC)` field in the output from when you started the cluster.
+</div>
+
+{% include {{ page.version.version }}/connect/jdbc-connection-url.md %}
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="js-ts">
 
 <div class="filter-content" markdown="1" data-scope="node-postgres">
 
@@ -89,6 +185,8 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 ~~~
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -138,6 +236,8 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 ~~~
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -245,6 +345,8 @@ Where:
 - `CLIENT_KEY` is an environment variable set to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 - `CLIENT_CERT` is an environment variable set to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 TypeORM accepts the following format for CockroachDB connection strings:
 
 {% include_cached copy-clipboard.html %}
@@ -319,6 +421,8 @@ postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&
 postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with Prisma, see the [official Prisma documentation](https://www.prisma.io/cockroachdb).
@@ -364,19 +468,13 @@ Parameter | Description
 `<client-cert>`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `<client-key>`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="python">
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="psycopg2">Psycopg2</button>
-  <button class="filter-button page-level" data-scope="psycopg3">Psycopg3</button>
-  <button class="filter-button page-level" data-scope="sqlalchemy">SQLAlchemy</button>
-  <button class="filter-button page-level" data-scope="django">Django</button>
-</div>
-
 
 <div class="filter-content" markdown="1" data-scope="serverless">
 
@@ -429,6 +527,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/docs).
@@ -479,6 +579,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/psycopg3/docs/basic/index.html).
@@ -528,6 +630,8 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 ~~~
 cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -642,6 +746,8 @@ DATABASES = {
 ...
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -694,17 +800,13 @@ Parameter | Description
 `{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="go">
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="pgx">pgx</button>
-  <button class="filter-button page-level" data-scope="pq">pq</button>
-  <button class="filter-button page-level" data-scope="gorm">GORM</button>
-</div>
 
 <div class="filter-content" markdown="1" data-scope="pgx">
 
@@ -758,6 +860,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 ~~~
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -818,6 +922,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with pq, see the [official pq documentation](https://pkg.go.dev/github.com/lib/pq).
@@ -877,6 +983,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 For more information about connecting with GORM, see the [official GORM documentation](https://gorm.io/docs).
@@ -922,17 +1030,13 @@ Parameter | Description
 `{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="java">
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="jdbc">JDBC</button>
-  <button class="filter-button page-level" data-scope="hibernate">Hibernate</button>
-</div>
-
 
 <div class="filter-content" markdown="1" data-scope="jdbc">
 
@@ -974,6 +1078,8 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 ~~~
 jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -1030,6 +1136,8 @@ jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&s
 jdbc:postgresql://{host}:{port}/{database}?user={username}&sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -1079,16 +1187,13 @@ Parameter | Description
 `{client-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="ruby">
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="ruby-pg">pg</button>
-  <button class="filter-button page-level" data-scope="activerecord">Active Record</button>
-</div>
 
 {{site.data.alerts.callout_info}}
 To connect to a {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at <code>~/.postgresql/root.crt</code>.<br>For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see <a href="../cockroachcloud/connect-to-a-serverless-cluster.html">Connect to a {{ site.data.products.serverless }} Cluster</a>.
@@ -1137,6 +1242,8 @@ postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&
 ~~~
 postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 
@@ -1189,6 +1296,8 @@ cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
 cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
 ~~~
 
+{% include {{ page.version.version }}/connect/core-note.md %}
+
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -1237,6 +1346,8 @@ Parameter | Description
 `{root-cert}`  | The path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
 `{client-cert}`  | The path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
 `{client-key}`  | The path to the [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+
+{% include {{ page.version.version }}/connect/core-note.md %}
 
 </div>
 

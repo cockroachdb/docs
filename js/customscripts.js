@@ -211,14 +211,21 @@ $(function() {
 
   // Map to store the scopes of the page filters
   let scopes = new Map();
+  // Scopes can have child scopes that should be hidden if the parent is hidden.
+  // Store the child scopes for each parent scope.
+  let childScopes = new Map();
 
   // Activate a new filter scope by setting the `current` class on only
   // elements with the desired scope and re-rendering the TOC to reflect any
   // changes in visibility.
   function setFilterScope(scope) {
+    // check if target scope has a parent scope
+    // if (typeof(childScopes.get(scope)) !== 'undefined') {
+    //   console.log("target scope has parent scope: " + childScopes.get(scope));
+    // }
     // find the filter set with this scope
     $('[data-scope].current').each(function(index) {
-      console.log("data-scope is: " + $(this).attr('data-scope'));
+      // console.log("data-scope is: " + $(this).attr('data-scope'));
       // if the target scope is in the same group as the current scope for that 
       // group, remove the current class
       
@@ -226,11 +233,11 @@ $(function() {
       // multiple scopes can be set, so try each scope, but stop after removing current
       sectionScopes.every(v => {
         if (scopes.get(v) === scopes.get(scope)) {
-          console.log("current scope is in target scope " + scope + "'s group.");
+          console.log("current scope " + v + " is in target scope " + scope + "'s group.");
           $(this).removeClass('current');
           return false;
         } else {
-          console.log("current scope " + scope + " in different group.");
+          // console.log("current scope " + scope + " in different group.");
           return true;
         }
       });
@@ -255,22 +262,48 @@ $(function() {
   // Handle clicks on filter buttons by activating the scope named by that
   // button and updating the URL hash.
   $('.filters').each(function(index) {
+    let parentScope;
+    if ($(this).parents('.filter-content').length) {
+      $(this).parents('.filter-content').each(function(i){
+        parentScope = $(this).data('scope');
+        console.log("found parent scope for filters: " + parentScope);
+      });
+    }
     $(this).find('.filter-button').each(function(i){
       // add the scope and group to the Map if it isn't already there
       var scope = $(this).data('scope');
       console.log("adding scope: " + scope);
       scopes.set(scope, index);
+      // if these filters are within a parent scope, set the parent scope
+      if (typeof(parentScope) !== 'undefined') {
+        console.log("adding " + scope + " to parent " + parentScope + " map.");
+        childScopes.set(scope, parentScope);
+      }
     });
     // when the user clicks the filter button, add it to the query params and set the scope
     $(this).find('.filter-button').on('click', function() {
-      var scope = $(this).data('scope');
-      var queryParams = "?";
-      var filterParams = getFilterParams();
+      let scope = $(this).data('scope');
+      console.log("target is: " + scope);
+      let parentScope = childScopes.get(scope);
+      let queryParams = "?";
+      let filterParams = getFilterParams();
       // if there are current query params, construct the new filters query params
       if (typeof(filterParams) !== 'undefined') {
         getFilterParams().forEach((item, i) => {
-          if (scopes.get(scope) !== scopes.get(item) )
-          queryParams = queryParams + "filters=" + item + "&";
+          currentScopeParent = childScopes.get(item);
+          console.log("filter is: " + item);
+          if (typeof(parentScope) !== 'undefined') {
+            console.log("target scope's parent: " + parentScope);
+          }
+          if (typeof(currentScopeParent) !== 'undefined') {
+            console.log("current scope's parent: " + currentScopeParent);
+          }
+          // only keep filter params if they're not in the same group or parent filter
+          if (scopes.get(scope) !== scopes.get(item)) {
+            if (scopes.get(currentScopeParent) !== scopes.get(scope)) {
+              queryParams = queryParams + "filters=" + item + "&";
+            }
+          }
         });
       }
       var url = window.location.pathname + queryParams +
@@ -287,7 +320,7 @@ $(function() {
   // set the default filter scopes
   $('.filters').each(function(index) {
     var s = $(this).children().first().data('scope');
-    console.log("setting scope to: " + s);
+    // console.log("setting scope to: " + s);
     setFilterScope(s);
   });
   if (typeof(filterParams) !== 'undefined') {
