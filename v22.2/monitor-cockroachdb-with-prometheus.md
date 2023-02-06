@@ -201,3 +201,4 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 ## See also
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
+- [Metrics](metrics.html)

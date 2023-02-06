@@ -25,6 +25,10 @@ layout: null
 /docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 302
 
 # Renamed pages
+/docs/v22.1/experimental-features.html /docs/v22.1/features-in-preview.html 301
+/docs/v22.2/experimental-features.html /docs/v22.2/features-in-preview.html 301
+/docs/stable/experimental-features.html /docs/stable/features-in-preview.html 301
+/docs/dev/experimental-features.html /docs/dev/features-in-preview.html 301
 /docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
 /docs/stable/operate-cockroachdb-kubernetes /docs/stable/kubernetes-overview.html 301
 /docs/stable/operate-cockroachdb-kubernetes.html /docs/stable/kubernetes-overview.html 301

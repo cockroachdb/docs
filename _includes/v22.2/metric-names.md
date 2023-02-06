@@ -1,5 +1,5 @@
-Name | Help
------|-----
+Name | Description
+-----|------------
 `addsstable.applications` | Number of SSTable ingestions applied (i.e., applied by Replicas)
 `addsstable.copies` | Number of SSTable ingestions that required copying files during application
 `addsstable.proposals` | Number of SSTable ingestions proposed (i.e., sent to Raft by lease holders)

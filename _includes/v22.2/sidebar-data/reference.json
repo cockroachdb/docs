@@ -1463,9 +1463,9 @@
             ]
           },
           {
-            "title": "Experimental Features",
+            "title": "Features in Preview",
             "urls": [
-              "/${VERSION}/experimental-features.html"
+              "/${VERSION}/features-in-preview.html"
             ]
           }
         ]
@@ -1859,6 +1859,12 @@
               "/${VERSION}/ui-debug-pages.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Metrics",
+        "urls": [
+          "/${VERSION}/metrics.html"
         ]
       },
       {

@@ -14,7 +14,7 @@ defaults:
     layout: page
 exclude:
 - __tests__
-- netlify
+- build
 - scripts
 - vendor
 - jekyll-algolia-dev
