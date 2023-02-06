@@ -1,6 +1,6 @@
 In addition to [constraining replicas to specific availability zones](configure-replication-zones.html#per-replica-constraints-to-specific-availability-zones), you may also specify preferences for where the range's leaseholders should be placed.  This can result in increased performance in some scenarios.
 
-The [`ALTER TABLE ... CONFIGURE ZONE`](configure-zone.html) statement below requires that the cluster try to place the ranges' leaseholders in zone `us-east1`; if that is not possible, it will try to place them in zone `us-west1`.
+The [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone) statement below requires that the cluster try to place the ranges' leaseholders in zone `us-east1`; if that is not possible, it will try to place them in zone `us-west1`.
 
 For more information about how the `lease_preferences` field works, see its description in the [Replication zone variables](configure-replication-zones.html#replication-zone-variables) section.
 

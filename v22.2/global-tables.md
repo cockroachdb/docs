@@ -19,7 +19,7 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 {% include enterprise-feature.md %}
 
@@ -53,7 +53,7 @@ To use this pattern, set the [table locality](multiregion-overview.html#table-lo
     ) LOCALITY GLOBAL;
     ~~~
 
-    Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
+    Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE ... SET LOCALITY`](alter-table.html#set-locality):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

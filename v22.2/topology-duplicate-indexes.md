@@ -25,7 +25,7 @@ In general, this pattern is suited well for immutable/reference tables that are 
 **See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/guides/banking-guide-to-the-cloud/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 ### Fundamentals
 
@@ -61,7 +61,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 
 1. If you do not already have one, [request a trial Enterprise license](licensing-faqs.html#obtain-a-license).
 
-1. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
+1. [Create a replication zone](alter-table.html#configure-zone) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -86,7 +86,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
         STORING (code);
     ~~~
 
-1. [Create a replication zone](configure-zone.html) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
+1. [Create a replication zone](alter-index.html#configure-zone) for each secondary index, in each case setting a leaseholder preference telling CockroachDB to put the leaseholder for the index in a distinct region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -191,7 +191,7 @@ This feature enables scenarios such as:
 - Reference data such as a table of postal codes that can be replicated to different regions, and queries will use the copy in the same region. See [Example - zone constraints](#zone-constraints) for more details.
 - Optimizing for local reads (potentially at the expense of writes) by adding leaseholder preferences to your zone configuration. See [Example - leaseholder preferences](#leaseholder-preferences) for more details.
 
-### Prerequisites
+### Before you begin
 
 1. Acquire an [Enterprise license](enterprise-licensing.html).
 1. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.

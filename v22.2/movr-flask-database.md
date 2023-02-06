@@ -69,7 +69,7 @@ By default, CockroachDB uses the table locality setting [`REGIONAL BY TABLE IN P
 The `movr` database contains tables with rows of data that need to be accessed by users in more than one region. As a result, none of the tables benefit from using a `REGIONAL BY TABLE` locality. Instead, all three tables in the `movr` database schema should use a [`REGIONAL BY ROW` locality](multiregion-overview.html#regional-by-row-tables). For `REGIONAL BY ROW` tables, CockroachDB automatically assigns each row to a region based on the locality of the node from which the row is inserted. It then optimizes subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
 
 {{site.data.alerts.callout_info}}
-As shown in the `CREATE TABLE` statements below, the `REGIONAL BY ROW` clauses do not identify a column to track the region for each row. To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](set-locality.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. The values of `crdb_region` are populated using the regional locality of the node from which the query creating the row originates.
+As shown in the `CREATE TABLE` statements below, the `REGIONAL BY ROW` clauses do not identify a column to track the region for each row. To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](alter-table.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. The values of `crdb_region` are populated using the regional locality of the node from which the query creating the row originates.
 {{site.data.alerts.end}}
 
 ## The `users` table
@@ -108,6 +108,6 @@ Now that you are familiar with the `movr` schema, you can [set up a development 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/glossary.html#cockroachdb-architecture-terms)
 - [Configure Replication Zones](configure-replication-zones.html)
-- [`CONFIGURE ZONE`](configure-zone.html)
+- [`CONFIGURE ZONE`](alter-table.html#configure-zone)
 - [Define Table Partitions](partitioning.html)
-- [`PARTITION BY`](partition-by.html)
+- [`ALTER TABLE ... PARTITION BY`](alter-table.html#partition-by)

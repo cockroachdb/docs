@@ -72,7 +72,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH CREATEROLE CREATELOGIN;
 
 ### Allow a role to create and rename databases
 
-The following example allows the role to [create](create-database.html) or [rename](rename-database.html) databases:
+The following example allows the role to [create](create-database.html) or [rename](alter-database.html#rename-to) databases:
 
 ~~~ sql
 root@:26257/defaultdb> ALTER ROLE carl WITH CREATEDB;
@@ -238,7 +238,7 @@ root@:26257/movr> SHOW timezone;
 
 ### Set default session variable values for all users
 
-To set a default value for all users for any [session variable](set-vars.html) that applies during login, issue a statment like the following:
+To set a default value for all users for any [session variable](set-vars.html) that applies during login, issue a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

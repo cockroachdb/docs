@@ -76,10 +76,10 @@ Field | Description
 ## See also
 
 - [Constraints](constraints.html)
-- [`ADD CONSTRAINT`](add-constraint.html)
-- [`RENAME CONSTRAINT`](rename-constraint.html)
-- [`DROP CONSTRAINT`](drop-constraint.html)
-- [`VALIDATE CONSTRAINT`](validate-constraint.html)
+- [`ADD CONSTRAINT`](alter-table.html#add-constraint)
+- [`RENAME CONSTRAINT`](alter-table.html#rename-constraint)
+- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
+- [`VALIDATE CONSTRAINT`](alter-table.html#validate-constraint)
 - [`CREATE TABLE`](create-table.html)
 - [Information Schema](information-schema.html)
 - [SQL Statements](sql-statements.html)

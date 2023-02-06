@@ -112,7 +112,7 @@ CREATE TABLE accounts (
 WITH (sql_stats_automatic_collection_enabled = false);
 ~~~
 
-Or by using [`ALTER TABLE ... SET`](set-storage-parameter.html):
+Or by using [`ALTER TABLE ... SET`](alter-table.html#set-storage-parameter):
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -170,7 +170,7 @@ CREATE TABLE accounts (
 WITH (sql_stats_forecasts_enabled = false);
 ~~~
 
-Or by using [`ALTER TABLE ... SET`](set-storage-parameter.html):
+Or by using [`ALTER TABLE ... SET`](alter-table.html#set-storage-parameter):
 
 ~~~ sql
 CREATE TABLE accounts (
@@ -238,12 +238,12 @@ If you disable full scans, and you provide an [index hint](indexes.html#selectio
 
 ## Control whether the optimizer uses an index
 
-You can specify [whether an index is visible](alter-index.html#index-visibility) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection). 
+You can specify [whether an index is visible](alter-index.html#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection). 
 
 This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 
 {{site.data.alerts.callout_info}}
-Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#index-visibility-considerations).
+Indexes that are not visible are still used to enforce `UNIQUE` and `FOREIGN KEY` [constraints](constraints.html). For more considerations, see [Index visibility considerations](alter-index.html#not-visible).
 {{site.data.alerts.end}}
 
 You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [`optimizer_use_not_visible_indexes` session variable](set-vars.html#optimizer-use-not-visible-indexes). By default, the variable is set to `off`.
@@ -346,7 +346,7 @@ To force the use of a specific join algorithm even if the optimizer determines t
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
-- `CROSS MERGE JOIN`
+- `CROSS HASH JOIN`
 - `INNER INVERTED JOIN`
 - `LEFT INVERTED JOIN`
 

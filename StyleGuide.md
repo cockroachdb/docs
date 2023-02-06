@@ -30,7 +30,7 @@ Included in this guide:
 - [Standard sections](#standard-sections)
   - [Glossary](#glossary)
   - [See also](#see-also)
-  - [Prerequisites](#prerequisites)
+  - [Before you begin](#before-you-begin)
 - [Page types](#page-types)
   - [Tutorial](#tutorials)
   - [Best practice](#best-practice)
@@ -75,6 +75,8 @@ Other general guidance about language and tone:
 - Use simple and direct language. Grammar can be incorrect to save simplicity (e.g., many descriptions in [reference docs](#reference-and-task-based-docs) are phrases).
 
     **Example:** `table name`: The name of the table to create audit logs for.
+
+- Avoid using "please" when giving an instruction, except when asking the user to go outside the scope of the task (such as contacting Cockroach Labs or filing a support issue).
 
 - To expand upon the idea of "free from hyperbolic language", avoid the use of the word "simple" (along with "just", "easily", "actually", etc.) since it's not really possible to tell what might be easy or hard for the user. Something you think is simple may be challenging for them.
 
@@ -183,6 +185,7 @@ Avoid using socially-charged terms for features and technical concepts.
 - Don't use end punctuation (e.g., periods or colons) in headings.
 - Use periods at the end of list items if they are sentences or complete a sentence.
 - Use the [Oxford (a.k.a. serial) comma](https://en.wikipedia.org/wiki/Serial_comma).
+- Append singular possessive nouns with `'s`, including when they end with `s`. For example, `Cockroach Labs's`.
 - Ensure commas and periods are inside quotation marks, e.g., _CockroachDB's availability model is described as "Multi-Active Availability."_ Place other punctuation outside quotation marks, e.g., _What is "Multi-Active Availability"?_ . When any type of punctuation is part of a quote, place it inside the quotation marks, e.g., _To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"_.
 - Avoid using slashes `/` and ampersands `&` as conjunctions in place of **or** and **and** respectively, unless space is very limited (e.g., in a table).
 - Avoid using _and/or_ unless space is very limited (e.g., in a table). Instead, decide whether **and** or **or** can stand alone or make use of **both** when the inclusivity must be explicit, e.g., **x or y or both**.
@@ -323,9 +326,9 @@ A _glossary_ is a collection (usually in tabular form) of [definitions](#definit
 - [Architecture Glossary](https://www.cockroachlabs.com/docs/v21.2/architecture/overview.html#glossary)
 - [Cockroach Cloud Concepts](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#cockroachdb-cloud-terms)
 
-### Prerequisites
+### Before you begin
 
-A _prerequisites_ section describes conditions that must be satisfied before starting a [task](#task) or [tutorial](#tutorial).
+The "Before you begin" section describes any knowledge, consideration, or conditions that the user should be aware of before starting a [task](#task) or [tutorial](#tutorial). These may be setup requirements or contextual information that's helpful to the task.
 
 ### See also
 
@@ -355,7 +358,7 @@ A tutorial helps users quickly achieve competence in a CockroachDB feature or un
 
   **Example:** Stream a Changefeed to Snowflake
 
-- The first section describes [prerequisites](#prerequisites). Heading title: **Before you begin** or **Prerequisites**.
+- The first section describes requirements and knowledge necessary or helpful for the user [before starting the tutorial](#before-you-begin). Heading title: **Before you begin**.
 - Subsequent headings are **Step 1. \<Imperative verb\> a \<noun\>**, **Step 2. \<Imperative verb\> a \<noun\>**, etc., each containing a small ordered list of steps. Within each **Step**, limit the number of steps. Aim for the heuristic maximum of 10 steps.
 - Tutorials should be written in a conversational [tone](#language-and-tone), as if it is teaching the user.
 - The instructions should be prescriptive (i.e., tell the user exactly what to do).
@@ -716,7 +719,7 @@ Start shell code samples with `~~~ shell` followed by a line break. The first ch
 
 SQL code samples are broken into two sections: commands and responses.
 
-- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. The first character of the next line must be the terminal marker `>`. Commands should be properly capitalized, and there should be only one command per code sample.
+- **Commands** (e.g., `SELECT`, `CREATE TABLE`) should begin with `~~~ sql` followed by a line break. Commands should be properly capitalized, and there should be only one command per code sample.
 
 - **Responses** (e.g., retrieved tables) should begin with `~~~` but should **not** be syntax highlighted.
 

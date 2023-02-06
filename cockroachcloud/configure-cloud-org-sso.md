@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include_cached feature-phases/preview-opt-in.md %}
-
 {% include_cached cockroachcloud/sso-intro.md %}
 
 This page describes how to enable [Cloud Organization SSO](cloud-org-sso.html) and manage your SSO configuration.
@@ -49,6 +47,16 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
   - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the [console admin](console-access-management.html#console-admin) role, it must be granted to them again.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
+
+### Ensure that at least one organization admin belongs to no other CockroachDB Cloud Organization
+
+{{site.data.alerts.callout_success}}
+Troubleshooting tip: If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that at least one organization admin belongs to no other CockroachDB Cloud Organization.
+{{site.data.alerts.end}}
+
+For your migration to succeed, you must ensure that at least one admin belongs to no other CockroachDB Cloud Organization than the one to be migrated. If all admins belong to multiple organizations, the migration will fail with the generic error `Cloud Organization SSO cannot be enabled`.
+
+If all of your administrators belongs to multiple organizations, you must create a temporary admin user without SSO (authenticating with username/password) to perform the migration. This powerful but weakly secured admin user should be deleted after the migration, in keeping with the general practices of minimizing unnecessary and weakly secured (without SSO) access.
 
 ## Enable Cloud Organization SSO
 
@@ -209,7 +217,7 @@ After Cloud Organization SSO is enabled, it cannot be disabled. To emulate the b
 
 Members must still sign in using your organization's custom URL.
 
-## What's next?
+## What next?
 
-- Read the [Cloud Org SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
+- [Cloud Organization SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
 - Learn more about [authenticating to {{ site.data.products.db }}](authentication.html).

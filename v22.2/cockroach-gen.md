@@ -1,6 +1,6 @@
 ---
 title: cockroach gen
-summary: Use cockroach gen to generate command-line interface utlities, such as man pages, and example data.
+summary: Use cockroach gen to generate command-line interface utilities, such as man pages, and example data.
 toc: true
 key: generate-cockroachdb-resources.html
 docs_area: reference.cli

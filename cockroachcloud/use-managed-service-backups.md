@@ -1,9 +1,15 @@
 ---
-title: Restore Data from a Backup
+title: Use Managed-Service Backups
 summary: Restore data from a backup in CockroachDB Cloud.
 toc: true
 docs_area: manage
 ---
+
+{% include cockroachcloud/ccloud/backup-types.md %}
+
+This page describes how to use managed-service backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
+
+You can access your managed-service backups from the Backups page in the {{ site.data.products.db }} Console.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
@@ -13,26 +19,24 @@ docs_area: manage
 
 This page describes the **Backups** page and how to restore your data.
 
-The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
-
 <section class="filter-content" markdown="1" data-scope="serverless">
 Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
-Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. Backups are stored in the same region that a [single-region cluster](plan-your-cluster.html#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
 
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
 
-In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
+In the meantime, you can [back up and restore data manually](take-and-restore-customer-owned-backups.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
 
 </section>
 
 ## Backups page
 
-A list of your full cluster backups displays on your cluster's **Backups** page.
+A list of your full and incremental cluster backups displays on your cluster's **Backups** page.
 
 For each backup, the following details display:
 
@@ -44,12 +48,17 @@ For each backup, the following details display:
 - The remaining number of days the backup will be retained (**Expires In**)
 - The number of [**Databases**](#databases) included in the backup
 
-    To view the databases included in the backup and initiate a restore, click the number in the [**Databases**](#databases) column
+<img src="{{ 'images/cockroachcloud/backups-dedicated.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
+
 </div>
+
 <div class="filter-content" markdown="1" data-scope="serverless">
 - The date and time the backup was taken (**Data From**)
 - The **Status** of the backup
 - The remaining number of days the backup will be retained (**Expires In**)
+
+<img src="{{ 'images/cockroachcloud/backups-serverless.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
+
 </div>
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
@@ -102,7 +111,7 @@ For each table in the database, the following details display:
 Additional ways to restore data:
 
 - [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster)
-- [Back up and restore data manually](run-bulk-operations.html)
+- [Back up and restore data manually](take-and-restore-customer-owned-backups.html)
 
 ### Restore a database
 
@@ -116,7 +125,7 @@ To restore a database:
 1. In the **Restore to** field, enter the name of the destination database. For multi-region databases on v21.2, see [Restore a multi-region database](#restore-a-multi-region-database-to-a-new-database-in-v21-2).
 
     {{site.data.alerts.callout_info}}
-    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/alter-database.html#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}
 
 1. Select any of the **Dependency options** to skip. You can:
@@ -155,7 +164,7 @@ To restore a table:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/alter-database.html#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}
 
 1. Select any of the **Dependency options** to skip. You can:
@@ -237,7 +246,7 @@ If the database's name is already in use, either [drop the existing database](..
 > DROP DATABASE example_database;
 ~~~
 
-Or [change the existing database's name](../{{site.current_cloud_version}}/rename-database.html):
+Or [change the existing database's name](../{{site.current_cloud_version}}/alter-database.html#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -260,7 +269,7 @@ If the table's name is already in use, either [drop the existing table](../{{sit
 > DROP TABLE target_database.example_table;
 ~~~
 
-Or [change the existing table's name](../{{site.current_cloud_version}}/rename-table.html):
+Or [change the existing table's name](../{{site.current_cloud_version}}/alter-table.html#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -277,6 +286,6 @@ Find the cluster backup you want to restore, and click **Restore**.
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](run-bulk-operations.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](run-bulk-operations.html) location or a [cloud storage location](run-bulk-operations.html?filters=cloud), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit.
+You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit. 
 
 </section>

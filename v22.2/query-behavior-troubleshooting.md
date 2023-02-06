@@ -307,7 +307,7 @@ A *hot node* is one that has much higher resource usage than other nodes. To det
 
 #### Solution
 
-- If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](split-at.html) to distribute the table across multiple nodes.
+- If you have a small table that fits into one range, then only one of the nodes will be used. This is expected behavior. However, you can [split your range](alter-table.html#split-at) to distribute the table across multiple nodes.
 
 - If the SQL Connections graph shows that one node has a higher number of SQL connections and other nodes have zero connections, check if your app is set to talk to only one node.
 

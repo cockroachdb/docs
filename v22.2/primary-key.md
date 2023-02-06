@@ -9,7 +9,7 @@ The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained 
 
 You should explicitly define a table's primary key in the [`CREATE TABLE`](create-table.html) statement. If you don't define a primary key at table creation time, CockroachDB will create a `rowid` column that is `NOT VISIBLE`, use the [`unique_rowid()` function](functions-and-operators.html#id-generation-functions) as its default value, and use that as the table's primary key.
 
-You can [change the primary key](#changing-primary-key-columns) of an existing table with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement, or by using [`DROP CONSTRAINT`](drop-constraint.html) and then [`ADD CONSTRAINT`](add-constraint.html) in the same transaction. You cannot fully drop the `PRIMARY KEY` constraint on a table without replacing it as it provides an intrinsic structure to the table's data.
+You can [change the primary key](#changing-primary-key-columns) of an existing table with an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) statement, or by using [`DROP CONSTRAINT`](alter-table.html#drop-constraint) and then [`ADD CONSTRAINT`](alter-table.html#add-constraint) in the same transaction. You cannot fully drop the `PRIMARY KEY` constraint on a table without replacing it as it provides an intrinsic structure to the table's data.
 
 ## Syntax
 
@@ -120,11 +120,11 @@ pq: null value in column "warehouse_id" violates not-null constraint
 
 You can change the primary key of an existing table by doing one of the following:
 
-- Issuing an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement. When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
-- Issuing an [`ALTER TABLE ... DROP CONSTRAINT ... PRIMARY KEY`](drop-constraint.html) statement to drop the primary key, followed by an [`ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) statement, in the same transaction, to add a new primary key. This replaces the existing primary key without creating a secondary index from the old primary key. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
+- Issuing an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) statement. When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
+- Issuing an [`ALTER TABLE ... DROP CONSTRAINT ... PRIMARY KEY`](alter-table.html#drop-constraint) statement to drop the primary key, followed by an [`ALTER TABLE ... ADD CONSTRAINT ... PRIMARY KEY`](alter-table.html#add-constraint) statement, in the same transaction, to add a new primary key. This replaces the existing primary key without creating a secondary index from the old primary key. For examples, see [Add constraints](alter-table.html#add-constraints) and [Drop constraints](alter-table.html#drop-constraints).
 
 {{site.data.alerts.callout_info}}
-You can use an [`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) statement without a [`DROP CONSTRAINT ... PRIMARY KEY`](drop-constraint.html) if the primary key was not explicitly defined at [table creation](create-table.html), and the current [primary key is on `rowid`](indexes.html#creation).
+You can use an [`ADD CONSTRAINT ... PRIMARY KEY`](alter-table.html#add-constraint) statement without a [`DROP CONSTRAINT ... PRIMARY KEY`](alter-table.html#drop-constraint) if the primary key was not explicitly defined at [table creation](create-table.html), and the current [primary key is on `rowid`](indexes.html#creation).
 {{site.data.alerts.end}}
 
 ## See also
@@ -137,5 +137,5 @@ You can use an [`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) statement
 - [`NOT NULL` constraint](not-null.html)
 - [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
 - [`ALTER TABLE`](alter-table.html)

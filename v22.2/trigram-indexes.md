@@ -353,8 +353,9 @@ The following PostgreSQL syntax and features are currently unsupported. For deta
 
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
+- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
 - [`SHOW INDEX`](show-index.html)
 - [Inverted indexes](inverted-indexes.html)
 - [Indexes](indexes.html)
+- [Use cases for trigram indexes (When not to use Full Text Search)](https://www.cockroachlabs.com/blog/use-cases-trigram-indexes/) (2022 blog post)
 - [SQL Statements](sql-statements.html)

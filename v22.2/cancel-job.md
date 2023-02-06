@@ -18,7 +18,7 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 ## Limitations
 
 - When an Enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
--  To avoid transaction states that cannot properly [roll back](rollback-transaction.html), `DROP` statements (e.g., [`DROP TABLE`](drop-table.html)), `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`](rename-table.html)), and [`CREATE TABLE ... AS`](create-table-as.html) statements are no longer cancellable.
+-  To avoid transaction states that cannot properly [roll back](rollback-transaction.html), `DROP` statements (e.g., [`DROP TABLE`](drop-table.html)), `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`](alter-table.html#rename-to)), and [`CREATE TABLE ... AS`](create-table-as.html) statements are no longer cancellable.
 
 ## Required privileges
 

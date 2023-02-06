@@ -1,1 +1,1 @@
-**Expected values for a healthy cluster**: This value should be 0 or single-digit milliseconds for short periods of time. If the values persist in double digits, you may have an I/O bottleneck.
+**Expected values for a healthy cluster**: This value should be 0 or single-digit values for short periods of time. If the values persist in double digits, you may have an I/O bottleneck.

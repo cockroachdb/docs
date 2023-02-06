@@ -5,8 +5,8 @@
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`ALTER DATABASE ... SET SECONDARY REGION`](set-secondary-region.html)
-- [`ALTER DATABASE ... DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`ALTER DATABASE ... SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
 - [Topology Patterns Overview](topology-patterns.html)
   - Single-region patterns
       - [Development](topology-development.html)

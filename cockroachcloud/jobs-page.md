@@ -6,7 +6,7 @@ cloud: true
 docs_area: manage
 ---
 
-{% capture version_prefix %}{{site.versions["dev"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
 
 The **Jobs** page of the {{ site.data.products.db }} Console provides details of all jobs in the cluster.
 

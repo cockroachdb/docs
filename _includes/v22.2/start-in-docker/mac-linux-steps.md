@@ -13,6 +13,10 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
 Cockroach Labs recommends that you store cluster data in Docker volumes rather than in the storage layer of the running container. Otherwise, if a Docker container is inadvertently deleted, its data is inaccessible.
 
+{{site.data.alerts.callout_danger}}
+Avoid using the `-v` / `--volume` command to mount a local macOS filesystem into the container. Use Docker volumes or a [`tmpfs` mount](https://docs.docker.com/storage/tmpfs/).
+{{site.data.alerts.end}}
+
 Create a [Docker volume](https://docs.docker.com/storage/volumes/) for each container:
 
 {% include_cached copy-clipboard.html %}

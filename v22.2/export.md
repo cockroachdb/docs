@@ -234,6 +234,41 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
+
+### Export data out of {{ site.data.products.db }}
+
+Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage-for-bulk-operations.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="local">local CSV</button>
+  <button class="filter-button" data-scope="cloud">Cloud storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+The following example exports the `customers` table from the `bank` database into a local CSV file:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql \
+--url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
+--execute "SELECT * FROM bank.customers" --format=csv > /Users/{username}/{path/to/file}/customers.csv
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cloud">
+
+The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
+
+~~~sql
+EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+</section>
+
 ### View a running export
 
 View running exports by using [`SHOW STATEMENTS`](show-statements.html):

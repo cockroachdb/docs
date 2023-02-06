@@ -13,7 +13,7 @@ The `DROP ROLE` [statement](sql-statements.html) removes one or more SQL roles. 
 
 - The `admin` role cannot be dropped, and `root` must always be a member of `admin`.
 - A role cannot be dropped if it has privileges. Use [`REVOKE`](revoke.html) to remove privileges.
-- Roles that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](owner-to.html#change-a-databases-owner).
+- Roles that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another role](alter-database.html#change-a-databases-owner).
 
 ## Required privileges
 

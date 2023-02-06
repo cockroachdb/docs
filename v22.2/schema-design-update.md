@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
 
 ## Before you begin
 
@@ -68,10 +68,10 @@ Suppose you want to make some changes to the `users` table that you created in [
 
 The `ALTER TABLE` statement has subcommands for all of these changes:
 
-- To add a new column, use the [`ADD COLUMN` subcommand](add-column.html).
-- To change the primary key columns of a table, use the [`ALTER PRIMARY KEY` subcommand](alter-primary-key.html).
-- To move a table to a different schema, use the [`SET SCHEMA`](set-schema.html) subcommand.
-- To change the owner of a table, use the [`OWNER  TO`](owner-to.html) subcommand.
+- To add a new column, use the [`ADD COLUMN` subcommand](alter-table.html#add-column).
+- To change the primary key columns of a table, use the [`ALTER PRIMARY KEY` subcommand](alter-table.html#alter-primary-key).
+- To move a table to a different schema, use the [`SET SCHEMA`](alter-table.html#set-schema) subcommand.
+- To change the owner of a table, use the [`OWNER TO`](alter-table.html#owner-to) subcommand.
 
 Create a new `.sql` file for the changes that you plan to make to the table:
 
@@ -96,7 +96,7 @@ ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (use
 
 In order to add a column to an existing table's primary key index, the column must have an existing [`NOT NULL` constraint](not-null.html). Neither the `username` nor the `email` columns have `NOT NULL` constraints.
 
-Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand](alter-column.html) to set the `NOT NULL` constraint on the `email` column:
+Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand](alter-table.html#alter-column) to set the `NOT NULL` constraint on the `email` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

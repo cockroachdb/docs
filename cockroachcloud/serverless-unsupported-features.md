@@ -9,23 +9,17 @@ docs_area: reference
 
 ## Change data capture
 
-[Distributed SQL (DistSQL)](../{{site.current_cloud_version}}/architecture/sql-layer.html#distsql) is not supported, which improves the performance of changefeeds.
-
 You can't collect [metrics per changefeed](../{{site.current_cloud_version}}/monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels).
 
 You can't configure [alerts on changefeeds](../{{site.current_cloud_version}}/monitoring-and-alerting.html#changefeed-is-experiencing-high-latency).
 
 ## Backups
 
-{{ site.data.products.serverless }} only support automated full backups. Automated [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) and [revision history](../{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html) backups are not supported. However, [user managed incremental and revision history backups](run-bulk-operations.html#backup-and-restore-data) using user provided storage locations are supported.
+{{ site.data.products.serverless }} only support automated full backups. Automated [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) and [revision history](../{{site.current_cloud_version}}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html) backups are not supported. However, [user managed incremental and revision history backups](take-and-restore-customer-owned-backups.html#back-up-data) using user provided storage locations are supported.
 
-Automated database and table level backups are not supported in {{ site.data.products.serverless }}. However, [user managed database and table level backups](run-bulk-operations.html#backup-and-restore-data) using user provided storage locations are supported.
+Automated database and table level backups are not supported in {{ site.data.products.serverless }}. However, [user managed database and table level backups](take-and-restore-customer-owned-backups.html#back-up-data) using user provided storage locations are supported.
 
 Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](../{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.html). However, user managed locality-aware backups using user provided storage locations are supported in {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
-
-## Performance
-
-[Distributed SQL (DistSQL)](../{{site.current_cloud_version}}/architecture/sql-layer.html#distsql) is not supported in {{ site.data.products.serverless }} clusters, so users do not benefit from the improved query performance that DistSQL offers, especially for online analytical processing (OLAP) queries and bulk operations like [`IMPORT`](../{{site.current_cloud_version}}/import.html).
 
 ## Multi-region clusters
 
@@ -37,7 +31,7 @@ Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} 
 
 ## Range management
 
-The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/split-at.html) and [`ALTER RANGE ... RELOCATE`](../{{site.current_cloud_version}}/alter-range-relocate.html) statements are not supported in {{ site.data.products.serverless }}.
+The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/alter-table.html#split-at) and [`ALTER RANGE ... RELOCATE`](../{{site.current_cloud_version}}/alter-range.html#relocate) statements are not supported in {{ site.data.products.serverless }}.
 
 ## Query cancellation using pgwire
 
