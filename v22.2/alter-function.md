@@ -26,6 +26,8 @@ Parameter | Description
 
 For more information about the statement syntax, see [User-Defined Functions](user-defined-functions.html#overview).
 
+Additional parameters are documented for the respective [subcommands](#subcommands).
+
 ## Subcommands
 
 Subcommand | Description
@@ -50,6 +52,8 @@ Parameter | Description |
 ----------|-------------|
 `role_spec` | The role to set as the owner of the function.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `RENAME TO`
 
 `ALTER FUNCTION ... RENAME TO` changes the name of a function.
@@ -64,6 +68,8 @@ Parameter | Description |
 Parameter | Description |
 ----------|-------------|
 `function_new_name` | The new name of the function.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `SET SCHEMA`
 
@@ -84,6 +90,8 @@ CockroachDB supports `SET SCHEMA` as an [alias for setting the `search_path` ses
 Parameter | Description |
 ----------|-------------|
 `schema_name` | The name of the new schema for the function.
+
+For usage, see [Synopsis](#synopsis).
 
 ## Examples
 

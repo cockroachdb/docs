@@ -5,8 +5,6 @@ toc: true
 docs_area: reference.sql
 ---
 
-<a id="experimental_audit"></a>
-
 The `ALTER TABLE` [statement](sql-statements.html) changes the definition of a table. For information on using `ALTER TABLE`, see the pages for its [subcommands](#subcommands).
 
 {{site.data.alerts.callout_info}}
@@ -87,6 +85,8 @@ Parameter | Description |
 `typename` | The [data type](data-types.html) of the new column.
 `col_qualification` | An optional list of [column qualifications](create-table.html#column-qualifications).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `ADD CONSTRAINT`
 
 Use `ALTER TABLE ... ADD CONSTRAINT` to add the following [constraints](constraints.html) to columns:
@@ -113,6 +113,8 @@ Parameter | Description |
 `constraint_name` | The name of the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `constraint_elem` | The [`CHECK`](check.html), [foreign key](foreign-key.html), or [`UNIQUE`](unique.html) constraint you want to add. <br/><br/>Adding/changing a `DEFAULT` constraint is done through [`ALTER COLUMN`](#alter-column). <br/><br/>Adding/changing the table's `PRIMARY KEY` is not supported through `ALTER TABLE`; it can only be specified during [table creation](create-table.html).
 `NOT VALID` | Create unvalidated constraints. When creating an unvalidated constraint, the system does not check that existing table data satisfies the constraint. The constraint is still enforced when table data is modified. An unvalidated constraint can later be validated using [`VALIDATE CONSTRAINT`](#validate-constraint).
+
+For usage, see [Synopsis](#synopsis).
 
 #### Changing primary keys with `ADD CONSTRAINT ... PRIMARY KEY`
 
@@ -159,6 +161,8 @@ Parameter | Description |
 `[NOT] VISIBLE` | The visibility of a column when using `*` in a [`SELECT` clause](select-clause.html).
 `typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [in preview](features-in-preview.html), with certain limitations. For details, see [Alter column data types](#alter-column-data-types). |
 `USING a_expr` |  How to compute a new column value from the old column value. |
+
+For usage, see [Synopsis](#synopsis).
 
 #### Alter column data types
 
@@ -219,6 +223,8 @@ Parameter | Description |
 `index_params` | The name of the column(s) that you want to use for the primary key. These columns replace the current primary key column(s).
 `USING HASH` | Creates a [hash-sharded index](hash-sharded-indexes.html).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `CONFIGURE ZONE`
 
 `ALTER TABLE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a table. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
@@ -238,6 +244,8 @@ The user must be a member of the [`admin` role](security-reference/authorization
 `variable` | The name of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
 `value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `DROP COLUMN`
 
@@ -262,6 +270,8 @@ Parameter | Description |
 `column_name` | The name of the column you want to drop.<br><br>When a column with a [`CHECK`](check.html) constraint is dropped, the `CHECK` constraint is also dropped.
 `CASCADE` | Drop the column even if objects (such as [views](views.html)) depend on it; drop the dependent objects, as well. `CASCADE` will drop a column with a foreign key constraint if it is the only column in the reference.<br><br>`CASCADE` does not list the objects it drops, so should be used cautiously.<br><br> `CASCADE` is not required to drop an indexed column, or a column that is referenced by an index. By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
 `RESTRICT` | *(Default)* Do not drop the column if any objects (such as [views](views.html)) depend on it.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `DROP CONSTRAINT`
 
@@ -289,11 +299,15 @@ Parameter | Description |
 ----------|-------------|
 `constraint_name` | The name of the constraint you want to drop.
 
+For usage, see [Synopsis](#synopsis).
+
+<a id="experimental_audit"></a>
+
 ### `EXPERIMENTAL_AUDIT`
 
-{% include feature-phases/preview.md %}
-
 `ALTER TABLE ... EXPERIMENTAL_AUDIT` enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for a table. The `SENSITIVE_ACCESS` log output is also called the *SQL audit log*. For details on using SQL audit logs, see [SQL Audit Logging](sql-audit-logging.html).
+
+{% include feature-phases/preview.md %}
 
 SQL audit logs contain detailed information about queries being executed against your system, including:
 
@@ -318,6 +332,8 @@ Parameter | Description |
 `WRITE`   | Log all table writes to the audit log file.
 `OFF`     | Turn off audit logging.
 
+For usage, see [Synopsis](#synopsis).
+
 {{site.data.alerts.callout_info}}
 This command logs all reads and writes, and both the `READ` and `WRITE` parameters are required (as shown in the [examples](#configure-audit-logging)).
 {{site.data.alerts.end}}
@@ -338,6 +354,8 @@ Parameter | Description |
 ----------|-------------|
 `role_spec` | The role to set as the owner of the table.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `PARTITION BY`
 
 #### Required privileges
@@ -355,6 +373,8 @@ Parameter | Description |
 `name_list` | List of columns you want to define partitions on (in the order they are defined in the primary key).
 `list_partitions` | Name of list partition followed by the list of values to be included in the partition.
 `range_partitions` | Name of range partition followed by the range of values to be included in the partition.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `RENAME COLUMN`
 
@@ -378,6 +398,8 @@ Parameter | Description |
 `column_name` | The current name of the column.
 `column_new_name` | The [`name`](sql-grammar.html#name) you want to use for the column, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `RENAME CONSTRAINT`
 
 `ALTER TABLE ... RENAME CONSTRAINT` changes the name of a constraint on a column.
@@ -399,6 +421,8 @@ Parameter | Description |
 `IF EXISTS` | Rename the constraint only if a constraint of `current_name` exists; if one does not exist, do not return an error.
 `constraint_name` | The current name of the constraint.
 `constraint_new_name` | The new [`name`](sql-grammar.html#name) you want to use for the constraint, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+
+For usage, see [Synopsis](#synopsis).
 
 ### `RENAME TO`
 
@@ -426,6 +450,8 @@ Parameter | Description |
 ----------|-------------|
 `table_new_name` | The new name of the table, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `RESET {storage parameter}`
 
 `ALTER TABLE ... RESET {storage parameter}` reverts the value of a storage parameter on a table to its default value.
@@ -445,6 +471,8 @@ The user must be a member of the [`admin`](security-reference/authorization.html
 Parameter | Description |
 ----------|-------------|
 `storage_parameter_key`    | The name of the storage parameter you are changing. See [Table storage parameters](#table-storage-parameters) for a list of available parameters. |
+
+For usage, see [Synopsis](#synopsis).
 
 ### `SET {storage parameter}`
 
@@ -466,6 +494,8 @@ Parameter | Description |
 ----------|-------------|
 `storage_parameter_key`    | The name of the storage parameter. See [Table storage parameters](#table-storage-parameters) for a list of available parameters. |
 `value` | The value to assign the storage parameter.
+
+For usage, see [Synopsis](#synopsis).
 
 #### Table storage parameters
 
@@ -489,6 +519,8 @@ Parameter | Description |
 ----------|-------------|
 `locality`   | The [locality](multiregion-overview.html#table-locality) to apply to this table. Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
 
+For usage, see [Synopsis](#synopsis).
+
 For more information about which table locality is right for your use case, see [Table localities](multiregion-overview.html#table-locality).
 
 ### `SET SCHEMA`
@@ -511,6 +543,8 @@ Parameter | Description |
 ----------|-------------|
 `schema_name` | The name of the new schema for the table.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `SPLIT AT`
 
 `ALTER TABLE ... SPLIT AT` forces a [range split](architecture/distribution-layer.html#range-splits) at a specified row in the table.
@@ -529,6 +563,8 @@ Parameter | Description |
 ----------|-------------|
 `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the table.
 `a_expr` | The expiration of the split enforcement on the table. This can be a [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), or [`TIMESTAMPZ`](timestamp.html).
+
+For usage, see [Synopsis](#synopsis).
 
 ### `UNSPLIT AT`
 
@@ -549,6 +585,8 @@ The user must have the `INSERT` [privilege](security-reference/authorization.htm
 `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to unsplit a table.
 `ALL` | Remove all split enforcements for a table.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `VALIDATE CONSTRAINT`
 
 `ALTER TABLE ... VALIDATE CONSTRAINT` checks whether values in a column match a [constraint](constraints.html) on the column.
@@ -566,6 +604,8 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 Parameter | Description |
 ----------|-------------|
 `constraint_name` | The name of the constraint to validate.
+
+For usage, see [Synopsis](#synopsis).
 
 ## View schema changes
 
@@ -967,7 +1007,7 @@ The entire transaction will be rolled back, including any new columns that were 
 
 #### Add the foreign key constraint with `CASCADE`
 
-To add a foreign key constraint, use the steps shown below.
+To add a foreign key constraint, use the following steps.
 
 Given two tables, `users` and `vehicles`, without foreign key constraints:
 
@@ -1149,7 +1189,7 @@ SHOW INDEXES FROM users;
 (13 rows)
 ~~~
 
-Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
+Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The following output (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1164,7 +1204,7 @@ SHOW PARTITIONS FROM TABLE users;
   movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |  ...
 ~~~
 
-To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned as shown above:
+To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned:
 
 1. Run a one-time-only validation query to ensure that the existing data in the table satisfies the unique constraint.
 1. Thereafter, the [optimizer](cost-based-optimizer.html) will automatically add a "uniqueness check" when necessary to any [`INSERT`](insert.html), [`UPDATE`](update.html), or [`UPSERT`](upsert.html) statement affecting the columns in the unique constraint.
@@ -1260,14 +1300,14 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
     ) LOCALITY REGIONAL BY ROW;
     ~~~
 
-1. In the statement below, we add a new user with the required `id`, `email`, and `desk_id` columns. CockroachDB needs to do additional work to enforce global uniqueness for the `id` and `email` columns, which are implicitly partitioned. This additional work is in the form of "uniqueness checks" that the optimizer adds as part of mutation queries.
+1. In the following statement, we add a new user with the required `id`, `email`, and `desk_id` columns. CockroachDB needs to do additional work to enforce global uniqueness for the `id` and `email` columns, which are implicitly partitioned. This additional work is in the form of "uniqueness checks" that the optimizer adds as part of mutation queries.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN INSERT INTO employee VALUES (1, 'joe@example.com', 1);
     ~~~
 
-    The `EXPLAIN` output below shows that the optimizer has added two `constraint-check` post queries to check the uniqueness of the implicitly partitioned indexes `id` and `email`. There is no check needed for `desk_id` (really `(crdb_region, desk_id)`), since that constraint is automatically enforced by the explicitly partitioned index we added in the [`CREATE TABLE`](create-table.html) statement above.
+    The following `EXPLAIN` output shows that the optimizer has added two `constraint-check` post queries to check the uniqueness of the implicitly partitioned indexes `id` and `email`. There is no check needed for `desk_id` (really `(crdb_region, desk_id)`), since that constraint is automatically enforced by the explicitly partitioned index we added in the preceding [`CREATE TABLE`](create-table.html) statement.
 
     ~~~
                                              info
@@ -1325,14 +1365,14 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
                             label: buffer 1
     ~~~
 
-1. The statement below updates the user's `email` column. Because the unique index on the `email` column is implicitly partitioned, the optimizer must perform a uniqueness check.
+1. The following statement updates the user's `email` column. Because the unique index on the `email` column is implicitly partitioned, the optimizer must perform a uniqueness check.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     EXPLAIN UPDATE employee SET email = 'joe1@example.com' WHERE id = 1;
     ~~~
 
-    In the `EXPLAIN` output below, the optimizer performs a uniqueness check for `email` since we're not updating any other columns (see the `constraint-check` section).
+    In the following `EXPLAIN` output, the optimizer performs a uniqueness check for `email` since we're not updating any other columns (see the `constraint-check` section).
 
     ~~~
                                                       info
@@ -1386,7 +1426,7 @@ To illustrate the different behavior of explicitly vs. implicitly partitioned in
                             label: buffer 1
     ~~~
 
-1. If we only update the user's `desk_id` as shown below, no uniqueness checks are needed, since the index on that column is explicitly partitioned (it's really `(crdb_region, desk_id)`).
+1. If we only update the user's `desk_id`, no uniqueness checks are needed, since the index on that column is explicitly partitioned (it's really `(crdb_region, desk_id)`).
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -2005,7 +2045,7 @@ I210323 18:50:10.951550 1182 8@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:
 ~~~
 
 {{site.data.alerts.callout_info}}
-The above example shows the default [`crdb-v2`](log-formats.html#format-crdb-v2) log format. This can be changed to a different format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
+The preceding example shows the default [`crdb-v2`](log-formats.html#format-crdb-v2) log format. This can be changed to a different format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -2605,7 +2645,7 @@ SET
            UPDATE 1
            ~~~
 
-   1. Finally, verify that the row has been auto-rehomed in this gateway's region by running the following statement and checking that the `region` column is now `us-west1` as shown below.
+   1. Finally, verify that the row has been auto-rehomed in this gateway's region by running the following statement and checking that the `region` column is now `us-west1`:
 
            {% include_cached copy-clipboard.html %}
            ~~~ sql

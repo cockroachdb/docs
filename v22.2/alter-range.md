@@ -23,6 +23,8 @@ Refer to the respective [subcommands](#subcommands).
 -----------|-------------
 `range_id` | The name or ID of the range you want to change.
 
+Additional parameters are documented for the respective [subcommands](#subcommands).
+
 ## Subcommands
 
 | Subcommand                                                                             | Description                                                                     |
@@ -48,6 +50,8 @@ Parameter | Description |
 `value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `RELOCATE`
 
 `ALTER RANGE ... RELOCATE` is used to move a lease or [replica](architecture/overview.html#architecture-replica) between [stores](cockroach-start.html#store). This is helpful in an emergency situation to relocate data in the cluster.
@@ -72,6 +76,8 @@ Parameter | Description |
 `FROM a_expr` | Move a replica from a store ID.
 `TO a_expr` | Move a lease or replica to a new store ID.
 `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows.
+
+For usage, see [Synopsis](#synopsis).
 
 ## Examples
 

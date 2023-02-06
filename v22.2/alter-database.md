@@ -27,6 +27,8 @@ Refer to the respective [subcommands](#subcommands).
 -----------|-------------
 `database_name` | The name of the database you want to change.
 
+Additional parameters are documented for the respective [subcommands](#subcommands).
+
 ## Subcommands
 
 Subcommand | Description
@@ -73,11 +75,13 @@ Parameter | Description |
 ----------|-------------|
 `region_name`   | The [region](multiregion-overview.html#database-regions) being added to this database.  Allowed values include any region present in [`SHOW REGIONS FROM CLUSTER`](show-regions.html). |
 
+For usage, see [Synopsis](#synopsis).
+
 ### `ADD SUPER REGION`
 
-{% include feature-phases/preview.md %}
-
 `ALTER DATABASE .. ADD SUPER REGION` adds a [super region](multiregion-overview.html#super-regions) to a [multi-region database](multiregion-overview.html).
+
+{% include feature-phases/preview.md %}
 
 {% include enterprise-feature.md %}
 
@@ -98,6 +102,8 @@ Parameter | Description |
 ----------|-------------|
 `region_name`          | The name of the [super region](multiregion-overview.html#super-regions) being added to this database.    |
 `region_name_list`     | The super region consists of this set of [database regions](multiregion-overview.html#database-regions). |
+
+For usage, see [Synopsis](#synopsis).
 
 ### `ALTER LOCALITY`
 
@@ -121,11 +127,13 @@ Parameter | Description |
 `variable` | The name of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change for the [schema objects](schema-design-overview.html) in the specified [region](multiregion-overview.html#database-regions).
 `value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change for the [schema objects](schema-design-overview.html) in the specified [region](multiregion-overview.html#database-regions).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `ALTER SUPER REGION`
 
-{% include feature-phases/preview.md %}
-
 `ALTER DATABASE .. ALTER SUPER REGION` alters an existing [super region](multiregion-overview.html#super-regions) of a [multi-region database](multiregion-overview.html).
+
+{% include feature-phases/preview.md %}
 
 {% include enterprise-feature.md %}
 
@@ -146,6 +154,8 @@ Parameter | Description |
 ----------|-------------|
 `region_name`          | The name of the [super region](multiregion-overview.html#super-regions) being altered.                               |
 `region_name_list`     | The altered super region will consist of this set of [database regions](multiregion-overview.html#database-regions). |
+
+For usage, see [Synopsis](#synopsis).
 
 ### `CONFIGURE ZONE`
 
@@ -170,6 +180,8 @@ Parameter | Description |
 `variable` | The name of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
 `value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `DROP REGION`
 
@@ -198,6 +210,8 @@ Parameter | Description |
 ----------|-------------|
 | `region_name`   | The [region](multiregion-overview.html#database-regions) being dropped from this database. Allowed values include any region present in [`SHOW REGIONS FROM DATABASE database_name`](show-regions.html).<br>You can only drop the primary region from a multi-region database if it is the last remaining region. |
 
+For usage, see [Synopsis](#synopsis).
+
 ### `DROP SECONDARY REGION`
 
 <span class="version-tag">New in v22.2:</span> `ALTER DATABASE .. DROP SECONDARY REGION` unsets the [secondary region](multiregion-overview.html#secondary-regions) (if set) from a [multi-region database](multiregion-overview.html).
@@ -217,9 +231,9 @@ To unset a secondary region on a database, the user must have one of the followi
 
 ### `DROP SUPER REGION`
 
-{% include feature-phases/preview.md %}
-
 `ALTER DATABASE .. DROP SUPER REGION` drops a [super region](multiregion-overview.html#super-regions) from a [multi-region database](multiregion-overview.html).
+
+{% include feature-phases/preview.md %}
 
 {% include enterprise-feature.md %}
 
@@ -240,6 +254,8 @@ Parameter | Description |
 ----------|-------------|
 `region_name`          | The name of the [super region](multiregion-overview.html#super-regions) being dropped from this database. |
 
+For usage, see [Synopsis](#synopsis).
+
 ### `OWNER TO`
 
 `ALTER DATABASE ... OWNER TO` is used to change the owner of a database.
@@ -255,6 +271,8 @@ To change the owner of a database, the user must be an `admin` user, or the curr
 Parameter | Description |
 ----------|-------------|
 `role_spec` | The role to set as the owner of the database.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `PLACEMENT`
 
@@ -283,6 +301,8 @@ Parameter | Description |
 ----------|-------------|
 `DEFAULT` | Set the replica placement policy for [regional tables](regional-tables.html) to `DEFAULT`.
 `RESTRICTED` | Set the replica placement policy for [regional tables](regional-tables.html) to `RESTRICTED`.
+
+For usage, see [Synopsis](#synopsis).
 
 The replica placement policies work as follows:
 
@@ -315,6 +335,8 @@ Parameter | Description |
 ----------|-------------|
 `database_new_name` | The [`name`](sql-grammar.html#name) you want to use for the database. The new name must be unique and follow these [identifier rules](keywords-and-identifiers.html#identifiers). You cannot rename a database if it is set as the [current database](sql-name-resolution.html#current-database) or if [`sql_safe_updates = true`](set-vars.html).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `RESET {session variable}`
 
 `ALTER DATABASE ... RESET {session variable}` resets a [session variable](set-vars.html#supported-variables) for a database to its default value for the client session.
@@ -328,6 +350,8 @@ No [privileges](security-reference/authorization.html#managing-privileges) are r
 Parameter | Description |
 ----------|-------------|
 `session_var` | The name of the [session variable](set-vars.html#supported-variables).
+
+For usage, see [Synopsis](#synopsis).
 
 #### Aliases
 
@@ -351,6 +375,8 @@ Parameter | Description |
 ----------|-------------|
 `variable`  | The name of [the session variable](set-vars.html#supported-variables) to set. The variable name is case-insensitive.
 `value` | The value, or list of values, to assign to the session variable.
+
+For usage, see [Synopsis](#synopsis).
 
 #### Aliases
 
@@ -389,6 +415,8 @@ Parameter | Description |
 ----------|-------------|
 `region_name`   | The region to set as the database's primary region.<br>Allowed values include any region present in [`SHOW REGIONS FROM CLUSTER`](show-regions.html). |
 
+For usage, see [Synopsis](#synopsis).
+
 ### `SET SECONDARY REGION`
 
 <span class="version-tag">New in v22.2:</span> `ALTER DATABASE .. SET SECONDARY REGION` adds a [secondary region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html) for failover purposes.
@@ -416,6 +444,8 @@ Parameter | Description |
 ----------|-------------|
 `region_name` | Usually, the [region](multiregion-overview.html#database-regions) being set as the secondary region for this database. E.g., `"ap-southeast-2"`. Allowed values include any (non-primary) region present in `SHOW REGIONS`. |
 
+For usage, see [Synopsis](#synopsis).
+
 ### `SURVIVE {ZONE,REGION} FAILURE`
 
 `ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE` [statement](sql-statements.html) sets the [survival goal](multiregion-overview.html#survival-goals) for a [multi-region database](multiregion-overview.html).
@@ -432,6 +462,8 @@ Parameter | Description |
 ----------|-------------|
 `ZONE` | Set the [survival goal](multiregion-overview.html#survival-goals) to zone failure.
 `REGION` | Set the [survival goal](multiregion-overview.html#survival-goals) to region failure.
+
+For usage, see [Synopsis](#synopsis).
 
 ## Examples
 

@@ -64,6 +64,8 @@ The user must be a member of the [`admin` role](security-reference/authorization
 `value` | The value of the [replication zone variable](configure-replication-zones.html#replication-zone-variables) to change.
 `DISCARD` | Remove a replication zone.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `PARTITION BY`
 
 `ALTER INDEX ... PARTITION BY` is used to partition, re-partition, or un-partition a secondary index. After defining partitions, [`CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition) is used to control the replication and placement of partitions.
@@ -92,6 +94,8 @@ Parameter | Description |
 `list_partitions` | Name of list partition followed by the list of values to be included in the partition.
 `range_partitions` | Name of range partition followed by the range of values to be included in the partition.
 
+For usage, see [Synopsis](#synopsis).
+
 ### `RENAME TO`
 
 `ALTER INDEX ... RENAME TO` changes the name of an index.
@@ -112,6 +116,8 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 -----------|-------------
 `index_new_name` | The [`name`](sql-grammar.html#name) you want to use for the index, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `SPLIT AT`
 
 `ALTER INDEX ... SPLIT AT` forces a [range split](architecture/distribution-layer.html#range-splits) at a specified row in the index.
@@ -131,6 +137,8 @@ The user must have the `INSERT` [privilege](security-reference/authorization.htm
 `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to split the index.
 `a_expr` | The expiration of the split enforcement on the index. This can be a [`DECIMAL`](decimal.html), [`INTERVAL`](interval.html), [`TIMESTAMP`](timestamp.html), or [`TIMESTAMPZ`](timestamp.html).
 
+For usage, see [Synopsis](#synopsis).
+
 ### `UNSPLIT AT`
 
 `ALTER INDEX ... UNSPLIT AT` removes a [split enforcement](#split-at) on a [range split](architecture/distribution-layer.html#range-splits), at a specified row in the index.
@@ -149,6 +157,8 @@ The user must have the `INSERT` [privilege](security-reference/authorization.htm
 -----------|-------------
 `select_stmt` | A [selection query](selection-queries.html) that produces one or more rows at which to unsplit an index.
 `ALL` | Remove all split enforcements for an index.
+
+For usage, see [Synopsis](#synopsis).
 
 ### `[NOT] VISIBLE`
 
@@ -220,7 +230,7 @@ ALTER INDEX students_by_list@name_idx PARTITION BY LIST (country) (
 
 #### Define a range partition on an index
 
-Suppose we have a table called `students_by_range`, a with a secondary index called `name_idx`, and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the index by range:
+Suppose we have a table called `students_by_range`, with a secondary index called `name_idx`, and the primary key of the table is defined as `(expected_graduation_date, id)`. We can define partitions on the index by range:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
