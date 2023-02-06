@@ -67,6 +67,12 @@ Other general guidance about language and tone:
 
     **Example:** Now that you have a database, user, and a table, run the following code to insert rows into the table.
 
+- Recommended usage of the personal pronoun "we": 
+
+    - "We" can be used to describe the group of people developing CockroachDB, instead of "Cockroach Labs," only when it is clear who "we" is referring to.
+    - Do not use "we" in place of "CockroachDB" for when you are talking about something the _product_ does or supports.
+    - Do not use "we" in tutorials. See the next bullet for more on tutorials and examples. 
+
 - For [tutorials and examples](#tutorials-and-examples), we recommend you use the second-person point of view (e.g., you). These docs should be more casual and conversational, as if they are teaching the user, but still straightforward and clear.
 
     **Example:** In this lab, you'll start with a fresh cluster, so make sure you've stopped and cleaned up the cluster from the previous labs.
