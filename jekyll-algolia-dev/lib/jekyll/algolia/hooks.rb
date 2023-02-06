@@ -98,6 +98,7 @@ module Jekyll
          :toc,
          :redirect_from].each { |k| record.delete(k)}
 
+        record[:version] = record[:url].split('/')[1]
         record[:url] = "https://www.cockroachlabs.com/docs#{record[:url]}"
 
         if filepath.start_with?('cockroachcloud') || context.config['cockroachcloud']

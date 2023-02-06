@@ -719,6 +719,11 @@ a.accordion-toggle {
 }
 
 /* Search results highlight */
+#search-refinements {
+  display: none;
+}
+
+
 #search-hits mark {
   background: none;
   font-weight: bold;

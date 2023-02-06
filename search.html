@@ -6,11 +6,12 @@ contribute: false
 docs_area: search
 ---
 
+<div id="search-refinements"></div>
 <div id="search-stats"></div>
 <div id="search-hits"></div>
 <div id="search-pages"></div>
-<script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
-<script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.3/dist/algoliasearch-lite.umd.js" integrity="sha256-dyJcbGuYfdzNfifkHxYVd/rzeR6SLLcDFYEidcybldM=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.50.1/dist/instantsearch.production.min.js" integrity="sha256-xtz5Q60cdtw/7BDkzWiTgCXLvwLrUqlKqegFqvNHiNM=" crossorigin="anonymous"></script>
 <script>
   const htmlEncode = (text) => {
     let div = document.createElement("div");
@@ -154,6 +155,14 @@ docs_area: search
   const customHits = instantsearch.connectors.connectHits(renderHits);
 
   search.addWidgets([
+  instantsearch.widgets.refinementList({
+      container: document.querySelector("#search-refinements"),
+      attribute: 'version',
+      operator: 'or',
+      showMore: true,
+      searchable: true,
+      searchablePlaceholder: 'Search docs area'
+    }),
     customHits({
       container: document.querySelector("#search-hits")
     }),
