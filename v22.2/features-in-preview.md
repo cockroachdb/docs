@@ -20,7 +20,7 @@ The table below lists the session settings that are available in preview. For a 
 
 ### Keep SQL audit logs
 
-Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -109,7 +109,7 @@ The table below lists the SQL functions and operators that are available in prev
 
 ## Alter column types
 
-CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#alter-column-data-types).
+CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-table.html#alter-column-data-types).
 
 ## Temporary objects
 
@@ -146,6 +146,6 @@ For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-cha
 
 - [`SHOW {session variable}`](show-vars.html)
 - [Functions and Operators](functions-and-operators.html)
-- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
+- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)

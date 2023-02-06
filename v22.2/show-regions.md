@@ -35,7 +35,7 @@ Field | Description  | `SHOW REGIONS` | `SHOW REGIONS FROM CLUSTER` | `SHOW REGI
 `region` | The name of the region. | ✓ | ✓ | ✓
 `zones` | The availability zones for the region. | ✓ | ✓ | ✓
 `database_names` | A set of database names that use the region. | ✓ | |
-`primary_region_of` | A set of database names for which the region is the [primary region](set-primary-region.html). | ✓ | |
+`primary_region_of` | A set of database names for which the region is the [primary region](alter-database.html#set-primary-region). | ✓ | |
 `secondary_region_of` | A set of database names for which the region is the [secondary region](multiregion-overview.html#secondary-regions). | ✓ | |
 `database`| The name of the database that uses the region.  | | | ✓
 `primary` | If `true`, indicates that the region is the primary region. | | | ✓
@@ -75,7 +75,7 @@ SHOW REGIONS FROM CLUSTER;
 
 `SHOW REGIONS FROM DATABASE` returns the database regions for a specific database.
 
-[Add an available region](add-region.html) as the primary region for the `movr` database:
+[Add an available region](alter-database.html#add-region) as the primary region for the `movr` database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -188,12 +188,12 @@ SHOW REGIONS FROM ALL DATABASES;
 ## See also
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
-- [`ADD REGION`](add-region.html)
-- [`DROP REGION`](drop-region.html)
-- [`ADD SUPER REGION`](add-super-region.html)
-- [`DROP SUPER REGION`](drop-super-region.html)
+- [`ADD REGION`](alter-database.html#add-region)
+- [`DROP REGION`](alter-database.html#drop-region)
+- [`ADD SUPER REGION`](alter-database.html#add-super-region)
+- [`DROP SUPER REGION`](alter-database.html#drop-super-region)
 - [`SHOW SUPER REGIONS`](show-super-regions.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
 - [SQL Statements](sql-statements.html)

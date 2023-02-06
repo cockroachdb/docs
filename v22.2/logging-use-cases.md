@@ -100,7 +100,7 @@ The [`SQL_SCHEMA`](logging.html#sql_schema) channel logs changes to the SQL logi
 
 #### Example: Schema change initiated
 
-This [`alter_table`](eventlog.html#alter_table) event shows an [`ALTER TABLE ... ADD FOREIGN KEY`](add-constraint.html) schema change being initiated on a `movr.public.vehicles` table:
+This [`alter_table`](eventlog.html#alter_table) event shows an [`ALTER TABLE ... ADD FOREIGN KEY`](alter-table.html#add-constraint) schema change being initiated on a `movr.public.vehicles` table:
 
 ~~~
 I210323 20:21:04.621132 113397 5@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:50812›,hostnossl,user=root] 14 ={"Timestamp":1616530864502127000,"EventType":"alter_table","Statement":"‹ALTER TABLE movr.public.vehicles ADD FOREIGN KEY (city, owner_id) REFERENCES movr.public.users (city, id)›","User":"‹root›","DescriptorID":59,"ApplicationName":"‹movr›","TableName":"‹movr.public.vehicles›","MutationID":1}
@@ -222,7 +222,7 @@ All possible `SESSIONS` event types are detailed in the [reference documentation
 
 ### SENSITIVE_ACCESS
 
-The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables](experimental-audit.html), when enabled, as well as queries executed by users with the [`admin`](security-reference/authorization.html#admin-role) role.
+The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit events. These include all queries being run against [audited tables](alter-table.html#experimental_audit), when enabled, as well as queries executed by users with the [`admin`](security-reference/authorization.html#admin-role) role.
 
 {{site.data.alerts.callout_info}}
 Enabling these logs can negatively impact performance. We recommend using `SENSITIVE_ACCESS` for security purposes only.
@@ -230,7 +230,7 @@ Enabling these logs can negatively impact performance. We recommend using `SENSI
 
 {% include feature-phases/preview.md %}
 
-To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit).
 
 #### Example: Audit events
 

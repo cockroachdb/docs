@@ -172,7 +172,7 @@ root            |                                       | {admin}
 
 ### Create a role that can create and rename databases
 
-The following example allows the role to [create](create-database.html) or [rename](rename-database.html) databases:
+The following example allows the role to [create](create-database.html) or [rename](alter-database.html#rename-to) databases:
 
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_create_db WITH CREATEDB;

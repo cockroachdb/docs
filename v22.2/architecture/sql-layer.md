@@ -138,7 +138,7 @@ You can find much greater detail in the [DistSQL RFC](https://github.com/cockroa
 
 ## Schema changes
 
-CockroachDB performs schema changes, such as the [addition of columns](../add-column.html) or [secondary indexes](../create-index.html), using a protocol that allows tables to remain online (i.e., able to serve reads and writes) during the schema change. This protocol allows different nodes in the cluster to asynchronously transition to a new table schema at different times.
+CockroachDB performs schema changes, such as the [addition of columns](../alter-table.html#add-column) or [secondary indexes](../create-index.html), using a protocol that allows tables to remain online (i.e., able to serve reads and writes) during the schema change. This protocol allows different nodes in the cluster to asynchronously transition to a new table schema at different times.
 
 The schema change protocol decomposes each schema change into a sequence of incremental changes that will achieve the desired effect.
 

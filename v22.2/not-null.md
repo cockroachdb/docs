@@ -19,7 +19,7 @@ The `NOT NULL` [constraint](constraints.html) specifies a column may not contain
 
   CockroachDB tries to write a `NULL` value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
 
-- To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`](alter-column.html#set-not-null-constraint) statement.
+- To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`](alter-table.html#set-not-null-constraint) statement.
 
 - For more information about `NULL`, see [NULL handling](null-handling.html).
 
@@ -72,7 +72,7 @@ pq: null value in column "cust_email" violates not-null constraint
 ## See also
 
 - [Constraints](constraints.html)
-- [`DROP CONSTRAINT`](drop-constraint.html)
+- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
 - [`CHECK` constraint](check.html)
 - [`DEFAULT` constraint](default-value.html)
 - [`REFERENCES` constraint (Foreign Key)](foreign-key.html)

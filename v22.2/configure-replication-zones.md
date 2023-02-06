@@ -22,7 +22,7 @@ For each of these objects you can control:
 - How long old data is kept before being garbage collected.
 - Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west`".
 
-This page explains how replication zones work and how to use the [`CONFIGURE ZONE`](configure-zone.html) statement to manage them.
+This page explains how replication zones work and how to use the `ALTER ... CONFIGURE ZONE` statement to manage them. `CONFIGURE ZONE` is a subcommand of the [`ALTER DATABASE`](alter-database.html#configure-zone), [`ALTER TABLE`](alter-table.html#configure-zone), [`ALTER INDEX`](alter-index.html#configure-zone), [`ALTER PARTITION`](alter-partition.html#create-a-replication-zone-for-a-partition), and [`ALTER RANGE`](alter-range.html#configure-zone) statements.
 
 {{site.data.alerts.callout_info}}
 To configure replication zones, a user must be a member of the [`admin` role](security-reference/authorization.html#admin-role) or have been granted [`CREATE`](security-reference/authorization.html#supported-privileges) or [`ZONECONFIG`](security-reference/authorization.html#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
@@ -59,6 +59,7 @@ In addition, CockroachDB stores internal [**system data**](architecture/distribu
 
 Level | Description
 ------|------------
+------|------------
 Cluster | The `default` replication zone mentioned above also applies to all system ranges not constrained by a more specific replication zone.
 System Range | CockroachDB comes with pre-configured replication zones for important system ranges, such as the "meta" and "liveness" ranges. If necessary, you can add replication zones for the "timeseries" range and other system ranges as well. Editing replication zones for system ranges may override settings from `default`. See [Create a Replication Zone for a System Range](#create-a-replication-zone-for-a-system-range) for more details.<br><br>CockroachDB also comes with pre-configured replication zones for the internal `system` database and the `system.jobs` table, which stores metadata about long-running jobs such as schema changes and backups.
 
@@ -74,11 +75,11 @@ When replicating data, whether table or system, CockroachDB always uses the most
 
 ## Manage replication zones
 
-Use the [`CONFIGURE ZONE`](configure-zone.html) statement to [add](#create-a-replication-zone-for-a-system-range), [modify](#edit-the-default-replication-zone), [reset](#reset-a-replication-zone), and [remove](#remove-a-replication-zone) replication zones.
+Use the `ALTER ... CONFIGURE ZONE` statement to [add](#create-a-replication-zone-for-a-system-range), [modify](#edit-the-default-replication-zone), [reset](#reset-a-replication-zone), and [remove](#remove-a-replication-zone) replication zones.
 
 ### Replication zone variables
 
-Use the [`ALTER ... CONFIGURE ZONE`](configure-zone.html) [statement](sql-statements.html) to set a replication zone:
+Use the `ALTER ... CONFIGURE ZONE` [statement](sql-statements.html) to set a replication zone:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -151,7 +152,7 @@ You can also use the [`SHOW PARTITIONS`](show-partitions.html) statement to view
 
 These examples focus on the basic approach and syntax for working with zone configuration. For examples demonstrating how to use constraints, see [Scenario-based examples](#scenario-based-examples).
 
-For more examples, see [`CONFIGURE ZONE`](configure-zone.html) and [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
+For more examples, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html).
 
 ### View all replication zones
 
@@ -169,55 +170,47 @@ For more information, see [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.
 
 {% include {{ page.version.version }}/zone-configs/edit-the-default-replication-zone.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
-
 ### Create a replication zone for a system range
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-system-range.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone).
 
 ### Create a replication zone for a database
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-database.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+For more information, see [`ALTER DATABASE ... CONFIGURE ZONE`](alter-database.html#configure-zone).
 
 ### Create a replication zone for a table
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+For more information, see [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone).
 
 ### Create a replication zone for a secondary index
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-secondary-index.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+For more information, see [`ALTER INDEX ... CONFIGURE ZONE`](alter-index.html#configure-zone).
 
 ### Create a replication zone for a partition
 
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
+For more information, see [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition).
 
 ### Reset a replication zone
 
 {% include {{ page.version.version }}/zone-configs/reset-a-replication-zone.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
-
 ### Remove a replication zone
 
 {% include {{ page.version.version }}/zone-configs/remove-a-replication-zone.md %}
 
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
-
 ### Constrain leaseholders to specific availability zones
 
 {% include {{ page.version.version }}/zone-configs/constrain-leaseholders-to-specific-datacenters.md %}
-
-For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ## Scenario-based examples
 
@@ -689,7 +682,11 @@ There's no need to make zone configuration changes; by default, the cluster is c
 ## See also
 
 - [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html)
-- [`CONFIGURE ZONE`](configure-zone.html)
+- [`ALTER DATABASE ... CONFIGURE ZONE`](alter-database.html#configure-zone)
+- [`ALTER INDEX ... CONFIGURE ZONE`](alter-index.html#configure-zone)
+- [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone)
+- [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone)
+- [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition)
 - [`SHOW PARTITIONS`](show-partitions.html)
 - [SQL Statements](sql-statements.html)
 - [Table Partitioning](partitioning.html)

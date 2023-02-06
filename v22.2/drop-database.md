@@ -139,7 +139,7 @@ SQLSTATE: 2BP01
 
 - [`CREATE DATABASE`](create-database.html)
 - [`SHOW DATABASES`](show-databases.html)
-- [`RENAME DATABASE`](rename-database.html)
+- [`ALTER DATABASE ... RENAME TO`](alter-database.html#rename-to)
 - [`SET DATABASE`](set-vars.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [SQL Statements](sql-statements.html)

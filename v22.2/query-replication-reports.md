@@ -73,8 +73,8 @@ For an example using this table, see [Find out which databases and tables have u
 
 | Column name             | Data type          | Description                                                                                                                           |
 |-------------------------+--------------------+---------------------------------------------------------------------------------------------------------------------------------------|
-| zone_id                 | [`INT8`](int.html) | The ID of the [replication zone](configure-zone.html).                                                                                |
-| subzone_id              | [`INT8`](int.html) | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                         |
+| zone_id                 | [`INT8`](int.html) | The ID of the [replication zone](configure-replication-zones.html).                                                                                |
+| subzone_id              | [`INT8`](int.html) | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                         |
 | report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
 | total_ranges            | [`INT8`](int.html) | Total [ranges](architecture/overview.html#architecture-range) in the zone this report entry is referring to.                                       |
 | unavailable_ranges      | [`INT8`](int.html) | Unavailable ranges in the zone this report entry is referring to.                                                                     |
@@ -97,8 +97,8 @@ For an example using this table, see [Find out which databases and tables have r
 
 | Column name    | Data type               | Description                                                                                                                         |
 |----------------+-------------------------+-------------------------------------------------------------------------------------------------------------------------------------|
-| zone_id        | [`INT8`](int.html)      | The ID of the [replication zone](configure-zone.html).                                                                              |
-| subzone_id     | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                       |
+| zone_id        | [`INT8`](int.html)      | The ID of the [replication zone](configure-replication-zones.html).                                                                              |
+| subzone_id     | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                       |
 | locality       | [`STRING`](string.html) | The name of the critical [locality](configure-replication-zones.html#zone-config-node-locality).                                    |
 | report_id      | [`INT8`](int.html)      | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                          |
 | at_risk_ranges | [`INT8`](int.html)      | The [ranges](architecture/overview.html#architecture-range) that are at risk of becoming unavailable as of the time of this report. |
@@ -117,8 +117,8 @@ For an example using this table, see [Find out which of your tables have a const
 
 | Column name      | Data type                       | Description                                                                                             |
 |------------------+---------------------------------+---------------------------------------------------------------------------------------------------------|
-| zone_id          | [`INT8`](int.html)              | The ID of the [replication zone](configure-zone.html).                                                  |
-| subzone_id       | [`INT8`](int.html)              | The ID of the subzone (i.e., [partition](partition-by.html)).                                           |
+| zone_id          | [`INT8`](int.html)              | The ID of the [replication zone](configure-replication-zones.html).                                                  |
+| subzone_id       | [`INT8`](int.html)              | The ID of the subzone (i.e., [partition](partitioning.html)).                                           |
 | type             | [`STRING`](string.html)         | The type of zone configuration that was violated, e.g., `constraint`.                                   |
 | config           | [`STRING`](string.html)         | The YAML key-value pair used to configure the zone, e.g., `+region=europe-west1`.                       |
 | report_id        | [`INT8`](int.html)              | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.              |
@@ -152,8 +152,8 @@ SHOW COLUMNS FROM crdb_internal.zones;
 
 | column_name         | data_type               | description                                                                                                                     |
 |---------------------+-------------------------+---------------------------------------------------------------------------------------------------------------------------------|
-| zone_id             | [`INT8`](int.html)      | The ID of the [replication zone](configure-zone.html).                                                                          |
-| subzone_id          | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partition-by.html)).                                                                   |
+| zone_id             | [`INT8`](int.html)      | The ID of the [replication zone](configure-replication-zones.html).                                                                          |
+| subzone_id          | [`INT8`](int.html)      | The ID of the subzone (i.e., [partition](partitioning.html)).                                                                   |
 | target              | [`STRING`](string.html) | The "object" that the constraint is being applied to, e.g., `PARTITION us_west OF INDEX movr.public.users@users_pkey`.             |
 | range_name          | [`STRING`](string.html) | The zone's name.                                                                                                                |
 | database_name       | [`STRING`](string.html) | The [database](show-databases.html) where the `target`'s data is located.                                                       |
@@ -513,6 +513,6 @@ To give another example, let's say your cluster were similar to the one shown ab
 
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Partitioning](partitioning.html)
-- [`PARTITION BY`](partition-by.html)
-- [`CONFIGURE ZONE`](configure-zone.html)
+- [`PARTITION BY`](partitioning.html)
+- [`CONFIGURE ZONE`](alter-table.html#configure-zone)
 - [Start a node](cockroach-start.html)

@@ -346,7 +346,7 @@ To reduce hot spots:
         - Increases data redundancy.
         - Can degrade performance for write-heavy workloads.
 
-- If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key can be served by a separate group of nodes in the cluster.
+- If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`](alter-table.html#split-at) so that each index key can be served by a separate group of nodes in the cluster.
 
 - If you are working with a table that **must** be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/). As part of this, we recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
 
