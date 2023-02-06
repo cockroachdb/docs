@@ -68,7 +68,7 @@ You can edit your spend limit from the **Overview** page. The change in your spe
 
 You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
 
-1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.hmtl).
+1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
 1. Click **Databases** in the **Data** section of the left side navigation.
 1. Click **Add database**.
 1. Enter a name for the new database.
