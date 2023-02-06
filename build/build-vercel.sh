@@ -31,13 +31,13 @@ build _config_cockroachdb.yml,_config_url.yml
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
 
-rm _site/docs/dev _site/docs/stable
+# rm _site/docs/dev _site/docs/stable
 
-ls -l _site/docs/dev
-ls -l _site/docs/stable
+# ls -l _site/docs/dev
+# ls -l _site/docs/stable
 
-cp -r _site/docs/v22.2 _site/docs/dev
-cp -r _site/docs/v22.2 _site/docs/stable
+# cp -r _site/docs/v22.2 _site/docs/dev
+# cp -r _site/docs/v22.2 _site/docs/stable
 
 # Set up htmltest
 
