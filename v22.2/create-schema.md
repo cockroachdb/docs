@@ -296,7 +296,7 @@ Because `max` is the current user, all unqualified `accounts` table names resolv
 ## See also
 
 - [`SHOW SCHEMAS`](show-schemas.html)
-- [`SET SCHEMA`](set-schema.html)
+- [`SET SCHEMA`](alter-table.html#set-schema)
 - [`DROP SCHEMA`](drop-schema.html)
 - [`ALTER SCHEMA`](alter-schema.html)
 - [SQL Statements](sql-statements.html)

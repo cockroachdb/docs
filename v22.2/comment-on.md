@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](add-column.html), or [indexes](indexes.html).
+The `COMMENT ON` [statement](sql-statements.html) associates comments to [databases](create-database.html), [tables](create-table.html), [columns](alter-table.html#add-column), or [indexes](indexes.html).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -26,7 +26,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 `database_name` | The name of the [database](create-database.html) on which you are commenting.
 `schema_name` |  The name of the [schema](create-schema.html) on which you are commenting.
 `table_name` | The name of the [table](create-table.html) on which you are commenting.
-`column_name` | The name of the [column](add-column.html) on which you are commenting.
+`column_name` | The name of the [column](alter-table.html#add-column) on which you are commenting.
 `table_index_name` | The name of the [index](indexes.html) on which you are commenting.
 `comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.  You can remove a comment by replacing the string with `NULL`.
 
@@ -208,7 +208,7 @@ To remove a comment from a database:
 
 - [`CREATE DATABASE`](create-database.html)
 - [`CREATE TABLE`](create-table.html)
-- [`ADD COLUMN`](add-column.html)
+- [`ADD COLUMN`](alter-table.html#add-column)
 - [`CREATE INDEX`](create-index.html)
 - [`SHOW TABLES`](show-tables.html)
 - [SQL Statements](sql-statements.html)

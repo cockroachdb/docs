@@ -179,7 +179,7 @@ Expression indexes have the following limitations:
 - [Computed Columns](computed-columns.html)
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
+- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
 - [`SHOW INDEX`](show-index.html)
 - [Indexes](indexes.html)
 - [SQL Statements](sql-statements.html)

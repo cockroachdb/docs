@@ -2,9 +2,9 @@ When upgrading from v20.1.x to v20.2.0, as soon as any node of the cluster has r
 
 In this case, avoid running the following operations against v20.1 nodes:
 
-- [`DROP TABLE`](drop-table.html), [`TRUNCATE TABLE`](truncate.html), [`RENAME TABLE`](rename-table.html)
+- [`DROP TABLE`](drop-table.html), [`TRUNCATE TABLE`](truncate.html), [`RENAME TABLE`](alter-table.html#rename-to)
 - [`DROP VIEW`](drop-view.html)
 - [`DROP SEQUENCE`](drop-sequence.html), [`RENAME SEQUENCE`](rename-sequence.html)
-- [`DROP DATABASE`](drop-database.html), [`RENAME DATABASE`](rename-database.html)
+- [`DROP DATABASE`](drop-database.html), [`ALTER DATABASE ... RENAME TO`](alter-database.html#rename-to)
 
 Running any of these operations against v19.2 nodes will result in inconsistency between two internal tables, `system.namespace` and `system.namespace2`. This inconsistency will prevent you from being able to recreate the dropped or renamed objects; the returned error will be `ERROR: relation <name of dropped/renamed object> already exists`. In the case of a dropped or renamed database, [`SHOW DATABASES`](show-databases.html) will also return an error: `ERROR: internal error: "" is not a database`.

@@ -64,17 +64,17 @@ You can define partitions and subpartitions over one or more columns of a table.
 
 #### Partition by list
 
-[`PARTITION BY LIST`](partition-by.html) lets you map one or more tuples to a partition.
+[`PARTITION BY LIST`](alter-table.html#partition-by) lets you map one or more tuples to a partition.
 
-To partition a table by list, use the [`PARTITION BY LIST`](partition-by.html) syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions.
+To partition a table by list, use the [`PARTITION BY LIST`](alter-table.html#partition-by) syntax while creating the table. While defining a list partition, you can also set the `DEFAULT` partition that acts as a catch-all if none of the rows match the requirements for the defined partitions.
 
 See [Partition by List](#define-table-partitions-by-list) example below for more details.
 
 #### Partition by range
 
-[`PARTITION BY RANGE`](partition-by.html) lets you map ranges of tuples to a partition.
+[`PARTITION BY RANGE`](alter-table.html#partition-by) lets you map ranges of tuples to a partition.
 
-To define a table partition by range, use the [`PARTITION BY RANGE`](partition-by.html) syntax while creating the table.  While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively.
+To define a table partition by range, use the [`PARTITION BY RANGE`](alter-table.html#partition-by) syntax while creating the table.  While defining a range partition, you can use CockroachDB-defined `MINVALUE` and `MAXVALUE` parameters to define the lower and upper bounds of the ranges respectively.
 
 {{site.data.alerts.callout_info}}The lower bound of a range partition is inclusive, while the upper bound is exclusive. For range partitions, <code>NULL</code> is considered less than any other data, which is consistent with our key encoding ordering and <code>ORDER BY</code> behavior.{{site.data.alerts.end}}
 
@@ -350,7 +350,7 @@ See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license)
 
 #### Step 5. Create and apply corresponding replication zones
 
-To create replication zone and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
+To create replication zone and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition) statement:
 
 1. Create a replication zone for the `north_america` partition and constrain its data to the US availability zone:
 
@@ -512,7 +512,7 @@ To set the Enterprise license, see [Set the Trial or Enterprise License Key](lic
 
 #### Step 5. Create and apply corresponding zone configurations
 
-To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
+To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -619,7 +619,7 @@ Subpartition names must be unique within a table. In our example, even though `g
 
 #### Step 5. Create and apply corresponding zone configurations
 
-To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
+To create zone configurations and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](alter-partition.html#create-a-replication-zone-for-a-partition) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -679,7 +679,7 @@ Time: 11.586626ms
 
 ### Repartition a table
 
-Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](partition-by.html) subcommand of the [`ALTER TABLE`](alter-table.html) command.
+Consider the partitioned table of students of RoachLearn. Suppose the table has been partitioned on range to store the current students on fast and expensive storage devices (example: SSD) and store the data of the graduated students on slower, cheaper storage devices(example: HDD). Now suppose we want to change the date after which the students will be considered current to `2018-08-15`. We can achieve this by using the [`PARTITION BY`](alter-table.html#partition-by) subcommand of the [`ALTER TABLE`](alter-table.html) command.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -690,7 +690,7 @@ Consider the partitioned table of students of RoachLearn. Suppose the table has 
 
 ### Unpartition a table
 
-You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](partition-by.html) syntax:
+You can remove the partitions on a table by using the [`PARTITION BY NOTHING`](alter-table.html#partition-by) syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

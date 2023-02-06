@@ -70,7 +70,7 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - Range details
 - Jobs
 - [Cluster Settings](cluster-settings.html)
-- [Metrics](ui-custom-chart-debug-page.html#available-metrics)
+- [Metrics](metrics.html)
 - [Replication Reports](query-replication-reports.html)
 - Problem ranges
 - CPU profiles

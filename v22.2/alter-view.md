@@ -26,10 +26,10 @@ Parameter | Description
 ----------|------------
 `MATERIALIZED` |  Rename a [materialized view](views.html#materialized-views).
 `IF EXISTS` | Rename the view only if a view of `view_name` exists; if one does not exist, do not return an error.
-`view_name` | The name of the view to rename. To find view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
-`RENAME TO view_name` | Rename the view to `view_name`, which must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). Name changes do not propagate to the  table(s) using the view.<br><br>Note that `RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a view's schema, use `ALTER VIEW ...SET SCHEMA` instead. In a future release, `RENAME TO` will be limited to changing the name of a view, and will not have the ability to change a view's database.
-`SET SCHEMA schema_name` | Change the schema of the view to `schema_name`.
-`OWNER TO role_spec` |  Change the owner of the view to `role_spec`.
+`view_name` | The name of the view to rename. To find existing view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
+`view_new_name` | The new name of the view. The name of the view must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). Name changes do not propagate to the table(s) using the view.
+`schema_name` | The name of the new schema.
+`role_spec` |  The role to set as the owner of the view.
 
 ## Limitations
 
@@ -46,12 +46,12 @@ Suppose you create a new view that you want to rename:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW money_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
+CREATE VIEW money_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
+WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 ~~~
 
 ~~~
@@ -63,7 +63,7 @@ Suppose you create a new view that you want to rename:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER VIEW money_rides RENAME TO expensive_rides;
+ALTER VIEW money_rides RENAME TO expensive_rides;
 ~~~
 ~~~
 RENAME VIEW
@@ -71,7 +71,7 @@ RENAME VIEW
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
+WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
 ~~~
 
 ~~~
@@ -81,6 +81,8 @@ RENAME VIEW
 (1 row)
 ~~~
 
+Note that `RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a view's schema, [use the `SET SCHEMA` clause](#change-the-schema-of-a-view). In a future release, `RENAME TO` will be limited to changing the name of a view, and will not have the ability to change a view's database.
+
 ### Change the schema of a view
 
 Suppose you want to add the `expensive_rides` view to a schema called `cockroach_labs`:
@@ -89,7 +91,7 @@ By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE public.expensive_rides;
+SHOW CREATE public.expensive_rides;
 ~~~
 
 ~~~
@@ -103,19 +105,19 @@ If the new schema does not already exist, [create it](create-schema.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE SCHEMA IF NOT EXISTS cockroach_labs;
+CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 Then, change the view's schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
+ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE public.expensive_rides;
+SHOW CREATE public.expensive_rides;
 ~~~
 
 ~~~
@@ -125,7 +127,7 @@ SQLSTATE: 42P01
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE cockroach_labs.expensive_rides;
+SHOW CREATE cockroach_labs.expensive_rides;
 ~~~
 
 ~~~

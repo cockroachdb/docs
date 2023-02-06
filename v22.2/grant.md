@@ -262,7 +262,7 @@ SHOW GRANTS ON TYPE status;
 GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~
 
-The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to add, modify, reset, or remove replication zones for the table `rides`.
+The user `max` can then use the [`CONFIGURE ZONE`](alter-table.html#configure-zone) statement to add, modify, reset, or remove replication zones for the table `rides`.
 
 ### Grant role membership
 
@@ -339,5 +339,5 @@ SHOW GRANTS ON TABLE rides;
 - [`REVOKE`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
-- [`CONFIGURE ZONE`](configure-zone.html)
+- [`CONFIGURE ZONE`](alter-table.html#configure-zone)
 - [Manage Users](security-reference/authorization.html#create-and-manage-users)
