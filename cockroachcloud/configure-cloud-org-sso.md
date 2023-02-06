@@ -42,9 +42,7 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 
 - The custom login URL and when they should begin using it.
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
-- Some members may need to be re-added to your organization:
-  - All members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the [console admin](console-access-management.html#console-admin) role, it must be granted to them again.
+- All members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
