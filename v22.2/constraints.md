@@ -45,23 +45,23 @@ How you add constraints depends on the number of columns you want to constrain, 
   {{site.data.alerts.end}}
 
 - **Existing tables** can have the following constraints added:
-  - `CHECK`, `FOREIGN KEY`, and `UNIQUE` constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`](add-constraint.html). For example, this statement adds the `UNIQUE` constraint to `baz.id`:
+  - `CHECK`, `FOREIGN KEY`, and `UNIQUE` constraints can be added through [`ALTER TABLE...ADD CONSTRAINT`](alter-table.html#add-constraint). For example, this statement adds the `UNIQUE` constraint to `baz.id`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE baz ADD CONSTRAINT id_unique UNIQUE (id);
     ~~~
 
-  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-column.html#set-or-change-a-default-value). For example, this statement adds the [`DEFAULT` value constraint](default-value.html) to `baz.bool`:
+  - `DEFAULT` values and `NOT NULL` constraints can be added through [`ALTER TABLE...ALTER COLUMN`](alter-table.html#set-or-change-a-default-value). For example, this statement adds the [`DEFAULT` value constraint](default-value.html) to `baz.bool`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER TABLE baz ALTER COLUMN bool SET DEFAULT true;
     ~~~
 
-  -  [`PRIMARY KEY`](primary-key.html) constraints can be added with [`ADD CONSTRAINT`](add-constraint.html)/[`ADD PRIMARY KEY`](alter-table.html) in the following circumstances:
+  -  [`PRIMARY KEY`](primary-key.html) constraints can be added with [`ADD CONSTRAINT`](alter-table.html#add-constraint)/[`ADD PRIMARY KEY`](alter-table.html) in the following circumstances:
 
-      - A [`DROP CONSTRAINT`](drop-constraint.html) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
+      - A [`DROP CONSTRAINT`](alter-table.html#drop-constraint) statement precedes the `ADD CONSTRAINT`/`ADD PRIMARY KEY` statement in the same transaction. For examples, see [Add constraints](alter-table.html#add-constraints) and [Drop constraints](alter-table.html#drop-constraints).
       - The current [primary key is on `rowid`](indexes.html#creation), the default primary key created if none is explicitly defined at table creation.
       - The `ADD CONSTRAINT`/`ADD PRIMARY KEY` is in the same transaction as a `CREATE TABLE` statement with no primary key defined.
 
@@ -93,11 +93,11 @@ The procedure for removing a constraint depends on its type:
 
 Constraint Type | Procedure
 -----------------|-----------
-[`CHECK`](check.html) | Use [`DROP CONSTRAINT`](drop-constraint.html).
-[`DEFAULT` value](default-value.html) | Use [`ALTER COLUMN`](alter-column.html#remove-default-constraint).
-[`FOREIGN KEY`](foreign-key.html) | Use [`DROP CONSTRAINT`](drop-constraint.html).
-[`NOT NULL`](not-null.html) | Use [`ALTER COLUMN`](alter-column.html#remove-not-null-constraint).
-[`PRIMARY KEY`](primary-key.html) |   Primary key constraints can be dropped with [`DROP CONSTRAINT`](drop-constraint.html) if an [`ADD CONSTRAINT`](add-constraint.html) statement follows the `DROP CONSTRAINT` statement in the same transaction.
+[`CHECK`](check.html) | Use [`DROP CONSTRAINT`](alter-table.html#drop-constraint).
+[`DEFAULT` value](default-value.html) | Use [`ALTER COLUMN`](alter-table.html#remove-default-constraint).
+[`FOREIGN KEY`](foreign-key.html) | Use [`DROP CONSTRAINT`](alter-table.html#drop-constraint).
+[`NOT NULL`](not-null.html) | Use [`ALTER COLUMN`](alter-table.html#remove-not-null-constraint).
+[`PRIMARY KEY`](primary-key.html) |   Primary key constraints can be dropped with [`DROP CONSTRAINT`](alter-table.html#drop-constraint) if an [`ADD CONSTRAINT`](alter-table.html#add-constraint) statement follows the `DROP CONSTRAINT` statement in the same transaction.
 [`UNIQUE`](unique.html) | The `UNIQUE` constraint cannot be dropped directly.  To remove the constraint, [drop the index](drop-index.html) that was created by the constraint, e.g., `DROP INDEX my_unique_constraint`.
 
 ### Change constraints
@@ -106,21 +106,21 @@ The procedure for changing a constraint depends on its type:
 
 Constraint Type | Procedure
 -----------------|-----------
-[`CHECK`](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
-[`DEFAULT` value](default-value.html) | The `DEFAULT` value can be changed through [`ALTER COLUMN`](alter-column.html).
-[`FOREIGN KEY`](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
-[`NOT NULL`](not-null.html) | The `NOT NULL` constraint cannot be changed, only added and removed with [`ALTER COLUMN`](alter-column.html).
-[`PRIMARY KEY`](primary-key.html) |   To change a primary key, use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement.<br><br>When you change a primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](drop-constraint.html)/[`ADD CONSTRAINT`](add-constraint.html) to change the primary key.
-[`UNIQUE`](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`](add-constraint.html)), and then remove the existing one ([`DROP CONSTRAINT`](drop-constraint.html)).
+[`CHECK`](check.html) | [Issue a transaction](transactions.html#syntax) that adds a new `CHECK` constraint ([`ADD CONSTRAINT`](alter-table.html#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`](alter-table.html#drop-constraint)).
+[`DEFAULT` value](default-value.html) | The `DEFAULT` value can be changed through [`ALTER COLUMN`](alter-table.html#alter-column).
+[`FOREIGN KEY`](foreign-key.html) | [Issue a transaction](transactions.html#syntax) that adds a new `FOREIGN KEY` constraint ([`ADD CONSTRAINT`](alter-table.html#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`](alter-table.html#drop-constraint)).
+[`NOT NULL`](not-null.html) | The `NOT NULL` constraint cannot be changed, only added and removed with [`ALTER COLUMN`](alter-table.html#alter-column).
+[`PRIMARY KEY`](primary-key.html) |   To change a primary key, use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) statement.<br><br>When you change a primary key with [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key), the old primary key index becomes a secondary index. If you do not want the old primary key to become a secondary index, use [`DROP CONSTRAINT`](alter-table.html#drop-constraint)/[`ADD CONSTRAINT`](alter-table.html#add-constraint) to change the primary key.
+[`UNIQUE`](unique.html) | [Issue a transaction](transactions.html#syntax) that adds a new `UNIQUE` constraint ([`ADD CONSTRAINT`](alter-table.html#add-constraint)), and then remove the existing one ([`DROP CONSTRAINT`](alter-table.html#drop-constraint)).
 
 
 ## See also
 
 - [`CREATE TABLE`](create-table.html)
-- [`ADD CONSTRAINT`](add-constraint.html)
-- [`DROP CONSTRAINT`](drop-constraint.html)
+- [`ADD CONSTRAINT`](alter-table.html#add-constraint)
+- [`DROP CONSTRAINT`](alter-table.html#drop-constraint)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
 - [`SHOW CREATE`](show-create.html)
-- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
 - [`ALTER TABLE`](alter-table.html)
-- [`ALTER COLUMN`](alter-column.html)
+- [`ALTER COLUMN`](alter-table.html#alter-column)

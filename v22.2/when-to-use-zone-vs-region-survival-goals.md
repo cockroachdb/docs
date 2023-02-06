@@ -34,5 +34,5 @@ Set a [`REGION` survival goal](multiregion-overview.html#surviving-region-failur
 - [Disaster Recovery](disaster-recovery.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)

@@ -353,7 +353,7 @@ The following PostgreSQL syntax and features are currently unsupported. For deta
 
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
+- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
 - [`SHOW INDEX`](show-index.html)
 - [Inverted indexes](inverted-indexes.html)
 - [Indexes](indexes.html)

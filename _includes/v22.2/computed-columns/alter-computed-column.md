@@ -1,4 +1,4 @@
-To alter the formula for a computed column, you must [`DROP`](drop-column.html) and [`ADD`](add-column.html) the column back with the new definition. Take the following table for instance:
+To alter the formula for a computed column, you must [`DROP`](alter-table.html#drop-column) and [`ADD`](alter-table.html#add-column) the column back with the new definition. Take the following table for instance:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

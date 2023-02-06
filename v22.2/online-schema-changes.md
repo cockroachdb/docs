@@ -42,14 +42,14 @@ The following online schema changes pause if the node executing the schema chang
 
 - Changes that trigger an index backfill (adding data to an index).
 - The following statements:
-  - [`ADD COLUMN`](add-column.html) when the statement also features `INDEX` or `UNIQUE`.
-  - [`ALTER PRIMARY KEY`](alter-primary-key.html)
+  - [`ADD COLUMN`](alter-table.html#add-column) when the statement also features `INDEX` or `UNIQUE`.
+  - [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
   - [`CREATE INDEX`](create-index.html)
   - [`CREATE MATERIALIZED VIEW`](views.html#materialized-views)
   - [`CREATE TABLE AS`](create-table-as.html)
   - [`REFRESH`](refresh.html)
-  - [`SET LOCALITY`](set-locality.html) under one of the following conditions:
-      - The locality changes from [`REGIONAL BY ROW`](set-locality.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
+  - [`SET LOCALITY`](alter-table.html#set-locality) under one of the following conditions:
+      - The locality changes from [`REGIONAL BY ROW`](alter-table.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
       - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
 
 {{site.data.alerts.callout_info}}
@@ -135,7 +135,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](rename-column.html#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](alter-table.html#add-and-rename-columns-atomically).
 
 ### Show all schema change jobs
 
@@ -179,7 +179,7 @@ Schema changes keep your data consistent at all times, but they do not run insid
 
 ### No online schema changes if primary key change in progress
 
-You cannot start an online schema change on a table if a [primary key change](alter-primary-key.html) is currently in progress on the same table.
+You cannot start an online schema change on a table if a [primary key change](alter-table.html#alter-primary-key) is currently in progress on the same table.
 
 ### No online schema changes between executions of prepared statements
 

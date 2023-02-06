@@ -440,7 +440,7 @@ Currently, the following CockroachDB [log channels](/docs/{{site.current_cloud_v
 
 ### Is it possible to include SQL audit logs as part of the log export capability?
 
-Yes, the [SQL Audit Log](/docs/{{site.current_cloud_version}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.current_cloud_version}}/experimental-audit.html) statement.
+Yes, the [SQL Audit Log](/docs/{{site.current_cloud_version}}/sql-audit-logging.html) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.current_cloud_version}}/alter-table.html#experimental_audit) statement.
 
 ### Can I use an AWS External ID with the log export feature?
 

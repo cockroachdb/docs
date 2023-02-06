@@ -301,6 +301,6 @@ You can define the [column families](column-families.html) of a new table create
 - [`INSERT`](insert.html)
 - [`DROP TABLE`](drop-table.html)
 - [SQL Statements](sql-statements.html)
-- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
 - [`ALTER TABLE`](alter-table.html)
 - [Online Schema Changes](online-schema-changes.html)

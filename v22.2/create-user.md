@@ -180,7 +180,7 @@ with_password    | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 
 ### Create a user that can create and rename databases
 
-The following example allows the user to [create](create-database.html) or [rename](rename-database.html) databases:
+The following example allows the user to [create](create-database.html) or [rename](alter-database.html#rename-to) databases:
 
 ~~~ sql
 root@:26257/defaultdb> CREATE USER can_create_db WITH CREATEDB;

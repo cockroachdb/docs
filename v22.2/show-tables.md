@@ -229,16 +229,16 @@ For [multi-region](multiregion-overview.html) tables, you can display the locali
 
 {% include enterprise-feature.md %}
 
-1. [Set the primary region](set-primary-region.html) on `movr` to `us-east`:
+1. [Set the primary region](alter-database.html#set-primary-region) on `movr` to `us-east`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE movr SET PRIMARY REGION "us-east";
     ~~~
 
-    All tables will be [`REGIONAL BY TABLE`](set-locality.html#set-the-table-locality-to-regional-by-table) in the primary region by default.
+    All tables will be [`REGIONAL BY TABLE`](alter-table.html#set-the-table-locality-to-regional-by-table) in the primary region by default.
 
-1. Configure the `users` table to be [`REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row):
+1. Configure the `users` table to be [`REGIONAL BY ROW`](alter-table.html#set-the-table-locality-to-regional-by-row):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

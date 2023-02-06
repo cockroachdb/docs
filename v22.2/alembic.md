@@ -343,7 +343,7 @@ Suppose you want to add a new [computed column](computed-columns.html) to the `a
 While [Alembic supports most SQL operations](https://alembic.sqlalchemy.org/en/latest/ops.html), you can always execute raw SQL using the `execute()` operation.
 
 {{site.data.alerts.callout_success}}
-Executing DDL statements as raw SQL can be particularly helpful when using SQL syntax for DDL statements specific to CockroachDB, like [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) or [`ALTER TABLE ... SET LOCALITY`](set-locality.html) statements.
+Executing DDL statements as raw SQL can be particularly helpful when using SQL syntax for DDL statements specific to CockroachDB, like [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) or [`ALTER TABLE ... SET LOCALITY`](alter-table.html#set-locality) statements.
 {{site.data.alerts.end}}
 
 For example, the raw SQL for the second migration would look something like this:

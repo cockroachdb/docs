@@ -169,7 +169,7 @@ Use the following command to specify regions and survival goals at database crea
 
 {% include enterprise-feature.md %}
 
-You can add a [secondary region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html) for failover purposes. If the [primary region](set-primary-region.html) fails, the secondary region becomes the new primary region.
+You can add a [secondary region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html) for failover purposes. If the [primary region](alter-database.html#set-primary-region) fails, the secondary region becomes the new primary region.
 
 To add a secondary region during database creation, use the following steps:
 
@@ -192,12 +192,12 @@ For more information about secondary regions, see [Secondary regions](multiregio
 
 - [`SHOW DATABASES`](show-databases.html)
 - [`SHOW CREATE DATABASE`](show-create.html)
-- [`RENAME DATABASE`](rename-database.html)
+- [`ALTER DATABASE ... RENAME TO`](alter-database.html#rename-to)
 - [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)
 - [SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
 - [Multiregion overview](multiregion-overview.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions).
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)

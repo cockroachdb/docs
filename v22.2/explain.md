@@ -351,7 +351,7 @@ Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more t
 
 ### Alter queries
 
-If you alter a table to split a range as described in [Split a table](split-at.html#split-a-table), the `EXPLAIN` command returns the target table and index names and a `NULL` expiry timestamp:
+If you alter a table to split a range as described in [Split a table](alter-table.html#split-a-table), the `EXPLAIN` command returns the target table and index names and a `NULL` expiry timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -373,7 +373,7 @@ EXPLAIN ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle')
 (9 rows)
 ~~~
 
-If you alter a table to split a range as described in [Set the expiration on a split enforcement](split-at.html#set-the-expiration-on-a-split-enforcement), the `EXPLAIN` command returns the target table and index names and the expiry timestamp:
+If you alter a table to split a range as described in [Set the expiration on a split enforcement](alter-table.html#set-the-expiration-on-a-split-enforcement), the `EXPLAIN` command returns the target table and index names and the expiry timestamp:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

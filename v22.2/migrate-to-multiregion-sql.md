@@ -51,7 +51,7 @@ Depending on how long you are willing to wait between steps for the replica reba
 
 In other words, the process described here may result in a significant increase in CPU usage, IOPS, and network traffic while the cluster rebalances replicas to meet the final set of constraints you have provided it with. Until this process completes, the cluster may not be able to handle its normal workload.
 
-Note that the process of dropping the old zone configs that occurs when the old configurations are removed **must be complete** before you can [add regions to the database](add-region.html) and set [table localities](set-locality.html). You can ensure this process is complete by waiting for the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](configure-zone.html#remove-a-replication-zone) statement shown below to finish successfully.
+Note that the process of dropping the old zone configs that occurs when the old configurations are removed **must be complete** before you can [add regions to the database](alter-database.html#add-region) and set [table localities](alter-table.html#set-locality). You can ensure this process is complete by waiting for the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](alter-database.html#remove-a-replication-zone) statement shown below to finish successfully.
 
 For a tutorial that shows how to transition a database to using multi-region SQL statements, see [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
 
@@ -75,7 +75,7 @@ You can check the state of any schema object's replication zone configuration at
 
 If you used the [duplicate indexes pattern][dupe_index], the steps for backing out the old configuration are:
 
-1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](configure-zone.html#remove-a-replication-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the [duplicate indexes][dupe_index] pattern, you will have to reapply them.
+1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](alter-database.html#remove-a-replication-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the [duplicate indexes][dupe_index] pattern, you will have to reapply them.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -113,7 +113,7 @@ If you applied the [geo-partitioned replicas][geo_replicas] pattern, the steps f
 The latency and resiliency benefits of the geo-partitioned replicas pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
 
 {{site.data.alerts.callout_info}}
-The multi-region SQL abstractions use a hidden [`crdb_region`](set-locality.html#crdb_region) column to represent the row's home region. You may need to modify your existing schema to take this into account. For example, if you already have a column you are using to denote each row's home region, you can use that name instead of `crdb_region` by following the instructions on the [`ALTER TABLE ... SET LOCALITY`](set-locality.html#rename-crdb_region) page.
+The multi-region SQL abstractions use a hidden [`crdb_region`](alter-table.html#crdb_region) column to represent the row's home region. You may need to modify your existing schema to take this into account. For example, if you already have a column you are using to denote each row's home region, you can use that name instead of `crdb_region` by following the instructions on the [`ALTER TABLE ... SET LOCALITY`](alter-table.html#rename-crdb_region) page.
 {{site.data.alerts.end}}
 
 #### Geo-partitioned leaseholders
@@ -140,7 +140,7 @@ The latency and resiliency benefits of the geo-partitioned leaseholders pattern 
 
 The steps from this point forward assume that you have cleared your prior replication zone configurations and will be using the [multi-region SQL abstractions](multiregion-overview.html) to work with a cluster that has existing [cluster regions](multiregion-overview.html#cluster-regions).
 
-Every multi-region database needs to have a primary region. To set the primary region, issue the [SET PRIMARY REGION](set-primary-region.html) statement:
+Every multi-region database needs to have a primary region. To set the primary region, issue the [SET PRIMARY REGION](alter-database.html#set-primary-region) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -149,7 +149,7 @@ ALTER DATABASE foo SET PRIMARY REGION = "us-west1"
 
 ### Step 3. Add more regions to the database
 
-To add another region to the database, issue the [`ADD REGION`](add-region.html) statement:
+To add another region to the database, issue the [`ADD REGION`](alter-database.html#add-region) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -191,7 +191,7 @@ For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When
 
 ### Step 6. (Optional) View the updated zone configurations
 
-The multi-region SQL statements operate on the same replication zone configurations that you have access to via the [`ALTER TABLE ... CONFIGURE ZONE`](configure-zone.html) statement. If you are interested in seeing how they work with the lower-level zone config mechanisms, you can use the [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) statement to view the zone configurations.
+The multi-region SQL statements operate on the same replication zone configurations that you have access to via the [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone) statement. If you are interested in seeing how they work with the lower-level zone config mechanisms, you can use the [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) statement to view the zone configurations.
 
 For example, given a multi-region demo cluster set up using the instructions in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html), here is what the zone configs for several tables in the [MovR schema](movr.html) look like.
 
@@ -310,8 +310,8 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
-- [`SET SECONDARY REGION`](set-secondary-region.html)
-- [`DROP SECONDARY REGION`](drop-secondary-region.html)
+- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
 - [Zone Config Extensions](zone-config-extensions.html)
 
 <!-- Reference Links -->
