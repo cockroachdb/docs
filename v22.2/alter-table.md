@@ -517,7 +517,7 @@ The user must be a member of the [`admin`](security-reference/authorization.html
 
 Parameter | Description |
 ----------|-------------|
-`locality`   | The [locality](multiregion-overview.html#table-locality) to apply to this table. Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
+`locality`   | The `LOCALITY` clause, followed by the [locality](multiregion-overview.html#table-locality) to apply to this table. Allowed values: <ul><li>[`REGIONAL BY TABLE`](#regional-by-table) (default)</li><li>[`REGIONAL BY ROW`](#regional-by-row)</li><li>[`GLOBAL`](#global)</li></ul> |
 
 For usage, see [Synopsis](#synopsis).
 
