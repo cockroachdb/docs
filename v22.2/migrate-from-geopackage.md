@@ -23,19 +23,19 @@ To follow along with the example below, you will need the following prerequisite
 
 ## Step 1. Download the GeoPackage data
 
-First, download the zip file containing the spring location data:
+1. Download the zip file containing the spring location data:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-wget https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    wget https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/env_mn_springs_inventory/gpkg_env_mn_springs_inventory.zip
+    ~~~
 
-Next, unzip the file:
+1. Unzip the file:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-unzip gpkg_env_mn_springs_inventory.zip
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    unzip gpkg_env_mn_springs_inventory.zip
+    ~~~
 
 ## Step 2. Convert the GeoPackage data to SQL
 

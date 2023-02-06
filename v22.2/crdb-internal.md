@@ -383,55 +383,55 @@ This example assumes you have a cluster in the state it was left in by [the prev
 
 In this example you will run a workload on the cluster with multiple concurrent transactions using the [bank workload](cockroach-workload.html#run-the-bank-workload). With a sufficiently high concurrency setting, the bank workload will frequently attempt to update multiple accounts at the same time. This will create plenty of locks to view in the `crdb_internal.cluster_locks` table.
 
-First, initialize the workload:
+1. Initialize the workload:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload init bank 'postgresql://root@localhost:26257/bank?sslmode=disable'
+    ~~~
 
-Next, run it at a high concurrency setting:
+1. Run it at a high concurrency setting:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload run bank --concurrency=128 --duration=3m 'postgresql://root@localhost:26257/bank?sslmode=disable'
+    ~~~
 
-While the workload is running, issue the following query to view a subset of the locks being requested.
+1. While the workload is running, issue the following query to view a subset of the locks being requested:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT
-    database_name,
-    table_name,
-    txn_id,
-    ts,
-    lock_key_pretty,
-    lock_strength,
-    granted,
-    contended
-FROM
-    crdb_internal.cluster_locks
-WHERE table_name = 'bank'
-LIMIT
-    10
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT
+        database_name,
+        table_name,
+        txn_id,
+        ts,
+        lock_key_pretty,
+        lock_strength,
+        granted,
+        contended
+    FROM
+        crdb_internal.cluster_locks
+    WHERE table_name = 'bank'
+    LIMIT
+        10
+    ~~~
 
-~~~
-  database_name | table_name |                txn_id                |             ts             |  lock_key_pretty   | lock_strength | granted | contended
-----------------+------------+--------------------------------------+----------------------------+--------------------+---------------+---------+------------
-  bank          | bank       | 7f0e262f-78e6-4a52-ad4e-d3cd5a851c82 | 2022-07-27 18:59:09.358877 | /Table/110/1/82/0  | Exclusive     |  true   |   false
-  bank          | bank       | c5bdc305-5940-43e1-8017-95260b4a1a39 | 2022-07-27 18:59:06.071559 | /Table/110/1/110/0 | Exclusive     |  true   |   true
-  bank          | bank       | ec872809-06b6-4320-b416-88b37c656f28 | 2022-07-27 18:59:05.843786 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | 7f4cd00d-2765-4b8d-b2e3-96e1c20e515e | 2022-07-27 18:59:06.345931 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | d6683639-a529-43b1-89ce-e7f0aa268426 | 2022-07-27 18:59:06.800857 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | ffbeb239-9fba-4cd8-8f20-ccebe3a069cd | 2022-07-27 18:59:07.485126 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | 7f64b1f5-e70e-4257-9d5b-5a26e48001cf | 2022-07-27 18:59:07.77492  | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | 3e4ca7d5-77ef-474b-8ffa-4eeeffa0d190 | 2022-07-27 18:59:08.888788 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | 57d984d7-54a9-4c7f-893d-a8c67e748bbe | 2022-07-27 18:59:05.117683 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-  bank          | bank       | 3c06319f-31c3-43ba-8323-9807e2c6de04 | 2022-07-27 18:59:05.117683 | /Table/110/1/110/0 | Exclusive     |  false  |   true
-(10 rows)
-~~~
+    ~~~
+      database_name | table_name |                txn_id                |             ts             |  lock_key_pretty   | lock_strength | granted | contended
+    ----------------+------------+--------------------------------------+----------------------------+--------------------+---------------+---------+------------
+      bank          | bank       | 7f0e262f-78e6-4a52-ad4e-d3cd5a851c82 | 2022-07-27 18:59:09.358877 | /Table/110/1/82/0  | Exclusive     |  true   |   false
+      bank          | bank       | c5bdc305-5940-43e1-8017-95260b4a1a39 | 2022-07-27 18:59:06.071559 | /Table/110/1/110/0 | Exclusive     |  true   |   true
+      bank          | bank       | ec872809-06b6-4320-b416-88b37c656f28 | 2022-07-27 18:59:05.843786 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | 7f4cd00d-2765-4b8d-b2e3-96e1c20e515e | 2022-07-27 18:59:06.345931 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | d6683639-a529-43b1-89ce-e7f0aa268426 | 2022-07-27 18:59:06.800857 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | ffbeb239-9fba-4cd8-8f20-ccebe3a069cd | 2022-07-27 18:59:07.485126 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | 7f64b1f5-e70e-4257-9d5b-5a26e48001cf | 2022-07-27 18:59:07.77492  | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | 3e4ca7d5-77ef-474b-8ffa-4eeeffa0d190 | 2022-07-27 18:59:08.888788 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | 57d984d7-54a9-4c7f-893d-a8c67e748bbe | 2022-07-27 18:59:05.117683 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+      bank          | bank       | 3c06319f-31c3-43ba-8323-9807e2c6de04 | 2022-07-27 18:59:05.117683 | /Table/110/1/110/0 | Exclusive     |  false  |   true
+    (10 rows)
+    ~~~
 
 As in the [basic example](#cluster-locks-basic-example), you can see that some transactions that wanted locks on the `bank` table are having to wait (`granted` is `false`), usually because they are trying to operate on the same rows as one or more other transactions (`contended` is `true`).
 

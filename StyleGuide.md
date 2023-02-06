@@ -956,6 +956,21 @@ To nest a list under a list item, start the list on the next line (no empty line
     - This is a bullet.
 ```
 
+Nested ordered lists work similarly:
+
+```
+1. This is a step.
+    1. This is a substep.
+    1. This is a substep.
+    1. This is a substep.
+
+1. This is a step.
+
+    This is a nested paragraph.
+    1. This is a substep.
+    1. This is a substep.
+```
+
 #### Nest paragraphs or code blocks
 
 To nest a paragraph or code block under a list item, insert an empty line and then indent the paragraph or code block 4 spaces, for example:
@@ -992,6 +1007,38 @@ Similarly, to nest a paragraph or code block under a **nested** list item, inser
 
 1. This is a step.
 ```
+
+#### Use ordered lists when there are multiple steps in a section
+
+Don't use prose to describe multiple steps within a section. Instead, use an ordered list. If a topic introduces actions the user performs with "First, ..." and "Next, ..." you should make these an ordered list.
+
+**Incorrect**
+
+First, run this command:
+
+~~~ shell
+command1 --option
+~~~
+
+Then, run another command:
+
+~~~ shell
+command2 myfile.yaml
+~~~
+
+**Correct**
+
+1. Run this command:
+
+    ~~~ shell
+    command1 --option
+    ~~~
+
+1. Run another command:
+
+    ~~~ shell
+    command2 myfile.yaml
+    ~~~
 
 ### Images
 

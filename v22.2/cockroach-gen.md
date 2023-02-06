@@ -182,120 +182,126 @@ You can also use the [`cockroach workload`](cockroach-workload.html) command to 
 
 To test out CockroachDB, you can generate an example `startrek` database, which contains 2 tables, `episodes` and `quotes`.
 
-First, start up [a demo cluster](cockroach-demo.html):
+1. Start up [a demo cluster](cockroach-demo.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach demo
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach demo
+    ~~~
 
-Then, pipe the output from `cockroach gen` to [the URL to the demo cluster](cockroach-demo.html#connection-parameters):
+1. Pipe the output from `cockroach gen` to [the URL to the demo cluster](cockroach-demo.html#connection-parameters):
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach gen example-data startrek | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach gen example-data startrek | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
+    ~~~
 
-~~~
-CREATE DATABASE
-SET
-DROP TABLE
-DROP TABLE
-CREATE TABLE
-INSERT 1
-...
-CREATE TABLE
-INSERT 1
-...
-~~~
+    ~~~
+    CREATE DATABASE
+    SET
+    DROP TABLE
+    DROP TABLE
+    CREATE TABLE
+    INSERT 1
+    ...
+    CREATE TABLE
+    INSERT 1
+    ...
+    ~~~
 
-Open a [SQL shell](cockroach-sql.html) to view it:
+1. Open a [SQL shell](cockroach-sql.html) to view it:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM startrek;
-~~~
-~~~
-  schema_name | table_name | type  | estimated_row_count
---------------+------------+-------+----------------------
-  public      | episodes   | table |                  79
-  public      | quotes     | table |                 200
-(2 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW TABLES FROM startrek;
+    ~~~
 
-You can also generate an example `intro` database, which contains 1 table, `mytable`, with a hidden message:
+    ~~~
+      schema_name | table_name | type  | estimated_row_count
+    --------------+------------+-------+----------------------
+      public      | episodes   | table |                  79
+      public      | quotes     | table |                 200
+    (2 rows)
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach gen example-data intro | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
-~~~
+1. Generate an example `intro` database, which contains 1 table, `mytable`, with a hidden message:
 
-~~~
-CREATE DATABASE
-SET
-DROP TABLE
-CREATE TABLE
-INSERT 1
-INSERT 1
-INSERT 1
-INSERT 1
-...
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach gen example-data intro | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-# Launch the built-in SQL client to view it:
-$ cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
-~~~
+    ~~~
+    CREATE DATABASE
+    SET
+    DROP TABLE
+    CREATE TABLE
+    INSERT 1
+    INSERT 1
+    INSERT 1
+    INSERT 1
+    ...
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM intro;
-~~~
+1. Launch the SQL client to view it:
+ 
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
+    ~~~
 
-~~~
-  schema_name | table_name | type  | estimated_row_count
---------------+------------+-------+----------------------
-  public      | mytable    | table |                  42
-(1 row)
-~~~
+1. Show the tables in the `intro` database:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM intro.mytable WHERE (l % 2) = 0;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW TABLES FROM intro;
+    ~~~
 
-~~~
-  l  |                          v
------+-------------------------------------------------------
-   0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,
-   2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^
-   4 | !                    "?##mW##?"-
-   6 | !  C O N G R A T S  _am#Z??A#ma,           Y
-   8 | !                 _ummY"    "9#ma,       A
-  10 | !                vm#Z(        )Xmms    Y
-  12 | !              .j####mmm#####mm#m##6.
-  14 | !   W O W !    jmm###mm######m#mmm##6
-  16 | !             ]#me*Xm#m#mm##m#m##SX##c
-  18 | !             dm#||+*$##m#mm#m#Svvn##m
-  20 | !            :mmE=|+||S##m##m#1nvnnX##;     A
-  22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M
-  24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A
-  26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z
-  28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E
-  30 | !       I       4#ma+|++]mmhvnnvq##P`       !
-  32 | !        D I     ?$#q%+|dmmmvnnm##!
-  34 | !           T     -4##wu#mm#pw##7'
-  36 | !                   -?$##m####Y'
-  38 | !             !!       "Y##Y"-
-  40 | !
-(21 rows)
-~~~
+    ~~~
+      schema_name | table_name | type  | estimated_row_count
+    --------------+------------+-------+----------------------
+      public      | mytable    | table |                  42
+    (1 row)
+    ~~~
+
+1. Select the message from the table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM intro.mytable WHERE (l % 2) = 0;
+    ~~~
+
+    ~~~
+      l  |                          v
+    -----+-------------------------------------------------------
+      0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,
+      2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^
+      4 | !                    "?##mW##?"-
+      6 | !  C O N G R A T S  _am#Z??A#ma,           Y
+      8 | !                 _ummY"    "9#ma,       A
+      10 | !                vm#Z(        )Xmms    Y
+      12 | !              .j####mmm#####mm#m##6.
+      14 | !   W O W !    jmm###mm######m#mmm##6
+      16 | !             ]#me*Xm#m#mm##m#m##SX##c
+      18 | !             dm#||+*$##m#mm#m#Svvn##m
+      20 | !            :mmE=|+||S##m##m#1nvnnX##;     A
+      22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M
+      24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A
+      26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z
+      28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E
+      30 | !       I       4#ma+|++]mmhvnnvq##P`       !
+      32 | !        D I     ?$#q%+|dmmmvnnm##!
+      34 | !           T     -4##wu#mm#pw##7'
+      36 | !                   -?$##m####Y'
+      38 | !             !!       "Y##Y"-
+      40 | !
+    (21 rows)
+    ~~~
 
 ### Generate an HAProxy config file
 

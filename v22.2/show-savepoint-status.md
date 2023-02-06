@@ -28,39 +28,39 @@ Field | Description
 
 ## Example
 
-First, open a [transaction](transactions.html) using [`BEGIN`](begin-transaction.html), and create a [nested transaction](transactions.html#nested-transactions) using a [savepoint](savepoint.html):
+1. Open a [transaction](transactions.html) using [`BEGIN`](begin-transaction.html), and create a [nested transaction](transactions.html#nested-transactions) using a [savepoint](savepoint.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> BEGIN;
-SAVEPOINT foo;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > BEGIN;
+    SAVEPOINT foo;
+    ~~~
 
-Next, use the `SHOW SAVEPOINT STATUS` statement to list the active savepoints in the current nested transaction.
+1. Use the `SHOW SAVEPOINT STATUS` statement to list the active savepoints in the current nested transaction.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW SAVEPOINT STATUS;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW SAVEPOINT STATUS;
+    ~~~
 
-~~~
-  savepoint_name | is_initial_savepoint
------------------+-----------------------
-  foo            |        true
-(1 row)
-~~~
+    ~~~
+      savepoint_name | is_initial_savepoint
+    -----------------+-----------------------
+      foo            |        true
+    (1 row)
+    ~~~
 
-Currently, there is only one savepoint.
+    Currently, there is only one savepoint.
 
-We can commit this nested transaction by issuing the [`RELEASE SAVEPOINT`](release-savepoint.html) statement.  Then, we clear the connection for the next transaction by issuing a [`COMMIT`](commit-transaction.html) statement.
+1. Commit this nested transaction by issuing the [`RELEASE SAVEPOINT`](release-savepoint.html) statement, then clear the connection for the next transaction by issuing a [`COMMIT`](commit-transaction.html) statement:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RELEASE SAVEPOINT foo;
-COMMIT;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RELEASE SAVEPOINT foo;
+    COMMIT;
+    ~~~
 
-If we did not want to commit this nested transaction, but restart it instead, we would have issued a [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction).
+    If we did not want to commit this nested transaction, but restart it instead, we would have issued a [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction).
 
 ## See also
 

@@ -378,56 +378,56 @@ $ cockroach init \
 
 In this example we will start a multi-node [local cluster](start-a-local-cluster.html) with a multi-region setup that uses the same regions (passed to the [`--locality`](#locality) flag) as the [multi-region MovR demo application](demo-low-latency-multi-region-deployment.html).
 
-First, start a node in the `us-east1` region:
+1. Start a node in the `us-east1` region:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach start --locality=region=us-east1,zone=us-east-1a --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start --locality=region=us-east1,zone=us-east-1a --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ~~~
 
-Next, start a node in the `us-west1` region:
+1. Start a node in the `us-west1` region:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach start --locality=region=us-west1,zone=us-west-1a --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start --locality=region=us-west1,zone=us-west-1a --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ~~~
 
-Next, start a node in the `europe-west1` region:
+1. Start a node in the `europe-west1` region:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach start --locality=region=europe-west1,zone=europe-west-1a --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start --locality=region=europe-west1,zone=europe-west-1a --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ~~~
 
-Next, initialize the cluster:
+1. Initialize the cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach init --insecure --host=localhost --port=26257
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach init --insecure --host=localhost --port=26257
+    ~~~
 
-Next, connect to the cluster using [`cockroach sql`](cockroach-sql.html):
+1. Connect to the cluster using [`cockroach sql`](cockroach-sql.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach sql --host=localhost --port=26257 --insecure
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --host=localhost --port=26257 --insecure
+    ~~~
 
-Finally, issue the [`SHOW REGIONS`](show-regions.html) statement to verify that the list of regions is expected.
+1. Issue the [`SHOW REGIONS`](show-regions.html) statement to verify that the list of regions is expected:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW REGIONS;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW REGIONS;
+    ~~~
 
-~~~
-     region    | zones | database_names | primary_region_of
----------------+-------+----------------+--------------------
-  europe-west1 | {}    | {}             | {}
-  us-east1     | {}    | {}             | {}
-  us-west1     | {}    | {}             | {}
-(3 rows)
-~~~
+    ~~~
+        region    | zones | database_names | primary_region_of
+    ---------------+-------+----------------+--------------------
+      europe-west1 | {}    | {}             | {}
+      us-east1     | {}    | {}             | {}
+      us-west1     | {}    | {}             | {}
+    (3 rows)
+    ~~~
 
 For more information about running CockroachDB multi-region, see the [Multi-region Capabilities Overview](multiregion-overview.html).
 

@@ -31,39 +31,39 @@ SELECT ST_GeomFromText('MULTILINESTRING((0 0, 1440 900), (800 600, 200 400))');
 
 A MultiLineString can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`](st_union.html) on a column that contains [LineString](linestring.html) geometries.  In the example below, we will build a MultiLineString from several LineStrings.
 
-First, insert the LineStrings:
+1. Insert the LineStrings:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE tmp_linestrings (id INT8 default unique_rowid(), geom GEOMETRY);
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE tmp_linestrings (id INT8 default unique_rowid(), geom GEOMETRY);
 
-INSERT INTO tmp_linestrings (geom)
-VALUES
-(st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980)')),
-(st_geomfromtext('SRID=4326;LINESTRING(-75.704722 36.076944, -95.992775 36.153980, -87.906471 43.038902)')),
-(st_geomfromtext('SRID=4326;LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'));
-~~~
+    INSERT INTO tmp_linestrings (geom)
+    VALUES
+    (st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980)')),
+    (st_geomfromtext('SRID=4326;LINESTRING(-75.704722 36.076944, -95.992775 36.153980, -87.906471 43.038902)')),
+    (st_geomfromtext('SRID=4326;LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'));
+    ~~~
 
-Next, build a MultiLineString from the individual [LineStrings](linestring.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiLineString:
+1. Build a MultiLineString from the individual [LineStrings](linestring.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiLineString:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_linestrings;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_linestrings;
+    ~~~
 
-~~~
-        output
-----------------------
-  ST_MultiLineString
-(1 row)
-~~~
+    ~~~
+            output
+    ----------------------
+      ST_MultiLineString
+    (1 row)
+    ~~~
 
-Finally, drop the temporary table:
+1. Drop the temporary table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP TABLE tmp_linestrings;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    DROP TABLE tmp_linestrings;
+    ~~~
 
 ## See also
 

@@ -432,129 +432,134 @@ Alembic can automatically generate migrations, based on changes to the models in
 
 Let's use the same example `overdrawn` computed column from above.
 
-First, downgrade the `fd88c68af7b5` migration:
+1. Downgrade the `fd88c68af7b5` migration:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ alembic downgrade -1
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ alembic downgrade -1
+    ~~~
 
-~~~
-INFO  [alembic.runtime.migration] Context impl CockroachDBImpl.
-INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-INFO  [alembic.runtime.migration] Running downgrade fd88c68af7b5 -> ad72c7ec8b22, add_overdrawn_column
-~~~
+    ~~~
+    INFO  [alembic.runtime.migration] Context impl CockroachDBImpl.
+    INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+    INFO  [alembic.runtime.migration] Running downgrade fd88c68af7b5 -> ad72c7ec8b22, add_overdrawn_column
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM accounts;
-~~~
+1. Verify the columns using a `SHOW COLUMNS` statement:
 
-~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
---------------+-----------+-------------+----------------+-----------------------+-----------+------------
-  id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                       | {primary} |   false
-(2 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW COLUMNS FROM accounts;
+    ~~~
 
-Delete the old migration file:
-{% include_cached copy-clipboard.html %}
-~~~ shell
-rm alembic/versions/fd88c68af7b5_add_overdrawn_column.py
-~~~
+    ~~~
+      column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+    --------------+-----------+-------------+----------------+-----------------------+-----------+------------
+      id          | UUID      |    false    | NULL           |                       | {primary} |   false
+      balance     | INT8      |    true     | NULL           |                       | {primary} |   false
+    (2 rows)
+    ~~~
 
-Open the `models.py` file in the app's project, and add the `overdrawn` column to the `Account` class definition:
+1. Delete the old migration file:
 
-~~~ python
-from sqlalchemy import Column, Integer, Boolean, Computed
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    rm alembic/versions/fd88c68af7b5_add_overdrawn_column.py
+    ~~~
 
-...
+1. Open the `models.py` file in the app's project, and add the `overdrawn` column to the `Account` class definition:
 
-class Account(Base):
-    """The Account class corresponds to the "accounts" database table.
-    """
-    __tablename__ = 'accounts'
-    id = Column(UUID(as_uuid=True), primary_key=True)
-    balance = Column(Integer)
-    overdrawn = Column('overdrawn', Boolean, Computed('CASE WHEN balance < 0 THEN True ELSE False END'))
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ python
+    from sqlalchemy import Column, Integer, Boolean, Computed
 
-Then, open the `alembic/env.py` file, and add the following import to the top of the file:
+    ...
 
-~~~ python
-from ..models import Base
-~~~
+    class Account(Base):
+        """The Account class corresponds to the "accounts" database table.
+        """
+        __tablename__ = 'accounts'
+        id = Column(UUID(as_uuid=True), primary_key=True)
+        balance = Column(Integer)
+        overdrawn = Column('overdrawn', Boolean, Computed('CASE WHEN balance < 0 THEN True ELSE False END'))
+    ~~~
 
-And update the variable `target_metadata` to read as follows:
+1. Open the `alembic/env.py` file, and add the following import to the top of the file:
 
-~~~ python
-target_metadata = Base.metadata
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ python
+    from ..models import Base
+    ~~~
 
-These two lines import the database model metadata from the app.
+1. Update the variable `target_metadata` to read as follows:
 
-Use the `alembic` command-line tool to auto-generate the migration from the models defined in the app:
+    {% include_cached copy-clipboard.html %}
+    ~~~ python
+    target_metadata = Base.metadata
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ alembic revision --autogenerate -m "add overdrawn column"
-~~~
+    These two lines import the database model metadata from the app.
 
-~~~
-INFO  [alembic.runtime.migration] Context impl CockroachDBImpl.
-INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-INFO  [alembic.autogenerate.compare] Detected added column 'accounts.overdrawn'
-  Generating /path/example-app-python-sqlalchemy/alembic/versions/44fa7043e441_add_overdrawn_column.py ...  done
-~~~
+1. Use the `alembic` command-line tool to auto-generate the migration from the models defined in the app:
 
-Alembic creates a new migration file (`44fa7043e441_add_overdrawn_column.py`, in this case).
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ alembic revision --autogenerate -m "add overdrawn column"
+    ~~~
 
-If you open this file, you'll see that it looks very similar to the one you manually created earlier in the tutorial.
+    ~~~
+    INFO  [alembic.runtime.migration] Context impl CockroachDBImpl.
+    INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+    INFO  [alembic.autogenerate.compare] Detected added column 'accounts.overdrawn'
+      Generating /path/example-app-python-sqlalchemy/alembic/versions/44fa7043e441_add_overdrawn_column.py ...  done
+    ~~~
 
-~~~ python
-...
-def upgrade():
-    # ### commands auto generated by Alembic - please adjust! ###
-    op.add_column('accounts', sa.Column('overdrawn', sa.Boolean(), sa.Computed('CASE WHEN balance < 0 THEN True ELSE False END', ), nullable=True))
-    # ### end Alembic commands ###
+    Alembic creates a new migration file (`44fa7043e441_add_overdrawn_column.py`, in this case).
 
+    If you open this file, you'll see that it looks very similar to the one you manually created earlier in the tutorial.
 
-def downgrade():
-    # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_column('accounts', 'overdrawn')
-    # ### end Alembic commands ###
-~~~
-
-Run the migration:
+    ~~~ python
+    ...
+    def upgrade():
+        # ### commands auto generated by Alembic - please adjust! ###
+        op.add_column('accounts', sa.Column('overdrawn', sa.Boolean(), sa.Computed('CASE WHEN balance < 0 THEN True ELSE False END', ), nullable=True))
+        # ### end Alembic commands ###
 
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ alembic upgrade 44fa7043e441
-~~~
+    def downgrade():
+        # ### commands auto generated by Alembic - please adjust! ###
+        op.drop_column('accounts', 'overdrawn')
+        # ### end Alembic commands ###
+    ~~~
 
-~~~
-INFO  [alembic.runtime.migration] Context impl CockroachDBImpl.
-INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-INFO  [alembic.runtime.migration] Running upgrade ad72c7ec8b22 -> 44fa7043e441, add overdrawn column
-~~~
+1. Run the migration:
 
-Verify that the new column exists in the `accounts` table:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    alembic upgrade 44fa7043e441
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW COLUMNS FROM accounts;
-~~~
+    ~~~
+    INFO  [alembic.runtime.migration] Context impl CockroachDBImpl.
+    INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+    INFO  [alembic.runtime.migration] Running upgrade ad72c7ec8b22 -> 44fa7043e441, add overdrawn column
+    ~~~
 
-~~~
-  column_name | data_type | is_nullable | column_default |             generation_expression              |  indices  | is_hidden
---------------+-----------+-------------+----------------+------------------------------------------------+-----------+------------
-  id          | UUID      |    false    | NULL           |                                                | {primary} |   false
-  balance     | INT8      |    true     | NULL           |                                                | {primary} |   false
-  overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {primary} |   false
-(3 rows)
-~~~
+1. Verify that the new column exists in the `accounts` table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW COLUMNS FROM accounts;
+    ~~~
+
+    ~~~
+      column_name | data_type | is_nullable | column_default |             generation_expression              |  indices  | is_hidden
+    --------------+-----------+-------------+----------------+------------------------------------------------+-----------+------------
+      id          | UUID      |    false    | NULL           |                                                | {primary} |   false
+      balance     | INT8      |    true     | NULL           |                                                | {primary} |   false
+      overdrawn   | BOOL      |    true     | NULL           | CASE WHEN balance < 0 THEN true ELSE false END | {primary} |   false
+    (3 rows)
+    ~~~
 
 ## Report Issues with Alembic and CockroachDB
 

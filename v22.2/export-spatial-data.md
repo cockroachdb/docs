@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying spatial data.
+CockroachDB supports efficiently storing and querying spatial data.
 
 This page has instructions for exporting spatial data from CockroachDB and converting it to other spatial formats using the [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) command.
 

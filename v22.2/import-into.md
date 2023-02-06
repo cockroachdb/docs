@@ -196,28 +196,28 @@ To import into a new table, use [`CREATE TABLE`](create-table.html) followed by 
  Certain [`IMPORT TABLE`](import.html) statements that defined the table schema inline are **not** supported in v22.1+. We recommend using the following example to import data into a new table.
 {{site.data.alerts.end}}
 
-First, create the new table with the necessary columns and data types:
+1. Create the new table with the necessary columns and data types:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE TABLE users (
-        id UUID PRIMARY KEY,
-        city STRING,
-        name STRING,
-        address STRING,
-        credit_card STRING
-      );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE TABLE users (
+            id UUID PRIMARY KEY,
+            city STRING,
+            name STRING,
+            address STRING,
+            credit_card STRING
+          );
+    ~~~
 
-Next, use `IMPORT INTO` to import the data into the new table:
+1. Use `IMPORT INTO` to import the data into the new table:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-IMPORT INTO users (id, city, name, address, credit_card)
-     CSV DATA (
-       's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-     );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    IMPORT INTO users (id, city, name, address, credit_card)
+        CSV DATA (
+          's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+        );
+    ~~~
 
 ### Import into an existing table from a CSV file
 

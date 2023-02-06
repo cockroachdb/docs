@@ -15,39 +15,39 @@ A `MULTIPOINT` is a collection of [Points](point.html).  MultiPoints are useful 
 
 A MultiPoint can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`](st_union.html) on a column that contains [Point](point.html) geometries.  In the example below, we will build a MultiPoint from several Points.
 
-First, insert the Points:
+1. Insert the Points:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE tmp_points (id INT8 default unique_rowid(), geom GEOMETRY);
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE tmp_points (id INT8 default unique_rowid(), geom GEOMETRY);
 
-INSERT INTO tmp_points (geom)
-VALUES
-(st_geomfromtext('POINT (-88.243357000000003 40.117404000000001)')),
-(st_geomfromtext('POINT (-94.598371 39.050068000000003)')),
-(st_geomfromtext('POINT (-73.962090000000003 40.609226)'));
-~~~
+    INSERT INTO tmp_points (geom)
+    VALUES
+    (st_geomfromtext('POINT (-88.243357000000003 40.117404000000001)')),
+    (st_geomfromtext('POINT (-94.598371 39.050068000000003)')),
+    (st_geomfromtext('POINT (-73.962090000000003 40.609226)'));
+    ~~~
 
-Next, build a MultiPoint from the individual [Points](point.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiPoint:
+1. Build a MultiPoint from the individual [Points](point.html) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiPoint:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_points;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_points;
+    ~~~
 
-~~~
-     output
------------------
-  ST_MultiPoint
-(1 row)
-~~~
+    ~~~
+        output
+    -----------------
+      ST_MultiPoint
+    (1 row)
+    ~~~
 
-Finally, drop the temporary table:
+1. Drop the temporary table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-DROP TABLE tmp_points;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    DROP TABLE tmp_points;
+    ~~~
 
 ### Well known text
 
