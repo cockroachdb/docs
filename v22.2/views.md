@@ -270,7 +270,7 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 ### View dependencies
 
-A view depends on the objects targeted by its underlying query. Attempting to [rename an object](rename-table.html) referenced in a view's stored query therefore results in an error:
+A view depends on the objects targeted by its underlying query. Attempting to [rename an object](alter-table.html#rename-to) referenced in a view's stored query therefore results in an error:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -307,7 +307,7 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
- You can [drop](drop-column.html) or [rename columns](rename-column.html) from a table on which a view is dependent, as long as the view does not depend on that column of the table. For example, because there is no view that depends on the `num` column of the `episodes` table, you can rename it to `number`:
+ You can [drop](alter-table.html#drop-column) or [rename columns](alter-table.html#rename-column) from a table on which a view is dependent, as long as the view does not depend on that column of the table. For example, because there is no view that depends on the `num` column of the `episodes` table, you can rename it to `number`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -58,7 +58,7 @@ The general process of creating a hash-sharded index is to add the `USING HASH` 
 
 - [`CREATE INDEX`](create-index.html)
 - [`CREATE TABLE`](create-table.html)
-- [`ALTER PRIMARY KEY`](alter-primary-key.html)
+- [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
 
 When this clause is used, CockroachDB creates a computed shard column and then stores each index shard in the underlying key-value store with one of the computed column's hash as its prefix.
 

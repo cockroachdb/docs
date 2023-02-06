@@ -9,7 +9,7 @@ To add a size limit using [`CREATE TABLE`](create-table.html):
 CREATE TABLE name (first STRING(100), last STRING(100));
 ~~~
 
-To add a size limit using [`ALTER TABLE ... ALTER COLUMN`](alter-column.html):
+To add a size limit using [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

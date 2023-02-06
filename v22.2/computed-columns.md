@@ -88,7 +88,7 @@ For compatibility with PostgreSQL, CockroachDB also supports creating store comp
 
 {% include {{ page.version.version }}/computed-columns/add-computed-column.md %}
 
-For more information, see [`ADD COLUMN`](add-column.html).
+For more information, see [`ADD COLUMN`](alter-table.html#add-column).
 
 ### Convert a computed column into a regular column
 

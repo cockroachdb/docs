@@ -167,7 +167,8 @@ To show information about a row in a secondary index, you must know the values o
 ## See also
 
 - [`SHOW RANGES`](show-ranges.html)
-- [`SPLIT AT`](split-at.html)
+- [`ALTER TABLE ... SPLIT AT`](alter-table.html#split-at)
+- [`ALTER INDEX ... SPLIT AT`](alter-index.html#split-at)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)

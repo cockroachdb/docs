@@ -12,7 +12,7 @@ The `DROP USER` [statement](sql-statements.html) removes one or more SQL users. 
 
 ## Consideration
 
-Users that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
+Users that [own objects](security-reference/authorization.html#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user](alter-database.html#change-a-databases-owner).
 
 ## Required privileges
 

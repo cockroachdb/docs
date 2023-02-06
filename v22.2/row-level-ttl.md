@@ -191,8 +191,8 @@ The `ttl_expiration_expression` parameter has the following requirements:
 
 - It must evaluate to a [`TIMESTAMPTZ`](timestamp.html).
 - It must not reference any columns outside the table to which it is applied.
-- Any column it references cannot be [dropped](drop-column.html) or have its [type altered](alter-type.html).
-- Finally, if the [column is renamed](rename-column.html), the value of `ttl_expiration_expression` is automatically updated.
+- Any column it references cannot be [dropped](alter-table.html#drop-column) or have its [type altered](alter-type.html).
+- Finally, if the [column is renamed](alter-table.html#rename-column), the value of `ttl_expiration_expression` is automatically updated.
 
 ### Create a table with `ttl_expire_after`
 

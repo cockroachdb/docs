@@ -2,6 +2,6 @@ A _global_ table is optimized for low-latency reads from every region in the dat
 
 For an example of a table that can benefit from the _global_ table locality setting in a multi-region deployment, see the `promo_codes` table from the [MovR application](movr.html).
 
-For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#global).
+For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE ... SET LOCALITY`](alter-table.html#global).
 
 For more information about global tables, including troubleshooting information, see [Global Tables](global-tables.html).
