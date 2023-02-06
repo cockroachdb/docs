@@ -73,9 +73,9 @@ You can check the state of any schema object's replication zone configuration at
 
 #### Duplicate indexes
 
-If you used the [duplicate indexes pattern][dupe_index], the steps for backing out the old configuration are:
+If you used the [duplicate indexes pattern][../v20.2/topology-duplicate-indexes.html], the steps for backing out the old configuration are:
 
-1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](alter-database.html#remove-a-replication-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the [duplicate indexes][dupe_index] pattern, you will have to reapply them.
+1. Remove the replication zone configurations you added using the [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](alter-database.html#remove-a-replication-zone) statement. Note that this will remove all zone configurations from the table. If you had any additional customizations beyond what are required for the [duplicate indexes][../v20.2/topology-duplicate-indexes.html] pattern, you will have to reapply them.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -94,7 +94,7 @@ The latency and resiliency benefits of the duplicate indexes pattern can be repl
 
 #### Geo-partitioned replicas
 
-If you applied the [geo-partitioned replicas][geo_replicas] pattern, the steps for backing out the old configuration are:
+If you applied the [geo-partitioned replicas][../v20.2/topology-geo-partitioned-replicas.html] pattern, the steps for backing out the old configuration are:
 
 1. Remove the manually created table partition. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
@@ -118,7 +118,7 @@ The multi-region SQL abstractions use a hidden [`crdb_region`](alter-table.html#
 
 #### Geo-partitioned leaseholders
 
-If you applied the [geo-partitioned leaseholders][geo_leaseholders] pattern, the steps for backing out the old configuration are:
+If you applied the [geo-partitioned leaseholders][../v20.2/topology-geo-partitioned-leaseholders.html] pattern, the steps for backing out the old configuration are:
 
 1. Remove the manually created table partition. This will also automatically remove the replication zone configurations that were applied to the partition as part of the instructions.
 
@@ -313,9 +313,3 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
 - [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
 - [Zone Config Extensions](zone-config-extensions.html)
-
-<!-- Reference Links -->
-
-[dupe_index]:       https://www.cockroachlabs.com/docs/v20.2/topology-duplicate-indexes.html
-[geo_replicas]:     https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-replicas.html
-[geo_leaseholders]: https://www.cockroachlabs.com/docs/v20.2/topology-geo-partitioned-leaseholders.html
