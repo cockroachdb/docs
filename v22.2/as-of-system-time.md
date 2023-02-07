@@ -10,7 +10,7 @@ The `AS OF SYSTEM TIME timestamp` clause causes statements to execute using the 
 You can use this clause to read historical data (also known as "[time travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)") and to improve performance by decreasing transaction conflicts. See [Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
 
 {{site.data.alerts.callout_info}}
-Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field in the [replication zone configuration](configure-replication-zones.html).
+Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field in the [replication zone configuration](configure-replication-zones.html). All {{ site.data.products.serverless }} clusters have a default garbage collection window of 4500 seconds (1.25 hours) that cannot be altered.
 {{site.data.alerts.end}}
 
 ## Synopsis
