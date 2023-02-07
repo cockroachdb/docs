@@ -1,0 +1,1 @@
+You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) to interact with external resources that require implicit access.
