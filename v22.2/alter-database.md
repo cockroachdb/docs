@@ -43,7 +43,7 @@ Subcommand | Description
 [`DROP SUPER REGION`](#drop-super-region) | Drop a super region made up of a set of [database regions](multiregion-overview.html#super-regions). ([Enterprise-only](enterprise-licensing.html).)
 [`OWNER TO`](#owner-to) |  Change the owner of a database.
 [`PLACEMENT`](#placement) | Configure the replica placement policy for a [multi-region database](multiregion-overview.html).
-[`RENAME TO`](#rename-database) | Change the name of a database.
+[`RENAME TO`](#rename-to) | Change the name of a database.
 [`RESET {session variable}`](#reset-session-variable) |  Reset the session variable values for the database to the system defaults. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... RESET {session variable}`](alter-role.html).
 [`SET {session variable}`](#set-session-variable) |  Set the default session variable values for the database. This syntax is identical to [`ALTER ROLE ALL IN DATABASE ... SET {session variable}`](alter-role.html).
 [`SET PRIMARY REGION`](#set-primary-region) |  Set the primary region of a [multi-region database](multiregion-overview.html). ([Enterprise-only](enterprise-licensing.html).)
