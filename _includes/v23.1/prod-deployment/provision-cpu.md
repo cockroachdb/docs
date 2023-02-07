@@ -1,0 +1,1 @@
+**at least 4 vCPUs**

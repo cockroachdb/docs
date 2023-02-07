@@ -1,0 +1,1 @@
+We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html). You also need to ensure that the permissions at your storage destination are configured for the bulk operation. See [Storage Permissions](use-cloud-storage-for-bulk-operations.html#storage-permissions) for a list of the necessary permissions that each bulk operation requires.
