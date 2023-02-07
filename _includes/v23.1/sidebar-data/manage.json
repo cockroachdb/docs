@@ -97,7 +97,7 @@
       ]
     },
     {
-      "title": "Back Up and Restore Data",
+      "title": "Backups and Restores",
       "items": [
         {
           "title": "Backup and Restore Overview",
@@ -112,7 +112,13 @@
           ]
         },
         {
-          "title": "Back Up and Restore CockroachDB Cloud Clusters",
+          "title": "Managed-Service Backups",
+          "urls": [
+            "/cockroachcloud/use-managed-service-backups.html"
+          ]
+        },
+        {
+          "title": "Customer-Owned Backups",
           "items": [
             {
               "title": "Take and Restore Customer-Owned Backups",
@@ -120,17 +126,6 @@
                 "/cockroachcloud/take-and-restore-customer-owned-backups.html"
               ]
             },
-            {
-              "title": "Use Managed-Service Backups",
-              "urls": [
-                "/cockroachcloud/use-managed-service-backups.html"
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Back Up and Restore CockroachDB Self-Hosted Clusters",
-          "items": [
             {
               "title": "Full and Incremental Backups",
               "urls": [
@@ -160,13 +155,13 @@
               "urls": [
                 "/${VERSION}/manage-a-backup-schedule.html"
               ]
+            },
+            {
+              "title": "Backup Validation",
+              "urls": [
+                "/${VERSION}/backup-validation.html"
+              ]
             }
-          ]
-        },
-        {
-          "title": "Backup Validation",
-          "urls": [
-            "/${VERSION}/backup-validation.html"
           ]
         },
         {

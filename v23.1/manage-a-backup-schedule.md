@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+{% include {{ page.version.version }}/backups/feature-availability-note.md %}
+
  You can create schedules in CockroachDB for periodic backups. Once a [backup schedule is created](#create-a-new-backup-schedule), you can do the following:
 
 - [Set up monitoring for the backup schedule](#set-up-monitoring-for-the-backup-schedule)

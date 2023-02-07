@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page provides information about how to take and restore locality-aware backups.
+{% include {{ page.version.version }}/backups/feature-availability-note.md %}
 
 {{site.data.alerts.callout_info}}
 Locality-aware [`BACKUP`](backup.html) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.

@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+{% include {{ page.version.version }}/backups/feature-availability-note.md %}
+
 {{site.data.alerts.callout_info}}
 [`BACKUP`](backup.html) with revision history is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
