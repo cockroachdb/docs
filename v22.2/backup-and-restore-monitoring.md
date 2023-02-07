@@ -14,11 +14,11 @@ Depending on whether you are using a {{ site.data.products.dedicated }} or {{ si
 
 We recommend setting up monitoring to alert when anomalies occur. You can then use the following SQL statements to inspect details relating to schedules, jobs, and backups:
 
-- [`SHOW SCHEDULES`](show-scheduled.html)
+- [`SHOW SCHEDULES`](show-schedules.html)
 - [`SHOW JOBS`](show-jobs.html)
 - [`SHOW BACKUP`](show-backup.html)
 
-For detail on [managed-service backups](use-managed-service-backups.html) that Cockroach Labs stores for your {{ site.data.products.db }} cluster, see the **Backups** page in the Cloud Console.
+For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your {{ site.data.products.db }} cluster, see the **Backups** page in the Cloud Console.
 
 {% include {{ page.version.version }}/backups/metrics-per-node.md %}
 
@@ -55,7 +55,7 @@ Metric | Description
 
 To use the Datadog integration with your **{{ site.data.products.dedicated }}** cluster, you can:
 
-- Export the following schedule backup metrics to Datadog using the [Cloud API](../cockroachcloud/cloud-api.html). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html?filters=datadog-metrics-export).
+- Export the following schedule backup metrics to Datadog using the [Cloud API](../cockroachcloud/cloud-api.html). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster](../cockroachcloud/export-metrics.html?filters=datadog-metrics-export).
 - Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog).
 
 ### Available metrics in Datadog
