@@ -1,14 +1,10 @@
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
-
-  # optional, fails build when a category is below a threshold
-  [plugins.inputs.thresholds]
-    performance = 0.9
-    accessibility = 0.9
-    best-practices = 0.9
-    seo = 0.9
-    pwa = 0.9
-
-  # optional, deploy the lighthouse report to a path under your site
   [plugins.inputs]
     output_path = "reports/lighthouse.html"
+    [plugins.inputs.thresholds]
+      performance = 0.9
+      accessibility = 0.9
+      best-practices = 0.9
+      seo = 0.9
+      pwa = 0.9
