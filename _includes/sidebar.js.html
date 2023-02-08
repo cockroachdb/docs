@@ -97,7 +97,7 @@
             // This condition makes it possible to use external
             // urls in the sidebar.
             if (!/^https?:/.test(url)) {
-              url = {% if site.url == "https://www.cockroachlabs.com" %}'{{ site.url }}' + {% endif %}sidebar.baseUrl + url;
+              url = sidebar.baseUrl + url;
             }
             return url;
           });
@@ -105,7 +105,7 @@
           // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
           var activePathname
           if (!/^https?:/.test(location.pathname)) {
-            activePathname = {% if site.url == "https://www.cockroachlabs.com" %}'{{ site.url }}' + {% endif %}location.pathname
+            activePathname = location.pathname
           }
           else {
             activePathname = location.pathname

@@ -55,6 +55,7 @@ jekyll_get_json:
   json: https://cockroachlabs.cloud/assets/docs/api/manifest.json
 keep_files:
 - _internal
+main_url: https://www.cockroachlabs.com
 markdown: Redcarpet
 plugins:
 - jekyll-include-cache
