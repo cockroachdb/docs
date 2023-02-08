@@ -30,7 +30,8 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**](upgrade-to-{{site.current_cloud_version}}.html)
-    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
+    - [**Add regions**](?filters=dedicated#add-regions-to-a-cluster)
+<!--    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) -->
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -113,11 +114,17 @@ AWS disks can only be scaled once every six hours.
 1. On the **Summary** page, verify your new cluster configuration.
 1. Click **Update**.
 
-## Add or remove regions from a cluster
+<!-- ## Add or remove regions from a cluster
 
-You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding.
+You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding. -->
 
-### Add a region to your cluster
+## Add a region to your cluster
+
+You can add up to nine regions at a time through the Console. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding.
+
+{{site.data.alerts.callout_info}}
+The ability to remove a region from a cluster through the Console is temporarily disabled. If you need to remove a region, [contact support](https://support.cockroachlabs.com).
+{{site.data.alerts.end}}
 
 1. Navigate to the cluster's **Overview** page.
 1. Select **Actions > Edit cluster**.
@@ -135,6 +142,7 @@ You can add or remove up to nine regions at a time through the Console. Note tha
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
+<!-- 
 ### Remove a region from your cluster
 
 When you remove a region from a [multi-region](plan-your-cluster.html#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](../{{site.versions["stable"]}}/node-shutdown.html?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](../{{site.versions["stable"]}}/ui-replication-dashboard.html#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. To remove a region from your cluster:
@@ -149,6 +157,7 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
+-->
 
 ## Create a database
 
