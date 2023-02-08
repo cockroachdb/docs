@@ -6,6 +6,8 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
+do not merge
+
 Indexes improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
 ## How do indexes work?
