@@ -30,8 +30,7 @@ For each cluster, the following details display:
     - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
     - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**](upgrade-to-{{site.current_cloud_version}}.html)
-    - [**Add regions**](?filters=dedicated#add-regions-to-a-cluster)
-<!--    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) -->
+{% comment %} - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) {% endcomment %}
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -114,7 +113,8 @@ AWS disks can only be scaled once every six hours.
 1. On the **Summary** page, verify your new cluster configuration.
 1. Click **Update**.
 
-<!-- ## Add or remove regions from a cluster
+{% comment %}
+## Add or remove regions from a cluster
 
 You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding. -->
 
@@ -142,7 +142,6 @@ The ability to remove a region from a cluster through the Console is temporarily
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
-<!-- 
 ### Remove a region from your cluster
 
 When you remove a region from a [multi-region](plan-your-cluster.html#multi-region-clusters) cluster, the node in that region with the highest ordinal will be [decommissioned](../{{site.versions["stable"]}}/node-shutdown.html?filters=decommission#decommission-the-node) first. Any ranges on that node will be [up-replicated](../{{site.versions["stable"]}}/ui-replication-dashboard.html#snapshot-data-received) to other nodes, and once decommission is complete that node will be shut down. This process is then repeated for every other node in the region. To remove a region from your cluster:
@@ -157,7 +156,7 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
--->
+{% endcomment %}
 
 ## Create a database
 

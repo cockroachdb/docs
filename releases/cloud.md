@@ -15,6 +15,12 @@ Get future release notes emailed to you:
 
 {% include releases/current-cloud-version.md %}
 
+## February 9, 2023
+
+<h3> General changes </h3>
+
+- For {{ site.data.products.dedicated }} clusters, the ability to add and remove regions through the {{ site.data.products.db }} Console has been temporarily disabled. If you need to add or remove regions from a cluster, [contact Support](https://support.cockroachlabs.com/).
+
 ## February 6, 2023
 
 <h3> General changes </h3>
