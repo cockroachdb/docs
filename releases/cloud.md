@@ -182,7 +182,7 @@ Get future release notes emailed to you:
 
 <h3>General changes</h3>
 
-- You can now [add and remove regions](../cockroachcloud/cluster-management.html#add-or-remove-regions-from-a-cluster) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console. This change makes it easier to support users in new locations or scale down your cluster.
+- You can now [add and remove regions](../cockroachcloud/cluster-management.html) from {{ site.data.products.dedicated }} clusters through the {{ site.data.products.db }} Console. This change makes it easier to support users in new locations or scale down your cluster.
 
 ## July 6, 2022
 
