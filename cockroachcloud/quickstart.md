@@ -1,5 +1,5 @@
 ---
-title: Quickstart with CockroachDB Cloud
+title: Quickstart with CockroachDB
 summary: Get started with a free CockroachDB Cloud cluster.
 toc: true
 referral_id: docs_quickstart_free
