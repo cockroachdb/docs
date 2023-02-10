@@ -57,10 +57,6 @@ Now that you have set up your project and created a database, in this section yo
 
 Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
 
-{{site.data.alerts.callout_info}}
-The following examples use the SSL mode `require` because the .NET Npgsql driver validates certificates differently from other PostgreSQL drivers. For other drivers, we recommend using `verify-full` as a security best practice.
-{{site.data.alerts.end}}
-
 <section class="filter-content" markdown="1" data-scope="local">
 
 {% include_cached copy-clipboard.html %}
@@ -89,11 +85,10 @@ In a text editor, modify `Program.cs` with the settings to connect to the demo c
 ~~~ csharp
 connStringBuilder.Host = "{localhost}";
 connStringBuilder.Port = 26257;
-connStringBuilder.SslMode = SslMode.Require;
+connStringBuilder.SslMode = SslMode.VerifyFull;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
 connStringBuilder.Database = "bank";
-connStringBuilder.TrustServerCertificate = true;
 ~~~
 
 Where `{username}` and `{password}` are the database username and password you created earlier.
@@ -110,12 +105,11 @@ Where `{username}` and `{password}` are the database username and password you c
 ~~~ csharp
 connStringBuilder.Host = "{host-name}";
 connStringBuilder.Port = 26257;
-connStringBuilder.SslMode = SslMode.Require;
+connStringBuilder.SslMode = SslMode.VerifyFull;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
 connStringBuilder.Database = "bank";
 connStringBuilder.RootCertificate = "~/.postgresql/root.crt";
-connStringBuilder.TrustServerCertificate = true;
 ~~~
 
 Where:
