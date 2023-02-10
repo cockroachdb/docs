@@ -26,7 +26,7 @@
 @import "utils/backgrounds";
 @import "utils/type";
 
-$images-url: "{{site.url}}/docs/images/";
+$images-url: "/docs/images/";
 
 html {
   height: 100%;
@@ -838,7 +838,7 @@ a.accordion-toggle {
   color: $neutral-800;
 }
 
-@import "{{site.url}}/docs/css/theme-blue.css";
+@import "/docs/css/theme-blue.css";
 
 a.btn-primary {
   &:hover {

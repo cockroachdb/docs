@@ -23,7 +23,16 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.8 or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.14 or later.
+    - If your CockroachDB cluster is running v22.1.14 or later, set the following session variable using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        ALTER ROLE {username} SET copy_from_retries_enabled = true;
+        ~~~
+
+        This prevents a potential issue when migrating especially large tables with millions of rows.
+
 - If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
     {{site.data.alerts.callout_danger}}
     You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
@@ -190,6 +199,15 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     ~~~
 
     Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
+
+- If you encounter a `TransactionRetryWithProtoRefreshError` error in the [Amazon CloudWatch logs](#step-2-2-task-settings) or [CockroachDB logs](logging-overview.html) when migrating an especially large table with millions of rows, and are running v22.1.14 or later, set the following session variable using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER ROLE {username} SET copy_from_retries_enabled = true;
+    ~~~
+
+    Then retry the migration.
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 

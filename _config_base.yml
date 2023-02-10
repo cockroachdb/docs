@@ -55,6 +55,7 @@ jekyll_get_json:
   json: https://cockroachlabs.cloud/assets/docs/api/manifest.json
 keep_files:
 - _internal
+main_url: https://www.cockroachlabs.com
 markdown: Redcarpet
 plugins:
 - jekyll-include-cache
@@ -143,7 +144,7 @@ release_info:
     crdb_branch_name: master
     docker_image: cockroachdb/cockroach-unstable
     name: v23.1.0-alpha.1
-    start_time: 2022-12-16 11:01:11.542608 +0000 UTC
+    start_time: 2023-02-07 11:34:13.953694 +0000 UTC
     version: v23.1.0-alpha.1
 sass:
   sass_dir: css
