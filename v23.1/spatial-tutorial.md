@@ -1695,6 +1695,7 @@ As mentioned above, the `bookstores` table was created by scraping web data from
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- sqlchecker: ignore
 INSERT
 INTO
 	bookstores
@@ -1776,6 +1777,7 @@ Each of these tables were populated using a script that parsed [the CSV files av
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- sqlchecker: ignore
 INSERT
 INTO
 	routes (id, name, country, state, geom)
