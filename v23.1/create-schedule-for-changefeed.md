@@ -132,6 +132,13 @@ To [resume](resume-schedules.html) a scheduled changefeed:
 RESUME SCHEDULE {schedule ID};
 ~~~
 
+To [delete](drop-schedules.html) a scheduled changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DROP SCHEDULE {schedule ID};
+~~~
+
 To see the full [`CREATE SCHEDULE` statement](show-create-schedule.html) for the scheduled changefeed:
 
 {% include_cached copy-clipboard.html %}
