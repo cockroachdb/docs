@@ -24,7 +24,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
-- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - When the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
 
@@ -176,7 +176,7 @@ RESTORE DATABASE backup_database_name FROM LATEST in 'your_backup_collection_URI
 To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
 
 {{site.data.alerts.callout_success}}
-If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
+If [dropping](drop-database.html) or [renaming](alter-database.html#rename-to) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
 {{site.data.alerts.end}}
 
 ### Tables
@@ -248,11 +248,11 @@ CockroachDB does **not** support incremental-only restores.
 
 - A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
-- A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
+- A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](alter-database.html#set-primary-region) from this cluster setting assigned to the target database.
 
 - `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
 
-- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](alter-table.html#regional-by-table), and [`GLOBAL`](alter-table.html#global) to another multi-region database is supported.
 
 - When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
 
@@ -464,20 +464,20 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
 
-First, create the new database that you'll restore the table or view into:
+1. Create the new database that you'll restore the table or view into:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE newdb;
+    ~~~
 
-Next, restore the table into the newly created database with `into_db`:
+2. Restore the table into the newly created database with `into_db`:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH into_db = 'newdb';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    WITH into_db = 'newdb';
+    ~~~
 
 #### Rename a database on restore
 
@@ -517,30 +517,34 @@ The `system.users` table stores your cluster's usernames and their hashed passwo
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
-First, create the new database that you'll restore the `system.users` table into:
+1. Create the new database that you'll restore the `system.users` table into:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE newdb;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH into_db = 'newdb';
-~~~
+1. Restore the `system.users` table into the new database:
 
-After the restore completes, add the `users` to the existing `system.users` table:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    WITH into_db = 'newdb';
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO system.users SELECT * FROM newdb.users;
-~~~
+1. After the restore completes, add the `users` to the existing `system.users` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> DROP TABLE newdb.users;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.users SELECT * FROM newdb.users;
+    ~~~
+
+1. Remove the temporary `users` table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > DROP TABLE newdb.users;
+    ~~~
 
 #### Restore from incremental backups in a different location
 

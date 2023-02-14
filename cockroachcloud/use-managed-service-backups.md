@@ -125,7 +125,7 @@ To restore a database:
 1. In the **Restore to** field, enter the name of the destination database. For multi-region databases on v21.2, see [Restore a multi-region database](#restore-a-multi-region-database-to-a-new-database-in-v21-2).
 
     {{site.data.alerts.callout_info}}
-    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/alter-database.html#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}
 
 1. Select any of the **Dependency options** to skip. You can:
@@ -164,7 +164,7 @@ To restore a table:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first [resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/alter-database.html#rename-to) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}
 
 1. Select any of the **Dependency options** to skip. You can:
@@ -246,7 +246,7 @@ If the database's name is already in use, either [drop the existing database](..
 > DROP DATABASE example_database;
 ~~~
 
-Or [change the existing database's name](../{{site.current_cloud_version}}/rename-database.html):
+Or [change the existing database's name](../{{site.current_cloud_version}}/alter-database.html#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -269,7 +269,7 @@ If the table's name is already in use, either [drop the existing table](../{{sit
 > DROP TABLE target_database.example_table;
 ~~~
 
-Or [change the existing table's name](../{{site.current_cloud_version}}/rename-table.html):
+Or [change the existing table's name](../{{site.current_cloud_version}}/alter-table.html#rename-to):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
