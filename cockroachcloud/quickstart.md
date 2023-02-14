@@ -6,7 +6,7 @@ referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to get started with CockroachDB quickly. You'll use [`ccloud`](ccloud-get-started.html), {{ site.data.products.db }}'s command-line interface (CLI) tool, to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java sample application.
+This page shows you how to get started with CockroachDB quickly. You'll use `ccloud`, {{ site.data.products.db }}'s command-line interface (CLI) tool, to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java sample application.
 
 ## Install <code>ccloud</code>
 
@@ -159,6 +159,7 @@ Now that you have a free {{ site.data.products.serverless }} cluster running, tr
 - [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.current_cloud_version}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data](../{{site.current_cloud_version}}/migration-overview.html).
+- Learn more about [`ccloud`](ccloud-get-started.html).
 
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
 
