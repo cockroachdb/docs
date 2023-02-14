@@ -28,9 +28,14 @@ The Simple Authentication and Security Layer [(SASL)](https://www.rfc-editor.org
 CockroachDB clusters can achieve a SASL-compliant security architecture using the SCRAM-SHA-256 implementation of SCRAM, a challenge–response password-based authentication mechanism. Together with transport layer security (TLS) and as part of properly managed trust architecture, SCRAM-SHA-256 authentication is a powerful security tool in any context where password-based authentication is required, and this is true for authenticating SQL clients to your CockroachDB cluster as well.
 
 {{site.data.alerts.callout_danger}}
-As of January 2023, [Looker](https://cloud.google.com/looker) and [Google Data Studio](https://datastudio.google.com) do not yet support SCRAM authentication. For more information, see https://issuetracker.google.com/issues/203573707
+As of February 2023, the products listed below do not yet support SCRAM authentication:
 
-If you use Looker or Google Data Studio with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
+| Product                                                                                          | Issue tracker / Forum Link                                                                                  |
+|--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------|
+| [Looker](https://cloud.google.com/looker) or [Google Data Studio](https://datastudio.google.com) | <https://issuetracker.google.com/issues/203573707>                                                          |
+| [Amazon Quicksight](https://aws.amazon.com/quicksight/)                                          | <https://community.amazonquicksight.com/t/my-quicksight-cannot-connect-to-rds-postgresql-db-via-vpc/4696/4> |
+
+If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ### Advantages and tradeoffs
