@@ -5,9 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `GRANT` [statement](sql-statements.html) controls each [role or user's](security-reference/authorization.html#users-and-roles) SQL privileges for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+The `GRANT` [statement](sql-statements.html) controls each [role or user's](security-reference/authorization.html#users-and-roles) [SQL privileges](security-reference/authorization.html#privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee. Users granted a privilege with `WITH GRANT OPTION` can in turn grant that privilege to others. The owner of an object implicitly has the `GRANT OPTION` for all privileges, and the `GRANT OPTION` is inherited through role memberships.
+
+For new databases, users with the following roles are automatically granted the [`ALL` privilege](security-reference/authorization.html#supported-privileges):
+
+- Every user who is part of [the `admin` role](security-reference/authorization.html#admin-role) (including [the `root` user](security-reference/authorization.html#root-user)).
+- Every user who is part of [the `owner` role](security-reference/authorization.html#admin-role) for the new database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -49,15 +54,9 @@ Roles and users can be granted the following privileges:
 
 ### Granting privileges
 
-- When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
+When a role or user is granted privileges for a table, the privileges are limited to the table. The user does _not_ automatically get privileges to new or existing tables in the database. To grant privileges to a user on all new and/or existing tables in a database, see [Grant privileges on all tables in a database](#grant-privileges-on-all-tables-in-a-database-or-schema).
 
-    {{site.data.alerts.callout_info}}
-    The user does not get privileges to existing tables in the database. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](#grant-privileges-on-all-tables-in-a-database-or-schema)
-    {{site.data.alerts.end}}
-
-- When a role or user is granted privileges for a table, the privileges are limited to the table.
-- The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
-- For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 ### Granting roles
 
@@ -74,7 +73,7 @@ Roles and users can be granted the following privileges:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER max WITH PASSWORD 'roach';
+CREATE USER IF NOT EXISTS max WITH PASSWORD 'roach';
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -119,16 +118,11 @@ SHOW GRANTS ON TABLE rides;
 
 ### Grant privileges on all tables in a database or schema
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO max;
-~~~
-
-This is equivalent to the following syntax:
+To grant all the privileges on existing tables to a user:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-GRANT SELECT ON TABLE movr.public.* TO max;
+GRANT ALL ON * TO max;
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -141,29 +135,62 @@ SHOW GRANTS ON TABLE movr.public.*;
 ----------------+-------------+----------------------------+---------+----------------+---------------
   movr          | public      | promo_codes                | admin   | ALL            |      t
   movr          | public      | promo_codes                | demo    | ALL            |      t
-  movr          | public      | promo_codes                | max     | SELECT         |      f
+  movr          | public      | promo_codes                | max     | ALL            |      f
   movr          | public      | promo_codes                | root    | ALL            |      t
   movr          | public      | rides                      | admin   | ALL            |      t
   movr          | public      | rides                      | demo    | ALL            |      t
-  movr          | public      | rides                      | max     | SELECT         |      f
+  movr          | public      | rides                      | max     | ALL            |      f
+  movr          | public      | rides                      | max     | UPDATE         |      t
   movr          | public      | rides                      | root    | ALL            |      t
   movr          | public      | user_promo_codes           | admin   | ALL            |      t
   movr          | public      | user_promo_codes           | demo    | ALL            |      t
-  movr          | public      | user_promo_codes           | max     | SELECT         |      f
+  movr          | public      | user_promo_codes           | max     | ALL            |      f
   movr          | public      | user_promo_codes           | root    | ALL            |      t
   movr          | public      | users                      | admin   | ALL            |      t
   movr          | public      | users                      | demo    | ALL            |      t
-  movr          | public      | users                      | max     | SELECT         |      f
+  movr          | public      | users                      | max     | ALL            |      f
   movr          | public      | users                      | root    | ALL            |      t
   movr          | public      | vehicle_location_histories | admin   | ALL            |      t
   movr          | public      | vehicle_location_histories | demo    | ALL            |      t
-  movr          | public      | vehicle_location_histories | max     | SELECT         |      f
+  movr          | public      | vehicle_location_histories | max     | ALL            |      f
   movr          | public      | vehicle_location_histories | root    | ALL            |      t
   movr          | public      | vehicles                   | admin   | ALL            |      t
   movr          | public      | vehicles                   | demo    | ALL            |      t
-  movr          | public      | vehicles                   | max     | SELECT         |      f
+  movr          | public      | vehicles                   | max     | ALL            |      f
+  movr          | public      | vehicles                   | public  | SELECT         |      f
   movr          | public      | vehicles                   | root    | ALL            |      t
-(24 rows)
+(26 rows)
+~~~
+
+To ensure that anytime a new table is created, all the privileges on that table are granted to a user, use [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER DEFAULT PRIVILEGES FOR ALL ROLES GRANT ALL ON TABLES TO max;
+~~~
+
+To check that this is working as expected, [create a table](create-table.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE IF NOT EXISTS usertable(x INT);
+~~~
+
+Then, check that the all privileges on the newly created table are granted to the user you specified using [`SHOW GRANTS`](show-grants.html):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW GRANTS ON TABLE usertable;
+~~~
+
+~~~
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  movr          | public      | usertable  | admin   | ALL            |      t
+  movr          | public      | usertable  | demo    | ALL            |      t
+  movr          | public      | usertable  | max     | ALL            |      f
+  movr          | public      | usertable  | root    | ALL            |      t
+(4 rows)
 ~~~
 
 ### Grant system-level privileges on the entire cluster
@@ -173,6 +200,11 @@ SHOW GRANTS ON TABLE movr.public.*;
 `root` and [`admin`](security-reference/authorization.html#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
 
 For example, the following statement allows the user `maxroach` to use the [`SET CLUSTER SETTING`](set-cluster-setting.html) statement by assigning the `MODIFYCLUSTERSETTING` system privilege:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE USER IF NOT EXISTS maxroach WITH PASSWORD 'setecastronomy';
+~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -205,7 +237,7 @@ SHOW GRANTS ON TABLE vehicles;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE SCHEMA cockroach_labs;
+CREATE SCHEMA IF NOT EXISTS cockroach_labs;
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -231,7 +263,7 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE TYPE status AS ENUM ('available', 'unavailable');
+CREATE TYPE IF NOT EXISTS status AS ENUM ('available', 'unavailable');
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -268,12 +300,12 @@ The user `max` can then use the [`CONFIGURE ZONE`](alter-table.html#configure-zo
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE ROLE developer WITH CREATEDB;
+CREATE ROLE IF NOT EXISTS developer WITH CREATEDB;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE USER abbey WITH PASSWORD 'lincoln';
+CREATE USER IF NOT EXISTS abbey WITH PASSWORD 'lincoln';
 ~~~
 
 {% include_cached copy-clipboard.html %}
