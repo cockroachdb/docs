@@ -86,6 +86,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |   | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
 |   | `>>` | Bitwise right-shift | binary |
+|   | `&&` | Overlaps | binary |
 | 8 | `&` | Bitwise AND | binary |
 | 9 | `#` | Bitwise XOR | binary |
 | 10 | <code>&#124;</code> | Bitwise OR | binary |
@@ -100,8 +101,8 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    | `[NOT] ILIKE ANY`, `[NOT] ILIKE SOME`, `[NOT] ILIKE ALL` | [Multi-valued] `ILIKE` comparison | binary |
 |    |  `->` | Access a JSONB field, returning a JSONB value. | binary |
 |    |  `->>` | Access a JSONB field, returning a string. | binary |
-|    |  `@>` | Tests whether the left JSONB field contains the right JSONB field. | binary |
-|    |  `>@` | Tests whether the left JSONB field is contained by the right JSONB field. | binary |
+|    |  `@>` | Tests whether the left JSONB or array field contains the right JSONB or array field. | binary |
+|    |  `>@` | Tests whether the left JSONB or array field is contained by the right JSONB or array field. | binary |
 |    |  `#>` | Access a JSONB field at the specified path, returning a JSONB value. | binary |
 |    |  `#>>` | Access a JSONB field at the specified path, returning a string. | binary |
 |    |  `?` | Does the key or element string exist within the JSONB value? | binary |

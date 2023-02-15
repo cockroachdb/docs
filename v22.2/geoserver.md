@@ -36,26 +36,26 @@ Start a CockroachDB cluster by following the instructions in [Start a Local Clus
 
 Connect to the running cluster from the [SQL client](cockroach-sql.html) and enter the statements below.
 
-First, [create](create-database.html) the `tutorial` database:
+1. [Create](create-database.html) the `tutorial` database:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE DATABASE tutorial;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE DATABASE tutorial;
+    ~~~
 
-Next, switch to the `tutorial` database:
+1. Switch to the `tutorial` database:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-USE tutorial;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    USE tutorial;
+    ~~~
 
-Finally, load the spatial data set:
+1. Load the spatial data set:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql') WITH ignore_unsupported_statements;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql') WITH ignore_unsupported_statements;
+    ~~~
 
 ## Step 3. Turn on CockroachDB's experimental box comparison operators
 
@@ -78,19 +78,19 @@ The reasons the box2d comparison operators are experimental in CockroachDB are a
 
 The easiest place to create the GeoServer data directory is in your user's home directory.
 
-In the UNIX shell, run the following command:
+1. In the UNIX shell, run the following command:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-mkdir -p $HOME/geoserver
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    mkdir -p $HOME/geoserver
+    ~~~
 
-Next, start GeoServer by running the following command:
+1. Start GeoServer by running the following command:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-geoserver $HOME/geoserver
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    geoserver $HOME/geoserver
+    ~~~
 
 You should see some log output that looks like the following:
 

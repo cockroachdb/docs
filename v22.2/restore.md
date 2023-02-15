@@ -464,20 +464,20 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
 
-First, create the new database that you'll restore the table or view into:
+1. Create the new database that you'll restore the table or view into:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE newdb;
+    ~~~
 
-Next, restore the table into the newly created database with `into_db`:
+2. Restore the table into the newly created database with `into_db`:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH into_db = 'newdb';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    WITH into_db = 'newdb';
+    ~~~
 
 #### Rename a database on restore
 
@@ -517,30 +517,34 @@ The `system.users` table stores your cluster's usernames and their hashed passwo
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
-First, create the new database that you'll restore the `system.users` table into:
+1. Create the new database that you'll restore the `system.users` table into:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE newdb;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH into_db = 'newdb';
-~~~
+1. Restore the `system.users` table into the new database:
 
-After the restore completes, add the `users` to the existing `system.users` table:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    WITH into_db = 'newdb';
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO system.users SELECT * FROM newdb.users;
-~~~
+1. After the restore completes, add the `users` to the existing `system.users` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> DROP TABLE newdb.users;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.users SELECT * FROM newdb.users;
+    ~~~
+
+1. Remove the temporary `users` table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > DROP TABLE newdb.users;
+    ~~~
 
 #### Restore from incremental backups in a different location
 
