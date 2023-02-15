@@ -33,6 +33,8 @@ URI Component      | Description
 
 To set a different sink URI to an existing changefeed, use the [`sink` option](alter-changefeed.html#sink-example) with `ALTER CHANGEFEED`.
 
+{% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
+
 ## Kafka
 
 Example of a Kafka sink URI:
@@ -284,12 +286,13 @@ The following table lists the available parameters for cloud storage sink URIs:
 
 URI Parameter      | Storage | Description
 -------------------+------------------------+---------------------------
-`AWS_ACCESS_KEY_ID` | AWS | The access key to your AWS account.
+`AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
 `ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
-`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these. 
+`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication](cloud-storage-authentication.html) for examples of each of these. 
 `AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure | The URL-encoded account key for your Azure account.
+`AZURE_ENVIRONMENT` | Azure | {% include {{ page.version.version }}/misc/azure-env-param.md %}
 `CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 `file_size`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
 <a name ="partition-format"></a>`partition_format` | All | Specify how changefeed [file paths](create-changefeed.html#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`

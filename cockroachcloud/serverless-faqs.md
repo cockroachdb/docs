@@ -155,9 +155,9 @@ There are some features of CockroachDB that are unsupported or partially support
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, you can [run bulk operations on {{ site.data.products.serverless }} clusters](run-bulk-operations.html). You must [add billing information to your organization](billing-management.html) to run bulk operations using cloud storage providers, but you can leave your spend limit at the $0 default. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) location for bulk operations.
+Yes, you can [IMPORT](../{{site.versions["stable"]}}/import.html#import-data-into-your-cockroachdb-cloud-cluster) and [EXPORT](../{{site.versions["stable"]}}/export.html#export-data-out-of-cockroachdb-cloud) on {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html) or set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) location for bulk operations.
 
-We don't recommend `userfile` for `EXPORT` operations. You can either add billing information to your organization to enable access to cloud storage, or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+We don't recommend [`userfile`](../{{site.current_cloud_version}}//use-userfile-for-bulk-operations.html) for [`EXPORT`](../{{site.current_cloud_version}}/export.html) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -168,18 +168,10 @@ $ cockroach sql \
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless }} clusters have access to both [Core changefeeds](../{{site.current_cloud_version}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise changefeeds](../{{site.current_cloud_version}}/changefeed-examples.html) once you have [billing information on file](billing-management.html) for your organization, even if you leave your spend limit at the $0 default.
+Yes, {{ site.data.products.serverless }} clusters have access to both [Core changefeeds](../{{site.current_cloud_version}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise changefeeds](../{{site.current_cloud_version}}/changefeed-examples.html).
 
-If you don't have [billing information on file](billing-management.html) for your organization, you can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.current_cloud_version}}/changefeed-for.html) or [`CREATE CHANGEFEED`](../{{site.current_cloud_version}}/create-changefeed.html). Once you enter billing information, even if you have a spend limit of $0, you can also [run a changefeed to a configurable sink](../{{site.current_cloud_version}}/changefeed-sinks.html).
-
-{{site.data.alerts.callout_info}}
-Creating a [changefeed](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html) for a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `pq: Outbound IO is disabled by configuration`.
-{{site.data.alerts.end}}
+You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.current_cloud_version}}/changefeed-for.html) or [`CREATE CHANGEFEED`](../{{site.current_cloud_version}}/create-changefeed.html), or you can [run a changefeed to a configurable sink](../{{site.current_cloud_version}}/changefeed-sinks.html).
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-The [**Backups** page](backups-page.html) allows you to restore your cluster from automatic full cluster backups, which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you leave your spend limit at the $0 default, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
-
-{{site.data.alerts.callout_info}}
-Running a [bulk operation](run-bulk-operations.html) to cloud storage from a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `external network access is disabled`.
-{{site.data.alerts.end}}
+The [**Backups** page](use-managed-service-backups.html) allows you to [restore](use-managed-service-backups.html#restore-a-cluster) your cluster from automatic [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups), which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also back up and restore your {{ site.data.products.serverless }} cluster manually. You can [take backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html#back-up-data).

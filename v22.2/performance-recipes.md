@@ -134,7 +134,7 @@ Also see [Table scans best practices](performance-best-practices-overview.html#t
 
 Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key](schema-design-table.html#primary-key-best-practices).
 
-If your application with a small dataset (for example, a dataset that contains few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](split-at.html#split-a-table) to reduce resource contention.
+If your application with a small dataset (for example, a dataset that contains few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](alter-table.html#split-a-table) to reduce resource contention.
 
 ### Slow writes
 

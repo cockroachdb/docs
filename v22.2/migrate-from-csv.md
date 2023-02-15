@@ -83,7 +83,7 @@ Repeat this process for each CSV file you want to import.
 Before importing CSV data, consider the following:
 
 - The column order in your schema must match the column order in the file being imported.
-- You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to add any foreign key relationships.
+- You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) to add any foreign key relationships.
 
 ## Configuration Options
 

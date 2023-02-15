@@ -13,11 +13,11 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` takes the table **offline** before importing the data. The table will be online again once the job has completed successfully.
 - `IMPORT INTO` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` is a blocking statement. To run an `IMPORT INTO` job asynchronously, use the [`DETACHED`](#options-detached) option.
-- `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+- `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](alter-table.html#validate-constraint) statement.
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](change-data-capture-overview.html) running on the targeted table to fail.
-- `IMPORT INTO` supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
+- `IMPORT INTO` supports importing into [`REGIONAL BY ROW`](alter-table.html#regional-by-row) tables.
 - See the [`IMPORT`](import.html) page for guidance on importing PostgreSQL and MySQL dump files.
 
 {{site.data.alerts.callout_info}}
@@ -111,7 +111,7 @@ For instructions and working examples showing how to migrate data from other dat
 
 ## Requirements
 
-### Prerequisites
+### Before you begin
 
 Before using `IMPORT INTO`, you should have:
 
@@ -196,28 +196,28 @@ To import into a new table, use [`CREATE TABLE`](create-table.html) followed by 
  Certain [`IMPORT TABLE`](import.html) statements that defined the table schema inline are **not** supported in v22.1+. We recommend using the following example to import data into a new table.
 {{site.data.alerts.end}}
 
-First, create the new table with the necessary columns and data types:
+1. Create the new table with the necessary columns and data types:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE TABLE users (
-        id UUID PRIMARY KEY,
-        city STRING,
-        name STRING,
-        address STRING,
-        credit_card STRING
-      );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE TABLE users (
+            id UUID PRIMARY KEY,
+            city STRING,
+            name STRING,
+            address STRING,
+            credit_card STRING
+          );
+    ~~~
 
-Next, use `IMPORT INTO` to import the data into the new table:
+1. Use `IMPORT INTO` to import the data into the new table:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-IMPORT INTO users (id, city, name, address, credit_card)
-     CSV DATA (
-       's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
-     );
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    IMPORT INTO users (id, city, name, address, credit_card)
+        CSV DATA (
+          's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+        );
+    ~~~
 
 ### Import into an existing table from a CSV file
 
@@ -298,7 +298,7 @@ For more information about importing data from Avro, including examples, see [Mi
 ## Known limitations
 
 - While importing into an existing table, the table is taken offline.
-- After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
+- After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](alter-table.html#validate-constraint).
 - Imported rows must not conflict with existing rows in the table or any unique secondary indexes.
 - `IMPORT INTO` works for only a single existing table.
 - `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:

@@ -129,30 +129,6 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 
 {{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.current_cloud_version}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
 
-### External network access disabled
-
-The following error is displayed if you try to access cloud storage from an organization without billing information on file:
-
-~~~
-ERROR: external network access is disabled
-~~~
-
-<h4>Solution</h4>
-
-You must [set up billing information](billing-management.html) for your organization to use cloud storage, but you can leave your spend limit at the $0 default. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
-
-### Outbound I/O is disabled
-
-The following error is displayed if you try to set up a [changefeed](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html) for your {{ site.data.products.serverless }} cluster without having billing information on file:
-
-~~~
-pq: Outbound IO is disabled by configuration
-~~~
-
-<h4>Solution</h4>
-
-You must [set up billing information](billing-management.html) for your organization to use [Core](../{{site.current_cloud_version}}/changefeed-examples.html#create-a-core-changefeed) and [Enterprise](../{{site.current_cloud_version}}/changefeed-examples.html) changefeeds, but you can leave your spend limit at the $0 default.
-
 ## Security errors
 
 ### Incorrect certs path

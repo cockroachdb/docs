@@ -53,7 +53,7 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](user-authorization.html#create-a-sql-user)
 - [Manage billing for the organization](billing-management.html)
-- [Restore databases and tables from a {{ site.data.products.db }} backup](backups-page.html#ways-to-restore-data)
+- [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
 - [Delete an organization](#delete-an-organization)
 
 ## Service accounts

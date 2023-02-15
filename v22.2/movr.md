@@ -101,4 +101,4 @@ For a tutorial on developing and deploying a globally-available web application 
 
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 - [Build an App with CockroachDB](example-apps.html)
-- [Experimental Features](experimental-features.html)
+- [Features in Preview](features-in-preview.html)

@@ -1,6 +1,6 @@
 ---
-title: Export Metrics From a CockroachDB dedicated Cluster
-summary: Export Metrics From a CockroachDB dedicated Cluster
+title: Export Metrics From a CockroachDB Dedicated Cluster
+summary: Export Metrics From a CockroachDB Dedicated Cluster
 toc: true
 docs_area: manage
 ---

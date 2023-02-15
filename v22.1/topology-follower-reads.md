@@ -14,7 +14,7 @@ In a multi-region deployment, [follower reads](follower-reads.html) are a good c
 
 If reads can use stale data, use [stale follower reads](follower-reads.html#stale-follower-reads). If reads must be exactly up-to-date, use [global tables](global-tables.html) to achieve [strong follower reads](follower-reads.html#follower-read-types). Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 
-## Prerequisites
+## Before you begin
 
 {% include enterprise-feature.md %}
 

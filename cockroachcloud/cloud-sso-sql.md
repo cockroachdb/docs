@@ -17,7 +17,7 @@ This authentication method works for human users but not for service accounts, s
 Note that the topic of this page is SQL access to a specific CockroachDB Cluster, not access to a {{ site.data.products.db }} organization. For the latter, see [Single Sign-On (SSO) for {{ site.data.products.db }} organizations](cloud-org-sso.html).
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 - You must be a member of a {{ site.data.products.db }} organization, and you must have access to an existing cluster or the permission to create a new cluster. For help setting up an organization and cluster, refer to [Quickstart with CockroachDB](quickstart.html).
 - To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 

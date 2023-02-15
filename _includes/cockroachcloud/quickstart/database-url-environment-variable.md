@@ -1,15 +1,4 @@
-<section class="filter-content" markdown="1" data-scope="mac">
-In a terminal set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-export DATABASE_URL="<connection-string>"
-~~~
-
-The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
-</section>
-
-<section class="filter-content" markdown="1" data-scope="linux">
+<section class="filter-content" markdown="1" data-scope="mac, linux">
 In a terminal set the `DATABASE_URL` environment variable to the connection string that you copied earlier:
 
 {% include_cached copy-clipboard.html %}

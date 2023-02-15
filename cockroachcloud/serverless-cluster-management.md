@@ -75,9 +75,9 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 
 ## Restore data from a backup
 
-Use the [**Backups** page](backups-page.html) to restore your cluster from automatic full cluster backups.
+Use the [Managed-Service Backups](use-managed-service-backups.html) to restore your cluster from automatic full cluster backups.
 
-You can also [backup and restore](run-bulk-operations.html#backup-and-restore-data) your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can take [backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html?filters=cloud#backup-and-restore-data).
+You can also [back up and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
 
 ## Delete cluster
 

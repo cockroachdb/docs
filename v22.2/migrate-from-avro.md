@@ -142,7 +142,7 @@ IMPORT INTO employees (
 Repeat this process for each OCF you want to import.
 
 {{site.data.alerts.callout_info}}
-You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to add any foreign key relationships.
+You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) to add any foreign key relationships.
 {{site.data.alerts.end}}
 
 ### Import binary or JSON records
@@ -210,7 +210,7 @@ IMPORT INTO simple
 Repeat this process for each binary or JSON file you want to import.
 
 {{site.data.alerts.callout_info}}
-You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](add-constraint.html) to add any foreign key relationships.
+You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) to add any foreign key relationships.
 {{site.data.alerts.end}}
 
 ## See also
