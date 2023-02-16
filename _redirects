@@ -382,6 +382,7 @@ layout: null
 /docs/cockroachcloud/migrate-from-free-to-dedicated /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
 /docs/cockroachcloud/free-faqs /docs/cockroachcloud/serverless-faqs.html 301
 /docs/v22.2/use-cloud-storage-for-bulk-operations.html /docs/v22.2/use-cloud-storage.html 301
+/docs/v23.1/use-cloud-storage-for-bulk-operations.html /docs/v23.1/use-cloud-storage.html 301
 /docs/stable/use-cloud-storage-for-bulk-operations.html /docs/stable/use-cloud-storage.html 301
 /docs/dev/use-cloud-storage-for-bulk-operations.html /docs/dev/use-cloud-storage.html 301
 /docs/cockroachcloud/run-bulk-operations.html /docs/cockroachcloud/take-and-restore-customer-owned-backups.html 301

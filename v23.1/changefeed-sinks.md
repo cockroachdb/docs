@@ -489,5 +489,5 @@ The following shows the default JSON messages for a changefeed emitting to a web
 
 ## See also
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [`CREATE CHANGEFEED`](create-changefeed.html)

@@ -237,7 +237,7 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage-for-bulk-operations.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
+Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="local">local CSV</button>

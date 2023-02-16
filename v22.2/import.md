@@ -331,7 +331,7 @@ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.h
 
 ### Import data into your {{ site.data.products.db }} cluster
 
-You can import data into your {{ site.data.products.db }} cluster using either [`userfile`](use-userfile-for-bulk-operations.html) or [cloud storage](use-cloud-storage-for-bulk-operations.html):
+You can import data into your {{ site.data.products.db }} cluster using either [`userfile`](use-userfile-for-bulk-operations.html) or [cloud storage](use-cloud-storage.html):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
