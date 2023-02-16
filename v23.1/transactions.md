@@ -25,7 +25,7 @@ The following SQL statements control transactions.
 | [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors](advanced-client-side-transaction-retries.html).               |
 
 {{site.data.alerts.callout_info}}
-If you are using a framework or library that does not have [advanced retry logic](advanced-client-side-transaction-retries.html) built in, you should implement an application-level retry loop with exponential backoff. See [Client-side intervention](#client-side-intervention).
+If you are using a framework or library that does not have [advanced retry logic](advanced-client-side-transaction-retries.html) built in, you should implement an application-level retry loop with exponential backoff. See [Client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -57,7 +57,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it could not be placed in a serializable ordering of transactions by CockroachDB. This is often due to contention: conflicts with another concurrent or recent transaction accessing the same data. In such cases, the transaction needs to be retried by the client as described in [client-side intervention](#client-side-intervention).  For a reference listing all of the retry error codes emitted by CockroachDB, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
+**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it could not be placed in a serializable ordering of transactions by CockroachDB. This is often due to contention: conflicts with another concurrent or recent transaction accessing the same data. In such cases, the transaction needs to be retried by the client as described in [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling). For a reference listing all of the retry error codes emitted by CockroachDB, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here](common-errors.html#result-is-ambiguous).
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`](commit-transaction.html) or [`ROLLBACK`](rollback-transaction.html) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
@@ -73,7 +73,7 @@ To mitigate read-write contention and reduce the need for transaction retries, u
 There are two cases in which transaction retries can occur:
 
 - [Automatic retries](#automatic-retries), which CockroachDB processes for you.
-- [Client-side intervention](#client-side-intervention), which your application must handle.
+- [Client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling), which your application must handle.
 
 ### Automatic retries
 
@@ -126,7 +126,7 @@ cannot retry, say, statement 2 in isolation. Since results for statement 1 have
 already been delivered to the client by the time statement 2 is forcing the
 transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
-[client-side intervention](#client-side-intervention).
+[client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 
 The [`enable_implicit_transaction_for_batch_statements` session variable](set-vars.html#enable-implicit-transaction-for-batch-statements) defaults to `true`. This means that any batch of statements is treated as an implicit transaction, so the `BEGIN`/`COMMIT` commands are not needed to group all the statements in one transaction.
 
@@ -149,121 +149,14 @@ Your application should include client-side retry handling when the statements a
 > COMMIT;
 ~~~
 
-To indicate that a transaction must be retried, CockroachDB signals an error with the `SQLSTATE` error code `40001` (serialization error) and an error message that begins with the string `"restart transaction"`.  For a complete list of transaction retry error codes, see [Transaction retry error reference](transaction-retry-error-reference.html).
+To indicate that a transaction must be retried, CockroachDB signals an error with the `SQLSTATE` error code `40001` (serialization error) and an error message that begins with the string `"restart transaction"`. These errors **cannot** be [resolved automatically](#automatic-retries), and require client-side intervention:
 
-To handle these types of errors, you have the following options:
-
-- If your database library or framework provides a method for retryable transactions (it will often be documented as a tool for handling deadlocks), use it.
-- If you're building an application in the following languages, Cockroach Labs has created adapters that include automatic retry handling:
-   - **Go** developers using [GORM](https://github.com/jinzhu/gorm) or [pgx](https://github.com/jackc/pgx) can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package. For an example, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
-   - **Python** developers using [SQLAlchemy](https://www.sqlalchemy.org) can use the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
-   - **Ruby (Active Record)** developers can use the [`activerecord-cockroachdb-adapter`](https://rubygems.org/gems/activerecord-cockroachdb-adapter). For an example, see [Build a Ruby App with CockroachDB and Active Record](build-a-ruby-app-with-cockroachdb-activerecord.html).
-- If you're building an application with another driver or data access framework that is [supported by CockroachDB](third-party-database-tools.html), we recommend reusing the retry logic in our ["Simple CRUD" Example Apps](example-apps.html). For example, **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can reuse the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
-- If you're building an application with a language and framework for which we do not provide example retry logic, you might need to write your own retry logic. For an example, see the [Client-side intervention example](#client-side-intervention-example).
-- **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
-
-#### Client-side intervention example
-
-{% include {{page.version.version}}/misc/client-side-intervention-example.md %}
-
-#### Testing transaction retry logic
-
-To test your transaction retry logic, use the [`inject_retry_errors_enabled` session variable](set-vars.html#supported-variables). When `inject_retry_errors_enabled` is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return a [transaction retry error](transaction-retry-error-reference.html) with the message ```restart transaction: TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable```.
-
-If the client retries the transaction using the special [`cockroach_restart` `SAVEPOINT` name](savepoint.html#savepoints-for-client-side-transaction-retries), after the 3rd retry, the transaction will proceed as normal. Otherwise, the errors will continue until the client issues a `SET inject_retry_errors_enabled=false` statement.
-
-For example, suppose you've written a wrapper function with some retry logic that you want to use to execute statements across a [`psycopg2`](https://www.psycopg.org/) connection:
-
-~~~ python
-def run_transaction(conn, op, max_retries=3):    
-    """
-    Execute the operation *op(conn)* retrying serialization failures.
-
-    If the database returns an error asking to retry the transaction, retry it
-    *max_retries* times before giving up (and propagate it).
-    """
-    # leaving this block the transaction will commit or rollback
-    # (if leaving with an exception)
-    with conn:
-        for retry in range(1, max_retries + 1):
-            try:
-                op(conn)
-                # If we reach this point, we were able to commit, so we break
-                # from the retry loop.
-                return
-
-            except SerializationFailure as e:
-                # This is a retry error, so we roll back the current
-                # transaction and sleep for a bit before retrying. The
-                # sleep time increases for each failed transaction.
-                logging.debug("got error: %s", e)
-                conn.rollback()
-                sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
-                logging.debug("Sleeping %s seconds", sleep_ms)
-                time.sleep(sleep_ms)
-
-            except psycopg2.Error as e:
-                logging.debug("got error: %s", e)
-                raise e
-
-        raise ValueError(f"Transaction did not succeed after {max_retries} retries")
-~~~
-
-`run_transaction` takes a SQL-executing function `op(conn)` and attempts to run the function, retrying on serialization failures (exposed in pscyopg2 as the [`SerializationFailure` exception class](https://www.psycopg.org/docs/errors.html#sqlstate-exception-classes)) with exponential backoff, until reaching a maximum number of tries.
-
-You can add a quick test to this function using the `inject_retry_errors_enabled` session variable.
-
-~~~ python
-def run_transaction(conn, op=None, max_retries=3):
-    """
-    Execute the operation *op(conn)* retrying serialization failure.
-    If no op is specified, the function runs a test, using the
-    inject_retry_errors_enabled session variable to inject errors.
-
-    If the database returns an error asking to retry the transaction, retry it
-    *max_retries* times before giving up (and propagate it).
-    """
-    # leaving this block the transaction will commit or rollback
-    # (if leaving with an exception)
-    with conn:
-        for retry in range(1, max_retries + 1):
-            try:
-                if not op:
-                    with conn.cursor() as cur:
-                        if retry == 1:
-                            cur.execute("SET inject_retry_errors_enabled = 'true'")
-                        if retry == max_retries:
-                            cur.execute("SET inject_retry_errors_enabled = 'false'")
-                        cur.execute("SELECT now()")
-                        logging.debug("status message: %s", cur.statusmessage)
-                else:
-                    op(conn)
-                # If we reach this point, we were able to commit, so we break
-                # from the retry loop.
-                return
-
-            except SerializationFailure as e:
-                # This is a retry error, so we roll back the current
-                # transaction and sleep for a bit before retrying. The
-                # sleep time increases for each failed transaction.
-                logging.debug("got error: %s", e)
-                conn.rollback()
-                sleep_ms = (2 ** retry) * 0.1 * (random.random() + 0.5)
-                logging.debug("Sleeping %s seconds", sleep_ms)
-                time.sleep(sleep_ms)
-
-            except psycopg2.Error as e:
-                logging.debug("got error: %s", e)
-                raise e
-
-        raise ValueError(f"Transaction did not succeed after {max_retries} retries")
-~~~
-
-Calling `run_transaction` without an `op` input sets `inject_retry_errors_enabled` as `true` until the final retry attempt, before which the `inject_retry_errors_enabled` is set back to `false`. For all attempts except the last one, CockroachDB will inject a retryable serialization error for the client to handle. If the client cannot handle the error properly, the retry logic isn't working properly.
+- See [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling) for a list of actions to take when encountering transaction retry errors.
+- See [Transaction retry error reference](transaction-retry-error-reference.html#transaction-retry-error-reference) for a complete list of transaction retry error codes.
 
 ## Transaction contention
 
-Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
+Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be retried.
 
 For more details about transaction contention and best practices for avoiding contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 

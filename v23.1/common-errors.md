@@ -49,9 +49,9 @@ To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.h
 
 ## restart transaction
 
-Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about how to implement client-side retries, see [client-side retry handling](transactions.html#client-side-intervention).
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about how to implement client-side retries, see [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 
-For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
+For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 

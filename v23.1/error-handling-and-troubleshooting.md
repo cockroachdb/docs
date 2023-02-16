@@ -34,10 +34,10 @@ If your driver or ORM does not implement this logic, then you will need to imple
 {{site.data.alerts.callout_info}}
 If a consistently high percentage of your transactions are resulting in transaction retry errors, then you may need to evaluate your schema design and data access patterns to find and remove sources of contention. For more information about contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
-For more information about what is causing a specific transaction retry error code, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
+For more information about what is causing a specific transaction retry error code, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
 {{site.data.alerts.end}}
 
-For more information about transaction retry errors, see [Transaction retries](transactions.html#client-side-intervention).
+For more information about transaction retry errors, see [Client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 
 ## Unsupported SQL features
 
@@ -134,7 +134,7 @@ As an alternative to the [mitigation steps listed above](#mitigation-steps-while
 
 - [Common Errors and Solutions](common-errors.html)
 - [Transactions](transactions.html)
-- [Transaction retries](transactions.html#client-side-intervention)
+- [Client-side transaction retry handling](transaction-retry-error-reference.html#client-side-retry-handling)
 - [SQL Layer][sql]
 
 <!-- Reference Links -->
