@@ -3,6 +3,7 @@ title: Features in Preview
 summary: Learn about the features available in preview in CockroachDB
 toc: true
 docs_area: reference.sql
+key: experimental-features.html
 ---
 
 This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
