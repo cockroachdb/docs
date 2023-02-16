@@ -166,6 +166,7 @@ Flag | Description
 Flag | Description
 -----|------------
 `--active-warehouses` | Run the load generator against a specific number of warehouses.<br><br>**Applicable commands:** `init` or `run`<br>**Defaults:** Value of `--warehouses`
+`--concurrency` | The number of concurrent workers.<br/><br/>**Applicable commands:** `init` or `run`<br>**Default:** `16`
 `--data-loader` | How to load initial table data. Valid options are `INSERT` and `IMPORT`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `INSERT`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `tpcc`
 `--display-every` | The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
