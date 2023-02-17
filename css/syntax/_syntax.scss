@@ -42,9 +42,9 @@
   .s { color: $cl_syntax_blue; } /* Literal.String */
   .na { color: $cl_syntax_green; } /* Name.Attribute */
   .nb { color: $cl_syntax_blue; } /* Name.Builtin */
-  .nc { color: $cl_syntax_purple; font-weight: bold } /* Name.Class */
-  .no { color: $cl_syntax_green; } /* Name.Constant */
-  .ni { color: $cl_syntax_purple; } /* Name.Entity */
+  .nc { color: $cl_syntax_aqua; font-weight: bold } /* Name.Class */
+  .no { color: $cl_syntax_aqua; } /* Name.Constant */
+  .ni { color: $cl_syntax_aqua; } /* Name.Entity */
   .ne { color: $cl_syntax_red; font-weight: bold } /* Name.Exception */
   .nf { color: $cl_syntax_red; } /* Name.Function */
   .nn { color: $cl_syntax_gray; } /* Name.Namespace */
