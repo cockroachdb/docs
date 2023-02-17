@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster.
+The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster. To view this page, click on a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page).
 
 ## Cluster settings
 
