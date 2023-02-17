@@ -1,0 +1,1 @@
+If you are migrating to a {{ site.data.products.core }} database, you can export the converted schema and execute the statements in [`cockroach sql`](cockroach-sql.html), or use a third-party schema migration tool such as [Alembic](alembic.html), [Flyway](flyway.html), or [Liquibase](liquibase.html).

@@ -11,7 +11,10 @@ docs_area: migrate
 The **Migrations** page on the {{ site.data.products.db }} Console features a **Schema Conversion Tool** that helps you:
 
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
-- Create a new database that uses the converted schema. You specify the target database and database owner when [finalizing the schema](#finalize-the-schema).
+- Create a new {{ site.data.products.serverless }} database that uses the converted schema. You specify the target database and database owner when [finalizing the schema](#finalize-the-schema).
+    {{site.data.alerts.callout_success}}
+    {% include cockroachcloud/migration/sct-self-hosted.md %}
+    {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 On the **Migrations** page, a *migration* refers to converting a schema for use with CockroachDB and creating a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).
@@ -218,11 +221,15 @@ To finalize the schema, click **Finalize Schema** when viewing the **Summary Rep
 
 1. In the **Success** tab, click **Next**.
 
-1. In the **Create Schema** tab, name the new database and select a user to own the database. Optionally click **Download SQL export** to download your schema file. This is useful for migrating your database to a different cluster. Then click **Finalize** to create the new database.
+1. In the **Create Schema** tab, name the new database and select a user to own the database. Optionally click **Download SQL export** to download your schema file. 
 
-{{site.data.alerts.callout_success}}
+    {{site.data.alerts.callout_success}}
+    {% include cockroachcloud/migration/sct-self-hosted.md %}
+    {{site.data.alerts.end}}
+
+1. Click **Finalize** to create the new database.
+
 After finalizing the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application).
-{{site.data.alerts.end}}
 
 ## See also
 

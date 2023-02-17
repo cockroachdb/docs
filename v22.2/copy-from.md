@@ -1,6 +1,6 @@
 ---
 title: COPY FROM
-summary: Copy data from a third-party client to CockroachDB.
+summary: Copy data from a third-party client to a CockroachDB table.
 toc: true
 docs_area: reference.sql
 ---
@@ -36,9 +36,7 @@ Option | Description
 
 Only members of the `admin` role can run `COPY` statements. By default, the `root` user belongs to the `admin` role.
 
-## Known limitations
-
-### `COPY` syntax not supported by CockroachDB
+## Unsupported syntax
 
 {% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
 
@@ -51,26 +49,26 @@ To run the examples, use [`cockroach demo`](cockroach-demo.html) to start a temp
 cockroach demo
 ~~~
 
-### Copy tab delimited data
+### Copy tab-delimited data to CockroachDB
 
-In the SQL shell, run the following command to start copying data to the `users` table:
+Start copying data to the `users` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COPY users FROM STDIN;
 ~~~
 
-The following prompt should appear:
+You will see the following prompt:
 
 ~~~
 Enter data to be copied followed by a newline.
 End with a backslash and a period on a line by itself, or an EOF signal.
 ~~~
 
-Enter some tab-delimited data that you want copied to the `users` table.
+Enter some tab-delimited data to copy to the table:
 
-{{site.data.alerts.callout_info}}
-You may need to edit the following rows after copying them to make sure the delimiters are tab characters.
+{{site.data.alerts.callout_danger}}
+Before you input the following rows, ensure the delimiters are tab characters. They may have been converted to spaces by the browser.
 {{site.data.alerts.end}}
 
 ~~~
@@ -81,6 +79,8 @@ You may need to edit the following rows after copying them to make sure the deli
 9eb851eb-851e-4800-8000-00000000001e	new york	Carl	'53 W 23rd St'	5678901234
 ~~~
 
+Mark the end of data with `\.` on its own line:
+
 ~~~
 \.
 ~~~
@@ -89,7 +89,7 @@ You may need to edit the following rows after copying them to make sure the deli
 COPY 2
 ~~~
 
-In the SQL shell, query the `users` table for the rows that you just inserted:
+Query the `users` table for the rows that you just inserted:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -104,25 +104,25 @@ SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851
 (2 rows)
 ~~~
 
-### Copy CSV delimited data
+### Copy CSV-delimited data to CockroachDB
 
 You can copy CSV data into CockroachDB using the following methods:
 
-- [Copy CSV delimited data from stdin](#copy-csv-delimited-data-from-stdin)
-- [Copy CSV delimited data from stdin with an escape character](#copy-csv-delimited-data-from-stdin-with-an-escape-character)
-- [Copy CSV delimited data from stdin with a header](#copy-csv-delimited-data-from-stdin-with-a-header)
-- [Copy CSV delimited data from stdin with hex encoded byte array data](#copy-csv-delimited-data-from-stdin-with-hex-encoded-byte-array-data)
+- [Copy CSV-delimited data from `stdin`](#copy-csv-delimited-data-from-stdin)
+- [Copy CSV-delimited data from `stdin` with an escape character](#copy-csv-delimited-data-from-stdin-with-an-escape-character)
+- [Copy CSV-delimited data from `stdin` with a header](#copy-csv-delimited-data-from-stdin-with-a-header)
+- [Copy CSV-delimited data from `stdin` with hex-encoded byte array data](#copy-csv-delimited-data-from-stdin-with-hex-encoded-byte-array-data)
 
-#### Copy CSV delimited data from stdin
+#### Copy CSV-delimited data from `stdin`
 
-Run the following SQL statement to create a new table that you will load with CSV formatted data:
+First, create a new table that you will load with CSV-formatted data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
 ~~~
 
-Run the following command to start copying data to the table:
+Start copying data to the `setecastronomy` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -136,12 +136,14 @@ Enter data to be copied followed by a newline.
 End with a backslash and a period on a line by itself, or an EOF signal.
 ~~~
 
-Enter the data, followed by a backslash and period on a line by itself:
+Enter some CSV-delimited data to copy to the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 "My name is Werner Brandes","My voice is my passport"
 ~~~
+
+Mark the end of data with `\.` on its own line:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -152,7 +154,7 @@ Enter the data, followed by a backslash and period on a line by itself:
 COPY 1
 ~~~
 
-To view the data, enter the following query:
+View the data in the `setecastronomy` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -166,16 +168,16 @@ SELECT * FROM setecastronomy;
 (1 row)
 ~~~
 
-#### Copy CSV delimited data from stdin with an escape character
+#### Copy CSV-delimited data from `stdin` with an escape character
 
-Run the following SQL statement to create a new table that you will load with CSV formatted data:
+First, create a new table that you will load with CSV-formatted data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
 ~~~
 
-To copy CSV data into CockroachDB and specify an escape character for quoting the fields, enter the following statement:
+Start copying data to the `setecastronomy` table, specifying an escape character for quoting the fields:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -189,12 +191,14 @@ Enter data to be copied followed by a newline.
 End with a backslash and a period on a line by itself, or an EOF signal.
 ~~~
 
-Enter the data, followed by a backslash and period on a line by itself:
+Enter some CSV-delimited data to copy to the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 "My name is Werner Brandes","\"My\" \"voice\" \"is\" \"my\" \"passport\""
 ~~~
+
+Mark the end of data with `\.` on its own line:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -205,7 +209,7 @@ Enter the data, followed by a backslash and period on a line by itself:
 COPY 1
 ~~~
 
-To view the data, enter the following query:
+View the data in the `setecastronomy` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -220,29 +224,31 @@ SELECT * FROM setecastronomy;
 (2 rows)
 ~~~
 
-#### Copy CSV delimited data from stdin with a header
+#### Copy CSV-delimited data from `stdin` with a header
 
-Run the following SQL statement to create a new table that you will load with CSV formatted data:
+First, create a new table that you will load with CSV-formatted data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
 ~~~
 
-To copy CSV data into CockroachDB and specify that CockroachDB should skip the header (first line of CSV input), enter the following statement:
+Start copying data to the `setecastronomy` table, specifying that CockroachDB should skip the header (first line of CSV input):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COPY setecastronomy FROM STDIN WITH CSV HEADER;
 ~~~
 
-Enter the data (including header line), followed by a backslash and period on a line by itself:
+Enter the data, including the header line:
 
 {% include_cached copy-clipboard.html %}
 ~~~
 "name","phrase"
 "Hi, my name is Werner Brandes","My voice is my passport; verify me"
 ~~~
+
+Mark the end of data with `\.` on its own line:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -253,7 +259,7 @@ Enter the data (including header line), followed by a backslash and period on a 
 COPY 1
 ~~~
 
-To view the data, enter the following query:
+View the data in the `setecastronomy` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -269,28 +275,30 @@ SELECT * FROM setecastronomy;
 (3 rows)
 ~~~
 
-#### Copy CSV delimited data from stdin with hex encoded byte array data
+#### Copy CSV-delimited data from `stdin` with hex-encoded byte array data
 
-To copy CSV data into CockroachDB and specify that CockroachDB should ingest hex encoded byte array data, enter the following statements:
+First, create a new table that you will load with CSV-formatted data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE IF NOT EXISTS mybytes(a INT PRIMARY KEY, b BYTEA);
 ~~~
 
+Set the `bytea_output` [session variable](set-vars.html#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-set bytea_output = 'escape';
+SET bytea_output = 'escape';
 ~~~
 
-To import the data, enter the following statement:
+Start copying data to the `mybytes` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 COPY mybytes FROM STDIN WITH CSV;
 ~~~
 
-Enter the data (including header line), followed by a backslash and period on a line by itself:
+Enter some CSV-delimited data to copy to the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -299,6 +307,8 @@ Enter the data (including header line), followed by a backslash and period on a 
 3,"\x6869"
 4,\x6869
 ~~~
+
+Mark the end of data with `\.` on its own line:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -309,7 +319,7 @@ Enter the data (including header line), followed by a backslash and period on a 
 COPY 4
 ~~~
 
-To view the data, enter the following query:
+View the data in the `mybytes` table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -328,9 +338,10 @@ SELECT * FROM mybytes;
 
 ## See also
 
-- [`IMPORT`](import.html)
+- [Migration Overview](migration-overview.html)
 - [`IMPORT INTO`](import-into.html)
 - [`EXPORT`](export.html)
 - [Install a Driver or ORM Framework](install-client-drivers.html)
+{% comment %}
 - [Migrate from PostgreSQL](migrate-from-postgres.html)
-- [Migration Overview](migration-overview.html)
+{% endcomment %}
