@@ -60,7 +60,9 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 
 ### Schedule options
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
  Option                     | Value                                   | Description
 ----------------------------+-----------------------------------------+------------------------------

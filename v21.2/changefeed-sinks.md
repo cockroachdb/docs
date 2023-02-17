@@ -159,7 +159,9 @@ URI Parameter      | Storage | Description
 
 ## Webhook sink
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v21.2" %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 

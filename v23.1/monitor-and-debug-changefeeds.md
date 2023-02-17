@@ -61,7 +61,9 @@ By default, changefeeds will retry errors with [some exceptions](#changefeed-ret
 
 ### Using changefeed metrics labels
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.

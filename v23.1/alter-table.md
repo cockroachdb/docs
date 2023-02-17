@@ -307,7 +307,9 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER TABLE ... EXPERIMENTAL_AUDIT` enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for a table. The `SENSITIVE_ACCESS` log output is also called the *SQL audit log*. For details on using SQL audit logs, see [SQL Audit Logging](sql-audit-logging.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 SQL audit logs contain detailed information about queries being executed against your system, including:
 
@@ -2528,7 +2530,9 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 #### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 This feature is disabled by default.
 
