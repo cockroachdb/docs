@@ -164,6 +164,12 @@
           ]
         },
         {
+          "title": "Backup and Restore Monitoring",
+          "urls": [
+            "/${VERSION}/backup-and-restore-monitoring.html"
+          ]
+        },
+        {
           "title": "Backup Validation",
           "urls": [
             "/${VERSION}/backup-validation.html"
