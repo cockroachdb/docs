@@ -2,6 +2,7 @@
 title: Use Cloud Storage
 summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to various operation statements.
 toc: true
+key: use-cloud-storage-for-bulk-operations.html
 docs_area: manage
 ---
 
