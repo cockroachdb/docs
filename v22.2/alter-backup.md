@@ -37,7 +37,7 @@ Parameter         | Description
 
 The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using [`SPECIFIED`](cloud-storage-authentication.html) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with [`IMPLICIT`](cloud-storage-authentication.html) credentials.
 
-We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+We recommend using [cloud storage for CockroachDB operations](use-cloud-storage.html).
 
 ## Examples
 
@@ -47,7 +47,7 @@ We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bul
 When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
 {{site.data.alerts.end}}
 
-See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
+See [Cloud Storage Authentication](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
 
 ### Add an AWS KMS key to an encrypted backup
 
@@ -98,4 +98,4 @@ To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backu
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage for CockroachDB Operations](use-cloud-storage.html)

@@ -178,15 +178,15 @@
       ]
     },
     {
-      "title": "File Storage for Bulk Operations",
+      "title": "File Storage",
       "items": [
         {
           "title": "Cloud Storage",
           "items": [
             {
-              "title": "Use Cloud Storage for Bulk Operations",
+              "title": "Use Cloud Storage",
               "urls": [
-                "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+                "/${VERSION}/use-cloud-storage.html"
               ]
             },
             {
