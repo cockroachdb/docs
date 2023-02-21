@@ -69,7 +69,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
