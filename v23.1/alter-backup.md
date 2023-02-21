@@ -3,6 +3,7 @@ title: ALTER BACKUP
 summary: Use the ALTER BACKUP statement to add new KMS encryption keys to backups.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 {% include enterprise-feature.md %}

@@ -3,6 +3,7 @@ title: ALTER CHANGEFEED
 summary: Use the ALTER CHANGEFEED statement to add and drop changefeed targets, as well as set and unset options.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 {% include enterprise-feature.md %}

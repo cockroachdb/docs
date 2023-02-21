@@ -3,6 +3,7 @@ title: ALTER SCHEMA
 summary: The ALTER SCHEMA statement modifies a user-defined schema in a database.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.

@@ -3,6 +3,7 @@ title: Developer Guide Overview
 summary: An overview of common tasks that come up when you build an application using CockroachDB
 toc: true
 docs_area: develop
+sidebar: develop
 ---
 
 This guide shows you how to develop an application on CockroachDB. After reading this page, we recommend [starting a CockroachDB cluster](secure-a-cluster.html), and then [installing a client library](install-client-drivers.html).
@@ -22,8 +23,13 @@ This guide shows you how to develop an application on CockroachDB. After reading
 
 Before you start using CockroachDB, you should understand a couple important mechanics of the database:
 
-- [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb)
-- [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
+- [Guide contents](#guide-contents)
+- [CockroachDB basics](#cockroachdb-basics)
+  - [How transactions work in CockroachDB](#how-transactions-work-in-cockroachdb)
+    - [Serializability and transaction contention](#serializability-and-transaction-contention)
+    - [Transaction retries](#transaction-retries)
+  - [How applications interact with CockroachDB](#how-applications-interact-with-cockroachdb)
+- [What's next?](#whats-next)
 
 Note that the sections that follow were written for the purposes of orienting application developers. For more detailed technical documentation on CockroachDB's architecture, see our [architecture documentation](architecture/overview.html).
 

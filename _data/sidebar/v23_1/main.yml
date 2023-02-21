@@ -1,0 +1,15 @@
+docs_list_title: Docs Home
+docs_list_url: /$VERSION/
+docs:
+
+- title: Develop
+  url: /$VERSION/developer-guide-overview.html
+
+- title: SQL Statements
+  url: /$VERSION/sql-statements.html
+
+- title: Architecture
+  url: /$VERSION/architecture/overview.html
+
+- title: Releases
+  url: /releases/index.html

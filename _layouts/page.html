@@ -18,6 +18,9 @@ layout: default
      {% assign post_header_class = post_header_class | append:  " mt-5" %}
     {% endunless %}
   {% endunless %}
+{% if page.version.version == "v23.1" %}
+{% include breadcrumbs.html page_version=page.version.version sidebar=page.sidebar page_title=page.title page_url=page.url %}
+{% endif %}
 <div class="{{ post_header_class }}">
   <h1 class="post-title-main w-100">{{ page.title }}</h1>
   {% unless page.contribute == false %}

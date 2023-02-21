@@ -3,6 +3,7 @@ title: ALTER INDEX
 summary: Use the ALTER INDEX statement to change an existing index.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 The `ALTER INDEX` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to an index.

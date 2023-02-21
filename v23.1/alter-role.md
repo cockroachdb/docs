@@ -3,6 +3,7 @@ title: ALTER ROLE
 summary: The ALTER ROLE statement can be used to add or change a role's password.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 Use the `ALTER ROLE` [statement](sql-statements.html) to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.

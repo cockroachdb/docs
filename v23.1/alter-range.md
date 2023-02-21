@@ -3,6 +3,7 @@ title: ALTER RANGE
 summary: Use the ALTER RANGE statement to configure the replication zone for a system range.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 The `ALTER RANGE` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a range.

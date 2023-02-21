@@ -3,6 +3,7 @@ title: ALTER PARTITION
 summary: Use the ALTER PARTITION statement to configure the replication zone for a partition.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 `ALTER PARTITION` is used to add, modify, reset, or remove replication zones for [partitioning](partitioning.html). It is combined with the `CONFIGURE ZONE` subcommand.

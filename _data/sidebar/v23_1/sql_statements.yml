@@ -1,0 +1,52 @@
+docs_list_title: SQL Statements
+docs_list_url: /$VERSION/sql-statements.html
+parent: main
+docs:
+
+- title: <code>ALTER BACKUP</code> (Enterprise)
+  url: /$VERSION/alter-backup.html
+
+- title: <code>ALTER BACKUP SCHEDULE</code>
+  url: /$VERSION/alter-backup-schedule.html
+
+- title: <code>ALTER CHANGEFEED</code> (Enterprise)
+  url: /$VERSION/alter-changefeed.html
+
+- title: <code>ALTER DATABASE</code>
+  url: /$VERSION/alter-database.html
+
+- title: <code>ALTER DEFAULT PRIVILEGES</code>
+  url: /$VERSION/alter-default-privileges.html
+
+- title: <code>ALTER FUNCTION</code>
+  url: /$VERSION/alter-function.html
+
+- title: <code>ALTER INDEX</code>
+  url: /$VERSION/alter-index.html
+
+- title: <code>ALTER PARTITION</code> (Enterprise)
+  url: /$VERSION/alter-partition.html
+
+- title: <code>ALTER RANGE</code>
+  url: /$VERSION/alter-range.html
+
+- title: <code>ALTER ROLE</code>
+  url: /$VERSION/alter-role.html
+
+- title: <code>ALTER SCHEMA</code>
+  url: /$VERSION/alter-schema.html
+
+- title: <code>ALTER SEQUENCE</code>
+  url: /$VERSION/alter-sequence.html
+
+- title: <code>ALTER TABLE</code>
+  url: /$VERSION/alter-table.html
+
+- title: <code>ALTER TYPE</code>
+  url: /$VERSION/alter-type.html
+
+- title: <code>ALTER USER</code>
+  url: /$VERSION/alter-user.html
+
+- title: <code>ALTER VIEW</code>
+  url: /$VERSION/alter-view.html

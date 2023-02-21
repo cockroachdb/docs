@@ -1,0 +1,13 @@
+docs_list_title: Developer Guide Overview
+docs_list_url: /$VERSION/developer-guide-overview.html
+parent: main
+docs:
+
+- title: Design a Database Schema
+  url: /$VERSION/schema-design-overview.html
+
+- title: Test your Application Locally
+  url: /$VERSION/local-testing.html
+
+- title: Troubleshoot Common Problems
+  url: /$VERSION/error-handling-and-troubleshooting.html

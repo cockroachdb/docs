@@ -3,6 +3,7 @@ title: Create a User-defined Schema
 summary: Create a user-defined schema for your CockroachDB cluster
 toc: true
 docs_area: develop
+sidebar: schema_design_overview
 ---
 
 This page provides best-practice guidance on creating user-defined schemas, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).

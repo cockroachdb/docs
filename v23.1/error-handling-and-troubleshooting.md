@@ -3,6 +3,7 @@ title: Troubleshoot Common Problems
 summary: How to troubleshoot problems and handle transaction retry errors during application development
 toc: true
 docs_area: develop
+sidebar: develop
 ---
 
 This page has instructions for handling errors and troubleshooting problems that may arise during application development.

@@ -1,0 +1,11 @@
+{%- assign pv = include.page_version | replace: ".", "_" -%}
+{%- assign parent = site.data.sidebar[pv][include.sidebar].parent -%}
+{%- if include.sidebar and include.page_title and pv and parent -%}
+    {%- include_cached breadcrumbs.html page_version=include.page_version sidebar=parent %} <a href="{{ site.data.sidebar[pv][include.sidebar].docs_list_url | replace: "$VERSION", include.page_version | relative_url }}">{{ site.data.sidebar[pv][include.sidebar].docs_list_title }}</a> > {{ include.page_title }}
+{%- elsif pv and parent and include.sidebar != "main" -%}
+    {%- include_cached breadcrumbs.html page_version=include.page_version sidebar=parent %} <a href="{{ site.data.sidebar[pv][include.sidebar].docs_list_url | replace: "$VERSION", include.page_version | relative_url }}">{{ site.data.sidebar[pv][include.sidebar].docs_list_title }}</a> > 
+{%- elsif pv and include.sidebar == "main" -%}
+    <a href="{{ site.data.sidebar[pv][include.sidebar].docs_list_url | replace: "$VERSION", include.page_version | relative_url }}">{{ site.data.sidebar[pv][include.sidebar].docs_list_title }}</a> > 
+{%- else -%}
+    error
+{%- endif -%}

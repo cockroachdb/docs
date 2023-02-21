@@ -4,6 +4,7 @@ summary: The ALTER FUNCTION statement alters a user-defined function.
 toc: true
 keywords:
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 The `ALTER FUNCTION` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a [user-defined function](user-defined-functions.html).

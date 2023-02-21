@@ -1,0 +1,20 @@
+{% assign pv = page.version.version | replace: ".", "_" %}
+{% assign parent = site.data.sidebar[pv][page.sidebar].parent %}
+<div class="col-sidebar" data-nosnippet>
+  <div class="col-sidebar-content">
+    <div class="mb-3 px-3">
+      <form action="/docs/search.html">
+        <input class="form-control" name="query" type="text" placeholder="Search">
+      </form>
+    </div>
+    {% if parent %}
+    <a href="{{ site.data.sidebar[pv][parent].docs_list_url | replace: "$VERSION", page.version.version | relative_url }}">Back to {{ site.data.sidebar[pv][parent].docs_list_title }}</a>
+    {% endif %}
+    <ul id="sidebar" class="js-sidebar nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}  pt-0" >
+      {% for x in site.data.sidebar[pv][page.sidebar].docs %}
+      <li><a href="{{ x.url | replace: "$VERSION", page.version.version | relative_url }}">{{ x.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="stiky-spacer"></div>
+</div>

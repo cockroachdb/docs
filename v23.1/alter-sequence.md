@@ -3,6 +3,7 @@ title: ALTER SEQUENCE
 summary: Use the ALTER SEQUENCE statement to change the name, increment values, and other settings of a sequence.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a sequence.

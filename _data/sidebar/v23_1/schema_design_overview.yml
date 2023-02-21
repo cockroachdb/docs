@@ -1,0 +1,10 @@
+docs_list_title: Schema Design Overview
+docs_list_url: /$VERSION/schema-design-overview.html
+parent: develop
+docs:
+
+- title: Create a Database
+  url: /$VERSION/schema-design-database.html
+
+- title: Create a User-Defined Schema
+  url: /$VERSION/schema-design-schema.html

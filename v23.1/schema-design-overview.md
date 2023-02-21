@@ -4,7 +4,10 @@ summary: An overview of the objects that make up a logical schema
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 docs_area: develop
+sidebar: schema_design_overview
 ---
+
+{{ page.url }}
 
 This page provides an overview of database schemas in CockroachDB.
 

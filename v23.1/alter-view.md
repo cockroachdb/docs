@@ -3,6 +3,7 @@ title: ALTER VIEW
 summary: The ALTER VIEW statement applies a schema change to a view.
 toc: true
 docs_area: reference.sql
+sidebar: sql_statements
 ---
 
 The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).
