@@ -48,7 +48,7 @@ You can include the changefeed options listed on the [`CREATE CHANGEFEED`](creat
 - `resolved`
 - `updated`
 
-Scheduled changefeeds have the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) or `initial_scan_only` option included implicitly. You cannot specify `initial_scan` as `'yes'` or `'no'`.
+Scheduled changefeeds have the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option included implicitly. You cannot specify `initial_scan` as `'yes'` or `'no'`.
 
 ## Schedule options
 
