@@ -452,6 +452,12 @@
               ]
             },
             {
+              "title": "Insights Page",
+              "urls": [
+                "/cockroachcloud/insights-page.html"
+              ]
+            },            
+            {
               "title": "Databases Page",
               "urls": [
                 "/cockroachcloud/databases-page.html"
