@@ -32,7 +32,7 @@ Method | Required permissions | Description
 `POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
 `DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
 
-See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
+See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a {{ site.data.products.db }} service account with these required permissions.
 
 ## Log name format
 
@@ -249,7 +249,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
 
-1. Determine the service account to use for exporting logs from your {{ site.data.products.dedicated }} cluster. This log export service account requires specific naming syntax to be recognized by the log export feature. This command uses the third-party JSON parsing tool [`jq`](https://stedolan.github.io/jq/download/) to isolate just the needed `id` (GCP cluster ID) and `account_id` (GCP account ID) fields, and combines them for you in the required form:
+1. Determine the GCP principal to grant permission to from your account. This principal is already created for you by Cockroach Labs; this step merely determines its account name. This command uses the third-party JSON parsing tool [`jq`](https://stedolan.github.io/jq/download/) to isolate just the needed `id` (GCP cluster ID) and `account_id` (GCP account ID) fields, and combines them for you in the required form:
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -262,12 +262,14 @@ Perform the following steps to enable log export from your {{ site.data.products
     - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 2.
     - `{secret_key}` is your API access key. See [API Access](console-access-management.html) for more details.
 
-    The resulting log export service account should resemble the following example:
+    The resulting GCP principal should resemble the following example:
 
     {% include_cached copy-clipboard.html %}
     ~~~
     crl-logging-user-a1c42be2e53b@crl-prod-abc.iam.gserviceaccount.com
     ~~~
+
+    This GCP principal refers to a resource that is owned by Cockroach Labs and is created automatically along with your cluster. You **do not** need to create this account in GCP; it is already present for use by your cluster.
 
 1. Create a new role with the required permissions in your GCP project:
 
@@ -277,11 +279,11 @@ Perform the following steps to enable log export from your {{ site.data.products
  1. Search for `logging.logEntries.create` in the **Filter** field, check the checkbox next to the resulting match, then click **Add**.
  1. Click the **Create** button.
 
-1. Add your {{ site.data.products.dedicated }} cluster's service account principal to the role you just created.
+1. Add your cluster's GCP principal to the role you just created.
 
 	1. In the GCP console, visit the [IAM admin page](https://console.cloud.google.com/iam-admin) for your project.
  1. Click the **+ Grant Access** button.
- 1. In the box labeled **New principals**, enter the name of the {{ site.data.products.db }} service account you determined in step 3.
+ 1. In the box labeled **New principals**, enter the name of your cluster's GCP principal you determined in step 3.
  1. In the **Select a role** dropdown, select the role you created in step 4.
 	1. Click **SAVE**.
 
@@ -464,4 +466,6 @@ When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/gene
 
 ### GCP Cloud Logging
 
-When supplying the GCP project ID in step 6, be sure you use the **Project ID**, and not the **Project Name**. Both are shown on the Google Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
+When supplying the GCP project ID in step 6a or 6b, be sure you use the **Project ID**, and not the **Project Name**. Both are shown on the Google Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
+
+You do not need to create a GCP service account to enable or manage log export. The GCP principal mentioned in step 3 and used in step 5c is already created for you. These steps simply determine the account name of this principal, which is specific to your cluster.
