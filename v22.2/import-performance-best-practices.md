@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page provides best practices for optimizing [import](import.html) performance in CockroachDB.
+This page provides best practices for optimizing [import](import-into.html) performance in CockroachDB.
 
 Import speed primarily depends on the amount of data that you want to import. However, there are two main factors that have can have a large impact on the amount of time it will take to run an import:
 
@@ -15,6 +15,14 @@ Import speed primarily depends on the amount of data that you want to import. Ho
 {{site.data.alerts.callout_info}}
 If the import size is small, then you do not need to do anything to optimize performance. In this case, the import should run quickly, regardless of the settings.
 {{site.data.alerts.end}}
+
+## TK section from IMPORT INTO doc .. manage import jobs?
+
+- All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT INTO` task in addition to serving normal traffic.
+- To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
+- To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
+- An import job will pause if a node in the cluster runs out of disk space. See [View and control import jobs](import-into.html#view-and-control-import-jobs) for information on resuming and showing the progress of import jobs.
+- An import job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the import has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
 
 ## Split your data into multiple files
 
@@ -50,9 +58,13 @@ CockroachDB imports the files that you give it, and does not further split them.
 If you split the data into **more** files than you have nodes, it will not have a large impact on performance.
 {{site.data.alerts.end}}
 
+## Partition and sort your data
+
+TK
+
 ### File storage during import
 
-During migration, all of the features of [`IMPORT`](import.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
+During migration, all of the features of [`IMPORT INTO`](import-into.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
 
 ## Choose a performant import format
 
@@ -60,32 +72,26 @@ Import formats do not have the same performance because of the way they are proc
 
 1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import-into.html) (both have about the same import performance)
 1. [`AVRO`](migrate-from-avro.html)
-1. [`MYSQLDUMP`](migrate-from-mysql.html)
-1. [`PGDUMP`](migrate-from-postgres.html)
 
 We recommend formatting your import files as `CSV`, `DELIMITED DATA`, or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
-
-`MYSQLDUMP` and `PGDUMP` run a single thread to parse their data, and therefore have substantially slower performance.
-
-`MYSQLDUMP` and `PGDUMP` are two examples of "bundled" data. This means that the dump file contains both the table schema and the data to import. These formats are the slowest to import, with `PGDUMP` being the slower of the two. This is because CockroachDB has to first load the whole file, read the whole file to get the schema, create the table with that schema, and then import the data. While these formats are slow, see [Import the schema separately from the data](#import-the-schema-separately-from-the-data) for guidance on speeding up bundled-data imports.
 
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
 ### Import the schema separately from the data
 
-For single-table `MYSQLDUMP` or `PGDUMP` imports, split your dump data into two files:
+Split your dump data into two files:
 
-1. A SQL file containing the table schema
-1. A CSV file containing the table data
+1. A SQL file containing the table schema (i.e., [data definition statements](sql-statements.html#data-definition-statements)).
+1. A CSV file containing the table data (i.e., tk).
 
-Then, import the schema-only file:
+<!-- Then, import the schema-only file:
 
 ~~~ sql
 > IMPORT TABLE customers
 FROM PGDUMP
     'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.sql' WITH ignore_unsupported_statements
 ;
-~~~
+~~~ -->
 
 And use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
 
@@ -114,7 +120,6 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 
 ## See also
 
-- [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from Oracle](migrate-from-oracle.html)
 - [Migrate from PostgreSQL](migrate-from-postgres.html)
