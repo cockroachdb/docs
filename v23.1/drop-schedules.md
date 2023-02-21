@@ -64,6 +64,7 @@ In this example, all schedules with the label `schedule_database` are dropped.
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
 - [`CREATE CHANGEFEED`](create-changefeed.html)
+- [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html)
 - [`SHOW BACKUP`](show-backup.html)
 - [`SHOW SCHEDULES`](show-schedules.html)
 - [`PAUSE SCHEDULES`](pause-schedules.html)

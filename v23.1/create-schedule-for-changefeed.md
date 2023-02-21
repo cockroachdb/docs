@@ -30,7 +30,7 @@ Parameter | Description
 `IF NOT EXISTS` | A scheduled changefeed should not be created if the `schedule_label` already exists. You will receive an error if the schedule label already exists, or if `schedule_label` is not defined when using `IF NOT EXISTS`.
 `schedule_label` | The name for the scheduled changefeed. This is optional and does not need to be unique. If you do not define a name, the label will default to `CHANGEFEED` with the timestamp of when you created the schedule. 
 `changefeed_targets` | The tables to target with the changefeed. For example, `movr.users, movr.rides`.
-`changefeed_sink` | A URI to authenticate to the [changefeed sink](changefeed-sinks.html).
+`changefeed_sink` | The [changefeed sink URI](changefeed-sinks.html).
 `changefeed_option` | The [options](create-changefeed.html#options) to control the behavior of your changefeed. For example, `WITH format = csv, full_table_name`. See [Changefeed options](#changefeed-options) for a list of exceptions.
 `target_list` | The columns to emit data from if you're using a [CDC transformation](cdc-transformations.html) expression.
 `insert_target` | The target tables for the changefeed if you're using a [CDC transformation](cdc-transformations.html) expression.

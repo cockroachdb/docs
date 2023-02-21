@@ -53,3 +53,4 @@ The [schedule options](create-schedule-for-changefeed.html#schedule-options) con
 
 - [Changefeed Messages](changefeed-messages.html)
 - [`CREATE CHANGEFEED`](create-changefeed.html)
+- [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html)
