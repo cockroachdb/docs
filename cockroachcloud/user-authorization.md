@@ -1,9 +1,21 @@
 ---
-title: User Authorization
-summary: Learn about the user authorization features for CockroachDB Cloud clusters.
+title: Managing User Authorization in CockroachDB Cloud
+summary: Learn procedures for managing the life cycle of CockroachDB Cloud users and roles.
 toc: true
 docs_area: manage
 ---
+
+{{ site.data.products.db }} has a two-level authorization model: users have permissions within organizations, and on specific clusters within organizations.
+
+Before proceding, it is suggested to review this authorization model, which is detailed in full here: [Authorization in {{ site.data.products.db }}](authorization.html)
+
+This page documents procedures for managing the life cycle of CockroachDB Cloud users and roles, including:
+
+- Adding users to your organization, by creating them or inviting them from another organization
+- managing organization-level users roles
+- granting organization users access to clusters through cluster roles
+- managing the privileges associated with cluster roles
+
 
 {{ site.data.products.db }} requires you to create SQL users to access the cluster.
 
