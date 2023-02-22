@@ -155,7 +155,7 @@ Let's define a changelog with the [XML format](https://docs.liquibase.com/concep
     This first changeset uses [the `sqlFile` tag](https://docs.liquibase.com/change-types/community/sql-file.html), which tells Liquibase that an external `.sql` file contains some [SQL statements](https://docs.liquibase.com/concepts/basic/sql-format.html) to execute.
 
     {{site.data.alerts.callout_success}}
-    CockroachDB has [limited support for online schema changes in transactions](online-schema-changes.html#limited-support-for-schema-changes-within-transactions). To avoid running into issues with incomplete transactions, we recommend setting the [`runInTransaction` attribute](https://docs.liquibase.com/concepts/basic/changeset.html#available-attributes) to `"false"` on all changesets.
+    CockroachDB [doesn't guarantee the atomicity of online schema changes in transactions with multiple statements](online-schema-changes.html#schema-changes-within-transactions). To avoid running into issues with incomplete transactions, we recommend setting the [`runInTransaction` attribute](https://docs.liquibase.com/concepts/basic/changeset.html#available-attributes) to `"false"` on all changesets.
     {{site.data.alerts.end}}
 
 
@@ -481,7 +481,7 @@ You can also query the `account` table directly to see the latest changes reflec
 
 By default, Liquibase wraps each changeset within a single transaction. If the transaction fails to successfully commit, Liquibase rolls back the transaction.
 
-CockroachDB has [limited support for online schema changes within transactions](online-schema-changes.html#limited-support-for-schema-changes-within-transactions). If a schema change fails, automatic rollbacks can lead to unexpected results. To avoid running into issues with incomplete transactions, we recommend setting the `runInTransaction` attribute on each of your changesets to `"false"`, as demonstrated throughout this tutorial.
+CockroachDB has [doesn't guarantee the atomicity of schema changes within transactions with multiple statements](online-schema-changes.html#schema-changes-within-transactions). If a schema change fails, automatic rollbacks can lead to unexpected results. To avoid running into issues with incomplete transactions, we recommend setting the `runInTransaction` attribute on each of your changesets to `"false"`, as demonstrated throughout this tutorial.
 
 {{site.data.alerts.callout_info}}
 If `runInTransaction="false"` for a changeset, and an error occurs while Liquid is running the changeset, the `databasechangelog` table might be left in an invalid state and need to be fixed manually.
