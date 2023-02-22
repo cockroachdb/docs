@@ -33,6 +33,8 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 
 By default, only the `root` user can execute `SHOW JOBS`.
 
+For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege can view a job that they created.
+
 ## Synopsis
 
 <div>
