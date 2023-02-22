@@ -70,7 +70,7 @@ Flag | Description
 `--pid-file` | The file to which the node's process ID will be written as soon as the node is ready to accept connections. When `--background` is used, this happens before the process detaches from the terminal. When this flag is not set, the process ID is not written to file.
 <a name="flags-store"></a> `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
 <a name="flags-spatial-libs"></a>`--spatial-libs` |  The location on disk where CockroachDB looks for [spatial](spatial-features.html) libraries.<br/><br/>**Defaults:** <br/><ul><li>`/usr/local/lib/cockroach`</li><li>A `lib` subdirectory of the CockroachDB binary's current directory.</li></ul><br/>
-`--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
+`--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. The temporary store directory is used primarily as working memory for distributed computations and importing from CSV data sources. On node start-up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Networking
 
@@ -209,6 +209,7 @@ Field | Description
 `attrs` | Arbitrary strings, separated by colons, specifying disk type or capability. These can be used to influence the location of data replicas. See [Configure Replication Zones](configure-replication-zones.html#replication-constraints) for full details.<br><br>In most cases, node-level `--locality` or `--attrs` are preferable to store-level attributes, but this field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (`ssd`) or spinny disk (`hdd`), as well as speeds and other specs, for example:<br><br> `--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 <a name="store-size"></a> `size` | The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. When no other nodes have available capacity, this limit will be exceeded. Data may also be written to the node faster than the cluster can rebalance it away; as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br><br> The `size` can be specified either in a bytes-based unit or as a percentage of hard drive space (notated as a decimal or with `%`), for example: <br><br>`--store=path=/mnt/ssd01,size=10000000000 ----> 10000000000 bytes`<br>`--store=path=/mnt/ssd01,size=20GB ----> 20000000000 bytes`<br>`--store=path=/mnt/ssd01,size=20GiB ----> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=0.02TiB ----> 21474836480 bytes`<br>`--store=path=/mnt/ssd01,size=20% ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=0.2 ----> 20% of available space`<br>`--store=path=/mnt/ssd01,size=.2 ----> 20% of available space`<br><br>**Default:** 100%<br><br>For an in-memory store, the `size` field is required and must be set to the true maximum bytes or percentage of available memory, for example:<br><br>`--store=type=mem,size=20GB`<br>`--store=type=mem,size=90%`<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.
 <a name="fields-ballast-size"></a> `ballast-size` | Configure the size of the automatically created emergency ballast file. Accepts the same value formats as the [`size` field](#store-size). For more details, see [Automatic ballast files](cluster-setup-troubleshooting.html#automatic-ballast-files).<br><br>To disable automatic ballast file creation, set the value to `0`:<br><br>`--store=path=/mnt/ssd01,ballast-size=0`
+<a name="store-provisioned-rate"></a> `provisioned-rate` | A mapping of a store name to a bandwidth limit, expressed in bytes per second. This constrains the bandwidth used for [admission control](admission-control.html) for operations on the store. The disk name is separated from the bandwidth value by a colon (`:`). A value of `0` (the default) represents unlimited bandwidth. For example: <br /><br />`--store=provisioned-rate=disk-name=/mnt/ssd01:200`<br /><br />**Default:** 0<br /><br />If the bandwidth value is omitted, bandwidth is limited to the value of the  [`kv.store.admission.provisioned_bandwidth` cluster setting](cluster-settings.html#settings). <strong>Modify this setting only in consultation with your <a href="https://support.cockroachlabs.com/hc/en-us">support team</a>.</strong>
 
 ### Logging
 
@@ -377,56 +378,56 @@ $ cockroach init \
 
 In this example we will start a multi-node [local cluster](start-a-local-cluster.html) with a multi-region setup that uses the same regions (passed to the [`--locality`](#locality) flag) as the [multi-region MovR demo application](demo-low-latency-multi-region-deployment.html).
 
-First, start a node in the `us-east1` region:
+1. Start a node in the `us-east1` region:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach start --locality=region=us-east1,zone=us-east-1a --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start --locality=region=us-east1,zone=us-east-1a --insecure --store=/tmp/node0 --listen-addr=localhost:26257 --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ~~~
 
-Next, start a node in the `us-west1` region:
+1. Start a node in the `us-west1` region:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach start --locality=region=us-west1,zone=us-west-1a --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start --locality=region=us-west1,zone=us-west-1a --insecure --store=/tmp/node2 --listen-addr=localhost:26259 --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ~~~
 
-Next, start a node in the `europe-west1` region:
+1. Start a node in the `europe-west1` region:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach start --locality=region=europe-west1,zone=europe-west-1a --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach start --locality=region=europe-west1,zone=europe-west-1a --insecure --store=/tmp/node1 --listen-addr=localhost:26258 --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ~~~
 
-Next, initialize the cluster:
+1. Initialize the cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach init --insecure --host=localhost --port=26257
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach init --insecure --host=localhost --port=26257
+    ~~~
 
-Next, connect to the cluster using [`cockroach sql`](cockroach-sql.html):
+1. Connect to the cluster using [`cockroach sql`](cockroach-sql.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach sql --host=localhost --port=26257 --insecure
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --host=localhost --port=26257 --insecure
+    ~~~
 
-Finally, issue the [`SHOW REGIONS`](show-regions.html) statement to verify that the list of regions is expected.
+1. Issue the [`SHOW REGIONS`](show-regions.html) statement to verify that the list of regions is expected:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW REGIONS;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW REGIONS;
+    ~~~
 
-~~~
-     region    | zones | database_names | primary_region_of
----------------+-------+----------------+--------------------
-  europe-west1 | {}    | {}             | {}
-  us-east1     | {}    | {}             | {}
-  us-west1     | {}    | {}             | {}
-(3 rows)
-~~~
+    ~~~
+        region    | zones | database_names | primary_region_of
+    ---------------+-------+----------------+--------------------
+      europe-west1 | {}    | {}             | {}
+      us-east1     | {}    | {}             | {}
+      us-west1     | {}    | {}             | {}
+    (3 rows)
+    ~~~
 
 For more information about running CockroachDB multi-region, see the [Multi-region Capabilities Overview](multiregion-overview.html).
 
@@ -459,7 +460,7 @@ For more information about the `--locality` flag, see [Locality](#locality).
     --max-sql-memory=.25
     ~~~
 
-2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
+1. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -473,7 +474,7 @@ For more information about the `--locality` flag, see [Locality](#locality).
     --max-sql-memory=.25
     ~~~
 
-3. Run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
+1. Run the [`cockroach init`](cockroach-init.html) command against any node to perform a one-time cluster initialization:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

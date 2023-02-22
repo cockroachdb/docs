@@ -18,5 +18,3 @@ IMPORT TABLE customers (
   599865027685613569 | succeeded |                  1 | 300024 |             0 | 13389972
 (1 row)
 ~~~
-
-For more import options, see [`IMPORT`](../{{site.versions["stable"]}}/import-into.html).

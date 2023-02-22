@@ -11,7 +11,7 @@ When you're ready to run CockroachDB in production in a single region, it's impo
 If you haven't already, [review the full range of topology patterns](topology-patterns.html) to ensure you choose the right one for your use case.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 {% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 
@@ -25,7 +25,7 @@ If you haven't already, [review the full range of topology patterns](topology-pa
     - App and load balancer in same region as VMs for CockroachDB
         - The load balancer redirects to CockroachDB nodes in the region
 
-2. Start each node on a separate VM, setting the [`--locality`](cockroach-start.html#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
+1. Start each node on a separate VM, setting the [`--locality`](cockroach-start.html#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -52,10 +52,10 @@ Since all ranges, including leaseholder replicas, are in a single region, read l
 For example, in the animation below:
 
 1. The read request reaches the load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the relevant leaseholder.
-4. The leaseholder retrieves the results and returns to the gateway node.
-5. The gateway node returns the results to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the relevant leaseholder.
+1. The leaseholder retrieves the results and returns to the gateway node.
+1. The gateway node returns the results to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_basic_production_reads.png' | relative_url }}" alt="Basic production topology reads" style="max-width:100%" />
 
@@ -66,12 +66,12 @@ Since all ranges are in a single region, writes achieve consensus without leavin
 For example, in the animation below:
 
 1. The write request reaches the load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder replicas for the relevant table and secondary index.
-4. While each leaseholder appends the write to its Raft log, it notifies its follower replicas.
-5. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
-6. The leaseholders then return acknowledgement of the commit to the gateway node.
-7. The gateway node returns the acknowledgement to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder replicas for the relevant table and secondary index.
+1. While each leaseholder appends the write to its Raft log, it notifies its follower replicas.
+1. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
+1. The leaseholders then return acknowledgement of the commit to the gateway node.
+1. The gateway node returns the acknowledgement to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_basic_production_writes.gif' | relative_url }}" alt="Leaseholder preferences topology writes" style="max-width:100%" />
 

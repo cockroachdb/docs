@@ -54,7 +54,7 @@ Multi-region clusters must contain at least 3 regions to ensure that data spread
 - Frankfurt (`europe-west3`)
 - Zurich (`europe-west6`)
 
-If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
+If you want to create a cluster in a disabled or unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
@@ -165,8 +165,8 @@ To start using your {{ site.data.products.db }} cluster, see the following pages
 
 If you created a multi-region cluster, it is important to carefully choose:
 
-- The right [survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#survival-goals) for each database.
-- The right [table locality](../{{site.versions["stable"]}}/multiregion-overview.html#table-locality) for each of your tables.
+- The right [survival goal](../{{site.current_cloud_version}}/multiregion-overview.html#survival-goals) for each database.
+- The right [table locality](../{{site.current_cloud_version}}/multiregion-overview.html#table-locality) for each of your tables.
 
 Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
 

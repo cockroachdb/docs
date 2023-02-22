@@ -10,6 +10,80 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Limitations for user-defined functions (UDFs)
+
+#### Limitations on use of UDFs
+
+[User-defined functions](user-defined-functions.html) are not currently supported in:
+
+- Expressions (column, index, constraint) in tables.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+
+- Views.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87699)
+
+- Other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+- [CDC transformations](cdc-transformations.html).
+
+#### Limitations on expressions allowed within UDFs
+
+The following are not currently allowed within the body of a [UDF](user-defined-functions.html):
+
+- Subqueries in statements.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87291)
+
+- Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
+
+- Expressions with `*` such as `SELECT *`.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
+
+- Common table expressions (CTEs).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
+- References to other user-defined functions.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
+
+The [cluster setting](cluster-settings.html) `kv.rangefeed.range_stuck_threshold` will automatically restart a rangefeed that appears to be stuck if it does not emit events for some time. Rangefeeds are used to stream per-range changefeed events. This setting was introduced in CockroachDB v22.1.7, disabled by default, but is enabled by default in v22.2.0, set to 1 minute.
+
+This setting can erroneously trigger if the client fails to consume events for the configured duration, for example, in the case of an overloaded changefeed sink. Furthermore, this can cause the entire changefeed to fail and restart with error "context canceled", instead of only restarting the internal per-range rangefeed.
+
+If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed.range_stuck_threshold = '0s'`. A fix is under development, and will be included in an upcoming 22.2 patch release.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92570)
+
+### Limitations for `DROP OWNED BY`
+
+[`DROP OWNED BY`](drop-owned-by.html) drops all owned objects as well as any [grants](grant.html) on objects not owned by the [role](security-reference/authorization.html#roles).
+
+#### `DROP OWNED BY` does not support drop functions
+
+{% include {{page.version.version}}/known-limitations/drop-owned-by-function-limitations.md %}
+
+#### `DROP OWNED BY` is not supported where role has system-level privileges
+
+{% include {{page.version.version}}/known-limitations/drop-owned-by-role-limitations.md %}
+
+### Spatial features disabled for ARM Macs
+
+[Spatial features](spatial-features.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
+
+[GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
+
+## Unresolved limitations
+
 ### Unsupported trigram syntax
 
 The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes.html):
@@ -47,22 +121,9 @@ The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) m
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
 
-### Row-Level TTL limitations
-
-{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
-
-### Change data capture limitations
-
-Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
-
-{% include {{ page.version.version }}/known-limitations/cdc.md %}
-{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
-
-## Unresolved limitations
-
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
-[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](alter-index.html#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
 
 To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
 
@@ -249,12 +310,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
-### Optimizer stale statistics deletion when columns are dropped
-
-- {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
-
-- {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
-
 ### Automatic statistics refresher may not refresh after upgrade
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
@@ -278,15 +333,15 @@ CockroachDB does not currently support [`IMPORT`s](import.html) into tables with
 To work around this limitation:
 
 1. Drop any partial indexes defined on the table.
-2. Perform the `IMPORT`.
-3. Recreate the partial indexes.
+1. Perform the `IMPORT`.
+1. Recreate the partial indexes.
 
 If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) with partial indexes:
 
 1. Drop the partial indexes on the PostgreSQL server.
-2. Recreate the `PGDUMP`.
-3. `IMPORT` the `PGDUMP`.
-4. Add partial indexes on the CockroachDB server.
+1. Recreate the `PGDUMP`.
+1. `IMPORT` the `PGDUMP`.
+1. Add partial indexes on the CockroachDB server.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
@@ -357,6 +412,10 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
+### `SHOW BACKUP` does not work with locality-aware backups and the `incremental_location` option
+
+{% include {{ page.version.version }}/known-limitations/show-backup-locality-incremental-location.md %}
+
 ### DB Console may become inaccessible for secure clusters
 
 Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
@@ -421,7 +480,7 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 ### Adding a column with sequence-based `DEFAULT` values
 
-It is currently not possible to [add a column](add-column.html) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
+It is currently not possible to [add a column](alter-table.html#add-column) to a table when the column uses a [sequence](create-sequence.html) as the [`DEFAULT`](default-value.html) value, for example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -478,7 +537,7 @@ As a workaround, [execute the file from the command line](cockroach-sql.html#exe
 
 ### New values generated by `DEFAULT` expressions during `ALTER TABLE ADD COLUMN`
 
-When executing an [`ALTER TABLE ADD COLUMN`](add-column.html) statement with a [`DEFAULT`](default-value.html) expression, new values generated:
+When executing an [`ALTER TABLE ADD COLUMN`](alter-table.html#add-column) statement with a [`DEFAULT`](default-value.html) expression, new values generated:
 
 - use the default [search path](sql-name-resolution.html#search-path) regardless of the search path configured in the current session via `SET SEARCH_PATH`.
 - use the UTC time zone regardless of the time zone configured in the current session via [`SET TIME ZONE`](set-vars.html).
@@ -575,7 +634,7 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 
 ### Some column-dropping schema changes do not roll back properly
 
-Some [schema changes](online-schema-changes.html) that [drop columns](drop-column.html) cannot be [rolled back](rollback-transaction.html) properly.
+Some [schema changes](online-schema-changes.html) that [drop columns](alter-table.html#drop-column) cannot be [rolled back](rollback-transaction.html) properly.
 
 In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
 
@@ -605,7 +664,13 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
 
-### User-defined functions
+### Row-Level TTL limitations
 
-{% include {{ page.version.version }}/known-limitations/udf-cdc-transformations.md %}
-{% include {{ page.version.version }}/known-limitations/udf-limitations.md %}
+{% include {{page.version.version}}/known-limitations/row-level-ttl-limitations.md %}
+
+### Change data capture limitations
+
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
+{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}

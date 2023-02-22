@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: reference.benchmarking
 ---
 
-CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs' extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
+CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs's extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
 
 For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-large.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design.
 
@@ -16,7 +16,7 @@ This document is about CockroachDB performance on benchmarks. For guidance on tu
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. CockroachDB can process **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the following chart, this is a 40% improvement over the results from CockroachDB 19.2.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. During testing, CockroachDB v21.1 processed **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the following chart, this was a 40% improvement over the results from CockroachDB 19.2.
 
 For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used).
 
@@ -31,7 +31,6 @@ CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-seriali
 | Efficiency (%)                                  |            98.81 |            95.45 |
 | Max number of rows (billion)                    |             49.8 |             69.7 |
 | Max unreplicated data (TB)                      |                8 |             11.2 |
-| p95 latency for New Order transactions (ms)     |           486.50 |           2684.4 |
 | Number of nodes                                 |               81 |               81 |
 
 ### Linear scaling

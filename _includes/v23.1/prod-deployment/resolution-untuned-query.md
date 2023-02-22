@@ -1,0 +1,1 @@
+If you find queries that are consuming too much memory, [cancel the queries](manage-long-running-queries.html#cancel-long-running-queries) to free up memory usage. For information on optimizing query performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).

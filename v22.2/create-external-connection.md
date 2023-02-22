@@ -20,7 +20,7 @@ You can also use the following SQL statements to work with external connections:
 
 ## Required privileges
 
-To create an external connection, a user must have the [`EXTERNALCONNECTION` system privilege](security-reference/authorization.html#supported-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system privilege by default and are capable of granting the `EXTERNALCONNECTION` privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
+To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#system-level-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
 
 For example: 
 
@@ -53,20 +53,23 @@ Parameter | Description
 
 Storage or sink      | Operation support               
 ---------------------+---------------------------------
-[Amazon S3](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
-[Azure Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
-[Google Cloud Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Azure Storage](use-cloud-storage.html) | Backups, restores, imports, exports
+[Google Cloud Storage](use-cloud-storage.html) | Backups, restores, imports, exports
 [Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format) | Encrypted backups
 [Kafka](changefeed-sinks.html#kafka) | Changefeeds
-[Nodelocal](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Nodelocal](use-cloud-storage.html) | Backups, restores, imports, exports
 [Userfile](use-userfile-for-bulk-operations.html) | Backups, restores, imports, exports
 
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
 
-{{site.data.alerts.callout_info}}
-When you create an external connection for a Kafka sink, you can only include the query parameters and options that Kafka sinks support. See the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
-{{site.data.alerts.end}}
+### Changefeed sinks as external connections
+
+Consider the following when you create an external connection for:
+
+- Kafka sinks: You can only include the query parameters and options that Kafka sinks support. See the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
+- Cloud storage sinks: {% include {{ page.version.version }}/cdc/cloud-storage-external-connection.md %}
 
 ## External connection URI format
 

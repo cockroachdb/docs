@@ -143,7 +143,7 @@ The optimizer supports hint syntax to force the use of a specific join algorithm
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
-- `CROSS MERGE JOIN`
+- `CROSS HASH JOIN`
 - `INNER INVERTED JOIN`
 - `LEFT INVERTED JOIN`
 

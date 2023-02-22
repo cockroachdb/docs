@@ -67,7 +67,7 @@ root@127.0.0.1:34839/movr>
     USE tutorial;
     ~~~
 
-2. [`IMPORT`](import.html) the parts of [the data set](#data-set-description) that live in the `tutorial` database.
+1. [`IMPORT`](import.html) the parts of [the data set](#data-set-description) that live in the `tutorial` database.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -83,7 +83,7 @@ root@127.0.0.1:34839/movr>
     Time: 17.745s total (execution 17.744s / network 0.000s)
     ~~~
 
-3. Create a `birds` database, and use it.
+1. Create a `birds` database, and use it.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -91,7 +91,7 @@ root@127.0.0.1:34839/movr>
     USE birds;
     ~~~
 
-4. [`IMPORT`](import.html) the parts of [the data set](#data-set-description) that live in the `birds` database.
+1. [`IMPORT`](import.html) the parts of [the data set](#data-set-description) that live in the `birds` database.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -105,7 +105,7 @@ root@127.0.0.1:34839/movr>
     (1 row)
     ~~~
 
-5. Switch back to the `tutorial` database. All of the queries in this tutorial assume you are in the `tutorial` database.
+1. Switch back to the `tutorial` database. All of the queries in this tutorial assume you are in the `tutorial` database.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -121,13 +121,13 @@ As a first step, you'd like to know where exactly the Common Loon has been sight
 Because of the structure of [the `birds` database](#the-birds-database), you will wrap the results of a [subquery](subqueries.html) against the `birds` database in a [common table expression (CTE)](common-table-expressions.html) to provide a shorthand name for referring to this data. This step will be necessary every time you want to get information about bird sightings. Therefore, the general pattern for many of these queries will be something like:
 
 1. Get bird information (usually including location data) and store the results in a named CTE.
-2. Using the named CTE, perform additional processing against the results of the CTE combined with other data you have (e.g., bookstores, roads). Depending on the complexity of the questions asked, you may even need to create multiple CTEs.
+1. Using the named CTE, perform additional processing against the results of the CTE combined with other data you have (e.g., bookstores, roads). Depending on the complexity of the questions asked, you may even need to create multiple CTEs.
 
 In the query below, to answer the question "where are the loons?", take the following steps:
 
 1. Join `birds.birds`, `birds.routes`, and `birds.observations` on the bird ID and route IDs where the bird name is "Common Loon".
-2. Collect the resulting birdwatcher route geometries (`routes.geom`) into one geometry (a [MultiPoint](multipoint.html)).
-3. Give the resulting table a name, `loon_sightings`, and query against it. In this case the query is rather simple: since the geometries have been collected into one in step 2 above, output the geometry as [GeoJSON](geojson.html) so the result can be pasted into <https://geojson.io> to generate a map of the sightings.
+1. Collect the resulting birdwatcher route geometries (`routes.geom`) into one geometry (a [MultiPoint](multipoint.html)).
+1. Give the resulting table a name, `loon_sightings`, and query against it. In this case the query is rather simple: since the geometries have been collected into one in step 2 above, output the geometry as [GeoJSON](geojson.html) so the result can be pasted into <https://geojson.io> to generate a map of the sightings.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -169,8 +169,8 @@ Now that you have some sense of how loon sightings are distributed across the st
 To find the answer:
 
 1. Collect the geometries of all loon sightings together in a CTE as one geometry.
-2. Get the area of the [convex hull](st_convexhull.html) of the resulting geometry.
-3. Because the `birds.routes` data uses [SRID 4326](srid-4326.html), the resulting area is measured in degrees, which can be converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
+1. Get the area of the [convex hull](st_convexhull.html) of the resulting geometry.
+1. Because the `birds.routes` data uses [SRID 4326](srid-4326.html), the resulting area is measured in degrees, which can be converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -210,7 +210,7 @@ In addition to the [loon observation point locations][q_01] and the [area of tho
 To find the answer:
 
 1. Join `birds.birds` and `birds.observations` on the bird ID where the bird name is "Common Loon".
-2. Sum all of the sightings; the `GROUP BY` on bird names is necessary due to the use of the `sum` aggregate function.
+1. Sum all of the sightings; the `GROUP BY` on bird names is necessary due to the use of the `sum` aggregate function.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -268,7 +268,7 @@ Since you are planning to do some hiking back into the woods to find the actual 
 To answer this question:
 
 1. Build a CTE that returns both the convex hull of loon habitat, as well as the sum of all loon observations in NY.
-2. Query the result table of the CTE from step 1 to divide the number of sightings by the area of the loon's habitat (the convex hull). As in [#2][q_02], do some arithmetic to convert from the unit of degrees returned by [SRID 4326](srid-4326.html) to square miles.
+1. Query the result table of the CTE from step 1 to divide the number of sightings by the area of the loon's habitat (the convex hull). As in [#2][q_02], do some arithmetic to convert from the unit of degrees returned by [SRID 4326](srid-4326.html) to square miles.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -320,7 +320,7 @@ A natural question that arises is: given that you are looking for loon habitat, 
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat. Note that the query below [orders by](order-by.html) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works](spatial-indexes.html#how-cockroachdbs-spatial-indexing-works).
+1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat. Note that the query below [orders by](order-by.html) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works](spatial-indexes.html#how-cockroachdbs-spatial-indexing-works).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -372,8 +372,8 @@ Since you know you will want to hit up [The Book Nook in Saranac Lake, NY](https
 To answer this question:
 
 1. Build a CTE that returns some information about the bookstore you want to visit.
-2. Build another CTE that returns information about the habitats of birds observed in NY state, and collects the habitat geometries together into one geometry.
-3. Join the results of the above CTEs and query the count of birds whose habitats contain the location of the bookstore.
+1. Build another CTE that returns information about the habitats of birds observed in NY state, and collects the habitat geometries together into one geometry.
+1. Join the results of the above CTEs and query the count of birds whose habitats contain the location of the bookstore.
 
 {{site.data.alerts.callout_info}}
 The final [`SELECT`](selection-queries.html) in the query below is doing a join that will not benefit from [spatial indexing](spatial-indexes.html), since both sides of the join are the results of [CTEs](common-table-expressions.html), and are therefore not indexed.
@@ -445,7 +445,7 @@ It's great that you [know how many bird species may be near a given bookstore][q
 To answer this question:
 
 1. Build a CTE that returns some information about the bookstore you want to visit.
-2. Join the results of the above CTE and a query against the `birds` database that lists the names and observation totals (sums) of birds whose habitats are within 10 miles of the location of the bookstore.
+1. Join the results of the above CTE and a query against the `birds` database that lists the names and observation totals (sums) of birds whose habitats are within 10 miles of the location of the bookstore.
 
 {{site.data.alerts.callout_info}}
 The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
@@ -526,8 +526,8 @@ You [already discovered which bookstores are located within loon habitat][q_06].
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat.
-3. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and return the results as [GeoJSON](geojson.html).
+1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat.
+1. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and return the results as [GeoJSON](geojson.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -572,9 +572,9 @@ You have already [visualized the convex hull][q_09], but now you would like to c
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat.
-2. Get the area of the [convex hull](st_convexhull.html) of the resulting geometry.
-3. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and calculate the area of the hull. As in previous examples, note that because the `birds.routes` data uses [SRID 4326](srid-4326.html), the resulting area is measured in degrees, which is converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
+1. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat.
+1. Get the area of the [convex hull](st_convexhull.html) of the resulting geometry.
+1. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and calculate the area of the hull. As in previous examples, note that because the `birds.routes` data uses [SRID 4326](srid-4326.html), the resulting area is measured in degrees, which is converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -622,7 +622,7 @@ In order to accomplish this, you start looking at [the `bookstore_routes` table]
 To answer this question:
 
 1. Issue subqueries that find the IDs of two of the bookstores you'd like to travel between, as start and end points.
-2. Measure the length of the geometry that corresponds to those start and end IDs. Note that because the `bookstore_routes.geom` column has a SRID of 0 (which it inherited from the `roads` database from which it was created), you can convert to miles by casting the data to a `GEOGRAPHY` type, which uses meters, and then dividing by 1609 (the number of meters in a mile).
+1. Measure the length of the geometry that corresponds to those start and end IDs. Note that because the `bookstore_routes.geom` column has a SRID of 0 (which it inherited from the `roads` database from which it was created), you can convert to miles by casting the data to a `GEOGRAPHY` type, which uses meters, and then dividing by 1609 (the number of meters in a mile).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -713,7 +713,7 @@ A natural question that arises once you start traveling between stores is: if I 
 To answer this question:
 
 1. Build a CTE that returns the route between the two stores of interest (a geometry).
-2. Join the results of the above CTE with a query against [the `birds` database](#the-birds-database) that checks whether the distance between the route geometry and the location of the bird observation (`birds.routes.geom`) bookstore's location is less than the desired length of 10 miles. Note that because the call to `ST_Distance` is operating on shapes cast to `GEOGRAPHY` data type, the results are in meters, which then have to be converted to miles by dividing the result by 1609 (the number of meters in a mile).
+1. Join the results of the above CTE with a query against [the `birds` database](#the-birds-database) that checks whether the distance between the route geometry and the location of the bird observation (`birds.routes.geom`) bookstore's location is less than the desired length of 10 miles. Note that because the call to `ST_Distance` is operating on shapes cast to `GEOGRAPHY` data type, the results are in meters, which then have to be converted to miles by dividing the result by 1609 (the number of meters in a mile).
 
 {{site.data.alerts.callout_info}}
 The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
@@ -813,7 +813,7 @@ Since you are already looking for loons, you would like to know if there are oth
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE and a query against [the `birds` database](#the-birds-database) that lists the names and observation totals (sums) of birds whose habitats are contained within the convex hull of loon habitat.
+1. Join the results of the above CTE and a query against [the `birds` database](#the-birds-database) that lists the names and observation totals (sums) of birds whose habitats are contained within the convex hull of loon habitat.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -895,8 +895,8 @@ Specifically, you would like to know: What are the 10 roads that are closest to 
 To answer this question:
 
 1. Build a CTE called `loon_habitat` that collects all of the Common Loon sightings into a single geometry.
-2. Build another CTE called `nearby_roads` that joins the results of the subquery above with [the `roads` table](#the-roads-table) and pulls out the roads in NY state that are within a degree (about 60 nautical miles). Order the roads returned by their distance from a loon sighting. This will return some duplicate roads (since loons can be sighted multiple times along a single road), which is why you need to `LIMIT` to 20 here so you can get the list down to 10 later. Because the data in the `roads` table has an SRID of 0, you need to use `ST_SetSRID` to set its SRID to [4326](srid-4326.html). This step is necessary because `ST_Distance` cannot operate on geometries with differing SRIDs.
-3. Finally, query the results of the `nearby_roads` subquery to get a list of 10 distinct road names that you can plan to visit.
+1. Build another CTE called `nearby_roads` that joins the results of the subquery above with [the `roads` table](#the-roads-table) and pulls out the roads in NY state that are within a degree (about 60 nautical miles). Order the roads returned by their distance from a loon sighting. This will return some duplicate roads (since loons can be sighted multiple times along a single road), which is why you need to `LIMIT` to 20 here so you can get the list down to 10 later. Because the data in the `roads` table has an SRID of 0, you need to use `ST_SetSRID` to set its SRID to [4326](srid-4326.html). This step is necessary because `ST_Distance` cannot operate on geometries with differing SRIDs.
+1. Finally, query the results of the `nearby_roads` subquery to get a list of 10 distinct road names that you can plan to visit.
 
 {{site.data.alerts.callout_info}}
 The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
@@ -968,7 +968,7 @@ Time: 1.447s total (execution 1.446s / network 0.000s)
 Unfortunately, this query is a bit slower than you would like: about 1.5 seconds on a single-node [`cockroach demo`](cockroach-demo.html) cluster on a laptop. There are several reasons for this:
 
 1. You haven't created any indexes at all yet. The query is likely to be doing full table scans, which you will need to hunt down with [`EXPLAIN`](explain.html).
-2. CockroachDB does not yet have built-in support for index-based nearest neighbor queries. If this feature is important to you, please comment with some information about your use case on [cockroachdb/cockroach#55227](https://github.com/cockroachdb/cockroach/issues/55227).
+1. CockroachDB does not yet have built-in support for index-based nearest neighbor queries. If this feature is important to you, please comment with some information about your use case on [cockroachdb/cockroach#55227](https://github.com/cockroachdb/cockroach/issues/55227).
 
 Let's look at the `EXPLAIN` output to see if there is something that can be done to improve this query's performance:
 
@@ -1040,14 +1040,14 @@ Based on these hypotheses, you take the following steps:
     CREATE INDEX ON roads USING GIST(geom);
     ~~~
 
-2. Update the SRID of the `roads.geom` column from 0 to [4326](srid-4326.html). This will take a few seconds.
+1. Update the SRID of the `roads.geom` column from 0 to [4326](srid-4326.html). This will take a few seconds.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     UPDATE roads SET geom = st_transform(st_setsrid(geom, 4326), 4326) WHERE gid IS NOT NULL RETURNING NOTHING;
     ~~~
 
-3. Add indexes on the `birds.observations.route_id` and `birds.observations.bird_id` columns:
+1. Add indexes on the `birds.observations.route_id` and `birds.observations.bird_id` columns:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1059,7 +1059,7 @@ Based on these hypotheses, you take the following steps:
     CREATE INDEX ON birds.observations(route_id);
     ~~~
 
-4. Add an index on the `birds.birds.name` column:
+1. Add an index on the `birds.birds.name` column:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -1192,7 +1192,7 @@ It may not be immediately relevant to your birdwatching or book-buying travels, 
 To answer this:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE and a query against [the `roads` table](#the-roads-table) that sums the mileage of all roads that are contained within the convex hull of loon habitat.
+1. Join the results of the above CTE and a query against [the `roads` table](#the-roads-table) that sums the mileage of all roads that are contained within the convex hull of loon habitat.
 
 {{site.data.alerts.callout_info}}
 Because you are using `ST_Contains`, the query below only sums the road mileages of roads whose geometries lie entirely within the loon habitat.
@@ -1243,8 +1243,8 @@ As you are driving around the Adirondacks, searching for loons as well as your n
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Build a CTE that joins [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) and the results of the above subquery to generate a set of bookstores inside the loon's habitat area.
-3. Finally, generate a query that joins the results of the above subquery against [the `roads` table](#the-roads-table) based on which roads are within a 10 mile radius. This generates a list of bookstores and the number of miles of nearby roads, sorted in order of which store has the fewest miles of road nearby.
+1. Build a CTE that joins [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) and the results of the above subquery to generate a set of bookstores inside the loon's habitat area.
+1. Finally, generate a query that joins the results of the above subquery against [the `roads` table](#the-roads-table) based on which roads are within a 10 mile radius. This generates a list of bookstores and the number of miles of nearby roads, sorted in order of which store has the fewest miles of road nearby.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1369,8 +1369,8 @@ EXPLAIN WITH loon_habitat AS (SELECT st_convexhull(st_collect(routes.geom)) AS g
 Looking at these results from the bottom up, you can see that:
 
 1. There is a full table scan happening on the `birds.birds.routes` table. Since it's so small (129 rows), let's move on for now.
-2. There is a full table scan on the `bookstores` table. Since the predicate is [`ST_Contains`](st_contains.html), you probably need to add a [spatial index](spatial-indexes.html) on `bookstores.geom`.
-3. There is a full table scan happening on the `roads` table. This is a serious problem due to the size of that table: ~225,000 rows. You already have an index on the `roads.geom` column for the `ST_DWithin` predicate to use, so you need to find another way to reduce the number of rows scanned. You can do what you did in [query 16][q_16] and add a check that the `roads.state = 'NY'`, since you are only looking at roads inside New York State.
+1. There is a full table scan on the `bookstores` table. Since the predicate is [`ST_Contains`](st_contains.html), you probably need to add a [spatial index](spatial-indexes.html) on `bookstores.geom`.
+1. There is a full table scan happening on the `roads` table. This is a serious problem due to the size of that table: ~225,000 rows. You already have an index on the `roads.geom` column for the `ST_DWithin` predicate to use, so you need to find another way to reduce the number of rows scanned. You can do what you did in [query 16][q_16] and add a check that the `roads.state = 'NY'`, since you are only looking at roads inside New York State.
 
 Based on these observations, you add an index to the `bookstores.geom` column:
 
@@ -1515,10 +1515,10 @@ Due to your long birdwatching experience, you recall that hawks are in the famil
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above subquery with [the `birds` database](#the-birds-database) to find the names and observation counts of the birds that:
+1. Join the results of the above subquery with [the `birds` database](#the-birds-database) to find the names and observation counts of the birds that:
   1. Are in the family "Accipitridae".
-  2. Have sighting locations whose geometry is contained by the hull describing the Common Loon's habitat.
-3. Order the birds in the list by how frequently they are sighted, since you may want to look for the most common hawks first.
+  1. Have sighting locations whose geometry is contained by the hull describing the Common Loon's habitat.
+1. Order the birds in the list by how frequently they are sighted, since you may want to look for the most common hawks first.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1578,10 +1578,10 @@ If you are a fan of owls as well as hawks, you can make several updates to [the 
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above subquery with [the `birds` database](#the-birds-database) to find the names and observation counts of the birds that:
+1. Join the results of the above subquery with [the `birds` database](#the-birds-database) to find the names and observation counts of the birds that:
   1. Are in the family "Accipitridae" (hawks) _or_ the family "Strigidae" (owls).
-  2. Have sighting locations whose geometry is contained by the hull describing the Common Loon's habitat.
-3. Group the birds by name and family, and within each grouping order the birds by how frequently they are sighted, since you may want to look for the most common hawks or owls first.
+  1. Have sighting locations whose geometry is contained by the hull describing the Common Loon's habitat.
+1. Group the birds by name and family, and within each grouping order the birds by how frequently they are sighted, since you may want to look for the most common hawks or owls first.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1734,11 +1734,11 @@ VALUES
 Similarly, the paths (specifically [MultiLinestrings](multilinestring.html)) between bookstores in the `bookstore_routes` table were also calculated using a script that made use of a simple greedy algorithm to find paths between the bookstores using the `roads` table (described below). The algorithm always looks for the next road that will bring you closer to the destination. It is fine for this small use case, but it is not robust enough for any kind of production use, since it does not perform any backtracking when it gets stuck in a local optimum. The algorithm works as follows, and assumes a starting bookstore _A_ and an ending bookstore _B_:
 
 1. (Start) Find the road nearest _A_; call this road _R_<sub>A</sub>.
-2. Find the road nearest the destination _B_; call this road _R_<sub>B</sub>.
-3. Do _R_<sub>A</sub> and _R_<sub>B</sub> intersect?  If so, the algorithm is done. You have arrived at your destination. (This is the recursive base case.)
-4. Otherwise, find the roads that intersect with _R_<sub>A</sub>. Of these roads, choose the one that passes closest to _R_<sub>B</sub>. Call it _R_<sub>A'</sub>.
-5. Do _R_<sub>A'</sub> and _R_<sub>B</sub> intersect?  If so, the algorithm is done. You have arrived at your destination.
-6. If the algorithm has arrived at this step without finishing, it goes back to step 4 and applies that step to the current "closest road to destination" _R_<sub>A'</sub>, and keeps operating steps 4-6 recursively until it has found a complete path or it hits some kind of heuristic timeout.
+1. Find the road nearest the destination _B_; call this road _R_<sub>B</sub>.
+1. Do _R_<sub>A</sub> and _R_<sub>B</sub> intersect?  If so, the algorithm is done. You have arrived at your destination. (This is the recursive base case.)
+1. Otherwise, find the roads that intersect with _R_<sub>A</sub>. Of these roads, choose the one that passes closest to _R_<sub>B</sub>. Call it _R_<sub>A'</sub>.
+1. Do _R_<sub>A'</sub> and _R_<sub>B</sub> intersect?  If so, the algorithm is done. You have arrived at your destination.
+1. If the algorithm has arrived at this step without finishing, it goes back to step 4 and applies that step to the current "closest road to destination" _R_<sub>A'</sub>, and keeps operating steps 4-6 recursively until it has found a complete path or it hits some kind of heuristic timeout.
 
 {{site.data.alerts.callout_info}}
 For more information about production quality map routing software that uses OpenStreetMap, see [the OpenStreetMap wiki page on Routing](https://wiki.openstreetmap.org/wiki/Routing).

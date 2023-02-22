@@ -10,19 +10,19 @@ This page provides important recommendations for {{ site.data.products.db }} pro
 
 ## Follow the SQL Best Practices
 
-To ensure optimal SQL performance for your {{ site.data.products.db }} cluster, follow the best practices described in the [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) guide.
+To ensure optimal SQL performance for your {{ site.data.products.db }} cluster, follow the best practices described in the [SQL Performance Best Practices](../{{site.current_cloud_version}}/performance-best-practices-overview.html) guide.
 
 ## Use a pool of persistent connections
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
+For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](../{{site.current_cloud_version}}/connection-pooling.html).
 
 ## Keeping connections current
 
 After an application establishes a connection to {{ site.data.products.db }}, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades](upgrade-policy.html) and restarts, network disruptions, or cloud infrastructure unavailability.
 
-Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
+Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](../{{site.current_cloud_version}}/connection-pooling.html).
 
 {% include common/transaction-retries.md %}
 

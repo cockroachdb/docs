@@ -12,6 +12,7 @@ Both Core and {{ site.data.products.enterprise }} changefeeds require that you e
 ## Considerations
 
 - It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
+- If you require [`resolved`](create-changefeed.html#resolved-option) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
 - Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](changefeed-messages.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](monitor-and-debug-changefeeds.html#monitor-a-changefeed).
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
@@ -62,10 +63,15 @@ To create an {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
+CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
 ~~~
 
 {% include {{ page.version.version }}/cdc/url-encoding.md %}
+
+When you create a changefeed **without** specifying a sink, CockroachDB sends the changefeed events to the SQL client. Consider the following regarding the [display format](cockroach-sql.html#sql-flag-format) in your SQL client:
+
+- If you do not define a display format, the client will buffer forever waiting for the query to finish because the default format needs to know the maximum row length. 
+- If you create a changefeed without a sink but specify a display format (e.g., `--format=csv`), it will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client.
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
@@ -75,7 +81,7 @@ To pause an {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> PAUSE JOB job_id;
+PAUSE JOB job_id;
 ~~~
 
 For more information, see [`PAUSE JOB`](pause-job.html).
@@ -86,7 +92,7 @@ To resume a paused {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESUME JOB job_id;
+RESUME JOB job_id;
 ~~~
 
 For more information, see [`RESUME JOB`](resume-job.html).
@@ -97,7 +103,7 @@ To cancel an {{ site.data.products.enterprise }} changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CANCEL JOB job_id;
+CANCEL JOB job_id;
 ~~~
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
@@ -122,7 +128,7 @@ To create a core changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPERIMENTAL CHANGEFEED FOR table_name;
+EXPERIMENTAL CHANGEFEED FOR table_name;
 ~~~
 
 For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).

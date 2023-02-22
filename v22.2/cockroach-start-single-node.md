@@ -50,7 +50,7 @@ Flag | Description
 `--max-tsdb-memory` | Maximum memory capacity available to store temporary data for use by the time-series database to display metrics in the [DB Console](ui-overview.html). Consider raising this value if your cluster is comprised of a large number of nodes where individual nodes have very limited memory available (e.g., under `8 GiB`). Insufficient memory capacity for the time-series database can constrain the ability of the DB Console to process the time-series queries used to render metrics for the entire cluster. This capacity constraint does not affect SQL query execution. This flag accepts numbers interpreted as bytes, size suffixes (e.g., `1GB` and `1GiB`) or a percentage of physical memory (e.g., `0.01`).<br><br>**Note:** The sum of `--cache`, `--max-sql-memory`, and `--max-tsdb-memory` should not exceed 75% of the memory available to the `cockroach` process.<br><br>**Default:** `0.01` (i.e., 1%) of physical memory or `64 MiB`, whichever is greater.
 `--pid-file` | The file to which the node's process ID will be written on successful startup. When this flag is not set, the process ID is not written to file.
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
-`--temp-dir` | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
+`--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. The temporary store directory is used primarily as working memory for distributed computations and importing from CSV data sources. On node start-up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Networking
 
@@ -162,7 +162,7 @@ Field | Description
     `certs` | You'll generate your CA certificate and all node and client certificates and keys in this directory.
     `my-safe-directory` | You'll generate your CA key in this directory and then reference the key when generating node and client certificates.
 
-2. Create the CA (Certificate Authority) certificate and key pair:
+1. Create the CA (Certificate Authority) certificate and key pair:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -171,7 +171,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-3. Create the certificate and key pair for the node:
+1. Create the certificate and key pair for the node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -182,7 +182,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-4. Create a client certificate and key pair for the `root` user:
+1. Create a client certificate and key pair for the `root` user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -192,7 +192,7 @@ Field | Description
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-5. Start the single-node cluster:
+1. Start the single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -251,7 +251,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 	server drained and shutdown completed
 	~~~
 
-2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
+1. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -267,7 +267,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
 
-3. Add two more nodes:
+1. Add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -293,14 +293,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine. Also, since all nodes use the same hostname (`localhost`), you can use the first node's certificate. Note that this is different than running a production cluster, where you would need to generate a certificate and key for each node, issued to all common names and IP addresses you might use to refer to the node as well as to any load balancer instances.
 
-4. Open the [built-in SQL shell](cockroach-sql.html):
+1. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --certs-dir=certs --host=localhost:26257
     ~~~
 
-5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
+1. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -343,7 +343,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 	server drained and shutdown completed
 	~~~
 
-2. Restart the node with the [`cockroach start`](cockroach-start.html) command:
+1. Restart the node with the [`cockroach start`](cockroach-start.html) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -357,7 +357,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     The new flag to note is `--join`, which specifies the addresses and ports of the nodes that will comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
-3. Add two more nodes:
+1. Add two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -383,14 +383,14 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags, since this all nodes are running on the same machine.
 
-4. Open the [built-in SQL shell](cockroach-sql.html):
+1. Open the [built-in SQL shell](cockroach-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-5. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
+1. Update preconfigured [replication zones](configure-replication-zones.html) to replicate user data 3 times and import internal data 5 times:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -417,5 +417,5 @@ ALTER TABLE system.public.tenant_usage CONFIGURE ZONE USING gc.ttlseconds = 7200
     - [In Docker](start-a-local-cluster-in-docker-mac.html)
 - Running a distributed multi-node cluster:
     - [From Binary](manual-deployment.html)
-    - [In Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
+    - [In Kubernetes](deploy-cockroachdb-with-kubernetes.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

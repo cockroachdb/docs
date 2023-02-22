@@ -6,18 +6,18 @@ cloud: true
 docs_area: manage
 ---
 
-{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
 The **Statements** page helps you:
 
-- Identify frequently executed or high latency [SQL statements](../{{site.versions["stable"]}}/sql-statements.html).
+- Identify frequently executed or high latency [SQL statements](../{{site.current_cloud_version}}/sql-statements.html).
 - View SQL statement fingerprint [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. The **Statements** tab is selected.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Statements** tab.
 {% endif %}
 
 {{site.data.alerts.callout_success}}

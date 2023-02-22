@@ -265,6 +265,10 @@ Command | Usage
 
 {% include {{ page.version.version }}/sql/shell-shortcuts.md %}
 
+### macOS terminal configuration
+
+{% include {{ page.version.version }}/sql/macos-terminal-configuration.md %}
+
 ## Diagnostics reporting
 
 By default, `cockroach demo` shares anonymous usage details with Cockroach Labs. To opt out, set the [`diagnostics.reporting.enabled`](diagnostics-reporting.html#after-cluster-initialization) [cluster setting](cluster-settings.html) to `false`. You can also opt out by setting the [`COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING`](diagnostics-reporting.html#at-cluster-initialization) environment variable to `false` before running `cockroach demo`.

@@ -10,7 +10,7 @@ Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll n
 
 ## Install CockroachDB
 
-If you haven't already, you'll need to [locally install](install-cockroachdb.html), [remotely deploy](manual-deployment.html), or [orchestrate](orchestration.html) CockroachDB.
+If you haven't already, you'll need to [locally install](install-cockroachdb.html), [remotely deploy](manual-deployment.html), or [orchestrate](kubernetes-overview.html) CockroachDB.
 
 ## Enable Enterprise features
 

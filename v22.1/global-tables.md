@@ -19,7 +19,7 @@ Tables with the `GLOBAL` locality can survive zone or region failures, depending
 {% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 {% include enterprise-feature.md %}
 
@@ -83,6 +83,14 @@ Writes incur higher latencies than reads, since they require a "commit-wait" ste
 Because the `test` database does not specify a [survival goal](multiregion-overview.html#survival-goals), it uses the default [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures). With the default settings, an entire zone can fail without interrupting access to the database.
 
 For more information about how to choose a database survival goal, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
+
+## Troubleshooting
+
+### High follower read latency on global tables
+
+Reads on multi-region global tables can experience sporadic high latency on [follower reads](follower-reads.html) if the round trip time between cluster nodes is higher than 150ms. To work around this issue, consider setting the `kv.closed_timestamp.lead_for_global_reads_override` [cluster setting](cluster-settings.html) to a value greater than 800ms. 
+
+The value of `kv.closed_timestamp.lead_for_global_reads_override` will impact write latency to global tables, so you should proceed in 100ms increments until the high read latency no longer occurs. If you've increased the setting to 1500ms and the problem persists, you should [contact support](support-resources.html).
 
 ## Alternatives
 

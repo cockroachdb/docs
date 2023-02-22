@@ -116,7 +116,7 @@ Field | Description
 --------------------------------------------------+-------+--------------+--------+--------------------------------------------------------------------------------------------------------------------------------------
   admission.kv.enabled                            | false | b            |  true  | when true, work performed by the KV layer is subject to admission control
   admission.kv_slot_adjuster.overload_threshold   | 32    | i            | false  | when the number of runnable goroutines per CPU is greater than this threshold, the slot adjuster considers the cpu to be overloaded
-  admission.l0_file_count_overload_threshold      | 1000  | i            | false  | when the L0 file count exceeds this theshold, the store is considered overloaded
+  admission.l0_file_count_overload_threshold      | 1000  | i            | false  | when the L0 file count exceeds this threshold, the store is considered overloaded
   admission.l0_sub_level_count_overload_threshold | 20    | i            | false  | when the L0 sub-level count exceeds this threshold, the store is considered overloaded
   ...
 ~~~

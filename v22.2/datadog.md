@@ -19,7 +19,7 @@ The {{ site.data.products.core }} integration with Datadog is powered by the [Da
 
 In this tutorial, you will enable the CockroachDB integration in Datadog, configure logging and alerting, and visualize data.
 
-## Prerequisites
+## Before you begin
 
 Before you can follow the steps presented in this tutorial, you must have:
 
@@ -180,3 +180,4 @@ The timeseries graph at the top of the page indicates the configured metric and 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)
 - [Logging Overview](logging-overview.html)
+- [Metrics](metrics.html)

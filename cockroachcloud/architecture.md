@@ -28,7 +28,7 @@ We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run
 
 {{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
 
-[Backups](backups-page.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
+[Backups](use-managed-service-backups.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
 
 ### Multi-region architecture
 
@@ -88,4 +88,4 @@ The diagrams below shows how {{ site.data.products.serverless }} autoscales with
 
 ## Learn more
 
-See the [CockroachDB architecture](../{{site.versions["stable"]}}/architecture/overview.html) documentation for more information.
+See the [CockroachDB architecture](../{{site.current_cloud_version}}/architecture/overview.html) documentation for more information.

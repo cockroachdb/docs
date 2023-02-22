@@ -15,7 +15,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html), and review the [Production Checklist](recommended-production-settings.html).
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html), and review the [Production Checklist](recommended-production-settings.html).
 
 ## Step 1. Generate certificates
 

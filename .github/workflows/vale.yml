@@ -10,7 +10,7 @@ jobs:
 
     - name: Get changed files
       id: changed_files
-      uses: tj-actions/changed-files@v34.3.2
+      uses: tj-actions/changed-files@main
 
     - name: Calculate changed files to pass to Vale
       id: calc_changed_files
@@ -23,9 +23,8 @@ jobs:
     - name: Vale
       uses: errata-ai/vale-action@reviewdog
       with:
-        version: 2.17.0
         reporter: github-pr-check
-        filter_mode: nofilter
+        filter_mode: added
         fail_on_error: false
         files: '${{ env.files_to_change }}'
         vale_flags: "--no-exit"

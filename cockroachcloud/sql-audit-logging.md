@@ -11,7 +11,7 @@ To enable the feature, [enable auditing](#enable-auditing) for a table and then 
 
 ## Enable auditing
 
-Use the [`EXPERIMENTAL_AUDIT`](../{{site.versions["stable"]}}/experimental-audit.html) subcommand of [`ALTER TABLE`](../{{site.versions["stable"]}}/alter-table.html):
+Use the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](../{{site.current_cloud_version}}/alter-table.html#experimental_audit) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

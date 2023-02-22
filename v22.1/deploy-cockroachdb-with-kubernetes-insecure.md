@@ -3,7 +3,6 @@ title: Deploy CockroachDB in a Single Kubernetes Cluster (Insecure)
 summary: Deploy an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
-redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
 docs_area:
 ---
 

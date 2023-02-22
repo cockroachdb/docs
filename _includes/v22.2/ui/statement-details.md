@@ -49,7 +49,7 @@ The plan table shows the following details:
 Column | Description
 -----|----
 Plan Gist | A sequence of bytes representing the flattened tree of operators and operator-specific metadata of the statement plan.
-Insights | The number of [insights](#insights) for the plan. To configure when to trigger insights, see [Schema insights settings](ui-insights-page.html#schema-insights-settings).
+Insights | The number of [insights](#insights) for the plan. To configure when to trigger insights, see [Schema insights settings]({{ link_prefix }}ui-insights-page.html#schema-insights-settings).
 Last Execution Time | The timestamp when the statement was last executed.
 Average Execution Time | The average execution time for all the executions of the plan.
 Execution Count | The number of times the plan was executed.
@@ -76,7 +76,7 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
 
 In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
 
-If you click **Create Index**, a confirmation dialog displays a warning about the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
+If you click **Create Index**, a confirmation dialog displays a warning about the cost of [online schema changes]({{ link_prefix }}online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
 
 If you click **Apply** to create the index and then execute the statement again, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
 

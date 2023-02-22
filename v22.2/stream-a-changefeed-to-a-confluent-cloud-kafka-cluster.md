@@ -17,7 +17,7 @@ An overview of the workflow involves creating and connecting the following:
 1. Confluent Schema Registry
 1. Changefeed streaming to your Confluent Cloud Kafka cluster 
 
-## Prerequisites 
+## Before you begin 
 
 You will need the following set up before starting this tutorial:
 
@@ -31,132 +31,134 @@ This tutorial uses the Cockroach Labs [`movr`](movr.html) workload as an example
 
 In this step, you'll use the Confluent CLI to create and configure a Kafka cluster. 
 
-First, ensure you are logged in to Confluent Cloud:
+1. Ensure you are logged in to Confluent Cloud:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent login --save
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent login --save
+    ~~~
 
-These instructions use the `--save` flag to store your username and password to a local file for convenience during this tutorial, but you can omit this flag if you would prefer to manually authenticate yourself each time.
+    These instructions use the `--save` flag to store your username and password to a local file for convenience during this tutorial, but you can omit this flag if you would prefer to manually authenticate yourself each time.
 
-List the [environments](https://docs.confluent.io/cloud/current/access-management/hierarchy/cloud-environments.html) in your Confluent Cloud account:
+1. List the [environments](https://docs.confluent.io/cloud/current/access-management/hierarchy/cloud-environments.html) in your Confluent Cloud account:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent environment list
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent environment list
+    ~~~
 
-If you haven't created an environment explicitly, this command will list a default environment. You can use the default environment for this tutorial. 
+    If you haven't created an environment explicitly, this command will list a default environment. You can use the default environment for this tutorial. 
 
-However, if you would prefer to create an environment, run the following command with a name for your environment:
+1. If you would prefer to create an environment, run the following command with a name for your environment:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent environment create {ENVIRONMENT NAME}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent environment create {ENVIRONMENT NAME}
+    ~~~
 
-Set the environment that you would like to create your cluster in, using the environment's `ID`, which starts with `env-`:
+1. Set the environment that you would like to create your cluster in, using the environment's `ID`, which starts with `env-`:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent environment use {ENVIRONMENT ID}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent environment use {ENVIRONMENT ID}
+    ~~~
 
-Next, create a Kafka cluster: 
+1. Create a Kafka cluster: 
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent kafka cluster create movr-confluent-tutorial --cloud "gcp" --region "us-east1"
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent kafka cluster create movr-confluent-tutorial --cloud "gcp" --region "us-east1"
+    ~~~
 
-Here the name of the cluster is `movr-confluent-tutorial`, but you can change this for your cluster.
+    Here the name of the cluster is `movr-confluent-tutorial`, but you can change this for your cluster.
 
-Note that the `--cloud` and `--region` flags are **required** when running the `create` command. See Confluent's documentation on [`confluent kafka cluster create`](https://docs.confluent.io/confluent-cli/current/command-reference/kafka/cluster/confluent_kafka_cluster_create.html).
+    Note that the `--cloud` and `--region` flags are **required** when running the `create` command. See Confluent's documentation on [`confluent kafka cluster create`](https://docs.confluent.io/confluent-cli/current/command-reference/kafka/cluster/confluent_kafka_cluster_create.html).
 
-The `create` command returns your new cluster's details, with a format similar to the following:
+    The `create` command returns your new cluster's details, with a format similar to the following:
 
-~~~
-+---------------+--------------------------------------------------------+
-| ID            | lkc-{ID}                                             |
-| Name          | movr-confluent-tutorial                                |
-| Type          | BASIC                                                  |
-| Ingress       |                                                    100 |
-| Egress        |                                                    100 |
-| Storage       | 5 TB                                                   |
-| Provider      | gcp                                                    |
-| Availability  | single-zone                                            |
-| Region        | us-east1                                               |
-| Status        | PROVISIONING                                           |
-| Endpoint      | SASL_SSL://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092 |
-| API Endpoint  | https://pkac-ew1dj.us-east1.gcp.confluent.cloud        |
-| REST Endpoint | https://pkc-4yyd6.us-east1.gcp.confluent.cloud:443     |
-+---------------+--------------------------------------------------------+
-~~~
+    ~~~
+    +---------------+--------------------------------------------------------+
+    | ID            | lkc-{ID}                                             |
+    | Name          | movr-confluent-tutorial                                |
+    | Type          | BASIC                                                  |
+    | Ingress       |                                                    100 |
+    | Egress        |                                                    100 |
+    | Storage       | 5 TB                                                   |
+    | Provider      | gcp                                                    |
+    | Availability  | single-zone                                            |
+    | Region        | us-east1                                               |
+    | Status        | PROVISIONING                                           |
+    | Endpoint      | SASL_SSL://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092 |
+    | API Endpoint  | https://pkac-ew1dj.us-east1.gcp.confluent.cloud        |
+    | REST Endpoint | https://pkc-4yyd6.us-east1.gcp.confluent.cloud:443     |
+    +---------------+--------------------------------------------------------+
+    ~~~
 
-You'll need this information later in the tutorial, but you can also access this status at any time with the following command:
+    You'll need this information later in the tutorial, but you can also access this status at any time with the following command:
 
-{% include_cached copy-clipboard.html %}
-~~~shell 
-confluent kafka cluster describe {CLUSTER ID}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell 
+    confluent kafka cluster describe {CLUSTER ID}
+    ~~~
 
-{{site.data.alerts.callout_info}}
-It can take up to 5 minutes for your Kafka cluster to provision. The `Status` field in the cluster's details will change from `PROVISIONING` to `UP` once your Kafka cluster is ready.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    It can take up to 5 minutes for your Kafka cluster to provision. The `Status` field in the cluster's details will change from `PROVISIONING` to `UP` once your Kafka cluster is ready.
+    {{site.data.alerts.end}}
 
 ## Step 2. Create a cluster API key and secret 
 
 In this step, you'll create an API key and secret for your Kafka cluster, which you'll need for connecting to your changefeed. 
 
-Create the API key for your Kafka cluster:
+1. Create the API key for your Kafka cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent api-key create --resource {CLUSTER ID}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent api-key create --resource {CLUSTER ID}
+    ~~~
 
-You will receive output displaying your API and secret key.
+    You will receive output displaying your API and secret key.
 
-Then, to make the consumer setup easier later in the tutorial, you can store the API key locally and set it as your active API key:
+1. To make the consumer setup easier later in the tutorial, you can store the API key locally and set it as your active API key:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent api-key store --resource {CLUSTER ID}
-~~~
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent api-key use {API KEY} --resource {CLUSTER ID}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent api-key store --resource {CLUSTER ID}
+    ~~~
 
-This will prompt you to enter your API and secret key. Use the `--force` flag if you already have a key stored in your local environment. 
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent api-key use {API KEY} --resource {CLUSTER ID}
+    ~~~
+
+    This will prompt you to enter your API and secret key. Use the `--force` flag if you already have a key stored in your local environment. 
 
 ## Step 3. Create Kafka topics 
 
 Next, you'll create the Kafka topics for your changefeed messages.
 
-Ensure you have the correct active Kafka cluster:
+1. Ensure you have the correct active Kafka cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent kafka cluster use {CLUSTER ID}
-~~~
-~~~
-Set Kafka cluster "lkc-{ID}" as the active cluster for environment "env-{ID}".
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent kafka cluster use {CLUSTER ID}
+    ~~~
 
-Run the following to create a topic:
+    ~~~
+    Set Kafka cluster "lkc-{ID}" as the active cluster for environment "env-{ID}".
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-confluent kafka topic create users
-~~~
+1. Run the following command to create a topic:
 
-`users` will be the topic name for this tutorial. If needed, you can change the topic name for your purposes and run the previous command for each topic you would like to create.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    confluent kafka topic create users
+    ~~~
 
-{{site.data.alerts.callout_success}}
-If you are using a Dedicated Confluent Cloud cluster, you can enable auto topic creation. For further detail, see [Enable automatic topic creation](https://docs.confluent.io/cloud/current/clusters/broker-config.html#enable-automatic-topic-creation). 
-{{site.data.alerts.end}}
+    `users` will be the topic name for this tutorial. If needed, you can change the topic name for your purposes and run the previous command for each topic you would like to create.
+
+    {{site.data.alerts.callout_success}}
+    If you are using a Dedicated Confluent Cloud cluster, you can enable auto topic creation. For further detail, see [Enable automatic topic creation](https://docs.confluent.io/cloud/current/clusters/broker-config.html#enable-automatic-topic-creation). 
+    {{site.data.alerts.end}}
 
 ## Step 4. Create a Confluent Schema Registry 
 
@@ -165,7 +167,7 @@ In this step, you'll create the Schema Registry in your environment.
 Enable the Schema Registry for the active environment: 
 
 {% include_cached copy-clipboard.html %}
-~~~shell
+~~~ shell
 confluent schema-registry cluster enable --cloud "gcp" --geo "us"
 ~~~
 
@@ -182,10 +184,10 @@ You will receive output showing the Schema Registry's ID and its endpoint URL:
 
 ## Step 5. Create a Schema Registry API key and secret 
 
-Next, generate an API and secret key for the Schema Registry using the ID from your output:
+Generate an API and secret key for the Schema Registry using the ID from your output:
 
 {% include_cached copy-clipboard.html %}
-~~~shell 
+~~~ shell 
 confluent api-key create --resource {SCHEMA REGISTRY ID}
 ~~~
 
@@ -198,7 +200,7 @@ In this step, you'll start a Kafka consumer for the changefeed messages.
 Run the following command to create a consumer:
 
 {% include_cached copy-clipboard.html %}
-~~~shell
+~~~ shell
 confluent kafka topic consume users \
  --value-format avro \
  --from-beginning \
@@ -224,44 +226,45 @@ Run `confluent schema-registry cluster describe` to access details for the Schem
 
 To create your changefeed, you'll prepare your CockroachDB cluster with the `movr` workload and [enable rangefeeds](create-and-configure-changefeeds.html).
 
-In a new terminal window, initiate the `movr` workload for your cluster:
+1. In a new terminal window, initiate the `movr` workload for your cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach workload init movr {"CONNECTION STRING"}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload init movr {"CONNECTION STRING"}
+    ~~~
 
-Then, run the workload to generate some data:
+1. Run the workload to generate some data:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
- cockroach workload run movr --duration=1m {"CONNECTION STRING"}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach workload run movr --duration=1m {"CONNECTION STRING"}
+    ~~~
 
-Start a [SQL session](cockroach-sql.html) for your CockroachDB cluster:
+1. Start a [SQL session](cockroach-sql.html) for your CockroachDB cluster:
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach sql --url {"CONNECTION STRING"}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url {"CONNECTION STRING"}
+    ~~~
 
-Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
+1. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-SET CLUSTER SETTING cluster.organization = '<organization name>';
-~~~
-{% include_cached copy-clipboard.html %}
-~~~sql
-SET CLUSTER SETTING enterprise.license = '<secret>';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING cluster.organization = '<organization name>';
+    ~~~
 
-Before you can create an {{ site.data.products.enterprise }} changefeed, it is necessary to enable rangefeeds on your cluster:
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SET CLUSTER SETTING enterprise.license = '<secret>';
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~sql 
-SET CLUSTER SETTING kv.rangefeed.enabled = true;
-~~~
+1. Before you can create an {{ site.data.products.enterprise }} changefeed, it is necessary to enable rangefeeds on your cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql 
+    SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
 
 ## Step 8. Create a changefeed
 

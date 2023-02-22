@@ -24,6 +24,13 @@ Complete the following items before starting this tutorial:
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
 - Ensure you have a secure, publicly available CockroachDB cluster running v21.2.16 or later.
+- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+    {{site.data.alerts.callout_danger}}
+    You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
+    {{site.data.alerts.end}}
+
+    - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](../{{site.current_cloud_version}}/alter-backup-schedule.html) for each backup schedule.
+    - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
     - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
@@ -83,6 +90,10 @@ A database migration task, also known as a replication task, controls what data 
 1. Select the **Replication instance** and **Source database endpoint** you created prior to starting this tutorial.
 1. For the **Target database endpoint** dropdown, select the CockroachDB endpoint created in the previous section.
 1. Select the appropriate **Migration type** based on your needs.
+
+    {{site.data.alerts.callout_danger}}
+    If you choose **Migrate existing data and replicate ongoing changes** or **Replicate data changes only**, you must first [disable revision history for backups](#before-you-begin).
+    {{site.data.alerts.end}}
     <img src="{{ 'images/v21.2/aws-dms-task-configuration.png' | relative_url }}" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
 
 ### Step 2.2. Task settings
@@ -126,6 +137,8 @@ Data should now be moving from source to target. You can analyze the **Table Sta
 1. Select the task you created in Step 2.
 1. Select **Table statistics** below the **Summary** section.
 
+If your migration succeeded, you should now [re-enable revision history](#before-you-begin) for cluster backups.
+
 If your migration failed for some reason, you can check the checkbox next to the table(s) you wish to re-migrate and select **Reload table data**.
 
 <img src="{{ 'images/v21.2/aws-dms-reload-table-data.png' | relative_url }}" alt="AWS-DMS-Reload-Table-Data" style="max-width:100%" />
@@ -150,10 +163,18 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 - When using **Truncate** or **Do nothing** as a target table preparation mode, you cannot include tables with any hidden columns. You can verify which tables contain hidden columns by executing the following SQL query:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
+    ~~~
+
+- If you select **Enable validation** in your [task settings](#step-2-2-task-settings) and have a [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html) column in your database, the migration will fail with the following error:
+
+    ~~~
+    Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
+    ~~~
+    
+    This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
 
 - **Drop tables on target** is not supported on v22.1 and earlier, and will error on initial load.
 
@@ -165,6 +186,14 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     - In v21.2.14 and later, check the `SQL_EXEC` [logging channel](logging-overview.html#logging-channels) for log messages related to `COPY` statements and the tables you are migrating.
     - Check the [Amazon CloudWatch logs that you configured](#step-2-2-task-settings) for messages containing `SQL_ERROR`.
+
+- If you encounter errors like the following:
+
+    ~~~
+    2022-10-21T13:24:07 [SOURCE_UNLOAD   ]W:  Value of column 'metadata' in table 'integrations.integration' was truncated to 32768 bytes, actual length: 116664 bytes  (postgres_endpoint_unload.c:1072)
+    ~~~
+
+    Try selecting **Full LOB mode** in your [task settings](#step-2-2-task-settings). If this does not resolve the error, select **Limited LOB mode** and gradually increase the **Maximum LOB size** until the error goes away. For more information about LOB (large binary object) modes, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.LOBSupport.html).
 
 - Run the following query from within the target CockroachDB cluster to identify common problems with any tables that were migrated. If problems are found, explanatory messages will be returned in the `cockroach sql` shell.
 

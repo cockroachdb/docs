@@ -28,6 +28,7 @@ Command | Usage
 [`cockroach debug job-trace`](cockroach-debug-job-trace.html) | Generate trace payloads for an executing job from a particular node.
 [`cockroach debug list-files`](cockroach-debug-list-files.html) | Show the files that will be collected by using `cockroach debug zip`.
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node.
+[`cockroach debug tsdump`](cockroach-debug-tsdump.html) | Generate a diagnostic dump of timeseries metrics that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach convert-url`](connection-parameters.html#convert-a-url-for-different-drivers) | Convert a connection URL to a format recognized by a [supported client driver](third-party-database-tools.html#drivers).
 [`cockroach gen`](cockroach-gen.html) | Generate man pages, a bash completion file, example SQL data, or an HAProxy configuration file for a running cluster.
@@ -51,8 +52,8 @@ For many common `cockroach` flags, such as `--port` and `--user`, you can set en
 CockroachDB prioritizes command flags, environment variables, and defaults as follows:
 
 1. If a flag is set for a command, CockroachDB uses it.
-2. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
-3. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
-4. If there's no flag default, CockroachDB gives an error.
+1. If a flag is not set for a command, CockroachDB uses the corresponding environment variable.
+1. If neither the flag nor environment variable is set, CockroachDB uses the default for the flag.
+1. If there's no flag default, CockroachDB gives an error.
 
 For more details, see [Client Connection Parameters](connection-parameters.html).

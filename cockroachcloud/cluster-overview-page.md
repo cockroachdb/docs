@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster.
+The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster. To view this page, click on a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page).
 
 ## Cluster settings
 
@@ -53,4 +53,4 @@ The **Request Units** graph displays the CPU and I/O resources being used by que
 
 ### SQL Statements
 
-The **SQL Statements** graph displays an average of the number of [`SELECT`](../{{site.versions["stable"]}}/select-clause.html), [`INSERT`](../{{site.versions["stable"]}}/insert.html), [`UPDATE`](../{{site.versions["stable"]}}/update.html), and [`DELETE`](../{{site.versions["stable"]}}/delete.html) statements successfully executed per second.
+The **SQL Statements** graph displays an average of the number of [`SELECT`](../{{site.current_cloud_version}}/select-clause.html), [`INSERT`](../{{site.current_cloud_version}}/insert.html), [`UPDATE`](../{{site.current_cloud_version}}/update.html), and [`DELETE`](../{{site.current_cloud_version}}/delete.html) statements successfully executed per second.

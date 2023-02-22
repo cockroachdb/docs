@@ -74,17 +74,7 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 
 ## Examples
 
-The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>  
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="s3">
-
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 
@@ -132,112 +122,6 @@ filename                                           | rows | bytes
 export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 (1 row)
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
-
-### Export a table
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH delimiter = '|' FROM TABLE bank.customers;
-~~~
-
-### Export using a `SELECT` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  FROM SELECT * FROM bank.customers WHERE id >= 100;
-~~~
-
-For more information, see [selection queries](selection-queries.html).
-
-### Non-distributed export using the SQL client
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
-~~~
-
-For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
-
-### Export gzip compressed CSV files
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH compression = 'gzip' FROM TABLE bank.customers;
-~~~
-
-~~~
-filename                                           | rows | bytes
----------------------------------------------------+------+--------
-export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
-(1 row)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="gcs">
-
-{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
-
-Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
-
-### Export a table
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  WITH delimiter = '|' FROM TABLE bank.customers;
-~~~
-
-### Export using a `SELECT` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  FROM SELECT * FROM bank.customers WHERE id >= 100;
-~~~
-
-For more information, see [selection queries](selection-queries.html).
-
-### Non-distributed export using the SQL client
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
-~~~
-
-For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
-
-### Export gzip compressed CSV files
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  WITH compression = 'gzip' FROM TABLE bank.customers;
-~~~
-
-~~~
-filename                                           | rows | bytes
----------------------------------------------------+------+--------
-export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
-(1 row)
-~~~
-
-</section>
 
 ### View a running export
 

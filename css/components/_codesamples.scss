@@ -8,13 +8,13 @@
 
 /* Works in conjunction with /js/customscripts.js to make shell terminals prompts ($) totally unselectable */
 .language-shell::before {
-	color: #A2A2A2;
+	color: $cl_syntax_aqua;
     content: "$ ";
 }
 
 /* Works in conjunction with /js/customscripts.js to make SQL terminals prompts (>) totally unselectable */
 .language-sql::before {
-	color: #A2A2A2;
+	color: $cl_syntax_aqua;
     content: "> ";
 }
 

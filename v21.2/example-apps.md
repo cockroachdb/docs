@@ -4,6 +4,7 @@ summary: Examples that show you how to build simple applications with CockroachD
 tags: golang, python, java
 toc: true
 docs_area: develop
+key: build-an-app-with-cockroachdb.html
 ---
 
 The examples in this section show you how to build simple applications using CockroachDB.

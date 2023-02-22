@@ -108,7 +108,7 @@ To allow arbitrary rotation schedules and ensure security of the keys, Cockroach
 
 - **Store key**: A cluster's _store key_ is a key encryption key (KEK) that CockroachDB uses to encrypt the cluster's data keys (see below).
 
-  For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files](/docs/{{site.versions["stable"]}}/encryption.html#generating-store-key-files).
+  For CockroachDB Self-Hosted clusters, you provide the store key and give its location to CockroachDB when starting the cluster. The store key file must contain 32 bytes (the key ID) followed by the key (16, 24, or 32 bytes). The size of the key dictates the version of AES to use (AES-128, AES-192, or AES-256). For an example showing how to create a store key, see [Generating Key Files](/docs/{{ page.version.version }}/encryption.html#generating-store-key-files).
 
   The store key is created automatically when the cluster is created.
 
@@ -149,6 +149,6 @@ Enabling Encryption at Rest might result in a higher CPU utilization. We estimat
 - [Customer-Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek.html)
 - [Client Connection Parameters](../connection-parameters.html)
 - [Manual Deployment](../manual-deployment.html)
-- [Orchestrated Deployment](../orchestration.html)
+- [Orchestrated Deployment](../kubernetes-overview.html)
 - [Local Deployment](../secure-a-cluster.html)
 - [Other Cockroach Commands](../cockroach-commands.html)

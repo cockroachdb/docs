@@ -16,9 +16,10 @@ If you want to experiment with CockroachDB SQL but do not have a cluster already
 
 The output of `cockroach sql` when used non-interactively is part of a stable interface, and can be used programmatically, with the exception of informational output lines that begin with the hash symbol (`#`). Informational output can change from release to release, and should not be used programmatically.
 
-## Prerequisites
+## Before you begin
 
-The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user has been set to use the `NOLOGIN` role or the `NOSQLLOGIN` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `NOSQLLOGIN` role), the user cannot log in using the SQL CLI with any authentication method.
+- The [role option of the user](create-role.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user has been set to use the `NOLOGIN` role or the `NOSQLLOGIN` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `NOSQLLOGIN` role), the user cannot log in using the SQL CLI with any authentication method.
+- **macOS users only:** By default, macOS-based terminals do not enable handling of the Alt key modifier. This prevents access to many keyboard shortcuts in the unix shell and `cockroach sql`. See the section [macOS terminal configuration](#macos-terminal-configuration) below for details.
 
 ## Synopsis
 
@@ -158,6 +159,10 @@ The **Version** and **Cluster ID** details are particularly noteworthy:
 ### Shortcuts
 
 {% include {{ page.version.version }}/sql/shell-shortcuts.md %}
+
+### macOS terminal configuration
+
+{% include {{ page.version.version }}/sql/macos-terminal-configuration.md %}
 
 ### Error messages and `SQLSTATE` codes
 

@@ -4,7 +4,6 @@ summary: Deploy a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
 secure: true
-redirect_from: orchestrate-cockroachdb-with-kubernetes.html
 ---
 
 <div class="filters filters-big clearfix">

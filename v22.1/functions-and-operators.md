@@ -83,6 +83,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |   | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
 |   | `>>` | Bitwise right-shift | binary |
+|   | `&&` | Overlaps | binary |
 | 8 | `&` | Bitwise AND | binary |
 | 9 | `#` | Bitwise XOR | binary |
 | 10 | <code>&#124;</code> | Bitwise OR | binary |

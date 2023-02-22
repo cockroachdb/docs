@@ -14,7 +14,7 @@ In a multi-region deployment, [follower reads](follower-reads.html) are a good c
 
 If reads can use stale data, use [stale follower reads](follower-reads.html#stale-follower-reads). If reads must be exactly up-to-date, use [global tables](global-tables.html) to achieve [strong follower reads](follower-reads.html#follower-read-types). Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 
-## Prerequisites
+## Before you begin
 
 {% include enterprise-feature.md %}
 
@@ -103,10 +103,10 @@ Reads retrieve historical data from the closest replica and, therefore, never le
 For example, in the following diagram:
 
 1. The read request in `us-central` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the closest replica for the table. In this case, the replica is *not* the leaseholder.
-4. The replica retrieves the results as of your preferred staleness interval in the past and returns to the gateway node.
-5. The gateway node returns the results to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the closest replica for the table. In this case, the replica is *not* the leaseholder.
+1. The replica retrieves the results as of your preferred staleness interval in the past and returns to the gateway node.
+1. The gateway node returns the results to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_follower_reads_reads.png' | relative_url }}" alt="Follower reads topology reads" style="max-width:100%" />
 
@@ -117,12 +117,12 @@ The replicas for the table are spread across all 3 regions, so writes involve mu
 For example, in the following animation:
 
 1. The write request in `us-central` reaches the regional load balancer.
-2. The load balancer routes the request to a gateway node.
-3. The gateway node routes the request to the leaseholder replica for the table in `us-east`.
-4. Once the leaseholder has appended the write to its Raft log, it notifies its follower replicas.
-5. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
-6. The leaseholder then returns acknowledgement of the commit to the gateway node.
-7. The gateway node returns the acknowledgement to the client.
+1. The load balancer routes the request to a gateway node.
+1. The gateway node routes the request to the leaseholder replica for the table in `us-east`.
+1. Once the leaseholder has appended the write to its Raft log, it notifies its follower replicas.
+1. As soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
+1. The leaseholder then returns acknowledgement of the commit to the gateway node.
+1. The gateway node returns the acknowledgement to the client.
 
 <img src="{{ 'images/v22.2/topology-patterns/topology_follower_reads_writes.gif' | relative_url }}" alt="Follower reads topology writes" style="max-width:100%" />
 

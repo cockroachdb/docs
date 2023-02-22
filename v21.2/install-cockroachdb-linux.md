@@ -114,7 +114,7 @@ true
 
   <ul>
   <li><a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a></li>
-  <li><a href="orchestrate-cockroachdb-with-kubernetes.html">Orchestrate CockroachDB in a Single Kubernetes Cluster</a></li>
+  <li><a href="deploy-cockroachdb-with-kubernetes.html">Orchestrate CockroachDB in a Single Kubernetes Cluster</a></li>
   <li><a href="orchestrate-cockroachdb-with-kubernetes-multi-cluster.html">Orchestrate CockroachDB Across Multiple Kubernetes Clusters</a></li>
   </ul>
 </div>

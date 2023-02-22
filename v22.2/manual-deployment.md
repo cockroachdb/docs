@@ -18,6 +18,6 @@ Use the following guides to deploy CockroachDB manually on-premises or on popula
 ## See also
 
 - [Production Checklist](recommended-production-settings.html)
-- [Orchestrated Deployment](orchestration.html)
+- [Orchestrated Deployment](kubernetes-overview.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [Local Deployment](start-a-local-cluster.html)

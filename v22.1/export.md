@@ -115,17 +115,7 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 
 ## Examples
 
-The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="azure">Azure Storage</button>  
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="s3">
-
-{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 
@@ -224,182 +214,37 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
-</section>
 
-<section class="filter-content" markdown="1" data-scope="azure">
+### Export data out of {{ site.data.products.db }}
 
-Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage-for-bulk-operations.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
 
-### Export a table into CSV
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="local">local CSV</button>
+  <button class="filter-button" data-scope="cloud">Cloud storage</button>
+</div>
 
-This example uses the `delimiter` option to define the ASCII character that delimits columns in your rows:
+<section class="filter-content" markdown="1" data-scope="local">
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH delimiter = '|' FROM TABLE bank.customers;
-~~~
+The following example exports the `customers` table from the `bank` database into a local CSV file:
 
-This examples uses the `nullas` option to define the string that represents `NULL` values:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH nullas = '' FROM TABLE bank.customers;
-~~~
-
-### Export a table into Parquet
-
-~~~ sql
-> EXPORT INTO PARQUET
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  FROM TABLE bank.customers;
-~~~
-
-### Export using a `SELECT` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  FROM SELECT * FROM bank.customers WHERE id >= 100;
-~~~
-
-For more information, see [selection queries](selection-queries.html).
-
-### Non-distributed export using the SQL client
-
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
-~~~
-
-For more information about the SQL client, see [`cockroach sql`](cockroach-sql.html).
-
-### Export compressed files
-
-`gzip` compression is supported for both `PARQUET` and `CSV` file formats:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH compression = 'gzip' FROM TABLE bank.customers;
-~~~
-
-~~~
-filename                                           | rows | bytes
----------------------------------------------------+------+--------
-export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
-(1 row)
-~~~
-
-`PARQUET` data also supports `snappy` compression:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO PARQUET
-  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH compression = 'snappy' FROM TABLE bank.customers;
-~~~
-
-~~~
-filename                                                   | rows | bytes
------------------------------------------------------------+------+--------
-export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
-(1 row)
+$ cockroach sql \
+--url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
+--execute "SELECT * FROM bank.customers" --format=csv > /Users/{username}/{path/to/file}/customers.csv
 ~~~
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="gcs">
+<section class="filter-content" markdown="1" data-scope="cloud">
 
-{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
+The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
 
-Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
-
-### Export a table into CSV
-
-This example uses the `delimiter` option to define the ASCII character that delimits columns in your rows:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+~~~sql
+EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH delimiter = '|' FROM TABLE bank.customers;
-~~~
-
-This examples uses the `nullas` option to define the string that represents `NULL` values:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  WITH nullas = '' FROM TABLE bank.customers;
-~~~
-
-### Export a table into Parquet
-
-~~~ sql
-> EXPORT INTO PARQUET
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  FROM TABLE bank.customers;
-~~~
-
-### Export using a `SELECT` statement
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  FROM SELECT * FROM bank.customers WHERE id >= 100;
-~~~
-
-For more information, see [selection queries](selection-queries.html).
-
-### Non-distributed export using the SQL client
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
-~~~
-
-For more information about the SQL client, see [`cockroach sql`](cockroach-sql.html).
-
-### Export compressed files
-
-`gzip` compression is supported for both `PARQUET` and `CSV` file formats:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO CSV
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  WITH compression = 'gzip' FROM TABLE bank.customers;
-~~~
-
-~~~
-filename                                           | rows | bytes
----------------------------------------------------+------+--------
-export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
-(1 row)
-~~~
-
-`PARQUET` data also supports `snappy` compression:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> EXPORT INTO PARQUET
-  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-  WITH compression = 'snappy' FROM TABLE bank.customers;
-~~~
-
-~~~
-filename                                                   | rows | bytes
------------------------------------------------------------+------+--------
-export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
-(1 row)
 ~~~
 
 </section>

@@ -1385,9 +1385,9 @@
             ]
           },
           {
-            "title": "Experimental Features",
+            "title": "Features in Preview",
             "urls": [
-              "/${VERSION}/experimental-features.html"
+              "/${VERSION}/features-in-preview.html"
             ]
           }
         ]
@@ -1552,6 +1552,12 @@
                 "urls": [
                   "/${VERSION}/cockroach-debug-merge-logs.html"
                 ]
+              },
+              {
+               "title": "<code>cockroach debug tsdump</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-debug-tsdump.html"
+               ]
               },
               {
                 "title": "<code>cockroach debug zip</code>",
@@ -1765,6 +1771,12 @@
           }
         ]
       },
+      {
+       "title": "Metrics",
+       "urls": [
+         "/${VERSION}/metrics.html"
+       ]
+     },
       {
         "title": "Transaction Retry Error Reference",
         "urls": [

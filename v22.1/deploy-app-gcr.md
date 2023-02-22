@@ -9,7 +9,7 @@ docs_area: get_started
 
 This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a {{ site.data.products.serverless }} cluster.
 
-## Prerequisites
+## Before you begin
 
 Before starting the tutorial, do the following:
 
@@ -112,7 +112,7 @@ Before starting the tutorial, do the following:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ export DATABASE_URL="postgresql://user:password@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs/root.crt&options=--cluster%3Drouting-id"
+    $ export DATABASE_URL="postgresql://$USER:$PASSWORD@random-cluster-name-4300.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=root.crt"
     ~~~
 
     This Django app uses the `dj_database_url` module to configure the database connection from a connection URL. The module uses the value assigned to the `DATABASE_URL` environment variable for the connection.

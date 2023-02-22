@@ -24,7 +24,7 @@ The examples on this page assume you are using a Java version <= 9. They do not 
 
 ## Step 1. Install the Java JDBC driver
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html).
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/setup/).
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
@@ -113,7 +113,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 To run it:
 
-1. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
+1. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download/).
 1. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}
@@ -220,7 +220,7 @@ For more information about importing data from MySQL, see [Migrate from MySQL](m
 
 ### Use `rewriteBatchedInserts` for increased speed
 
-We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters):
+We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/use/#connection-parameters):
 
 > This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
 

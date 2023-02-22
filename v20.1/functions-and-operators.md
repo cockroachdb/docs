@@ -113,7 +113,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported operations
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/operators.md %}
+{% include v20.1/sql/operators.md %}
 
 <!--
 ## `CAST()`

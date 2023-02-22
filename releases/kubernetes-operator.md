@@ -21,6 +21,14 @@ To be notified about updates to the Helm chart, visit the [CockroachDB Helm char
 
 <!-- Copy the top section below and bump the variable -->
 
+## December 16, 2022
+
+{% assign operator_version = "2.9.0" %}
+CockroachDB Kubernetes Operator {{ operator_version }} is available.
+
+- [Changelog](https://github.com/cockroachdb/cockroach-operator/blob/master/CHANGELOG.md#v{{ operator_version }})
+- [Download](https://github.com/cockroachdb/cockroach-operator/releases/tag/v{{ operator_version }})
+
 ## July 13, 2022
 
 {% assign operator_version = "2.8.0" %}

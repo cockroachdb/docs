@@ -37,7 +37,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
-2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -393,13 +393,22 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     gcloud iam service-accounts keys create key.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
     ~~~
 
-    Next, base64 encode your credentials key:
+    Next, base64 encode your credentials key using the command specific to your platform.
+
+    If you're working on macOS:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cat key.json | base64
     ~~~
 
+    If you're working on Linux, run the following to ensure that lines are not wrapped in the output:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cat key.json | base64 -w 0
+    ~~~
+    
     Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
 
 1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account and add your topic's region:

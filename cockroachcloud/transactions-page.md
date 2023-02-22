@@ -6,7 +6,7 @@ cloud: true
 docs_area: manage
 ---
 
-{% capture version_prefix %}{{site.versions["stable"]}}/{% endcapture %}
+{% capture version_prefix %}{{site.current_cloud_version}}/{% endcapture %}
 
 The **Transactions** page helps you:
 
@@ -21,7 +21,7 @@ In contrast to the [**Statements** page]({{ link_prefix }}statements-page.html),
 {% if page.cloud != true %}
 To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. Click the **Transactions** tab.
 {% else %}
-To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console. Click the **Transactions** tab.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
 {% endif %}
 
 ## Search and filter

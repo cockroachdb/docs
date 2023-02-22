@@ -21,9 +21,9 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` system privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
-- Interacting with a cloud storage resource using [`IMPLICIT` authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
 
@@ -32,7 +32,7 @@ No special privilege is required for:
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile](use-userfile-for-bulk-operations.html) storage.
 
-We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+We recommend using [cloud storage for CockroachDB operations](use-cloud-storage.html).
 
 ## Synopsis
 
@@ -156,6 +156,10 @@ system        | public             | role_members               | table       | 
 ### Show a backup taken with the incremental location option
 
 To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
+
+{{site.data.alerts.callout_info}}
+`SHOW BACKUP` can display backups taken with the `incremental_location` option **or** for [locality-aware backups](take-and-restore-locality-aware-backups.html), but not for locality-aware backups taken with the `incremental_location` option.
+{{site.data.alerts.end}}
 
 You can use the option to show the most recent backup where `incremental_location` has stored the backup:
 
@@ -376,6 +380,10 @@ WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_A
   data/710798326337404929.sst
   data/710798326337404929.sst
 ~~~
+
+## Known limitations
+
+- {% include {{ page.version.version }}/known-limitations/show-backup-locality-incremental-location.md %}
 
 ## See also
 

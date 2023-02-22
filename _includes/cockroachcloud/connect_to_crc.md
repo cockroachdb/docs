@@ -7,5 +7,5 @@ $ cockroach sql \
 
 <!-- BEGIN CRC free sql -->
 $ cockroach sql \
---url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>&options=--cluster=<cluster_name>'
+--url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
 <!-- END CRC free sql -->

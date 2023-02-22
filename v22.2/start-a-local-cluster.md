@@ -16,7 +16,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html), and review the [Production Checklist](recommended-production-settings.html).
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](kubernetes-overview.html), and review the [Production Checklist](recommended-production-settings.html).
 
 ## Step 1. Start the cluster
 
@@ -44,7 +44,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
     * - Any user, connecting as root, can read or write any data in your cluster.
     * - There is no network encryption nor authentication, and thus no confidentiality.
     *
-    * Check out how to secure your cluster: https://www.cockroachlabs.com/docs/v19.2/secure-a-cluster.html
+    * Check out how to secure your cluster: https://www.cockroachlabs.com/docs/{{ page.version.version }}/secure-a-cluster.html
     *
     *
     * INFO: initial startup completed.
@@ -54,7 +54,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
     *
     ~~~
 
-2. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
+1. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
     - The `--insecure` flag makes communication unencrypted.
     - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the DB Console.
     - The `--store` flag indicates the location where the node's data and logs are stored.
@@ -63,7 +63,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
         {% include {{ page.version.version }}/prod-deployment/join-flag-single-region.md %}
     - The `--background` flag starts the `cockroach` process in the background so you can continue using the same terminal for other operations.
 
-3. Start two more nodes:
+1. Start two more nodes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -89,7 +89,7 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
+1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -137,7 +137,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     $ cockroach sql --insecure --host=localhost:26257
     ~~~
 
-2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -166,7 +166,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     (1 row)
     ~~~
 
-3. Now exit the SQL shell on node 1 and open a new shell on node 2:
+1. Now exit the SQL shell on node 1 and open a new shell on node 2:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -182,7 +182,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
     In a real deployment, all nodes would likely use the default port `26257`, and so you wouldn't need to set the port portion of `--host`.
     {{site.data.alerts.end}}
 
-4. Run the same `SELECT` query as before:
+1. Run the same `SELECT` query as before:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -198,7 +198,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-5. Exit the SQL shell on node 2:
+1. Exit the SQL shell on node 2:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -225,7 +225,7 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     I190926 16:50:35.915498 1 workload/workloadsql/dataload.go:135  imported promo_codes (0s, 1000 rows)
     ~~~
 
-2. Run the workload for 5 minutes:
+1. Run the workload for 5 minutes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -240,7 +240,7 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
 1. Go to <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
-2. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+1. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
 
     <img src="{{ 'images/v22.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -250,11 +250,11 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-3. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+1. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
     <img src="{{ 'images/v22.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-4. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+1. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 5. Simulate node maintenance
 
@@ -327,7 +327,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Again, these commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-2. Back on the **Cluster Overview** in the DB Console, you'll now see 5 nodes listed:
+1. Back on the **Cluster Overview** in the DB Console, you'll now see 5 nodes listed:
 
     <img src="{{ 'images/v22.2/ui_cluster_overview_5_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -383,7 +383,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
     kill -TERM 4622
     ~~~
 
-2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
+1. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
 
     If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 

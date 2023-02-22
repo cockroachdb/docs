@@ -68,16 +68,17 @@ You can edit your spend limit from the **Overview** page. The change in your spe
 
 You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
 
-1. Navigate to the **Databases** page from the **Overview** page of your cluster.
+1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
+1. Click **Databases** in the **Data** section of the left side navigation.
 1. Click **Add database**.
 1. Enter a name for the new database.
 1. Click **Create**.
 
 ## Restore data from a backup
 
-Use the [**Backups** page](backups-page.html) to restore your cluster from automatic full cluster backups.
+Use the [Managed-Service Backups](use-managed-service-backups.html) to restore your cluster from automatic full cluster backups.
 
-You can also [backup and restore](run-bulk-operations.html#backup-and-restore-data) your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can take [backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html?filters=cloud#backup-and-restore-data).
+You can also [back up and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
 
 ## Delete cluster
 
