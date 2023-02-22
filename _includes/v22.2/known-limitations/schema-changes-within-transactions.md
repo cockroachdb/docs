@@ -5,5 +5,5 @@ Within a single [transaction](transactions.html):
 - [`DROP COLUMN`](alter-table.html#drop-column) can result in data loss if one of the other schema changes in the transaction fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
 
 {{site.data.alerts.callout_info}}
-If a schema change within a transaction fails, manual intervention may be needed to determine which has failed. After determining which schema change(s) failed, you can then retry the schema changes.
+If a schema change within a transaction fails, manual intervention may be needed to determine which statement has failed. After determining which schema change(s) failed, you can then retry the schema change.
 {{site.data.alerts.end}}
