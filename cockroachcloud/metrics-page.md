@@ -32,7 +32,7 @@ See the [**Statements** page](statements-page.html) for more details on the stat
 
 ### SQL Statement Latency
 
-SQL statement latency is calculated as the total time in ms a [statement](../{{site.versions["stable"]}}/statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issues on the cluster.
+SQL statement latency is calculated as the total time in ms a [statement](../{{site.versions["stable"]}}/sql-statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issues on the cluster.
 
 ### SQL Open Sessions
 
@@ -80,9 +80,8 @@ See the [Statements page](statements-page.html) for more details on the cluster'
 
 ## See also
 
-- [Available metrics](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html#available-metrics?filters=metric-names-serverless)
+- [Available metrics](../{{site.versions["stable"]}}/ui-custom-chart-debug-page.html?filters=metric-names-serverless#available-metrics)
 - [Statements Page](statements-page.html)
 - [Transactions Page](transactions-page.html)
 - [Sessions Page](sessions-page.html)
-- [Insights Page](insights-page.html)
 - [Jobs Page](jobs-page.html)
