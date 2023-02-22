@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for-backup.html).
+ The `PAUSE SCHEDULES` [statement](sql-statements.html) can be used to pause [backup schedules](create-schedule-for-backup.html) and [changefeed schedules](create-schedule-for-changefeed.html).
 
 After pausing a schedule, you can resume it with [`RESUME SCHEDULES`](resume-schedules.html).
 
@@ -17,11 +17,9 @@ The following users can pause a schedule:
 
 ## Synopsis
 
-~~~
-PAUSE SCHEDULES <selectclause>
-  select clause: select statement returning schedule id to pause.
-PAUSE SCHEDULE <scheduleID>
-~~~
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/pause_schedule.html %}
+</div>
 
 ## Parameters
 
@@ -63,6 +61,7 @@ In this example, all schedules with the label `schedule_database` are paused.
 - [Manage a Backup Schedule](manage-a-backup-schedule.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)
 - [`SHOW BACKUP`](show-backup.html)
 - [`SHOW SCHEDULES`](show-schedules.html)
 - [`RESUME SCHEDULES`](resume-schedules.html)
