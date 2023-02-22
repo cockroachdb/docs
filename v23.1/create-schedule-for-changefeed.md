@@ -31,7 +31,7 @@ Parameter | Description
 `schedule_label` | The name for the scheduled changefeed. This is optional and does not need to be unique. If you do not define a name, the label will default to `CHANGEFEED` with the timestamp of when you created the schedule. 
 `changefeed_targets` | The tables to target with the changefeed. For example, `movr.users, movr.rides`.
 `changefeed_sink` | The [changefeed sink URI](changefeed-sinks.html).
-`changefeed_option` | The [options](create-changefeed.html#options) to control the behavior of your changefeed. For example, `WITH format = csv, full_table_name`. See [Changefeed options](#changefeed-options) for a list of exceptions.
+`changefeed_option` | The [options](create-changefeed.html#options) to control the behavior of your changefeed. For example, `WITH format = csv, full_table_name`. See [Changefeed options](#changefeed-options) for a list of available options.
 `target_list` | The columns to emit data from if you're using a [CDC transformation](cdc-transformations.html) expression.
 `insert_target` | The target tables for the changefeed if you're using a [CDC transformation](cdc-transformations.html) expression.
 `where_clause` | An optional `WHERE` clause to apply filters to the table if you're using a [CDC transformation](cdc-transformations.html) expression.
@@ -73,7 +73,10 @@ The following statement sets up a scheduled changefeed named `users_rides_nightl
 CREATE SCHEDULE users_rides_nightly FOR CHANGEFEED INTO 'external://kafka-sink' WITH format=csv RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS first_run=now, on_execution_failure=retry, on_previous_running=skip;
 ~~~
 
-If the scheduled changefeed runs into an error, it will retry the changefeed immediately. The changefeed will skip a new changefeed run if the previous run is still running at the next scheduled time.
+The [schedule options](create-schedule-for-changefeed.html#schedule-options) control the schedule's behavior:
+
+- If it runs into an error, `on_execution_failure=retry` will ensure that the schedule retries the changefeed immediately. 
+- If the previous scheduled changefeed is still running, `on_previous_running=skip` will skip a new changefeed at the next scheduled time.
 
 ### Create a scheduled changefeed with CDC transformations
 
