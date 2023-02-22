@@ -9,7 +9,7 @@ The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running
 
 ## Required privileges
 
-To view and cancel a session, the user must be a member of the `admin` role or must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) and [`CANCELQUERY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameters set. Non-admin users cannot cancel admin users' sessions.
+To view and cancel a session, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) and the `CANCELQUERY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`CANCELQUERY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) defined. Non-admin users cannot cancel admin users' sessions.
 
 ## Synopsis
 

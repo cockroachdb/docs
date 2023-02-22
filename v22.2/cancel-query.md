@@ -18,7 +18,7 @@ The `CANCEL QUERY` [statement](sql-statements.html) cancels a running SQL query.
 
 ## Required privileges
 
-Members of the `admin` role (include `root`, which belongs to `admin` by default) can cancel any currently active queries. User that are not members of the `admin` role can cancel only their own currently active queries. To view and cancel another non-admin user's query, the user must be a member of the `admin` role or must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) and [`CANCELQUERY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameters set.
+Members of the `admin` role (including `root`, which belongs to `admin` by default) can cancel any currently active queries. User that are not members of the `admin` role can cancel only their own currently active queries. To view and cancel another non-admin user's query, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) and the `CANCELQUERY` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy [`CANCELQUERY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) defined.
 
 ## Synopsis
 
