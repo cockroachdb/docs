@@ -11,7 +11,7 @@ docs_area: manage
 The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
 {{site.data.alerts.end}}
 
-{% include feature-phases/preview-opt-in.md %}
+{% include feature-phases/limited-access.md %}
 
 ## The `logexport` endpoint
 
