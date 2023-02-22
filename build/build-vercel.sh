@@ -36,7 +36,7 @@ rm _site/docs/dev _site/docs/stable
 ls -l _site/docs/dev
 ls -l _site/docs/stable
 
-cp -r _site/docs/v22.2 _site/docs/dev
+cp -r _site/docs/v23.1 _site/docs/dev
 cp -r _site/docs/v22.2 _site/docs/stable
 
 # Set up htmltest
