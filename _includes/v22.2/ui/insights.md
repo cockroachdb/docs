@@ -8,11 +8,11 @@ The **Workload Insights** tab displays insights related to transaction and state
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Workload Insights > Transaction Executions**.
 {% endif -%}
 {% if page.cloud == true -%}
-To display this view, click **Insights** in the left-hand navigation of the Cloud Console and select **Workload Insights > Transaction Executions**.
-
 {{site.data.alerts.callout_info}}
 The **Transaction Executions** view is currently unavailable for {{ site.data.products.serverless }} clusters.
 {{site.data.alerts.end}}
+
+To display this view, click **Insights** in the left-hand navigation of the Cloud Console and select **Workload Insights > Transaction Executions**.
 {% endif -%}
 
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
