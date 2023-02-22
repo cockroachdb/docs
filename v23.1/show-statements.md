@@ -28,7 +28,7 @@ In CockroachDB, the following are aliases for `SHOW STATEMENTS`:
 
 ## Required privileges
 
-All users can see their own currently active queries. All users belonging to the `admin` role can view all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set.
+All users can see their own currently active queries. All users belonging to the `admin` role can view all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](security-reference/authorization.html#role-options)) defined.
 
 ## Synopsis
 
