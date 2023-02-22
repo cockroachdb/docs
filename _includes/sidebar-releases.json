@@ -58,13 +58,13 @@
     "/releases/kubernetes-operator.html"
   ]
 },
+{% assign advisories = site.pages | where_exp: "advisories", "advisories.path contains 'advisories'" | where_exp: "advisories", "advisories.index != 'true'" %}
 {
  "title": "Technical Advisories",
  "urls": [
-   "/advisories/index.html",
-   {% for x in site.data.advisories %}
-     "/advisories/{{ x.advisory }}.html",
+    "/advisories/index.html"
+   {% for x in advisories %}
+    ,"{{ x.url }}"
    {% endfor %}
-   "/advisories/index.html"
  ]
 }

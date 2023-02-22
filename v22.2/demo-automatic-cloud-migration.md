@@ -231,7 +231,7 @@ Note that it takes a few minutes for the DB Console to show accurate per-node re
 
 So your cluster is replicating across two simulated clouds. But let's say that after experimentation, you're happy with cloud vendor 2, and you decide that you'd like to move everything there. Can you do that without interruption to your live client traffic? Yes, and it's as simple as running a single command to add a [hard constraint](configure-replication-zones.html#replication-constraints) that all replicas must be on nodes with `--locality=cloud=2`.
 
-In a new terminal, [edit the default replication zone](configure-zone.html):
+In a new terminal, [edit the default replication zone](alter-range.html#configure-zone):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

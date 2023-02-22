@@ -5,6 +5,7 @@ toc: true
 toc_not_nested: true
 secure: true
 docs_area: deploy
+key: operate-cockroachdb-kubernetes.html
 ---
 
 CockroachDB can be deployed and managed on Kubernetes using the following methods:

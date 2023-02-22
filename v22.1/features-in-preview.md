@@ -3,6 +3,7 @@ title: Features in Preview
 summary: Learn about the features available in preview in CockroachDB
 toc: true
 docs_area: reference.sql
+key: experimental-features.html
 ---
 
 This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
@@ -109,7 +110,7 @@ The table below lists the SQL functions and operators available in preview in Co
 
 ## Alter column types
 
-CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#altering-column-data-types).
+ CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#altering-column-data-types).
 
 ## Temporary objects
 

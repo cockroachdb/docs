@@ -9,4 +9,4 @@ The source file URL _does_ require the [`admin` role](security-reference/authori
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
 - [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
 
-We recommend using [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+We recommend using [cloud storage for CockroachDB operations](use-cloud-storage.html).

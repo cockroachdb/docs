@@ -16,7 +16,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Step 1. Select a connection method
 
-1. Select your cluster to navigate to the cluster **Overview** page.
+1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
 
 1. In the top right corner of the {{ site.data.products.db }} Console, click the **Connect** button.
 

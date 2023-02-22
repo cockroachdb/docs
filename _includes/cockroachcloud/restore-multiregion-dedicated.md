@@ -3,7 +3,7 @@
 
     The **Restore database** module displays with backup details.
 
-1. In the **Restore to** field, enter the name of the destination database. You can only restore to the same database name as the backed-up database. Therefore, you need to [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/rename-database.html) your existing database before restoring.
+1. In the **Restore to** field, enter the name of the destination database. You can only restore to the same database name as the backed-up database. Therefore, you need to [`DROP`](../{{site.current_cloud_version}}/drop-database.html) or [`RENAME`](../{{site.current_cloud_version}}/alter-database.html#rename-to) your existing database before restoring.
 
     To restore a [multi-region database](../{{site.current_cloud_version}}/multiregion-overview.html) you have backed up to a **different** database name, you can use the following procedure. (In this example, the original, backed-up database is `movr` and the new database is `new_movr`.)
 
