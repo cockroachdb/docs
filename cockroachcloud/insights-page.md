@@ -18,8 +18,8 @@ docs_area: manage
 
 The **Insights** page of the {{ site.data.products.db }} Console helps you:
 
-- Identify SQL statements with [high retry counts](transactions.html#automatic-retries), [slow execution](query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans](cost-based-optimizer.html).
-- Identify [indexes](indexes.html) that should be created, altered, replaced, or dropped to improve performance.
+- Identify SQL statements with [high retry counts]({{link_prefix}}transactions.html#automatic-retries), [slow execution]({{link_prefix}}query-behavior-troubleshooting.html#identify-slow-queries), or [suboptimal plans]({{link_prefix}}cost-based-optimizer.html).
+- Identify [indexes]({{link_prefix}}indexes.html) that should be created, altered, replaced, or dropped to improve performance.
 
 To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Insights** in the **Monitoring** section of the left side navigation.
 
