@@ -194,6 +194,24 @@ The `ttl_expiration_expression` parameter has the following requirements:
 - Any column it references cannot be [dropped](alter-table.html#drop-column) or have its [type altered](alter-type.html).
 - Finally, if the [column is renamed](alter-table.html#rename-column), the value of `ttl_expiration_expression` is automatically updated.
 
+### Use a `ttl_expiration_expression` on a `DATE` column
+
+Use the SQL syntax shown below to create a new table with rows that expire 30 days after an event ends using a `ttl_expiration_expression`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  description TEXT,
+  start_date DATE DEFAULT now() NOT NULL,
+  end_date DATE NOT NULL
+) WITH (
+  ttl_expiration_expression = '((end_date::TIMESTAMP) + INTERVAL ''30 days'') AT TIME ZONE ''UTC'''
+);
+~~~
+
+When using a `ttl_expiration_expression` on a `DATE` or `TIMESTAMPTTZ` column use `AT TIME ZONE` to explicitly set the timezone for the expression. By setting the timezone to UTC in the expression, you set an exact time when the delete should be performed, regardless of the local timezone of the node.
+
 ### Create a table with `ttl_expire_after`
 
 Use the SQL syntax shown below to create a new table with rows that expire after a 3 month [interval](interval.html), execute a statement like the following:
