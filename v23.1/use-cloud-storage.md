@@ -229,7 +229,7 @@ For guidance on adding a user to a bucket's policy, see [Add a principal to a bu
 
 ### Object locking
 
-Delete and overwrite permissions are **not** required. To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
 
 {{site.data.alerts.callout_info}}
 We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
