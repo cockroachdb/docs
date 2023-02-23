@@ -4,7 +4,7 @@ CockroachDB does not yet support the following `COPY` syntax:
 
   - [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/85571)
 
-- Various `COPY` options (`FORMAT`, `FREEZE`, `QUOTE`, etc).
+- Various `COPY` options (`FORMAT`, `FREEZE`, `QUOTE`, etc.).
 
   - [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/85572)
   - [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/85573)

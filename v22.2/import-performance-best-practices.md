@@ -16,14 +16,6 @@ Import speed primarily depends on the amount of data that you want to import. Ho
 If the import size is small, then you do not need to do anything to optimize performance. In this case, the import should run quickly, regardless of the settings.
 {{site.data.alerts.end}}
 
-## TK section from IMPORT INTO doc .. manage import jobs?
-
-- All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT INTO` task in addition to serving normal traffic.
-- To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
-- To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
-- An import job will pause if a node in the cluster runs out of disk space. See [View and control import jobs](import-into.html#view-and-control-import-jobs) for information on resuming and showing the progress of import jobs.
-- An import job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the import has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
-
 ## Split your data into multiple files
 
 Splitting the import data into multiple files can have a large impact on the import performance. The following formats support multi-file import using `IMPORT INTO`:
@@ -58,20 +50,16 @@ CockroachDB imports the files that you give it, and does not further split them.
 If you split the data into **more** files than you have nodes, it will not have a large impact on performance.
 {{site.data.alerts.end}}
 
-## Partition and sort your data
-
-TK
-
 ### File storage during import
 
-During migration, all of the features of [`IMPORT INTO`](import-into.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
+During migration, all of the features of [`IMPORT`](import-into.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
 
 ## Choose a performant import format
 
 Import formats do not have the same performance because of the way they are processed. Below, import formats are listed from fastest to slowest:
 
-1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import-into.html) (both have about the same import performance)
-1. [`AVRO`](migrate-from-avro.html)
+1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import-into.html) (both have about the same import performance).
+1. [`AVRO`](migrate-from-avro.html).
 
 We recommend formatting your import files as `CSV`, `DELIMITED DATA`, or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
 
@@ -81,19 +69,12 @@ We recommend formatting your import files as `CSV`, `DELIMITED DATA`, or `AVRO`.
 
 Split your dump data into two files:
 
-1. A SQL file containing the table schema (i.e., [data definition statements](sql-statements.html#data-definition-statements)).
-1. A CSV file containing the table data (i.e., tk).
+1. A SQL file containing the table schema.
+1. A CSV file containing the table data.
 
-<!-- Then, import the schema-only file:
+Convert the schema-only file using the [Schema Conversion Tool](../cockroachcloud/migrations-page.html). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-~~~ sql
-> IMPORT TABLE customers
-FROM PGDUMP
-    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.sql' WITH ignore_unsupported_statements
-;
-~~~ -->
-
-And use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
+Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
 
 ~~~ sql
 > IMPORT INTO customers (id, name)
@@ -120,6 +101,7 @@ Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMA
 
 ## See also
 
+- [`IMPORT INTO`](import-into.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from Oracle](migrate-from-oracle.html)
 - [Migrate from PostgreSQL](migrate-from-postgres.html)

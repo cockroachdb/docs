@@ -30,7 +30,7 @@ To begin a new migration to CockroachDB, convert your database schema to an equi
 1. Use the source database's tooling to extract the [data definition language (DDL)](sql-statements.html#data-definition-statements) to a `.sql` file.
 1. Upload the `.sql` file to the [**Schema Conversion Tool**](../cockroachcloud/migrations-page.html) on the {{ site.data.products.db }} Console. The tool will convert the syntax, identify [unimplemented features](#unimplemented-features) in the schema, and suggest edits according to CockroachDB [best practices](#schema-design-best-practices).
 	{{site.data.alerts.callout_info}}
-	The Schema Conversion Tool currently accepts `.sql` files from PostgreSQL, MySQL, Oracle, and Microsoft SQL Server.
+	The Schema Conversion Tool accepts `.sql` files from PostgreSQL, MySQL, Oracle, and Microsoft SQL Server.
 	{{site.data.alerts.end}}
 
 1. The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}

@@ -51,58 +51,58 @@ cockroach demo
 
 ### Copy tab-delimited data to CockroachDB
 
-Start copying data to the `users` table:
+1. Start copying data to the `users` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COPY users FROM STDIN;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY users FROM STDIN;
+    ~~~
 
-You will see the following prompt:
+1. You will see the following prompt:
 
-~~~
-Enter data to be copied followed by a newline.
-End with a backslash and a period on a line by itself, or an EOF signal.
-~~~
+    ~~~
+    Enter data to be copied followed by a newline.
+    End with a backslash and a period on a line by itself, or an EOF signal.
+    ~~~
 
-Enter some tab-delimited data to copy to the table:
+1. Enter some tab-delimited data to copy to the table:
 
-{{site.data.alerts.callout_danger}}
-Before you input the following rows, ensure the delimiters are tab characters. They may have been converted to spaces by the browser.
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    Before you input the following rows, ensure the delimiters are tab characters. They may have been converted to spaces by the browser.
+    {{site.data.alerts.end}}
 
-~~~
-8a3d70a3-d70a-4000-8000-00000000001d  seattle Hannah  '400 Broad St'  0987654321
-~~~
+    ~~~
+    8a3d70a3-d70a-4000-8000-00000000001d  seattle Hannah  '400 Broad St'  0987654321
+    ~~~
 
-~~~
-9eb851eb-851e-4800-8000-00000000001e  new york  Carl  '53 W 23rd St'  5678901234
-~~~
+    ~~~
+    9eb851eb-851e-4800-8000-00000000001e  new york  Carl  '53 W 23rd St'  5678901234
+    ~~~
 
-Mark the end of data with `\.` on its own line:
+1. Mark the end of data with `\.` on its own line:
 
-~~~
-\.
-~~~
+    ~~~
+    \.
+    ~~~
 
-~~~
-COPY 2
-~~~
+    ~~~
+    COPY 2
+    ~~~
 
-Query the `users` table for the rows that you just inserted:
+1. Query the `users` table for the rows that you just inserted:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
+    ~~~
 
-~~~
-                  id                  |   city   |  name  |    address     | credit_card
---------------------------------------+----------+--------+----------------+-------------
- 9eb851eb-851e-4800-8000-00000000001e | new york | Carl   | '53 W 23rd St' | 5678901234
- 8a3d70a3-d70a-4000-8000-00000000001d | seattle  | Hannah | '400 Broad St' | 0987654321
-(2 rows)
-~~~
+    ~~~
+                      id                  |   city   |  name  |    address     | credit_card
+    --------------------------------------+----------+--------+----------------+-------------
+     9eb851eb-851e-4800-8000-00000000001e | new york | Carl   | '53 W 23rd St' | 5678901234
+     8a3d70a3-d70a-4000-8000-00000000001d | seattle  | Hannah | '400 Broad St' | 0987654321
+    (2 rows)
+    ~~~
 
 ### Copy CSV-delimited data to CockroachDB
 
@@ -115,226 +115,226 @@ You can copy CSV data into CockroachDB using the following methods:
 
 #### Copy CSV-delimited data from `stdin`
 
-First, create a new table that you will load with CSV-formatted data:
+1. Create a new table that you will load with CSV-formatted data:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
+    ~~~
 
-Start copying data to the `setecastronomy` table:
+1. Start copying data to the `setecastronomy` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COPY setecastronomy FROM STDIN WITH CSV;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY setecastronomy FROM STDIN WITH CSV;
+    ~~~
 
-You will see the following prompt:
+    You will see the following prompt:
 
-~~~
-Enter data to be copied followed by a newline.
-End with a backslash and a period on a line by itself, or an EOF signal.
-~~~
+    ~~~
+    Enter data to be copied followed by a newline.
+    End with a backslash and a period on a line by itself, or an EOF signal.
+    ~~~
 
-Enter some CSV-delimited data to copy to the table:
+1. Enter some CSV-delimited data to copy to the table:
 
-{% include_cached copy-clipboard.html %}
-~~~
-"My name is Werner Brandes","My voice is my passport"
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    "My name is Werner Brandes","My voice is my passport"
+    ~~~
 
-Mark the end of data with `\.` on its own line:
+1. Mark the end of data with `\.` on its own line:
 
-{% include_cached copy-clipboard.html %}
-~~~
-\.
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    \.
+    ~~~
 
-~~~
-COPY 1
-~~~
+    ~~~
+    COPY 1
+    ~~~
 
-View the data in the `setecastronomy` table:
+1. View the data in the `setecastronomy` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM setecastronomy;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM setecastronomy;
+    ~~~
 
-~~~
-            name            |              phrase
-----------------------------+------------------------------------
-  My name is Werner Brandes | My voice is my passport
-(1 row)
-~~~
+    ~~~
+                name            |              phrase
+    ----------------------------+------------------------------------
+      My name is Werner Brandes | My voice is my passport
+    (1 row)
+    ~~~
 
 #### Copy CSV-delimited data from `stdin` with an escape character
 
-First, create a new table that you will load with CSV-formatted data:
+1. Create a new table that you will load with CSV-formatted data:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
+    ~~~
 
-Start copying data to the `setecastronomy` table, specifying an escape character for quoting the fields:
+1. Start copying data to the `setecastronomy` table, specifying an escape character for quoting the fields:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COPY setecastronomy FROM STDIN WITH CSV DELIMITER ',' ESCAPE '\';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY setecastronomy FROM STDIN WITH CSV DELIMITER ',' ESCAPE '\';
+    ~~~
 
-You will see the following prompt:
+    You will see the following prompt:
 
-~~~
-Enter data to be copied followed by a newline.
-End with a backslash and a period on a line by itself, or an EOF signal.
-~~~
+    ~~~
+    Enter data to be copied followed by a newline.
+    End with a backslash and a period on a line by itself, or an EOF signal.
+    ~~~
 
-Enter some CSV-delimited data to copy to the table:
+1. Enter some CSV-delimited data to copy to the table:
 
-{% include_cached copy-clipboard.html %}
-~~~
-"My name is Werner Brandes","\"My\" \"voice\" \"is\" \"my\" \"passport\""
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    "My name is Werner Brandes","\"My\" \"voice\" \"is\" \"my\" \"passport\""
+    ~~~
 
-Mark the end of data with `\.` on its own line:
+1. Mark the end of data with `\.` on its own line:
 
-{% include_cached copy-clipboard.html %}
-~~~
-\.
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    \.
+    ~~~
 
-~~~
-COPY 1
-~~~
+    ~~~
+    COPY 1
+    ~~~
 
-View the data in the `setecastronomy` table:
+1. View the data in the `setecastronomy` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM setecastronomy;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM setecastronomy;
+    ~~~
 
-~~~
-            name            |              phrase
-----------------------------+------------------------------------
-  My name is Werner Brandes | My voice is my passport
-  My name is Werner Brandes | "My" "voice" "is" "my" "passport"
-(2 rows)
-~~~
+    ~~~
+                name            |              phrase
+    ----------------------------+------------------------------------
+      My name is Werner Brandes | My voice is my passport
+      My name is Werner Brandes | "My" "voice" "is" "my" "passport"
+    (2 rows)
+    ~~~
 
 #### Copy CSV-delimited data from `stdin` with a header
 
-First, create a new table that you will load with CSV-formatted data:
+1. Create a new table that you will load with CSV-formatted data:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
+    ~~~
 
-Start copying data to the `setecastronomy` table, specifying that CockroachDB should skip the header (first line of CSV input):
+1. Start copying data to the `setecastronomy` table, specifying that CockroachDB should skip the header (first line of CSV input):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COPY setecastronomy FROM STDIN WITH CSV HEADER;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY setecastronomy FROM STDIN WITH CSV HEADER;
+    ~~~
 
-Enter the data, including the header line:
+1. Enter the data, including the header line:
 
-{% include_cached copy-clipboard.html %}
-~~~
-"name","phrase"
-"Hi, my name is Werner Brandes","My voice is my passport; verify me"
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    "name","phrase"
+    "Hi, my name is Werner Brandes","My voice is my passport; verify me"
+    ~~~
 
-Mark the end of data with `\.` on its own line:
+1. Mark the end of data with `\.` on its own line:
 
-{% include_cached copy-clipboard.html %}
-~~~
-\.
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    \.
+    ~~~
 
-~~~
-COPY 1
-~~~
+    ~~~
+    COPY 1
+    ~~~
 
-View the data in the `setecastronomy` table:
+1. View the data in the `setecastronomy` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM setecastronomy;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM setecastronomy;
+    ~~~
 
-~~~
-              name              |               phrase
---------------------------------+-------------------------------------
-  My name is Werner Brandes     | My voice is my passport
-  My name is Werner Brandes     | "My" "voice" "is" "my" "passport"
-  Hi, my name is Werner Brandes | My voice is my passport; verify me
-(3 rows)
-~~~
+    ~~~
+                  name              |               phrase
+    --------------------------------+-------------------------------------
+      My name is Werner Brandes     | My voice is my passport
+      My name is Werner Brandes     | "My" "voice" "is" "my" "passport"
+      Hi, my name is Werner Brandes | My voice is my passport; verify me
+    (3 rows)
+    ~~~
 
 #### Copy CSV-delimited data from `stdin` with hex-encoded byte array data
 
-First, create a new table that you will load with CSV-formatted data:
+1. Create a new table that you will load with CSV-formatted data:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE IF NOT EXISTS mybytes(a INT PRIMARY KEY, b BYTEA);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE IF NOT EXISTS mybytes(a INT PRIMARY KEY, b BYTEA);
+    ~~~
 
-Set the `bytea_output` [session variable](set-vars.html#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
+1. Set the `bytea_output` [session variable](set-vars.html#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SET bytea_output = 'escape';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET bytea_output = 'escape';
+    ~~~
 
-Start copying data to the `mybytes` table:
+1. Start copying data to the `mybytes` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-COPY mybytes FROM STDIN WITH CSV;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    COPY mybytes FROM STDIN WITH CSV;
+    ~~~
 
-Enter some CSV-delimited data to copy to the table:
+1. Enter some CSV-delimited data to copy to the table:
 
-{% include_cached copy-clipboard.html %}
-~~~
-1,X'6869
-2,x'6869
-3,"\x6869"
-4,\x6869
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    1,X'6869
+    2,x'6869
+    3,"\x6869"
+    4,\x6869
+    ~~~
 
-Mark the end of data with `\.` on its own line:
+1. Mark the end of data with `\.` on its own line:
 
-{% include_cached copy-clipboard.html %}
-~~~
-\.
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    \.
+    ~~~
 
-~~~
-COPY 4
-~~~
+    ~~~
+    COPY 4
+    ~~~
 
-View the data in the `mybytes` table:
+1. View the data in the `mybytes` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT * FROM mybytes;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM mybytes;
+    ~~~
 
-~~~
-  a |   b
-----+---------
-  1 | X'6869
-  2 | x'6869
-  3 | hi
-  4 | hi
-(4 rows)
-~~~
+    ~~~
+      a |   b
+    ----+---------
+      1 | X'6869
+      2 | x'6869
+      3 | hi
+      4 | hi
+    (4 rows)
+    ~~~
 
 ## See also
 

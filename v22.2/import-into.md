@@ -41,8 +41,13 @@ Before using `IMPORT INTO`, you should have:
 
 - Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
 
-    - Literals (booleans, strings, integers, decimals, dates)
+    - Literals (booleans, strings, integers, decimals, dates).
     - Functions where each argument is a constant expression and the functions themselves depend solely on their arguments (e.g., arithmetic operations, boolean logical operations, string operations).
+
+- `random()`
+- `gen_random_uuid()`
+- `unique_rowid()`
+- `nextval()`
 
 - Current [`TIMESTAMP`](timestamp.html) functions that record the transaction timestamp, which include:
 
@@ -53,11 +58,6 @@ Before using `IMPORT INTO`, you should have:
     - `statement_timestamp()`
     - `timeofday()`
     - `transaction_timestamp()`
-
-- `random()`
-- `gen_random_uuid()`
-- `unique_rowid()`
-- `nextval()`
 
 ### Available storage
 
