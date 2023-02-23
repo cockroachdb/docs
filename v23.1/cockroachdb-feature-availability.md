@@ -113,16 +113,6 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
-## Functions and Operators
-
-The table below lists the SQL functions and operators that are available in preview in CockroachDB. For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
-
-| Function                                                                         | Description                                     |
-|----------------------------------------------------------------------------------+-------------------------------------------------|
-| [`experimental_strftime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strftime` notation. |
-| [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
-| [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
-
 ## Alter column types
 
 CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-table.html#alter-column-data-types).
