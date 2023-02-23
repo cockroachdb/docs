@@ -121,7 +121,7 @@
           "title": "Customer-Owned Backups",
           "items": [
             {
-              "title": "Take and Restore Customer-Owned Backups",
+              "title": "Take and Restore Customer-Owned Backups on CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/take-and-restore-customer-owned-backups.html"
               ]

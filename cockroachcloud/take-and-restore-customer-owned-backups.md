@@ -1,5 +1,5 @@
 ---
-title: Take and Restore Customer-Owned Backups 
+title: Take and Restore Customer-Owned Backups on CockroachDB Cloud
 summary: Run backups and restores from your CockroachDB Cloud cluster.
 toc: true
 docs_area: manage
