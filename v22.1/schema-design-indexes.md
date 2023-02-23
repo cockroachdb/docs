@@ -283,8 +283,8 @@ It's likely that you will need to update your database schema at some point. For
 
 - [Change and Remove Objects in a Database Schema](schema-design-update.html)
 - [Online Schema Changes](online-schema-changes.html)
-- [Insert Data](schema-design-indexes.html)
-- [Query Data](online-schema-changes.html)
+- [Insert Data](insert-data.html)
+- [Query Data](query-data.html)
 
 You might also be interested in the following pages:
 

@@ -55,13 +55,13 @@ Parameter | Description
 
 Storage or sink      | Operation support               
 ---------------------+---------------------------------
-[Amazon S3](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
-[Azure Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
-[Google Cloud Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Azure Storage](use-cloud-storage.html) | Backups, restores, imports, exports
+[Google Cloud Storage](use-cloud-storage.html) | Backups, restores, imports, exports
 [Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format) | Encrypted backups
 [Kafka](changefeed-sinks.html#kafka) | Changefeeds
-[Nodelocal](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Nodelocal](use-cloud-storage.html) | Backups, restores, imports, exports
 [Userfile](use-userfile-for-bulk-operations.html) | Backups, restores, imports, exports
 
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.

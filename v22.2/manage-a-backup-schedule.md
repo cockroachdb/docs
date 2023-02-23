@@ -33,7 +33,7 @@ In this example, a schedule labeled `schedule_label` is created to take daily (i
 For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
 
 {{site.data.alerts.callout_info}}
-Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage](use-cloud-storage.html).
 {{site.data.alerts.end}}
 
 ## Set up monitoring for the backup schedule

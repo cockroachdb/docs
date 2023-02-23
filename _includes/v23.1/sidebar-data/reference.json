@@ -331,6 +331,12 @@
                 ]
               },
               {
+                "title": "<code>CREATE SCHEDULE FOR CHANGEFEED</code>",
+                "urls": [
+                  "/${VERSION}/create-schedule-for-changefeed.html"
+                ]
+              },
+              {
                 "title": "<code>CREATE SCHEMA</code>",
                 "urls": [
                   "/${VERSION}/create-schema.html"
@@ -1426,6 +1432,12 @@
                 "urls": [
                   "/${VERSION}/cockroach-debug-merge-logs.html"
                 ]
+              },
+              {
+               "title": "<code>cockroach debug tsdump</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-debug-tsdump.html"
+               ]
               },
               {
                 "title": "<code>cockroach debug zip</code>",

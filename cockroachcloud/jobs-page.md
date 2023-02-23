@@ -10,7 +10,7 @@ docs_area: manage
 
 The **Jobs** page of the {{ site.data.products.db }} Console provides details of all jobs in the cluster.
 
-To view this page, click **Jobs** in the left-hand navigation of the {{ site.data.products.db }} Console.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Jobs** in the **Monitoring** section of the left side navigation.
 
 {% include common/ui/jobs-page.md %}
 

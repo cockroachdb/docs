@@ -1428,6 +1428,12 @@
                 ]
               },
               {
+               "title": "<code>cockroach debug tsdump</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-debug-tsdump.html"
+               ]
+              },
+              {
                 "title": "<code>cockroach debug zip</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-zip.html"

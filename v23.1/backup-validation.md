@@ -131,4 +131,4 @@ Similarly, to just `schema_only` restores, you'll find the table schemas restore
 - [`RESTORE`](restore.html)
 - [`BACKUP`](backup.html)
 - [`SHOW BACKUP`](show-backup.html)
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)

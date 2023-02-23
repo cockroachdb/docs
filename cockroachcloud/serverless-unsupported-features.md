@@ -33,10 +33,6 @@ Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} 
 
 The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/alter-table.html#split-at) and [`ALTER RANGE ... RELOCATE`](../{{site.current_cloud_version}}/alter-range.html#relocate) statements are not supported in {{ site.data.products.serverless }}.
 
-## Query cancellation using pgwire
-
-[Canceling queries from client drivers/ORMs using the PostgreSQL wire protocol (pgwire)](../{{site.current_cloud_version}}/cancel-query.html#considerations) is not supported in {{ site.data.products.serverless }}.
-
 ## Self service upgrades
 
 {{ site.data.products.serverless }} is a fully managed multi-tenant deployment of CockroachDB. Major and minor upgrades of CockroachDB are handled by Cockroach Labs, and [can't be initiated by users](serverless-faqs.html#can-i-upgrade-the-version-of-cockroachdb-my-cockroachdb-serverless-cluster-is-running-on).

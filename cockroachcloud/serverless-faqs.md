@@ -155,7 +155,7 @@ There are some features of CockroachDB that are unsupported or partially support
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, you can [IMPORT](../{{site.versions["stable"]}}/import.html#import-data-into-your-cockroachdb-cloud-cluster) and [EXPORT](../{{site.versions["stable"]}}/export.html#export-data-out-of-cockroachdb-cloud) on {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html) or set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) location for bulk operations.
+Yes, you can [IMPORT](../{{site.versions["stable"]}}/import.html#import-data-into-your-cockroachdb-cloud-cluster) and [EXPORT](../{{site.versions["stable"]}}/export.html#export-data-out-of-cockroachdb-cloud) on {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider](../{{site.current_cloud_version}}/use-cloud-storage.html) or set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) location for bulk operations.
 
 We don't recommend [`userfile`](../{{site.current_cloud_version}}//use-userfile-for-bulk-operations.html) for [`EXPORT`](../{{site.current_cloud_version}}/export.html) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
 

@@ -44,6 +44,6 @@ DROP EXTERNAL CONNECTION backup_storage;
 
 ## See also
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Changefeed Sinks](changefeed-sinks.html)
 

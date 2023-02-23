@@ -22,7 +22,7 @@ By default, a new SQL user created using a [Console Admin](console-access-manage
 
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to create a new user:
 
-1. Navigate to your cluster's **SQL Users** page.
+1. Navigate to your cluster's **SQL Users** page in the **Security** section of the left side navigation.
 1. Click the **Add User** button in the top right corner.
 
     The **Create SQL user** modal displays.

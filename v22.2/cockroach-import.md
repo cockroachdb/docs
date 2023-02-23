@@ -48,7 +48,7 @@ $ cockroach import --help
 `--insecure`     | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 `--ignore-unsupported-statements` |  Ignore statements that are unsupported during an import from a PGDUMP file. <br/>**Default:** `false`
-`--log-ignored-statements` |  Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
+`--log-ignored-statements` |  Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile-for-bulk-operations.html).
 `--row-limit=` |  The number of rows to import for each table during a PGDUMP or MYSQLDUMP import. <br/> This can be used to check schema and data correctness without running the entire import. <br/>**Default:** `0`
 
 ## Examples

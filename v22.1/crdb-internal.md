@@ -265,6 +265,32 @@ SELECT * FROM crdb_internal.cluster_contention_events;
 (9 rows)
 ~~~
 
+#### View the tables/indexes with the most time under contention
+
+To view the [tables](create-table.html) and [indexes](indexes.html) with the most cumulative time under [contention](performance-best-practices-overview.html#transaction-contention) since the last server restart, run the query below.
+
+{{site.data.alerts.callout_info}}
+The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html) to always capture contention events.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_contention_events AS events, cumulative_contention_time AS time FROM crdb_internal.cluster_contention_events) SELECT i.descriptor_name, i.index_name, c.events, c.time FROM crdb_internal.table_indexes AS i JOIN c ON i.descriptor_id = c.table_id AND i.index_id = c.index_id ORDER BY c.time DESC LIMIT 10;
+~~~
+
+~~~
+  descriptor_name |   index_name   | events |      time
+------------------+----------------+--------+------------------
+  warehouse       | warehouse_pkey |      7 | 00:00:01.046293
+  district        | district_pkey  |      1 | 00:00:00.191346
+  stock           | stock_pkey     |      1 | 00:00:00.158207
+  order           | order_pkey     |      1 | 00:00:00.155404
+  new_order       | new_order_pkey |      1 | 00:00:00.100949
+(5 rows)
+~~~
+
+(The output above is for a [local cluster](start-a-local-cluster.html) running the [TPC-C workload](cockroach-workload.html#tpcc-workload) at a `--concurrency` of 256.)
+
 ### `cluster_locks`
 
 The `crdb_internal.cluster_locks` schema contains information about [locks](architecture/transaction-layer.html#concurrency-control) held by [transactions](transactions.html) on specific [keys](architecture/overview.html#architecture-range). Queries acquire locks on keys within transactions, or they wait until they can acquire locks until other transactions have released locks on those keys.

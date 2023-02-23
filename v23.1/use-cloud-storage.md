@@ -1,7 +1,8 @@
 ---
-title: Use Cloud Storage for Bulk Operations
-summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
+title: Use Cloud Storage
+summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to various operation statements.
 toc: true
+key: use-cloud-storage-for-bulk-operations.html
 docs_area: manage
 ---
 
@@ -45,7 +46,7 @@ The location parameters often contain special characters that need to be URI-enc
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-You can disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
+You can disable the use of implicit credentials when accessing external cloud storage services for various operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>
@@ -99,9 +100,9 @@ CockroachDB also provides client-side encryption of backup data, for more inform
 
 ## Storage permissions
 
-This section describes the minimum permissions required to run CockroachDB bulk operations. While we provide the required permissions for Amazon S3 and Google Cloud Storage, the provider's documentation provides detail on the setup process and different options regarding access management.
+This section describes the minimum permissions required to run CockroachDB operations. While we provide the required permissions for Amazon S3 and Google Cloud Storage, the provider's documentation provides detail on the setup process and different options regarding access management.
 
-Depending on the actions a bulk operation performs, it will require different access permissions to a cloud storage bucket.
+Depending on the actions an operation performs, it will require different access permissions to a cloud storage bucket.
 
 This table outlines the actions that each operation performs against the storage bucket:
 
@@ -228,7 +229,7 @@ For guidance on adding a user to a bucket's policy, see [Add a principal to a bu
 
 ### Object locking
 
-Delete and overwrite permissions are **not** required. To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
 
 {{site.data.alerts.callout_info}}
 We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
