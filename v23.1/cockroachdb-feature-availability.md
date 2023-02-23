@@ -1,12 +1,27 @@
 ---
-title: Features in Preview
-summary: Learn about the features available in preview in CockroachDB
+title: CockroachDB Feature Availability
+summary: Learn about the features available in preview and limited access in CockroachDB
 toc: true
 docs_area: reference.sql
 key: experimental-features.html
 ---
 
-This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+CockroachDB features go through a development lifecycle and some are publicly available at different phases than others. This page defines the different levels of CockroachDB {{ page.version.version }} feature availability, and lists the features in each phase.
+
+## Feature availability phases
+
+Phase                                         | Definition | Accessibility 
+----------------------------------------------+------------+-------------
+Private preview                               | Feature is not production ready and will not be publicly documented. | Invite-only
+[Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Feature is opt-in. To enroll your organization, contact your Cockroach Labs account team.
+[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitation and/or capabilities may change or be added based on feedback. | Public
+General availability (GA)                     | Feature is production-ready, publicly available, and has reached full development maturity. | Public
+
+## Features in limited access
+
+
+
+## Features in preview
 
 ## Session variables
 
@@ -21,7 +36,7 @@ The table below lists the session settings that are available in preview. For a 
 
 ### Keep SQL audit logs
 
-Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -69,7 +84,7 @@ Example:
 
 ### Check for constraint violations with `SCRUB`
 
-Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html) constraints, and more. Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
+Checks the consistency of [`UNIQUE`](unique.html) indexes, [`CHECK`](check.html) constraints, and more.  Partially implemented; see [cockroachdb/cockroach#10425](https://github.com/cockroachdb/cockroach/issues/10425) for details.
 
 {{site.data.alerts.callout_info}}
 This example uses the `users` table from our open-source, fictional peer-to-peer vehicle-sharing application, [MovR](movr.html).
@@ -100,7 +115,7 @@ The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows informat
 
 ## Functions and Operators
 
-The table below lists the SQL functions and operators available in preview in CockroachDB. For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
+The table below lists the SQL functions and operators that are available in preview in CockroachDB. For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
 
 | Function                                                                         | Description                                     |
 |----------------------------------------------------------------------------------+-------------------------------------------------|
@@ -110,7 +125,7 @@ The table below lists the SQL functions and operators available in preview in Co
 
 ## Alter column types
 
- CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-column.html#altering-column-data-types).
+CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-table.html#alter-column-data-types).
 
 ## Temporary objects
 
@@ -118,23 +133,24 @@ The table below lists the SQL functions and operators available in preview in Co
 
 ## Password authentication without TLS
 
-   For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` (in preview) for [`cockroach start`](cockroach-start.html#security).
+For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` (in preview) for [`cockroach start`](cockroach-start.html#security).
 
-  With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
-  Example:
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach sql --user=jpointsman --insecure
-  ~~~
+Example:
 
-  ~~~
-    # Welcome to the CockroachDB SQL shell.
-    # All statements must be terminated by a semicolon.
-    # To exit, type: \q.
-    #
-    Enter password:
-  ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --user=jpointsman --insecure
+~~~
+
+~~~
+  # Welcome to the CockroachDB SQL shell.
+  # All statements must be terminated by a semicolon.
+  # To exit, type: \q.
+  #
+  Enter password:
+~~~
 
 ## Changefeed metrics labels
 
@@ -146,6 +162,6 @@ For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-cha
 
 - [`SHOW {session variable}`](show-vars.html)
 - [Functions and Operators](functions-and-operators.html)
-- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
+- [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
 - [`SHOW RANGE ... FOR ROW`](show-range-for-row.html)

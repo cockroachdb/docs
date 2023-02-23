@@ -1259,9 +1259,9 @@
             ]
           },
           {
-            "title": "Features in Preview",
+            "title": "CockroachDB Feature Availability",
             "urls": [
-              "/${VERSION}/features-in-preview.html"
+              "/${VERSION}/cockroachdb-feature-availability.html"
             ]
           }
         ]

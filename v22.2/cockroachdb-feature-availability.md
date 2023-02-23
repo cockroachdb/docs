@@ -1,12 +1,27 @@
 ---
-title: Features in Preview
-summary: Learn about the features available in preview in CockroachDB
+title: CockroachDB Feature Availability
+summary: Learn about the features available in preview and limited access in CockroachDB
 toc: true
 docs_area: reference.sql
 key: experimental-features.html
 ---
 
-This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+CockroachDB features go through a development lifecycle and some are publicly available at different phases than others. This page defines the different levels of CockroachDB {{ page.version.version }} feature availability, and lists the features in each phase.
+
+## Feature availability phases
+
+Phase                                         | Definition | Accessibility 
+----------------------------------------------+------------+-------------
+Private preview                               | Feature is not production ready and will not be publicly documented. | Invite-only
+[Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Feature is opt-in. To enroll your organization, contact your Cockroach Labs account team.
+[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitation and/or capabilities may change or be added based on feedback. | Public
+General availability (GA)                     | Feature is production-ready, publicly available, and has reached full development maturity. | Public
+
+## Features in limited access
+
+
+
+## Features in preview
 
 ## Session variables
 
