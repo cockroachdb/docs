@@ -17,10 +17,6 @@ Private preview                               | Feature is not production ready 
 [Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitation and/or capabilities may change or be added based on feedback. | Public
 General availability (GA)                     | Feature is production-ready, publicly available, and has reached full development maturity. | Public
 
-## Features in limited access
-
-
-
 ## Features in preview
 
 This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
