@@ -6,6 +6,10 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_danger}}
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`](import-into.html) or [`COPY FROM`](copy-from.html). For more details, see [Move your data to CockroachDB](migration-overview.html#step-2-move-your-data-to-cockroachdb).
+{{site.data.alerts.end}}
+
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:
 
 - [PostgreSQL dump files][postgres]
