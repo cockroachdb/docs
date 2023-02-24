@@ -48,7 +48,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+- Using [Userfile](use-userfile.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -237,7 +237,7 @@ To associate your export objects with a [specific storage class](use-cloud-stora
 
 ### Export data out of {{ site.data.products.db }}
 
-Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
+Using `EXPORT` with [`userfile`](use-userfile.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="local">local CSV</button>

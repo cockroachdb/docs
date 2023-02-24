@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach userfile get` [command](cockroach-commands.html) fetches the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
+ The `cockroach userfile get` [command](cockroach-commands.html) fetches the files stored in the [user-scoped file storage](use-userfile.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
 
 ## Required privileges
 
@@ -84,5 +84,5 @@ $ cockroach userfile get '*.csv' --certs-dir=certs
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
 - [`cockroach userfile list`](cockroach-userfile-list.html)
-- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
+- [Use `userfile`](use-userfile.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)

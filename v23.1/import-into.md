@@ -94,7 +94,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [`userfile`](use-userfile-for-bulk-operations.html) storage.
+- Using [`userfile`](use-userfile.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 

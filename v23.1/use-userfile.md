@@ -1,11 +1,12 @@
 ---
-title: Use Userfile for Bulk Operations
+title: Use Userfile
 summary: The IMPORT statement imports various types of data into CockroachDB with user-scoped storage.
 toc: true
+key: use-userfile-for-bulk-operations.html
 docs_area: manage
 ---
 
- To put files on your CockroachDB cluster without external servers, use `userfile`, a per-user bulk file storage. To interact with `userfile`, use the following [commands](cockroach-commands.html):
+ To put files on your CockroachDB cluster without external servers, use `userfile`, a per-user file storage. To interact with `userfile`, use the following [commands](cockroach-commands.html):
 
 - [`cockroach userfile upload`](#upload-a-file)
 - [`cockroach userfile list`](#list-files)

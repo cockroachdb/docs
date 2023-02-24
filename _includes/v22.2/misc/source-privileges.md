@@ -1,7 +1,7 @@
 The source file URL does _not_ require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
 
 - S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
-- [Userfile](use-userfile-for-bulk-operations.html)
+- [Userfile](use-userfile.html)
 
 The source file URL _does_ require the [`admin` role](security-reference/authorization.html#admin-role) in the following scenarios:
 

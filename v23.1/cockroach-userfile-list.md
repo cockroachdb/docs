@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach userfile list` [command](cockroach-commands.html) lists the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be listed.
+ The `cockroach userfile list` [command](cockroach-commands.html) lists the files stored in the [user-scoped file storage](use-userfile.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be listed.
 
 ## Required privileges
 
@@ -102,7 +102,7 @@ cockroach userfile list userfile://testdb.public.uploads
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
 - [`cockroach userfile get`](cockroach-userfile-get.html)
-- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
+- [Use `userfile`](use-userfile.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
