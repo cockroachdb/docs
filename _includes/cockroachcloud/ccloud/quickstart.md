@@ -1,4 +1,4 @@
-The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 resource limit, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

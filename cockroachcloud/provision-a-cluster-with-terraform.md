@@ -28,7 +28,7 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-In this tutorial, you will create a {{ site.data.products.serverless }} cluster with a spend limit of $0.
+In this tutorial, you will create a {{ site.data.products.serverless }} cluster with a resource limit of $0.
 
 1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.serverless }} `main.tf` example file:
 

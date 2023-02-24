@@ -143,7 +143,7 @@ Avoid violent or harmful terms.
 
 - Replace "_kill_" with **terminate**
 - Replace "_hit_ Enter" with **press Enter**.
-- Replace "_hit_ your spend limit" with **reach your spend limit**
+- Replace "_hit_ your resource limit" with **reach your resource limit**
 - Replace "_hit_ an error" with **experience an error**.
 - Replace "performance _hit_" with **reduced performance**.
 - Replace "want to _hit_ up" with **want to visit**.

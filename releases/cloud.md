@@ -235,7 +235,7 @@ Get future release notes emailed to you:
 - Fixed a bug where regenerating a SQL user password would fail with a duplicate user warning.
 - Deleted clusters will no longer be visible after they've been deleted. Previously, a full page refresh was needed to update the **Clusters** page.
 - Fixed a bug that caused charges on the **Cluster overview** page to show an error state for users with the Developer role. Cluster charges are now hidden for Developers and only available to users with the Admin role.
-- Fixed a bug where adding decimals to a {{ site.data.products.serverless }} cluster's spend limit would cause an error, but the spend limit could still be set.
+- Fixed a bug where adding decimals to a {{ site.data.products.serverless }} cluster's resource limit would cause an error, but the resource limit could still be set.
 - Fixed a bug where opening or closing the list of nodes on a multi-node {{ site.data.products.dedicated }} cluster's **Cluster overview** page would result in a duplicated row of nodes.
 - Fixed a bug for credit card users where the credit card form was occasionally loading as a blank box. Now, the credit card form will always load properly without needing to refresh the page.
 

@@ -32,11 +32,12 @@ If you want to create a cluster in an unavailable region, please [contact Suppor
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 {{site.data.alerts.end}}
 
-## Step 3. Enter a spend limit
+## Step 3. Enter a resource limit
 
-Every cluster starts with 10M RUs of free [burst capacity](architecture.html#cockroachdb-cloud-terms) each month and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage resource limit, your cluster will be throttled and you will only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
-If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
+All {{ site.data.products.db }} organizations get 100M RUs and 5 GB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set a paid resource limit to maintain a high level of performance with larger workloads.
+
 
 {% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
 
@@ -57,13 +58,13 @@ Your cluster will be created in a few seconds.
 
 <section class="filter-content" markdown="1" data-scope="paid">
 
-1. Enter your **Spend limit**.
+1. Enter your **Resource limit**.
 
     This is the maximum amount you could be charged per month. You will be charged only for what you use.
 
 1. Click **Next: Payment info**.
 
-1. Verify your cluster configuration and spend limit.
+1. Verify your cluster configuration and resource limit.
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
