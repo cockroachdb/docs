@@ -61,7 +61,7 @@ CockroachDB docs should be helpful, humble, positive, and friendly. To achieve t
 
 Other general guidance about language and tone:
 
-- For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as "[imperative mood](https://en.wikipedia.org/wiki/Imperative_mood)." These docs should be straightforward and conventional.
+- For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as the "[imperative mood](https://www.grammar-monster.com/glossary/imperative_mood.htm)." These docs should be straightforward and conventional.
 
     **Example:** In a new terminal, as the `root` user, use the `cockroach user` command to create a new user, `maxroach`.
 
