@@ -33,7 +33,7 @@ This page lists the features that are available in preview in CockroachDB {{ pag
 
 ### Export metrics from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.md) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Functions and Operators
 
@@ -47,11 +47,11 @@ Function                                                                        
 
 ### Export metrics from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.md) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Keep SQL audit logs
 
-Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](alter-table.html#experimental_audit).
+Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -130,7 +130,7 @@ The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows informat
 
 ## Alter column types
 
-CockroachDB supports [altering the column types](alter-table.html#alter-column-data-types) of existing tables, with certain limitations. To enable altering column types, set the `enable_experimental_alter_column_type_general` [session variable](show-vars.html) to `true`.
+CockroachDB supports [altering the column types](alter-column#altering-column-data-types) of existing tables, with certain limitations. To enable altering column types, set the `enable_experimental_alter_column_type_general` [session variable](show-vars.html) to `true`.
 
 ## Temporary objects
 

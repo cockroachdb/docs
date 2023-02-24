@@ -41,7 +41,7 @@ Limiting access to a CockroachDB cluster's nodes over the public internet is an 
 
 ### Export Cloud Organization audit logs (cloud API)
 
-{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can [export these audit logs](../cockroachcloud/cloud-org-audit-logs.html) using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).
+{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can [export these audit logs](../cockroachcloud/cloud-org-audit-logs.html) using the [`auditlogevents` endpoint](../cockroachcloud/cloud-api.html#cloud-audit-logs) of the [Cloud API](../cockroachcloud/cloud-api.html).
 
 ## Features in preview
 
@@ -179,7 +179,7 @@ Use a [webhook sink](changefeed-sinks.html#webhook-sink) to deliver changefeed m
 
 ## Change data capture transformations
 
-[Change data capture transformations](cdc-transformations.html) allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
+[Change data capture transformations](cdc-transformations.html) allow you to define the change data emitted to your sink when you create a changefeed. The expression syntax provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
 
 ## See Also
 
