@@ -1257,12 +1257,6 @@
                 ]
               }
             ]
-          },
-          {
-            "title": "CockroachDB Feature Availability",
-            "urls": [
-              "/${VERSION}/cockroachdb-feature-availability.html"
-            ]
           }
         ]
       },
@@ -1747,6 +1741,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "CockroachDB Feature Availability",
+        "urls": [
+          "/${VERSION}/cockroachdb-feature-availability.html"
         ]
       },
       {
