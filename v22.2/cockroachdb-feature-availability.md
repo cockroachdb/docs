@@ -6,16 +6,16 @@ docs_area: reference.sql
 key: experimental-features.html
 ---
 
-CockroachDB features go through a development lifecycle and some are publicly available at different phases than others. This page defines the different levels of CockroachDB {{ page.version.version }} feature availability, and lists the features in each phase.
+Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
 ## Feature availability phases
 
 Phase                                         | Definition | Accessibility 
 ----------------------------------------------+------------+-------------
-Private preview                               | Feature is not production ready and will not be publicly documented. | Invite-only
+Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
 [Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Feature is opt-in. To enroll your organization, contact your Cockroach Labs account team.
-[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitation and/or capabilities may change or be added based on feedback. | Public
-General availability (GA)                     | Feature is production-ready, publicly available, and has reached full development maturity. | Public
+[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitations and/or capabilities may change or be added based on feedback. | Public
+General availability (GA)                     | Feature is production-ready and publicly available. | Public
 
 ## Features in limited access
 
@@ -25,7 +25,7 @@ General availability (GA)                     | Feature is production-ready, pub
 
 ### Export logs from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
+{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
 ### Customer-Managed Encryption Keys (CMEK) on {{ site.data.products.dedicated }}
 
@@ -37,7 +37,7 @@ General availability (GA)                     | Feature is production-ready, pub
 
 ### Private {{ site.data.products.dedicated }} clusters
 
-Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. [{{ site.data.products.dedicated }} private clusters](../cockroachcloud/private-clusters.html) allow organizations to meet this objective. A private {{ site.data.products.dedicated }} cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster
+Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. [{{ site.data.products.dedicated }} private clusters](../cockroachcloud/private-clusters.html) allow organizations to meet this objective. A private {{ site.data.products.dedicated }} cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
 ### Export Cloud Organization audit logs (cloud API)
 
@@ -144,7 +144,7 @@ To enable temporary objects, set the `experimental_enable_temp_tables` [session 
 
 ### Password authentication without TLS
 
-For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` (in preview) for [`cockroach start`](cockroach-start.html#security).
+For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
 
 With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 

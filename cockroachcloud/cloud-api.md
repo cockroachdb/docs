@@ -395,7 +395,7 @@ If the `DELETE` request was successful the client will not receive a response pa
 ## Export Cloud Organization audit logs
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
+{% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
 To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).

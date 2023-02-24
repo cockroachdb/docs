@@ -6,7 +6,7 @@ docs_area: manage.security
 ---
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
+{% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
 Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. {{ site.data.products.dedicated }} private clusters allow organizations to meet this objective.

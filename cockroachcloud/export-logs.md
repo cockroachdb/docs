@@ -12,7 +12,7 @@ The {{ site.data.products.dedicated }} log export feature is only available on c
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/limited-access.md %}
+{% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
 ## The `logexport` endpoint
