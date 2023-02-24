@@ -172,6 +172,10 @@ If the connection is mutually TLS-authenticated (i.e., if the client authenticat
 
 ### `--accept-sql-without-tls` mode
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 CockroachDB clusters can be started with this option in order to allow clients to opt out of TLS server authentication.
 
 Client connections can be made with `sslmode=on`, in which case TLS authentication proceeds as in default mode.
