@@ -206,7 +206,7 @@
         {
           "title": "Local File Server",
           "urls": [
-            "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
+            "/${VERSION}/use-a-local-file-server.html"
           ]
         }
       ]

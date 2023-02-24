@@ -37,7 +37,7 @@ Each node in the CockroachDB cluster needs to have access to the files being imp
 
 - [Use Cloud Storage](use-cloud-storage.html)
 - [Use Userfile](use-userfile.html)
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.

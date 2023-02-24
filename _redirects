@@ -391,6 +391,10 @@ layout: null
 /docs/stable/use-userfile-for-bulk-operations.html /docs/stable/use-userfile.html 301
 /docs/dev/use-userfile-for-bulk-operations.html /docs/dev/use-userfile.html 301
 /docs/v23.1/use-userfile-for-bulk-operations.html /docs/v23.1/use-userfile.html 301
+/docs/v22.2/use-a-local-file-server-for-bulk-operations.html /docs/v22.2/use-a-local-file-server.html 301
+/docs/stable/use-a-local-file-server-for-bulk-operations.html /docs/stable/use-a-local-file-server.html 301
+/docs/dev/use-a-local-file-server-for-bulk-operations.html /docs/dev/use-a-local-file-server.html 301
+/docs/v23.1/use-a-local-file-server-for-bulk-operations.html /docs/v23.1/use-a-local-file-server.html 301
 
 # Removed pages
 /docs/dev/add-column.html /docs/dev/alter-table.html#add-column 301

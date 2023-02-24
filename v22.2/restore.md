@@ -127,7 +127,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
     HTTP storage is not supported for `BACKUP` and `RESTORE`.
     {{site.data.alerts.end}}
 
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 

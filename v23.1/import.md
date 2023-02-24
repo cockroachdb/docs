@@ -52,7 +52,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 - Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
-- Using [HTTP](use-a-local-file-server-for-bulk-operations.html) or HTTPS.
+- Using [HTTP](use-a-local-file-server.html) or HTTPS.
 
 No special privilege is required for: 
 
@@ -144,7 +144,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 
 - [Use Cloud Storage](use-cloud-storage.html)
 - [Use `userfile`](use-userfile.html)
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 

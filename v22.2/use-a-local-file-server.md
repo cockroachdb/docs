@@ -1,7 +1,8 @@
 ---
-title: Use a Local File Server for Bulk Operations
-summary: Learn how to create a simple file server for use with bulk operations within CockroachDB
+title: Use a Local File Server
+summary: Learn how to create a simple file server for use with operations within CockroachDB
 toc: true
+key: use-a-local-file-server-for-bulk-operations.html
 docs_area: manage
 ---
 
