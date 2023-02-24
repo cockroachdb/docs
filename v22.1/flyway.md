@@ -164,7 +164,7 @@ When used with most databases, [Flyway wraps the statements in a migration withi
 
 ### Transaction retries
 
-When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
+When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a [`40001 SQLSTATE` (i.e., a serialization failure)](common-errors.html#restart-transaction), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
 
 ### Transactional schema changes
 

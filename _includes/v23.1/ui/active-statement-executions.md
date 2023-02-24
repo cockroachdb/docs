@@ -9,7 +9,7 @@ Statement Execution ID | The execution ID of the statement execution.
 Statement Execution | The SQL statement that was executed.
 Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 Start Time (UTC) | The timestamp when the execution started.
-Time Spent Waiting | The time the execution spent waiting and experiencing lock contention.
+Time Spent Waiting | The time the execution spent waiting and experiencing [lock contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 
 To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the [**Statement Execution** details page](#statement-execution-details-page).
@@ -28,7 +28,7 @@ The statement execution details page provides the following details on the state
 - **Session ID**: Link to the [session](ui-sessions-page.html) in which the transaction is running.
 - **Transaction Execution ID**: Link to the ID of the [transaction](ui-transactions-page.html#active-executions-table) in which the statement is executing.
 
-If a statement execution is waiting, the statement execution details are followed by Contention Insights and details of the statement execution on which the blocked statement execution is waiting.
+If a statement execution is waiting, the statement execution details are followed by Contention Insights and details of the statement execution on which the blocked statement execution is waiting. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
 <img src="{{ 'images/v23.1/waiting-statement.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 
