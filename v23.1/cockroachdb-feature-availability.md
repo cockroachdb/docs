@@ -128,17 +128,17 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
-## Alter column types
+### Alter column types
 
 CockroachDB supports [altering the column types](alter-table.html#alter-column-data-types) of existing tables, with certain limitations. To enable altering column types, set the `enable_experimental_alter_column_type_general` [session variable](show-vars.html) to `true`.
 
-## Temporary objects
+### Temporary objects
 
 [Temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
 To enable temporary objects, set the `experimental_enable_temp_tables` [session variable](show-vars.html) to `on`. 
 
-## Password authentication without TLS
+### Password authentication without TLS
 
 For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
 
@@ -163,21 +163,21 @@ $ cockroach sql --user=jpointsman --insecure
 
 The [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
 
-## Changefeed metrics labels
+### Changefeed metrics labels
 
 {% include {{ page.version.version }}/cdc/metrics-labels.md %}
 
 For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page.
 
-## Google Pub/Sub sink for changefeeds
+### Google Pub/Sub sink for changefeeds
 
 Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink](changefeed-sinks.html#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
 
-## Webhook sink for changefeeds
+### Webhook sink for changefeeds
 
 Use a [webhook sink](changefeed-sinks.html#webhook-sink) to deliver changefeed messages to an arbitrary HTTP endpoint.
 
-## Change data capture transformations
+### Change data capture transformations
 
 [Change data capture transformations](cdc-transformations.html) allow you to define the change data emitted to your sink when you create a changefeed. The expression syntax provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
 
