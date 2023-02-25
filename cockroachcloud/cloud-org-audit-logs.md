@@ -3,6 +3,7 @@ title: Export CockroachDB Cloud organization audit logs
 summary: Learn about exporting CockroachDB Cloud organization audit logs.
 toc: true
 docs_area: manage
+cloud: true
 ---
 
 {{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).

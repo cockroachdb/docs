@@ -4,6 +4,7 @@ summary: Learn how to configure Egress Perimeter Controls for enhanced network s
 toc: true
 toc_not_nested: true
 docs_area: security
+cloud: true
 ---
 
 {{site.data.alerts.callout_info}}

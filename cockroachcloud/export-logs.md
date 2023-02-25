@@ -3,6 +3,7 @@ title: Export Logs From a CockroachDB Dedicated Cluster
 summary: Export Logs From a CockroachDB Dedicated Cluster
 toc: true
 docs_area: manage
+cloud: true
 ---
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.

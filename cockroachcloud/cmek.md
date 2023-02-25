@@ -3,6 +3,7 @@ title: Customer-Managed Encryption Keys (CMEK)
 summary: Use cryptographic keys that you manage to protect data at rest in a {{ site.data.products.dedicated }} cluster.
 toc: true
 docs_area: manage.security
+cloud: true
 ---
 
 Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. This key is called the _CMEK key_.
