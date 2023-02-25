@@ -1,4 +1,4 @@
-{% if page.cloud == true %}
+{% if page.cloud == true or page.security == true %}
   {% capture link_prefix %}../{{site.versions["stable"]}}/{% endcapture %}
 {% else %}
   {% assign link_prefix = "" %}

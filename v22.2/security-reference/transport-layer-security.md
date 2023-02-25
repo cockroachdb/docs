@@ -3,6 +3,7 @@ title: Transport Layer Security (TLS) and Public Key Infrastructure (PKI)
 summary: Overview of PKI and TLS and how to implement them with CockroachDB
 toc: true
 docs_area: reference.security
+security: true
 ---
 
 This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructure (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
