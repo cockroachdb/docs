@@ -8,7 +8,7 @@ docs_area: reference.sql
 The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
+**This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

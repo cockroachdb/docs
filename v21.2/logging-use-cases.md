@@ -229,7 +229,7 @@ Enabling these logs can negatively impact performance. We recommend using `SENSI
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
+**This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
 To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
