@@ -61,7 +61,7 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 ### Schedule options
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
+**This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
  Option                     | Value                                   | Description

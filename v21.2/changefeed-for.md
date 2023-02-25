@@ -14,7 +14,7 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 For more information, see [Stream Data Out of CockroachDB Using Changefeeds](change-data-capture-overview.html).
 
 {{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
+**This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
 ## Required privileges
