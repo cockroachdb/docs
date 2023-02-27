@@ -11,7 +11,7 @@ This page shows you how to get started with CockroachDB quickly. You'll use `ccl
 ## Install <code>ccloud</code>
 
 {{site.data.alerts.callout_info}}
-The <code>ccloud</code> CLI tool is in Preview.
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 {% assign ccloud_version = "0.3.7" %}
@@ -62,9 +62,13 @@ The `ccloud quickstart` command guides you through logging in to CockroachDB Clo
     ccloud quickstart
     ~~~
 
-1. Log in to {{ site.data.products.db }} using the browser window opened by `ccloud quickstart`. If you are new to {{ site.data.products.db }}, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+1. Log in to {{ site.data.products.db }} using the browser window opened by `ccloud quickstart`. 
 
-1. In your terminal, follow the `ccloud quickstart` prompts to choose a cluster name, cloud provider, and cloud provider region, and then connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+    If you are new to {{ site.data.products.db }}, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+1. In your terminal, follow the `ccloud quickstart` prompts to choose a cluster name, cloud provider, and cloud provider region, and then connect to the cluster. 
+
+    Each prompt has default values that you can select, or change if you want a different option.
 
 1. From the list of available connection options, select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`:
 
