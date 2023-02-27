@@ -25,9 +25,9 @@ CMEK can be enabled only on a private cluster. Contact your account team for adv
 
 {{ site.data.products.dedicated }} does not force encryption of previously-written data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt newly-written data, while previously-written data remains unencrypted unless it’s rewritten.
 
-## Can we enable CMEK when we add a new region to a cluster?
+## Can we enable CMEK for a new region when it's added to a CMEK-enabled cluster?
 
-Yes, when you add a new CMEK-enabled region to a cluster, you must also enable CMEK on its existing regions if it is not already enabled. Refer to [Activate CMEK for your {{ site.data.products.dedicated }} Cluster](/docs/cockroachcloud/managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster) and [Add a Region to a CMEK-enabled Cluster](/docs/cockroachcloud/managing-cmek.html#add-a-region-to-a-cmek-enabled-cluster).
+Yes, when you add a new region to a CMEK-enabled cluster, you can enable CMEK for that region. Refer to [Add a Region to a CMEK-enabled Cluster](/docs/cockroachcloud/managing-cmek.html#add-a-region-to-a-cmek-enabled-cluster).
 
 ## Is the data encryption key rotated at some set duration or periodically? If yes, is there a way to customize the duration?
 
