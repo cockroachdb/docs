@@ -27,10 +27,10 @@ A logical identification of how nodes and data are clustered around [geographica
 ### Availability zone
 A part of a data center that is considered to form a unit with regards to failures and fault tolerance. There can be multiple nodes in a single availability zone, however Cockroach Labs recommends that you to place different replicas of your data in different availability zones.
 
-### [{{ site.data.products.serverless }}](../../cockroachcloud/quickstart.html)
+### {{ site.data.products.serverless }}
 A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded. Billed and scaled according to the resources _consumed_.
 
-### [{{ site.data.products.dedicated }}](../../cockroachcloud/quickstart-trial-cluster.html)
+### {{ site.data.products.dedicated }}
 A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP), billed according to the resources _provisioned for_ the cluster. This service tier offers [advanced security features](../security-reference/security-overview.html).
 
 ### [CockroachDB Self-Hosted](../start-a-local-cluster.html)
