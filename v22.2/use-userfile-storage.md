@@ -1,6 +1,6 @@
 ---
 title: Use Userfile Storage
-summary: The IMPORT statement imports various types of data into CockroachDB with user-scoped storage.
+summary: Store data from CockroachDB operations in your cluster's userfile storage.
 toc: true
 key: use-userfile-for-bulk-operations.html
 docs_area: manage
