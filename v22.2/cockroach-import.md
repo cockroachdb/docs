@@ -48,7 +48,7 @@ $ cockroach import --help
 `--insecure`     | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
 `--ignore-unsupported-statements` |  Ignore statements that are unsupported during an import from a PGDUMP file. <br/>**Default:** `false`
-`--log-ignored-statements` |  Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile.html).
+`--log-ignored-statements` |  Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile-storage.html).
 `--row-limit=` |  The number of rows to import for each table during a PGDUMP or MYSQLDUMP import. <br/> This can be used to check schema and data correctness without running the entire import. <br/>**Default:** `0`
 
 ## Examples
@@ -81,7 +81,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ### Import a database with unsupported SQL syntax and log all unsupported statements
 
- To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile.html):
+ To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-storage.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

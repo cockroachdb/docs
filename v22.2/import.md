@@ -57,7 +57,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile.html) storage.
+- Using [Userfile](use-userfile-storage.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -93,7 +93,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** `Off`. May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default:** `0.5MB`. This setting may need to be tweaked if your PostgreSQL dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  |  Ignore SQL statements in the dump file that are unsupported by CockroachDB.
-`log_ignored_statements` | `PGDUMP` |  Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile.html)).
+`log_ignored_statements` | `PGDUMP` |  Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage.html) or [userfile storage](use-userfile-storage.html)).
 <a name="options-detached"></a>`DETACHED`             | N/A            |  When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
@@ -143,7 +143,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage](use-cloud-storage.html)
-- [Use `userfile`](use-userfile.html)
+- [Use `userfile` Storage](use-userfile-storage.html)
 - [Use a Local File Server](use-a-local-file-server.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
@@ -335,7 +335,7 @@ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.h
 
 ### Import data into your {{ site.data.products.db }} cluster
 
-You can import data into your {{ site.data.products.db }} cluster using either [`userfile`](use-userfile.html) or [cloud storage](use-cloud-storage.html):
+You can import data into your {{ site.data.products.db }} cluster using either [`userfile`](use-userfile-storage.html) or [cloud storage](use-cloud-storage.html):
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>

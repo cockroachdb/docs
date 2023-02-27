@@ -1,5 +1,5 @@
 ---
-title: Use Userfile
+title: Use Userfile Storage
 summary: The IMPORT statement imports various types of data into CockroachDB with user-scoped storage.
 toc: true
 key: use-userfile-for-bulk-operations.html

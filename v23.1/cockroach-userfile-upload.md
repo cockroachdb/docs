@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach userfile upload` [command](cockroach-commands.html) uploads a file to the [user-scoped file storage](use-userfile.html) using a SQL connection.
+ The `cockroach userfile upload` [command](cockroach-commands.html) uploads a file to the [user-scoped file storage](use-userfile-storage.html) using a SQL connection.
 
 This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the [destination](#file-destination).
 
@@ -170,7 +170,7 @@ successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 - [`cockroach userfile list`](cockroach-userfile-list.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
 - [`cockroach userfile get`](cockroach-userfile-get.html)
-- [Use `userfile`](use-userfile.html)
+- [Use `userfile` storage](use-userfile-storage.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)
