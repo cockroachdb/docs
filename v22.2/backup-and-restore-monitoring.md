@@ -39,7 +39,7 @@ Metric | Description
 -------+-------------
 `schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
 `schedules_backup_started` | The number of scheduled backup jobs that have started.
-`schedules_backup_last_completed_time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option](create-schedule-for-backup.html#schedule-options). You can use this option on {{ site.data.products.core }} clusters.
+`schedules_backup_last_completed_time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option](create-schedule-for-backup.html#schedule-options).
 `schedules_backup_failed` | The number of scheduled backup jobs that have failed.
 `schedules_round_reschedule_wait` | The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
 `schedules_round_reschedule_skip` | The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
