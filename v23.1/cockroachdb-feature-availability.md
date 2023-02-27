@@ -17,7 +17,7 @@ This page outlines _feature availability_, which is separate from Cockroach Labs
 Phase                                         | Definition | Accessibility 
 ----------------------------------------------+------------+-------------
 Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
-[Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Feature is opt-in. To enroll your organization, contact your Cockroach Labs account team.
+[Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
 [Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitations and/or capabilities may change or be added based on feedback. | Public
 General availability (GA)                     | Feature is production-ready and publicly available. | Public
 
