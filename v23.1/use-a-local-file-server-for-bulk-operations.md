@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-If you need a location to store files for the [`IMPORT`](import.html) process, but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage-for-bulk-operations.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
+If you need a location to store files for the [`IMPORT`](import.html) process, but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
 
 This is especially useful for:
 
@@ -98,7 +98,7 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 ## See also
 
 - [`IMPORT`][import]
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 
 <!-- Reference Links -->
 

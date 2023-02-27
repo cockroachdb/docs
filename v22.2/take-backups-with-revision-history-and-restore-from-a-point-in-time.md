@@ -27,7 +27,7 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 > BACKUP INTO '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
-For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage](use-cloud-storage.html).
 
 ## Point-in-time restore
 

@@ -13,7 +13,9 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 For more information, see [Change Data Capture Overview](change-data-capture-overview.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 ## Required privileges
 

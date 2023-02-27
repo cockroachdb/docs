@@ -4,9 +4,12 @@ summary: Learn how to configure Egress Perimeter Controls for enhanced network s
 toc: true
 toc_not_nested: true
 docs_area: security
+cloud: true
 ---
 
-{% include feature-phases/preview-opt-in.md %}
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
 
 This page describes how Egress Perimeter Controls can enhance the security of {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
 

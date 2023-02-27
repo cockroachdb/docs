@@ -111,7 +111,7 @@ Review the [backward-incompatible changes in {{ page.version.version }}](../rele
 This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to {{ previous_version }}. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in {{ page.version.version }}](#features-that-require-upgrade-finalization). However, it will no longer be possible to [roll back to {{ previous_version }}](#step-5-roll-back-the-upgrade-optional) if auto-finalization is enabled. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-6-finish-the-upgrade):
 
 1. [Upgrade to {{ previous_version }}](../{{ previous_version }}/upgrade-cockroach-version.html), if you haven't already.
 
@@ -239,7 +239,17 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
 1. Repeat these steps for the next node.
 
-## Step 5. Finish the upgrade
+## Step 5. Roll back the upgrade (optional)
+
+If you decide to roll back to {{previous_version}}, you must do so before the upgrade has been [finalized](#step-6-finish-the-upgrade), as described in the next section. It is always possible to roll back to a previous {{ page.version.version }} version.
+
+To roll back an upgrade, do the following on each cluster node:
+
+1. [Perform a rolling upgrade](#step-4-perform-the-rolling-upgrade), as described in the previous section, but replace the upgraded `cockroach` binary on each node with the binary for the previous version.
+1. Restart the `cockroach` process on the node and verify that it has rejoined the cluster before rolling back the upgrade on the next node.
+1. After all nodes have been rolled back and rejoined the cluster, [finalize the rollback](#step-6-finish-the-upgrade) in the same way as you would finalize an upgrade, as described in the next section.
+
+## Step 6. Finish the upgrade
 
 {{site.data.alerts.callout_info}}
 This step is relevant only when upgrading from {{ previous_version }}.x to {{ page.version.version }}. For upgrades within the {{ page.version.version }}.x series, skip this step.

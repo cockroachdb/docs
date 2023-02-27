@@ -50,7 +50,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](re
 For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
 
 {{site.data.alerts.callout_info}}
-For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage](use-cloud-storage.html).
 {{site.data.alerts.end}}
 
 ## Show a node's locality

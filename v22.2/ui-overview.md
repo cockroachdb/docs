@@ -61,7 +61,7 @@ The [Jobs](ui-jobs-page.html) page shows details of jobs running in the cluster.
 
 ### Advanced Debug
 
-The [Advanced Debug](ui-debug-pages.html) page provides advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
+The [Advanced Debug](ui-debug-pages.html) page provides advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers. To access the **Advanced Debug** page, the user must be a member of the `admin` role or must have the `VIEWDEBUG` [system privilege](security-reference/authorization.html#supported-privileges) defined.
 
 ## DB Console access
 

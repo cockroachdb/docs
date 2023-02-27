@@ -81,7 +81,9 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER DATABASE .. ADD SUPER REGION` adds a [super region](multiregion-overview.html#super-regions) to a [multi-region database](multiregion-overview.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
 
@@ -133,7 +135,9 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER DATABASE .. ALTER SUPER REGION` alters an existing [super region](multiregion-overview.html#super-regions) of a [multi-region database](multiregion-overview.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
 
@@ -233,7 +237,9 @@ To unset a secondary region on a database, the user must have one of the followi
 
 `ALTER DATABASE .. DROP SUPER REGION` drops a [super region](multiregion-overview.html#super-regions) from a [multi-region database](multiregion-overview.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
 
