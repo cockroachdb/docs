@@ -8,6 +8,10 @@ key: experimental-features.html
 
 Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
+{{site.data.alerts.callout_info}}
+This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](../releases/release-support-policy.html) or [API Support Policy](api-support-policy.html).
+{{site.data.alerts.end}}
+
 ## Feature availability phases
 
 Phase                                         | Definition | Accessibility 

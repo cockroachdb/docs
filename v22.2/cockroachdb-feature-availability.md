@@ -8,6 +8,10 @@ key: experimental-features.html
 
 Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
+{{site.data.alerts.callout_info}}
+This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](../releases/release-support-policy.html) or [API Support Policy](api-support-policy.html).
+{{site.data.alerts.end}}
+
 ## Feature availability phases
 
 Phase                                         | Definition | Accessibility 
@@ -39,7 +43,7 @@ General availability (GA)                     | Feature is production-ready and 
 
 Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. [{{ site.data.products.dedicated }} private clusters](../cockroachcloud/private-clusters.html) allow organizations to meet this objective. A private {{ site.data.products.dedicated }} cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
-### Export Cloud Organization audit logs (cloud API)
+### Export Cloud Organization audit logs (Cloud API)
 
 {{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can [export these audit logs](../cockroachcloud/cloud-org-audit-logs.html) using the [`auditlogevents` endpoint](../cockroachcloud/cloud-api.html#cloud-audit-logs) of the [Cloud API](../cockroachcloud/cloud-api.html).
 
