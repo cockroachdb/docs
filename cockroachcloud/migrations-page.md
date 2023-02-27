@@ -33,7 +33,9 @@ The **Schema Conversion Tool** expects to analyze a SQL dump file containing [da
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="postgres">

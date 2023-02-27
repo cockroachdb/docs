@@ -1,23 +1,61 @@
 ---
-title: Features in Preview
-summary: Learn about the features available in preview in CockroachDB
+title: CockroachDB Feature Availability
+summary: Learn about the features available in preview and limited access in CockroachDB
 toc: true
 docs_area: reference.sql
 key: experimental-features.html
 ---
 
-This page lists the features that are available in preview in CockroachDB {{ page.version.version }}. These features are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+Some CockroachDB features are made available in phases prior to being launched in general availability (GA). This page defines the different levels of CockroachDB {{ page.version.version }} feature availability and lists the features in each phase.
 
-## Session variables
+{{site.data.alerts.callout_info}}
+This page outlines _feature availability_, which is separate from Cockroach Labs' [Release Support Policy](../releases/release-support-policy.html) or [API Support Policy](api-support-policy.html).
+{{site.data.alerts.end}}
 
-The table below lists the session settings that are available in preview. For a complete list of session variables, see [`SHOW {session variable}`](show-vars.html).
+## Feature availability phases
 
-| Variable                            | Default Value | Description                                                                                                                                                                                                                                                                                             |
-|-------------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enable_experimental_alter_column_type_general`       | `'false'`       |  If set to `'true'`, enables [column type altering](#alter-column-types) for general cases, with some limitations.                                                                                                                                                                                   |
-| `experimental_enable_temp_tables`       | `'off'`       |  If set to `'on'`, enables [temporary objects](#temporary-objects), including [temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences).                                                                                                                                                                                   |
+Phase                                         | Definition | Accessibility 
+----------------------------------------------+------------+-------------
+Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
+[Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Feature is opt-in. To enroll your organization, contact your Cockroach Labs account team.
+[Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitations and/or capabilities may change or be added based on feedback. | Public
+General availability (GA)                     | Feature is production-ready and publicly available. | Public
 
-## SQL statements
+## Features in limited access
+
+{{site.data.alerts.callout_info}}
+**The following features are in limited access** and are only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
+{{site.data.alerts.end}}
+
+### Export logs from {{ site.data.products.dedicated }} clusters
+
+{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
+
+### Customer-Managed Encryption Keys (CMEK) on {{ site.data.products.dedicated }}
+
+[Customer-Managed Encryption Keys (CMEK)](../cockroachcloud/cmek.html) allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform.
+
+### Egress perimeter controls for {{ site.data.products.dedicated }}
+
+[Egress Perimeter Controls](../cockroachcloud/egress-perimeter-controls.html) can enhance the security of {{ site.data.products.dedicated }} clusters by enabling cluster administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration.
+
+### Private {{ site.data.products.dedicated }} clusters
+
+Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. [{{ site.data.products.dedicated }} private clusters](../cockroachcloud/private-clusters.html) allow organizations to meet this objective. A private {{ site.data.products.dedicated }} cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
+
+### Export Cloud Organization audit logs (Cloud API)
+
+{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can [export these audit logs](../cockroachcloud/cloud-org-audit-logs.html) using the [`auditlogevents` endpoint](../cockroachcloud/cloud-api.html#cloud-audit-logs) of the [Cloud API](../cockroachcloud/cloud-api.html).
+
+## Features in preview
+
+{{site.data.alerts.callout_info}}
+**The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
+
+### Export metrics from {{ site.data.products.dedicated }} clusters
+
+{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Keep SQL audit logs
 
@@ -98,27 +136,19 @@ This example uses the `users` table from our open-source, fictional peer-to-peer
 
 The [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement shows information about a [range](architecture/overview.html#architecture-range) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
-## Functions and Operators
+### Alter column types
 
-The table below lists the SQL functions and operators that are available in preview in CockroachDB. For more information, see each function's documentation at [Functions and Operators](functions-and-operators.html).
+CockroachDB supports [altering the column types](alter-table.html#alter-column-data-types) of existing tables, with certain limitations. To enable altering column types, set the `enable_experimental_alter_column_type_general` [session variable](show-vars.html) to `true`.
 
-| Function                                                                         | Description                                     |
-|----------------------------------------------------------------------------------+-------------------------------------------------|
-| [`experimental_strftime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strftime` notation. |
-| [`experimental_strptime`](functions-and-operators.html#date-and-time-functions)  | Format time using standard `strptime` notation. |
-| [`experimental_uuid_v4()`](functions-and-operators.html#id-generation-functions) | Return a UUID.                                  |
-
-## Alter column types
-
-CockroachDB supports altering the column types of existing tables, with certain limitations. For more information, see [Altering column data types](alter-table.html#alter-column-data-types).
-
-## Temporary objects
+### Temporary objects
 
 [Temporary tables](temporary-tables.html), [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) are in preview in CockroachDB. If you create too many temporary objects in a session, the performance of DDL operations will degrade. Performance limitations could persist long after creating the temporary objects. For more details, see [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 
-## Password authentication without TLS
+To enable temporary objects, set the `experimental_enable_temp_tables` [session variable](show-vars.html) to `on`. 
 
-For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` (in preview) for [`cockroach start`](cockroach-start.html#security).
+### Password authentication without TLS
+
+For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
 
 With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
@@ -137,11 +167,31 @@ $ cockroach sql --user=jpointsman --insecure
   Enter password:
 ~~~
 
-## Changefeed metrics labels
+### Core implementation of changefeeds
+
+The [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) statement creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
+
+### Changefeed metrics labels
 
 {% include {{ page.version.version }}/cdc/metrics-labels.md %}
 
 For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page.
+
+### Google Pub/Sub sink for changefeeds
+
+Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink](changefeed-sinks.html#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
+
+### Webhook sink for changefeeds
+
+Use a [webhook sink](changefeed-sinks.html#webhook-sink) to deliver changefeed messages to an arbitrary HTTP endpoint.
+
+### Change data capture transformations
+
+[Change data capture transformations](cdc-transformations.html) allow you to define the change data emitted to your sink when you create a changefeed. The expression syntax provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).  
+
+### External connections
+
+You can use external connections to specify and interact with resources that are external from CockroachDB. With [`CREATE EXTERNAL CONNECTION`](create-external-connection.html), you define a name for an external connection while passing the provider URI and query parameters.
 
 ## See Also
 
