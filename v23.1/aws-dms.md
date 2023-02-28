@@ -99,6 +99,7 @@ A database migration task, also known as a replication task, controls what data 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
 1. For the **Target table preparation mode**, select **Truncate**, **Drop tables on target**, or **Do nothing**.
     <img src="{{ 'images/v23.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
+1. Check **Enable validation** to compare the data in the source and target rows, and verify that the migration succeeded. You can view the results in the [**Table statistics**](#step-3-verify-the-migration) for your migration task. For more information about data validation, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html).
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
 1. For the **Target Load**, select **Detailed debug**.
     <img src="{{ 'images/v23.1/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
@@ -165,14 +166,6 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     ~~~ sql
     > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
     ~~~
-
-- If you select **Enable validation** in your [task settings](#step-2-2-task-settings) and have a [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html) column in your database, the migration will fail with the following error:
-
-    ~~~
-    Suspending the table : 1 from validation since we received an error message : ERROR: unknown signature: to_char(timestamp, string); No query has been executed with that handle with type : non-retryable(0)  (partition_validator.c:514)
-    ~~~
-
-    This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
 
 ## Troubleshooting common issues
 
