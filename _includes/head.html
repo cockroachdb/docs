@@ -1,4 +1,4 @@
-<meta charset="utf-8">
+<meta charset="utf-8" prefix="og: https://ogp.me/ns#">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
@@ -36,11 +36,37 @@
 <meta name="google-site-verification" content="xIjIKHNh-szz0m5JilyA4IriUmVD5DxeYBE18xSqvZY" /> {% comment %} Joe Nickdow {% endcomment %}
 <meta name="google-site-verification" content="tJzwad6zE43z3_4uoZ8Jx4iquB66Kpt5zcK6yxNXg_A" /> {% comment %} Dan Kelly {% endcomment %}
 {% endif %}
-<title>{{ page.title }} | {{ site.site_title }}</title>
+{% comment %} Open Graph data {% endcomment %}
+<meta property="og:title" content="{{ page.title }}" />
+<meta property="og:type" content="article" />
 {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
-<link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}">
-<link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
+<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}" />
+<meta property="og:image" content="{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}" />
+<meta property="og:site_name" content="{{ site.site_title }}" />
+{% if page.summary %}<meta property="og:description" content="{{ page.summary | strip_html | strip_newlines | truncate: 160 }}">{% endif %}
+{% if page.video_url %}<meta property="og:video" content="{{ page.video_url }}" />{% endif %}
+{% comment %} Google structured content/rich results {% endcomment %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ page.title }}",
+    "image": "{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}",
+    {% if page.summary %}"description": "{{ page.summary | strip_html | strip_newlines | truncate: 160 }}",{% endif %}
+    "author": {
+        "@type": "Organization",
+        "name": "Cockroach Labs Documentation Team",
+        "url": "https://github.com/cockroachdb/docs"
+      }
+  }
+  </script>
+{% comment %} Favicons {% endcomment %}
+<link rel="icon" type="image/png" href="https://crl2020.imgix.net/img/crl-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="https://crl2020.imgix.net/img/crl-32x32.png?w=16h=16" sizes="16x16">
 
+<title>{{ page.title }}</title>
+
+<link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}">
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
 {% include_cached corestyles.css.html %}
 <link rel="preload" href="{{ 'css/customstyles.css' | relative_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
