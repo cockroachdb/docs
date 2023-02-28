@@ -23,7 +23,7 @@ CMEK can be enabled only on a private cluster. Contact your account team for adv
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 
-{{ site.data.products.dedicated }} does not force encryption of previously-written data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt newly-written data, while previously-written data remains unencrypted unless it’s rewritten.
+{{ site.data.products.dedicated }} does not force encryption of previously-written data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt newly-written data, while previously-written data remains unencrypted unless it's rewritten.
 
 ## Can we enable CMEK for a new region when it's added to a CMEK-enabled cluster?
 
