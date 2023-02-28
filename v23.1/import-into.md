@@ -173,7 +173,7 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 
 ## Examples
 
-{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+{% include {{ page.version.version }}/import-export-auth.md %}
 
 ### Import into a new table from a CSV file
 

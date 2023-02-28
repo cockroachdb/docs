@@ -68,6 +68,8 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
 See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
 
 #### Kafka
@@ -77,8 +79,6 @@ Example of a Kafka sink URI:
 ~~~
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
-
-{% include {{ page.version.version }}/misc/external-connection-kafka.md %}
 
 #### Google Cloud Pub/Sub
 
@@ -232,6 +232,8 @@ Before running any of the examples in this section it is necessary to enable the
 
 The following examples show the syntax for managing changefeeds and starting changefeeds to specific sinks. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations see the [Changefeed Sinks](changefeed-sinks.html) page.
 
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
 ### Create a changefeed connected to Kafka
 
 {% include_cached copy-clipboard.html %}
@@ -268,7 +270,11 @@ For step-by-step guidance on creating a changefeed connected to Kafka, see the [
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page provides a list of all kafka-specific query parameters.
+For more information, see:
+
+- [This step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro) to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record.
+- The [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial to set up a Confluent Cloud Kafka cluster using the Confluent Cloud Schema Registry.
+- The [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page to see a list of all kafka-specific query parameters.
 
 ### Create a changefeed connected to a cloud storage sink
 

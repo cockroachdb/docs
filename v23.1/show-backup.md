@@ -84,13 +84,15 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 ## Examples
 
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+
 ### View a list of the available full backup subdirectories
 
 <a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 's3://{bucket name}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
+SHOW BACKUPS IN 'external://backup_s3';
 ~~~
 
 ~~~
@@ -109,7 +111,7 @@ To view the most recent backup, use the `LATEST` syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP FROM LATEST IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
+SHOW BACKUP FROM LATEST IN 'external://backup_s3';
 ~~~
 
 ~~~
@@ -133,7 +135,7 @@ To view a list of the [full](take-full-and-incremental-backups.html#full-backups
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP FROM '2022/04/08-142355.33' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
+SHOW BACKUP FROM '2022/04/08-142355.33' IN 'external://backup_s3';
 ~~~
 
 ~~~
@@ -194,7 +196,7 @@ movr          | public             | vehicles                   | table       | 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP SCHEMAS FROM '2022/04/08-142601.69' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
+SHOW BACKUP SCHEMAS FROM '2022/04/08-142601.69' IN 'external://backup_s3';
 ~~~
 
 ~~~
@@ -229,7 +231,7 @@ Use the `WITH privileges` [option](#options) to view a list of which users and r
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP FROM '2022/07/07-160311.96' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH privileges;
+SHOW BACKUP FROM '2022/07/07-160311.96' IN 'external://backup_s3' WITH privileges;
 ~~~
 
 ~~~
@@ -258,7 +260,7 @@ Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.h
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}'
+SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}'
       WITH encryption_passphrase = 'password123';
 ~~~
 
@@ -266,7 +268,7 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
+SHOW BACKUP FROM '2020/09/24-190540.54' IN 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
       WITH kms = 'aws:///arn:aws:kms:us-east-1:123456789:key/1234-abcd-5678-efgh-90ij?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
@@ -302,7 +304,7 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH debug_ids;
+SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH debug_ids;
 ~~~
 
 ~~~
@@ -336,7 +338,7 @@ Use the `WITH as_json` option to output a backup's internal metadata, contained 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH as_json;
+SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH as_json;
 ~~~
 
 The response will include a `manifest` column with the file's contents as the JSON value. Use [JSONB functions](functions-and-operators.html#jsonb-functions) to query particular data or edit the format of the response.
@@ -349,7 +351,7 @@ For example, to return a specific entry from the JSON response as a [`string`](s
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' with as_json) SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM x;
+WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' with as_json) SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM x;
 ~~~
 
 ~~~ json
@@ -364,7 +366,7 @@ To query for particular data, use the [`jsonb_array_elements()` function](functi
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}' WITH as_json) SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM x);
+WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 'external://backup_s3' WITH as_json) SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM x);
 ~~~
 
 ~~~
