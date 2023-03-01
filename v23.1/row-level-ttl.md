@@ -212,7 +212,7 @@ CREATE TABLE events (
 );
 ~~~
 
-A `ttl_expiration_expression` that uses an existing `TIMESTAMPTZ` column.
+A `ttl_expiration_expression` that uses an existing `TIMESTAMPTZ` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -226,7 +226,7 @@ CREATE TABLE events (
 );
 ~~~
 
-When using a `ttl_expiration_expression` on a `DATE` or `TIMESTAMPTTZ` column use `AT TIME ZONE` to explicitly set the timezone for the expression. By setting the timezone to UTC in the expression, you set an exact time when the delete should be performed, regardless of the local timezone of the node.
+When using a `ttl_expiration_expression` on a `DATE` or `TIMESTAMPTTZ` column, use `AT TIME ZONE` to explicitly set the time zone for the expression. By setting the time zone to UTC in the expression, you set an exact time when the delete should be performed, regardless of the local time zone of the node.
 
 ### Create a table with `ttl_expire_after`
 
