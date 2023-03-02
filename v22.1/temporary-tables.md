@@ -9,8 +9,8 @@ docs_area: develop
 
 To create a temp table, add `TEMP`/`TEMPORARY` to a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement. For full syntax details, see the [`CREATE TABLE`](create-table.html#synopsis) and [`CREATE TABLE AS`](create-table-as.html#synopsis) pages. For example usage, see [Examples](#examples).
 
-{{site.data.alerts.callout_danger}}
-**This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

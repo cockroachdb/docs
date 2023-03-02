@@ -16,6 +16,8 @@ Also keep in mind some basic topology recommendations:
 
 {% include {{ page.version.version }}/prod-deployment/topology-recommendations.md %}
 
+For optimal cluster performance, Cockroach Labs recommends that all nodes use the same hardware and operating system.
+
 ## Software
 
 We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
