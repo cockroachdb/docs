@@ -30,7 +30,9 @@ All [Console Admins](console-access-management.html#console-admin) will receive 
 
 ## Free vs. paid usage
 
-{{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. All {{ site.data.products.db }} organizations are given 50 million RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice. You must set a paid resource limit if you've already created one free {{ site.data.products.serverless }} cluster. Setting a paid resource limit will allow your cluster to scale to meet your application's needs and maintain a high level of performance.
+{{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. All {{ site.data.products.db }} organizations are given 50 million RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice. 
+
+You must set a paid resource limit if you've already created one free {{ site.data.products.serverless }} cluster. Setting a paid resource limit will allow your cluster to scale to meet your application's needs and maintain a high level of performance. When setting a resource limit, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
 ## Learn more
 

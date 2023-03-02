@@ -34,10 +34,9 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Enter a resource limit
 
-Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage resource limit, your cluster will be throttled and you will only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
-All {{ site.data.products.db }} organizations get 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set a paid resource limit to maintain a high level of performance with larger workloads.
-
+All {{ site.data.products.db }} organizations get 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set a paid resource limit to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 
 {% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
 
@@ -50,6 +49,10 @@ All {{ site.data.products.db }} organizations get 50M RUs and 5 GiB of storage f
 
 <section class="filter-content" markdown="1" data-scope="free">
 
+1. Select the **Start for free** option.
+
+    This will only be available if you haven't already created a free {{ site.data.products.serverless }} cluster or set up billing information.
+    
 1. Click **Create cluster**.
 
 Your cluster will be created in a few seconds.
@@ -58,11 +61,13 @@ Your cluster will be created in a few seconds.
 
 <section class="filter-content" markdown="1" data-scope="paid">
 
+1. If the option to **Start for free** is still available to you, select **Upgrade your resources** instead.
+    
 1. Enter your **Resource limit**.
+    - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.   
+    - If you select **Unlimited**, your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
 
-    This is the maximum amount you could be charged per month. You will be charged only for what you use.
-
-1. Click **Next: Payment info**.
+1. Click **Next: Payment**.
 
 1. Verify your cluster configuration and resource limit.
 
