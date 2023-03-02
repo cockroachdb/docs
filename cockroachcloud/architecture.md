@@ -60,21 +60,15 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 ### Performance
 
-#### Baseline
+Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
-Baseline performance for a Serverless cluster is 100 [Request Units](learn-about-request-units.html), or RUs, per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+#### Free
 
-The following diagram shows how RUs are accumulated and consumed:
-
-<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="width:100%; max-width:800px" />
+All {{ site.data.products.db }} organizations are given 50 million [Request Units](learn-about-request-units.html) and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 #### Paid
 
-You can set your resource limit higher to maintain a high level of performance with larger workloads. If you have a resource limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your resource limit. You will only be charged for the resources you use up to your resource limit. If you reach your resource limit, your cluster will revert to the baseline performance of 100 RUs per second.
-
-Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for burst performance, and vice versa. If you hit your resource limit, your cluster will be throttled down to baseline performance levels. If this occurs, you can opt to increase your resource limit, adjust your workload to stay within the current resource limit, or stay at the baseline performance level until the next month.
-
-Storage always gets first priority in the budget since you need to be able to store your data first and foremost. The remainder of the budget is allocated to burst performance. You can theoretically reach your resource limit on burst performance in the first few minutes of a cluster being created. If this happens, the cluster will be throttled back to the baseline performance and can reaccumulate burst capacity by using fewer RUs.
+You must set a paid resource limit if you've already created one free {{ site.data.products.serverless }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage.
 
 ### Autoscaling
 

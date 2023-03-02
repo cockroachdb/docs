@@ -36,7 +36,7 @@ You do not need an account with the cloud provider you choose in order to create
 
 Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage resource limit, your cluster will be throttled and you will only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
-All {{ site.data.products.db }} organizations get 100M RUs and 5 GB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set a paid resource limit to maintain a high level of performance with larger workloads.
+All {{ site.data.products.db }} organizations get 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set a paid resource limit to maintain a high level of performance with larger workloads.
 
 
 {% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
