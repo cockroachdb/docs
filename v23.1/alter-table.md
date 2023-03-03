@@ -255,9 +255,13 @@ Use `ALTER TABLE ... DROP COLUMN` to remove columns from a table.
 When used in an explicit transaction combined with other schema changes to the same table, `DROP COLUMN` can result in data loss if one of the other schema changes fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
 {{site.data.alerts.end}}
 
-By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
+By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
 
 For examples, see [Drop columns](#drop-columns).
+
+#### Known limitations
+
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index](partial-indexes.html) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](drop-index.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
 
 #### Required privileges
 
