@@ -11,7 +11,7 @@ cloud: true
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
+{% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 ## The `metricexport` endpoint
@@ -94,18 +94,19 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
         "Version": "2012-10-17",
         "Statement": [
             {
+                "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:DescribeLogGroups",
+                    "logs:DescribeLogStreams",
+                    "logs:PutRetentionPolicy",
+                    "logs:PutLogEvents"
+                ],
                 "Effect": "Allow",
-                "Principal": {
-                    "AWS": "arn:aws:iam::{your_aws_acct_id}:root"
-                },
-                "Action": "sts:AssumeRole"
-            },
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "arn:aws:iam::{your_aws_acct_id}:root"
-                },
-                "Action": "sts:AssumeRole"
+                "Resource": [
+                    "arn:aws:logs:*:{your_aws_acct_id}:log-group:{log_group_name}",
+                    "arn:aws:logs:*:{your_aws_acct_id}:log-group:{log_group_name}:log-stream:*"
+                ]
             }
         ]
     }
@@ -113,6 +114,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
 
     Where:
     - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudMetricsExportRole` role, **not** the cloud provider account ID of your {{ site.data.products.dedicated }} cluster from step 2. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
+    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
 
     This defines the set of permissions that the {{ site.data.products.dedicated }} metrics export feature requires to be able to write metrics to CloudWatch.
 
@@ -125,7 +127,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
     curl --request POST \
       --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport \
       --header "Authorization: Bearer {secret_key}" \
-      --data '{"cloudwatch":{"target_region": "{aws_region}}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}}'
+      --data '{"cloudwatch":{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}}'
     ~~~
 
     Where:
@@ -133,7 +135,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
     - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
     - `{aws_region}` is your AWS region, like `us-east-1`.
     - `{role_arn}` is the ARN for the `CockroachCloudMetricsExportRole` role you copied in step 7. If you used a different role name there, be sure to use your role name in place of `CockroachCloudMetricsExportRole` in the above command.
-    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
+    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1. This **must** be the same group name you provided in step 6.
 
     Specifying an AWS region (to `{aws_region}`) that you do not have a cluster in, or a region that only partially covers your cluster's nodes will result in missing metrics.
 
