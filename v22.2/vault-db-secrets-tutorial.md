@@ -412,7 +412,7 @@ In this phase of the tutorial, we will use credentials provisioned by Vault to a
         export USER_NAME=v-token-crdb-rol-thfLPlFwex0k9Op0P8qA-1653528652 # generated CockroachDB client username
         export PASSWORD=FlOo0p7jMTXjT27hlZZ-H # generated CockroachDB client password
         export DB_NAME=defaultdb
-        export CLUSTER_NAME=lilac-grizzly-684 # generated CockroachDB client password
+        export CLUSTER_NAME=lilac-grizzly-684
         export HOST=free-tier21.aws-us-west-2.crdb.io
         export TLS_OPTS="sslrootcert=root.crt&sslmode=verify-full"
         export CLI_DB_CONNECTION_URL="postgresql://$USER_NAME:$PASSWORD@${HOST}:26257/${DB_NAME}?${TLS_OPTS}"
