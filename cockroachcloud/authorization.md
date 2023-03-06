@@ -5,7 +5,18 @@ toc: true
 docs_area: manage
 ---
 
+
+
+
+
 In CockroachDB Cloud, an *Organization* corresponds to a an authorization hierarchy rooted in a billing account. All database clusters in {{ site.data.products.db }} belong within an organization. The user of the billing account can create or invite other CockroachDB Cloud users to the organization. 
+
+
+
+
+
+
+
 
 ## Organization user roles
 
@@ -26,7 +37,8 @@ Within a CockroachDB Cloud Organization, the unit of database functionality is t
 
 Each cluster also has its own set of SQL roles, which allow authenticated users to execute SQL statements via any PostgreSQL-compatible client.
 
-## Cluster roles for organization users
+## Cluster roles for organization users using Cluster SSO
 
+Cluster Single Sign-On (SSO) for {{ site.data.products.db }} allows authorized organization users to directly access clusters within the organization via [`ccloud`](ccloud-get-started.html), the {{ site.data.products.db }} command line interface.
 
-yada yada
+However, because organization roles and roles on any given SQL cluster 
