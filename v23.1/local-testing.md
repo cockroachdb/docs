@@ -80,7 +80,7 @@ For more information about logging, see [Configure logs](configure-logs.html).
 
 To test bulk operations like [`IMPORT`](import.html), [`BACKUP`](backup.html), or [`RESTORE`](restore.html), we recommend using a local file server.
 
-For more details, see [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html).
+For more details, see [Use a Local File Server](use-a-local-file-server.html).
 
 ## Use Docker-specific testing and development tools
 
