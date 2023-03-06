@@ -48,7 +48,7 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 	1. In the AWS console, visit the [IAM page](https://console.aws.amazon.com/iam/).
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
-	1. Choose **Another AWS account**. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID that you found previously by querying your cluster's Cloud API.
+	1. Choose **Another AWS account**. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID that you found [previously](#step-1-provision-the-cross-account-iam-role) by querying your cluster's Cloud API.
 	1. Finish creating the IAM role with a suitable name. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
