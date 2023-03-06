@@ -3,6 +3,7 @@ title: Use the Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
 docs_area: manage
+cloud: true
 ---
 
 The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
@@ -394,7 +395,9 @@ If the `DELETE` request was successful the client will not receive a response pa
 
 ## Export Cloud Organization audit logs
 
-{% include feature-phases/preview-opt-in.md %}
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
 
 To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](console-access-management.html#service-accounts).
 
