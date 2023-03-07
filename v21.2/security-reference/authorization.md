@@ -11,7 +11,6 @@ Authorization, generally, is the control over **who** (users/roles) can perform 
 CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
 {{site.data.alerts.end}}
 
-For documentation of procedures related to managing users on CockroachDB clusters, see [Security Reference&mdash;Authorization](security-reference/authorization.html).
 
 ## Users and roles
 
