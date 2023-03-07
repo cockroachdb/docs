@@ -5,6 +5,26 @@ toc: true
 docs_area: manage
 ---
 
+### What is the default role assigned to users as they’re added to a CockroachDB Cloud organization? What entitlements does that role include?
+
+Org Member is the default and only role assignable to new users as they are added to a CockroachDB Cloud organization. This role has most minimum entitlements across all the available roles, including just the ability to view the list of available clusters and high-level organization information like ID, Name, Label etc. 
+
+### What is the minimum access role that can be granted on a cluster?
+
+Cluster Developer is the minimum access role within the roles that could be assigned to a user on a cluster. It allows users to view the details of the target cluster(s) as well as change the IP allowlisting configuration for those cluster(s).
+
+### What roles are assigned to the user that creates a CockroachDB Cloud organization and thus becomes the first and only user in that organization?
+
+Org Member, Org Admin, Cluster Admin and Billing Coordinator [to be added soon] are assigned to the first and only user in a CockroachDB Cloud organization. This is done to allow the user perform all possible actions to create & manage clusters, configure billing & view usage etc. 
+
+Once the initial user has added more users to the CockroachDB Cloud organization, it is possible to assign Cluster Admin and Billing Coordinator roles to one or more of those users and optionally remove those roles from the initial user. Latter operation is allowed to satisfy enterprise security standards as some companies like to differentiate between product admins who can manage users, roles, and authentication configuration in a product, and the admins who are allowed to provision core resources in that product (like creating and managing clusters in CockroachDB Cloud).
+
+### Is it possible to assign more than 1 role to a user in a CockroachDB Cloud organization?
+
+Yes, it is possible to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB Cloud organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Admin, Cluster Admin and Billing Coordinator [to be added soon] roles when they create the CockroachDB Cloud organization. 
+
+
+
 ### Can we follow the least privilege principle by using the roles available in the CockroachDB Cloud authorization model?
 
 Yes, the roles available in the CockroachDB Cloud authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
@@ -31,23 +51,6 @@ If for some reason, you decide to retire the existing service accounts and plan 
 
 Yes, an admin could assign a cluster level role like Cluster Admin, Cluster Operator Reader & Writer [to be added soon] or Cluster Developer on the entire CockroachDB DB Cloud organization or on one or more specific clusters. There are two scopes in the authorization model - organization and clusters, with organization being the parent, and clusters being the children in the hierarchy. So if an admin assigns cluster level roles at the organization scope, they are automatically applicable on all clusters in the CockroachDB DB Cloud organization. Such access should be granted after due consideration and only to users who are going to work with all clusters. Otherwise it could lead to unintended privilege escalation and thus potential access to data when it shouldn’t be allowed.
 
-### Which is the default role assigned to users as they’re added to a CockroachDB Cloud organization? What entitlements does that role include?
-
-Org Member is the default and only role assignable to new users as they are added to a CockroachDB Cloud organization. This role has most minimum entitlements across all the available roles, including just the ability to view the list of available clusters and high-level organization information like ID, Name, Label etc. 
-
-### What is the minimum access role within the available cluster level roles in a CockroachDB Cloud organization?
-
-Cluster Developer is the minimum access role within the roles that could be assigned to a user on a cluster. It allows users to view the details of the target cluster(s) as well as change the IP allowlisting configuration for those cluster(s).
-
-### What roles are assigned to the user that creates a CockroachDB Cloud organization and thus becomes the first and only user in that organization?
-
-Org Member, Org Admin, Cluster Admin and Billing Coordinator [to be added soon] are assigned to the first and only user in a CockroachDB Cloud organization. This is done to allow the user perform all possible actions to create & manage clusters, configure billing & view usage etc. 
-
-Once the initial user has added more users to the CockroachDB Cloud organization, it is possible to assign Cluster Admin and Billing Coordinator roles to one or more of those users and optionally remove those roles from the initial user. Latter operation is allowed to satisfy enterprise security standards as some companies like to differentiate between product admins who can manage users, roles, and authentication configuration in a product, and the admins who are allowed to provision core resources in that product (like creating and managing clusters in CockroachDB Cloud).
-
-### Is it possible to assign more than 1 role to a user in a CockroachDB Cloud organization?
-
-Yes, it is possible to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB Cloud organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Admin, Cluster Admin and Billing Coordinator [to be added soon] roles when they create the CockroachDB Cloud organization. 
 
 ### What happens if an admin removes all role assignments for a particular user? Is that user removed from the CockroachDB Cloud organization?
 
