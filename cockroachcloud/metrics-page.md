@@ -20,13 +20,13 @@ On the **Monitor SQL Activity** tab, you can view the following time series grap
 
 ### Open SQL Transactions
 
-The graph shows the total number of open [SQL transactions](../stable/transactions.html) across the cluster.
+The graph shows the total number of open [SQL transactions](../{{site.versions["stable"]}}/transactions.html) across the cluster.
 
 See the [**Transactions** page](transactions-page.html) for more details on the transactions.
 
 ### SQL Statements
 
-- The graph shows a moving average of the number of [`SELECT`](../stable/selection-queries.html)/[`INSERT`](../stable/insert.html)/[`UPDATE`](../stable/update.html)/[`DELETE`](../stable/delete.html) statements per second issued by SQL clients on the cluster.
+- The graph shows a moving average of the number of [`SELECT`](../{{site.versions["stable"]}}/selection-queries.html)/[`INSERT`](../{{site.versions["stable"]}}/insert.html)/[`UPDATE`](../{{site.versions["stable"]}}/update.html)/[`DELETE`](../{{site.versions["stable"]}}/delete.html) statements per second issued by SQL clients on the cluster.
 
 See the [**Statements** page](statements-page.html) for more details on the statements.
 
@@ -60,7 +60,7 @@ See the [Transaction Retry Error Reference](../{{site.versions["stable"]}}/trans
 
 ### SQL Statement Errors
 
-This graph shows a moving average of the number of SQL statements that returned a [planning](../stable/architecture/sql-layer.html#sql-parser-planner-executor), [runtime](../stable/architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](../stable/transactions.html#error-handling) across all nodes.
+This graph shows a moving average of the number of SQL statements that returned a [planning](../{{site.versions["stable"]}}/architecture/sql-layer.html#sql-parser-planner-executor), [runtime](../{{site.versions["stable"]}}/architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](../{{site.versions["stable"]}}/transactions.html#error-handling) across all nodes.
 
 See the [Statements page](statements-page.html) for more details on the cluster's SQL statements.
 
@@ -68,7 +68,7 @@ See the [Statements page](statements-page.html) for more details on the cluster'
 
 This graph shows a moving average of the number of statements with full table and index scans across all nodes in the cluster.
 
-[Examine the statements](../stable/sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](../stable/schema-design-indexes.html#create-a-secondary-index).
+[Examine the statements](../{{site.versions["stable"]}}/sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](../{{site.versions["stable"]}}/schema-design-indexes.html#create-a-secondary-index).
 
 ### SQL Statement Contention 
 
