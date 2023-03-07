@@ -15,7 +15,7 @@ docs_area: reference.sql
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-Support for altering column types is [in preview](features-in-preview.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
+Support for altering column types is [in preview](cockroachdb-feature-availability.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
@@ -37,7 +37,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 | `table_name` | The name of the table with the column to modify. |
 | `column_name` | The name of the column to modify. |
 | `SET DEFAULT a_expr` | The new [default value](default-value.html). |
-| `typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [in preview](features-in-preview.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types). |
+| `typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [in preview](cockroachdb-feature-availability.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types). |
 | `USING a_expr` |  How to compute a new column value from the old column value. |
 
 ## View schema changes
@@ -46,7 +46,7 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 
 ## Altering column data types
 
-Support for altering column data types is [in preview](features-in-preview.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
+Support for altering column data types is [in preview](cockroachdb-feature-availability.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
 
 The following are equivalent in CockroachDB:
 

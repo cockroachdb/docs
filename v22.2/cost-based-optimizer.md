@@ -270,7 +270,10 @@ Locality optimized search is supported for scans that are guaranteed to return 1
 
 Although the optimizer prefers to [read from rows in local regions](#locality-optimized-search-in-multi-region-clusters) when possible, by default, it does not guarantee that any query will not visit a remote region. This can occur if a query has no [home region](multiregion-overview.html#table-localities) (for example, if it reads from different home regions in a [regional by row table](multiregion-overview.html#regional-by-row-tables)) or a query's home region differs from the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) region.
 
-For some latency-sensitive applications, cross-region latency may not be acceptable. In these cases, set the [`enforce_home_region` session variable](show-vars.html#enforce-home-region) to `on`. This configures the optimizer to return an error and in some cases a suggested resolution if a query cannot be run entirely in a single region.
+For some latency-sensitive applications, cross-region latency may not be acceptable. In these cases, set the [`enforce_home_region` session variable](show-vars.html#enforce-home-region) to `on`. This configures the optimizer to return one of the following error types, and in some cases a suggested resolution, if a query cannot be run entirely in a single region:
+
+- `Query has no home region`. The optimizer provides a hint on how to run the query in a single region.
+- `Query is not running in its home region`. The optimizer provides a hint containing the home region of the query. The application should disconnect and then reconnect with a [connection string](connection-parameters.html) specifying a node in the query's home region.
 
 Only tables with `ZONE` [survivability](when-to-use-zone-vs-region-survival-goals.html) can be scanned without error when this setting is enabled.
 

@@ -228,7 +228,9 @@ The [`SENSITIVE_ACCESS`](logging.html#sensitive_access) channel logs SQL audit e
 Enabling these logs can negatively impact performance. We recommend using `SENSITIVE_ACCESS` for security purposes only.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 To log all queries against a specific table, enable auditing on the table with [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 

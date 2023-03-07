@@ -38,7 +38,9 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Using changefeed metrics labels
 
-{% include feature-phases/preview.md %}
+{{site.data.alerts.callout_info}}
+**This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 An {{ site.data.products.enterprise }} license is required to use metrics labels in changefeeds.

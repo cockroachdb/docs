@@ -5,7 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `RESUME SCHEDULES` [statement](sql-statements.html) can be used to resume [paused backup schedules](pause-schedules.html). When a schedule is resumed, the `next_run` will be set to the next `TIMESTAMP` that conforms to the schedule.
+ The `RESUME SCHEDULES` [statement](sql-statements.html) can be used to resume [paused schedules](pause-schedules.html): 
+ 
+ - [Backup schedule](create-schedule-for-backup.html)
+ - [Changefeed schedule](create-schedule-for-changefeed.html)
+ 
+ When a schedule is resumed, the `next_run` will be set to the next `TIMESTAMP` that conforms to the schedule.
 
 ## Required privileges
 
@@ -15,12 +20,9 @@ The following users can resume a schedule:
 
 ## Synopsis
 
-~~~
-RESUME SCHEDULES <selectclause>
- selectclause: select statement returning schedule IDs to resume.
-
-RESUME SCHEDULE <scheduleID>
-~~~
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/resume_schedule.html %}
+</div>
 
 ## Parameters
 

@@ -266,7 +266,14 @@ $ cockroach node status --host=localhost:26257 --insecure
 
 ### Identify live nodes in an unavailable cluster
 
-The `is_live` and `is_available` fields are marked as `true` as long as a majority of the nodes are up, and a quorum can be reached:
+The `is_live` and `is_available` columns give you information about a node's current status:
+
+- `is_live`: The node is up and running
+- `is_available`: The node is part of the [quorum](architecture/replication-layer.html#overview).
+
+Only nodes that are both `is_live: true` and `is_available: true` can participate in the cluster. If either are `false`, check the logs so you can troubleshoot the node(s) in question.
+
+For example, the following indicates a healthy cluster, where a majority of the nodes are up (`is_live: true`) and a quorum can be reached (`is_available: true` for live nodes):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -282,7 +289,7 @@ $ cockroach node status --host=localhost:26257 --insecure
 (3 rows)
 ~~~
 
-If a majority of nodes are down and a quorum cannot be reached, the `is_live` field is marked as `true` for the nodes that are up, but the `is_available` field is marked as `false` for all nodes:
+The following indicates an unhealthy cluster, where a majority of nodes are down (`is_live: false`), and thereby quorum cannot be reached (`is_available: false` for all nodes):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
