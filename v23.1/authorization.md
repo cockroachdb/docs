@@ -1,5 +1,5 @@
 ---
-title: Managing SQL User Authorization
+title: Managing Cluster User Authorization
 summary: Learn procedures for managing the life cycle of SQL users and roles.
 toc: true
 docs_area: manage

@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.db }} has a two-level authorization model: users have permissions within organizations, and on specific clusters within organizations.
+{{ site.data.products.db }} has a two-level authorization model: users have permissions within organizations, and on specific database clusters within organizations.
 
-Before proceding, it is suggested to review this authorization model, which is detailed in full here: [Authorization in {{ site.data.products.db }}](authorization.html)
+Before proceding, it is recommended to review the {{ site.data.products.db }} authorization model, which is detailed in full here: [Authorization in {{ site.data.products.db }}](authorization.html)
 
 This page documents procedures for managing the life cycle of CockroachDB Cloud users and roles, including:
 
@@ -15,7 +15,6 @@ This page documents procedures for managing the life cycle of CockroachDB Cloud 
 - managing organization-level users roles
 - granting organization users access to clusters through cluster roles
 - managing the privileges associated with cluster roles
-
 
 {{ site.data.products.db }} requires you to create SQL users to access the cluster.
 
