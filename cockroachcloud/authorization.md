@@ -9,7 +9,7 @@ docs_area: manage
 
 In CockroachDB Cloud, an *Organization* corresponds to a an authorization hierarchy rooted in a billing account. All database clusters in {{ site.data.products.db }} belong within an organization. The user of the billing account can create or invite other CockroachDB Cloud users to the organization. 
 
-Authorized users (with an `admin` or `cluster creator` role) can create clusters in their organization, create SQL users/roles on those clusters, and grant access to those users/roles by managing the associated credentials or single sign-on (SSO) authentication flows.
+Authorized organization users (with an Cluster Admin or Cluster Creator role) can create clusters in their organization, create SQL users/roles on those clusters, and grant access to those users/roles by managing the associated credentials or single sign-on (SSO) authentication flows.
 
 See:
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
