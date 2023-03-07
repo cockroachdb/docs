@@ -50,9 +50,9 @@
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "{{ page.title }}",
+    "headline": "{{ page.title | replace: '"', '\"' }}",
     "image": "{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}",
-    {% if page.summary %}"description": "{{ page.summary | strip_html | strip_newlines | truncate: 160 }}",{% endif %}
+    {% if page.summary %}"description": "{{ page.summary | strip_html | strip_newlines | truncate: 160 | replace: '"', '\"' }}",{% endif %}
     "author": {
         "@type": "Organization",
         "name": "Cockroach Labs Documentation Team",
