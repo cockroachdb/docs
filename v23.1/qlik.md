@@ -17,6 +17,20 @@ This page describes the Qlik Replicate functionality at a high level. For detail
 Complete the following items before using Qlik Replicate:
 
 - Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](../releases/index.html), and have created a [SQL user](security-reference/authorization.html#sql-users) that you can use for your Qlik Replicate target endpoint.
+    - Set the following session variables using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        ALTER ROLE {username} SET copy_from_retries_enabled = true;
+        ~~~
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ sql
+        ALTER ROLE {username} SET copy_from_atomic_enabled = false;
+        ~~~
+
+        This prevents a potential issue when migrating especially large tables with millions of rows.
+
 - If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#migrate-and-replicate-data-to-cockroachdb), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
     {{site.data.alerts.callout_danger}}
     You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you verify in Monitor view that the migration succeeded, you should re-enable revision history.
