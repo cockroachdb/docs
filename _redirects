@@ -25,10 +25,16 @@ layout: null
 /docs/v21.2/migrate-from-oracle.html /docs/v21.2/migration-overview.html 302
 
 # Renamed pages
-/docs/v22.1/experimental-features.html /docs/v22.1/features-in-preview.html 301
-/docs/v22.2/experimental-features.html /docs/v22.2/features-in-preview.html 301
-/docs/stable/experimental-features.html /docs/stable/features-in-preview.html 301
-/docs/dev/experimental-features.html /docs/dev/features-in-preview.html 301
+/docs/v22.1/experimental-features.html /docs/v22.1/cockroachdb-feature-availability.html 301
+/docs/v22.2/experimental-features.html /docs/v22.2/cockroachdb-feature-availability.html 301
+/docs/stable/experimental-features.html /docs/stable/cockroachdb-feature-availability.html 301
+/docs/dev/experimental-features.html /docs/dev/cockroachdb-feature-availability.html 301
+/docs/v23.1/experimental-features.html /docs/v23.1/cockroachdb-feature-availability.html 301
+/docs/v22.1/features-in-preview.html /docs/v22.1/cockroachdb-feature-availability.html 301
+/docs/v22.2/features-in-preview.html /docs/v22.2/cockroachdb-feature-availability.html 301
+/docs/stable/experimental-features.html /docs/stable/cockroachdb-feature-availability.html 301
+/docs/dev/features-in-preview.html /docs/dev/cockroachdb-feature-availability.html 301
+/docs/v23.1/features-in-preview.html /docs/v23.1/cockroachdb-feature-availability.html 301
 /docs/install-client-drivers.html /docs/stable/install-client-drivers.html 301
 /docs/stable/operate-cockroachdb-kubernetes /docs/stable/kubernetes-overview.html 301
 /docs/stable/operate-cockroachdb-kubernetes.html /docs/stable/kubernetes-overview.html 301
@@ -382,11 +388,19 @@ layout: null
 /docs/cockroachcloud/migrate-from-free-to-dedicated /docs/cockroachcloud/migrate-from-serverless-to-dedicated.html 301
 /docs/cockroachcloud/free-faqs /docs/cockroachcloud/serverless-faqs.html 301
 /docs/v22.2/use-cloud-storage-for-bulk-operations.html /docs/v22.2/use-cloud-storage.html 301
-/docs/v23.1/use-cloud-storage-for-bulk-operations.html /docs/v23.1/use-cloud-storage.html 301
 /docs/stable/use-cloud-storage-for-bulk-operations.html /docs/stable/use-cloud-storage.html 301
 /docs/dev/use-cloud-storage-for-bulk-operations.html /docs/dev/use-cloud-storage.html 301
+/docs/v23.1/use-cloud-storage-for-bulk-operations.html /docs/v23.1/use-cloud-storage.html 301
 /docs/cockroachcloud/run-bulk-operations.html /docs/cockroachcloud/take-and-restore-customer-owned-backups.html 301
 /docs/cockroachcloud/backups-page.html /docs/cockroachcloud/use-managed-service-backups.html 301
+/docs/v22.2/use-userfile-for-bulk-operations.html /docs/v22.2/use-userfile-storage.html 301
+/docs/stable/use-userfile-for-bulk-operations.html /docs/stable/use-userfile-storage.html 301
+/docs/dev/use-userfile-for-bulk-operations.html /docs/dev/use-userfile-storage.html 301
+/docs/v23.1/use-userfile-for-bulk-operations.html /docs/v23.1/use-userfile-storage.html 301
+/docs/v22.2/use-a-local-file-server-for-bulk-operations.html /docs/v22.2/use-a-local-file-server.html 301
+/docs/stable/use-a-local-file-server-for-bulk-operations.html /docs/stable/use-a-local-file-server.html 301
+/docs/dev/use-a-local-file-server-for-bulk-operations.html /docs/dev/use-a-local-file-server.html 301
+/docs/v23.1/use-a-local-file-server-for-bulk-operations.html /docs/v23.1/use-a-local-file-server.html 301
 
 # Removed pages
 /docs/dev/add-column.html /docs/dev/alter-table.html#add-column 301

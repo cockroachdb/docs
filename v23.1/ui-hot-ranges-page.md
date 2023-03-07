@@ -6,7 +6,7 @@ docs_area: reference.db_console
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by a SQL user with the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` role option.
+On a secure cluster, this area of the DB Console can only be accessed by users belonging to the `admin` role or a SQL user with the `VIEWCLUSTERMETADATA` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](security-reference/authorization.html#role-options)) defined. The `VIEWACTIVITY` and `VIEWACTIVITYREDACTED` [system privileges](security-reference/authorization.html#supported-privileges) **do not** grant access to this page.
 {{site.data.alerts.end}}
 
 The **Hot Ranges** page of the DB Console provides details about ranges receiving a high number of reads or writes. These are known as *hot ranges*.

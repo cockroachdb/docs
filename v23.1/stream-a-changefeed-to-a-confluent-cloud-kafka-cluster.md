@@ -23,7 +23,7 @@ You will need the following set up before starting this tutorial:
 
 - A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page. 
 - A Confluent Cloud account. See Confluent's [Get started](https://www.confluent.io/get-started/) page for details.
-- The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
+- The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. This tutorial uses v3.3.0 of the Confluent CLI. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
 
 This tutorial uses the Cockroach Labs [`movr`](movr.html) workload as an example database.
 
@@ -204,9 +204,9 @@ Run the following command to create a consumer:
 confluent kafka topic consume users \
  --value-format avro \
  --from-beginning \
- --sr-endpoint {SCHEMA REGISTRY ENDPOINT URL} \
- --sr-api-key {SCHEMA REGISTRY API KEY} \
- --sr-api-secret {SCHEMA REGISTRY SECRET}
+ --schema-registry-endpoint {SCHEMA REGISTRY ENDPOINT URL} \
+ --schema-registry-api-key {SCHEMA REGISTRY API KEY} \
+ --schema-registry-api-secret {SCHEMA REGISTRY SECRET}
 ~~~
 
 In this command, you need to pass the following Schema Registry details:

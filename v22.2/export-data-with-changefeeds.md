@@ -14,11 +14,6 @@ The benefits of using changefeeds for this function compared to an export, inclu
 - [Changefeed sinks](changefeed-sinks.html) provide additional endpoints to send your data.
 - You can use the [`format=csv`](create-changefeed.html#format) option with `initial_scan= 'only'` to emit messages in CSV format.
 
-Although this option offers an alternative way to export data out of your database, it is necessary to consider the following when you use [`CREATE CHANGEFEED`](create-changefeed.html) instead of [`EXPORT`](export.html):
-
-- Changefeeds do not offer any [filtering capabilities](export.html#export-using-a-select-statement).
-- Changefeeds can emit [duplicate messages](changefeed-messages.html#ordering-guarantees).
-
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
 ## Example
