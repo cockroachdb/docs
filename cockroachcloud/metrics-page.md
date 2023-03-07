@@ -20,19 +20,19 @@ On the **Monitor SQL Activity** tab, you can view the following time series grap
 
 ### Open SQL Transactions
 
-The graph shows the total number of open SQL transactions across the cluster.
+The graph shows the total number of open [SQL transactions](../stable/transactions.html) across the cluster.
 
 See the [**Transactions** page](transactions-page.html) for more details on the transactions.
 
 ### SQL Statements
 
-- The graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements per second issued by SQL clients on the cluster.
+- The graph shows a moving average of the number of [`SELECT`](../stable/selection-queries.html)/[`INSERT`](../stable/insert.html)/[`UPDATE`](../stable/update.html)/[`DELETE`](../stable/delete.html) statements per second issued by SQL clients on the cluster.
 
 See the [**Statements** page](statements-page.html) for more details on the statements.
 
 ### SQL Statement Latency
 
-SQL statement latency is calculated as the total time in ms a [statement](../{{site.versions["stable"]}}/sql-statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issues on the cluster.
+SQL statement latency is calculated as the total time in nanoseconds a [statement](../{{site.versions["stable"]}}/sql-statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issues on the cluster.
 
 ### SQL Open Sessions
 
@@ -46,7 +46,7 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 
 ### SQL Connection Attempts
 
-This graph shows the total number of new SQL connection attempts for the cluster.
+This graph shows a moving average of new SQL connection attempts to the cluster per second.
 
 ## Identify SQL Problems
 
@@ -60,21 +60,19 @@ See the [Transaction Retry Error Reference](../{{site.versions["stable"]}}/trans
 
 ### SQL Statement Errors
 
-This graph shows the 10-second average of the number of SQL statements that returned a [planning](../{{site.versions["stable"]}}/architecture/sql-layer.html#sql-parser-planner-executor), [runtime](../{{site.versions["stable"]}}/architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](../{{site.versions["stable"]}}/transactions.html#error-handling) across all nodes.
+This graph shows a moving average of the number of SQL statements that returned a [planning](../stable/architecture/sql-layer.html#sql-parser-planner-executor), [runtime](../stable/architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](../stable/transactions.html#error-handling) across all nodes.
 
 See the [Statements page](statements-page.html) for more details on the cluster's SQL statements.
 
 ### SQL Statement Full Scans 
 
-This graph shows the total number of full table and index scans across all nodes in the cluster.
+This graph shows a moving average of the number of statements with full table and index scans across all nodes in the cluster.
 
-[Examine the statements](../{{site.versions["stable"]}}/sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](../{{site.versions["stable"]}}/schema-design-indexes.html#create-a-secondary-index).
+[Examine the statements](../stable/sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](../stable/schema-design-indexes.html#create-a-secondary-index).
 
 ### SQL Statement Contention 
 
-This graph shows the total number of SQL statements that experienced [contention](../{{site.versions["stable"]}}/transactions.html#transaction-contention) across the cluster.
-
-The statement contention metric is a counter that represents the number of statements that have experienced contention. If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+This graph shows a moving average of the number of SQL statements that experienced [contention](../{{site.versions["stable"]}}/transactions.html#transaction-contention) across the cluster.
 
 See the [Statements page](statements-page.html) for more details on the cluster's SQL statements.
 
