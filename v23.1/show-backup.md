@@ -158,7 +158,7 @@ system        | public             | role_members               | table       | 
 To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
 
 {{site.data.alerts.callout_info}}
-`SHOW BACKUP` can display backups taken with the `incremental_location` option **or** for [locality-aware backups](take-and-restore-locality-aware-backups.html), but not for locality-aware backups taken with the `incremental_location` option.
+`SHOW BACKUP` can display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
 {{site.data.alerts.end}}
 
 You can use the option to show the most recent backup where `incremental_location` has stored the backup:
@@ -194,8 +194,9 @@ movr          | public             | vehicles                   | table       | 
 
 To view a [locality-aware backup](take-and-restore-locality-aware-backups.html), pass locality-aware backup URIs to `SHOW BACKUP`:
 
+{% include_cached new-in.html version="v23.1.0" %}
 {{site.data.alerts.callout_info}}
-`SHOW BACKUP` can display backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option **or** for locality-aware backups, but not for locality-aware backups taken with the `incremental_location` option.
+`SHOW BACKUP` can display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

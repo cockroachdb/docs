@@ -195,7 +195,7 @@ movr          | public             | vehicles                   | table       | 
 To view a [locality-aware backup](take-and-restore-locality-aware-backups.html), pass locality-aware backup URIs to `SHOW BACKUP`:
 
 {{site.data.alerts.callout_info}}
-`SHOW BACKUP` can display backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option **or** for locality-aware backups, but not for locality-aware backups taken with the `incremental_location` option.
+`SHOW BACKUP` cannot display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
