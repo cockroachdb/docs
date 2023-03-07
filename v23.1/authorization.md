@@ -1,10 +1,13 @@
 ---
-title: Authorization
-summary: Learn about the authorization features for secure CockroachDB clusters.
+title: Managing SQL User Authorization
+summary: Learn procedures for managing the life cycle of SQL users and roles.
 toc: true
 docs_area: manage
 ---
 
+This page documents procedures for managing the life cycle of SQL users and roles on CockroachDB clusters.
+
+For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization](security-reference/authorization.html).
 ## Create CockroachDB users
 
 Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
