@@ -13,7 +13,7 @@ Authorized organization users (with an Cluster Admin or Cluster Creator role) ca
 
 See:
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
-- [Managing Cluster User Authorization]((../{{site.versions["stable"]}}/authorization.html))
+- [Managing Cluster User Authorization]((../{{site.versions["dev"]}}/authorization.html))
 
 ## Organization user roles
 
