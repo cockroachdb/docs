@@ -157,10 +157,6 @@ system        | public             | role_members               | table       | 
 
 To view an incremental backup that was taken with the `incremental_location` option, run `SHOW BACKUP` with the full backup and incremental backup location following the original `BACKUP` statement.
 
-{{site.data.alerts.callout_info}}
-`SHOW BACKUP` can display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
-{{site.data.alerts.end}}
-
 You can use the option to show the most recent backup where `incremental_location` has stored the backup:
 
 {% include_cached copy-clipboard.html %}
@@ -193,11 +189,6 @@ movr          | public             | vehicles                   | table       | 
 ### Show a locality-aware backup
 
 To view a [locality-aware backup](take-and-restore-locality-aware-backups.html), pass locality-aware backup URIs to `SHOW BACKUP`:
-
-{% include_cached new-in.html version="v23.1.0" %}
-{{site.data.alerts.callout_info}}
-`SHOW BACKUP` can display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
-{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -408,10 +399,6 @@ WITH x AS (SHOW BACKUP FROM '/2021/11/15-150703.21' IN 's3://{bucket name}?AWS_A
   data/710798326337404929.sst
   data/710798326337404929.sst
 ~~~
-
-## Known limitations
-
-- {% include {{ page.version.version }}/known-limitations/show-backup-locality-incremental-location.md %}
 
 ## See also
 
