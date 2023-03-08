@@ -86,7 +86,7 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 ### View a list of the available full backup subdirectories
 
-<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
+<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command: 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -102,6 +102,21 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 ~~~
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
+
+To view a list of [locality-aware backups](take-and-restore-locality-aware-backups.html), pass the `default` location in the [collection URI](backup.html#backup-file-urls):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUPS IN 's3://{bucket name}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=default';
+~~~
+
+~~~
+        path
+-------------------------
+/2023/02/23-150925.62
+/2023/03/08-192859.44
+(2 rows)
+~~~
 
 ### Show the most recent backup
 
