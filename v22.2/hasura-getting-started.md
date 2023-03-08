@@ -34,7 +34,8 @@ Before you start this tutorial, you need:
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 1. In the [CockroachDB Cloud console](https://cockroachlabs.cloud/clusters), select your cluster and click **Connect**.
-1. Select the SQL user you want to use for the Hasura Cloud connection under **Select SQL user**. If you have not set up a SQL user for this cluster, follow the instructions to create a new SQL user. Be sure to copy and save the password to a secure location.
+1. Select the SQL user you want to use for the Hasura Cloud connection under **Select SQL user**.
+1. If you have not set up a SQL user for this cluster, follow the instructions to create a new SQL user. Be sure to copy and save the password to a secure location.
 1. Select **General connection string**.
 1. Expand **Download CA Cert (Required only once)**
 1. Select your operating system under **Select operating system** and then in a terminal run the command to download the certificate.
