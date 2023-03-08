@@ -158,7 +158,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
 
 To enable metrics export for your {{ site.data.products.dedicated }} cluster to Datadog, you can either enable the Datadog integration in your {{ site.data.products.dedicated }} Cloud Console, or on the command line via the [Cloud API](cloud-api.html):
 
-- To enable metrics export to Datadog using the Cloud Console, follow the [Monitor {{ site.data.products.dedicated }} with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) instructions.
+- To enable metrics export to Datadog using the Cloud Console, follow the [Monitor {{ site.data.products.dedicated }} with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog) instructions.
 - To enable metrics export to Datadog using the [Cloud API](cloud-api.html), follow the steps below.
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
