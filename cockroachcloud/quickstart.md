@@ -67,11 +67,15 @@ The `ccloud quickstart` command guides you through logging in to CockroachDB Clo
 
     If you are new to {{ site.data.products.db }}, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
 
-1. In your terminal, follow the `ccloud quickstart` prompts to choose a cluster name, cloud provider, and cloud provider region, and then connect to the cluster. 
+1. In your terminal, follow the `ccloud quickstart` prompts to choose a cluster name, cloud provider, and cloud provider region, and then create the cluster.
 
     Each prompt has default values that you can select, or change if you want a different option.
 
-1. From the list of available connection options, select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`:
+1. Once your cluster has been created, follow the prompts in your terminal to connect to your cluster.
+    
+    You will have to create a SQL user and password, but you can use the default values for the database name and CA certificate path.
+
+1. From the list of available connection options, select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting with `postgresql://`:
 
     ~~~
     ? How would you like to connect? General connection string
