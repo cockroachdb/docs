@@ -37,7 +37,7 @@
                       "urls": [
                         "/cockroachcloud/learn-about-request-units.html"
                       ]
-                    },                                    
+                    },
                     {
                       "title": "Optimize Your CockroachDB Serverless Workload",
                       "urls": [
@@ -45,7 +45,7 @@
                       ]
                     }
                   ]
-                },  
+                },
                 {
                   "title": "Create a CockroachDB Serverless Cluster",
                   "urls": [
@@ -97,6 +97,7 @@
                     "/${VERSION}/install-cockroachdb.html",
                     "/${VERSION}/install-cockroachdb-mac.html",
                     "/${VERSION}/install-cockroachdb-linux.html",
+                    "/${VERSION}/fips-compliance.html",
                     "/${VERSION}/install-cockroachdb-windows.html"
                   ]
                 },
