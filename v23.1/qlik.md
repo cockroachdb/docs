@@ -17,7 +17,7 @@ This page describes the Qlik Replicate functionality at a high level. For detail
 Complete the following items before using Qlik Replicate:
 
 - Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](../releases/index.html), and have created a [SQL user](security-reference/authorization.html#sql-users) that you can use for your Qlik Replicate target endpoint.
-    - Set the following session variables using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+    - Set the following [session variables](set-vars.html#supported-variables) using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
@@ -31,9 +31,9 @@ Complete the following items before using Qlik Replicate:
 
         This prevents a potential issue when migrating especially large tables with millions of rows.
 
-- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#migrate-and-replicate-data-to-cockroachdb), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#migrate-and-replicate-data-to-cockroachdb), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for the migration to succeed.
     {{site.data.alerts.callout_danger}}
-    You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you verify in Monitor view that the migration succeeded, you should re-enable revision history.
+    You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you verify in the Qlik Replicate Monitor view that the migration succeeded, you should re-enable revision history.
     {{site.data.alerts.end}}
 
     - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](alter-backup-schedule.html) for each backup schedule.
@@ -47,7 +47,7 @@ Complete the following items before using Qlik Replicate:
 
 ## Migrate and replicate data to CockroachDB
 
-You can use Qlik Replicate to migrate tables from a source database to CockroachDB. This can comprise an initial load that copies the selected schemas and their data from the source database to CockroachDB, followed by continuous replication of ongoing changes using change data capture (CDC).
+You can use Qlik Replicate to migrate tables from a source database to CockroachDB. This can comprise an initial load that copies the selected schemas and their data from the source database to CockroachDB, followed by continuous replication of ongoing changes using Qlik change data capture (CDC).
 
 In the Qlik Replicate interface, the source database is configured as a **source endpoint** with the appropriate dialect, and CockroachDB is configured as a PostgreSQL **target endpoint**. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster](connect-to-the-database.html).
 
