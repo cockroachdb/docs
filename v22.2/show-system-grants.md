@@ -31,7 +31,7 @@ The `SHOW SYSTEM GRANTS` statement returns the following fields:
 Field            | Description
 -----------------|-----------------------------------------------------------------------------------------------------
 `grantee`  | The name of the user.
-`privilege`  | The name of the [system privilege](security-reference/authorization.html#supported-privileges) granted to the user.
+`privilege_type`  | The name of the [system privilege](security-reference/authorization.html#supported-privileges) granted to the user.
 `is_grantable`   | `t` (true) if the user has the grant option on the object; `f` (false) if not.
 
 ## Required privileges
@@ -50,7 +50,7 @@ To list all system grants for all users and roles:
 ~~~
 
 ~~~
-  grantee |      privilege       | is_grantable
+  grantee |    privilege_type    | is_grantable
 ----------+----------------------+---------------
   max     | VIEWACTIVITY         |      t
   max     | VIEWCLUSTERMETADATA  |      t
@@ -80,9 +80,9 @@ To list all system grants for a specific user or role:
 ~~~
 
 ~~~
-  grantee | privilege | is_grantable
-----------+-----------+---------------
-  max     | ALL       |      t
+  grantee | privilege_type | is_grantable
+----------+----------------+---------------
+  max     | ALL            |      t
 (1 row)
 ~~~
 

@@ -52,7 +52,7 @@ Field            | Description
 `schema_name`    | The name of the schema.
 `table_name`     | The name of the table.
 `type_name`      | The name of the user-defined type.
-`name`           | The name of the external connection.
+`connection_name`| The name of the external connection.
 `grantee`        | The name of the user or role that was granted the [privilege](security-reference/authorization.html#managing-privileges).
 `privilege_type` | The name of the privilege.
 `is_grantable`   | `TRUE` if the grantee has the grant option on the object; `FALSE` if not.
@@ -359,13 +359,13 @@ SHOW GRANTS ON EXTERNAL CONNECTION my_backup_bucket;
 ~~~
 
 ~~~
-  name              |  grantee  | privilege | grantable
---------------------+-----------+-----------+------------
-  my_backup_bucket  | alice     | DROP      |     t
-  my_backup_bucket  | alice     | USAGE     |     t
-  my_backup_bucket  | max       | DROP      |     f
-  my_backup_bucket  | max       | USAGE     |     f
-  my_backup_bucket  | root      | ALL       |     f
+  connection_name   |  grantee  | privilege_type | is_grantable
+--------------------+-----------+----------------+-------------
+  my_backup_bucket  | alice     | DROP           |     t
+  my_backup_bucket  | alice     | USAGE          |     t
+  my_backup_bucket  | max       | DROP           |     f
+  my_backup_bucket  | max       | USAGE          |     f
+  my_backup_bucket  | root      | ALL            |     f
 (5 rows)
 ~~~
 
@@ -379,10 +379,10 @@ SHOW GRANTS ON EXTERNAL CONNECTION my_backup_bucket FOR alice;
 ~~~
 
 ~~~
-  name              |  grantee  | privilege | grantable
---------------------+-----------+-----------+------------
-  my_backup_bucket  | alice     | DROP      |     t
-  my_backup_bucket  | alice     | USAGE     |     t
+  connection_name   |  grantee  | privilege_type | is_grantable
+--------------------+-----------+----------------+-------------
+  my_backup_bucket  | alice     | DROP           |     t
+  my_backup_bucket  | alice     | USAGE          |     t
 (2 rows)
 ~~~
 
