@@ -429,6 +429,12 @@
               ]
             },
             {
+              "title": "Metrics Page",
+              "urls": [
+                "/cockroachcloud/metrics-page.html"
+              ]
+            },
+            {
               "title": "Statements Page",
               "urls": [
                 "/cockroachcloud/statements-page.html"
