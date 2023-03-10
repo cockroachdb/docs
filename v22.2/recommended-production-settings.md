@@ -343,6 +343,8 @@ Each node has a default SQL memory size of `25%`. This memory is used as-needed 
     SQL memory size applies a limit globally to all sessions at any point in time. Certain disk-spilling operations also respect a memory limit that applies locally to a single operation within a single query. This limit is configured via a separate cluster setting. For details, see [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
     {{site.data.alerts.end}}
 
+    If a node runs out of its allocated SQL memory, a `memory budget exceeded` error occurs and the `cockroach` process may be at risk of crashing due to an out-of-memory (OOM) error. To mitigate this issue, refer to [Memory Budget Exceeded](common-errors.html#memory-budget-exceeded).
+
 To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags. As long as all machines are [provisioned with sufficient RAM](#memory), you can experiment with increasing each value up to `35%`.
 
 {% include_cached copy-clipboard.html %}
@@ -353,7 +355,7 @@ $ cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
 
-Because CockroachDB manages its own memory caches, disable Linux memory swapping to avoid over-allocating memory.
+Because CockroachDB manages its own memory caches, disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory.
 {{site.data.alerts.end}}
 
 ## Dependencies
