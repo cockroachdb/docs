@@ -32,17 +32,17 @@ See the [**Statements** page](statements-page.html) for more details on the stat
 
 ### SQL Statement Latency
 
-SQL statement latency is calculated as the total time in nanoseconds a [statement](../{{site.versions["stable"]}}/sql-statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issues on the cluster.
+SQL statement latency is calculated as the total time in nanoseconds a [statement](../{{site.versions["stable"]}}/sql-statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issued on the cluster.
 
 ### SQL Open Sessions
 
-This graph shows the total number of SQL client connections across the cluster.
+This graph shows the total number of SQL [client connections](../{{site.versions["stable"]}}/show-sessions.html) across the cluster.
 
 See the [**Sessions** page](sessions-page.html) for more details on the sessions.
 
 ### SQL Connection Latency
 
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication. This graph shows the p90-p99.99 latencies for SQL connections to the cluster.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including [authentication](authentication.html). This graph shows the p90-p99.99 latencies for [SQL connections](../{{site.versions["stable"]}}/show-sessions.html) to the cluster.
 
 ### SQL Connection Attempts
 
@@ -54,7 +54,7 @@ On the **Identify SQL Problems** tab, you can view the following time series gra
 
 ### Transaction Restarts
 
-This graph shows the number of transactions restarted across the cluster.
+This graph shows the number of [transactions restarted](../{{site.versions["stable"]}}/common-errors.html#restart-transaction) across the cluster.
 
 See the [Transaction Retry Error Reference](../{{site.versions["stable"]}}/transaction-retry-error-reference.html) for details on the errors that caused the transaction to restart.
 
@@ -66,7 +66,7 @@ See the [Statements page](statements-page.html) for more details on the cluster'
 
 ### SQL Statement Full Scans 
 
-This graph shows a moving average of the number of statements with full table and index scans across all nodes in the cluster.
+This graph shows a moving average of the number of statements with [full table and index scans](../{{site.versions["stable"]}}/show-full-table-scans.html) across all nodes in the cluster.
 
 [Examine the statements](../{{site.versions["stable"]}}/sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](../{{site.versions["stable"]}}/schema-design-indexes.html#create-a-secondary-index).
 
