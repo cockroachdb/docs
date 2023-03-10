@@ -147,6 +147,7 @@ release_info:
     start_time: 2023-03-06 10:55:32.149776 +0000 UTC
     version: v23.1.0-alpha.5
 sass:
+  quiet_deps: true
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
