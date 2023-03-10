@@ -15,6 +15,8 @@ You can validate a [cluster](backup.html#backup-a-cluster), [database](backup.ht
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Validate backup files 
 
 Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST and metadata files](backup-architecture.html) that belong to a backup are present in the storage location.

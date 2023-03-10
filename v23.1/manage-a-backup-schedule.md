@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include {{ page.version.version }}/backups/feature-availability-note.md %}
-
  You can create schedules in CockroachDB for periodic backups. Once a [backup schedule is created](#create-a-new-backup-schedule), you can do the following:
 
 - [Set up monitoring for the backup schedule](#set-up-monitoring-for-the-backup-schedule)
@@ -16,6 +14,8 @@ docs_area: manage
 - [Restore from a scheduled backup](#restore-from-a-scheduled-backup)
 
 For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
+
+{% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Create a new backup schedule
 

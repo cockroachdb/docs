@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include {{ page.version.version }}/backups/feature-availability-note.md %}
-
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
 
 There are two main types of backups:
@@ -19,6 +17,8 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
+{% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Backup collections
 

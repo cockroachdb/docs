@@ -5,8 +5,6 @@ toc: true
 docs_area: manage
 ---
 
-{% include {{ page.version.version }}/backups/feature-availability-note.md %}
-
 {{site.data.alerts.callout_info}}
 [`BACKUP`](backup.html) with revision history is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
@@ -21,6 +19,8 @@ You can create full or incremental backups [with revision history](backup.html#w
 You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html). Taking backups with revision history allows for point-in-time restores within the revision history. 
 
 {% include {{ page.version.version }}/backups/pts-schedules-incremental.md %}
+
+{% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Create a backup with revision history
 
