@@ -38,4 +38,4 @@ When searching for history entries, the following shortcuts are active:
 
 #### Tab completion
 
-The SQL client offers context-sensitive tab completion when entering commands. Use the Tab key on your keyboard when entering a command to initiate the command completion interface. You can then navigate to database objects, keywords, and functions using the arrow keys. Press the Tab key again to select the object, function, or keyword from the command completion interface and return to the console.
+The SQL client offers context-sensitive tab completion when entering commands. Use the **Tab** key on your keyboard when entering a command to initiate the command completion interface. You can then navigate to database objects, keywords, and functions using the arrow keys. Press the **Tab** key again to select the object, function, or keyword from the command completion interface and return to the console.
