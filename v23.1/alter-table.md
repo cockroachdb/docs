@@ -437,7 +437,7 @@ For usage, see [Synopsis](#synopsis).
 {{site.data.alerts.callout_info}}
 `ALTER TABLE ... RENAME TO` cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](#set-schema).
 
-`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`](backup.html#backup-a-table-or-view) and [`RESTORE`](restore.html#restore-a-table).
+`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`](backup.html#back-up-a-table-or-view) and [`RESTORE`](restore.html#restore-a-table).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

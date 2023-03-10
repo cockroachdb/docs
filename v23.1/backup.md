@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
-You can [backup a full cluster](#backup-a-cluster), which includes:
+You can [backup a full cluster](#back-up-a-cluster), which includes:
 
 - Relevant system tables
 - All [databases](create-database.html)
@@ -17,8 +17,8 @@ You can [backup a full cluster](#backup-a-cluster), which includes:
 
 You can also backup:
 
-- [An individual database](#backup-a-database), which includes all of its tables and views.
-- [An individual table](#backup-a-table-or-view), which includes its indexes and views.
+- [An individual database](#back-up-a-database), which includes all of its tables and views.
+- [An individual table](#back-up-a-table-or-view), which includes its indexes and views.
 
     `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
@@ -33,8 +33,8 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 ## Considerations
 
 - Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/use-managed-service-backups.html).
-- Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
-- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#back-up-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
+- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter.
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
@@ -88,9 +88,9 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 
 Target                             | Description
 -----------------------------------+-------------------------------------------------------------------------
-N/A                                | Backup the cluster. For an example of a full cluster backup, [see Backup a cluster](#backup-a-cluster).
-`DATABASE {database_name} [, ...]` | The name of the database(s) you want to backup (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#backup-a-database).
-`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to backup. For an example of backing up a table or view, see [Backup a table or view](#backup-a-table-or-view).
+N/A                                | Backup the cluster. For an example of a full cluster backup, [see Backup a cluster](#back-up-a-cluster).
+`DATABASE {database_name} [, ...]` | The name of the database(s) you want to backup (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#back-up-a-database).
+`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to backup. For an example of backing up a table or view, see [Backup a table or view](#back-up-a-table-or-view).
 
 ### Options
 
@@ -201,7 +201,7 @@ The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in 
 We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
 {{site.data.alerts.end}}
 
-### Backup a cluster
+### Back up a cluster
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
@@ -210,7 +210,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup a database
+### Back up a database
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
@@ -226,7 +226,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 BACKUP DATABASE bank, employees INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup a table or view
+### Back up a table or view
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
@@ -242,7 +242,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup all tables in a schema
+### Back up all tables in a schema
 
  To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
 
@@ -309,6 +309,36 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
+
+### Restrict nodes executing a backup job by locality
+
+{% include_cached new-in.html version="v23.1" %} Use the `EXECUTION LOCALITY` option to set locality filter requirements that a node must meet in order to take part in executing a backup job. This will pin the [coordination of the backup job](backup-architecture.html#job-creation-phase) and the nodes that process the row data to the defined locality.
+
+When you start or [resume](resume-job.html) a backup with `EXECUTION LOCALITY`, it is necessary to determine the coordinating node for the job. If a node that does not match the locality filter is the first node to claim the job, it will find a node that does match the filter and transfer the execution to it. This can result in a short delay in starting or resuming a backup job that has execution locality requirements. 
+
+Once the coordinating node is determined, it will assign chunks of row data to nodes that are then responsible for reading that row data and backing it up. The coordinator will only assign row data to nodes that match the locality filter. The following will happen in different cases:
+
+- If the [leaseholder](architecture/reads-and-writes-overview.html#architecture-leaseholder) for part of the row data matches the filter, the coordinator will assign it that row data to process. 
+- If the leaseholder does not match the locality filter, the coordinator will select a node from those that match the locality filter with a preference for nodes with localities that are more similar to the leaseholder.
+
+When the coordinator assigns row data to a node matching the locality filter to back up, that node will read from the closest [replica](architecture/reads-and-writes-overview.html#architecture-replica). If the node is the leaseholder, or is itself a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas](configure-replication-zones.html), including potentially non-voting replicas that will have less impact on read latency in the locality or region that you plan on pinning for backup job execution.
+
+For an overview of the backup job phases, see the [Backup Architecture](backup-architecture.html) page.
+
+To specify the locality requirements for the coordinating node, run `EXECUTION LOCALITY` with key-value pairs:
+
+~~~ sql
+BACKUP DATABASE movr INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws';
+~~~
+
+The key-value pairs represent the locality designations assigned to the [cluster](cockroach-start.html#locality).
+
+When you run `EXECUTION LOCALITY`, consider the following:
+
+- The backup job will fail if no nodes match the locality filter.
+- Selection of the coordinating node that matches the locality filter may noticeably increase the startup latency of the backup job.
+- Even though a backup job has been pinned to a locality, it does not guarantee the job will not read from another locality if there are no replicas in its locality.
+- You can not use `EXECUTION LOCALITY` in a locality-aware backup.
 
 ### Back up with an S3 storage class
 

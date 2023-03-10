@@ -12,7 +12,7 @@ This page provides an overview of the backup and restore features available in C
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
 
-You can create full or incremental backups of a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view). Taking regular backups of your data is an operational best practice.
+You can create full or incremental backups of a [cluster](backup.html#back-up-a-cluster), [database](backup.html#back-up-a-database), or [table](backup.html#back-up-a-table-or-view). Taking regular backups of your data is an operational best practice.
 
 For an explanation of how a backup works, see [Backup Architecture](backup-architecture.html).
 
@@ -35,6 +35,12 @@ Backup / Restore  | Description  | Product Support
 [Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul> 
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
+### Additional backup and restore features
+
+- [Restrict nodes executing a backup job by locality](backup.html#restrict-nodes-executing-a-backup-job-by-locality)
+- [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
+- [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups)
 
 ## Backup and restore SQL statements
 
