@@ -324,7 +324,7 @@ Read hot spots can occur if you perform lots of scans of a portion of a table in
 
 ### Find hot spots
 
-To track down the nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and [Range Report](ui-hot-ranges-page.html#range-report).
+To track down nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and the [Range Report](ui-hot-ranges-page.html#range-report). To track down ranges experiencing hot spots, use the [Key visualizer](ui-key-visualizer.html).
 
 ### Reduce hot spots
 
