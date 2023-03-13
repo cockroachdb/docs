@@ -84,12 +84,18 @@
 									}
 								]
       	    },
-      	    {
-      	      "title": "User Authorization",
-      	      "urls": [
-      		      "/cockroachcloud/user-authorization.html"
-      	      ]
-      	    },
+            {
+              "title": "Authorization in CockroachDB Cloud",
+              "urls": [
+                "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing User Authorization in CockroachDB Cloud",
+              "urls": [
+                "/cockroachcloud/user-authorization.html"
+              ]
+            },
             {
       	      "title": "Network Authorization",
       	      "urls": [
