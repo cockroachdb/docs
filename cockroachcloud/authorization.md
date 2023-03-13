@@ -12,6 +12,7 @@ In CockroachDB Cloud, an *Organization* corresponds to a an authorization hierar
 Authorized organization users (with an Cluster Admin or Cluster Creator role) can create clusters in their organization, create SQL users/roles on those clusters, and grant access to those users/roles by managing the associated credentials or single sign-on (SSO) authentication flows.
 
 See:
+
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
 - [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
 
@@ -23,12 +24,10 @@ Users may be granted two levels of access:
 
 - 'Developer' allows users to:
   - Read cluster information in the CockroachDB Cloud Console and Cloud API
-  - Be assigned SQL roles on particular database clusters
 - 'Administrator' allows users to:
+  - Create and delete organization users
   - Create, modify and delete clusters
-  - Create and delete users
-  - Grant users SQL roles on particular clusters
-  - Be assigned SQL roles on particular cluster
+  - Create and manage SQL roles on particular clusters
 
 Within a CockroachDB Cloud Organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB database nodes. All SQL operations and data storage are distributed over the cluster.
 
@@ -38,4 +37,6 @@ Each cluster also has its own set of SQL roles, which allow authenticated users 
 
 Cluster Single Sign-On (SSO) for {{ site.data.products.db }} allows authorized organization users to directly access clusters within the organization via [`ccloud`](ccloud-get-started.html), the {{ site.data.products.db }} command line interface.
 
-However, because organization roles and roles on any given SQL cluster 
+However, because organization roles and roles on any given SQL cluster are logically separate, a corresponding SQL role must be created for each SSO organization user, on each particular cluster.
+
+This correspondence lies in the SQL role name, which must be: `sso_{email_name}`, where 'email_name' refers to everything up to the '@'' in an email address. For example, the SQL user `sso_docs` would result from docs@cockroachlabs.com. `ccloud will prompt you to create this user if it does not already exist, in which case an admin must create it manually.
