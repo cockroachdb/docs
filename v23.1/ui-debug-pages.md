@@ -13,6 +13,10 @@ The **Advanced Debug** page of the DB Console provides links to advanced monitor
 These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
  {{site.data.alerts.end}}
 
+## Required privileges
+
+To view the **Advanced Debug** page, and work with the debugging and profiling endpoints hosted on this page, the user must be a member of the `admin` role or must have the `VIEWDEBUG` [system privilege](security-reference/authorization.html#supported-privileges) defined.
+
 ## License and node information
 
 On the right-side of the page, the following information is displayed:

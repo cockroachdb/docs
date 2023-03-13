@@ -15,6 +15,8 @@ docs_area: manage
 
 For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:
@@ -33,7 +35,7 @@ In this example, a schedule labeled `schedule_label` is created to take daily (i
 For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
 
 {{site.data.alerts.callout_info}}
-Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage](use-cloud-storage.html).
 {{site.data.alerts.end}}
 
 ## Set up monitoring for the backup schedule

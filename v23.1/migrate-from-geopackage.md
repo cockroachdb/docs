@@ -58,7 +58,7 @@ Warning 1: Non-conformant content for record 1 in column field_ch_1, 2017/05/04,
 
 Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations](import.html#import-file-location).
 
-For local testing, you can [start a local file server](use-a-local-file-server-for-bulk-operations.html).  The following command will start a local file server listening on port 3000:
+For local testing, you can [start a local file server](use-a-local-file-server.html).  The following command will start a local file server listening on port 3000:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

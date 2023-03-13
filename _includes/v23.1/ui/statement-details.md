@@ -90,7 +90,7 @@ The **Diagnostics** tab allows you to activate and download diagnostics for a SQ
 The **Diagnostics** tab is not visible:
 
 - On {{ site.data.products.serverless }} clusters.
-- For roles with the `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}alter-role.html#role-options).
+- For roles with the `VIEWACTIVITYREDACTED` [system privilege]({{ link_prefix }}security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITYREDACTED` [role option]({{ link_prefix }}security-reference/authorization.html#role-options)) defined.
 {{site.data.alerts.end}}
 
 When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces]({{ link_prefix }}show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger]({{ link_prefix }}query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`]({{ link_prefix }}explain-analyze.html#debug-option). You can use the information collected in the bundle to diagnose problematic SQL statements, such as [slow queries]({{ link_prefix }}query-behavior-troubleshooting.html#query-is-always-slow). We recommend that you share the diagnostics bundle with our [support team]({{ link_prefix }}support-resources.html), which can help you interpret the results.

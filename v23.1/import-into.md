@@ -5,24 +5,74 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimited data into an [existing table](create-table.html), by appending new rows into the table.
+The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimited data into an existing table by appending new rows to the table.
 
 ## Considerations
 
-- `IMPORT INTO` works for existing tables. To import data into new tables, read the following [Import into a new table from a CSV file](#import-into-a-new-table-from-a-csv-file) example.
-- `IMPORT INTO` takes the table **offline** before importing the data. The table will be online again once the job has completed successfully.
+- `IMPORT INTO` takes the table **offline** before importing the data. The table will be online again once the [job](#view-and-control-import-jobs) has completed successfully.
+- `IMPORT INTO` works with existing tables. To import data into a new table, see [Import into a new table from a CSV file](#import-into-a-new-table-from-a-csv-file).
 - `IMPORT INTO` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` is a blocking statement. To run an `IMPORT INTO` job asynchronously, use the [`DETACHED`](#options-detached) option.
-- `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](alter-table.html#validate-constraint) statement.
-- `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
-- `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
+- `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`ALTER TABLE ... VALIDATE CONSTRAINT`](alter-table.html#validate-constraint) statement.
+- `IMPORT INTO` is an insert-only statement; it cannot be used to [update](update.html) existing rows. Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
+- `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To add a subset of rows to a table, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](change-data-capture-overview.html) running on the targeted table to fail.
 - `IMPORT INTO` supports importing into [`REGIONAL BY ROW`](alter-table.html#regional-by-row) tables.
-- See the [`IMPORT`](import.html) page for guidance on importing PostgreSQL and MySQL dump files.
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
 {{site.data.alerts.end}}
+
+## Before you begin
+
+Before using `IMPORT INTO`, you should have:
+
+- An existing CockroachDB table to import into. `IMPORT INTO` supports [computed columns](computed-columns.html) and certain [`DEFAULT` expressions](#supported-default-expressions).
+
+- Sufficient capacity in the [CockroachDB store](#available-storage) for the imported data.
+
+- The CSV or Avro data you want to import, preferably hosted on cloud storage. The [import file location](#import-file-location) must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.
+
+### Supported `DEFAULT` expressions
+
+`IMPORT INTO` supports the following [`DEFAULT`](default-value.html) expressions:
+
+- `DEFAULT` expressions with [user-defined types](enum.html).
+
+- Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
+
+    - Literals (booleans, strings, integers, decimals, dates).
+    - Functions where each argument is a constant expression and the functions themselves depend solely on their arguments (e.g., arithmetic operations, boolean logical operations, string operations).
+
+- `random()`
+- `gen_random_uuid()`
+- `unique_rowid()`
+- `nextval()`
+
+- Current [`TIMESTAMP`](timestamp.html) functions that record the transaction timestamp, which include:
+
+    - `current_date()`
+    - `current_timestamp()`
+    - `localtimestamp()`
+    - `now()`
+    - `statement_timestamp()`
+    - `timeofday()`
+    - `transaction_timestamp()`
+
+### Available storage
+
+Each node in the cluster is assigned an equal part of the imported data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](cockroach-start.html#store) directory must have enough available storage to hold its portion of the data.
+
+On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
+
+### Import file location
+
+CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
+
+- [Use Cloud Storage](use-cloud-storage.html)
+- [Use a Local File Server](use-a-local-file-server.html)
+
+{% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 ## Required privileges
 
@@ -39,12 +89,12 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 - Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - Using the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command.
-- Using [HTTP](use-a-local-file-server-for-bulk-operations.html) or HTTPS.
+- Using [HTTP](use-a-local-file-server.html) or HTTPS.
 
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+- Using [`userfile`](use-userfile-storage.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -65,7 +115,7 @@ While importing into an existing table, the table is taken offline.
 Parameter | Description
 ----------|------------
 `table_name` | The name of the table you want to import into.
-`column_name` | The table columns you want to import.<br><br>Note: Currently, target columns are not enforced.
+`column_name` | The table columns you want to import.<br><br>**Note:** Currently, target columns are not enforced.
 `file_location` | The [URL](#import-file-location) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
 `<option> [= <value>]` | Control your import's behavior with [import options](#import-options).
 
@@ -73,10 +123,10 @@ Parameter | Description
 
 The `DELIMITED DATA` format can be used to import delimited data from any text file type, while ignoring characters that need to be escaped, like the following:
 
-- The file's delimiter (`\t` by default)
-- Double quotes (`"`)
-- Newline (`\n`)
-- Carriage return (`\r`)
+- The file's delimiter (`\t` by default).
+- Double quotes (`"`).
+- Newline (`\n`).
+- Carriage return (`\r`).
 
 For examples showing how to use the `DELIMITED DATA` format, see the [Examples](#import-into-an-existing-table-from-a-delimited-data-file) section below.
 
@@ -109,70 +159,7 @@ For examples showing how to use these options, see the [Examples section](import
 
 For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html).
 
-## Requirements
-
-### Before you begin
-
-Before using `IMPORT INTO`, you should have:
-
-- An existing table to import into (use [`CREATE TABLE`](create-table.html)).
-
-     `IMPORT INTO` supports [computed columns](computed-columns.html) and the [`DEFAULT` expressions listed below](#supported-default-expressions).
-
-- The CSV or Avro data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster. For more information, see the [Import file location](#import-file-location) section below.
-
-#### Supported `DEFAULT` expressions
-
-`IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
-
-- `DEFAULT` expressions with [user-defined types](enum.html).
-
-- Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
-
-    - Literals (booleans, strings, integers, decimals, dates)
-    - Functions where each argument is a constant expression and the functions themselves depend solely on their arguments (e.g., arithmetic operations, boolean logical operations, string operations).
-
-- Current [`TIMESTAMP`](timestamp.html) functions that record the transaction timestamp, which include:
-
-    - `current_date()`
-    - `current_timestamp()`
-    - `localtimestamp()`
-    - `now()`
-    - `statement_timestamp()`
-    - `timeofday()`
-    - `transaction_timestamp()`
-
-- `random()`
-- `gen_random_uuid()`
-- `unique_rowid()`
-- `nextval()`
-
-### Available storage
-
-Each node in the cluster is assigned an equal part of the imported data, and so must have enough temp space to store it. In addition, data is persisted as a normal table, and so there must also be enough space to hold the final, replicated data. The node's first-listed/default [`store`](cockroach-start.html#store) directory must have enough available storage to hold its portion of the data.
-
-On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storage`, it must also be greater than the portion of the data a node will store in temp space.
-
-### Import file location
-
-CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
-
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
-
-{% include {{ page.version.version }}/misc/external-connection-note.md %}
-
-## Performance
-
-- All nodes are used during the import job, which means all nodes' CPU and RAM will be partially consumed by the `IMPORT` task in addition to serving normal traffic.
-- To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
-- To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
-- An import job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling import jobs](#viewing-and-controlling-import-jobs) for information on resuming and showing the progress of import jobs.
-- An import job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the import has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
-
-For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
-
-## Viewing and controlling import jobs
+## View and control import jobs
 
 After CockroachDB successfully initiates an import into an existing table, it registers the import as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
 
@@ -309,7 +296,6 @@ For more information about importing data from Avro, including examples, see [Mi
 
 ## See also
 
-- [`IMPORT`](import.html)
 - [Migration Overview](migration-overview.html)
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Import Performance Best Practices](import-performance-best-practices.html)

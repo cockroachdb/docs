@@ -20,6 +20,8 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 {% include {{ page.version.version }}/backups/pts-schedules-incremental.md %}
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a backup with revision history
 
 {% include_cached copy-clipboard.html %}
@@ -27,7 +29,7 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 > BACKUP INTO '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
-For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage](use-cloud-storage.html).
 
 ## Point-in-time restore
 

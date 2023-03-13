@@ -35,9 +35,9 @@ You will need to export one CSV file per table, with the following requirements:
 
 Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`](import-into.html) can pull from, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
-- [Use Userfile for Bulk Operations](use-userfile-for-bulk-operations.html)
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
+- [Use `userfile` Storage](use-userfile-storage.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.

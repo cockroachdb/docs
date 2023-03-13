@@ -1,5 +1,5 @@
 ---
-title: Take and Restore Customer-Owned Backups 
+title: Take and Restore Customer-Owned Backups on CockroachDB Cloud
 summary: Run backups and restores from your CockroachDB Cloud cluster.
 toc: true
 docs_area: manage
@@ -44,10 +44,10 @@ For information on `userfile` commands, visit the following pages:
 <section class="filter-content" markdown="1" data-scope="cloud">
 
 {{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
+For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
 {{site.data.alerts.end}}
 
-The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
+The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage.html).
 
 {% include cockroachcloud/backup-examples.md %}
 
@@ -114,7 +114,7 @@ For more information on restoring to your cluster, read the [`RESTORE`](../{{sit
 
 ## See also
 
-- [Use Userfile for Bulk Operations](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html)
+- [Use Userfile Storage](../{{site.current_cloud_version}}/use-userfile-storage.html)
 - [Scheduled Backups](../{{site.current_cloud_version}}/manage-a-backup-schedule.html)
 - [Take Full and Incremental Backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html)
-- [Use Bulk Operations for Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage.html)

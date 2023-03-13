@@ -26,6 +26,8 @@ The locality query string parameters must be [URL-encoded](https://en.wikipedia.
 
 Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder](architecture/replication-layer.html#leases) at the time the [distributed backup flow](architecture/sql-layer.html#distsql) was planned. The locality of the node running the distributed backup flow determines where the backup files will be placed in a locality-aware backup. The node running the backup flow, and the leaseholder node of the range being backed up are usually the same, but can differ when lease transfers have occurred during the execution of the backup. The leaseholder node returns the files to the node running the backup flow (usually a local transfer), which then writes the file to the external storage location with a locality that matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a locality-aware backup
 
 For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
@@ -50,7 +52,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](re
 For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
 
 {{site.data.alerts.callout_info}}
-For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage](use-cloud-storage.html).
 {{site.data.alerts.end}}
 
 ## Show a node's locality

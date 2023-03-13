@@ -57,13 +57,16 @@ $blue-400: #0788FF;
 $blue-500: #00294D;
  
 // syntax highlighting colors
+$cl_syntax_aqua: #1bf8ec;
+$cl_syntax_blue: $blue-200;
 $cl_syntax_gray: #A2A2A2;
 $cl_syntax_gray_light: #F7F7F7;
-$cl_syntax_purple: #CEC0F2;
-$cl_syntax_blue: $blue-200;
-$cl_syntax_green: #26A5A5;
+$cl_syntax_green: $cl_green_bright;
 $cl_syntax_green_link: #54B30E;
-
+$cl_syntax_pink: #fc95ad;
+$cl_syntax_purple: #CEC0F2;
+$cl_syntax_purple_dark: #190f33;
+$cl_syntax_red: #ff4136;
 
 // 2020 styles
 

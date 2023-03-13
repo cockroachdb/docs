@@ -5,7 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 You can use external connections to specify and interact with resources that are external from CockroachDB. With `CREATE EXTERNAL CONNECTION`, you define a name for an external connection while passing the provider URI and query parameters. [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), [`EXPORT`](export.html), and [`CREATE CHANGEFEED`](create-changefeed.html) queries can interact with the defined external connection instead of a required, provider-specific URI. As a result, you can decouple the management of the external resource from the operation in which you're using them.
 
@@ -53,14 +55,14 @@ Parameter | Description
 
 Storage or sink      | Operation support               
 ---------------------+---------------------------------
-[Amazon S3](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
-[Azure Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
-[Google Cloud Storage](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
+[Azure Storage](use-cloud-storage.html) | Backups, restores, imports, exports
+[Google Cloud Storage](use-cloud-storage.html) | Backups, restores, imports, exports
 [Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format) | Encrypted backups
 [Kafka](changefeed-sinks.html#kafka) | Changefeeds
-[Nodelocal](use-cloud-storage-for-bulk-operations.html) | Backups, restores, imports, exports
-[Userfile](use-userfile-for-bulk-operations.html) | Backups, restores, imports, exports
+[Nodelocal](use-cloud-storage.html) | Backups, restores, imports, exports
+[Userfile Storage](use-userfile-storage.html) | Backups, restores, imports, exports
 
 For more information on authentication and forming the URI that an external connection will represent, see each of the links to the storage or sink pages in the table.
 

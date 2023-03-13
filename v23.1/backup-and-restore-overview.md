@@ -59,15 +59,15 @@ The following table outlines SQL statements you can use to create, configure, pa
 
 ## Backup storage
 
-We recommend taking backups to [cloud storage](use-cloud-storage-for-bulk-operations.html) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
+We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
 
-- [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
+- [Example file URLs](use-cloud-storage.html#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
 - [Authentication](cloud-storage-authentication.html) to set up authentication to a cloud storage bucket and include those credentials in the URL.
 
 For detail on additional cloud storage features CockroachDB supports:
 
-- [Object locking](use-cloud-storage-for-bulk-operations.html#object-locking) to prevent backups from being overwritten or deleted.
-- [Storage Class (AWS S3 only)](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
+- [Object locking](use-cloud-storage.html#object-locking) to prevent backups from being overwritten or deleted.
+- [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 

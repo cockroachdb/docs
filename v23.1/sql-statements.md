@@ -186,9 +186,10 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`](create-changefeed.html) | [**({{ site.data.products.enterprise }})**](enterprise-licensing.html) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink ([Kafka](changefeed-sinks.html#kafka) or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink)).
-[`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | **(Core)** Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
-[`ALTER CHANGEFEED`](alter-changefeed.html) | Modify an existing changefeed. Modifying a changefeed requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+[`CREATE CHANGEFEED`](create-changefeed.html) | [({{ site.data.products.enterprise }})](enterprise-licensing.html) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (e.g, [Kafka](changefeed-sinks.html#kafka), [cloud storage](changefeed-sinks.html#cloud-storage-sink)).
+[`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html) | [({{ site.data.products.enterprise }})](enterprise-licensing.html) Create a scheduled changefeed to export data out of CockroachDB using an initial scan. to a configurable sink (e.g, [Kafka](changefeed-sinks.html#kafka), [cloud storage](changefeed-sinks.html#cloud-storage-sink)).
+[`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | (Core) Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+[`ALTER CHANGEFEED`](alter-changefeed.html) | [({{ site.data.products.enterprise }})](enterprise-licensing.html) Modify an existing changefeed.
 
 ## External resource statements
 

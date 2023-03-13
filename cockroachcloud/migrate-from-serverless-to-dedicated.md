@@ -15,7 +15,7 @@ These instructions assume you already have the following:
 
 - A [{{ site.data.products.serverless }} cluster](quickstart.html) from which you want to migrate data.
 - A [paid {{ site.data.products.dedicated }} cluster](quickstart-trial-cluster.html). Your first paid {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
-- [Cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
+- [Cloud storage](../{{site.current_cloud_version}}/use-cloud-storage.html).
 
 ## Step 1. Export data to cloud storage
 
@@ -77,7 +77,7 @@ First, upload your {{ site.data.products.serverless }} data to a cloud storage l
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
+    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage.html).
     {{site.data.alerts.end}}
 
 ## Step 2. Import the CSV

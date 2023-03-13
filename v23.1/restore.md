@@ -72,7 +72,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+- Using [Userfile](use-userfile-storage.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -121,13 +121,13 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 
     {{site.data.alerts.callout_info}}
     HTTP storage is not supported for `BACKUP` and `RESTORE`.
     {{site.data.alerts.end}}
 
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 

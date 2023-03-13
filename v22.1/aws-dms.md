@@ -9,7 +9,9 @@ This page has instructions for setting up [AWS Database Migration Service (DMS)]
 
 For a detailed tutorial about using AWS DMS and information about specific migration tasks, see the [AWS DMS documentation site](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 For any issues related to AWS DMS, aside from its interaction with CockroachDB as a migration target, contact [AWS Support](https://aws.amazon.com/contact-us/).
 
@@ -23,7 +25,7 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v22.1.14 or later.
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](../releases/index.html).
     - If your CockroachDB cluster is running v22.1.14 or later, set the following session variable using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
@@ -33,7 +35,7 @@ Complete the following items before starting this tutorial:
 
         This prevents a potential issue when migrating especially large tables with millions of rows.
 
-- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for the migration to succeed.
     {{site.data.alerts.callout_danger}}
     You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
     {{site.data.alerts.end}}

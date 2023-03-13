@@ -186,5 +186,5 @@ The incremental backup schedule's `BACKUP` statement shows that it will read fil
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Manage a Backup Schedule](manage-a-backup-schedule.html)
 - [`BACKUP`](backup.html)
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [`CREATE EXTERNAL CONNECTION`](create-external-connection.html)
