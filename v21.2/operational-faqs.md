@@ -29,6 +29,18 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 The time-series data used in the [DB Console](ui-overview-dashboard.html) is stored within the cluster and accumulates for 10 days before it starts to be truncated. As a result, for the first 10 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you are not writing data to the cluster.
 
+CockroachDB writes about 15 KiB per second per node to the time-series database. About half of that is optimized away by the storage engine. Therefore an estimated calculation of how much data will be stored in the time-series database is:
+
+`8 KiB * 24 hours * 3600 seconds/hour * number of days`
+
+Given the 10 day accumulation period, you can expect storage per node to increase by about the following amount:
+
+`8 * 24 * 3600 * 10 = 6912000`
+
+or about 6 GiB. With on-disk compression, the actual disk usage is likely to be about 4 GiB.
+
+However, depending on your usage of time-series charts in the [DB Console](ui-overview-dashboard.html), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, see [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data)
+
 ## Can I reduce or disable the storage of time-series data?
 
 Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage-entirely).
