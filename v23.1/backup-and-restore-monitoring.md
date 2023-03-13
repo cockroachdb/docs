@@ -9,7 +9,7 @@ CockroachDB includes metrics to monitor [backup](backup.html), [restore](restore
 
 Depending on whether you are using a {{ site.data.products.dedicated }} or {{ site.data.products.core }} cluster, you can use the following to monitor backup and restore metrics for your CockroachDB cluster:
 
-- [Prometheus endpoint](#prometheus-endpoint): {{ site.data.products.dedicated }}, {{ site.data.products.core }}
+- [Prometheus endpoint](#prometheus-endpoint): {{ site.data.products.core }}
 - [Datadog integration](#datadog-integration): {{ site.data.products.dedicated }}
 
 We recommend setting up monitoring to alert when anomalies occur. You can then use the following SQL statements to inspect details relating to schedules, jobs, and backups:
@@ -32,15 +32,15 @@ See the [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheu
 
 We recommend the following guidelines:
 
-- Use the `schedules_backup_last_completed_time` metric. Configure this metric to monitor the backup schedule you would use in a disaster.
-- Monitor for a lack of successful backups rather than failed backups. A stuck scheduled job will not increment the `schedules_backup_failed` metric. Instead, alert on the `schedules_backup_last_completed_time` metric if the timestamp has not moved forward as expected.
+- Use the `schedules_backup_last_completed_time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
+- Configure alerting on the `schedules_backup_last_completed_time` metric to watch for cases where the timestamp has not moved forward as expected.
 
 Metric | Description 
 -------+-------------
 `schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
 `schedules_backup_started` | The number of scheduled backup jobs that have started.
 `schedules_backup_last_completed_time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option](create-schedule-for-backup.html#schedule-options).
-`schedules_backup_failed` | The number of scheduled backup jobs that have failed.
+`schedules_backup_failed` | The number of scheduled backup jobs that have failed. **Note:** A stuck scheduled job will not increment this metric.
 `schedules_round_reschedule_wait` | The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
 `schedules_round_reschedule_skip` | The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
 `jobs_backup_currently_running` | The number of backup jobs currently running in `Resume` or `OnFailOrCancel` state.

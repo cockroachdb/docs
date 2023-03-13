@@ -73,11 +73,11 @@ For detail on additional cloud storage features CockroachDB supports:
 
 ## Backup and restore observability
 
-You can verify that your stored backups are restorable with backup validation. A successful restore completely validates a backup, however, the validation tools offer a faster alternative and return an error message if a backup is not valid. There are three "levels" of verifying backups that give increasing validation coverage depending on the amount of runtime you want to invest in validating backups.
+You can verify that your stored backups are restorable with backup validation. While a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid. There are three "levels" of verifying backups that give increasing validation coverage depending on the amount of runtime you want to invest in validating backups.
 
 See the [Backup Validation](backup-validation.html) page for detail and examples.
 
-You can track backup jobs with metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. You can alert on these metrics via the Prometheus endpoint or the Datadog integration.
+You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. You can alert on these metrics via the Prometheus endpoint or the Datadog integration.
 
 See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for product availability and a list of the available metrics.
 
