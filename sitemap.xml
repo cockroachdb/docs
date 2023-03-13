@@ -9,7 +9,7 @@ layout: null
     {%- if page.url contains site.versions["stable"] or page.url contains site.versions["dev"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
       {%- unless page.url contains '404' or page.sitemap == false or page.url contains site.versions["dev"] and site.versions["dev"] != site.versions["stable"] and stable_pages_names contains page.name %}
   <url>
-    <loc>{{ page.canonical | absolute_url | replace: dev_path, "/dev/" }}</loc>
+    <loc>{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}</loc>
     <lastmod>{{ page.last_modified_at | date: "%Y-%m-%dT%H:%M:%S%:z" }}</lastmod>
   </url>
       {%- endunless -%}

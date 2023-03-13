@@ -32,18 +32,18 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ## Considerations
 
-- Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
+- Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/use-managed-service-backups.html).
 - Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
-- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter.
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 
 ### Storage considerations
 
-- [HTTP storage](use-a-local-file-server-for-bulk-operations.html) is not supported for `BACKUP` and `RESTORE`.
-- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) in your cloud storage bucket.**
-- While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](use-cloud-storage-for-bulk-operations.html) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
+- [HTTP storage](use-a-local-file-server.html) is not supported for `BACKUP` and `RESTORE`.
+- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage.html#object-locking) in your cloud storage bucket.**
+- While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](use-cloud-storage.html) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
 
 ## Required privileges
 
@@ -100,14 +100,14 @@ N/A                                | Backup the cluster. For an example of a ful
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [URL format](use-cloud-storage-for-bulk-operations.html#url-format)
-- [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls)
+- [URL format](use-cloud-storage.html#url-format)
+- [Example file URLs](use-cloud-storage.html#example-file-urls)
 - [Authentication parameters](cloud-storage-authentication.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
 {{site.data.alerts.callout_success}}
-Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage-for-bulk-operations.html#additional-cloud-storage-feature-support).
+Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more detail, see [Additional cloud storage feature support](use-cloud-storage.html#additional-cloud-storage-feature-support).
 {{site.data.alerts.end}}
 
 ## Functional details
@@ -123,7 +123,7 @@ Table with a [sequence](create-sequence.html) | The sequence it uses; however, t
 [Views](views.html) | The tables used in the view's `SELECT` statement.
 
 {{site.data.alerts.callout_info}}
-To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`](set-storage-parameter.html#exclude-a-tables-data-from-backups).
+To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`](create-table.html#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`](alter-table.html#exclude-a-tables-data-from-backups).
 
 For more detail, see the [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) example.
 {{site.data.alerts.end}}
@@ -149,6 +149,8 @@ This improves performance by decreasing the likelihood that the `BACKUP` will be
 `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
 
 A backup job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the backup has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
+
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for detail on monitoring backup and restore jobs and a list of the available metrics.
 
 ### Backup performance configuration
 
@@ -328,7 +330,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 ### Back up with an S3 storage class
 
-To associate your backup objects with a [specific storage class](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+To associate your backup objects with a [specific storage class](use-cloud-storage.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

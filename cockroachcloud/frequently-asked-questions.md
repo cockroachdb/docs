@@ -127,11 +127,11 @@ The backups for AWS clusters are encrypted using [AWS S3’s server-side encrypt
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 
-You can also [backup and restore](run-bulk-operations.html) data on your own. If you need additional help, [contact us](https://support.cockroachlabs.com).
+You can also [backup and restore](take-and-restore-customer-owned-backups.html) data on your own. If you need additional help, [contact us](https://support.cockroachlabs.com).
 
 ### Can I download the backups that {{ site.data.products.db }} takes for me?
 
-{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.current_cloud_version}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](take-and-restore-customer-owned-backups.html) to your own [storage location](../{{site.current_cloud_version}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to {{ site.data.products.dedicated }}?
 
@@ -198,6 +198,6 @@ To optimize schema design to achieve your performance goals, we recommend workin
 
 ### Can I monitor my cluster with third-party tools?
 
-Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) for more information.
+Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](tools-page.html#monitor-cockroachdb-dedicated-with-datadog) for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).

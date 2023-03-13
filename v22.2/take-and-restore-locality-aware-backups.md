@@ -26,6 +26,8 @@ The locality query string parameters must be [URL-encoded](https://en.wikipedia.
 
 Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder](architecture/replication-layer.html#leases) at the time the [distributed backup flow](architecture/sql-layer.html#distsql) was planned. The locality of the node running the distributed backup flow determines where the backup files will be placed in a locality-aware backup. The node running the backup flow, and the leaseholder node of the range being backed up are usually the same, but can differ when lease transfers have occurred during the execution of the backup. The leaseholder node returns the files to the node running the backup flow (usually a local transfer), which then writes the file to the external storage location with a locality that matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a locality-aware backup
 
 For example, to create a locality-aware backup where nodes with the locality `region=us-west` write backup files to `s3://us-west-bucket`, and all other nodes write to `s3://us-east-bucket` by default, run:
@@ -50,7 +52,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](re
 For guidance on how to identify the locality of a node to pass in a backup query, see [Show a node's locality](#show-a-nodes-locality).
 
 {{site.data.alerts.callout_info}}
-For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage](use-cloud-storage.html).
 {{site.data.alerts.end}}
 
 ## Show a node's locality
@@ -79,7 +81,7 @@ Specifying both locality tier pairs (e.g., `region=us-east,az=az1`) from the out
 
 Given a list of URIs that together contain the locations of all of the files for a single [locality-aware backup](#create-a-locality-aware-backup), [`RESTORE`](restore.html) can read in that backup. Note that the list of URIs passed to [`RESTORE`](restore.html) may be different from the URIs originally passed to [`BACKUP`](backup.html). This is because it's possible to move the contents of one of the parts of a locality-aware backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a locality-aware backup into a single location.
 
-When restoring a [full backup](take-full-and-incremental-backups.html#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored zone configurations can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following [zone configurations](configure-zone.html):
+When restoring a [full backup](take-full-and-incremental-backups.html#full-backups), the cluster data is restored first, then the system table data "as is." This means that the restored zone configurations can point to regions that do not have active nodes in the new cluster. For example, if your full backup has the following [zone configurations](alter-partition.html#create-a-replication-zone-for-a-partition):
 
 ~~~ sql
 ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_pkey \
@@ -92,7 +94,7 @@ ALTER PARTITION us_west OF INDEX movr.public.rides@rides_pkey \
 		CONFIGURE ZONE USING constraints = '[+region=us-west1]';
 ~~~
 
-And the restored cluster does not have [nodes with the locality](partitioning.html#node-attributes) `region=us-west1`, the restored cluster will still have a zone configuration for `us-west1`. This means that the cluster's data will **not** be reshuffled to `us-west1` because the region does not exist. The data will be distributed as if the zone configuration does not exist. For the data to be distributed correctly, you can [add node(s)](cockroach-start.html) with the missing region or [remove the zone configuration](configure-zone.html#remove-a-replication-zone).
+And the restored cluster does not have [nodes with the locality](partitioning.html#node-attributes) `region=us-west1`, the restored cluster will still have a zone configuration for `us-west1`. This means that the cluster's data will **not** be reshuffled to `us-west1` because the region does not exist. The data will be distributed as if the zone configuration does not exist. For the data to be distributed correctly, you can [add node(s)](cockroach-start.html) with the missing region or [remove the zone configuration](configure-replication-zones.html#remove-a-replication-zone).
 
 For example, use the following to create a locality-aware backup:
 

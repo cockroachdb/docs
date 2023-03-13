@@ -145,30 +145,6 @@
                 ]
               },
               {
-                "title": "<code>ADD COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/add-column.html"
-                ]
-              },
-              {
-                "title": "<code>ADD CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/add-constraint.html"
-                ]
-              },
-              {
-                "title": "<code>ADD REGION</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/add-region.html"
-                ]
-              },
-              {
-                "title": "<code>ADD SUPER REGION</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/add-super-region.html"
-                ]
-              },
-              {
                 "title": "<code>ALTER BACKUP</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-backup.html"
@@ -184,12 +160,6 @@
                 "title": "<code>ALTER CHANGEFEED</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-changefeed.html"
-                ]
-              },
-              {
-                "title": "<code>ALTER COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/alter-column.html"
                 ]
               },
               {
@@ -217,33 +187,15 @@
                 ]
               },
               {
-                "title": "<code>ALTER LOCALITY</code>",
-                "urls": [
-                  "/${VERSION}/alter-locality.html"
-                ]
-              },
-              {
                 "title": "<code>ALTER PARTITION</code> (Enterprise)",
                 "urls": [
                   "/${VERSION}/alter-partition.html"
                 ]
               },
               {
-                "title": "<code>ALTER PRIMARY KEY</code>",
-                "urls": [
-                  "/${VERSION}/alter-primary-key.html"
-                ]
-              },
-              {
                 "title": "<code>ALTER RANGE</code>",
                 "urls": [
                   "/${VERSION}/alter-range.html"
-                ]
-              },
-              {
-                "title": "<code>ALTER RANGE ... RELOCATE</code>",
-                "urls": [
-                  "/${VERSION}/alter-range-relocate.html"
                 ]
               },
               {
@@ -262,12 +214,6 @@
                 "title": "<code>ALTER SEQUENCE</code>",
                 "urls": [
                   "/${VERSION}/alter-sequence.html"
-                ]
-              },
-              {
-                "title": "<code>ALTER SUPER REGION</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/alter-super-region.html"
                 ]
               },
               {
@@ -292,12 +238,6 @@
                 "title": "<code>ALTER VIEW</code>",
                 "urls": [
                   "/${VERSION}/alter-view.html"
-                ]
-              },
-              {
-                "title": "<code>EXPERIMENTAL_AUDIT</code>",
-                "urls": [
-                  "/${VERSION}/experimental-audit.html"
                 ]
               },
               {
@@ -340,12 +280,6 @@
                 "title": "<code>COMMIT</code>",
                 "urls": [
                   "/${VERSION}/commit-transaction.html"
-                ]
-              },
-              {
-                "title": "<code>CONFIGURE ZONE</code>",
-                "urls": [
-                  "/${VERSION}/configure-zone.html"
                 ]
               },
               {
@@ -451,18 +385,6 @@
                 ]
               },
               {
-                "title": "<code>DROP COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/drop-column.html"
-                ]
-              },
-              {
-                "title": "<code>DROP CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/drop-constraint.html"
-                ]
-              },
-              {
                 "title": "<code>DROP DATABASE</code>",
                 "urls": [
                   "/${VERSION}/drop-database.html"
@@ -486,24 +408,6 @@
                    "/${VERSION}/drop-owned-by.html"
                  ]
                },
-              {
-                "title": "<code>DROP REGION (Enterprise)</code>",
-                "urls": [
-                  "/${VERSION}/drop-region.html"
-                ]
-              },
-              {
-                "title": "<code>DROP SECONDARY REGION</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/drop-secondary-region.html"
-                ]
-              },
-              {
-                "title": "<code>DROP SUPER REGION</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/drop-super-region.html"
-                ]
-              },
               {
                 "title": "<code>DROP TYPE</code>",
                 "urls": [
@@ -574,7 +478,7 @@
                 "title": "<code>EXPLAIN ANALYZE</code>",
                 "urls": [
                   "/${VERSION}/explain-analyze.html"
-                ]
+              ]
               },
               {
                 "title": "<code>EXPORT</code>",
@@ -625,18 +529,6 @@
                 ]
               },
               {
-                "title": "<code>OWNER TO</code>",
-                "urls": [
-                  "/${VERSION}/owner-to.html"
-                ]
-              },
-              {
-                "title": "<code>PARTITION BY</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/partition-by.html"
-                ]
-              },
-              {
                 "title": "<code>PAUSE JOB</code>",
                 "urls": [
                   "/${VERSION}/pause-job.html"
@@ -649,12 +541,6 @@
                 ]
               },
               {
-                "title": "<code>PLACEMENT (RESTRICTED | DEFAULT)</code>",
-                "urls": [
-                  "/${VERSION}/placement-restricted.html"
-                ]
-              },
-              {
                 "title": "<code>REASSIGN OWNED</code>",
                 "urls": [
                   "/${VERSION}/reassign-owned.html"
@@ -664,36 +550,6 @@
                 "title": "<code>REFRESH</code>",
                 "urls": [
                   "/${VERSION}/refresh.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME COLUMN</code>",
-                "urls": [
-                  "/${VERSION}/rename-column.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/rename-constraint.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME DATABASE</code>",
-                "urls": [
-                  "/${VERSION}/rename-database.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME INDEX</code>",
-                "urls": [
-                  "/${VERSION}/rename-index.html"
-                ]
-              },
-              {
-                "title": "<code>RENAME TABLE</code>",
-                "urls": [
-                  "/${VERSION}/rename-table.html"
                 ]
               },
               {
@@ -712,12 +568,6 @@
                 "title": "<code>RESET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/reset-vars.html"
-                ]
-              },
-              {
-                "title": "<code>RESET &#123;storage parameter&#125;</code>",
-                "urls": [
-                  "/${VERSION}/reset-storage-parameter.html"
                 ]
               },
               {
@@ -778,36 +628,6 @@
                 "title": "<code>SET &#123;session variable&#125;</code>",
                 "urls": [
                   "/${VERSION}/set-vars.html"
-                ]
-              },
-              {
-                "title": "<code>SET &#123;storage parameter&#125;</code>",
-                "urls": [
-                  "/${VERSION}/set-storage-parameter.html"
-                ]
-              },
-              {
-                "title": "<code>SET LOCALITY</code>",
-                "urls": [
-                  "/${VERSION}/set-locality.html"
-                ]
-              },
-              {
-                "title": "<code>SET PRIMARY REGION (Enterprise)</code>",
-                "urls": [
-                  "/${VERSION}/set-primary-region.html"
-                ]
-              },
-              {
-                "title": "<code>SET SCHEMA</code>",
-                "urls": [
-                  "/${VERSION}/set-schema.html"
-                ]
-              },
-              {
-                "title": "<code>SET SECONDARY REGION</code> (Enterprise)",
-                "urls": [
-                  "/${VERSION}/set-secondary-region.html"
                 ]
               },
               {
@@ -1033,27 +853,9 @@
                 ]
               },
               {
-                "title": "<code>SPLIT AT</code>",
-                "urls": [
-                  "/${VERSION}/split-at.html"
-                ]
-              },
-              {
-                "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
-                "urls": [
-                  "/${VERSION}/survive-failure.html"
-                ]
-              },
-              {
                 "title": "<code>TRUNCATE</code>",
                 "urls": [
                   "/${VERSION}/truncate.html"
-                ]
-              },
-              {
-                "title": "<code>UNSPLIT AT</code>",
-                "urls": [
-                  "/${VERSION}/unsplit-at.html"
                 ]
               },
               {
@@ -1066,12 +868,6 @@
                 "title": "<code>UPSERT</code>",
                 "urls": [
                   "/${VERSION}/upsert.html"
-                ]
-              },
-              {
-                "title": "<code>VALIDATE CONSTRAINT</code>",
-                "urls": [
-                  "/${VERSION}/validate-constraint.html"
                 ]
               },
               {
@@ -1461,12 +1257,6 @@
                 ]
               }
             ]
-          },
-          {
-            "title": "Experimental Features",
-            "urls": [
-              "/${VERSION}/experimental-features.html"
-            ]
           }
         ]
       },
@@ -1630,6 +1420,12 @@
                 "urls": [
                   "/${VERSION}/cockroach-debug-merge-logs.html"
                 ]
+              },
+              {
+               "title": "<code>cockroach debug tsdump</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-debug-tsdump.html"
+               ]
               },
               {
                 "title": "<code>cockroach debug zip</code>",
@@ -1862,6 +1658,12 @@
         ]
       },
       {
+        "title": "Metrics",
+        "urls": [
+          "/${VERSION}/metrics.html"
+        ]
+      },
+      {
         "title": "Transaction Retry Error Reference",
         "urls": [
           "/${VERSION}/transaction-retry-error-reference.html"
@@ -1939,6 +1741,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "CockroachDB Feature Availability",
+        "urls": [
+          "/${VERSION}/cockroachdb-feature-availability.html"
         ]
       },
       {

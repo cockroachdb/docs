@@ -94,7 +94,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to {{ cap_per_vcpu | strip_html }}. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    We recommending choosing up to <b>{{ cap_per_vcpu }}</b>. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------

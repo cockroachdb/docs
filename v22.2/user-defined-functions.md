@@ -123,7 +123,7 @@ User-defined functions are not currently supported in:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-- [CDC transformations](https://www.cockroachlabs.com/docs/v22.2/cdc-transformations).
+- [CDC transformations](cdc-transformations.html).
 
 ### Limitations on expressions allowed within UDFs
 

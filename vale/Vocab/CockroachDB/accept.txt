@@ -135,6 +135,7 @@ gzip
 HAProxy
 hardcoded
 HashiCorp
+Hasura
 HDDs?
 heartbeat(ed|ing)
 heredocs
@@ -400,6 +401,7 @@ toolchains?
 tooltips?
 touchpoints?
 transactionally
+tsdump
 ttl
 twirp
 txns?

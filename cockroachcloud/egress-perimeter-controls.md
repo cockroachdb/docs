@@ -4,9 +4,12 @@ summary: Learn how to configure Egress Perimeter Controls for enhanced network s
 toc: true
 toc_not_nested: true
 docs_area: security
+cloud: true
 ---
 
-{% include feature-phases/preview-opt-in.md %}
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
 
 This page describes how Egress Perimeter Controls can enhance the security of {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
@@ -29,7 +32,7 @@ Further reading: [review how CockroachDB products differs in advanced security f
 Regardless of user-specific Egress Perimeter Control policy, egress is always permitted to services that are managed by Cockroach Labs and are essential to your cluster's functionality and ongoing operations.
 {{site.data.alerts.end}}
 
-## Prerequisites
+## Before you begin
 
 - You need a {{ site.data.products.dedicated }} cluster. Egress Perimeter Controls are not supported for {{ site.data.products.serverless }} clusters.
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).

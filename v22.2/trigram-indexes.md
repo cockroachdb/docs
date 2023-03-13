@@ -144,204 +144,204 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
 
 ### Use a trigram index to speed up fuzzy string matching
 
-Create a table with a `STRING` column:
+1. Create a table with a `STRING` column:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE TABLE t (w STRING);
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE t (w STRING);
+    ~~~
 
-Populate the table with sample values:
+2. Populate the table with sample values:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-INSERT INTO t VALUES
-  ('foo'),
-  ('bar'),
-  ('wordy'),
-  ('world'),
-  ('whorl'),
-  ('wort'),
-  ('worm'),
-  ('norm'),
-  ('weird'),
-  ('worried'),
-  ('wofoord'),
-  ('wobarrd');
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    INSERT INTO t VALUES
+      ('foo'),
+      ('bar'),
+      ('wordy'),
+      ('world'),
+      ('whorl'),
+      ('wort'),
+      ('worm'),
+      ('norm'),
+      ('weird'),
+      ('worried'),
+      ('wofoord'),
+      ('wobarrd');
 
-INSERT INTO t SELECT 'empty' FROM generate_series(1, 10000);
-~~~
+    INSERT INTO t SELECT 'empty' FROM generate_series(1, 10000);
+    ~~~
 
-First, see how trigram matching performs without a trigram index. Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function](functions-and-operators.html#trigrams-functions):
+1. See how trigram matching performs without a trigram index. Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function](functions-and-operators.html#trigrams-functions):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT w, similarity(w, 'word')
-  FROM t
-  WHERE w % 'word'
-  ORDER BY similarity DESC, w;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT w, similarity(w, 'word')
+      FROM t
+      WHERE w % 'word'
+      ORDER BY similarity DESC, w;
+    ~~~
 
-~~~
-     w    |     similarity
-----------+----------------------
-  wordy   |  0.5714285714285714
-  wofoord |  0.4444444444444444
-  worm    | 0.42857142857142855
-  wort    | 0.42857142857142855
-  world   |               0.375
-  wobarrd |                 0.3
-  worried |                 0.3
-(7 rows)
+    ~~~
+        w    |     similarity
+    ----------+----------------------
+      wordy   |  0.5714285714285714
+      wofoord |  0.4444444444444444
+      worm    | 0.42857142857142855
+      wort    | 0.42857142857142855
+      world   |               0.375
+      wobarrd |                 0.3
+      worried |                 0.3
+    (7 rows)
 
 
-Time: 30ms total (execution 30ms / network 0ms)
-~~~
+    Time: 30ms total (execution 30ms / network 0ms)
+    ~~~
 
-Values are not included in the results if their similarities do not meet the threshold set by [`pg_trgm.similarity_threshold`](show-vars.html#pg_trgm_similarity_threshold), which defaults to `0.3`. For example:
+    Values are not included in the results if their similarities do not meet the threshold set by [`pg_trgm.similarity_threshold`](show-vars.html#pg_trgm_similarity_threshold), which defaults to `0.3`. For example:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT similarity('weird', 'word');
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT similarity('weird', 'word');
+    ~~~
 
-~~~
-      similarity
-----------------------
-  0.2222222222222222
-~~~
+    ~~~
+          similarity
+    ----------------------
+      0.2222222222222222
+    ~~~
 
-Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan, which you can verify using [`EXPLAIN`](explain.html):
+    Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan, which you can verify using [`EXPLAIN`](explain.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-EXPLAIN SELECT w, similarity(w, 'word')
-  FROM t
-  WHERE w % 'word'
-  ORDER BY similarity DESC, w;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT w, similarity(w, 'word')
+      FROM t
+      WHERE w % 'word'
+      ORDER BY similarity DESC, w;
+    ~~~
 
-~~~
-                                              info
--------------------------------------------------------------------------------------------------
-  distribution: local
-  vectorized: true
+    ~~~
+                                                  info
+    -------------------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
 
-  • sort
-  │ estimated row count: 3,337
-  │ order: -similarity,+w
-  │
-  └── • render
+      • sort
+      │ estimated row count: 3,337
+      │ order: -similarity,+w
       │
-      └── • filter
-          │ estimated row count: 3,337
-          │ filter: w % 'word'
+      └── • render
+          │
+          └── • filter
+              │ estimated row count: 3,337
+              │ filter: w % 'word'
+              │
+              └── • scan
+                    estimated row count: 10,012 (100% of the table; stats collected 59 minutes ago)
+                    table: t@t_pkey
+                    spans: FULL SCAN
+    ~~~
+
+1. To speed up the fuzzy search, create a trigram index on column `w`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE INDEX ON t USING GIN (w gin_trgm_ops);
+    ~~~
+
+1. Check that the statement uses the trigram index:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT w, similarity(w, 'word')
+      FROM t
+      WHERE w % 'word'
+      ORDER BY similarity DESC, w;
+    ~~~
+
+    ~~~
+                                                    info
+    ------------------------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • sort
+      │ estimated row count: 3,337
+      │ order: -similarity,+w
+      │
+      └── • render
+          │
+          └── • filter
+              │ estimated row count: 3,337
+              │ filter: w % 'word'
+              │
+              └── • index join
+                  │ estimated row count: 1,112
+                  │ table: t@t_pkey
+                  │
+                  └── • inverted filter
+                      │ estimated row count: 1,112
+                      │ inverted column: w_inverted_key
+                      │ num spans: 2
+                      │
+                      └── • scan
+                            estimated row count: 1,112 (11% of the table; stats collected 4 minutes ago)
+                            table: t@t_w_idx
+                            spans: 2 spans
+    ~~~
+
+1. Execute the statement again and note the improved performance:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT w, similarity(w, 'word')
+      FROM t
+      WHERE w % 'word'
+      ORDER BY similarity DESC, w;
+    ~~~
+
+    ~~~
+        w    |     similarity
+    ----------+----------------------
+      wordy   |  0.5714285714285714
+      wofoord |  0.4444444444444444
+      worm    | 0.42857142857142855
+      wort    | 0.42857142857142855
+      world   |               0.375
+      worried |                 0.3
+    (6 rows)
+
+
+    Time: 4ms total (execution 4ms / network 0ms)
+    ~~~
+
+1. Pattern matching with `LIKE` and `ILIKE` is also accelerated by a trigram index:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
+    ~~~
+
+    ~~~
+                                              info
+    ------------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • filter
+      │ estimated row count: 3,337
+      │ filter: w LIKE '%foo%'
+      │
+      └── • index join
+          │ estimated row count: 1,112
+          │ table: t@t_pkey
           │
           └── • scan
-                estimated row count: 10,012 (100% of the table; stats collected 59 minutes ago)
-                table: t@t_pkey
-                spans: FULL SCAN
-~~~
-
-To speed up the fuzzy search, create a trigram index on column `w`:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-CREATE INDEX ON t USING GIN (w gin_trgm_ops);
-~~~
-
-Check that the statement uses the trigram index:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-EXPLAIN SELECT w, similarity(w, 'word')
-  FROM t
-  WHERE w % 'word'
-  ORDER BY similarity DESC, w;
-~~~
-
-~~~
-                                                 info
-------------------------------------------------------------------------------------------------------
-  distribution: local
-  vectorized: true
-
-  • sort
-  │ estimated row count: 3,337
-  │ order: -similarity,+w
-  │
-  └── • render
-      │
-      └── • filter
-          │ estimated row count: 3,337
-          │ filter: w % 'word'
-          │
-          └── • index join
-              │ estimated row count: 1,112
-              │ table: t@t_pkey
-              │
-              └── • inverted filter
-                  │ estimated row count: 1,112
-                  │ inverted column: w_inverted_key
-                  │ num spans: 2
-                  │
-                  └── • scan
-                        estimated row count: 1,112 (11% of the table; stats collected 4 minutes ago)
-                        table: t@t_w_idx
-                        spans: 2 spans
-~~~
-
-Execute the statement again and note the improved performance:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT w, similarity(w, 'word')
-  FROM t
-  WHERE w % 'word'
-  ORDER BY similarity DESC, w;
-~~~
-
-~~~
-     w    |     similarity
-----------+----------------------
-  wordy   |  0.5714285714285714
-  wofoord |  0.4444444444444444
-  worm    | 0.42857142857142855
-  wort    | 0.42857142857142855
-  world   |               0.375
-  worried |                 0.3
-(6 rows)
-
-
-Time: 4ms total (execution 4ms / network 0ms)
-~~~
-
-Pattern matching with `LIKE` and `ILIKE` is also accelerated by a trigram index:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-EXPLAIN SELECT * FROM t WHERE w LIKE '%foo%';
-~~~
-
-~~~
-                                           info
-------------------------------------------------------------------------------------------
-  distribution: local
-  vectorized: true
-
-  • filter
-  │ estimated row count: 3,337
-  │ filter: w LIKE '%foo%'
-  │
-  └── • index join
-      │ estimated row count: 1,112
-      │ table: t@t_pkey
-      │
-      └── • scan
-            estimated row count: 1,112 (11% of the table; stats collected 3 minutes ago)
-            table: t@t_w_idx
-            spans: 1 span
-~~~
+                estimated row count: 1,112 (11% of the table; stats collected 3 minutes ago)
+                table: t@t_w_idx
+                spans: 1 span
+    ~~~
 
 ## Unsupported features
 
@@ -353,8 +353,9 @@ The following PostgreSQL syntax and features are currently unsupported. For deta
 
 - [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
+- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
 - [`SHOW INDEX`](show-index.html)
 - [Inverted indexes](inverted-indexes.html)
 - [Indexes](indexes.html)
+- [Use cases for trigram indexes (When not to use Full Text Search)](https://www.cockroachlabs.com/blog/use-cases-trigram-indexes/) (2022 blog post)
 - [SQL Statements](sql-statements.html)

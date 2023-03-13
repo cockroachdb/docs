@@ -5,14 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-<div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
-    <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
-</div>
-
-The **Cluster Overview** page displays key metrics about your {{ site.data.products.db }} cluster.
-
-<section class="filter-content" markdown="1" data-scope="serverless">
+The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster. To view this page, click on a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page).
 
 ## Cluster settings
 

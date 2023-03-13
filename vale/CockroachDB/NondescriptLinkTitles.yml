@@ -1,0 +1,19 @@
+extends: existence
+message: Avoid using non-descriptive link titles.
+link: https://github.com/cockroachdb/docs/blob/master/StyleGuide.md#lists
+level: warning
+scope: link
+nonword: true
+tokens:
+  - '(?i)click here'
+  - '(?i)click this'
+  - '(?i)find out more'
+  - '(?i)go'
+  - '(?i)here'
+  - '(?i)learn more'
+  - '(?i)more'
+  - '(?i)over here'
+  - '(?i)read here'
+  - '(?i)read more'
+  - '(?i)right here'
+  - '(?i)this'

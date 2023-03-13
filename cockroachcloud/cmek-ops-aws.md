@@ -48,9 +48,7 @@ Here we will create a *cross-account IAM role*. This is a role in your AWS accou
 	1. In the AWS console, visit the [IAM page](https://console.aws.amazon.com/iam/).
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
-	1. Choose **Another AWS account**.
-		1. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID that you found previously by querying your cluster's Cloud API.
-		1. Select the option to **Require external ID**, and for the value of **External ID**, provide your {{ site.data.products.dedicated }} Organization ID.
+	1. Choose **Another AWS account**. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID that you found [previously](#step-1-provision-the-cross-account-iam-role) by querying your cluster's Cloud API.
 	1. Finish creating the IAM role with a suitable name. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
@@ -82,10 +80,10 @@ After you have provisioned the cross-account IAM role and CMEK key for your Cock
 
 ### Option B: Use the Vault AWS-KMS secrets engine to create the CMEK key
 
-#### Prerequisites
+#### Before you begin
 
-- [Vault enterprise license](https://www.vaultproject.io/docs/enterprise)
-- [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise)
+- You must have a [Vault enterprise license](https://www.vaultproject.io/docs/enterprise).
+- You must have [Vault enterprise edition installed locally](https://learn.hashicorp.com/tutorials/nomad/hashicorp-enterprise-license?in=vault/enterprise).
 
 1. Initialize your shell for Vault:
 	{% include_cached copy-clipboard.html %}

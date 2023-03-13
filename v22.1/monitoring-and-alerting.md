@@ -335,3 +335,4 @@ Currently, not all events listed have corresponding alert rule definitions avail
 - [Orchestrated Deployment](kubernetes-overview.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [Third-Party Monitoring Integrations](third-party-monitoring-tools.html)
+- [Metrics](metrics.html)

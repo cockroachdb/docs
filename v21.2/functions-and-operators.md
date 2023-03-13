@@ -62,16 +62,17 @@ The following table lists all CockroachDB operators from highest to lowest prece
 | 1 | `.` | Member field access operator | binary |
 | 2 | `::` | [Type cast](scalar-expressions.html#explicit-type-coercions) | binary |
 | 3 | `-` | Unary minus | unary (prefix) |
-|  | `~` | Bitwise not | unary (prefix) |
+|   | `~` | Bitwise not | unary (prefix) |
 | 4 | `^` | Exponentiation | binary |
 | 5 | `*` | Multiplication | binary |
-|  | `/` | Division | binary |
-|  | `//` | Floor division | binary |
-|  | `%` | Modulo | binary |
+|   | `/` | Division | binary |
+|   | `//` | Floor division | binary |
+|   | `%` | Modulo | binary |
 | 6 | `+` | Addition | binary |
-|  | `-` | Subtraction | binary |
+|   | `-` | Subtraction | binary |
 | 7 | `<<` | Bitwise left-shift | binary |
-|  | `>>` | Bitwise right-shift | binary |
+|   | `>>` | Bitwise right-shift | binary |
+|   | `&&` | Overlaps | binary |
 | 8 | `&` | Bitwise AND | binary |
 | 9 | `#` | Bitwise XOR | binary |
 | 10 | <code>&#124;</code> | Bitwise OR | binary |

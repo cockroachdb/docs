@@ -320,7 +320,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.1" %} In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
@@ -392,11 +394,20 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     gcloud iam service-accounts keys create key.json --iam-account=cdc-demo@cockroach-project.iam.gserviceaccount.com
     ~~~
 
-    Next, base64 encode your credentials key:
+    Next, base64 encode your credentials key using the command specific to your platform.
+
+    If you're working on macOS:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     cat key.json | base64
+    ~~~
+
+    If you're working on Linux, run the following to ensure that lines are not wrapped in the output:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cat key.json | base64 -w 0
     ~~~
 
     Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
@@ -521,7 +532,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 

@@ -15,7 +15,7 @@ These instructions assume you already have the following:
 
 - A [{{ site.data.products.serverless }} cluster](quickstart.html) from which you want to migrate data.
 - A [paid {{ site.data.products.dedicated }} cluster](quickstart-trial-cluster.html). Your first paid {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
-- [Cloud storage](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html). To access cloud storage, you must have [billing information](billing-management.html) on file for your organization. You provided this when you created your {{ site.data.products.dedicated }} cluster.
+- [Cloud storage](../{{site.current_cloud_version}}/use-cloud-storage.html).
 
 ## Step 1. Export data to cloud storage
 
@@ -77,7 +77,7 @@ First, upload your {{ site.data.products.serverless }} data to a cloud storage l
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage for Bulk Operations](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html).
+    For more information about using cloud storage with CockroachDB, see [Use Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage.html).
     {{site.data.alerts.end}}
 
 ## Step 2. Import the CSV
@@ -190,7 +190,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 3. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the {{ site.data.products.dedicated }} cluster, add the [foreign key](../{{site.current_cloud_version}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.current_cloud_version}}/add-constraint.html). For example:
+Once all of the tables you want to migrate have been imported into the {{ site.data.products.dedicated }} cluster, add the [foreign key](../{{site.current_cloud_version}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.current_cloud_version}}/alter-table.html#add-constraint). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql

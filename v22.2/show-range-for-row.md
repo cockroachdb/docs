@@ -7,7 +7,9 @@ docs_area: reference.sql
 
 The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#architecture-range) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}s
 
 {{site.data.alerts.callout_info}}
 To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`](show-ranges.html) statement.
@@ -167,7 +169,8 @@ To show information about a row in a secondary index, you must know the values o
 ## See also
 
 - [`SHOW RANGES`](show-ranges.html)
-- [`SPLIT AT`](split-at.html)
+- [`ALTER TABLE ... SPLIT AT`](alter-table.html#split-at)
+- [`ALTER INDEX ... SPLIT AT`](alter-index.html#split-at)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)

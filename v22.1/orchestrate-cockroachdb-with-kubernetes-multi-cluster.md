@@ -205,7 +205,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
-    --node-ami auto \
     --region <aws-region-1> \
     --vpc-cidr <ip-range-1>
     ~~~
@@ -217,7 +216,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
-    --node-ami auto \
     --region <aws-region-2> \
     --vpc-cidr <ip-range-2>
     ~~~
@@ -229,7 +227,6 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --nodegroup-name standard-workers \
     --node-type m5.xlarge \
     --nodes 3 \
-    --node-ami auto \
     --region <aws-region-3> \
     --vpc-cidr <ip-range-3>
     ~~~
@@ -381,7 +378,7 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
     curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/configmap.yaml
     ~~~
 
-1. After [obtaining the IP addresses of EKS instances](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions.
+1. After [obtaining the IP addresses of the Network Load Balancers](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions.
 
     ~~~
     ...

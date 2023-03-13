@@ -46,7 +46,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v21.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v21.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 
@@ -80,7 +80,7 @@ Once your cluster is running v21.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 

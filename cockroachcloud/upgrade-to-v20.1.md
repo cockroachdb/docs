@@ -43,7 +43,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Tools**](tools-page.html) pages in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 
@@ -113,7 +113,7 @@ Once your cluster is running v20.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
@@ -125,7 +125,7 @@ Before your upgrade has been finalized, remember to prevent new schema changes a
 
 Also, most v20.1 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../{{site.current_cloud_version}}/alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
+- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../{{site.current_cloud_version}}/alter-table.html#alter-primary-key) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
 
 - **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](https://www.cockroachlabs.com/docs/v20.1/foreign-key.html#rules-for-creating-foreign-keys).
 

@@ -7,9 +7,10 @@
 // See https://github.com/twbs/rfs
 
 // Configuration
-@use "sass:math";
 
 // Base font size
+@use "sass:math";
+
 $rfs-base-font-size: 1.25rem !default;
 $rfs-font-size-unit: rem !default;
 

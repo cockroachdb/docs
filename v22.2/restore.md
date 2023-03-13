@@ -24,7 +24,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
-- [Zone configurations](configure-zone.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - When the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
 
@@ -72,7 +72,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+- Using [Userfile](use-userfile-storage.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -94,7 +94,7 @@ No special privilege is required for:
  `LATEST` | Restore the most recent backup in the given collection URI. See the [Restore from the most recent backup](#restore-the-most-recent-backup) example.
  <a name="subdir-param"></a>`subdirectory` | Restore from a specific subdirectory in the given collection URI. See the [Restore a specific backup](#restore-a-specific-backup) example.
  `localityURI` | The URI where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include **every** locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
- <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+ <a name="as-of-system-time"></a>`AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html). If the backup was not taken with `revision_history`, you can use `SHOW BACKUP` to restore to a time that the backup covers (including in the full or incremental backup). See the [example](#restore-with-as-of-system-time).
  `restore_options_list` | Control your backup's behavior with [these options](#options).
 
 ### Options
@@ -121,13 +121,13 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 
     {{site.data.alerts.callout_info}}
     HTTP storage is not supported for `BACKUP` and `RESTORE`.
     {{site.data.alerts.end}}
 
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
@@ -176,7 +176,7 @@ RESTORE DATABASE backup_database_name FROM LATEST in 'your_backup_collection_URI
 To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
 
 {{site.data.alerts.callout_success}}
-If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
+If [dropping](drop-database.html) or [renaming](alter-database.html#rename-to) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
 {{site.data.alerts.end}}
 
 ### Tables
@@ -242,17 +242,19 @@ CockroachDB does **not** support incremental-only restores.
 - A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs.
 - A restore job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
 
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for detail on monitoring backup and restore jobs and a list of the available metrics.
+
 ## Restoring to multi-region databases
 
  Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
 
 - A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
-- A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
+- A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](alter-database.html#set-primary-region) from this cluster setting assigned to the target database.
 
 - `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
 
-- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](alter-table.html#regional-by-table), and [`GLOBAL`](alter-table.html#global) to another multi-region database is supported.
 
 - When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
 
@@ -386,6 +388,50 @@ RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_
  `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
 
+### Restore with `AS OF SYSTEM TIME`
+ 
+Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history. 
+
+If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
+
+First, find the times that are available for a point-in-time-restore by listing the available backup directories in your storage location:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+~~~
+~~~
+          path
+------------------------
+  2023/01/18-141753.98
+  2023/01/23-184816.10
+  2023/01/23-185448.11
+(3 rows)
+~~~
+
+From the output use the required date directory and run the following to get the details of the backup:
+
+~~~sql
+SHOW BACKUP '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+~~~
+~~~
+  database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+----------------------------+----------------------------+------------+------+------------------
+  movr          | public             | vehicle_location_histories | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |      85430 | 1092 |        t
+  movr          | public             | promo_codes                | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |     225775 | 1003 |        t
+  movr          | public             | user_promo_codes           | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |       1009 |   11 |        t
+  NULL          | NULL               | system                     | database    | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |       NULL | NULL |        t
+  system        | public             | users                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |        t
+  system        | public             | zones                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |
+~~~
+
+Finally, use the `start_time` and `end_time` detail to define the required time as part of the `AS OF SYSTEM TIME` clause. Run the restore, passing the directory and the timestamp:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' AS OF SYSTEM TIME '2023-01-23 18:56:48';
+~~~
+
 ### Restore a backup asynchronously
 
 Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
@@ -420,20 +466,20 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
 
-First, create the new database that you'll restore the table or view into:
+1. Create the new database that you'll restore the table or view into:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE newdb;
+    ~~~
 
-Next, restore the table into the newly created database with `into_db`:
+2. Restore the table into the newly created database with `into_db`:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH into_db = 'newdb';
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    WITH into_db = 'newdb';
+    ~~~
 
 #### Rename a database on restore
 
@@ -473,30 +519,34 @@ The `system.users` table stores your cluster's usernames and their hashed passwo
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
-First, create the new database that you'll restore the `system.users` table into:
+1. Create the new database that you'll restore the `system.users` table into:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE newdb;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE newdb;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
-WITH into_db = 'newdb';
-~~~
+1. Restore the `system.users` table into the new database:
 
-After the restore completes, add the `users` to the existing `system.users` table:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    WITH into_db = 'newdb';
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> INSERT INTO system.users SELECT * FROM newdb.users;
-~~~
+1. After the restore completes, add the `users` to the existing `system.users` table:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> DROP TABLE newdb.users;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO system.users SELECT * FROM newdb.users;
+    ~~~
+
+1. Remove the temporary `users` table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > DROP TABLE newdb.users;
+    ~~~
 
 #### Restore from incremental backups in a different location
 

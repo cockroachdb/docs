@@ -217,36 +217,10 @@ The cluster will underperform if storage is not provisioned or configured correc
 
 Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O:
 
-<table>
-<thead>
-<tr>
-  <th>Category</th>
-  <th>Recommendations</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>Storage</td>
-  <td>
-    <ul>
-      <li>Provision volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}.</li>
-      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}</li>
-      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}</li>
-      <li>See additional storage recommendations in the <a href="recommended-production-settings.html#storage">Production Checklist</a>.</li>
-    </ul>
-  </td>
-</tr>
-<tr>
-  <td>Disk I/O</td>
-  <td>
-    <ul>
-      <li>Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.</li>
-      <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}</li>
-      <li>See additional disk I/O recommendations in the <a href="recommended-production-settings.html#disk-i-o">Production Checklist</a>.</li>
-    </ul>
-  </td>
-</tbody>
-</table>
+| Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Storage   | <ul><li>Provision volumes with <b>{% include {{ page.version.version }}/prod-deployment/provision-storage.md %}</b>.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}</li><li>See additional storage recommendations in the [Production Checklist](recommended-production-settings.html#storage).</li></ul> |
+| Disk I/O | <ul><li>Disks must be able to achieve <b>{% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}</b>.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}</li><li>See additional disk I/O recommendations in the [Production Checklist](recommended-production-settings.html#disk-i-o).</li></ul> |
 
 ### Storage and disk monitoring
 
@@ -316,4 +290,5 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
 - [Admission Control](admission-control.html)
+- [Metrics](metrics.html)
 - [Alerts Page](../cockroachcloud/alerts-page.html) ({{ site.data.products.dedicated }})

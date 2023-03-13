@@ -5,7 +5,9 @@ toc: true
 docs_area: stream
 ---
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.2" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).  
 
@@ -121,7 +123,7 @@ Filtering delete messages from your changefeed is helpful for certain outbox tab
 
 ### Geofilter a changefeed
 
-When you are working with a [`REGIONAL BY ROW` table](set-locality.html#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
+When you are working with a [`REGIONAL BY ROW` table](alter-table.html#regional-by-row), you can filter the changefeed on the `crdb_region` column to create a region-specific changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -165,32 +167,33 @@ You can use CDC transformations as a tool for debugging or investigating issues 
 
 For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`](create-changefeed.html#cursor-option) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell. 
 
-First, find the start time. Use the [`cluster_logical_timestamp()`](functions-and-operators.html#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
+1. Find the start time. Use the [`cluster_logical_timestamp()`](functions-and-operators.html#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-SELECT cluster_logical_timestamp() - 3600000000000;
-~~~
-~~~
-             ?column?
-----------------------------------
-  1663938662092036106.0000000000
-(1 row)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SELECT cluster_logical_timestamp() - 3600000000000;
+    ~~~
 
-Next, run the changefeed without a sink and pass the start time to the `cursor` option:
+    ~~~
+                 ?column?
+    ----------------------------------
+      1663938662092036106.0000000000
+    (1 row)
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
-~~~
+1. Run the changefeed without a sink and pass the start time to the `cursor` option:
 
-To find changes within a time period, use `cursor` with the [`end_time`](create-changefeed.html#end-time) option:
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
-~~~
+1. To find changes within a time period, use `cursor` with the [`end_time`](create-changefeed.html#end-time) option:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000', schema_change_policy='stop' AS SELECT * FROM vehicle_location_histories  WHERE ride_id::string LIKE 'f2616bb3%';
+    ~~~
 
 ### Recover lost messages
 

@@ -15,30 +15,33 @@ You can validate a [cluster](backup.html#backup-a-cluster), [database](backup.ht
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Validate backup files 
 
 Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST and metadata files](backup-architecture.html) that belong to a backup are present in the storage location.
 
-First, take a backup that we'll use for each of the examples on this page:
+1. Take a backup that we'll use for each of the examples on this page:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-BACKUP DATABASE movr INTO "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" AS OF SYSTEM TIME "-10s";
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    BACKUP DATABASE movr INTO "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" AS OF SYSTEM TIME "-10s";
+    ~~~
 
-To find a specific backup to validate in the storage location, first show the stored backups in the storage location:
+1. To find a specific backup to validate in the storage location, show the stored backups in the storage location:
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-SHOW BACKUPS IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}"; 
-~~~
-~~~
-          path
-------------------------
-  2022/09/19-134123.64
-  2022/09/19-134559.68
-(2 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    SHOW BACKUPS IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}"; 
+    ~~~
+
+    ~~~
+            path
+    ------------------------
+    2022/09/19-134123.64
+    2022/09/19-134559.68
+    (2 rows)
+    ~~~
 
 {% include {{ page.version.version }}/backups/check-files-validate.md %}
 
@@ -130,4 +133,4 @@ Similarly, to just `schema_only` restores, you'll find the table schemas restore
 - [`RESTORE`](restore.html)
 - [`BACKUP`](backup.html)
 - [`SHOW BACKUP`](show-backup.html)
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)

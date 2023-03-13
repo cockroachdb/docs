@@ -84,7 +84,7 @@ For instructions and working examples showing how to migrate data from other dat
 
 ## Requirements
 
-### Prerequisites
+### Before you begin
 
 Before using `IMPORT`, you should have:
 
@@ -311,6 +311,43 @@ IMPORT TABLE customers FROM PGDUMP 'nodelocal://2/customers.sql';
 ~~~
 
 You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command to upload a file to the external IO directory on a node's (the gateway node, by default) local file system.
+
+
+### Import data into your {{ site.data.products.db }} cluster
+
+You can import data into your {{ site.data.products.db }} cluster using either [`userfile`](use-userfile-for-bulk-operations.html) or [cloud storage](use-cloud-storage-for-bulk-operations.html):
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
+  <button class="filter-button" data-scope="cloud">Cloud storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="userfile">
+
+#### Import using `userfile`
+
+{% include cockroachcloud/userfile-examples/import-into-userfile.md %}
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cloud">
+
+#### Import using cloud storage
+
+To import a table into your cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
+;
+~~~
+
+</section>
 
 ## Known limitation
 

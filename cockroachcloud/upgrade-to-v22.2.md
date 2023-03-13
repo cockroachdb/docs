@@ -49,7 +49,7 @@ Before starting the upgrade, complete the following steps.
 
 Your cluster will be unavailable while its single node is stopped and restarted with v22.2. Prepare your application for this brief downtime, typically a few minutes.
 
-The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the {{ site.data.products.db }} Console will also be disabled during this time.
+The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will also be disabled during this time.
 
 </section>
 
@@ -88,7 +88,7 @@ If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v
 
 ### Monitor your application
 
-Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [manually trigger finalization](#finalize-the-upgrade).
 

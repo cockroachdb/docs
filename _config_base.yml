@@ -14,7 +14,7 @@ defaults:
     layout: page
 exclude:
 - __tests__
-- netlify
+- build
 - scripts
 - vendor
 - jekyll-algolia-dev
@@ -55,6 +55,7 @@ jekyll_get_json:
   json: https://cockroachlabs.cloud/assets/docs/api/manifest.json
 keep_files:
 - _internal
+main_url: https://www.cockroachlabs.com
 markdown: Redcarpet
 plugins:
 - jekyll-include-cache
@@ -125,27 +126,28 @@ release_info:
     start_time: 2022-10-13 17:45:03.909127 +0000 UTC
     version: v21.2.17
   v22.1:
-    build_time: 2023-01-09 00:00:00 (go1.19)
+    build_time: 2023-03-03 00:00:00 (go1.19)
     crdb_branch_name: release-22.1
     docker_image: cockroachdb/cockroach
-    name: v22.1.13
-    start_time: 2023-01-04 12:01:22.351690 +0000 UTC
-    version: v22.1.13
+    name: v22.1.16
+    start_time: 2023-03-01 13:20:01.002036 +0000 UTC
+    version: v22.1.16
   v22.2:
-    build_time: 2023-01-04 00:00:00 (go1.19)
+    build_time: 2023-03-03 00:00:00 (go1.19)
     crdb_branch_name: release-22.2
     docker_image: cockroachdb/cockroach
-    name: v22.2.2
-    start_time: 2023-01-03 11:22:46.206439 +0000 UTC
-    version: v22.2.2
+    name: v22.2.6
+    start_time: 2023-02-28 13:49:22.362179 +0000 UTC
+    version: v22.2.6
   v23.1:
-    build_time: 2022-12-19 00:00:00 (go1.19)
+    build_time: 2023-03-06 00:00:00 (go1.19)
     crdb_branch_name: master
     docker_image: cockroachdb/cockroach-unstable
-    name: v23.1.0-alpha.1
-    start_time: 2022-12-16 11:01:11.542608 +0000 UTC
-    version: v23.1.0-alpha.1
+    name: v23.1.0-alpha.5
+    start_time: 2023-03-06 10:55:32.149776 +0000 UTC
+    version: v23.1.0-alpha.5
 sass:
+  quiet_deps: true
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs

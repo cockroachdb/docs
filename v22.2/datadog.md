@@ -8,7 +8,7 @@ docs_area: manage
 [Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog)
+This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog)
 {{site.data.alerts.end}}
 
 The {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
@@ -19,7 +19,7 @@ The {{ site.data.products.core }} integration with Datadog is powered by the [Da
 
 In this tutorial, you will enable the CockroachDB integration in Datadog, configure logging and alerting, and visualize data.
 
-## Prerequisites
+## Before you begin
 
 Before you can follow the steps presented in this tutorial, you must have:
 
@@ -180,3 +180,4 @@ The timeseries graph at the top of the page indicates the configured metric and 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)
 - [Logging Overview](logging-overview.html)
+- [Metrics](metrics.html)

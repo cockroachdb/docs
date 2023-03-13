@@ -140,10 +140,18 @@ Examples of supported cloud storage sink URIs:
 
 <a name ="cloud-parameters"></a>The following table lists the available parameters for cloud storage sink URIs:
 
-URI Parameter      | Description
--------------------+------------------------------------------------------------------
-`file_size`        | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
-`topic_prefix`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+URI Parameter      | Storage | Description
+-------------------+------------------------+---------------------------
+`AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
+`AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
+`AUTH`             | AWS S3, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html) for examples of each of these. 
+`AZURE_ACCOUNT_NAME` | Azure | The name of your Azure account.
+`AZURE_ACCOUNT_KEY` | Azure | The URL-encoded account key for your Azure account.
+`AZURE_ENVIRONMENT` | Azure | {% include {{ page.version.version }}/misc/azure-env-param.md %}
+`CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
+`file_size`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
+`S3_storage_class` | AWS S3 | Specify the S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
+`topic_prefix`     | All | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
@@ -151,7 +159,9 @@ URI Parameter      | Description
 
 ## Webhook sink
 
-{% include feature-phases/preview.md %}
+{{site.data.alerts.callout_info}}
+**This feature is [experimental](experimental-features.html).**This feature is subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v21.2" %} Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
