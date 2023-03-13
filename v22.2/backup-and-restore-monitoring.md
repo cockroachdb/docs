@@ -61,7 +61,7 @@ Metric | Description
 To use the Datadog integration with your **{{ site.data.products.dedicated }}** cluster, you can:
 
 - Export the following schedule backup metrics to Datadog using the [Cloud API](../cockroachcloud/cloud-api.html). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster](../cockroachcloud/export-metrics.html?filters=datadog-metrics-export).
-- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog).
+- Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog).
 
 ### Available metrics in Datadog
 
