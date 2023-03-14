@@ -11,10 +11,10 @@ You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) a 
 GRANT CHANGEFEED ON TABLE example_table TO user;
 ~~~
 
-When you grant a user the `CHANGEFEED` privilege, they can:
+When you grant a user the `CHANGEFEED` privilege on a set of tables, they can:
 
 - Create changefeeds on the target table even if the user does **not** have the [`CONTROLCHANGEFEED` role option](alter-role.html#role-options) or the `SELECT` privilege on the table. 
-- {% include_cached new-in.html version="v23.1" %} Manage the changefeed jobs that they have created using the [`SHOW CHANGEFEED JOB`](show-jobs.html), [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html) commands.
+- {% include_cached new-in.html version="v23.1" %} Manage the changefeed jobs running on the tables using the [`SHOW CHANGEFEED JOB`](show-jobs.html), [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html) commands.
 
 These users will be able to create changefeeds, but they will not be able to run a `SELECT` query on that data directly. However, they could still read this data indirectly if they have read access to the [sink](changefeed-sinks.html).
 
@@ -22,12 +22,14 @@ These users will be able to create changefeeds, but they will not be able to run
 
 ### Privilege model
 
+The following summarizes the operations users can run when they have changefeed privileges on a table:
+
 Granted privileges | Usage 
 -------------------+-------
-`CHANGEFEED` | Create changefeeds on tables defined in the `GRANT` statement.<br>Manage the changefeed job.
-`CHANGEFEED` + `USAGE` on external connections | Create changefeeds on tables defined in the `GRANT` statement **only** to an external connection URI that the user has [`USAGE`](create-external-connection.html#required-privileges) on.<br>Manage the changefeed job.
+`CHANGEFEED` | Create changefeeds on tables.<br>Manage changefeed jobs on tables.
+`CHANGEFEED` + [`USAGE`](create-external-connection.html#required-privileges) on external connection | Create changefeeds on tables to an external connection URI.<br>Manage changefeed jobs on tables.<br>**Note:** If you need to manage access to changefeed sink URIs, set the `changefeed.permissions.enforce_external_connections=true` cluster setting. This will mean that users with these privileges can **only** create changefeeds on external connections.
 `SELECT` | Create a sinkless changefeed that emits messages to a SQL client.
-**Deprecated** `CONTROLCHANGEFEED` role option + `SELECT` | Create changefeeds on tables defined in the `GRANT` statement.
+**Deprecated** `CONTROLCHANGEFEED` role option + `SELECT` | Create changefeeds on tables.
 
 You can add `CHANGEFEED` to the user or role's [default privileges](security-reference/authorization.html#default-privileges) with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role):
 
