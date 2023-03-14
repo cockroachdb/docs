@@ -33,7 +33,7 @@ Requests to the cluster arrive as SQL statements, but data is ultimately written
 
 In relationship to other layers in CockroachDB, the SQL layer:
 
-- Receives requests from the outside world via its [SQL API](#sql-api).
+- Receives SQL requests from the outside world via its [SQL API](#sql-api).
 - Converts SQL statements into low-level KV operations, which it sends as requests to the [transaction layer](transaction-layer.html).
 
 ## Components
@@ -152,7 +152,7 @@ For more information, including examples and limitations, see [Online Schema Cha
 
 ### SQL and transaction layer
 
-KV operations from executed `planNodes` are sent to the transaction layer.
+Sends KV operations as requests from executed `planNodes` to the transaction layer.
 
 ## What's next?
 
