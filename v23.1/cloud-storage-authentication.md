@@ -618,22 +618,56 @@ In this SQL statement, `AUTH=implicit` uses the workload identity service accoun
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
-## Azure Storage authentication
+## Azure specified authentication
 
-To access Azure storage containers, use the following parameters:
+You can authenticate to Azure with explicit credentials in the following ways:
 
-- `AZURE_ACCOUNT_NAME`
-- `AZURE_ACCOUNT_KEY`
-- (optional) `AZURE_ENVIRONMENT`
+- {% include_cached new-in.html version="v23.1" %} Define the `AUTH=specified` parameter with:
+    - `AZURE_ACCOUNT_NAME`: Name of your Azure account.
+    - `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application).
+    - `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
+    - `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 
-It is necessary to [url encode](https://en.wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. 
+    ~~~
+    azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}
+    ~~~
 
-For example:
+    You can authenticate to Azure Storage and Azure Key Vault with this URI format. 
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD';
+- Specify your container name with:
+    - `AZURE_ACCOUNT_NAME`: Name of your Azure account.
+    - `AZURE_ACCOUNT_KEY`: Key generated for your Azure account.
+    - (optional) `AZURE_ENVIRONMENT`
+
+    It is necessary to [url encode](https://en.wikipedia.org/wiki/Percent-encoding) the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. 
+
+    ~~~
+    azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
+    ~~~
+
+## Azure Storage implicit authentication
+
+{{site.data.alerts.callout_danger}}
+Implicit authentication to Azure is only available for {{ site.data.products.core }} clusters.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v23.1" %} If the `AUTH` parameter is set to `implicit`, credentials will be loaded from the environment (i.e., the machines running the backup) or with a managed identity. You need to set the following environment variables for `implicit` authentication:
+
+- `AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application).
+- `AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.
+- `AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
+
+See Microsoft's [Azure Authentication](https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication) documentation to set this up. 
+
+You must include the container name and Azure account name in your URI, as follows:
+
 ~~~
+azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}
+~~~
+
+When using role-based access control through an [Azure App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) to Azure Storage, it is necessary to grant the App Registration permission to the container. Use the `Storage Blob Data Contributor` built-in role to grant read, write, and delete access. See Microsoft's [Assign an Azure role for access to blob data](https://learn.microsoft.com/en-us/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for instructions.
+
+For details on using `implicit` authentication for an Azure encrypted backup, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 
 </section>
 

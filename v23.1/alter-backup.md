@@ -11,7 +11,7 @@ The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to
 
 After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`](backup.html), [`RESTORE`](restore.html), and [`SHOW BACKUP`](show-backup.html) statements can use any of the existing or new KMS URIs to decrypt the backup.
 
-CockroachDB supports AWS and Google Cloud KMS keys. For more detail on encrypted backups and restores, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+CockroachDB supports AWS, Azure, and Google Cloud KMS keys. For more detail on encrypted backups and restores, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 
 ## Synopsis
 
@@ -35,7 +35,7 @@ Parameter         | Description
 - `ALTER BACKUP` can only be run by members of the [`admin` role](security-reference/authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
 - `ALTER BACKUP` requires full read and write permissions to the target cloud storage bucket.
 
-The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` using [`SPECIFIED`](cloud-storage-authentication.html) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3` or `gs` with [`IMPLICIT`](cloud-storage-authentication.html) credentials.
+The backup collection's URI does **not** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3`, `azure`, or `gs` with [`specified`](cloud-storage-authentication.html) credentials. The backup collection's URI **does** require the [`admin` role](security-reference/authorization.html#admin-role) when using `s3`, `azure`, or `gs` with [`implicit`](cloud-storage-authentication.html) credentials.
 
 We recommend using [cloud storage](use-cloud-storage.html).
 
@@ -47,7 +47,7 @@ We recommend using [cloud storage](use-cloud-storage.html).
 When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](take-full-and-incremental-backups.html#full-backups) in the backup collection.
 {{site.data.alerts.end}}
 
-See [Use Cloud Storage](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
+See [Cloud Storage Authentication](cloud-storage-authentication.html) for more detail on authenticating to your cloud storage bucket.
 
 ### Add an AWS KMS key to an encrypted backup
 
@@ -67,6 +67,28 @@ To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement tha
 ALTER BACKUP '2022/03/23-213101.37' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
     WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
+~~~  
+
+To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).
+
+### Add an Azure KMS key to an encrypted backup
+
+{% include_cached new-in.html version="v23.1" %} To add a new KMS key to the most recent backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER BACKUP LATEST IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    ADD NEW_KMS = 'azure-kms:///{new key}/{new key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
+    WITH OLD_KMS = 'azure-kms:///{old key}/{old key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
+~~~  
+
+To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER BACKUP '2023/03/14-203808.29' IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    ADD NEW_KMS = 'azure-kms:///{new key}/{new key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
+    WITH OLD_KMS = 'azure-kms:///{old key}/{old key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~  
 
 To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backup.html).

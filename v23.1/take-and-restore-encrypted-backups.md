@@ -13,13 +13,14 @@ This doc provides information about how to take and restore encrypted backups in
 
 - [Using AWS Key Management Service (KMS)](#aws-kms-uri-format)
 - [Using Google Cloud Key Management Service (KMS)](#google-cloud-kms-uri-format)
+- {% include_cached new-in.html version="v23.1" %} [Using Azure Key Vault](#azure-key-vault-uri-format)
 - [Using a passphrase](#use-a-passphrase)
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Use Key Management Service
 
-You can encrypt full or incremental backups with AWS or Google Cloud Key Management Service (KMS) by using the [`kms` option](backup.html#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.
+You can encrypt full or incremental backups with AWS KMS, Google Cloud KMS, or Azure Key Vault by using the [`kms` option](backup.html#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.
 
 On [`RESTORE`](restore.html), CockroachDB reads the `ENCRYPTION_INFO` file and attempts to decrypt the encrypted data key using the KMS URI provided in the `RESTORE` statement. Once CockroachDB successfully obtains the unencrypted data key, the `BACKUP` manifest and data files will be decrypted and the restoration will proceed. Similarly, the same KMS URI is needed to decrypt the file to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html#show-an-encrypted-backup).
 
@@ -60,6 +61,50 @@ The AWS URI **requires** the following:
 
 See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) documentation for guidance on creating an AWS KMS key.
 
+#### Azure Key Vault URI format
+
+{% include_cached new-in.html version="v23.1" %} The Azure Key Vault URI must use the following format:
+
+~~~
+azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}
+~~~
+
+To use `implicit` authentication for KMS URI for an Azure encrypted backup, include the Azure Key Vault name:
+
+~~~
+azure-kms:///{key}/{key version}?AUTH=implicit&AZURE_VAULT_NAME={key vault name}
+~~~
+
+See [Cloud Storage Authentication](cloud-storage-authentication.html) for more detail on `implicit` authentication.
+
+The Azure Key Vault URI **requires** the following:
+
+ Component                  | Description
+----------------------------+------------------------------------------------------------------------
+`azure-kms:///`             | The Azure scheme. Note the triple slash (`///`).
+`{key}`                     | Name of the key stored in your key vault.
+`{key version}`             | Current version of the key in your key vault.
+`AZURE_TENANT_ID={tenant ID}` | Directory (tenant) ID for your App Registration.
+`AZURE_CLIENT_ID={client ID}` | Application (client) ID for your App Registration.
+`AZURE_CLIENT_SECRET={client secret}` | Client credentials secret generated for your App Registration.
+`AZURE_VAULT_NAME={key vault name}` | Name of your key vault.
+
+To run an encrypted Azure backup, it is necessary to create the following:
+
+- [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) to generate and store your keys. See Microsoft's quickstart to [Create a key vault using the Azure portal](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal).
+- Azure App Registration to manage role-based access control. See Microsoft's [Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) to register an application.
+
+Once you have created your App Registration you must assign it permissions to your key vault. To complete a successful encrypted backup, your App Registration needs the following permissions:
+
+~~~json
+"dataActions": [
+    "Microsoft.KeyVault/vaults/keys/encrypt/action",
+    "Microsoft.KeyVault/vaults/keys/decrypt/action"
+]
+~~~
+
+Follow Microsoft's [Assign a Key Vault access policy](https://learn.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal) tutorial for instructions.
+
 #### Google Cloud KMS URI format
 
 The Google Cloud KMS URI must use the following format:
@@ -83,34 +128,24 @@ See Google Cloud's [customer-managed encryption key](https://cloud.google.com/st
 
 ### Examples
 
-- [Take an encrypted backup](#take-an-encrypted-backup)
-- [Take a backup with multi-region encryption](#take-a-backup-with-multi-region-encryption)
-- [Restore from an encrypted backup](#restore-from-an-encrypted-backup)
-
 The following examples provide connection strings to Amazon S3 and Google Cloud Storage. For guidance using other authentication parameters, read Use Cloud Storage for Bulk Operations.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">AWS</button>
+  <button class="filter-button" data-scope="azure">Azure</button>
   <button class="filter-button" data-scope="gcs">Google Cloud</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-#### Take an encrypted backup
+#### Take an encrypted S3 backup
 
 To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#options):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
-~~~
-
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries |  bytes
----------------------+-----------+--------------------+------+---------------+----------
-  594193600274956289 | succeeded |                  1 | 2689 |          1217 | 1420108
-(1 row)
 ~~~
 
 #### Take a backup with multi-region encryption
@@ -119,58 +154,35 @@ To take a backup with [multi-region encryption](#multi-region), use the `kms` op
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
       'aws:///{key}?AUTH=implicit&REGION=us-east-1',
       'aws:///{key}?AUTH=implict&REGION=us-west-1'
     );
 ~~~
 
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-  594471427115220993 | succeeded |                  1 |   20 |             2 |  1026
-(1 row)
-~~~
+#### Restore from an encrypted S3 backup
 
-#### Restore from an encrypted backup
-
-To decrypt an [encrypted backup](#take-an-encrypted-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup.
-
-For example, the encrypted backup created in the [first example](#take-an-encrypted-backup) can be restored with:
+To decrypt an [encrypted backup](#take-an-encrypted-s3-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
-~~~
-
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries |  bytes
----------------------+-----------+--------------------+------+---------------+----------
-  594193600274956291 | succeeded |                  1 | 2689 |          1217 | 1420108
-(1 row)
 ~~~
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="gcs">
+<section class="filter-content" markdown="1" data-scope="azure">
 
-#### Take an encrypted backup
+#### Take an encrypted Azure backup
 
-To take an encrypted backup with Google Cloud KMS, use the `kms` [option](backup.html#options):
+To take an encrypted backup with Azure KMS, use the `kms` [option](backup.html#options):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
-    WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries |  bytes
----------------------+-----------+--------------------+------+---------------+----------
-  594193600274956289 | succeeded |                  1 | 2689 |          1217 | 1420108
-(1 row)
+BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
 ~~~
 
 #### Take a backup with multi-region encryption
@@ -179,37 +191,58 @@ To take a backup with [multi-region encryption](#multi-region), use the `kms` op
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    WITH KMS=(
+      'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}',
+      'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
+    );
+~~~
+
+#### Restore from an encrypted Azure backup
+
+To decrypt an [encrypted backup](#take-an-encrypted-azure-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESTORE FROM LATEST IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    WITH kms = 'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+#### Take an encrypted Google Storage backup
+
+To take an encrypted backup with Google Cloud KMS, use the `kms` [option](backup.html#options):
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+#### Take a backup with multi-region encryption
+
+To take a backup with [multi-region encryption](#multi-region), use the `kms` option to specify a comma-separated list of KMS URIs:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     WITH KMS=(
       'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}',
       'gs:///projects/{project name}/locations/us-west1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}'
     );
 ~~~
 
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-  594471427115220993 | succeeded |                  1 |   20 |             2 |  1026
-(1 row)
-~~~
+#### Restore from an encrypted Google Storage backup
 
-#### Restore from an encrypted backup
-
-To decrypt an [encrypted backup](#take-an-encrypted-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup.
-
-For example, the encrypted backup created in the [first example](#take-an-encrypted-backup) can be restored with:
+To decrypt an [encrypted backup](#take-an-encrypted-google-storage-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}';
-~~~
-
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries |  bytes
----------------------+-----------+--------------------+------+---------------+----------
-  594193600274956291 | succeeded |                  1 | 2689 |          1217 | 1420108
-(1 row)
 ~~~
 
 </section>
@@ -228,13 +261,7 @@ To take an encrypted backup, use the [`encryption_passphrase` option](backup.htm
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
+BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 
 To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
@@ -247,13 +274,7 @@ For example, the encrypted backup created in the previous example can be restore
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
-~~~
-~~~
-        job_id       |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+---------
-  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
-(1 row)
+RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 
 To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
