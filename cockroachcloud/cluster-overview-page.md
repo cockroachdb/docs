@@ -1,11 +1,18 @@
 ---
 title: Cluster Overview Page
-summary: How to use the Cluster Overview page to view cluster details on {{ site.data.products.serverless }}.
+summary: How to use the Cluster Overview page to view cluster details on {{ site.data.products.db }}.
 toc: true
 docs_area: manage
 ---
 
-The **Cluster Overview** page displays key metrics about your {{ site.data.products.serverless }} cluster. To view this page, click on a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page).
+The **Cluster Overview** page displays key metrics about your {{ site.data.products.db }} cluster. To view this page, click on a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page).
+
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="serverless">{{ site.data.products.serverless }}</button>
+  <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
 
 ## Cluster settings
 
@@ -65,7 +72,7 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
-| Cloud     | The cluster's [cloud provider](create-a-serverless-cluster.html#step-2-select-the-cloud-provider). |
+| Cloud     | The cluster's [cloud provider](create-a-serverless-cluster.html#step-2-select-a-cloud-provider-region). |
 | Plan type | The [plan type](create-your-cluster.html#step-1-start-the-cluster-creation-process) used to create the cluster.                                                           |
 | Region(s) | The cluster's [region(s)](create-your-cluster.html#step-3-select-the-region-s).         |
 | Nodes     | The [number of nodes](create-your-cluster.html#step-4-select-the-number-of-nodes) the cluster has and how many are live. |
@@ -82,6 +89,6 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 - Single Sign-On (SSO) for both your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and the [DB Console](../{{site.versions["stable"]}}/sso-db-console.html)
 - [Network security](network-authorization.html)
 
-You can also check the status of these features on the [**PCI ready**](cluster-overview.html#pci-ready) page of the {{ site.data.products.db }} Console.
+You can also check the status of these features on the [**PCI ready**](cluster-overview.html#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
 
 </section>
