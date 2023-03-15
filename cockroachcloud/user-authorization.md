@@ -11,10 +11,10 @@ Before proceeding, it is recommended to review the {{ site.data.products.db }} a
 
 This page describes the procedures for managing organization users and roles:
 
-- Adding users to your organization, by creating them or inviting them from another organization
-- managing organization-level users roles
-- granting organization users access to clusters through cluster roles
-- managing the privileges associated with cluster roles
+- Adding users to your organization, by creating them or inviting them from another organization.
+- Managing organization-level users roles.
+- Granting organization users access to clusters through cluster roles.
+- Managing the privileges associated with cluster roles.
 
 {{ site.data.products.db }} requires you to create SQL users to access the cluster.
 
