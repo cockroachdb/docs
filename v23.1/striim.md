@@ -41,7 +41,7 @@ Complete the following items before using Striim:
 
 You can use Striim to migrate tables from a source database to CockroachDB. This can comprise an initial load that copies the selected schemas and their data from the source database to CockroachDB, followed by continuous replication of ongoing changes using Striim change data capture (CDC).
 
-### Initial data load
+### Initial load
 
 To perform the initial load, create a Striim application and configure the source database using one of the **Initial Load** sources. Configure CockroachDB as a **PostgreSQL** target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster](connect-to-the-database.html). Do the following before deploying the application:
 
@@ -51,7 +51,7 @@ To perform the initial load, create a Striim application and configure the sourc
 	jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&reWriteBatchedInserts=true
 	~~~
 
-- After creating the Target, [export the App](https://www.striim.com/docs/platform/en/hands-on-quick-tour.html#UUID-a846e232-87e4-d88b-eb77-fa80691bbdf7) and add the field `_h_ConnectionRetryCode: '40001'` to the TQL file. For example:
+- After creating the target, [export the application](https://www.striim.com/docs/platform/en/hands-on-quick-tour.html#UUID-a846e232-87e4-d88b-eb77-fa80691bbdf7) and add the field `_h_ConnectionRetryCode: '40001'` to the TQL file. For example:
 
 	~~~
 	CREATE OR REPLACE TARGET cockroach USING Global.DatabaseWriter ( 
@@ -73,13 +73,13 @@ To perform the initial load, create a Striim application and configure the sourc
 	  adapterName: 'DatabaseWriter' ) 
 	~~~
 
-	Then [import the modified TQL file](https://www.striim.com/docs/platform/en/creating-apps-by-importing-tql.html) to create a new App.
+	Then [import the modified TQL file](https://www.striim.com/docs/platform/en/creating-apps-by-importing-tql.html) to create a new application.
 
 {{site.data.alerts.callout_info}}
 To minimize downtime for your migration, configure a separate [continuous replication](#continuous-replication) application before you deploy the initial load application. Once the initial load is complete, deploy the continuous replication application.
 {{site.data.alerts.end}}
 
-Deploying this application performs the initial load of data to CockroachDB. Remember that you should have already [created the schema objects](#before-you-begin) on CockroachDB.
+Deploy this application to perform the initial load of data to CockroachDB. Remember that you should have already [created the schema objects](#before-you-begin) on CockroachDB.
 
 ### Continuous replication
 
@@ -89,15 +89,21 @@ To perform continuous replication of ongoing changes, create another Striim appl
 
 - Set up your source database for continuous replication as described in the [Striim for BigQuery documentation](https://www.striim.com/docs/GCP/StriimForBigQuery/en/connect_source-select.html).
 
+- Repeat the guidance for creating the [initial load](#initial-load) application:
+
+	- When configuring CockroachDB as a target, specify the **Connection URL** in [JDBC format](connect-to-the-database.html?filters=java&#step-5-connect-to-the-cluster) while appending the `reWriteBatchedInserts=true` property, and without specifying the username.
+
+	- After creating the target, [export the application](https://www.striim.com/docs/platform/en/hands-on-quick-tour.html#UUID-a846e232-87e4-d88b-eb77-fa80691bbdf7) and add the field `_h_ConnectionRetryCode: '40001'` to the TQL file. Then [import the modified TQL file](https://www.striim.com/docs/platform/en/creating-apps-by-importing-tql.html) to create a new application.
+
 Deploy this application once the [initial load](#initial-load) application has finished running. 
 
 ## Replicate data from CockroachDB to a secondary source
 
-You can use Striim to replicate ongoing changes from CockroachDB to a secondary source. This may include a [downstream sink](changefeed-sinks.html) such as Kafka or cloud storage for purposes such as reporting, caching, or full-text indexing.
+You can use Striim to replicate ongoing changes from CockroachDB to a secondary source. This may include a [downstream sink](changefeed-sinks.html) such as Kafka or cloud storage for purposes such as reporting, caching, or full-text indexing. For a list of targets, see the [Striim documentation](https://www.striim.com/docs/en/targets.html).
 
 To perform continuous replication of ongoing changes, create a Striim application, configure CockroachDB as a **PostgreSQL CDC** source, and select an appropriate downstream target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster](connect-to-the-database.html).
 
-## See Also
+## See also
 
 - [Migrate Your Database to CockroachDB](migration-overview.html)
 - [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
