@@ -37,7 +37,7 @@ With {{ site.data.products.serverless }}, you are charged for the storage and ac
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
-No, you can create one {{ site.data.products.serverless }} cluster that is free forever. If you choose to set a resource limit for your cluster, you will only be charged for the resources you use up to your limits.
+No, you can create one {{ site.data.products.serverless }} cluster for free. If you choose to set a resource limit for your cluster, you will only be charged for the resources you use up to your limits.
 
 ### What regions are available for {{ site.data.products.serverless }} clusters?
 

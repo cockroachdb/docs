@@ -5,7 +5,7 @@
 1. On the **Clusters** page, click **Create Cluster**.
 1. On the **Create your cluster** page, select **Serverless**.
 
-    Unless you change your monthly budget, this cluster will be free forever.
+    Unless you change your monthly budget, this cluster will be free.
 
 1. Click **Create cluster**.
 
