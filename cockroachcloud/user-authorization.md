@@ -1,6 +1,6 @@
 ---
 title: Managing User Authorization in CockroachDB Cloud
-summary: Learn procedures for managing the life cycle of CockroachDB Cloud users and roles.
+summary: Learn procedures for managing the lifecycle of CockroachDB Cloud users and roles.
 toc: true
 docs_area: manage
 ---
