@@ -16,7 +16,7 @@ A {{ site.data.products.db }} user belongs to one or more organizations, either 
 A CockroachDB cluster deployed on request for a specific customer in *shared* network and compute infrastrucutre.
 
 ### {{ site.data.products.dedicated }} cluster
-A CockroachDB cluster deployed on request for a specific customer, in a cloud provider's network and compute infrastructure *dedicated* to that customer, which can be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced [network, identity-management, and encryption-related security features](../security-reference/security-overview.html).
+A CockroachDB cluster deployed on request for a specific customer, in a cloud provider's network and compute infrastructure *dedicated* to that customer, which can be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features.
 
 ### Request Unit (RU)
 Represents the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview]({{ link_prefix }}serverless-cluster-management.html#view-cluster-overview) page.
