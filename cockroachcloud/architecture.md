@@ -60,7 +60,7 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 ### Performance
 
-Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
+Your cluster's resource limits are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
 #### Free
 
@@ -68,7 +68,7 @@ All {{ site.data.products.db }} organizations are given 50 million [Request Unit
 
 #### Paid
 
-You must set a paid resource limit if you've already created one free {{ site.data.products.serverless }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage.
+You must enter billing information and set resource limits if you've already created one free {{ site.data.products.serverless }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage, or choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
 ### Autoscaling
 

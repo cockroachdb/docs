@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-You can have one free {{ site.data.products.serverless }} cluster per organization.
+Organizations without billing information on file can only create one {{ site.data.products.serverless }} cluster.
 {{site.data.alerts.end}}

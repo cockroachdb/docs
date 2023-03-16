@@ -9,6 +9,8 @@ docs_area: get_started
 
 This page shows you how to get started with CockroachDB quickly. You'll use `ccloud`, {{ site.data.products.db }}'s command-line interface (CLI) tool, to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java sample application.
 
+{% include cockroachcloud/free-cluster-limit.md %}
+
 ## Install <code>ccloud</code>
 
 {{site.data.alerts.callout_info}}
@@ -54,7 +56,7 @@ $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [
 
 ## Run `ccloud quickstart`
 
-The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. 
+The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} cluster, and connecting to the new cluster. 
 
 1. In a terminal, run `ccloud quickstart`:
 

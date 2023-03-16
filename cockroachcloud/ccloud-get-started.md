@@ -13,7 +13,7 @@ The `ccloud` tool is a command-line interface (CLI) tool that allows you to crea
 
 ## Use `ccloud quickstart`
 
-The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 resource limit, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -92,7 +92,7 @@ Success! Created cluster
 
 The `id` in the output is the cluster ID. You use the `name` in other `ccloud` commands to identify the cluster on which the `ccloud` command operates.
 
-You can set the cluster name, cloud infrastructure provider, region, and resource limit as command options. The following command is equivalent to the previous command that uses the default values.
+You can set the cluster name, cloud infrastructure provider, region, and resource limits as command options. The following command is equivalent to the previous command that uses the default values.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -136,7 +136,7 @@ ccloud cluster create dedicated dim-dog us-central1:2 us-west2:1 --cloud GCP --v
 </section>
 
 {{site.data.alerts.callout_info}}
-If you set a maximum resource limit greater than $0 on a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
+To set resource limits for a {{ site.data.products.serverless }} cluster, or create a {{ site.data.products.dedicated }} cluster, you must [add a credit card](billing-management.html) to your organization.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="dedicated">

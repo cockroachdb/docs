@@ -27,9 +27,9 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 All {{ site.data.products.db }} organizations are given 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
-Setting a paid resource limit will allow your cluster to scale to meet your application's needs and maintain a high level of performance. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
+Setting higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
-You can create a maximum of one free {{ site.data.products.serverless }} cluster per organization.
+Organizations without billing information on file can only create one cluster. Once you set up billing information, your organization can have up to 200 clusters.
 
 ### What is a Request Unit?
 
@@ -37,7 +37,7 @@ With {{ site.data.products.serverless }}, you are charged for the storage and ac
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
-No, you can create one {{ site.data.products.serverless }} cluster for free. If you choose to set a resource limit for your cluster, you will only be charged for the resources you use up to your limits.
+No, you can create one {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 5 GiB of storage per month. If you need more resources, you can set higher limits for your cluster. You will only be charged for your usage beyond the free threshold.
 
 ### What regions are available for {{ site.data.products.serverless }} clusters?
 
@@ -86,7 +86,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### I created a CockroachCloud Free (beta) cluster before {{ site.data.products.serverless }} was available. Can I still use my cluster?
 
-Yes, your free cluster has been automatically migrated to {{ site.data.products.serverless }}. Your ability to use your cluster should not be affected, and you will now have the option to [add a resource limit](serverless-cluster-management.html#edit-your-resource-limit) for your cluster with no downtime.
+Yes, your free cluster has been automatically migrated to {{ site.data.products.serverless }}. Your ability to use your cluster should not be affected, and you will now have the option to [add resource limits](serverless-cluster-management.html#edit-your-resource-limits) for your cluster with no downtime.
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
@@ -137,7 +137,7 @@ Yes, see the [Cloud API](cloud-api.html) page for more information. Note that th
 
 ### Can I upgrade my free {{ site.data.products.serverless }} cluster's performance?
 
-Yes, you can upgrade your cluster through the Console by [increasing your resource limit](serverless-cluster-management.html#edit-your-resource-limit) and entering [billing information](billing-management.html) if you haven't already.
+Yes, you can upgrade your cluster through the Console by [increasing your resource limits](serverless-cluster-management.html#edit-your-resource-limits) and entering [billing information](billing-management.html) if you haven't already.
 
 ### Can I upgrade the version of CockroachDB my {{ site.data.products.serverless }} cluster is running on?
 

@@ -13,6 +13,8 @@ This page walks you through the process of creating a cluster using {{ site.data
 
 If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_serverless_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 
+{% include cockroachcloud/free-cluster-limit.md %}
+
 ## Step 1. Start the cluster creation process
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
@@ -32,15 +34,13 @@ If you want to create a cluster in an unavailable region, please [contact Suppor
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 {{site.data.alerts.end}}
 
-## Step 3. Enter a resource limit
+## Step 3. Set resource limits
 
-Your cluster's resource limit is the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+Your cluster's resource limits are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
-All {{ site.data.products.db }} organizations get 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set a paid resource limit to maintain a high level of performance with larger workloads. You will only be charged for what you use.
+All {{ site.data.products.db }} organizations get 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 
 {% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
-
-{% include cockroachcloud/free-cluster-limit.md %}
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="free">Free</button>
@@ -63,13 +63,13 @@ Your cluster will be created in a few seconds.
 
 1. If the option to **Start for free** is still available to you, select **Upgrade your resources** instead.
     
-1. Enter your **Resource limit**.
+1. Enter your **Resource limits**.
     - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.   
     - If you select **Unlimited**, your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
 
 1. Click **Next: Payment**.
 
-1. Verify your cluster configuration and resource limit.
+1. Verify your cluster configuration resource limits.
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.

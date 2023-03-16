@@ -325,9 +325,9 @@ Where:
 - `{region_name}` is the cloud infrastructure provider region where the cluster is located.
 - `{status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`.
 
-## Set the maximum resource limit of a Serverless cluster
+## Set the maximum resource limits of a Serverless cluster
 
-To set the maximum resource limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` [permission](console-access-management.html#service-accounts) to retrieve information about an organization's clusters.
+To set the maximum resource limits for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` [permission](console-access-management.html#service-accounts) to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>

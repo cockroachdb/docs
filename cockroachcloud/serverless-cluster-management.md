@@ -22,7 +22,7 @@ For each cluster, the following details display:
 - The cluster's cloud provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
-    - [**Edit resource limit**](#edit-your-resource-limit)
+    - [**Edit resource limits**](#edit-your-resource-limits)
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -32,7 +32,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 The **Overview** page displays details about the selected {{ site.data.products.serverless }} cluster:
 
 - The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Region**
-- The **Usage this month** section, including the **Resource limit**, **Storage**, and **Request Units**
+- The **Usage this month** section, including the **Resource limits**, **Storage**, and **Request Units**
 - The cluster's **Current activity**
 - Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
 
@@ -51,16 +51,16 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
     Your used [RUs](learn-about-request-units.html), used storage, and spend from the selected time frame will be shown along with your monthly cost estimate. The spend and cost estimate do not account for the [free resources](learn-about-pricing.html#free-vs-paid-usage) granted to every organization, which you would have to use up before being charged.
 
-## Edit your resource limit
+## Edit your resource limits
 
-You can edit your resource limit from the **Overview** page. The change in your resource limit will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
+You can edit your resource limits from the **Overview** page. The change in your resource limits will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
-1. Click the pencil icon (or **Add a resource limit** if you haven't set one before) next to your **Resource limit** in the **Usage this month** section.
+1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
 
     You will be taken to the **Edit cluster** page, which shows a graph of your cluster's **Recommended budget** compared to your current budget.
 
-1. Enter a new **Resource limit**.
+1. Enter new **Resource limits**.
 
 1. Click **Update**.
 
