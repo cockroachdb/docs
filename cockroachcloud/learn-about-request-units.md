@@ -21,7 +21,7 @@ The cost to do a prepared point read (fetching a single row by its key) of a 64 
 
   Query                    | RUs per 1 query    | Price per 1M queries
   -------------------------|--------------------|----------
-  Read 1 row of 64 bytes   | 1.03               | $0.20
+  Read 1 row of 64 bytes   | 1.03               | $0.21
   Read 1 row of 1024 bytes | 1.99               | $0.40
   Read 1 row of 2048 bytes | 3.01               | $0.60
 
@@ -45,16 +45,16 @@ A small scan costs about 3 RUs, and the cost increases with the size of the scan
 
   Query                                 | RUs per 1 query | Price per 1M queries
   --------------------------------------|-----------------|----------
-  Scan 1K rows of 64 bytes, return 1    | 3.26            | $0.67
+  Scan 1K rows of 64 bytes, return 1    | 3.26            | $0.65
   Scan 1K rows of 1024 bytes, return 1  | 22.39           | $4.48
-  Scan 10K rows of 1024 bytes, return 1 | 196.05          | $39.22
+  Scan 10K rows of 1024 bytes, return 1 | 196.05          | $39.21
 
 Other cluster activity such as establishing a SQL connection or executing a `SELECT` statement also consume RUs:  
 
   Query                    | RUs per 1 query  | Price per 1M queries
   -------------------------|------------------|----------
-  Establish SQL Connection | 4.36             | $0.88
-  `SELECT 1`               | 0.14             | $0.02
+  Establish SQL Connection | 4.36             | $0.87
+  `SELECT 1`               | 0.14             | $0.03
 
 In addition to queries that you run, Request Units can be consumed by background activity, such as automatic statistics gathering used to optimize your queries or changefeeds connected to an external sink.
 
