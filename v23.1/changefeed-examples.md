@@ -27,6 +27,10 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+{{site.data.alerts.end}}
+
 ## Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
