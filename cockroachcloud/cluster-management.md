@@ -191,7 +191,7 @@ Additionally, you can [backup and restore](../{{site.current_cloud_version}}/tak
 - Single Sign-On (SSO) for both your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and the [DB Console](../{{site.versions["stable"]}}/sso-db-console.html)
 - [Network security](network-authorization.html)
 
-You can also check the status of these features on the [**PCI ready**](cluster-overview.html#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
+You can also check the status of these features on the [**PCI ready**](cluster-overview.html?filters=dedicated#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
 
 
 ## Delete cluster
