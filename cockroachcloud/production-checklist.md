@@ -42,4 +42,4 @@ To verify that you have authorized the application server's network, navigate to
 - Single Sign-On (SSO) for both your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and the [DB Console](../{{site.versions["stable"]}}/sso-db-console.html)
 - [Network security](network-authorization.html)
 
-You can check the status of these features on the [**PCI ready**](cluster-overview.html?filters=dedicated#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
+You can check the status of these features on the [**PCI ready**](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced) page of the {{ site.data.products.db }} Console.
