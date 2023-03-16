@@ -250,7 +250,7 @@ You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [
 
 ## Locality optimized search in multi-region clusters
 
-In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as _locality optimized search_.
+In [multi-region deployments](multiregion-overview.html), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), may perform a _locality optimized search_ to attempt to avoid high latency, cross-region communication between nodes. If query results could be produced using only region-local rows, the database will first search for rows in the gateway node's region. The search only continues in remote regions if rows in the local region did not satisfy the query.  Examples of queries that can use _localtiy optimized search_ include unique key lookups and queries with `LIMIT` clauses.
 
 Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. Unless [queries are limited to a single region](#control-whether-queries-are-limited-to-a-single-region), CockroachDB performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
 
