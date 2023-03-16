@@ -272,7 +272,7 @@ For step-by-step guidance on creating a changefeed connected to Kafka, see the [
 
 For more information, see:
 
-- [This step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro) to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record.
+- The [Create a changefeed connected to Kafka using Avro](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro) tutorial to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record.
 - The [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial to set up a Confluent Cloud Kafka cluster using the Confluent Cloud Schema Registry.
 - The [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page to see a list of all kafka-specific query parameters.
 
