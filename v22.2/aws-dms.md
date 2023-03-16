@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page has instructions for setting up [AWS Database Migration Service (DMS)](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly hosted database containing application data such as MySQL, Oracle, or PostgreSQL.
+This page has instructions for setting up [AWS Database Migration Service (DMS)](https://aws.amazon.com/dms/) to migrate data to CockroachDB from an existing, publicly hosted database containing application data, such as PostgreSQL, MySQL, Oracle, or Microsoft SQL Server.
 
 For a detailed tutorial about using AWS DMS and information about specific migration tasks, see the [AWS DMS documentation site](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html).
 
@@ -21,8 +21,8 @@ Complete the following items before starting this tutorial:
 
 - Configure a [replication instance](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_ReplicationInstance.Creating.html) in AWS.
 - Configure a [source endpoint](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html) in AWS pointing to your source database.
-- Ensure you have a secure, publicly available CockroachDB cluster running v22.2.4 or later, and have created a [SQL user](security-reference/authorization.html#sql-users) that you can use for your AWS DMS [target endpoint](#step-1-create-a-target-endpoint-pointing-to-cockroachdb).
-    - If your CockroachDB cluster is running v22.2.4 or later, set the following session variables using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
+- Ensure you have a secure, publicly available CockroachDB cluster running the latest **{{ page.version.version }}** [production release](../releases/index.html), and have created a [SQL user](security-reference/authorization.html#sql-users) that you can use for your AWS DMS [target endpoint](#step-1-create-a-target-endpoint-pointing-to-cockroachdb).
+    - If your CockroachDB cluster is running v22.2.4 or later, set the following [session variables](set-vars.html#supported-variables) using [`ALTER ROLE ... SET {session variable}`](alter-role.html#set-default-session-variable-values-for-a-role):
 
         {% include_cached copy-clipboard.html %}
         ~~~ sql
@@ -36,7 +36,7 @@ Complete the following items before starting this tutorial:
 
         This prevents a potential issue when migrating especially large tables with millions of rows.
 
-- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+- If you are migrating to a {{ site.data.products.db }} cluster and plan to [use replication as part of your migration strategy](#step-2-1-task-configuration), you must first **disable** [revision history for cluster backups](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) for the migration to succeed.
     {{site.data.alerts.callout_danger}}
     You will not be able to run a [point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html#point-in-time-restore) as long as revision history for cluster backups is disabled. Once you [verify that the migration succeeded](#step-3-verify-the-migration), you should re-enable revision history.
     {{site.data.alerts.end}}
@@ -44,10 +44,10 @@ Complete the following items before starting this tutorial:
     - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](alter-backup-schedule.html) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
-    - If you are migrating from a PostgreSQL database, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
+    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-test-and-update-your-schema).
+    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-convert-your-schema).
     {{site.data.alerts.end}}
 
 As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
@@ -77,10 +77,12 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. Supply an **Endpoint identifier** to identify the new target endpoint.
 1. In the **Target engine** dropdown, select **PostgreSQL**.
 1. Under **Access to endpoint database**, select **Provide access information manually**.
+
+    For information about where to find CockroachDB connection parameters, see [Connect to a CockroachDB Cluster](connect-to-the-database.html).
 1. Enter the **Server name** and **Port** of your CockroachDB cluster.
 1. Supply a **User name**, **Password**, and **Database name** from your CockroachDB cluster.
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{database}`. For information about where to find these parameters, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#step-2-connect-to-your-cluster).
+    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{database}`.
     {{site.data.alerts.end}}
     <img src="{{ 'images/v22.2/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. If needed, you can test the connection under **Test endpoint connection (optional)**.
@@ -113,6 +115,7 @@ A database migration task, also known as a replication task, controls what data 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
 1. For the **Target table preparation mode**, select **Truncate**, **Drop tables on target**, or **Do nothing**.
     <img src="{{ 'images/v22.2/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
+1. Optionally check **Enable validation** to compare the data in the source and target rows, and verify that the migration succeeded. You can view the results in the [**Table statistics**](#step-3-verify-the-migration) for your migration task. For more information about data validation, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html).
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
 1. For the **Target Load**, select **Detailed debug**.
     <img src="{{ 'images/v22.2/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />

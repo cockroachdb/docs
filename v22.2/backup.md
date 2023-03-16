@@ -41,7 +41,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 
 ### Storage considerations
 
-- [HTTP storage](use-a-local-file-server-for-bulk-operations.html) is not supported for `BACKUP` and `RESTORE`.
+- [HTTP storage](use-a-local-file-server.html) is not supported for `BACKUP` and `RESTORE`.
 - Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage.html#object-locking) in your cloud storage bucket.**
 - While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](use-cloud-storage.html) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
 
@@ -149,6 +149,8 @@ This improves performance by decreasing the likelihood that the `BACKUP` will be
 `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
 
 A backup job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the backup has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
+
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for detail on monitoring backup and restore jobs and a list of the available metrics.
 
 ### Backup performance configuration
 

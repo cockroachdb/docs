@@ -27,6 +27,10 @@ Use the following filters to show usage examples for either **Enterprise** or **
 
 <section class="filter-content" markdown="1" data-scope="enterprise">
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+{{site.data.alerts.end}}
+
 ## Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
@@ -321,7 +325,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 ## Create a changefeed connected to a Google Cloud Pub/Sub sink
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
@@ -531,7 +537,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
  In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 

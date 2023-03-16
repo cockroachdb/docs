@@ -61,7 +61,7 @@ CockroachDB docs should be helpful, humble, positive, and friendly. To achieve t
 
 Other general guidance about language and tone:
 
-- For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as "[imperative mood](https://en.wikipedia.org/wiki/Imperative_mood)." These docs should be straightforward and conventional.
+- For [reference and general task-based docs](#reference-and-task-based-docs), use the second-person imperative present tense, also known as the "[imperative mood](https://www.grammar-monster.com/glossary/imperative_mood.htm)." These docs should be straightforward and conventional.
 
     **Example:** In a new terminal, as the `root` user, use the `cockroach user` command to create a new user, `maxroach`.
 
@@ -485,6 +485,8 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
 
+Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
+
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
@@ -688,6 +690,9 @@ All product names except CockroachDB should be written as Liquid variables unles
 - **CockroachDB Dedicated** : `{{ site.data.products.dedicated }}`
 - **CockroachDB Self-Hosted** : `{{ site.data.products.core }}`
 - **CockroachDB Cloud** : `{{ site.data.products.db }}`
+
+
+The first occurrence of a product name within a docs page should use full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
 ### Code
 

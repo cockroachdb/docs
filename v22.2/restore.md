@@ -72,7 +72,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 No special privilege is required for: 
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
-- Using [Userfile](use-userfile-for-bulk-operations.html) storage.
+- Using [Userfile](use-userfile-storage.html) storage.
 
 {% include {{ page.version.version }}/misc/bulk-permission-note.md %}
 
@@ -127,7 +127,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
     HTTP storage is not supported for `BACKUP` and `RESTORE`.
     {{site.data.alerts.end}}
 
-- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
+- [Use a Local File Server](use-a-local-file-server.html)
 
 {% include {{ page.version.version }}/misc/external-connection-note.md %}
 
@@ -241,6 +241,8 @@ CockroachDB does **not** support incremental-only restores.
 - When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
 - A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs.
 - A restore job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
+
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for detail on monitoring backup and restore jobs and a list of the available metrics.
 
 ## Restoring to multi-region databases
 

@@ -198,6 +198,6 @@ To optimize schema design to achieve your performance goals, we recommend workin
 
 ### Can I monitor my cluster with third-party tools?
 
-Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](monitoring-page.html#monitor-cockroachdb-dedicated-with-datadog) for more information.
+Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](tools-page.html#monitor-cockroachdb-dedicated-with-datadog) for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).

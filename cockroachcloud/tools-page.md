@@ -1,11 +1,11 @@
 ---
-title: Monitoring Page
-summary: How to use the Monitoring page to enable monitoring with Datadog and access the DB Console.
+title: Tools Page
+summary: How to use the Tools page to enable monitoring with Datadog and access the DB Console.
 toc: true
 docs_area: manage
 ---
 
-The **Monitoring** page is accessible on {{ site.data.products.dedicated }} clusters. This page allows you to:
+The **Tools** page is accessible on {{ site.data.products.dedicated }} clusters. This page allows you to:
 
 - Set up cluster [monitoring with Datadog](#monitor-cockroachdb-dedicated-with-datadog).
 - Access the cluster's [built-in DB Console](#access-the-db-console) to view time-series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
@@ -28,7 +28,7 @@ For more information about using Datadog, see the [Datadog documentation](https:
 
 To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 
-1. On the cluster's **Monitoring** page, click **Setup** in the **Datadog** panel.
+1. On the cluster's **Tools** page, click **Setup** in the **Datadog** panel.
 
 1. Fill in the **API key** and **Datadog Site** fields with their corresponding values.
     - The **API key** is associated with your Datadog organization. If you don't have an API key to use with your {{ site.data.products.dedicated }} cluster, you need to create one. For instructions, see the [Datadog documentation](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
@@ -40,7 +40,7 @@ To enable Datadog monitoring for a {{ site.data.products.dedicated }} cluster:
 
 ### Verify integration status
 
-Once enabled, the **Integration status** in the **Datadog** panel on the **Monitoring** page will show as `Active`.
+Once enabled, the **Integration status** in the **Datadog** panel on the **Tools** page will show as `Active`.
 
 If an issue is encountered during the integration, one of the following statuses may appear instead:
 
@@ -143,7 +143,7 @@ After deactivating an integration, the metrics data will remain in Datadog for a
 
 To access the DB Console:
 
-1. On the cluster's **Monitoring** page, click **Open DB Console** in the **DB Console** panel.
+1. On the cluster's **Tools** page, click **Open DB Console** in the **DB Console** panel.
 
     You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 

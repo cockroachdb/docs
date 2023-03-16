@@ -90,6 +90,7 @@ You can force queries [to use a specific partial index](table-expressions.html#f
 
 - CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
 - CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
+- CockroachDB prevents a column from being dropped using [`ALTER TABLE ... DROP COLUMN`](alter-table.html#drop-column) if it is referenced by a partial index predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](drop-index.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
 
 ## Examples
 

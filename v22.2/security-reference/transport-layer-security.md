@@ -3,6 +3,7 @@ title: Transport Layer Security (TLS) and Public Key Infrastructure (PKI)
 summary: Overview of PKI and TLS and how to implement them with CockroachDB
 toc: true
 docs_area: reference.security
+security: true
 ---
 
 This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructure (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
@@ -171,6 +172,10 @@ Clients always require a public certificate for the CA that issued the server ce
 If the connection is mutually TLS-authenticated (i.e., if the client authentication method is a certificate rather than a username/password combination), then a private key/public certificate pair for the client is also required.
 
 ### `--accept-sql-without-tls` mode
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 CockroachDB clusters can be started with this option in order to allow clients to opt out of TLS server authentication.
 
