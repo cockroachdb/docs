@@ -65,6 +65,8 @@ Name | Description
 `queue.gc.info.abortspanconsidered` | Number of AbortSpan entries eligible for removal based on their ages
 `queue.gc.info.abortspangcnum` | Number of AbortSpan entries fit for removal
 `queue.gc.info.abortspanscanned` | Number of transactions present in the AbortSpan scanned from the engine
+`queue.gc.info.clearrangefailed` | Number of failed ClearRange operations during GC
+`queue.gc.info.clearrangesuccess` | Number of successful ClearRange operations during GC
 `queue.gc.info.intentsconsidered` | Number of intents eligible to be considered because they are at least two hours old
 `queue.gc.info.intenttxns` | Number of associated distinct transactions
 `queue.gc.info.numkeysaffected` | Number of keys with GC'able data
