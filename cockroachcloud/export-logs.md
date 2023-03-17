@@ -8,10 +8,6 @@ cloud: true
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
 
-{{site.data.alerts.callout_danger}}
-The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
@@ -61,10 +57,6 @@ Where:
 </div>
 
 <section class="filter-content" markdown="1" data-scope="aws-log-export">
-
-{{site.data.alerts.callout_danger}}
-The {{ site.data.products.dedicated }} log export feature is only available on AWS-hosted clusters created after August 11, 2022.
-{{site.data.alerts.end}}
 
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
 
@@ -237,10 +229,6 @@ Perform the following steps to enable log export from your {{ site.data.products
 </section>
 
 <section class="filter-content" markdown="1" data-scope="gcp-log-export">
-
-{{site.data.alerts.callout_danger}}
-The {{ site.data.products.dedicated }} log export feature is only available on GCP-hosted clusters created after September 9, 2022.
-{{site.data.alerts.end}}
 
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to GCP Cloud Logging.
 
@@ -418,7 +406,6 @@ Where:
 
 ## Limitations
 
-- The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
 - {{ site.data.products.dedicated }} clusters hosted on AWS can only export logs to AWS CloudWatch. Similarly, {{ site.data.products.dedicated }} clusters hosted on GCP can only export logs to GCP Cloud Logging.
 
 ## {{ site.data.products.dedicated }} log export Frequently Asked Questions (FAQ)

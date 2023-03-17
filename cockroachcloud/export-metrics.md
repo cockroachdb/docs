@@ -8,7 +8,7 @@ cloud: true
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
-Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
+Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}
@@ -45,7 +45,7 @@ See [Service accounts](console-access-management.html#service-accounts) for inst
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
 {{site.data.alerts.callout_danger}}
-The metrics export feature is only available on {{ site.data.products.dedicated }} clusters created after August 11, 2022. If your {{ site.data.products.dedicated }} cluster was created before this date, you must create a new cluster to utilize metrics export, or [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
 {{site.data.alerts.end}}
 
 Perform the following steps to enable metrics export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
@@ -252,7 +252,6 @@ Where:
 
 ## Limitations
 
-- Metrics export to AWS CloudWatch is currently only available on {{ site.data.products.dedicated }} clusters created after August 11, 2022.
 - Metrics export to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
 - AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your {{ site.data.products.dedicated }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
 
@@ -264,4 +263,4 @@ Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM p
 
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 
-Your {{ site.data.products.dedicated }} cluster must be running on AWS (not GCP), and must have been created after August 11, 2022 to make use of metrics export to AWS CloudWatch.
+Your {{ site.data.products.dedicated }} cluster must be running on AWS (not GCP) to make use of metrics export to AWS CloudWatch. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
