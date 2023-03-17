@@ -140,14 +140,14 @@ release_info:
     start_time: 2023-02-28 13:49:22.362179 +0000 UTC
     version: v22.2.6
   v23.1:
-    build_time: 2023-03-13 00:00:00 (go1.19)
+    build_time: 2023-03-20 00:00:00 (go1.19)
     crdb_branch_name: master
     docker_image: cockroachdb/cockroach-unstable
-    name: v23.1.0-alpha.6
-    start_time: 2023-03-07 16:33:46.374332 +0000 UTC
-    version: v23.1.0-alpha.6
+    name: v23.1.0-alpha.7
+    start_time: 2023-03-17 12:32:36.434585 +0000 UTC
+    version: v23.1.0-alpha.7
 sass:
-  quiet_deps: true
+  quiet_deps: 'true'
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
