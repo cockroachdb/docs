@@ -59,7 +59,7 @@ Here are some best practices to follow when updating rows:
 
 - Always specify a `WHERE` clause in `UPDATE` queries. If no `WHERE` clause is specified, CockroachDB will update all of the rows in the specified table.
 - To update a large number of rows (i.e., tens of thousands of rows or more), use a [batch-update loop](bulk-update-data.html).
-- When executing `UPDATE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+- When executing `UPDATE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under [contention](performance-best-practices-overview.html#transaction-contention).
 
 ### `UPDATE` example
 

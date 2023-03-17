@@ -30,7 +30,7 @@ Charts following the execution attributes display statement fingerprint statisti
 - **Rows Processed**: The total number of rows read and written.
 - **Execution Retries**: The number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
 - **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
-- **Contention Time**: The amount of time spent waiting for resources.
+- **Contention Time**: The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
