@@ -261,10 +261,13 @@ Name | Description
 `sys.cgo.allocbytes` | Current bytes of memory allocated by cgo
 `sys.cgo.totalbytes` | Total bytes of memory allocated by cgo, but not released
 `sys.cgocalls` | Total number of cgo call
-`sys.cpu.sys.ns` | Total system cpu time in nanoseconds
-`sys.cpu.sys.percent` | Current system cpu percentage
-`sys.cpu.user.ns` | Total user cpu time in nanoseconds
-`sys.cpu.user.percent` | Current user cpu percentage
+`sys.cpu.combined.percent-normalized` | Current user+system cpu percentage consumed by the CRDB process, normalized 0-1 by number of cores
+`sys.cpu.host.combined.percent-normalized` | Current user+system cpu percentage across the whole machine, normalized 0-1 by number of cores
+`sys.cpu.now.ns` | The time when CPU measurements were taken, as nanoseconds since epoch
+`sys.cpu.sys.ns` | Total system cpu time consumed by the CRDB process
+`sys.cpu.sys.percent` | Current system cpu percentage consumed by the CRDB process
+`sys.cpu.user.ns` | Total user cpu time consumed by the CRDB process
+`sys.cpu.user.percent` | Current user cpu percentage consumed by the CRDB process
 `sys.fd.open` | Process open file descriptors
 `sys.fd.softlimit` | Process open FD soft limit
 `sys.gc.count` | Total number of GC runs
