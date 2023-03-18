@@ -101,6 +101,19 @@ For each table in the database, the following details display:
 
 - The number of **Rows** captured in the backup
 
+### Incomplete Backups
+
+To view any failed or pending backups, click the Incomplete Backups tab on your cluster's **Backups** page. 
+
+For each incomplete backup, the following details display:
+
+- The date and time the backup began (**Started**) 
+- The amount of time the backup ran for (**Duration**)
+- The error code and text for the failed backup (**Status**)
+- The SQL command corresponding to the failed backup job (**Description**)
+
+<img src="{{ 'images/cockroachcloud/incomplete-backups.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
+
 ## Ways to restore data
 
 [Console Admin](console-access-management.html#console-admin) can perform the following from the Console:
