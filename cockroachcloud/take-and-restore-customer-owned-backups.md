@@ -43,10 +43,6 @@ For information on `userfile` commands, visit the following pages:
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-{{site.data.alerts.callout_info}}
-For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your organization to have access to [cloud storage](../{{site.current_cloud_version}}/use-cloud-storage.html). If you don't have billing set up, [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
-{{site.data.alerts.end}}
-
 The cloud storage examples on this page use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage](../{{site.current_cloud_version}}/use-cloud-storage.html).
 
 {% include cockroachcloud/backup-examples.md %}
