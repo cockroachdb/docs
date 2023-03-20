@@ -84,6 +84,10 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 
 ## Unresolved limitations
 
+### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
+
 ### Unsupported trigram syntax
 
 The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes.html):
