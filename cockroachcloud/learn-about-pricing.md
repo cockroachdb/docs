@@ -15,7 +15,7 @@ RU and storage consumption is prorated at the following prices:
 
   Unit                    | Cost
   ------------------------|------
-  1M Request Units        | $1.00
+  10M Request Units       | $1.00
   1 GiB storage           | $1.00
 
 ## Choosing a spend limit
