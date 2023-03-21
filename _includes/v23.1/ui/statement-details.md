@@ -135,12 +135,3 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 {% endif %}
 
 Click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.
-
-## See also
-
-- [Troubleshoot Query Behavior]({{ link_prefix }}query-behavior-troubleshooting.html)
-- [Transaction retries]({{ link_prefix }}transactions.html#transaction-retries)
-- [Optimize Statement Performance]({{ link_prefix }}make-queries-fast.html)
-- [Support Resources]({{ link_prefix }}support-resources.html)
-- [Raw Status Endpoints]({{ link_prefix }}monitoring-and-alerting.html#raw-status-endpoints)
-- [Transactions Page]({{ page_prefix }}transactions-page.html)
