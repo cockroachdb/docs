@@ -41,21 +41,20 @@ A list of your full and incremental cluster backups displays on your cluster's *
 For each backup, the following details display:
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-- The date and time the backup was taken (**Data From**) 
-- The **Status** of the backup 
+- **Data From**: The date and time the backup was taken
 - The **Type** of backup
 - The **Size** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
-- The number of [**Databases**](#databases) included in the backup
+- **Expires In**: The remaining number of days the backup will be retained
+- [**Databases**](#databases): The number of databases included in the backup
 
 <img src="{{ 'images/cockroachcloud/backups-dedicated.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
-- The date and time the backup was taken (**Data From**)
+- **Data From**: The date and time the backup was taken
 - The **Status** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
+- **Expires In**: The remaining number of days the backup will be retained
 
 <img src="{{ 'images/cockroachcloud/backups-serverless.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
 
@@ -107,12 +106,10 @@ To view any failed or pending backups, click the Incomplete Backups tab on your 
 
 For each incomplete backup, the following details display:
 
-- The date and time the backup began (**Started**) 
-- The amount of time the backup ran for (**Duration**)
-- The error code and text for the failed backup (**Status**)
-- The SQL command corresponding to the failed backup job (**Description**)
-
-<img src="{{ 'images/cockroachcloud/incomplete-backups.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
+- **Started**: The date and time the backup began  
+- **Duration**: The amount of time the backup ran for 
+- **Status**: The error code and text for the failed backup. No error code is shown for pending backups  
+- **Description**: The SQL command corresponding to the failed or pending backup job 
 
 ## Ways to restore data
 
