@@ -1,6 +1,6 @@
 ---
 title: Migrate and Replicate Data with Striim
-summary: Use Striim to migrate data to a CockroachDB cluster or replicate data to a secondary source.
+summary: Use Striim to migrate data to a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
@@ -8,7 +8,10 @@ docs_area: migrate
 [Striim](https://www.striim.com/) offers a [managed service](https://www.striim.com/product/striim-cloud/) and a [self-hosted platform](https://www.striim.com/product/striim-platform/) that you can use to do the following:
 
 - [Migrate data to CockroachDB](#migrate-and-replicate-data-to-cockroachdb) from an existing, publicly hosted database containing application data, such as PostgreSQL, MySQL, Oracle, or Microsoft SQL Server. 
+
+{% comment %}
 - [Replicate data to a secondary source](#replicate-data-from-cockroachdb-to-a-secondary-source) such as Kafka or cloud storage.
+{% endcomment %}
 
 As of this writing, Striim supports the following database [sources](https://www.striim.com/docs/en/sources.html):
 
@@ -97,11 +100,13 @@ To perform continuous replication of ongoing changes, create another Striim appl
 
 Deploy this application once the [initial load](#initial-load) application has finished running. 
 
+{% comment %}
 ## Replicate data from CockroachDB to a secondary source
 
 You can use Striim to replicate ongoing changes from CockroachDB to a secondary source. This may include a [downstream sink](changefeed-sinks.html) such as Kafka or cloud storage for purposes such as reporting, caching, or full-text indexing. For a list of targets, see the [Striim documentation](https://www.striim.com/docs/en/targets.html).
 
 To perform continuous replication of ongoing changes, create a Striim application, configure CockroachDB as a **PostgreSQL CDC** source, and select an appropriate downstream target. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster](connect-to-the-database.html).
+{% endcomment %}
 
 ## See also
 
