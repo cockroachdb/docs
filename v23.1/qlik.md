@@ -1,6 +1,6 @@
 ---
 title: Migrate and Replicate Data with Qlik Replicate
-summary: Use Qlik Replicate to migrate data to a CockroachDB cluster or replicate data to a secondary source.
+summary: Use Qlik Replicate to migrate data to a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
@@ -8,7 +8,33 @@ docs_area: migrate
 [Qlik](https://www.qlik.com) offers a service called Qlik Replicate that you can use to do the following:
 
 - [Migrate data to CockroachDB](#migrate-and-replicate-data-to-cockroachdb) from an existing, publicly hosted database containing application data, such as PostgreSQL, MySQL, Oracle, or Microsoft SQL Server. 
+
+{% comment %}
 - [Replicate data to a secondary source](#replicate-data-from-cockroachdb-to-a-secondary-source) such as Kafka or cloud storage.
+{% endcomment %}
+
+As of this writing, Qlik supports the following database [sources](https://www.qlik.com/us/products/data-sources):
+
+- Cassandra
+- Couchbase
+- DB2 for iSeries
+- DB2 for LUW
+- DB2 for z/OS
+- HP Nonstop Enscribe (AIS)
+- HP Nonstop SQL/MP (AIS)
+- IBM Informix
+- IMS/DB
+- MariaDB
+- Microsoft SQL Server
+- MongoDB
+- MySQL
+- OpenVMS RMS
+- Oracle
+- Percona
+- PostgreSQL
+- SAP HANA
+- SAP Sybase ASE
+- Other via ODBC (with or without CDC)
 
 This page describes the Qlik Replicate functionality at a high level. For detailed information, refer to the tutorial and documentation provided when [signing up for Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate).
 
@@ -58,15 +84,18 @@ To use a {{ site.data.products.serverless }} cluster as the target endpoint, set
 - To perform both an initial load and continuous replication of ongoing changes to the target tables, select **Full Load** and **Apply Changes**. This minimizes downtime for your migration.
 - To perform a one-time migration to CockroachDB, select **Full Load** only.
 
+{% comment %}
 ## Replicate data from CockroachDB to a secondary source
 
 You can use Qlik Replicate to replicate ongoing changes from CockroachDB to a secondary source. This may include a [downstream sink](changefeed-sinks.html) such as Kafka or cloud storage for purposes such as reporting, caching, or full-text indexing.
 
 In the Qlik Replicate interface, CockroachDB is configured as a PostgreSQL **source endpoint**, and the secondary source is configured as the **target endpoint**. For information about where to find the CockroachDB connection parameters, see [Connect to a CockroachDB Cluster](connect-to-the-database.html).
+{% endcomment %}
 
 ## See also
 
-- [Migration Overview](migration-overview.html)
+- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [Change Data Capture Overview](change-data-capture-overview.html)
 - [Third-Party Tools Supported by Cockroach Labs](third-party-database-tools.html)
 - [Migrate with AWS Database Migration Service (DMS)](aws-dms.html)
