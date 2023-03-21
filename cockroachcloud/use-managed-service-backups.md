@@ -108,7 +108,7 @@ For each incomplete backup, the following details display:
 
 - **Started**: The date and time the backup began  
 - **Duration**: The amount of time the backup ran for 
-- **Status**: The error code and text for the failed backup. No error code is shown for pending backups  
+- **Status**: The error code and text for the failed backups. No error code is shown for pending backups  
 - **Description**: The SQL command corresponding to the failed or pending backup job 
 
 ## Ways to restore data
