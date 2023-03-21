@@ -161,7 +161,7 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
     - **Create Index**, **Alter Index**, or **Replace Index**: A **Statement Fingerprint** field displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index; and a **Recommendation** field displays the SQL query to create, alter, or replace the index.
     - **Drop Unused Index**: An **Index** field displays the name of the index to drop; and a **Description** field displays the reason for dropping the index.
 
-To realize the schema insight, click the action button in the final column to execute the SQL statement. A confirmation dialog displays a warning about the cost of [online schema changes](online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client. This button is only shown for [admin users](security-reference/authorization.html#admin-role).
+[Admin users](security-reference/authorization.html#admin-role) will see an action button in the final column, which will execute the SQL statement suggested by the schema insight, for example "Create Index". Upon clicking the action button, a confirmation dialog displays a warning about the cost of [online schema changes](online-schema-changes.html) and the option to copy the SQL statement for later execution in a SQL client.
 
 ## Configuration
 
