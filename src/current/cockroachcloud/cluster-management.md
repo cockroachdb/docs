@@ -161,7 +161,7 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
-{% endcomment 
+{% endcomment %}
   
 ## Set a maintenance window
 
