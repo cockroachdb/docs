@@ -77,6 +77,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 |-----+------------------------+----------------+----------|
 | [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Full | [Migrate with AWS Database Migration Service (DMS)](aws-dms.html)
 | [Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate) | November 2022 | Full | [Migrate and Replicate Data with Qlik Replicate](qlik.html)
+| [Striim](https://www.striim.com) | 4.1.2 | Full | [Migrate and Replicate Data with Striim](striim.html)
 
 ## Provisioning tools
 | Tool | Latest tested version | Support level | Documentation |
