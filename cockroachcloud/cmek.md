@@ -6,11 +6,7 @@ docs_area: manage.security
 cloud: true
 ---
 
-Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. This key is called the _CMEK key_.
-
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
+Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} [private cluster](private-clusters.html) using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. This key is called the _CMEK key_.
 
 You can manage your CMEK keys using one or more of the following services:
 
@@ -55,7 +51,7 @@ CMEK helps you to enforce such business rules on {{ site.data.products.db }} clu
 
 When you create a {{ site.data.products.dedicated }} cluster, its data at rest on cluster disks is not encrypted by default. However, the disks themselves are automatically encrypted by cryptographic keys owned and managed by the cloud providers themselves.
 
-When you enable CMEK on a {{ site.data.products.dedicated }} cluster, {{ site.data.products.db }} creates two encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
+When you enable CMEK on a {{ site.data.products.dedicated }} private cluster, {{ site.data.products.db }} creates two encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
 
 1. The _data key_ is a Data Encryption Key (DEK), and is used to encrypt and decrypt cluster data before it is read from or written to disks attached to a cluster's nodes. Each time the cluster is started or restarted, and each time a node and related disks are added to a cluster, {{ site.data.products.dedicated }} uses the store key to encrypt and decrypt data keys. Each cluster node maintains its own list of data keys. The data key is automatically rotated monthly and is always encrypted at rest by the store key.
 
@@ -113,6 +109,7 @@ Backups in {{ site.data.products.dedicated }} are triggered in two ways, only on
 The CMEK feature has the following limitations:
 
 - CMEK can be enabled only on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
+- The cluster must be a private cluster. Refer to [Create Private Clusters](private-clusters.html)
 - To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
 - If you add a new region to a cluster with CMEK enabled, the new region will not be automatically protected by the CMEK key.
 
@@ -120,4 +117,5 @@ The CMEK feature has the following limitations:
 
 - [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html)
 - [Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)](cmek-faq.html)
+- [Create Private Clusters](private-clusters.html)
 - [Encryption At Rest](/docs/{{site.current_cloud_version}}/encryption.html)

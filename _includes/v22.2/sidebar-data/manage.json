@@ -219,6 +219,12 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
+              "title": "Create Private Clusters",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
+            {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
               "urls": [],
               "items": [
@@ -241,7 +247,7 @@
                   ]
                 },
                 {
-                  "title": "Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
+                  "title": "FAQs",
                   "urls": [
                     "/cockroachcloud/cmek-faq.html"
                   ]
