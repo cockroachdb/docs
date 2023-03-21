@@ -81,7 +81,7 @@ The **Cluster configuration** panel displays the settings you chose during [clus
 
 ## PCI ready (Dedicated advanced)
 
-{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for PCI compliance. Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for PCI readiness. Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
 - [Audit logs](cloud-org-audit-logs.html)
 - [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)

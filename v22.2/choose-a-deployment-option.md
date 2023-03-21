@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Cockroach Labs offers four ways to deploy CockroachDB: three managed services&mdash;{{ site.data.products.serverless }}, {{ site.data.products.dedicated }} base, and {{ site.data.products.dedicated }} advanced&mdash;and a self managed option&mdash;{{ site.data.products.core }}. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
+Cockroach Labs offers four ways to deploy CockroachDB: three managed services&mdash;{{ site.data.products.serverless }}, {{ site.data.products.dedicated }} standard, and {{ site.data.products.dedicated }} advanced&mdash;and a self managed option&mdash;{{ site.data.products.core }}. To help you choose which deployment option will best satisfy your requirements, this page describes the application types each deployment is designed for and lists some of the deployment option features that support the application types. For a full feature comparison list, see [CockroachDB: A cloud native, globally-distributed SQL database](https://www.cockroachlabs.com/get-started-cockroachdb/).
 
 <table>
   <tr>
@@ -40,7 +40,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><a id="dedicated-base"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated }} base</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
+        <li><a id="dedicated-standard"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated }} standard</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -70,7 +70,7 @@ Cockroach Labs offers four ways to deploy CockroachDB: three managed services&md
         <li><b>Cost</b>: Pricing based on disk size and storage. A single, predictable price packages hardware costs with SRE resources and support.</li>
         <li><b>Resource isolation</b>: Dedicated, single-tenant instance of CockroachDB software and infrastructure.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
-        <li><b>Advanced security</b>: Access to all features required for PCI compliance, including CMEK and egress rules.</li>
+        <li><b>Advanced security</b>: Access to all features required for PCI readiness, including CMEK and egress rules.</li>
         <li><b>Advanced features</b>: Yes. See <a href="enterprise-licensing.html">Enterprise Features</a>.</li>
       </ul></td>
   </tr>
