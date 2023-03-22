@@ -1660,7 +1660,13 @@
             "urls": [
               "/${VERSION}/ui-debug-pages.html"
             ]
-          }
+          },
+          {
+           "title": "Key Visualizer",
+           "urls": [
+             "/${VERSION}/ui-key-visualizer.html"
+           ]
+         }
         ]
       },
       {
