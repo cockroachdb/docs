@@ -53,7 +53,7 @@ SCRAM authentication imposes additional computational load on your application s
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
-In clusters running v22.2.0 to v22.2.6, the default hashing cost was high for certain clients that are running on a limited amount of CPU, which may cause higher than normal connection latency. See the [Technical Advisory](../../advisories/a97932.html) for mitigation steps. 
+In clusters running v22.2.0 to v22.2.6, the default hashing cost was too high for certain clients running on a limited amount of CPU, causing connection latency. See the [Technical Advisory](../../advisories/a97932.html) for mitigation steps. 
 
 For more details, refer to [Troubleshoot SQL client application problems](../error-handling-and-troubleshooting.html#troubleshoot-sql-client-application-problems)
 {{site.data.alerts.end}}
