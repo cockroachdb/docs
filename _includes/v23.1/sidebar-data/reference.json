@@ -1682,6 +1682,12 @@
         ]
       },
       {
+       "title": "Transaction Retry Error Example",
+       "urls": [
+         "/${VERSION}/transaction-retry-error-example.html"
+       ]
+     },
+      {
         "title": "Cluster API",
         "urls": [
           "/api/cluster/v2.html"
