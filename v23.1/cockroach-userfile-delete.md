@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If the pattern `'*'` is passed, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
+ The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-userfile-storage.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If the pattern `'*'` is passed, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
 
 ## Required privileges
 
@@ -104,7 +104,7 @@ cockroach userfile delete userfile://testdb.public.uploads
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile list`](cockroach-userfile-list.html)
 - [`cockroach userfile get`](cockroach-userfile-get.html)
-- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
+- [Use `userfile` storage](use-userfile-storage.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)

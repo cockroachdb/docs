@@ -142,7 +142,7 @@ Use `ALTER TABLE ... ALTER COLUMN` to do the following:
 - Set the [visibility](#set-the-visibility-of-a-column) of a column.
 
 {{site.data.alerts.callout_info}}
-Support for altering column data types is [in preview](features-in-preview.html), with certain limitations. For details, see [Altering column data types](#alter-column-data-types).
+Support for altering column data types is [in preview](cockroachdb-feature-availability.html), with certain limitations. For details, see [Altering column data types](#alter-column-data-types).
 {{site.data.alerts.end}}
 
 For examples, see [Alter columns](#alter-columns).
@@ -159,14 +159,14 @@ Parameter | Description |
 `a_expr` | The new [default value](default-value.html) to set. |
 `b_expr` | The [`ON UPDATE` expression](create-table.html#on-update-expressions) to set.
 `[NOT] VISIBLE` | The visibility of a column when using `*` in a [`SELECT` clause](select-clause.html).
-`typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [in preview](features-in-preview.html), with certain limitations. For details, see [Alter column data types](#alter-column-data-types). |
+`typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [in preview](cockroachdb-feature-availability.html), with certain limitations. For details, see [Alter column data types](#alter-column-data-types). |
 `USING a_expr` |  How to compute a new column value from the old column value. |
 
 For usage, see [Synopsis](#synopsis).
 
 #### Alter column data types
 
-Support for altering column data types is [in preview](features-in-preview.html), with certain limitations. To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
+Support for altering column data types is [in preview](cockroachdb-feature-availability.html), with certain limitations. To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
 
 The following are equivalent in CockroachDB:
 
@@ -255,9 +255,13 @@ Use `ALTER TABLE ... DROP COLUMN` to remove columns from a table.
 When used in an explicit transaction combined with other schema changes to the same table, `DROP COLUMN` can result in data loss if one of the other schema changes fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
 {{site.data.alerts.end}}
 
-By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
+By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
 
 For examples, see [Drop columns](#drop-columns).
+
+#### Known limitations
+
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index](partial-indexes.html) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](drop-index.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
 
 #### Required privileges
 
@@ -307,7 +311,9 @@ For usage, see [Synopsis](#synopsis).
 
 `ALTER TABLE ... EXPERIMENTAL_AUDIT` enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for a table. The `SENSITIVE_ACCESS` log output is also called the *SQL audit log*. For details on using SQL audit logs, see [SQL Audit Logging](sql-audit-logging.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 SQL audit logs contain detailed information about queries being executed against your system, including:
 
@@ -2528,7 +2534,9 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 #### Turn on auto-rehoming for `REGIONAL BY ROW` tables
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 This feature is disabled by default.
 

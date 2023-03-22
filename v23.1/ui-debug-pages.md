@@ -10,8 +10,12 @@ docs_area: reference.db_console
 The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Advanced Debug** in the left-hand navigation.
 
 {{site.data.alerts.callout_info}}
-These pages are experimental and undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
+These pages are experimental and largely undocumented. If you find an issue, let us know through [these channels](https://www.cockroachlabs.com/community/).
  {{site.data.alerts.end}}
+
+## Required privileges
+
+To view the **Advanced Debug** page, and work with the debugging and profiling endpoints hosted on this page, the user must be a member of the `admin` role or must have the `VIEWDEBUG` [system privilege](security-reference/authorization.html#supported-privileges) defined.
 
 ## License and node information
 
@@ -42,7 +46,9 @@ Localities | Check node localities for your cluster. | [`admin` users only on se
 
 ## Even More Advanced Debugging
 
-The **Even More Advanced Debugging** section of the page lists additional reports that are largely internal and intended for use by CockroachDB developers. You can ignore this section while monitoring and troubleshooting CockroachDB. Alternatively, if you want to learn how to use these pages, feel free to contact us through [these channels](https://www.cockroachlabs.com/community/).
+The **Even More Advanced Debugging** section of the page lists advanced troubleshooting tools and reports that are generally of interest to CockroachDB developers and contributors, such as the [Key Visualizer](ui-key-visualizer.html), a tool for visualizing read and write traffic across your keyspace.
+
+If you want to learn more about the tools in this section, contact us through [these channels](https://www.cockroachlabs.com/community/).
 
 ## Raw Status Endpoints (JSON)
 

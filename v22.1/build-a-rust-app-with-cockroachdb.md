@@ -48,7 +48,7 @@ The `main` function is the entry point for the application, with the code for co
 The `execute_txn` function wraps database operations in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the function will retry committing the transaction, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
 
 {{site.data.alerts.callout_info}}
-CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
+CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write [contention](performance-best-practices-overview.html#transaction-contention). CockroachDB provides a generic <strong>retry function</strong> that runs inside a transaction and retries it as needed. You can copy and paste the retry function from here into your code.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

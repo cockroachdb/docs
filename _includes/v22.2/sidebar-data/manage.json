@@ -97,7 +97,7 @@
       ]
     },
     {
-      "title": "Back Up and Restore Data",
+      "title": "Backups and Restores",
       "items": [
         {
           "title": "Backup and Restore Overview",
@@ -112,25 +112,20 @@
           ]
         },
         {
-          "title": "Back Up and Restore CockroachDB Cloud Clusters",
+          "title": "Managed-Service Backups",
+          "urls": [
+            "/cockroachcloud/use-managed-service-backups.html"
+          ]
+        },
+        {
+          "title": "Customer-Owned Backups",
           "items": [
             {
-              "title": "Take and Restore Customer-Owned Backups",
+              "title": "Take and Restore Customer-Owned Backups on CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/take-and-restore-customer-owned-backups.html"
               ]
             },
-            {
-              "title": "Use Managed-Service Backups",
-              "urls": [
-                "/cockroachcloud/use-managed-service-backups.html"
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Back Up and Restore CockroachDB Self-Hosted Clusters",
-          "items": [
             {
               "title": "Full and Incremental Backups",
               "urls": [
@@ -160,13 +155,19 @@
               "urls": [
                 "/${VERSION}/manage-a-backup-schedule.html"
               ]
+            },
+            {
+              "title": "Backup Validation",
+              "urls": [
+                "/${VERSION}/backup-validation.html"
+              ]
+            },
+            {
+              "title": "Backup and Restore Monitoring",
+              "urls": [
+              "/${VERSION}/backup-and-restore-monitoring.html"
+              ]
             }
-          ]
-        },
-        {
-          "title": "Backup Validation",
-          "urls": [
-            "/${VERSION}/backup-validation.html"
           ]
         },
         {
@@ -178,15 +179,15 @@
       ]
     },
     {
-      "title": "File Storage for Bulk Operations",
+      "title": "File Storage",
       "items": [
         {
           "title": "Cloud Storage",
           "items": [
             {
-              "title": "Use Cloud Storage for Bulk Operations",
+              "title": "Use Cloud Storage",
               "urls": [
-                "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+                "/${VERSION}/use-cloud-storage.html"
               ]
             },
             {
@@ -200,13 +201,13 @@
         {
           "title": "Userfile Storage",
           "urls": [
-            "/${VERSION}/use-userfile-for-bulk-operations.html"
+            "/${VERSION}/use-userfile-storage.html"
           ]
         },
         {
           "title": "Local File Server",
           "urls": [
-            "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
+            "/${VERSION}/use-a-local-file-server.html"
           ]
         }
       ]
@@ -428,9 +429,15 @@
               ]
             },
             {
-              "title": "Monitoring Page",
+              "title": "Tools Page",
               "urls": [
-                "/cockroachcloud/monitoring-page.html"
+                "/cockroachcloud/tools-page.html"
+              ]
+            },
+            {
+              "title": "Metrics Page",
+              "urls": [
+                "/cockroachcloud/metrics-page.html"
               ]
             },
             {

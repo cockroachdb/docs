@@ -27,8 +27,8 @@ The **Transaction Executions** view provides an overview of all transaction exec
 {{site.data.alerts.callout_info}}
 The rows in this page are populated from the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table.
 
-- The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the `crdb_internal.transaction_contention_events` table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
-- The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html) to always capture contention events.
+- The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the [`crdb_internal.transaction_contention_events` table](crdb-internal.html#transaction_contention_events) exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
+- The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention](performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting](cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 {{site.data.alerts.end}}
 
 Transaction executions with the **High Contention** insight are transactions that experienced [contention](transactions.html#transaction-contention).
@@ -43,9 +43,9 @@ To view [details of the execution](#transaction-execution-details), click an exe
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
 - **Transaction Execution**: The transaction fingerprint of the latest transaction execution.
 - **Insights**: The insight for the transaction execution.
-  - **High Contention**: The transaction execution experienced high contention time according to the threshold set in `sql.insights.latency_threshold`.
+  - **High Contention**: The transaction execution experienced high [contention](performance-best-practices-overview.html#transaction-contention) time according to the threshold set in the [`sql.insights.latency_threshold` cluster setting](cluster-settings.html#setting-sql-insights-latency-threshold).
 - **Start Time (UTC)**: The timestamp when the transaction execution started.
-- **Contention Time**: The amount of time the transaction execution spent waiting in contention.
+- **Contention Time**: The amount of time the transaction execution spent waiting in [contention](performance-best-practices-overview.html#transaction-contention).
 - **Application Name**: The name specified by the [`application_name` session setting](show-vars.html#supported-variables).
 
 #### Transaction execution details
@@ -68,7 +68,7 @@ This section provides details of the transaction executions that block the trans
 - **Transaction Execution ID**: The execution ID of the blocking transaction execution.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
 - **Transaction Execution**: The queries attempted in the transaction.
-- **Contention Start Time (UTC)**: The timestamp at which contention was detected for the transaction.
+- **Contention Start Time (UTC)**: The timestamp at which [contention](performance-best-practices-overview.html#transaction-contention) was detected for the transaction.
 - **Contention Time**: The time transactions with this execution ID was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
 - **Schema Name**: The name of the contended schema.
 - **Database Name**: The name of the contended database.
@@ -84,8 +84,8 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 {{site.data.alerts.callout_info}}
 The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`](crdb-internal.html) table.
 
-- The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than `sql.insights.execution_insights_capacity`.
-- The default tracing behavior enables captures a small percent of transactions so not all contention events will be recorded. When investigating query latency, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html) to always capture contention events.
+- The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than the [`sql.insights.execution_insights_capacity` cluster setting](cluster-settings.html#setting-sql-insights-execution-insights-capacity).
+- The default tracing behavior enables captures a small percent of transactions so not all [contention](performance-best-practices-overview.html#transaction-contention) events will be recorded. When investigating query latency, you can set the [`sql.trace.txn.enable_threshold` cluster setting](cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 
 {{site.data.alerts.end}}
 
@@ -99,21 +99,21 @@ To view [details of the execution](#statement-execution-details), click an execu
 - **Statement Fingerprint ID**: The statement fingerprint ID of the latest statement execution.
 - **Statement Execution**: The [statement fingerprint](ui-statements-page.html#sql-statement-fingerprints) of the latest statement execution.
 - **Insights**: The insight for the statement execution.
-  - **High Contention**: The statement execution experienced high contention time according to the threshold set in `sql.insights.latency_threshold`.
-  - **High Retry Count**: The statement execution experienced a high number of retries according to the threshold set in `sql.insights.high_retry_count.threshold`.
+  - **High Contention**: The statement execution experienced high [contention](performance-best-practices-overview.html#transaction-contention) time according to the threshold set in the [`sql.insights.latency_threshold` cluster setting](cluster-settings.html#setting-sql-insights-latency-threshold).
+   - **High Retry Count**: The statement execution experienced a high number of [retries](transactions.html#automatic-retries) according to the threshold set in the [`sql.insights.high_retry_count.threshold` cluster setting](cluster-settings.html#setting-sql-insights-high-retry-count-threshold).
   - **Suboptimal Plan**: The statement execution has resulted in one or more [index recommendations](#schema-insights-view) that would improve the plan.
   - **Failed**: The statement execution failed.
   - **Slow Execution**: The statement experienced slow execution. Depending on the settings in [Configuration](#configuration), either of the following conditions trigger this insight:
 
-      - Execution time is greater than the value of `sql.insights.latency_threshold`.
+      - Execution time is greater than the value of the [`sql.insights.latency_threshold` cluster setting](cluster-settings.html#setting-sql-insights-latency-threshold).
       - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`), execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`, and [execution latency](ui-sql-dashboard.html#kv-execution-latency-99th-percentile) is `> p99 && > 2*p50`. For details, see [Detect slow executions](#detect-slow-executions).
 - **Start Time (UTC)**: The timestamp when the statement execution started.
 - **Elapsed Time**: The time that elapsed to complete the statement execution.
 - **User Name**: The name of the user that invoked the statement execution.
 - **Application Name**: The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 - **Rows Processed**: The total number of rows read and written.
-- **Retries**: The number of times the statement execution was retried.
-- **Contention Time**: The amount of time the statement execution spent waiting in contention.
+- **Retries**: The number of times the statement execution was [retried](transactions.html#automatic-retries).
+- **Contention Time**: The amount of time the statement execution spent waiting in [contention](performance-best-practices-overview.html#transaction-contention).
 - **Full Scan**: Whether the execution performed a full scan of the table.
 - **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
 - **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
@@ -169,7 +169,7 @@ You can configure the behavior of insights using the following [cluster settings
 
 ### Workload insights settings
 
-You can configure [**Workload Insights**](#workload-insights-tab) with the following cluster settings.
+You can configure [**Workload Insights**](#workload-insights-tab) with the following [cluster settings](cluster-settings.html).
 
 | Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
 |------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
@@ -196,13 +196,13 @@ Additional controls filter out executions that are less actionable:
 - The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that the elevated latency is significant enough to warrant attention.
 - The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Some executions are slower than usual, but are still fast enough for the workload.
 
-The `sql.insights.anomaly_detection.memory_limit` cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about 1,000 fingerprints.
+The [`sql.insights.anomaly_detection.memory_limit` cluster setting](cluster-settings.html#setting-sql-insights-anomaly-detection-memory-limit) limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about 1,000 fingerprints.
 
 You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` [metrics](ui-custom-chart-debug-page.html) to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage; or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
 
 ### Schema insights settings
 
-You can configure the index recommendations in the [**Schema Insights** view](#schema-insights-view), [**Explain Plans** tab](ui-statements-page.html#insights), and [**Databases** page](ui-databases-page.html) with the following cluster settings.
+You can configure the index recommendations in the [**Schema Insights** view](#schema-insights-view), [**Explain Plans** tab](ui-statements-page.html#insights), and [**Databases** page](ui-databases-page.html) with the following [cluster settings](cluster-settings.html).
 
 | Setting                                                                | Default value | Description                                                                                                             | Where used                           |
 |------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|

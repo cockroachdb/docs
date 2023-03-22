@@ -5,14 +5,16 @@ toc: true
 docs_area: stream_data
 ---
 
-{{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. CockroachDB supports the following sinks:
+{{ site.data.products.enterprise }} changefeeds emit messages to configurable downstream sinks. This page details the URIs, parameters, and configurations available for each changefeed sink.
+
+CockroachDB supports the following sinks:
 
 - [Kafka](#kafka)
 - [Google Cloud Pub/Sub](#google-cloud-pub-sub)
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 
-See [`CREATE CHANGEFEED`](create-changefeed.html) for more detail on the [query parameters](create-changefeed.html#query-parameters) available when setting up a changefeed.
+The [`CREATE CHANGEFEED`](create-changefeed.html) page provides detail on using the SQL statement and a complete list of the [query parameters](create-changefeed.html#query-parameters) and options available when setting up a changefeed.
 
 For a step-by-step example connecting a changefeed to a sink, see the [Changefeed Examples](changefeed-examples.html) page.
 
@@ -31,6 +33,8 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](create-changefeed.html#query-parameters).
 
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
 To set a different sink URI to an existing changefeed, use the [`sink` option](alter-changefeed.html#sink-example) with `ALTER CHANGEFEED`.
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
@@ -42,8 +46,6 @@ Example of a Kafka sink URI:
 ~~~
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
-
-{% include {{ page.version.version }}/misc/external-connection-kafka.md %}
 
 <a name ="kafka-parameters"></a>The following table lists the available parameters for Kafka URIs:
 
@@ -171,7 +173,9 @@ See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a C
 
 ## Google Cloud Pub/Sub
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
 
@@ -354,7 +358,9 @@ The following shows the default JSON messages for a changefeed emitting to a clo
 
 ## Webhook sink
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
@@ -489,5 +495,5 @@ The following shows the default JSON messages for a changefeed emitting to a web
 
 ## See also
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [`CREATE CHANGEFEED`](create-changefeed.html)

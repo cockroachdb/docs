@@ -13,6 +13,7 @@ CockroachDB stores the contents of the following data types in GIN indexes:
 - [JSONB](jsonb.html)
 - [Arrays](array.html)
 - [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](spatial-indexes.html)
+- [Strings (using trigram indexes)](trigram-indexes.html)
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using GIN indexes to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
@@ -368,6 +369,10 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 (1 row)
 ~~~
 
+### Create a trigram index on a STRING column
+
+For an example showing how to create a trigram index on a [`STRING`](string.html) column, see [Trigram Indexes](trigram-indexes.html#examples).
+
 ### Inverted join examples
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
@@ -375,6 +380,11 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 ## See also
 
 - [Indexes](indexes.html)
+- [Trigram Indexes](trigram-indexes.html)
+- [`JSONB`](jsonb.html)
+- [Arrays](array.html)
+- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](spatial-indexes.html)
+- [`STRING`](string.html)
 - [`CREATE INDEX`](create-index.html)
 - [Computed Columns](computed-columns.html)
 - [SQL Statements](sql-statements.html)

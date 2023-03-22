@@ -8,7 +8,7 @@ docs_area: develop
 This page provides an overview for optimizing statement performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
 
 - [SQL statement performance](#sql-statement-performance-rules): This is the most common cause of performance problems and where you should start.
-- [Schema design](#schema-design): Depending on your SQL schema and the data access patterns of your workload, you may need to make changes to avoid creating transaction contention or hot spots.
+- [Schema design](#schema-design): Depending on your SQL schema and the data access patterns of your workload, you may need to make changes to avoid creating [transaction contention](performance-best-practices-overview.html#transaction-contention) or [hot spots](performance-best-practices-overview.html#hot-spots).
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 ## SQL statement performance rules

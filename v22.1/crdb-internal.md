@@ -82,7 +82,7 @@ Table name | Description| Use in production
 `table_indexes` | Contains information about table indexes in your cluster.| ✗
 `table_row_statistics` | Contains row count statistics for tables in the current database.| ✗
 `tables` | Contains information about tables in your cluster.| ✗
-[`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction contention events. | ✓
+[`transaction_contention_events`](#transaction_contention_events)| Contains information about historical transaction [contention](performance-best-practices-overview.html#transaction-contention) events. | ✓
 [`transaction_statistics`](#transaction_statistics) | Aggregates in-memory and persisted [statistics](ui-transactions-page.html#transaction-statistics) from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics, call `SELECT crdb_internal.reset_sql_stats()`.| ✓
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.| ✗
 
@@ -149,11 +149,11 @@ This section provides the schema and examples for tables supported in production
 
 Column | Type | Description
 ------------|-----|------------
-`database_name`  | `STRING`  | The name of the database experiencing contention.
-`schema_name`  | `STRING`  | The name of the schema experiencing contention.
-`table_name` | `STRING` | The name of the table experiencing contention.
-`index_name` | `STRING` | The name of the index experiencing contention.
-`num_contention_events` | `INT8` | The number of contention events.
+`database_name`  | `STRING`  | The name of the database experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`schema_name`  | `STRING`  | The name of the schema experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`table_name` | `STRING` | The name of the table experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`index_name` | `STRING` | The name of the index experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention](performance-best-practices-overview.html#transaction-contention) events.
 
 #### View all indexes that have experienced contention
 
@@ -172,12 +172,12 @@ SELECT * FROM movr.crdb_internal.cluster_contended_indexes;
 
 Column | Type | Description
 ------------|-----|------------
-`database_name`  | `STRING`  | The name of the database experiencing contention.
-`schema_name`  | `STRING`  | The name of the schema experiencing contention.
-`table_name` | `STRING` | The name of the table experiencing contention.
-`index_name` | `STRING` | The name of the index experiencing contention.
-`key` | `BYTES` | The key experiencing contention.
-`num_contention_events` | `INT8` | The number of contention events.
+`database_name`  | `STRING`  | The name of the database experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`schema_name`  | `STRING`  | The name of the schema experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`table_name` | `STRING` | The name of the table experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`index_name` | `STRING` | The name of the index experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`key` | `BYTES` | The key experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention](performance-best-practices-overview.html#transaction-contention) events.
 
 #### View all keys that have experienced contention
 
@@ -214,10 +214,10 @@ SELECT table_name, index_name, key, num_contention_events FROM movr.crdb_interna
 
 Column | Type | Description
 ------------|-----|------------
-`database_name`  | `STRING`  | The name of the database experiencing contention.
-`schema_name`  | `STRING`  | The name of the schema experiencing contention.
-`table_name` | `STRING` | The name of the table experiencing contention.
-`num_contention_events` | `INT8` | The number of contention events.
+`database_name`  | `STRING`  | The name of the database experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`schema_name`  | `STRING`  | The name of the schema experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`table_name` | `STRING` | The name of the table experiencing [contention](performance-best-practices-overview.html#transaction-contention).
+`num_contention_events` | `INT8` | The number of [contention](performance-best-practices-overview.html#transaction-contention) events.
 
 #### View all tables that have experienced contention
 
@@ -238,11 +238,11 @@ Column | Type | Description
 ------------|-----|------------
 `table_id`  | `INT8`  | Unique table identifier.
 `index_id`  | `INT8`  | Unique index identifier.
-`num_contention_events` | `INT8` | The number of contention events.
-`cumulative_contention_time` | `INTERVAL` | The cumulative time that the transaction spends waiting in contention.
-`key` | `BYTES` | The key experiencing contention.
+`num_contention_events` | `INT8` | The number of [contention](performance-best-practices-overview.html#transaction-contention) events.
+`cumulative_contention_time` | `INTERVAL` | The cumulative time that the transaction spends waiting in [contention](performance-best-practices-overview.html#transaction-contention).
+`key` | `BYTES` | The key experiencing [contention](performance-best-practices-overview.html#transaction-contention).
 `txn_id` | `UUID` | Unique transaction identifier.
-`count` | `INT8` | The number of contention events.
+`count` | `INT8` | The number of [contention](performance-best-practices-overview.html#transaction-contention) events.
 
 #### View all contention events
 
@@ -264,6 +264,32 @@ SELECT * FROM crdb_internal.cluster_contention_events;
        107 |        2 |                     9 | 00:00:00.039563            | \xf3\x8a\x12seattle\x00\x01\x12v\xd4J%\x90\x1bF\x0b\x97\x02v\xc7\xee\xa9\xc7R\x00\x01\x12s\xa1\xad\x8c\xca\xe4G\t\xadG\x91\xa3\xa4\xae\xb7\xc7\x00\x01\x88      | e83df970-a01a-470f-914d-f5615eeec620 |     1
 (9 rows)
 ~~~
+
+#### View the tables/indexes with the most time under contention
+
+To view the [tables](create-table.html) and [indexes](indexes.html) with the most cumulative time under [contention](performance-best-practices-overview.html#transaction-contention) since the last server restart, run the query below.
+
+{{site.data.alerts.callout_info}}
+The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html) to always capture contention events.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH c AS (SELECT DISTINCT ON (table_id, index_id) table_id, index_id, num_contention_events AS events, cumulative_contention_time AS time FROM crdb_internal.cluster_contention_events) SELECT i.descriptor_name, i.index_name, c.events, c.time FROM crdb_internal.table_indexes AS i JOIN c ON i.descriptor_id = c.table_id AND i.index_id = c.index_id ORDER BY c.time DESC LIMIT 10;
+~~~
+
+~~~
+  descriptor_name |   index_name   | events |      time
+------------------+----------------+--------+------------------
+  warehouse       | warehouse_pkey |      7 | 00:00:01.046293
+  district        | district_pkey  |      1 | 00:00:00.191346
+  stock           | stock_pkey     |      1 | 00:00:00.158207
+  order           | order_pkey     |      1 | 00:00:00.155404
+  new_order       | new_order_pkey |      1 | 00:00:00.100949
+(5 rows)
+~~~
+
+(The output above is for a [local cluster](start-a-local-cluster.html) running the [TPC-C workload](cockroach-workload.html#tpcc-workload) at a `--concurrency` of 256.)
 
 ### `cluster_locks`
 
@@ -1113,7 +1139,7 @@ group by metadata ->> 'query', statistics->'statistics'->'planGists'->>0;
 
 ### `transaction_contention_events`
 
-{% include_cached new-in.html version="v22.1" %} Contains one row for each transaction contention event.
+{% include_cached new-in.html version="v22.1" %} Contains one row for each transaction [contention](performance-best-practices-overview.html#transaction-contention) event.
 
 Requires either the `VIEWACTIVITY` or `VIEWACTIVITYREDACTED` [role option](alter-role.html#role-options) to access. If you have the `VIEWACTIVITYREDACTED` role, `contending_key` will be redacted.
 
@@ -1123,11 +1149,11 @@ The `sql.contention.event_store.duration_threshold` [cluster setting](cluster-se
 
 Column | Type | Description
 ------------|-----|------------
-`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction contention event was collected.
+`collection_ts` | `TIMESTAMPTZ NOT NULL` | The timestamp when the transaction [contention](performance-best-practices-overview.html#transaction-contention) event was collected.
 `blocking_txn_id` | `UUID NOT NULL` | The ID of the blocking transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
+`blocking_txn_fingerprint_id` | `BYTES NOT NULL`| The ID of the blocking transaction fingerprint. To surface historical information about the transactions that caused the [contention](performance-best-practices-overview.html#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables to surface historical information about the transactions that caused the contention.
 `waiting_txn_id` | `UUID NOT NULL` | The ID of the waiting transaction. You can join this column into the [`cluster_contention_events`](#cluster_contention_events) table.
-`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the contention, you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
+`waiting_txn_fingerprint_id` | `BYTES NOT NULL` | The ID of the waiting transaction fingerprint. To surface historical information about the transactions that caused the [contention](performance-best-practices-overview.html#transaction-contention), you can join this column into the [`statement_statistics`](#statement_statistics) and [`transaction_statistics`](#transaction_statistics) tables.
 `contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
 `contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
 

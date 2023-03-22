@@ -5,7 +5,9 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `SHOW CREATE EXTERNAL CONNECTION` displays the connection name and the creation statements for active external connections.
 
@@ -68,5 +70,5 @@ backup_bucket_1   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket_n
 
 ## See also
 
-- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use Cloud Storage](use-cloud-storage.html)
 - [Changefeed Sinks](changefeed-sinks.html)

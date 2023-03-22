@@ -18,12 +18,6 @@
       "title": "Migrate Data to CockroachDB",
       "items": [
         {
-          "title": "Migrate data using AWS DMS",
-          "urls": [
-            "/${VERSION}/aws-dms.html"
-          ]
-        },
-        {
           "title": "Migrate from CSV",
           "urls": [
             "/${VERSION}/migrate-from-csv.html"
@@ -63,6 +57,29 @@
           "title": "Import Performance Best Practices",
           "urls": [
             "/${VERSION}/import-performance-best-practices.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Migrate with Third-Party Tooling",
+      "items": [
+        {
+          "title": "AWS DMS",
+          "urls": [
+            "/${VERSION}/aws-dms.html"
+          ]
+        },
+        {
+          "title": "Qlik Replicate",
+          "urls": [
+            "/${VERSION}/qlik.html"
+          ]
+        },
+        {
+          "title": "Striim",
+          "urls": [
+            "/${VERSION}/striim.html"
           ]
         }
       ]

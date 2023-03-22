@@ -1,7 +1,11 @@
-Find the transactions and statements within the transactions that are experiencing contention. CockroachDB has several tools to help you track down such transactions and statements:
+Find the transactions and statements within the transactions that are experiencing [contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). CockroachDB has several tools to help you track down such transactions and statements:
 
 * In DB Console, visit the [Transactions](ui-transactions-page.html) and [Statements](ui-statements-page.html) pages and sort transactions and statements by contention.
-* Query the [`crdb_internal.cluster_contended_indexes`](crdb-internal.html#cluster_contended_indexes) and [`crdb_internal.cluster_contended_tables`](crdb-internal.html#cluster_contended_tables) tables for your database to find the indexes and tables that are experiencing contention.  To find out which transactions are holding locks on which objects, query [`crdb_internal.cluster_locks`](crdb-internal.html#cluster_locks).
+* Query the following tables:
+
+  - [`crdb_internal.cluster_contended_indexes`](crdb-internal.html#cluster_contended_indexes) and [`crdb_internal.cluster_contended_tables`](crdb-internal.html#cluster_contended_tables) tables for your database to find the indexes and tables that are experiencing contention. 
+  - [`crdb_internal.cluster_locks`](crdb-internal.html#cluster_locks) to find out which transactions are holding locks on which objects.
+  - [`crdb_internal.cluster_contention_events`](crdb-internal.html#view-the-tables-indexes-with-the-most-time-under-contention) to view the tables/indexes with the most time under contention.
 
 After you identify the transactions or statements that are causing contention, follow the steps in the next section [to avoid contention](performance-best-practices-overview.html#avoid-transaction-contention).
 

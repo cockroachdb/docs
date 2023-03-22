@@ -53,7 +53,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit your spend limit
 
-You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
+You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Learn about {{ site.data.products.serverless }} Pricing](learn-about-pricing.html) for more information on resource usage.
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add a spend limit** if you haven't set one before) next to your **Spend limit** in the **Usage this month** section.
@@ -68,7 +68,8 @@ You can edit your spend limit from the **Overview** page. The change in your spe
 
 You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
 
-1. Navigate to the **Databases** page from the **Overview** page of your cluster.
+1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
+1. Click **Databases** in the **Data** section of the left side navigation.
 1. Click **Add database**.
 1. Enter a name for the new database.
 1. Click **Create**.
@@ -77,7 +78,7 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 
 Use the [Managed-Service Backups](use-managed-service-backups.html) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
+You can also [back up and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
 
 ## Delete cluster
 

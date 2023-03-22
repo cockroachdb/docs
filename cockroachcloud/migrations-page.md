@@ -11,13 +11,13 @@ docs_area: migrate
 The **Migrations** page on the {{ site.data.products.db }} Console features a **Schema Conversion Tool** that helps you:
 
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
-- Create a new database that uses the converted schema. You specify the target database and database owner when [finalizing the schema](#finalize-the-schema).
+- Create a new {{ site.data.products.serverless }} database that uses the converted schema. You specify the target database and database owner when [finalizing the schema](#finalize-the-schema). {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 {{site.data.alerts.callout_info}}
 On the **Migrations** page, a *migration* refers to converting a schema for use with CockroachDB and creating a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).
 {{site.data.alerts.end}}
 
-To view this page, click **Migrations** in the left navigation of the {{ site.data.products.db }} Console. The **Migrations** tab is selected.
+To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
 
 ## Upload a SQL dump
 
@@ -33,7 +33,9 @@ The **Schema Conversion Tool** expects to analyze a SQL dump file containing [da
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="postgres">
@@ -60,7 +62,7 @@ The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be 
 
 <ul>
 <section class="filter-content" markdown="1" data-scope="postgres">
-<li><b>INT type conversion</b>: On CockroachDB, <code>INT</code> is an alias for <code>INT8</code>, which creates 64-bit signed integers. On PostgreSQL, <code>INT</code> defaults to <code>INT4</code>. For details, see <a href="../{{version_prefix}}migration-overview.html#differences-from-other-databases">Differences from other databases</a>.</li> 
+<li><b>INT type conversion</b>: On CockroachDB, <code>INT</code> is an alias for <code>INT8</code>, which creates 64-bit signed integers. On PostgreSQL, <code>INT</code> defaults to <code>INT4</code>. For details, see <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">Schema design best practices</a>.</li> 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
@@ -68,16 +70,16 @@ The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">
-<li><b>AUTO_INCREMENT Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="../{{version_prefix}}migration-overview.html#differences-from-other-databases">Differences from other databases</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="../{{version_prefix}}sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
+<li><b>AUTO_INCREMENT Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="../{{version_prefix}}sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
 <li><b>Enum Preferences:</b> On CockroachDB, <a href="../{{version_prefix}}enum.html"><code>ENUMS</code></a> are a standalone type. On MySQL, they are part of column definitions. You can select to either deduplicate the <code>ENUM</code> definitions or create a separate type for each column.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="oracle">
-<li><b>GENERATED AS IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="../{{version_prefix}}migration-overview.html#differences-from-other-databases">Differences from other databases</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="../{{version_prefix}}sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
+<li><b>GENERATED AS IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="../{{version_prefix}}sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mssql">
-<li><b>IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="../{{version_prefix}}migration-overview.html#differences-from-other-databases">Differences from other databases</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="../{{version_prefix}}sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
+<li><b>IDENTITY Conversion Option:</b> We do not recommend using a sequence to define a primary key column. For details, see <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">Schema design best practices</a>. To understand the differences between the <code><b>UUID</b></code> and <code><b>unique_rowid()</b></code></b> options, see the <a href="../{{version_prefix}}sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid">SQL FAQs</a>.</li>
 </section>
 </ul>
 
@@ -113,7 +115,7 @@ The **Summary Report** displays the results of the schema analysis:
 <li>The number of <b>Compatibility Notes</b> regarding differences in SQL syntax. Although these statements do not block finalization, you should [update](#update-the-schema) them before finalization.</li>
 </section>
 
-<li>The number of <b>Suggestions</b> regarding <a href="../{{version_prefix}}migration-overview.html#differences-from-other-databases">CockroachDB best practices</a>.</li>
+<li>The number of <b>Suggestions</b> regarding <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">CockroachDB best practices</a>.</li>
 </ul>
 
 To review and [update the schema](#update-the-schema), click **View Statements** or the **Statements** tab to open the [**Statements** list](#statements-list).
@@ -147,7 +149,7 @@ The **Suggestions** graph displays the number of each suggestion type:
 - **Missing Primary Key** represents a statement that does not define an explicit primary key for a table. [Defining an explicit primary key on every table is recommended.](../{{version_prefix}}schema-design-table.html#select-primary-key-columns)
 
 {{site.data.alerts.callout_success}}
-For more details on why these suggestions are made, see [Differences from other databases](../{{version_prefix}}migration-overview.html#differences-from-other-databases).
+For more details on why these suggestions are made, see [Schema design best practices](../{{version_prefix}}migration-overview.html#schema-design-best-practices).
 {{site.data.alerts.end}}
 
 ## Statements list
@@ -218,11 +220,11 @@ To finalize the schema, click **Finalize Schema** when viewing the **Summary Rep
 
 1. In the **Success** tab, click **Next**.
 
-1. In the **Create Schema** tab, name the new database and select a user to own the database. Optionally click **Download SQL export** to download your schema file. This is useful for migrating your database to a different cluster. Then click **Finalize** to create the new database.
+1. In the **Create Schema** tab, name the new database and select a user to own the database. Optionally click **Download SQL export** to download your schema file. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-{{site.data.alerts.callout_success}}
+1. Click **Finalize** to create the new database.
+
 After finalizing the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application).
-{{site.data.alerts.end}}
 
 ## See also
 

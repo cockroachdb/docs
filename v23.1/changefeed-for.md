@@ -13,11 +13,26 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 For more information, see [Change Data Capture Overview](change-data-capture-overview.html).
 
+{{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 ## Required privileges
 
-{% include {{ page.version.version }}/cdc/privilege-model.md %}
+{{site.data.alerts.callout_info}}
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#system-level-privileges) that provides finer control over a user's privilege to work with the database, including creating and managing changefeeds. 
+
+There is continued support for the [legacy privilege model](#legacy-privilege-model) for changefeeds in v23.1, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all changefeeds.
+{{site.data.alerts.end}}
+
+{% include_cached new-in.html version="v23.1" %} Users require `SELECT` usage on a table to create a changefeed with `EXPERIMENTAL CHANGEFEED FOR`. 
+
+You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) a user the `SELECT` privilege to allow them to create core changefeeds on a specific table:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+GRANT SELECT ON TABLE example_table TO user;
+~~~
 
 ### Legacy privilege model
 

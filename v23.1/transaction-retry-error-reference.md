@@ -10,9 +10,9 @@ When a [transaction](transactions.html) is unable to complete due to [contention
 Transaction retry errors fall into two categories:
 
 - **Serialization Errors** indicate that a transaction failed because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions. These errors are generally addressed with client-side intervention, where the client [initiates a restart of the transaction](#client-side-retry-handling), and [adjusts application logic and tunes queries](#minimize-transaction-retry-errors) for greater performance.
-- **Internal State Errors** indicate that the cluster itself is experiencing an issue, such as being overloaded, which prevents the transaction from completing. These errors generally require both cluster-side and client-side intervention, where an operator addresses an issue with the cluster before the client then [initiates a restart of the transaction](#client-side-retry-handling).
+- **Internal State Errors** indicate that the cluster itself is experiencing an issue, such as being [overloaded](ui-overload-dashboard.html), which prevents the transaction from completing. These errors generally require both cluster-side and client-side intervention, where an operator addresses an issue with the cluster before the client then [initiates a restart of the transaction](#client-side-retry-handling).
 
-All transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string `restart transaction`. Further, each error includes a [specific error code](#transaction-retry-error-reference) to assist with targeted troubleshooting.
+All transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string [`restart transaction`](common-errors.html#restart-transaction). Further, each error includes a [specific error code](#transaction-retry-error-reference) to assist with targeted troubleshooting.
 
 When experiencing transaction retry errors, you should follow the guidance under [Actions to take](#actions-to-take), and then consult the reference for your [specific transaction retry error](#transaction-retry-error-reference) for guidance specific to the error message encountered.
 

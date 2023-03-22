@@ -16,6 +16,8 @@ Also keep in mind some basic topology recommendations:
 
 {% include {{ page.version.version }}/prod-deployment/topology-recommendations.md %}
 
+For optimal cluster performance, Cockroach Labs recommends that all nodes use the same hardware and operating system.
+
 ## Software
 
 We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
@@ -318,7 +320,7 @@ For guidance on sizing, validating, and using connection pools with CockroachDB,
 
 CockroachDB is purpose-built to be fault-tolerant and to recover automatically, but sometimes disasters happen. Having a [disaster recovery](disaster-recovery.html) plan enables you to recover quickly, while limiting the consequences.
 
-Taking regular backups of your data in production is an operational best practice. You can create [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage](use-cloud-storage-for-bulk-operations.html) and enabling [object locking](use-cloud-storage-for-bulk-operations.html#object-locking) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
+Taking regular backups of your data in production is an operational best practice. You can create [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups) backups of a cluster, database, or table. We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabling [object locking](use-cloud-storage.html#object-locking) to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups.
 
 For details about available backup and restore types in CockroachDB, see [Backup and restore types](backup-and-restore-overview.html#backup-and-restore-product-support).
 

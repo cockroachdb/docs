@@ -59,17 +59,27 @@ The following table outlines SQL statements you can use to create, configure, pa
 
 ## Backup storage
 
-We recommend taking backups to [cloud storage](use-cloud-storage-for-bulk-operations.html) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
+We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabling object locking to protect the validity of your backups. CockroachDB supports Amazon S3, Azure Storage, and Google Cloud Storage for backups. Read the following usage information:
 
-- [Example file URLs](use-cloud-storage-for-bulk-operations.html#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
+- [Example file URLs](use-cloud-storage.html#example-file-urls) to form the URL that you pass to `BACKUP` and `RESTORE` statements.
 - [Authentication](cloud-storage-authentication.html) to set up authentication to a cloud storage bucket and include those credentials in the URL.
 
 For detail on additional cloud storage features CockroachDB supports:
 
-- [Object locking](use-cloud-storage-for-bulk-operations.html#object-locking) to prevent backups from being overwritten or deleted.
-- [Storage Class (AWS S3 only)](use-cloud-storage-for-bulk-operations.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
+- [Object locking](use-cloud-storage.html#object-locking) to prevent backups from being overwritten or deleted.
+- [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
+
+## Backup and restore observability
+
+You can verify that your stored backups are restorable with backup validation. While a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid. There are three "levels" of verifying backups that give increasing validation coverage depending on the amount of runtime you want to invest in validating backups.
+
+See the [Backup Validation](backup-validation.html) page for detail and examples.
+
+You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. You can alert on these metrics via the Prometheus endpoint or the Datadog integration.
+
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for product availability and a list of the available metrics.
 
 ## See also
 

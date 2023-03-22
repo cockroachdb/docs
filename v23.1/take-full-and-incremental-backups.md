@@ -12,11 +12,13 @@ There are two main types of backups:
 - [Full backups](#full-backups)
 - [Incremental backups](#incremental-backups)
 
-You can use the [`BACKUP`](backup.html) statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`](restore.html) statement to efficiently restore schema and data as necessary. For more information, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+You can use the [`BACKUP`](backup.html) statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`](restore.html) statement to efficiently restore schema and data as necessary. For more information, see [Use Cloud Storage](use-cloud-storage.html).
 
 {% include {{ page.version.version }}/backups/backup-to-deprec.md %}
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
+{% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Backup collections
 
@@ -240,7 +242,7 @@ To restore an incremental backup that was taken using the [`incremental_location
 RESTORE TABLE movr.users FROM LATEST IN '{collectionURI}' WITH incremental_location = '{explicit_incrementalsURI}';
 ~~~
 
-For details on cloud storage URLs, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+For details on cloud storage URLs, see [Use Cloud Storage](use-cloud-storage.html).
 
 ## Examples
 

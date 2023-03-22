@@ -57,7 +57,7 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retry Errors** | Errors with the code `40001` or string `retry transaction`, which indicate that a transaction failed because it could not be placed in a serializable ordering of transactions by CockroachDB. This is often due to contention: conflicts with another concurrent or recent transaction accessing the same data. In such cases, the transaction needs to be retried by the client as described in [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling). For a reference listing all of the retry error codes emitted by CockroachDB, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
+**Retry Errors** | Errors with [the code `40001` or string `restart transaction`](common-errors.html#restart-transaction), which indicate that a transaction failed because it could not be placed in a serializable ordering of transactions by CockroachDB. This is often due to [contention](#transaction-contention): conflicts with another concurrent or recent transaction accessing the same data. In such cases, the transaction needs to be retried by the client as described in [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling). For a reference listing all of the retry error codes emitted by CockroachDB, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here](common-errors.html#result-is-ambiguous).
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`](commit-transaction.html) or [`ROLLBACK`](rollback-transaction.html) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
@@ -138,8 +138,7 @@ In the event [bounded staleness reads](follower-reads.html#bounded-staleness-rea
 
 Your application should include client-side retry handling when the statements are sent individually, such as:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
+~~~
 > BEGIN;
 
 > UPDATE products SET inventory = 0 WHERE sku = '8675309';
@@ -156,7 +155,7 @@ To indicate that a transaction must be retried, CockroachDB signals an error wit
 
 ## Transaction contention
 
-Transactions in CockroachDB lock data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be retried.
+Transactions in CockroachDB [lock](crdb-internal.html#cluster_locks) data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
 
 For more details about transaction contention and best practices for avoiding contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 

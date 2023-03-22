@@ -3,9 +3,12 @@ title: Create private CockroachDB Dedicated clusters (Preview)
 summary: Learn how to create CockroachDB Dedicated clusters with no node-level public IP addresses.
 toc: true
 docs_area: manage.security
+cloud: true
 ---
 
-{% include feature-phases/preview-opt-in.md %}
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
 
 Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. {{ site.data.products.dedicated }} private clusters allow organizations to meet this objective.
 

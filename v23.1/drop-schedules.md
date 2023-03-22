@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html).
+ The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html) or [changefeed schedules](create-schedule-for-changefeed.html).
 
 {{site.data.alerts.callout_danger}}
 `DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](cancel-job.html) first, as you will not be able to look up the job ID once the schedule is dropped.
@@ -19,11 +19,9 @@ The following users can drop a schedule:
 
 ## Synopsis
 
-~~~
-DROP SCHEDULES <selectclause>
-  select clause: select statement returning schedule id to pause.
-DROP SCHEDULE <scheduleID>
-~~~
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/drop_schedule.html %}
+</div>
 
 ## Parameters
 
@@ -65,6 +63,8 @@ In this example, all schedules with the label `schedule_database` are dropped.
 - [Manage a Backup Schedule](manage-a-backup-schedule.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)
+- [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html)
 - [`SHOW BACKUP`](show-backup.html)
 - [`SHOW SCHEDULES`](show-schedules.html)
 - [`PAUSE SCHEDULES`](pause-schedules.html)

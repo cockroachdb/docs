@@ -1383,12 +1383,6 @@
                 ]
               }
             ]
-          },
-          {
-            "title": "Features in Preview",
-            "urls": [
-              "/${VERSION}/features-in-preview.html"
-            ]
           }
         ]
       },
@@ -1552,6 +1546,12 @@
                 "urls": [
                   "/${VERSION}/cockroach-debug-merge-logs.html"
                 ]
+              },
+              {
+               "title": "<code>cockroach debug tsdump</code>",
+               "urls": [
+                 "/${VERSION}/cockroach-debug-tsdump.html"
+               ]
               },
               {
                 "title": "<code>cockroach debug zip</code>",
@@ -1849,6 +1849,12 @@
               "/cockroachcloud/serverless-benchmarking.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "CockroachDB Feature Availability",
+        "urls": [
+          "/${VERSION}/cockroachdb-feature-availability.html"
         ]
       },
       {

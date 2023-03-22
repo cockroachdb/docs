@@ -25,7 +25,7 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 ### What are the usage limits of {{ site.data.products.serverless }}?
 
-Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity and earned RUs, your cluster will revert to baseline performance.
+Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 50M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity and earned RUs, your cluster will revert to baseline performance.
 
 If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
@@ -37,7 +37,7 @@ With {{ site.data.products.serverless }}, you are charged for the storage and ac
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
-No, you can create a {{ site.data.products.serverless }} cluster that is free forever. If you choose to set a spend limit for your cluster, you will only be charged for the resources you use up to your spend limit.
+No, you can create a {{ site.data.products.serverless }} cluster for free. If you choose to set a spend limit for your cluster, you will only be charged for the resources you use up to your spend limit.
 
 ### What regions are available for {{ site.data.products.serverless }} clusters?
 
@@ -155,9 +155,9 @@ There are some features of CockroachDB that are unsupported or partially support
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, you can [IMPORT](../{{site.versions["stable"]}}/import.html#import-data-into-your-cockroachdb-cloud-cluster) and [EXPORT](../{{site.versions["stable"]}}/export.html#export-data-out-of-cockroachdb-cloud) on {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider](../{{site.current_cloud_version}}/use-cloud-storage-for-bulk-operations.html) or set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) location for bulk operations.
+Yes, you can [IMPORT](../{{site.versions["stable"]}}/import.html#import-data-into-your-cockroachdb-cloud-cluster) and [EXPORT](../{{site.versions["stable"]}}/export.html#export-data-out-of-cockroachdb-cloud) on {{ site.data.products.serverless }} clusters. You can use a [cloud storage provider](../{{site.current_cloud_version}}/use-cloud-storage.html) or set up a [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) location.
 
-We don't recommend [`userfile`](../{{site.current_cloud_version}}//use-userfile-for-bulk-operations.html) for [`EXPORT`](../{{site.current_cloud_version}}/export.html) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
+We don't recommend [`userfile`](../{{site.current_cloud_version}}//use-userfile-storage.html) for [`EXPORT`](../{{site.current_cloud_version}}/export.html) operations. You can either use cloud storage or export data to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general). For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -174,4 +174,4 @@ You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENT
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-The [**Backups** page](use-managed-service-backups.html) allows you to [restore](use-managed-service-backups.html#restore-a-cluster) your cluster from automatic [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups), which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also back up and restore your {{ site.data.products.serverless }} cluster manually. You can [take backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-for-bulk-operations.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html#back-up-data).
+The [**Backups** page](use-managed-service-backups.html) allows you to [restore](use-managed-service-backups.html#restore-a-cluster) your cluster from automatic [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups), which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also back up and restore your {{ site.data.products.serverless }} cluster manually. You can [take backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html#back-up-data).

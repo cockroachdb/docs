@@ -2,6 +2,7 @@ Note: macOS users may need to manually enable Alt-based shortcuts in their termi
 
 | Shortcut                | Description                                                                        |
 |-------------------------|------------------------------------------------------------------------------------|
+| Tab                     | Use [context-sensitive command completion](#tab-completion).                                          |
 | Ctrl+C                  | Clear / Cancel the input.                                                          |
 | Ctrl+M, Enter           | New line / enter.                                                                  |
 | Ctrl+F, Right arrow     | Forward one character.                                                             |
@@ -34,3 +35,7 @@ When searching for history entries, the following shortcuts are active:
 | Enter          | Accept the current recalled entry.                 |
 | Backspace      | Delete previous character in search pattern.       |
 | Other          | Add character to search pattern.                   |
+
+#### Tab completion
+
+The SQL client offers context-sensitive tab completion when entering commands. Use the **Tab** key on your keyboard when entering a command to initiate the command completion interface. You can then navigate to database objects, keywords, and functions using the arrow keys. Press the **Tab** key again to select the object, function, or keyword from the command completion interface and return to the console.
