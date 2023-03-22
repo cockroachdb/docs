@@ -186,7 +186,7 @@ Perform the following steps to enable log export from your {{ site.data.products
                      },
                      {
                          log_name: "devops",
-                         channels: ["OPS", "HEALTH", "STORAGE"]
+                         channels: ["OPS", "HEALTH", "STORAGE"],
                          min_level: "WARNING"
                      },
              ]
