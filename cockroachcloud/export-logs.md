@@ -48,7 +48,7 @@ When written to your chosen cloud log sink, logs have the following name format:
 
 Where:
 
-- `{log-name}` is a string of your choosing as you configure log export. For AWS CloudWatch, this is the [log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) you create as part of enabling log export. For GCP Cloud Logging, this is the `log_name` you choose during configuration. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
+- `{log-name}` is a string of your choosing as you configure log export. For AWS CloudWatch, this name will correspond to an automatically-created [CloudWatch log group](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group). For GCP Cloud Logging, this string will be prepended to all log names sent from your cluster. See the [Enable log export](#enable-log-export) instructions specific to your cloud provider for more information.
 - `{region}` is the cloud provider region where your {{ site.data.products.dedicated }} cluster resides.
 - `{log-channel}` is the CockroachDB [log channel](../{{site.current_cloud_version}}/logging-overview.html#logging-channels), such as `HEALTH` or `OPS`.
 - `{N}` is the node number of the {{ site.data.products.dedicated }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
@@ -67,8 +67,6 @@ The {{ site.data.products.dedicated }} log export feature is only available on A
 {{site.data.alerts.end}}
 
 Perform the following steps to enable log export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
-
-1. Create the desired target AWS CloudWatch log group by following the [Create a log group in CloudWatch logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#Create-Log-Group) instructions. If you already have a log group created, you may skip this step. To send logs to more than one target log group, see the custom configuration option in step 9 below.
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
 
@@ -93,7 +91,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
 	1. Choose **Another AWS account**.
-	1. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID from step 3.
+	1. For **Account ID**, provide the {{ site.data.products.dedicated }} AWS Account ID from step 2.
 	1. Finish creating the IAM role with a suitable name. These instructions will use the role name `CockroachCloudLogExportRole`. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
@@ -120,7 +118,7 @@ Perform the following steps to enable log export from your {{ site.data.products
                 ],
                 "Effect": "Allow",
                 "Resource": [
-                    "arn:aws:logs:*:{your_aws_acct_id}:log-group:{log_group_name}:*"
+                    "arn:aws:logs:*:{your_aws_acct_id}:log-group:*:*"
                 ]
             }
         ]
@@ -129,7 +127,6 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     Where:
     - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudLogExportRole` role, **not** the AWS Account ID of your {{ site.data.products.dedicated }} cluster. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
-    - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
 
     This defines the set of permissions that the {{ site.data.products.dedicated }} log export feature requires to be able to write logs to CloudWatch.
 
@@ -138,7 +135,7 @@ Perform the following steps to enable log export from your {{ site.data.products
     {% include_cached copy-clipboard.html %}
     ~~~
     "Resource": [
-        "arn:aws:logs:us-east-1:{your_aws_acct_id}:log-group:{log_group_name}:*"
+        "arn:aws:logs:us-east-1:{your_aws_acct_id}:log-group:*:*"
     ]
     ~~~
 
@@ -159,10 +156,10 @@ Perform the following steps to enable log export from your {{ site.data.products
         ~~~
 
         Where:
-        - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 3.
+        - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 2.
         - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
-        - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
-        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 8.
+        - `{log_group_name}` is the target AWS CloudWatch log group you would like the logs to be sent to in your AWS account.
+        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
 
     1. To enable log export for your {{ site.data.products.dedicated }} cluster with custom logging configuration:
 
@@ -173,21 +170,21 @@ Perform the following steps to enable log export from your {{ site.data.products
             {% include_cached copy-clipboard.html %}
             ~~~json
             {
-             type: AWS_CLOUDWATCH,
-             log_name: "default",
-             auth_principal: "{role_arn}",
-             redact: true,
-             region: "",
-             groups: [
+             "type": "AWS_CLOUDWATCH",
+             "log_name": "crdb-default",
+             "auth_principal": "{role_arn}",
+             "redact": true,
+             "region": "",
+             "groups": [
                      {
-                         log_name: "sql",
-                         channels: ["SQL_SCHEMA", "SQL_EXEC"],
-                         redact: false,
+                         "log_name": "crdb-sql",
+                         "channels": ["SQL_SCHEMA", "SQL_EXEC"],
+                         "redact": false,
                      },
                      {
-                         log_name: "devops",
-                         channels: ["OPS", "HEALTH", "STORAGE"]
-                         min_level: "WARNING"
+                         "log_name": "crdb-devops",
+                         "channels": ["OPS", "HEALTH", "STORAGE"],
+                         "min_level": "WARNING"
                      },
              ]
             }
@@ -195,15 +192,15 @@ Perform the following steps to enable log export from your {{ site.data.products
 
             This configuration:
             - Enables [redaction](/docs/{{site.current_cloud_version}}/configure-logs.html#redact-logs) globally for all log entries emitted to AWS CloudWatch.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
-            - Sends log entries in all other logging channels to the `default` AWS CloudWatch log group.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a AWS CloudWatch log group named `crdb-sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to an AWS CloudWatch log group named `crdb-devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Sends log entries in all other logging channels to the `crdb-default` AWS CloudWatch log group.
 
-        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. For example, the above configuration becomes the following single line, suitable for the next step's `POST` command:
 
             {% include_cached copy-clipboard.html %}
             ~~~json
-            {type: AWS_CLOUDWATCH, log_name: default, auth_principal: {role_arn}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}
+            {"type": "AWS_CLOUDWATCH", "log_name": "crdb-default", "auth_principal": "{role_arn}", "redact": true, "region": "", "groups": [{"log_name": "crdb-sql", "channels": ["SQL_SCHEMA", "SQL_EXEC","SQL_PERF"], "redact": false}, {"log_name": "crdb-devops", "channels": ["OPS", "HEALTH", "STORAGE"], "min_level": "WARNING"}]}
             ~~~
 
         1. Then, to enable log export for your {{ site.data.products.dedicated }} cluster with the above example custom logging configuration, issue the following Cloud API command:
@@ -213,7 +210,7 @@ Perform the following steps to enable log export from your {{ site.data.products
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data '{type: AWS_CLOUDWATCH, log_name: default, auth_principal: {role_arn}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}'
+              --data '{"type": "AWS_CLOUDWATCH", "log_name": "crdb-default", "auth_principal": "{role_arn}", "redact": true, "region": "", "groups": [{"log_name": "crdb-sql", "channels": ["SQL_SCHEMA", "SQL_EXEC","SQL_PERF"], "redact": false}, {"log_name": "crdb-devops", "channels": ["OPS", "HEALTH", "STORAGE"], "min_level": "WARNING"}]}'
             ~~~
 
             Where:
@@ -317,21 +314,21 @@ Perform the following steps to enable log export from your {{ site.data.products
             {% include_cached copy-clipboard.html %}
             ~~~json
             {
-             type: GCP_CLOUD_LOGGING,
-             log_name: "default",
-             auth_principal: "{gcp_project_id}",
-             redact: true,
-             region: "",
-             groups: [
+             "type": "GCP_CLOUD_LOGGING",
+             "log_name": "crdb-default",
+             "auth_principal": "{gcp_project_id}",
+             "redact": true,
+             "region": "",
+             "groups": [
                      {
-                         log_name: "sql",
-                         channels: ["SQL_SCHEMA", "SQL_EXEC"],
-                         redact: false,
+                         "log_name": "crdb-sql",
+                         "channels": ["SQL_SCHEMA", "SQL_EXEC"],
+                         "redact": false,
                      },
                      {
-                         log_name: "devops",
-                         channels: ["OPS", "HEALTH", "STORAGE"]
-                         min_level: "WARNING"
+                         "log_name": "crdb-devops",
+                         "channels": ["OPS", "HEALTH", "STORAGE"],
+                         "min_level": "WARNING"
                      },
              ]
             }
@@ -339,15 +336,15 @@ Perform the following steps to enable log export from your {{ site.data.products
 
             This configuration:
             - Enables [redaction](/docs/{{site.current_cloud_version}}/configure-logs.html#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
-            - Sends log entries in all other logging channels to the `default` GCP Cloud Logging log group.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `crdb-sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](/docs/{{site.current_cloud_version}}/logging-overview.html#logging-channels) to a GCP Cloud Logging log group named `crdb-devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Sends log entries in all other logging channels to the `crdb-default` GCP Cloud Logging log group.
 
-        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
+        1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. For example, the above configuration becomes the following single line, suitable for the next step's `POST` command:
 
             {% include_cached copy-clipboard.html %}
             ~~~json
-            {type: GCP_CLOUD_LOGGING, log_name: default, auth_principal: {gcp_project_id}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}
+            {"type": "GCP_CLOUD_LOGGING", "log_name": "crdb-default", "auth_principal": "{gcp_project_id}", "redact": true, "region": "", "groups": [{"log_name": "crdb-sql", "channels": ["SQL_SCHEMA", "SQL_EXEC","SQL_PERF"], "redact": false}, {"log_name": "crdb-devops", "channels": ["OPS", "HEALTH", "STORAGE"], "min_level": "WARNING"}]}
             ~~~
 
         1. Then, to enable log export for your {{ site.data.products.dedicated }} cluster with the above example custom logging configuration, issue the following Cloud API command:
@@ -357,7 +354,7 @@ Perform the following steps to enable log export from your {{ site.data.products
             curl --request POST \
               --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/logexport \
               --header "Authorization: Bearer {secret_key}" \
-              --data '{type: GCP_CLOUD_LOGGING, log_name: default, auth_principal: {gcp_project_id}, redact: true, region: '', groups: [{log_name: sql, channels: [SQL_SCHEMA, SQL_EXEC], redact: false}, {log_name: devops, channels: [OPS, HEALTH, STORAGE], min_level: WARNING}]}'
+              --data '{"type": "GCP_CLOUD_LOGGING", "log_name": "crdb-default", "auth_principal": "{gcp_project_id}", "redact": true, "region": "", "groups": [{"log_name": "crdb-sql", "channels": ["SQL_SCHEMA", "SQL_EXEC","SQL_PERF"], "redact": false}, {"log_name": "crdb-devops", "channels": ["OPS", "HEALTH", "STORAGE"], "min_level": "WARNING"}]}'
             ~~~
 
             Where:
@@ -463,9 +460,9 @@ Log messages received from {{ site.data.products.dedicated }} nodes that are not
 
 ### AWS CloudWatch
 
-Most log export errors stem from incorrect AWS IAM configuration. Ensure you have followed steps 1 through 6 of the [Enable log export](#enable-log-export) instructions closely, and that you have a **cross-account** IAM role which trusts your {{ site.data.products.dedicated }} AWS account ID (as determined in step 3) and has permission to write to your specified log group in CloudWatch (as created in step 1).
+Most log export errors stem from incorrect AWS IAM configuration. Ensure you have followed steps 1 through 5 of the [Enable log export](#enable-log-export) instructions closely, and that you have a **cross-account** IAM role which trusts your {{ site.data.products.dedicated }} AWS account ID (as determined in step 2).
 
-When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) to step 9, be sure you are supplying the ARN for the `CockroachCloudLogExportRole` role, **not** the ARN for the `CockroachCloudLogExportPolicy` policy. Whether you are using the default logging configuration or the custom configuration: be sure to supply this ARN to the `auth_principal` parameter, in the `--data` payload.
+When supplying the [Amazon Resource Name (ARN)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) to step 8, be sure you are supplying the ARN for the `CockroachCloudLogExportRole` role, **not** the ARN for the `CockroachCloudLogExportPolicy` policy. Whether you are using the default logging configuration or the custom configuration: be sure to supply this ARN to the `auth_principal` parameter, in the `--data` payload.
 
 ### GCP Cloud Logging
 
