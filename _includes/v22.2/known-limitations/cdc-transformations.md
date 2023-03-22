@@ -8,5 +8,6 @@
     - Sub-select queries
     - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows).
 - If a table has a boolean column, referring to the column in a `WHERE` clause can result in an error message: `expected boolean expression, found expression of type bool`. A workaround for this issue is to construct the clause as per the following: `WHERE IF(column, TRUE, FALSE)`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90411)
+- `delete` changefeed events will not contain any content in the output message. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83835)
 
-Since {% if page.name == "cdc-transformations.md" %} CDC transformations {% else %} [CDC transformations](cdc-transformations.html){% endif %} are in preview, there is continued development to improve limitations in the feature. Many of the limitations include SQL expressions that will cause an error if you try to run them within a transformation. You can view these in [GitHub](https://github.com/cockroachdb/cockroach/issues?q=is%3Aopen+label%3AA-cdc-expressions+label%3AC-bug).
+Since {% if page.name == "cdc-transformations.md" %} CDC transformations {% else %} [CDC transformations](cdc-transformations.html){% endif %} are in preview, there is continued development to improve limitations in the feature. Many of the limitations include SQL expressions that will cause an error if you try to run them within a transformation.

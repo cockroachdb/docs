@@ -24,12 +24,14 @@ The benefits of using changefeeds for this use case compared to an export, inclu
 
 To create a changefeed that will only complete an initial scan of a table(s), run the following:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_parameters}' WITH initial_scan = 'only', format=csv;
 ~~~
 
 The job will return a job ID once it has started. You can use `SHOW CHANGEFEED JOBS` to check on the status:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CHANGEFEED JOB {job ID};
 ~~~
@@ -38,10 +40,14 @@ When the scan has completed you will find the output shows `succeeded` in the `s
 
 ### Create a scheduled changefeed to export data
 
-This example creates a nightly export of some filtered table data with a scheduled changefeed that will run just after midnight every night. The changefeed uses [CDC transformations](cdc-transformations.html) to query the table and filter the data it will send to the sink: 
+This example creates a nightly export of some filtered table data with a scheduled changefeed that will run just after midnight every night. The changefeed uses [CDC queries](cdc-queries.html) to query the table and filter the data it will send to the sink: 
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE SCHEDULE sf_skateboard FOR CHANGEFEED INTO 'external://cloud-sink' WITH format=csv AS SELECT current_location AS sf_address, id, type, status FROM vehicles WHERE city = 'san francisco' AND type = 'skateboard' RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS on_execution_failure=retry, on_previous_running=start;
+CREATE SCHEDULE sf_skateboard FOR CHANGEFEED INTO 'external://cloud-sink' WITH format=csv 
+  AS SELECT current_location AS sf_address, id, type, status FROM vehicles 
+  WHERE city = 'san francisco' AND type = 'skateboard' 
+  RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS on_execution_failure=retry, on_previous_running=start;
 ~~~
 
 The [schedule options](create-schedule-for-changefeed.html#schedule-options) control the schedule's behavior:

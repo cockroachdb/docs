@@ -15,7 +15,7 @@ We recommend reading the [Changefeed Messages](changefeed-messages.html) page fo
 
 The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds see the following pages:
 
-- [Change Data Capture Transformations](cdc-transformations.html)
+- [Change Data Capture Queries](cdc-queries.html)
 - [Changefeeds on Tables with Column Families](changefeeds-on-tables-with-column-families.html)
 - [Export Data with Changefeeds](export-data-with-changefeeds.html)
 
@@ -41,9 +41,9 @@ Parameter | Description
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client. For more detail, see [create-and-configure-changefeed.html#create].
 `option` / `value` | For a list of available options and their values, see [Options](#options).
 
-### CDC transformation parameters
+### CDC query parameters
 
-Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Transformations](cdc-transformations.html) page for detail on the functionality, syntax, and use cases for changefeeds created with transformations.
+Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Queries](cdc-queries.html) page for detail on the functionality, syntax, and use cases for changefeeds created with queries.
 
 Parameter | Description
 ----------|------------

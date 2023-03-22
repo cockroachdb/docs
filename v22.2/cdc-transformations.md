@@ -3,13 +3,14 @@ title: Change Data Capture Transformations
 summary: Filter the changefeed data that emits to the changefeed sink.
 toc: true
 docs_area: stream
+key: cdc-queries.html
 ---
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-{% include_cached new-in.html version="v22.2" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).  
+{% include_cached new-in.html version="v22.2" %} Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
 
 You can use CDC transformations to do the following:
 
@@ -20,6 +21,10 @@ You can use CDC transformations to do the following:
 You can use any CockroachDB-supported SQL expression syntax that is not listed in [limitations](#limitations) to build a changefeed query.
 
 See the [Examples](#examples) section for further use cases.
+
+{{site.data.alerts.callout_info}}
+[Changefeeds using queries in **v23.1**](../v23.1/cdc-queries.html) have different support for [functions](#cdc-transformation-function-support). If you are using CDC transformations in v22.2 and upgrade, we recommend closely [monitoring](monitor-and-debug-changefeeds.html) any running changefeeds during the upgrade.
+{{site.data.alerts.end}}
 
 ## Syntax
 
@@ -51,11 +56,7 @@ For a SQL diagram of the CDC transformation syntax, see the [`CREATE CHANGEFEED`
 You can use the following functions in CDC transformation queries:
 
 - Functions marked as "Immutable" on the [Functions and Operators page](functions-and-operators.html).
-- Changefeed functions:
-
-    {{site.data.alerts.callout_info}}
-    Changefeed functions are in preview and **subject to change** with continued development.
-    {{site.data.alerts.end}}
+- The following changefeed functions are available to use in CDC transformations in v22.2. However, these are **deprecated** and removed in v23.1. If you have changefeeds with transformations running and upgrade your cluster, we recommend [monitoring](monitor-and-debug-changefeeds.html) your changefeeds:
 
     Function                  | Description
     --------------------------+----------------------
@@ -151,14 +152,20 @@ Therefore, the first changefeed created:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql 
-CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT * FROM movr.vehicle_location_histories WHERE left(ride_id::string, 1) IN ('0','1','2','3');
+CREATE CHANGEFEED INTO 'scheme://sink-URI-1' 
+WITH schema_change_policy='stop' 
+AS SELECT * FROM movr.vehicle_location_histories 
+WHERE left(ride_id::string, 1) IN ('0','1','2','3');
 ~~~
 
 The final changefeed created:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql 
-CREATE CHANGEFEED INTO 'scheme://sink-URI' WITH schema_change_policy='stop' AS SELECT * FROM movr.vehicle_location_histories WHERE left(ride_id::string, 1) IN ('c','d','e','f');
+CREATE CHANGEFEED INTO 'scheme://sink-URI-2' 
+WITH schema_change_policy='stop' 
+AS SELECT * FROM movr.vehicle_location_histories 
+WHERE left(ride_id::string, 1) IN ('c','d','e','f');
 ~~~
 
 ### View recent changes to a row
@@ -252,8 +259,8 @@ For the previous JSON example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
-cdc_updated_timestamp()::int AS event_timestamp,
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop' 
+AS SELECT cdc_updated_timestamp()::int AS event_timestamp,
 'dogs' AS table,
 IF (cdc_is_delete(),'delete','create') AS type,
 jsonb_build_object('good_boy',good_boy) AS data
@@ -270,8 +277,8 @@ For the remaining tables, you use the same statement structure to create changef
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
-cdc_updated_timestamp()::int AS event_timestamp,
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop' 
+AS SELECT cdc_updated_timestamp()::int AS event_timestamp,
 'users' AS table,
 IF (cdc_is_delete(),'delete','create') AS type,
 jsonb_build_object('email', email, 'admin', admin) AS data
@@ -280,8 +287,8 @@ FROM users;
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
-cdc_updated_timestamp()::int AS event_timestamp,
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop'  
+AS SELECT cdc_updated_timestamp()::int AS event_timestamp,
 'accounts' AS table,
 IF (cdc_is_delete(),'delete','create') AS type,
 jsonb_build_object('owner', owner) AS data
@@ -294,7 +301,7 @@ For example, when you delete a message in your outbox table after processing it 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO ‘kafka://endpoint?topic_name=events’ AS SELECT * FROM outbox WHERE NOT cdc_is_delete();
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop' AS SELECT * FROM outbox WHERE NOT cdc_is_delete();
 ~~~
 
 Similarly, if you have a status column in your outbox table tracking its lifecycle, you can filter out updates as well so that only the initial insert sends a message:
