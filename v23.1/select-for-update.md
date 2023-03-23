@@ -116,5 +116,5 @@ COMMIT
 <!-- Reference links -->
 
 [transaction_contention]: performance-best-practices-overview.html#transaction-contention
-[retries]: transactions.html#client-side-intervention
+[retries]: transaction-retry-error-reference.html#client-side-retry-handling
 [select]: select-clause.html

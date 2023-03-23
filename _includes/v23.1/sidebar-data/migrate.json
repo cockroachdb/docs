@@ -75,6 +75,12 @@
           "urls": [
             "/${VERSION}/qlik.html"
           ]
+        },
+        {
+          "title": "Striim",
+          "urls": [
+            "/${VERSION}/striim.html"
+          ]
         }
       ]
     },

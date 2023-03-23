@@ -11,7 +11,7 @@ There are two ways to use `ROLLBACK`:
 
 - The `ROLLBACK` statement [rolls back the entire transaction](#rollback-a-transaction).
 
--  The `ROLLBACK TO SAVEPOINT` statement [rolls back and restarts the nested transaction](#rollback-a-nested-transaction) started at the corresponding `SAVEPOINT` statement, for working with [standard savepoints](savepoint.html#savepoints-for-nested-transactions).  This is in addition to the existing support for working with [client-side transaction retries](transactions.html#client-side-intervention).  For examples of each usage, see:
+-  The `ROLLBACK TO SAVEPOINT` statement [rolls back and restarts the nested transaction](#rollback-a-nested-transaction) started at the corresponding `SAVEPOINT` statement, for working with [standard savepoints](savepoint.html#savepoints-for-nested-transactions). This is in addition to the existing support for working with [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling). For examples of each usage, see:
 
   - [Rollback a nested transaction](#rollback-a-nested-transaction)
   - [Retry a transaction](#retry-a-transaction)

@@ -36,7 +36,7 @@ The following binaries are not suitable for production environments:
 {% assign versions = site.data.versions | where_exp: "versions", "released_versions contains versions.major_version" | sort: "release_date" | reverse %}
 {% comment %} Fetch all major versions (e.g., v21.2), sorted in reverse chronological order. {% endcomment %}
 
-{% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where: "withdrawn", "false"  | sort: "release_date" | reverse | first %}
+{% assign latest_hotfix = site.data.releases | where_exp: "latest_hotfix", "latest_hotfix.major_version == site.versions['stable']" | where_exp: "latest_hotfix", "latest_hotfix.withdrawn != true"  | sort: "release_date" | reverse | first %}
 {% comment %} For the latest GA version, find the latest hotfix that is not withdrawn. {% endcomment %}
 
 {% comment %}Assign the JS for the experimental download prompt and store it in the Liquid variable experimental_download_js {% endcomment %}
@@ -58,26 +58,26 @@ The following binaries are not suitable for production environments:
 
         {% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %} {% comment %} Fetch all releases for that major version based on release type (Production/Testing). {% endcomment %}
 
-        {% assign v_linux_arm = "false" %}
+        {% assign v_linux_arm = false %}
         {% for r in releases %}
-            {% if r.linux_arm == "true" %}
-                {% assign v_linux_arm = "true" %}
+            {% if r.linux.linux_arm == true %}
+                {% assign v_linux_arm = true %}
                 {% break %}
             {% endif %}
         {% endfor %}
 
-        {% assign v_mac_arm = "false" %}
+        {% assign v_mac_arm = false %}
         {% for r in releases %}
-            {% if r.mac_arm == "true" %}
-                {% assign v_mac_arm = "true" %}
+            {% if r.mac.mac_arm == true %}
+                {% assign v_mac_arm = true %}
                 {% break %}
             {% endif %}
         {% endfor %}
 
-        {% assign v_docker_arm = "false" %}
+        {% assign v_docker_arm = false %}
         {% for r in releases %}
-            {% if r.docker_arm == "true" %}
-                {% assign v_docker_arm = "true" %}
+            {% if r.docker.docker_arm == true %}
+                {% assign v_docker_arm = true %}
                 {% break %}
             {% endif %}
         {% endfor %}
@@ -93,7 +93,7 @@ The following binaries are not suitable for production environments:
             <td>Version</td>
             <td>Date</td>
             <td>Intel 64-bit Downloads</td>
-        {% if v_linux_arm == "true" %}
+        {% if v_linux_arm == true %}
             <td>ARM 64-bit (<b>Experimental</b>) Downloads</td>
         {% endif %}
         </tr>
@@ -108,23 +108,23 @@ The following binaries are not suitable for production environments:
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+                {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
-                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
-                    {% if r.has_sql_only != "false" %}
-                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">SQL Shell Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    {% if r.has_sql_only == true %}
+                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz">SQL Shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-amd64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                     {% endif %}
                 {% endif %}
-                {% if r.linux_arm == "true" %}
-                    {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
+                {% if r.linux.linux_arm == true %}
+                    {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
                 <td><span class="badge badge-gray">Withdrawn</span></td>
                     {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
                 <td>
-                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-arm64.tgz">Full Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
-                        {% if r.has_sql_only != "false" %}
-                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-arm64.tgz">SQL shell Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-arm64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                        {% if r.has_sql_only == true %}
+                    <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-arm64.tgz">SQL shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.linux-arm64.tgz.sha256sum">SHA256</a>{% endif %})</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                         {% endif %}
                 </td>
                     {% endif %}
@@ -143,7 +143,7 @@ The following binaries are not suitable for production environments:
             <td>Version</td>
             <td>Date</td>
             <td>Intel 64-bit Downloads</td>
-        {% if v_mac_arm == "true" %}
+        {% if v_mac_arm == true %}
             <td>ARM 64-bit Downloads</td>
         {% endif %}
         </tr>
@@ -158,22 +158,22 @@ The following binaries are not suitable for production environments:
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+                {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
-                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
-                    {% if r.has_sql_only != "false" %}
-                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz">SQL shell Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    {% if r.has_sql_only == true %}
+                <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz">SQL shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                     {% endif %}
                 {% endif %}
-                {% if r.mac_arm == "true" %}
-                  {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
+                {% if r.mac.mac_arm == true %}
+                  {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}{% comment %}Version and date columns joined with previous row{% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                   {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
                 <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-arm64.tgz">Full Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
-                    {% if r.has_sql_only != "false" %}
+                    {% if r.has_sql_only == true %}
                 <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-arm64.tgz">SQL shell Binary</a> (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</div>
                     {% endif %}
             </td>
@@ -207,17 +207,17 @@ The following binaries are not suitable for production environments:
                 {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+                {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
                 {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
-                    {% if r.no_windows == "true" %}
-                N/A
-                    {% else %}
-                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
-                        {% if r.has_sql_only != "false" %}
-                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a>{% if r.has_sha256sum == "true" %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                    {% if r.windows == true %}
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
+                        {% if r.has_sql_only == true %}
+                <div><a onclick="{{ experimental_download_js }}" href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip">SQL shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.version }}.windows-6.2-amd64.zip.sha256sum">SHA256</a>){% endif %}</div> {% comment %} If a sha256sum is available for a particular release, we display a link to the file containing the sha256sum alongside the download link of the release. {% endcomment %}
                         {% endif %}
+                    {% else %}
+                N/A
                     {% endif %}
                 {% endif %}
             </td>
@@ -229,7 +229,7 @@ The following binaries are not suitable for production environments:
 
 <section class="filter-content" data-scope="docker">
     <p>Docker images for CockroachDB are published on <a class="external" href="https://hub.docker.com/r/cockroachdb/cockroach/tags)">Docker Hub</a>.</p>
-        {% if v_docker_arm == "true" %}
+        {% if v_docker_arm == true %}
     <p><a href="https://docs.docker.com/build/building/multi-platform/">Multi-platform images</a> include support for both Intel and ARM. ARM support is <b>experimental</b> and is not yet qualified for production use.</p>
         {% endif %}
     <table class="release-table">
@@ -251,13 +251,13 @@ The following binaries are not suitable for production environments:
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
             <td>
-                {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+                {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
                 <span class="badge badge-gray">Withdrawn</span>
                 {% else %}
-                    {% if r.no_source == "true" %}
-                N/A
+                    {% if r.source == true %}
+                <b>Intel{% if r.docker.docker_arm == true %}/ARM{% endif %}</b>: <code>{{ r.docker.docker_image }}:{{ r.version }}</code>
                     {% else %}
-                <b>Intel{% if r.docker_arm == "true" %}/ARM{% endif %}</b>: <code>{{ r.docker_image }}:{{ r.version }}</code>
+                N/A
                     {% endif %}
             </td>
         {% endif %}
@@ -287,14 +287,14 @@ The following binaries are not suitable for production environments:
         {% endif %}
             </td>
             <td>{{ r.release_date }}</td> {% comment %} Release date of the release. {% endcomment %}
-        {% if r.withdrawn == "true" %} {% comment %} Suppress withdrawn releases. {% endcomment %}
+        {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <td><span class="badge badge-gray">Withdrawn</span></td>
         {% else %} {% comment %} Add download links for all non-withdrawn versions. {% endcomment %}
             <td>
-            {% if r.no_source == "true" %}
-                N/A
-            {% else %}
+            {% if r.source == true %}
                 <a class="external" href="https://github.com/cockroachdb/cockroach/releases/tag/{{ r.version }}">View on Github</a>
+            {% else %}
+                N/A
             {% endif %}
             </td>
         {% endif %}

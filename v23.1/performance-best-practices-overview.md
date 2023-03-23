@@ -324,7 +324,7 @@ Read hot spots can occur if you perform lots of scans of a portion of a table in
 
 ### Find hot spots
 
-To track down the nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and [Range Report](ui-hot-ranges-page.html#range-report).
+To track down nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and the [Range Report](ui-hot-ranges-page.html#range-report). To track down ranges experiencing hot spots, use the [Key visualizer](ui-key-visualizer.html).
 
 ### Reduce hot spots
 
@@ -374,7 +374,7 @@ Transaction contention occurs when the following three conditions are met:
 - They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
 - At least one of the transactions modify the data.
 
-Transactions that experience contention typically show [delays in completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries) or [`restart transaction` errors with the error code `40001`](common-errors.html#restart-transaction). The possibility of transaction restarts requires clients to implement [transaction retries](transactions.html#client-side-intervention).
+Transactions that experience contention typically show [delays in completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries) or [`restart transaction` errors with the error code `40001`](common-errors.html#restart-transaction). The possibility of transaction restarts requires clients to implement [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling).
 
 For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
