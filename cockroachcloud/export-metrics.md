@@ -6,7 +6,7 @@ docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
@@ -14,7 +14,9 @@ Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.d
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-## The `metricexport` endpoint
+## Use the Cloud API
+
+### The `metricexport` endpoint
 
 To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster, use the `metricexport` endpoint:
 
@@ -35,7 +37,7 @@ Method | Required permissions | Description
 
 See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
 
-## Enable metrics export
+### Enable metrics export
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
@@ -213,7 +215,7 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
 
 </section>
 
-## Monitor the status of a metrics export configuration
+### Monitor the status of a metrics export configuration
 
 To check the status of an existing {{ site.data.products.dedicated }} metrics export configuration, use the following Cloud API command:
 
@@ -229,11 +231,11 @@ Where:
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
 
-## Update an existing metrics export configuration
+### Update an existing metrics export configuration
 
 To update an existing {{ site.data.products.dedicated }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or Datadog), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
 
-## Disable metrics export
+### Disable metrics export
 
 To disable an existing {{ site.data.products.dedicated }} metrics export configuration, and stop sending metrics to a cloud metrics sink, use the following Cloud API command:
 
@@ -249,6 +251,8 @@ Where:
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{metrics_export_type}` is the metrics export cloud sink target you are using, either: `CLOUDWATCH` or `DATADOG`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+
+## Use Terraform
 
 ## Limitations
 

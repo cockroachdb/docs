@@ -167,6 +167,8 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 1. Enter a name for the new database.
 1. Click **Create**.
 
+Alternatively, you can [manage databases with Terraform](manage-database-terraform.html).
+
 ## Restore data from a backup
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.

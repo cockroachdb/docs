@@ -6,7 +6,7 @@ docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
+{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) or the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) to configure log export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, send log entries to specific log group targets by log channel, among others.
 
 {{site.data.alerts.callout_danger}}
 The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
@@ -16,7 +16,9 @@ The {{ site.data.products.dedicated }} log export feature is only available on c
 {% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-## The `logexport` endpoint
+## Use the Cloud API
+
+### The `logexport` endpoint
 
 To configure and manage log export for your {{ site.data.products.dedicated }} cluster, use the `logexport` endpoint:
 
@@ -37,7 +39,7 @@ Method | Required permissions | Description
 
 See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a {{ site.data.products.db }} service account with these required permissions.
 
-## Log name format
+### Log name format
 
 When written to your chosen cloud log sink, logs have the following name format:
 
@@ -53,7 +55,7 @@ Where:
 - `{log-channel}` is the CockroachDB [log channel](../{{site.current_cloud_version}}/logging-overview.html#logging-channels), such as `HEALTH` or `OPS`.
 - `{N}` is the node number of the {{ site.data.products.dedicated }} node emitting the log messages. Log messages received before a node is fully started may appear in a log named without an explicit node number, e.g., ending in just `.n`.
 
-## Enable log export
+### Enable log export
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-log-export">AWS CloudWatch</button>
@@ -380,7 +382,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 </section>
 
-## Monitor the status of a log export configuration
+### Monitor the status of a log export configuration
 
 To check the status of an existing {{ site.data.products.dedicated }} log export configuration, use the following Cloud API command:
 
@@ -396,11 +398,11 @@ Where:
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
 
-## Update an existing log export configuration
+### Update an existing log export configuration
 
 To update an existing {{ site.data.products.dedicated }} log export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or GCP Cloud Logging), then issue the same `POST` Cloud API command as shown in the [Enable log export](#enable-log-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a log export configuration](#monitor-the-status-of-a-log-export-configuration) instructions to ensure the update completes successfully.
 
-## Disable log export
+### Disable log export
 
 To disable an existing {{ site.data.products.dedicated }} log export configuration, and stop sending logs to a cloud log sink, use the following Cloud API command:
 
@@ -415,6 +417,9 @@ Where:
 
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+
+## Use Terraform
+
 
 ## Limitations
 

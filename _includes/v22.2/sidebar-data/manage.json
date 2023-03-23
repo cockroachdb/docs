@@ -40,11 +40,34 @@
           "urls": [
             "/cockroachcloud/ccloud-get-started.html"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "title": "Manage CockroachDB Cloud with Terraform",
+      "items": [
         {
-          "title": "Provision a CockroachDB Cloud cluster using Terraform",
+          "title": "Provision a CockroachDB Cloud cluster with Terraform",
           "urls": [
             "/cockroachcloud/provision-a-cluster-with-terraform.html"
+          ]
+        },
+        {
+          "title": "Manage Databases with Terraform",
+          "urls": [
+            "/cockroachcloud/manage-database-terraform.html"
+          ]
+        },
+        {
+          "title": "Export Logs with Terraform",
+          "urls": [
+            "/cockroachcloud/log-export-terraform.html"
+          ]
+        },
+        {
+          "title": "Export Metrics with Terraform",
+          "urls": [
+            "/cockroachcloud/metric-export-terraform.html"
           ]
         }
       ]
