@@ -2,7 +2,7 @@
 
 The **Index Stats** table displays index statistics for a table.
 
-Index statistics accumulate from the time an index was created or when statistics were reset. To reset index statistics for the cluster, click **Reset all index stats**.
+Index statistics accumulate from the time an index was created or when statistics were reset. If desired, [admin users]({{ link_prefix }}security-reference/authorization.html#admin-role) may reset index statistics for the cluster by clicking **Reset all index stats**. This link does not appear for non-admin users.
 
 The following information is displayed for each index:
 
@@ -14,7 +14,7 @@ The following information is displayed for each index:
 | Index Recommendations | A recommendation to drop the index if it is unused.                   |
 
 {% if page.cloud != true %}
-Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation.
+Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation. [Admin users](security-reference/authorization.html#admin-role) also see a list of executed statement fingerprints using the index.
 {% endif %}
 
 ## Grants view

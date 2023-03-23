@@ -438,7 +438,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 1. Access the DB Console
 
-1. On the Console, navigate to the cluster's **Monitoring** page and click **Open DB Console**.
+1. On the Console, navigate to the cluster's **Tools** page and click **Open DB Console**.
 
     You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 

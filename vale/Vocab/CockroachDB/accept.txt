@@ -135,6 +135,7 @@ gzip
 HAProxy
 hardcoded
 HashiCorp
+Hasura
 HDDs?
 heartbeat(ed|ing)
 heredocs

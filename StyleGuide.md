@@ -485,6 +485,8 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
 
+Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
+
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:

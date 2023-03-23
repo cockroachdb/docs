@@ -84,6 +84,10 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 
 ## Unresolved limitations
 
+### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
+
 ### Unsupported trigram syntax
 
 The following PostgreSQL syntax and features are currently unsupported for [trigrams](trigram-indexes.html):
@@ -411,10 +415,6 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### `SHOW BACKUP` does not work with locality-aware backups and the `incremental_location` option
-
-{% include {{ page.version.version }}/known-limitations/show-backup-locality-incremental-location.md %}
 
 ### DB Console may become inaccessible for secure clusters
 

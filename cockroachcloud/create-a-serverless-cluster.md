@@ -34,15 +34,11 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Enter a spend limit
 
-Every cluster starts with 10M RUs of free [burst capacity](architecture.html#cockroachdb-cloud-terms) each month and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+Every cluster starts with 10M RUs of free [burst capacity](architecture.html#cockroachdb-cloud-terms) each month and earns 100 RUs per second up to a maximum of 50M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
 {% include cockroachcloud/serverless-usage.md %} For more information, see [Planning your cluster](plan-your-cluster.html).
-
-{{site.data.alerts.callout_info}}
-Regardless of whether you set a spend limit, [adding billing information](billing-management.html) for your organization allows you to use [cloud storage for backups](take-and-restore-customer-owned-backups.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](take-and-restore-customer-owned-backups.html).
-{{site.data.alerts.end}}
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="free">Free</button>

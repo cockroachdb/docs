@@ -20,4 +20,5 @@ group :jekyll_plugins do
     gem 'jekyll-remote-include', github: 'ianjevans/jekyll-remote-include', tag: 'v1.1.7'
     gem "jekyll-last-modified-at"
     gem "jekyll-get-json"
+    gem 'jekyll-sass-converter', '~> 3.0'
   end

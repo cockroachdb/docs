@@ -135,7 +135,7 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 
 ## Examples
 
-{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+{% include {{ page.version.version }}/import-export-auth.md %}
 
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 

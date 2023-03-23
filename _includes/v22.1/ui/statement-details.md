@@ -30,7 +30,7 @@ The following screenshot shows the statement fingerprint of the query described 
 - **Rows Processed**: the total number of rows read and written.
 - **Execution Retries**: the number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
 - **Execution Count**: the total number of executions. It is calculated as the sum of first attempts and retries.
-- **Contention**: the amount of time spent waiting for resources.
+- **Contention**: the amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
 The following charts summarize the executions of the statement fingerprint illustrated in the preceding section:
 

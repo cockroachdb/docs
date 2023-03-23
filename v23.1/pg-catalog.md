@@ -129,7 +129,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_tables` | `pg_tables`
 `pg_tablespace` | `pg_tablespace`
 `pg_timezone_abbrevs` | `pg_timezone_abbrevs` (empty)
-`pg_timezone_names` | `pg_timezone_names` (empty)
+`pg_timezone_names` | `pg_timezone_names`
 `pg_transform` | `pg_transform` (empty)
 `pg_trigger` | `pg_trigger`
 `pg_ts_config` | `pg_ts_config` (empty)

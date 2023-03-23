@@ -50,7 +50,7 @@ Here are some best practices to follow when deleting rows:
 - Always specify a `WHERE` clause in `DELETE` queries. If no `WHERE` clause is specified, CockroachDB will delete all of the rows in the specified table.
 - To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html) instead of a `DELETE` statement.
 - To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column).
-- When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+- When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under [contention](performance-best-practices-overview.html#transaction-contention).
 - Review the [performance considerations below](#performance-considerations).
 
 ### Examples
