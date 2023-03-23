@@ -18,11 +18,17 @@ Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.d
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
+<<<<<<< HEAD:src/current/cockroachcloud/export-metrics.md
 <a id="the-metricexport-endpoint"></a>
 
 ## Use Terraform
 
 To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster with Terraform, [PLACEHOLDER]. For a full tutorial, see [Export Metrics with Terraform](export-metrics-terraform.html).
+=======
+## Use Terraform
+
+To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster with Terraform, [PLACEHOLDER]. For a full tutorial, see [Export Metrics with Terraform](metrics-export-terraform.html).
+>>>>>>> 05020805b (DRAFT):cockroachcloud/export-metrics.md
 
 ## Use the Cloud API
 

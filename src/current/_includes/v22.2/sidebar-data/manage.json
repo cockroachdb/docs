@@ -67,7 +67,7 @@
         {
           "title": "Export Metrics with Terraform",
           "urls": [
-            "/cockroachcloud/metric-export-terraform.html"
+            "/cockroachcloud/metrics-export-terraform.html"
           ]
         }
       ]

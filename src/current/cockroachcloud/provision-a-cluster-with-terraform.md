@@ -110,6 +110,8 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
        - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
+       - `{database name}` is the name of the database you want to create.
+       - `{os}` is the operating system your computer is using. Possible values are `mac`, `windows`, or `linux`.
        - `{allow list name}` is the name for the [IP allow list](network-authorization.html#ip-allowlisting). Use a descriptive name to identify the IP allow list.
        - `{database name}` is the name of the database you want to create.
        - `{os}` is the operating system your computer is using. Possible values are `mac`, `windows`, or `linux`.

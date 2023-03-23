@@ -20,15 +20,22 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 ## Use Terraform
 
+<<<<<<< HEAD:src/current/cockroachcloud/export-logs.md
 To configure and manage log export for your {{ site.data.products.dedicated }} cluster with Terraform, [PLACEHOLDER]. For a full tutorial, see [Export Logs with Terraform](export-logs-terraform.html).
+=======
+To configure and manage log export for your {{ site.data.products.dedicated }} cluster with Terraform, [PLACEHOLDER]. For a full tutorial, see [Export Logs with Terraform](log-export-terraform.html).
+>>>>>>> 05020805b (DRAFT):cockroachcloud/export-logs.md
 
 ## Use the Cloud API
 
 ### The `logexport` endpoint
 
 To configure and manage log export for your {{ site.data.products.dedicated }} cluster with the Cloud API, use the `logexport` endpoint:
+<<<<<<< HEAD:src/current/cockroachcloud/export-logs.md
 
 To configure and manage log export for your {{ site.data.products.dedicated }} cluster, use the `logexport` endpoint:
+=======
+>>>>>>> 05020805b (DRAFT):cockroachcloud/export-logs.md
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -424,7 +431,11 @@ curl --request DELETE \
 Where:
 
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+<<<<<<< HEAD:src/current/cockroachcloud/export-logs.md
 - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
+=======
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+>>>>>>> 05020805b (DRAFT):cockroachcloud/export-logs.md
 
 ## Limitations
 
