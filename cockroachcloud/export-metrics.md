@@ -14,6 +14,10 @@ Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.d
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
+## Use Terraform
+
+To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster with Terraform, [PLACEHOLDER]. For a full tutorial, see [Export Metrics with Terraform](metrics-export-terraform.html).
+
 ## Use the Cloud API
 
 ### The `metricexport` endpoint
