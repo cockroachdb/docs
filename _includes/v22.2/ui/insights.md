@@ -148,8 +148,6 @@ The **Insights** column shows the name of the insight, in this case **Suboptimal
 
 ## Schema Insights tab
 
-To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Schema Insights**.
-
 {% if page.cloud != true -%}
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select  **Schema Insights**.
 {% endif -%}
@@ -184,7 +182,7 @@ You can configure the behavior of insights using the following [cluster settings
 
 ### Workload insights settings
 
-You can configure [**Workload Insights**](#workload-insights-tab) with the following [{{ link_prefix }}cluster settings](cluster-settings.html):
+You can configure [**Workload Insights**](#workload-insights-tab) with the following [{{ link_prefix }}cluster settings]({{ link_prefix }}cluster-settings.html):
 
 | Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
 |------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|

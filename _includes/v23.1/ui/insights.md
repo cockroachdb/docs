@@ -15,7 +15,7 @@ To display this view, click **Insights** in the left-hand navigation of the Clou
 The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
 
 {{site.data.alerts.callout_info}}
-The rows in this page are populated from the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) and  [`crdb_internal.transaction_execution_insights`]({{ link_prefix }}crdb-internal.html#transaction_execution_insights) tables.
+The rows in this page are populated from the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) and  `crdb_internal.transaction_execution_insights` tables.
 
 - The results displayed in the **Transaction Executions** view will be available as long as a corresponding row in the `crdb_internal.transaction_contention_events` or `crdb_internal.transaction_execution_insights` tables exists. The rows in `crdb_internal.transaction_contention_events` on each node must use less space than `sql.contention.event_store.capacity`, and the rows in `crdb_internal.transaction_contention_events` cannot exceed `sql.insights.execution_insights_capacity`.
 - The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
@@ -145,8 +145,6 @@ The **Insights** column shows the name of the insight, in this case **Suboptimal
 
 ## Schema Insights tab
 
-To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Schema Insights**.
-
 {% if page.cloud != true -%}
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select  **Schema Insights**.
 {% endif -%}
@@ -181,7 +179,7 @@ You can configure the behavior of insights using the following [cluster settings
 
 ### Workload insights settings
 
-You can configure [**Workload Insights**](#workload-insights-tab) with the following [{{ link_prefix }}cluster settings](cluster-settings.html):
+You can configure [**Workload Insights**](#workload-insights-tab) with the following [{{ link_prefix }}cluster settings]({{ link_prefix }}cluster-settings.html):
 
 | Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
 |------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
