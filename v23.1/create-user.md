@@ -3,9 +3,10 @@ title: CREATE USER
 summary: The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables.
 toc: true
 docs_area: reference.sql
+glossary_tooltip: true
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
+The `CREATE USER` [statement](sql-statements.html) creates SQL {% glossary user, display: users %}, which let you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
 
 You can use the keywords `ROLE` and `USER` interchangeably. `CREATE USER` is equivalent to [`CREATE ROLE`](create-role.html), with one exception: `CREATE ROLE` sets the `NOLOGIN` [role option](#role-options), which prevents the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` [role option](#role-options) to achieve the same result as `CREATE USER`.
 

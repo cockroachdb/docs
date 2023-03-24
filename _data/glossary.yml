@@ -1,0 +1,6 @@
+- term: Organization
+  definition: An authorization hierarchy rooted in a billing account. All {{ site.data.products.db }} database clusters belong to an organization. The user of the billing account at the root creates or invites other admin users to the organization.
+- term: User
+  definition: A {{ site.data.products.db }} user belongs to one or more organizations, either as an `admin` or `developer`. Note *organization user* is distinct from *SQL user/role* on any given cluster.
+
+

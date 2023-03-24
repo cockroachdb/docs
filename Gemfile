@@ -21,4 +21,5 @@ group :jekyll_plugins do
     gem "jekyll-last-modified-at"
     gem "jekyll-get-json"
     gem 'jekyll-sass-converter', '~> 3.0'
+    gem 'jekyll-glossary_tooltip'
   end
