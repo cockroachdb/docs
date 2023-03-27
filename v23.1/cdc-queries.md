@@ -44,7 +44,7 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`](create-
 
 - `cdc_prev`: A tuple-typed column that gives changefeeds access to the previous state of a row. See the [Emit the previous state of a row](#emit-the-previous-state-of-a-row) example for more detail.
 - CDC queries support [system columns](crdb-internal.html), for example:
-  - `crdb_internal_mvcc_timestamp`: Records the timestamp of each row created in a table. If you do not have a timestamp column in the target table, you can access `crdb_internal_mvcc_timestamp` in a changefeed. See the [Determine the age of a row](#determine-the-age-of-a-row) example.
+  - <a name="crdbinternal-mvcc-timestamp"></a>`crdb_internal_mvcc_timestamp`: Records the timestamp of each row created in a table. If you do not have a timestamp column in the target table, you can access `crdb_internal_mvcc_timestamp` in a changefeed. See the [Determine the age of a row](#determine-the-age-of-a-row) example.
 
 ## Limitations
 
@@ -59,12 +59,20 @@ You can use the following functions in CDC queries:
 
     Function                  | Description
     --------------------------+----------------------
-    `changefeed_creation_timestamp()` | Returns the changefeed creation timestamp.
+    `changefeed_creation_timestamp()` | Returns the decimal MVCC timestamp when the changefeed was created.
     `event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`](create-changefeed.html#diff-opt) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
-    `event_schema_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ, such as when the table is undergoing [schema changes](online-schema-changes.html).
+    `event_schema_timestamp()` | Returns the timestamp of the [schema changes](online-schema-changes.html) event.
 
-- {% include_cached new-in.html version="v23.1" %} Non-volatile [user-defined functions](user-defined-functions.html).
+- {% include_cached new-in.html version="v23.1" %} Non-volatile [user-defined functions](user-defined-functions.html). See the [Queries and user-defined functions](#queries-and-user-defined-functions) example.
 - The following "Stable" functions:
+  - `age()`
+  - `array_to_json()`
+  - `array_to_string()`
+  - `crdb_internal.cluster_id()`
+  - `date_part()`
+  - `date_trunc()`
+  - `extract()`
+  - `format()`
   - `jsonb_build_array()`
   - `jsonb_build_object()`
   - `to_json()`
@@ -235,7 +243,8 @@ For example, you may need to identify what recently changed in a specific row. Y
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink' 
-  AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp AS age 
+  AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp 
+  AS age 
   FROM movr.rides;
 ~~~
 ~~~
@@ -363,6 +372,26 @@ CREATE CHANGEFEED INTO 'scheme://sink-URI' AS SELECT status, cdc_prev FROM outbo
 ~~~
 
 Since all non-primary key columns will be `NULL` in the `cdc_prev` output for an insert message, insert messages will be sent. Updates will not send, as long as the status was not previously `NULL`.
+
+## Queries and user-defined functions
+
+{% include_cached new-in.html version="v23.1" %} You can create CDC queries that include [user-defined functions](user-defined-functions.html).
+
+The following [`CREATE FUNCTION`](create-function.html) statement builds the `doubleRevenue()` function at the database level: 
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE FUNCTION doubleRevenue(r int)
+  RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 
+  $$ SELECT 2 * r $$;
+~~~
+
+You can then use this function within a CDC query tagetting a table in the same database:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides.revenue::int) FROM rides WHERE revenue < 30;
+~~~
 
 ## See also
 

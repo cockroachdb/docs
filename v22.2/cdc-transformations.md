@@ -23,7 +23,9 @@ You can use any CockroachDB-supported SQL expression syntax that is not listed i
 See the [Examples](#examples) section for further use cases.
 
 {{site.data.alerts.callout_info}}
-[Changefeeds using queries in **v23.1**](../v23.1/cdc-queries.html) have different support for [functions](#cdc-transformation-function-support). If you are using CDC transformations in v22.2 and upgrade, we recommend closely [monitoring](monitor-and-debug-changefeeds.html) any running changefeeds during the upgrade.
+Change data capture transformations have been updated in v23.1. While there is general backward compatibility, the updated CDC queries may produce different message output. If you are using CDC transformations in v22.2 and upgrade, we recommend closely [monitoring](monitor-and-debug-changefeeds.html) any running changefeeds during the upgrade. Or, you can [stop](cancel-job.html) and recreate the changefeed after the upgrade is finalized.
+
+For details on the updates, see the v23.1 [Change Data Capture Queries](../v23.1/cdc-queries.html) page.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -56,13 +58,17 @@ For a SQL diagram of the CDC transformation syntax, see the [`CREATE CHANGEFEED`
 You can use the following functions in CDC transformation queries:
 
 - Functions marked as "Immutable" on the [Functions and Operators page](functions-and-operators.html).
-- The following changefeed functions are available to use in CDC transformations in v22.2. However, these are **deprecated** and removed in v23.1. If you have changefeeds with transformations running and upgrade your cluster, we recommend [monitoring](monitor-and-debug-changefeeds.html) your changefeeds:
+- The following changefeed functions are available to use in CDC transformations in v22.2:
 
     Function                  | Description
     --------------------------+----------------------
     `cdc_is_delete() `        | Returns `true` if the event is a deletion event.
     `cdc_prev()`              | Returns a JSON representation of a row's previous state. 
     `cdc_updated_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ, such as when the table is undergoing [schema changes](online-schema-changes.html).
+
+    {{site.data.alerts.callout_info}}
+    CDC transformations using the deprecated functions, listed in this table, will continue to run successfully after upgrading to v23.1. However, we recommend closely [monitoring](monitor-and-debug-changefeeds.html) any running changefeeds during an upgrade to v23.1 because this may result in different message output. 
+    {{site.data.alerts.end}}
 
 - The following "Stable" functions:
   - `jsonb_build_array()`
