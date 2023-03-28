@@ -3672,21 +3672,3 @@
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
   source: true
-
-- version: v22.2.7
-  major_version: v22.2
-  release_date: '2023-03-27'
-  release_type: Production
-  go_version: go1.19
-  sha: cbe33971930ee972e639203a73f14240b92aeff4
-  has_sql_only: true
-  has_sha256sum: true
-  mac:
-    mac_arm: true
-  windows: true
-  linux:
-    linux_arm: true
-  docker:
-    docker_image: cockroachdb/cockroach
-    docker_arm: true
-  source: true
