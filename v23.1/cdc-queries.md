@@ -52,18 +52,19 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`](create-
 
 ## CDC query function support
 
-You can use the following functions in CDC queries:
+{% include_cached new-in.html version="v23.1" %} The following table outlines functions that are useful with CDC queries:
+
+Function                  | Description
+--------------------------+----------------------
+`changefeed_creation_timestamp()` | Returns the decimal MVCC timestamp when the changefeed was created.
+`event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`](create-changefeed.html#diff-opt) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
+`event_schema_timestamp()` | Returns the timestamp of the [schema changes](online-schema-changes.html) event.
+
+You can also use the following functions in CDC queries:
 
 - Functions marked as "Immutable" on the [Functions and Operators page](functions-and-operators.html).
-- {% include_cached new-in.html version="v23.1" %} Changefeed functions:
-
-    Function                  | Description
-    --------------------------+----------------------
-    `changefeed_creation_timestamp()` | Returns the decimal MVCC timestamp when the changefeed was created.
-    `event_op()`              | Returns a string describing the type of event. If a changefeed is running with the [`diff`](create-changefeed.html#diff-opt) option, then this function returns `'insert'`, `'update'`, or `'delete'`. If a changefeed is running without the `diff` option, it is not possible to determine an update from an insert, so `event_op()` returns [`'upsert'`](https://www.cockroachlabs.com/blog/sql-upsert/) or `'delete'`.
-    `event_schema_timestamp()` | Returns the timestamp of the [schema changes](online-schema-changes.html) event.
-
 - {% include_cached new-in.html version="v23.1" %} Non-volatile [user-defined functions](user-defined-functions.html). See the [Queries and user-defined functions](#queries-and-user-defined-functions) example.
+- Functions that rely on [session data](show-sessions.html). At the time of changefeed creation, information about the current session is saved. When a CDC query includes one of the functions that use session data, the query will evaluate the saved session data. 
 - The following "Stable" functions:
   - `age()`
   - `array_to_json()`
@@ -373,7 +374,7 @@ CREATE CHANGEFEED INTO 'scheme://sink-URI' AS SELECT status, cdc_prev FROM outbo
 
 Since all non-primary key columns will be `NULL` in the `cdc_prev` output for an insert message, insert messages will be sent. Updates will not send, as long as the status was not previously `NULL`.
 
-## Queries and user-defined functions
+### Queries and user-defined functions
 
 {% include_cached new-in.html version="v23.1" %} You can create CDC queries that include [user-defined functions](user-defined-functions.html).
 
@@ -398,3 +399,5 @@ CREATE CHANGEFEED INTO 'external://sink' AS SELECT rider_id, doubleRevenue(rides
 - [`CREATE CHANGEFEED`](create-changefeed.html)
 - [Changefeed Messages](changefeed-messages.html)
 - [Changefeed Sinks](changefeed-sinks.html)
+- [Functions and Operators](functions-and-operators.html)
+- [User-Defined Functions](user-defined-functions.html)

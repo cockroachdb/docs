@@ -123,8 +123,6 @@ User-defined functions are not currently supported in:
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-- [CDC queries](cdc-queries.html).
-
 ### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a UDF:
