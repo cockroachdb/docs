@@ -3679,6 +3679,25 @@
   release_type: Production
   go_version: go1.19
   sha: ea17b266be6f5108663378fc5f439c951ab17f2b
+  withdrawn: true
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: false
+  windows: true
+  linux:
+    linux_arm: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: false
+  source: true
+
+- version: v22.1.18
+  major_version: v22.1
+  release_date: '2023-03-28'
+  release_type: Production
+  go_version: go1.19
+  sha: 165c29a8ae338bd6948d886919d953fd167234bd
   has_sql_only: true
   has_sha256sum: true
   mac:
