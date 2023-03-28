@@ -4,5 +4,5 @@
 - The following are not permitted in CDC queries:
     - [Volatile functions](functions-and-operators.html#function-volatility)
     - Sub-select queries
-    - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows).
+    - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/98237)
 - `delete` changefeed events will not contain any content in the output message. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83835)

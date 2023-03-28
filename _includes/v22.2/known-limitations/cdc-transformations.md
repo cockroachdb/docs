@@ -6,7 +6,7 @@
 - The following are not permitted in CDC transformations:
     - [Volatile functions](functions-and-operators.html#function-volatility)
     - Sub-select queries
-    - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows).
+    - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/98237)
 - If a table has a boolean column, referring to the column in a `WHERE` clause can result in an error message: `expected boolean expression, found expression of type bool`. A workaround for this issue is to construct the clause as per the following: `WHERE IF(column, TRUE, FALSE)`. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90411)
 - `delete` changefeed events will not contain any content in the output message. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83835)
 

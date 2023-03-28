@@ -168,7 +168,7 @@ The final changefeed created:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql 
-CREATE CHANGEFEED INTO 'scheme://sink-URI-2' 
+CREATE CHANGEFEED INTO 'scheme://sink-URI-4' 
 WITH schema_change_policy='stop' 
 AS SELECT * FROM movr.vehicle_location_histories 
 WHERE left(ride_id::string, 1) IN ('c','d','e','f');
