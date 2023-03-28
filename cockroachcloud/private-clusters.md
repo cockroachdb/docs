@@ -12,15 +12,15 @@ By default, {{ site.data.products.db }} has safeguards in place to protect clust
 
 On the other hand, a private cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
-One private network exists per cluster region, and each node is connected to the private network for its region. A highly-available NAT gateway connects the private networks and provides a static egress public IP address. On AWS, the NAT gateways are created in three separate availability zones to mitigate against the risk of an availability zone outage.
+One private network exists per cluster region, and each node is connected to the private network for its region. A NAT gateway is connected to each private network and provides a static egress public IP address.
 
-Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across the private subnet and through the private network. All egress traffic from the cluster nodes to non-cloud external resources flows across the private subnet and through the NAT gateway.
+Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across the private subnet and through the cloud provider's private network. Egress traffic from the cluster nodes to all other external resources flows across the private subnet and through the NAT gateway.
 
 This page shows how to create a private cluster.
 
 ## Create a private cluster
 
-When you [create](https://cockroachlabs.com/docs/api/cloud/v1/clusters) a private cluster, you set its `private_network_visibility` field to `true`. This in turn automatically sets `network_visibility` to `NETWORK_VISIBILITY_PRIVATE`. To create a private cluster, you must use [{{ site.data.products.db }} API](cloud-api.html) or [CockroachDB's Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster).
+To create a private cluster, you must use [{{ site.data.products.db }} API](cloud-api.html) or [CockroachDB's Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster). When you [create](https://cockroachlabs.com/docs/api/cloud/v1/clusters) a private cluster using Terraform Provider, you set its `private_network_visibility` field to `true`. This in turn automatically sets uses the Cloud API to set the cluster's `network_visibility` field to `NETWORK_VISIBILITY_PRIVATE`.
 
 {{site.data.alerts.callout_info}}
 An existing cluster can't be migrated in-place to a private cluster.

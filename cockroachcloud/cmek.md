@@ -6,7 +6,7 @@ docs_area: manage.security
 cloud: true
 ---
 
-Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} [private cluster](private-clusters.html) using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. This key is called the _CMEK key_.
+Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} [private cluster](private-clusters.html) using a cryptographic key that is entirely within your control, hosted in a supported cloud provider key-management system (KMS). This key is called the _CMEK key_.
 
 You can manage your CMEK keys using one or more of the following services:
 
@@ -51,7 +51,7 @@ CMEK helps you to enforce such business rules on {{ site.data.products.db }} clu
 
 When you create a {{ site.data.products.dedicated }} cluster, its data at rest on cluster disks is not encrypted by default. However, the disks themselves are automatically encrypted by cryptographic keys owned and managed by the cloud providers themselves.
 
-When you enable CMEK on a {{ site.data.products.dedicated }} private cluster, {{ site.data.products.db }} creates two encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
+When you enable CMEK on a {{ site.data.products.dedicated }} private cluster, {{ site.data.products.db }} creates two kinds of encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
 
 1. The _data key_ is a Data Encryption Key (DEK), and is used to encrypt and decrypt cluster data before it is read from or written to disks attached to a cluster's nodes. Each time the cluster is started or restarted, and each time a node and related disks are added to a cluster, {{ site.data.products.dedicated }} uses the store key to encrypt and decrypt data keys. Each cluster node maintains its own list of data keys. The data key is automatically rotated monthly and is always encrypted at rest by the store key.
 
