@@ -83,3 +83,8 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 $ docker pull {{ release.docker.docker_image }}:{{ release.version }}
 ~~~
 {% endif %}
+
+{% if release.previous_version %}
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
+View a detailed changelog on GitHub: [{{ release.previous_version }}..{{ release.version }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_version }}..{{ release.version }})
+{% endif %}
