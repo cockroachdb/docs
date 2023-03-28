@@ -28,22 +28,14 @@ The project has the following directory structure:
 
 ~~~
 ├── README.md
-├── dbinit.sql
 └── main.go
 ~~~
 
-The `dbinit.sql` file initializes the database schema that the application uses:
+The `main.go` file contains the code for `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations. The file also executes the `main` method of the program.
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/dbinit.sql %}
-~~~
-
-The `main.go` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations. The file also executes the `main` method of the program.
-
-{% include_cached copy-clipboard.html %}
-~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/main.go %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/main/main.go %}
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -59,7 +51,27 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
     $ cd example-app-go-pgx
     ~~~
 
-{% include {{ page.version.version }}/setup/init-bank-sample.md %}
+1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ~~~
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    export DATABASE_URL="{connection-string}"
+    ~~~
+
+    Where `{connection-string}` is the connection string you copied earlier.
+
+    </section>
 
 ## Step 4. Run the code
 
@@ -80,29 +92,33 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
     The output should look similar to the following:
 
     ~~~
-    2021/07/20 14:48:02 Creating new rows...
-    2021/07/20 14:48:02 New rows created.
-    2021/07/20 14:48:02 Initial balances:
-    2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
-    2021/07/20 14:48:02 8d1849dd-9222-4b12-a4ff-94e583b544a8: 250
-    2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 500
-    2021/07/20 14:48:02 d0ce1f5c-e468-4899-8590-2bb6076247f2: 100
-    2021/07/20 14:48:02 Transferring funds from account with ID c6ae8917-d24e-4115-b719-f663dbfb9ffb to account with ID d0ce1f5c-e468-4899-8590-2bb6076247f2...
-    2021/07/20 14:48:02 Transfer successful.
-    2021/07/20 14:48:02 Balances after transfer:
-    2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
-    2021/07/20 14:48:02 8d1849dd-9222-4b12-a4ff-94e583b544a8: 250
-    2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 400
-    2021/07/20 14:48:02 d0ce1f5c-e468-4899-8590-2bb6076247f2: 200
-    2021/07/20 14:48:02 Deleting rows with IDs 8d1849dd-9222-4b12-a4ff-94e583b544a8 and d0ce1f5c-e468-4899-8590-2bb6076247f2...
-    2021/07/20 14:48:02 Rows deleted.
-    2021/07/20 14:48:02 Balances after deletion:
-    2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
-    2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 400
+    2023/03/24 13:48:13 Drop existing accounts table if necessary.
+    2023/03/24 13:48:13 Creating accounts table.
+    2023/03/24 13:48:13 Creating new rows...
+    2023/03/24 13:48:13 New rows created.
+    2023/03/24 13:48:13 Initial balances:
+    2023/03/24 13:48:13 19a2b534-11f6-4bbd-ab50-b94c44479280: 500
+    2023/03/24 13:48:13 882bb8be-31cb-4481-8e28-69b0566a322b: 300
+    2023/03/24 13:48:13 b8cbefed-37ee-4bae-b5b0-3bcfb7a6d3bf: 250
+    2023/03/24 13:48:13 d0a238d5-96bd-42d7-89a3-3e2448b3137b: 100
+    2023/03/24 13:48:14 Transferring funds from account with ID 19a2b534-11f6-4bbd-ab50-b94c44479280 to account with ID d0a238d5-96bd-42d7-89a3-3e2448b3137b...
+    2023/03/24 13:48:14 Transfer successful.
+    2023/03/24 13:48:14 Balances after transfer:
+    2023/03/24 13:48:14 19a2b534-11f6-4bbd-ab50-b94c44479280: 400
+    2023/03/24 13:48:14 882bb8be-31cb-4481-8e28-69b0566a322b: 300
+    2023/03/24 13:48:14 b8cbefed-37ee-4bae-b5b0-3bcfb7a6d3bf: 250
+    2023/03/24 13:48:14 d0a238d5-96bd-42d7-89a3-3e2448b3137b: 200
+    2023/03/24 13:48:14 Deleting rows with IDs b8cbefed-37ee-4bae-b5b0-3bcfb7a6d3bf and d0a238d5-96bd-42d7-89a3-3e2448b3137b...
+    2023/03/24 13:48:14 Rows deleted.
+    2023/03/24 13:48:14 Balances after deletion:
+    2023/03/24 13:48:14 19a2b534-11f6-4bbd-ab50-b94c44479280: 400
+    2023/03/24 13:48:14 882bb8be-31cb-4481-8e28-69b0566a322b: 300
     ~~~
 
     As shown in the output, the code does the following:
-    - Inserts some rows into the `accounts` table.
+    - Drops any existing `accounts` table.
+    - Creates a new `accounts` table.
+    - Inserts some rows into the table.
     - Reads values from the table.
     - Updates values in the table.
     - Deletes values from the table.
