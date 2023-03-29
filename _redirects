@@ -405,7 +405,7 @@ layout: null
 {% unless site.versions["stable"] == "v22.2" %}
 /docs/stable/cdc-transformations.html /docs/stable/cdc-queries.html 301
 {% endunless %}
-/docs/dev/cdc-transformations.html /docs/stable/cdc-queries.html 301
+/docs/dev/cdc-transformations.html /docs/dev/cdc-queries.html 301
 /docs/v23.1/cdc-transformations.html /docs/v23.1/cdc-queries.html 301
 
 # Removed pages
