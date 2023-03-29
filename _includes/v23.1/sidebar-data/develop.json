@@ -9,6 +9,12 @@
       ]
     },
     {
+      "title": "Developer Basics",
+      "urls": [
+        "/${VERSION}/developer-basics.html"
+      ]
+    },
+    {
       "title": "Connect to CockroachDB",
       "items": [
         {

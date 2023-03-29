@@ -19,7 +19,9 @@ layout: default
     {% endunless %}
   {% endunless %}
 <div class="{{ post_header_class }}">
-  <h1 class="post-title-main w-100">{{ page.title }}</h1>
+  {% unless page.landing_page == true %}
+    <h1 class="post-title-main w-100">{{ page.title }}</h1>
+  {% endunless %}
   {% unless page.contribute == false %}
     {% assign toc_classes = 'd-block ' %}
     {% unless page.toc == false %}

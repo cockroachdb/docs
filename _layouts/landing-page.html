@@ -1,0 +1,204 @@
+---
+layout: default
+---
+<div class="home-header mb-xl-5 bg-cover bg-cover__bg-early-3-1">
+    <div class="p-2 p-md-5">
+    <h1 class="m-0 text-white">Documentation</h1>
+    <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
+      <div class="row d-lg-flex mx-0">
+        <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
+          <div class="card card-link h-100 d-flex text-center">
+          <a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}" class="h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
+              <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-in-browser.svg' | relative_url }}" alt="icon browser" />
+              <h6 class="mt-2 mt-0 text-black">Start a cloud <br>cluster</h6>
+
+              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
+            </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
+          <div class="card card-link h-100 d-flex text-center">
+          <a href="{{ '/cockroachcloud/quickstart.html?filters=local' | relative_url }}" class="h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
+              <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}" alt="sample app" />
+              <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
+
+              <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
+            </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
+          <div class="card card-link h-100 d-flex text-center">
+          <a href="{{ '/stable/example-apps.html' | relative_url }}" class="h-100">
+            <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
+              <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}" alt="icon cloud" />
+              <h6 class="m-0 text-black">Build a sample <br>app</h6>
+
+              <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right"/></h4>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="row pt-5 mt-5 pb-5 mb-5">
+      <div class="col-lg-8">
+        <p class="overline">CockroachDB Core</p>
+        <h2 class="mt-0">Free and Open Source</h2>
+        <p class="sub-heading">Our always-free, open source version of CockroachDB. Contains all the foundational capabilities of a distributed SQL database at no-cost to you.</p>
+        <a class="btn btn-redirect mt-3" href="{{ '/releases/index.html#production-releases' | relative_url }} ">Download the CockroachDB binary <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <p class="overline">CockroachDB</p>
+        <h2 class="mt-2">Recommended articles</h2>
+      </div>
+    </div>
+
+    <div class="row display-flex pb-4 mb-5">
+      <div class="col-6 col-lg-3">
+        <h3 class="mt-3">Get Started</h3>
+        <div class="landing-column-content">
+          <ul>
+            <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
+            <li><a href="{{ '/cockroachcloud/quickstart.html?filters=local' | relative_url }}">Start a Local Cluster</a></li>
+            <li><a href="{{ '/stable/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
+            <li><a href="{{ '/stable/demo-fault-tolerance-and-recovery.html' | relative_url }}">Explore Capabilities</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <h3 class="mt-3">Develop</h3>
+        <div class="landing-column-content">
+          <ul>
+            <li><a href="{{ '/stable/developer-guide-overview.html' | relative_url }}">Common Dev Tasks</a></li>
+            <li><a href="{{ '/stable/example-apps.html' | relative_url }}">Sample Apps</a></li>
+            <li><a href="{{ '/stable/sql-feature-support.html' | relative_url }}">SQL Reference</a></li>
+            <li><a href="{{ '/stable/performance-best-practices-overview.html' | relative_url }}">SQL Best Practices</a></li>
+            <li><a href="{{ '/stable/error-handling-and-troubleshooting.html' | relative_url }}">SQL Troubleshooting</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <h3 class="mt-3">Deploy</h3>
+        <div class="landing-column-content">
+          <ul>
+            <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">CockroachDB Cloud Deployment</a></li>
+            <li><a href="{{ '/stable/kubernetes-overview.html' | relative_url }}">Kubernetes Overview</a></li>
+            <li><a href="{{ '/stable/choose-a-deployment-option.html' | relative_url }}">Choose a Deployment Option</a></li>
+            <li><a href="{{ '/stable/recommended-production-settings.html' | relative_url }}">Production Checklist</a></li>
+            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | relative_url }}">Upgrade CockroachDB</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <h3 class="mt-3">FAQs</h3>
+        <div class="landing-column-content">
+          <ul>
+            <li><a href="{{ '/stable/frequently-asked-questions.html' | relative_url }}">CockroachDB FAQs</a></li>
+            <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachDB Cloud FAQs</a></li>
+            <li><a href="{{ '/stable/sql-faqs.html' | relative_url }}">SQL FAQs</a></li>
+            <li><a href="{{ '/stable/licensing-faqs.html' | relative_url }}">Licensing FAQs</a></li>
+            <li><a href="{{ '/stable/cockroachdb-in-comparison.html' | relative_url }}">DB Comparisons</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-lg-12 mb-5">
+        <div class="card shadow position-relative alert alert-dismissable">
+          <a
+            class="close close-card position-absolute"
+            href="#"
+            data-dismiss="alert"
+            aria-label="Close"
+            ><img class="m-0" src="{{ 'images/icon-cancel.svg' | relative_url }}" alt="icon cancel"
+          /></a>
+          <div class="card-body m-2 p-xl-5 text-white bg-dark-wing m-3">
+            <h6 class="m-0">Learning Resources</h6>
+            <h1 class="m-0 text-white">Cockroach University</h1>
+            <h4 class="mt-0 pb-3">
+              Free online learning platform covering distributed databases,
+              cloud-native <br />applications, general purpose SQL databases & much
+              more!
+            </h4>
+            <a class="mb-3 text-ice-temple text-decoration-none" href="https://www.cockroachlabs.com/cockroach-university/"
+              >Start free course
+              <img class="ml-1 m-0" src="{{ 'images/icon-arrow-right-ice-temple.svg' | relative_url }}" alt="icon arrow right"
+            /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card shadow position-relative alert alert-dismissable">
+          <a
+            class="close close-card position-absolute"
+            href="#"
+            data-dismiss="alert"
+            aria-label="Close"
+            ><svg
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M1.75373 0.387174C1.37633 0.00977659 0.764449 0.00977659 0.387052 0.387174C0.00965453 0.764571 0.00965453 1.37645 0.387052 1.75385L3.73733 5.10413L0.387052 8.4544C0.00965451 8.8318 0.00965451 9.44368 0.387052 9.82108C0.764449 10.1985 1.37633 10.1985 1.75373 9.82108L5.104 6.4708L8.45428 9.82108C8.83168 10.1985 9.44356 10.1985 9.82096 9.82108C10.1984 9.44368 10.1984 8.8318 9.82096 8.4544L6.47068 5.10413L9.82096 1.75385C10.1984 1.37645 10.1984 0.764571 9.82096 0.387174C9.44356 0.00977658 8.83168 0.00977658 8.45428 0.387174L5.104 3.73745L1.75373 0.387174Z"
+                fill="black"
+              />
+            </svg>
+          </a>
+          <div class="row no-gutters p-3">
+            <div class="col-md-4 m-0"
+            style="background-image: url('https://crl2020.imgix.net/img/2022-cloud-report-launch.jpg?auto=format');background-size:cover;min-height: 150px;">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body p-0 pl-4"
+              style="
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    ">
+                <p
+                  class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0 mr-auto"
+                >
+                  Blog
+                </p>
+                <h6 class="card-title font-weight-bold mt-3">
+                  <a style="text-decoration: none; color: #000;" href="https://www.cockroachlabs.com/blog/2022-cloud-report/">AMD vs. Intel and More – What’s New in the 2022 Cloud Report</a>
+                </h6>
+                <div class="d-flex align-items-center mt-auto mb-2">
+                  <div class="ml-3 d-flex flex-column justify-content-center ">
+                    <div class="card-text m-0 lh-n">Charlie Custer</div>
+                    <p class="card-text m-0 lh-n">
+                      <small class="text-muted">June 13, 2022</small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mb-5">
+    <a class="btn btn-redirect mt-3 text-inherit" target="_blank" rel="noopener" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
+    </div>
+
+  </div>
