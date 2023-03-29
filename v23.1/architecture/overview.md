@@ -53,7 +53,7 @@ Once the CockroachDB cluster is initialized, developers interact with CockroachD
 
 After receiving SQL remote procedure calls (RPCs), nodes convert them into key-value (KV) operations that work with our [distributed, transactional key-value store](transaction-layer.html).
 
-As these RPCs start filling your cluster with data, CockroachDB starts [algorithmically distributing your data among the nodes of the cluster](distribution-layer.html), breaking the data up into 512 MiB chunks that we call ranges. Each range is replicated to at least 3 nodes by default to ensure survivability. This ensures that if any nodes go down, you still have copies of the data which can be used for:
+As these RPCs start filling your cluster with data, CockroachDB starts [algorithmically distributing your data among the nodes of the cluster](distribution-layer.html), breaking the data up into chunks that we call ranges. Each range is replicated to at least 3 nodes by default to ensure survivability. This ensures that if any nodes go down, you still have copies of the data which can be used for:
 
 - Continuing to serve reads and writes.
 - Consistently replicating the data to other nodes.

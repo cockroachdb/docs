@@ -301,7 +301,7 @@ To give yourself more time to recover and clean up the corrupted data, put your 
 
 ### Run differentials
 
-If you are within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours), run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries and use [`CREATE TABLE AS … SELECT * FROM`](create-table-as.html) to create comparison data and run differentials to find the offending rows to fix.
+If you are within the [garbage collection window](configure-replication-zones.html#gc-ttlseconds), run [`AS OF SYSTEM TIME`](as-of-system-time.html) queries and use [`CREATE TABLE AS … SELECT * FROM`](create-table-as.html) to create comparison data and run differentials to find the offending rows to fix.
 
 If you are outside of the garbage collection window, you will need to use a [backup](backup.html) to run comparisons.
 
@@ -312,10 +312,10 @@ If you are outside of the garbage collection window, you will need to use a [bac
 
 ### Create a new backup
 
-If your cluster is running, you do not have a backup that encapsulates the time you want to [restore](restore.html) to, and the data you want to recover is still in the [garbage collection window](configure-replication-zones.html#replication-zone-variables), there are two actions you can take:
+If your cluster is running, you do not have a backup that encapsulates the time you want to [restore](restore.html) to, and the data you want to recover is still in the [garbage collection window](configure-replication-zones.html#gc-ttlseconds), there are two actions you can take:
 
-- If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
-- If you are an {{ site.data.products.enterprise }} user, trigger a new [backup `with_revision_history`](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
+- If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#gc-ttlseconds).
+- If you are an {{ site.data.products.enterprise }} user, trigger a new [backup `with_revision_history`](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#gc-ttlseconds).
 
 ### Recover from corrupted data in a database or table
 

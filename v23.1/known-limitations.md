@@ -585,7 +585,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ### Max size of a single column family
 
-When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the max range size (512 MiB by default) for the table, the operation may fail, or cluster performance may suffer.
+When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the [max range size](configure-replication-zones.html#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
 
 As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
 
