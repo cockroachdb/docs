@@ -3,7 +3,6 @@ title: Change Data Capture Transformations
 summary: Filter the changefeed data that emits to the changefeed sink.
 toc: true
 docs_area: stream
-key: cdc-queries.html
 ---
 
 {{site.data.alerts.callout_info}}
