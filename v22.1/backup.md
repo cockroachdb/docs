@@ -73,7 +73,7 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 <a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
-`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your data's garbage collection TTL (which is controlled by the [`gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 ### Targets
