@@ -102,7 +102,7 @@ See [`CREATE CHANGEFEED`](create-changefeed.html) for examples on using the foun
 {{site.data.alerts.callout_success}}
 To optimize the `SELECT` query you run in your changefeed statement, use the [`EXPLAIN`](explain.html) statement to view a statement plan. 
 
-Note that `EXPLAIN` does not have access to `cdc_prev`, therefore you will receive an error if your `SELECT` query contains `cdc_prev`.
+Note that `EXPLAIN` does not have access to [`cdc_prev`](#emit-the-previous-state-of-a-row), therefore you will receive an error if your `SELECT` query contains `cdc_prev`.
 {{site.data.alerts.end}}
 
 ### Filter columns
@@ -145,14 +145,14 @@ To emit the previous state of a row, it is necessary to explicitly call `cdc_pre
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE CHANGEFEED INTO 'external://sink' AS SELECT *, cdc_prev FROM table;
+CREATE CHANGEFEED INTO 'external://sink' AS SELECT *, cdc_prev FROM movr.rides;
 ~~~
 
 To emit the previous state of a column, you can specify this as a named field from the `cdc_prev` tuple with the following syntax:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE CHANGEFEED INTO 'external://sink' AS SELECT *, cdc_prev FROM table WHERE (cdc_prev).column = 'value';
+CREATE CHANGEFEED INTO 'external://sink' AS SELECT *, cdc_prev FROM movr.vehicles WHERE (cdc_prev).status = 'in_use';
 ~~~
 
 ### Geofilter a changefeed
@@ -186,8 +186,8 @@ Therefore, the first changefeed created:
 {% include_cached copy-clipboard.html %}
 ~~~sql 
 CREATE CHANGEFEED INTO 'scheme://sink-URI-1' 
-  AS SELECT * FROM movr.vehicle_location_histories 
-  WHERE left(ride_id::string, 1) IN ('0','1','2','3');
+AS SELECT * FROM movr.vehicle_location_histories 
+WHERE left(ride_id::string, 1) IN ('0','1','2','3');
 ~~~
 
 The final changefeed created:
@@ -195,8 +195,8 @@ The final changefeed created:
 {% include_cached copy-clipboard.html %}
 ~~~sql 
 CREATE CHANGEFEED INTO 'scheme://sink-URI-4' 
-  AS SELECT * FROM movr.vehicle_location_histories 
-  WHERE left(ride_id::string, 1) IN ('c','d','e','f');
+AS SELECT * FROM movr.vehicle_location_histories 
+WHERE left(ride_id::string, 1) IN ('c','d','e','f');
 ~~~
 
 ### View recent changes to a row
@@ -224,8 +224,8 @@ For example, you may need to identify what recently changed in a specific row. Y
     {% include_cached copy-clipboard.html %}
     ~~~sql
     CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000' 
-      AS SELECT * FROM vehicle_location_histories 
-      WHERE ride_id::string LIKE 'f2616bb3%';
+    AS SELECT * FROM vehicle_location_histories 
+    WHERE ride_id::string LIKE 'f2616bb3%';
     ~~~
 
 1. To find changes within a time period, use `cursor` with the [`end_time`](create-changefeed.html#end-time) option:
@@ -233,8 +233,8 @@ For example, you may need to identify what recently changed in a specific row. Y
     {% include_cached copy-clipboard.html %}
     ~~~sql
     CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000' 
-      AS SELECT * FROM vehicle_location_histories 
-      WHERE ride_id::string LIKE 'f2616bb3%';
+    AS SELECT * FROM vehicle_location_histories 
+    WHERE ride_id::string LIKE 'f2616bb3%';
     ~~~
 
 ### Determine the age of a row
@@ -244,9 +244,9 @@ For example, you may need to identify what recently changed in a specific row. Y
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://sink' 
-  AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp 
-  AS age 
-  FROM movr.rides;
+AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp 
+AS age 
+FROM movr.rides;
 ~~~
 ~~~
 {"age": 1679504962492204986.0000000000}
@@ -268,8 +268,8 @@ In the event that an incident downstream has affected some rows, you may need a 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'scheme://sink-URI' 
-  AS SELECT * FROM movr.vehicle_location_histories 
-  WHERE ride_id = 'ff9df988-ebda-4066-b0fc-ecbc45f8d12b';
+AS SELECT * FROM movr.vehicle_location_histories 
+WHERE ride_id = 'ff9df988-ebda-4066-b0fc-ecbc45f8d12b';
 ~~~
 
 The changefeed will return messages for the specified rows:
@@ -325,11 +325,11 @@ For the previous JSON example:
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
-  event_schema_timestamp()::int AS event_timestamp,
-  'dogs' AS table,
-  event_op() AS type,
-  jsonb_build_object('good_boy',good_boy) AS data
-  FROM dogs;
+event_schema_timestamp()::int AS event_timestamp,
+'dogs' AS table,
+event_op() AS type,
+jsonb_build_object('good_boy',good_boy) AS data
+FROM dogs;
 ~~~
 
 This statement does the following:
@@ -343,21 +343,21 @@ For the remaining tables, you use the same statement structure to create changef
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
-  event_schema_timestamp()::int AS event_timestamp,
-  'users' AS table,
-  event_op() AS type,
-  jsonb_build_object('email', email, 'admin', admin) AS data
-  FROM users;
+event_schema_timestamp()::int AS event_timestamp,
+'users' AS table,
+event_op() AS type,
+jsonb_build_object('email', email, 'admin', admin) AS data
+FROM users;
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
-  event_schema_timestamp()::int AS event_timestamp,
-  'accounts' AS table,
-  event_op() AS type,
-  jsonb_build_object('owner', owner) AS data
-  FROM accounts;
+event_schema_timestamp()::int AS event_timestamp,
+'accounts' AS table,
+event_op() AS type,
+jsonb_build_object('owner', owner) AS data
+FROM accounts;
 ~~~
 
 For a different usage of the outbox pattern, you may still want an events table to track and manage the lifecycle of an event. You can also use CDC queries in this case to filter the event management metadata out of a message. 
@@ -387,8 +387,8 @@ The following [`CREATE FUNCTION`](create-function.html) statement builds the `do
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION doubleRevenue(r int)
-  RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 
-  $$ SELECT 2 * r $$;
+RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 
+$$ SELECT 2 * r $$;
 ~~~
 
 You can then use this function within a CDC query tagetting a table in the same database:

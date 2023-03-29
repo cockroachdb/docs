@@ -58,11 +58,11 @@ For a SQL diagram of the CDC transformation syntax, see the [`CREATE CHANGEFEED`
 You can use the following functions in CDC transformation queries:
 
 - Functions marked as "Immutable" on the [Functions and Operators page](functions-and-operators.html).
-- The following changefeed functions are available to use in CDC transformations in v22.2:
+- The following changefeed functions are available to use in v22.2 CDC transformations. However, they are **deprecated** and will be replaced or renamed in [v23.1](../v23.1/cdc-queries.html):
 
     Function                  | Description
     --------------------------+----------------------
-    `cdc_is_delete() `        | Returns `true` if the event is a deletion event.
+    `cdc_is_delete()`         | Returns `true` if the event is a deletion event.
     `cdc_prev()`              | Returns a JSON representation of a row's previous state. 
     `cdc_updated_timestamp()` | Returns the event's update timestamp. This is typically the MVCC timestamp, but can differ, such as when the table is undergoing [schema changes](online-schema-changes.html).
 
