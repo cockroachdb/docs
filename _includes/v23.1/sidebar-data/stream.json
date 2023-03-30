@@ -41,9 +41,9 @@
       "title": "Work with Changefeeds",
       "items": [
         {
-          "title": "Change Data Capture Transformations",
+          "title": "Change Data Capture Queries",
           "urls": [
-            "/${VERSION}/cdc-transformations.html"
+            "/${VERSION}/cdc-queries.html"
           ]
         },
         {

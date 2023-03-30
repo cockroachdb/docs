@@ -28,8 +28,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-- [CDC transformations](cdc-transformations.html).
-
 #### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a [UDF](user-defined-functions.html):
@@ -673,4 +671,4 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
-{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
+{% include {{ page.version.version }}/known-limitations/cdc-queries.md %}

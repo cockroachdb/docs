@@ -1,6 +1,8 @@
 {% assign release = site.data.releases | where_exp: "release", "release.version == include.release" | first %}
 {% assign version = site.data.versions | where_exp: "version", "version.major_version == release.major_version" | first %}
 
+{% if release.release_type == "Testing" %}{% include releases/experimental-test-release.md %}{% endif %}{% comment %} warn users about using testing releases for production environments {% endcomment %}
+
 {% comment %} set the release and version based on the include.release parameter {% endcomment %}
 
 {% if release.withdrawn == true %}{% comment %} if the release is withdrawn, automatically disable the download links and Docker image {% endcomment %}
@@ -66,8 +68,6 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 {% include_cached windows_warning.md %}
 </section>
 
-{% if release.release_type == "Testing" %}{% include releases/experimental-test-release.md %}{% endif %}{% comment %} warn users about using testing releases for production environments {% endcomment %}
-
 <h3 id="{{ release.version | downcase | replace: ".", "-" }}-docker-image">Docker image</h3>
 
 {% if release.docker.docker_arm == true %}
@@ -82,4 +82,9 @@ This release was withdrawn, and we've removed the links to the downloads and Doc
 ~~~shell
 $ docker pull {{ release.docker.docker_image }}:{{ release.version }}
 ~~~
+{% endif %}
+
+{% if release.previous_version %}
+<h3 id="{{ release.version | downcase | replace: ".", "-" }}-changelog">Changelog</h3>
+View a detailed changelog on GitHub: [{{ release.previous_version }}..{{ release.version }}](https://github.com/cockroachdb/cockroach/compare/{{ release.previous_version }}..{{ release.version }})
 {% endif %}
