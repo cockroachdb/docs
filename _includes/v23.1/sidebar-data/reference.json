@@ -104,6 +104,12 @@
                 ]
               },
               {
+                "title": "Cursors",
+                "urls": [
+                  "/${VERSION}/cursors.html"
+                ]
+              },
+              {
                 "title": "Table Expressions",
                 "urls": [
                   "/${VERSION}/table-expressions.html"
