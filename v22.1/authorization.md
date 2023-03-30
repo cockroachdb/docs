@@ -1,11 +1,11 @@
 ---
 title: Managing SQL User Authorization
-summary: Learn procedures for managing the life cycle of SQL users and roles.
+summary: Learn procedures for managing the lifecycle of SQL users and roles.
 toc: true
 docs_area: manage
 ---
 
-This page documents procedures for managing the life cycle of SQL users and roles on CockroachDB clusters.
+This page documents procedures for managing the lifecycle of SQL users and roles on CockroachDB clusters.
 
 For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization](security-reference/authorization.html).
 
