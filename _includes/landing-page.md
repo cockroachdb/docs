@@ -1,4 +1,4 @@
-<div class="home-header mb-xl-5 bg-cover bg-cover__bg-early-3-1">
+<div class="mb-xl-5 bg-cover bg-cover__bg-early-3-1">
     <div class="p-2 p-md-5">
     <h1 class="m-0 text-white">{{ page.title }}</h1>
     <p class="mt-0 pb-4 text-white">{{ page.summary }}</p>

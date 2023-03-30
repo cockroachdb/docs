@@ -15,30 +15,34 @@ develop:
     title: "Example applications"
     text: "Browse our example applications written in your favorite language and framework."
     icon: 'images/icon-sample-apps.svg'
-  - link: "cockroachcloud/learn-cockroachdb-sql.html"
-    title: "Learn CockroachDB SQL"
-    text: "Submit SQL queries to retrieve data from your cluster."
-    icon: 'images/icons/icon-database.svg'
+  - link: "/stable/tutorials-overview.html"
+    title: "Tutorials"
+    text: "Browse our tutorials."
+    icon: 'images/icon-sample-apps.svg'
   - link: "/stable/developer-basics.html"
     title: "Developer basics"
     text: "A quick overview of key concepts developers need to know about CockroachDB."
     icon: 'images/icon-sample-apps.svg'
+  - link: "cockroachcloud/learn-cockroachdb-sql.html"
+    title: "Learn CockroachDB SQL"
+    text: "Submit SQL queries to retrieve data from your cluster."
+    icon: 'images/icons/icon-database.svg'
   - link: "/stable/schema-design-overview.html"
     title: "Design a schema"
     text: "Details and best practices about designing schemas for your data."
-    icon: 'images/icons/icon-database.svg'
-  - link: "/stable/insert-data.html"
-    title: "Write data"
-    text: "How to insert data into your cluster."
     icon: 'images/icons/icon-database.svg'
   - link: "/stable/query-data.html"
     title: "Read data"
     text: "How to query your cluster to retrieve data."
     icon: 'images/icons/icon-database.svg'
-  - link: "/stable/logging-overview.html"
-    title: "Debug your application"
-    text: "Use CockroachDB logs to solve problems in your application."
-    icon: 'images/icon-mag-glass.svg'
+  - link: "/stable/insert-data.html"
+    title: "Write data"
+    text: "How to insert data into your cluster."
+    icon: 'images/icons/icon-database.svg'
+  - link: "/stable/error-handling-and-troubleshooting.html"
+    title: "Troubleshoot your application"
+    text: "Handle errors and solve problems with your application."
+    icon: 'images/icon-sample-apps.svg'
   - link: '/stable/make-queries-fast.html'
     title: "Optimize performance"
     text: "How to make your queries run as fast as possible."
