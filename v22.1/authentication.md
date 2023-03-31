@@ -75,7 +75,7 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
     ~~~
 
-    Note that the client still needs the CA certificate to validate the nodes' certificates.
+    The client still needs the CA certificate to validate the certificate of the node.
 
     {{site.data.alerts.callout_success}}
     For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
