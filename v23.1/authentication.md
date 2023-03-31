@@ -53,53 +53,53 @@ CockroachDB offers the following methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
-   Example:
-   {% include_cached copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --certs-dir=certs --user=jpointsman
-   ~~~
+    Example:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --user=jpointsman
+    ~~~
 
 - **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters.
 
-   Example:
-   {% include_cached copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --certs-dir=certs --user=jpointsman
-   ~~~
+    Example:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --user=jpointsman
+    ~~~
 
-   ~~~
+    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
     Enter password:
-  ~~~
+    ~~~
 
-   Note that the client still needs the CA certificate to validate the nodes' certificates.
+    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
-   {{site.data.alerts.callout_success}}
+    {{site.data.alerts.callout_success}}
     For improved performance, CockroachDB securely caches password authentication information for users. To limit the authentication latency of users logging into a new session, we recommend that you run bulk `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)) inside a transaction, and run any regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
-   {{site.data.alerts.end}}
+    {{site.data.alerts.end}}
 
 - **Password authentication without TLS**
 
     For deployments where transport security is already handled at the infrastructure level (e.g., IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security). The `--accept-sql-without-tls` flag is in [preview](cockroachdb-feature-availability.html).
 
-   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+    With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
-   Example:
-   {% include_cached copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --user=jpointsman --insecure
-   ~~~
+    Example:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --user=jpointsman --insecure
+    ~~~
 
-   ~~~
+    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
     Enter password:
-  ~~~
+    ~~~
 
 - [**Single sign-on authentication to DB Console**](sso-db-console.html), which is available to [Enterprise users](enterprise-licensing.html).
 
@@ -287,9 +287,9 @@ Going back to our example and assuming that we trust the CA, Rosa needs to get h
 
 A public key is shared using a digital certificate signed by a CA using the CA's private key. The digital certificate contains:
 
--   The certificate owner’s public key
--   Information about the certificate owner
--   The CA's digital signature
+- The certificate owner’s public key
+- Information about the certificate owner
+- The CA's digital signature
 
 ### Digital signature
 
