@@ -22,7 +22,7 @@ Follow these tutorials to develop more extensive applications using CockroachDB:
   - A [Python application](movr.html) that uses the dataset. 
   - A [tutorial on how to reduce latency in reads and writes](demo-low-latency-multi-region-deployment.html) using MovR in a multi-region cluster.
   - [A tutorial on developing a globally available application deployed on Google cloud](movr-flask-overview.html) using MovR.
-- A [tutorial on developing and deploying a Python and Flask To-Do application](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html) using Kubernetes and {{ site.data.products.dedicated }}.
+- A [tutorial on developing and deploying a Python and Flask To-Do application](../cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html) using Kubernetes and {{ site.data.products.dedicated }}.
 
 ## Integration tutorials
 
