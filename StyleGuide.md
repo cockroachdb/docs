@@ -485,6 +485,8 @@ Do not use underlined text in CockroachDB docs. If it seems beneficial to emphas
 
 Whenever a CockroachDB feature is referenced, provide a link to the relevant documentation. You can also provide links to external resources, but only if the resource is confirmed to be accurate by a technical reviewer or the author is a Cockroach Labs SME and no CockroachDB documentation covers the topic.
 
+Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
+
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
@@ -1162,14 +1164,14 @@ The general process to follow and use this is as follows:
 2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
     ```
     {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
-    {% assign html_page_names = "page-name-1.html;page-name-2.html;page-name-3.html" %}
+    {% assign html_page_filenames = "page-name-1.html;page-name-2.html;page-name-3.html" %}
 
-    {% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=<CRDB version> %}
+    {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=<CRDB version> %}
     ```
     - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
-    - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
+    - `html_page_filenames` is a semicolon-separated list of the page filenames with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
-3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+3. For each page listed in `html_page_filenames`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
   
 #### Technical limitations of include files
 

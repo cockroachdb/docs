@@ -401,6 +401,12 @@ layout: null
 /docs/stable/use-a-local-file-server-for-bulk-operations.html /docs/stable/use-a-local-file-server.html 301
 /docs/dev/use-a-local-file-server-for-bulk-operations.html /docs/dev/use-a-local-file-server.html 301
 /docs/v23.1/use-a-local-file-server-for-bulk-operations.html /docs/v23.1/use-a-local-file-server.html 301
+/docs/cockroachcloud/monitoring-page.html /docs/cockroachcloud/tools-page.html 301
+{% unless site.versions["stable"] == "v22.2" %}
+/docs/stable/cdc-transformations.html /docs/stable/cdc-queries.html 301
+{% endunless %}
+/docs/dev/cdc-transformations.html /docs/dev/cdc-queries.html 301
+/docs/v23.1/cdc-transformations.html /docs/v23.1/cdc-queries.html 301
 
 # Removed pages
 /docs/dev/add-column.html /docs/dev/alter-table.html#add-column 301

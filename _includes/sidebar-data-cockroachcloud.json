@@ -220,9 +220,9 @@
               ]
             },
             {
-              "title": "Monitoring Page",
+              "title": "Tools Page",
               "urls": [
-                "/cockroachcloud/monitoring-page.html"
+                "/cockroachcloud/tools-page.html"
               ]
             },
             {

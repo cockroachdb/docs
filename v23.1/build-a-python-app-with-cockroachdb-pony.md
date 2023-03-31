@@ -130,5 +130,5 @@ Issue the following statement:
 
 ## Best practices
 
-Pony ORM provides the [retry option](transactions.html#client-side-intervention) for the `db_session` decorator. If Pony detects that the optimistic checks do not pass, it restarts the decorated function automatically.
+Pony ORM provides the [client-side retry option](transaction-retry-error-reference.html#client-side-retry-handling) for the `db_session` decorator. If Pony detects that the optimistic checks do not pass, it restarts the decorated function automatically.
 The `retry` parameter can only be specified in the `db_session` decorator and not the context manager. For more information, see [PonyORM documentation](https://docs.ponyorm.org/api_reference.html?highlight=retry#transactions-db-session).

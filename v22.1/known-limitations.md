@@ -60,6 +60,10 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 ## Unresolved limitations
 
+### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
+
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
 [Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.

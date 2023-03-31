@@ -19,7 +19,7 @@ When you experience a hanging or stuck query and the cluster is healthy (i.e., n
 
 Such long-running queries can hold intents open for (practically) unlimited durations. If your query tries to access those rows, it may have to wait for that transaction to complete (by [committing](commit-transaction.html) or [rolling back](rollback-transaction.html)) before it can make progress.
 
-This situation is hard to diagnose via the [Transactions](ui-transactions-page.html) and [Statements](ui-statements-page.html) pages in the [DB Console](ui-overview.html) since contention is only reported after the conflict has been resolved (which in this scenario may be never).
+This situation is hard to diagnose via the [Transactions](ui-transactions-page.html) and [Statements](ui-statements-page.html) pages in the [DB Console](ui-overview.html) since [contention](performance-best-practices-overview.html#transaction-contention) is only reported after the conflict has been resolved (which in this scenario may be never).
 
 In these cases, you will need to take the following steps.
 

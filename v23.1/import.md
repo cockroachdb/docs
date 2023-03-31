@@ -174,7 +174,7 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 ## Examples
 
-{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+{% include {{ page.version.version }}/import-export-auth.md %}
 
 ### Import a PostgreSQL database dump
 
