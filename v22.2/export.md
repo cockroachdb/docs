@@ -135,7 +135,7 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 
 ## Exports and `AS OF SYSTEM TIME`
 
-It is not necessary to use an [`AS OF SYSTEM TIME`](as-of-system-time.html) clause in `EXPORT` statements, even though they are long-running queries. When the `EXPORT` statement is executed there is an implied `AS OF SYSTEM TIME`: the start of the statement's execution. The risk of [contention](performance-best-practices-overview.html#transaction-contention) is low because potentially conflicting transactions would need an effective `AS OF SYSTEM TIME` of the exact same time as the `EXPORT` statement's start time.
+The [`AS OF SYSTEM TIME`](as-of-system-time.html) clause is not required in `EXPORT` statements, even though they are long-running queries. If it is omitted, `AS OF SYSTEM TIME` is implicitly set to the start of the statement's execution. The risk of [contention](performance-best-practices-overview.html#transaction-contention) is low because other transactions would need to have exactly the same transaction start time as the `EXPORT` statement's start time.
 
 ## Examples
 
