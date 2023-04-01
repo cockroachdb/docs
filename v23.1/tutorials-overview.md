@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Tutorials
-summary: An overview of tutorials using CockroachDB
+summary: An overview of developer and deployment tutorials using CockroachDB
 toc: true
 contribute: true
 docs_area: develop
