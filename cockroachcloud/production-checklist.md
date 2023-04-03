@@ -34,7 +34,7 @@ To verify that you have authorized the application server's network, navigate to
 
 ## Configure PCI ready features (Dedicated advanced)
 
-{{ site.data.products.dedicated }} advanced has access to all features required for PCI readiness. You should configure these settings to make your cluster PCI ready:
+{{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness](pci-dss.html). You should configure these settings to make your cluster PCI ready:
 
 - [Audit logs](cloud-org-audit-logs.html)
 - [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)

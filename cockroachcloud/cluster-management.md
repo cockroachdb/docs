@@ -183,7 +183,7 @@ Additionally, you can [backup and restore](../{{site.current_cloud_version}}/tak
 
 ## Configure PCI ready features (Dedicated advanced)
 
-{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for PCI readniess. Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+{{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness](pci-dss.html). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
 - [Audit logs](cloud-org-audit-logs.html)
 - [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)

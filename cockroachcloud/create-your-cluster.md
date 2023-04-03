@@ -23,7 +23,7 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. Select the **Dedicated standard** or **Dedicated advanced** plan.
 
 {{site.data.alerts.callout_info}}
-{{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](../{{site.versions["stable"]}}/security-reference/security-overview.html) in addition to all {{ site.data.products.dedicated }} standard features.
+{{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features.
 {{site.data.alerts.end}}
 
 ## Step 2. Select the cloud provider
