@@ -277,7 +277,7 @@ preloaded
 preparable
 prepend(ed|ing|s)
 Prisma
-procedural[s]
+procedurals?
 profiler
 proofer
 proto(bufs?|s)?
