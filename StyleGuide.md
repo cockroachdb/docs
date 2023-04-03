@@ -1189,7 +1189,7 @@ Include files have the following technical limitations:
 To allow your reader to select from two or more versions of on-page content, use a tabset. This might be appropriate for:
   - Install procedurals with different steps for the different supported platforms (like macOS, Windows, Linux).
   - Reference material where the Enterprise and non-Enterprise versions of a feature differ.
-  - Demonstrating how to connect from an example application in each supported programming language (like Python, C++, Java, etc).
+  - Demonstrating how to connect from an example application in each supported programming language (like Python, C++, Java, etc.).
 
 To add tabs to your copy, you first define the tabset for use later on the page, then you declare each tab's content within each tab.
 
