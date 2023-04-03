@@ -81,7 +81,7 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 <a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
-`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your data's garbage collection TTL (which is controlled by the [`gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 ### Targets
@@ -192,6 +192,8 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+ 
+If you need to limit the control specific users have over your storage buckets, see [Assume role authentication](cloud-storage-authentication.html) for setup instructions.
 
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
@@ -205,9 +207,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO \
-'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Backup a database
@@ -216,18 +216,14 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank \
-INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE bank INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP DATABASE bank, employees \
-INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP DATABASE bank, employees INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Backup a table or view
@@ -236,18 +232,14 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP bank.customers \
-INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP bank.customers INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP bank.customers, bank.accounts \
-INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 ### Backup all tables in a schema
@@ -256,9 +248,7 @@ AS OF SYSTEM TIME '-10s';
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP test_schema.*
-INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP test_schema.* INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
@@ -277,17 +267,14 @@ To take an incremental backup using the `LATEST` keyword:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO LATEST IN \
-    's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-    AS OF SYSTEM TIME '-10s';
+BACKUP INTO LATEST IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 To store the backup in an existing subdirectory in the collection:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BACKUP INTO {'subdirectory'} IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s';
+BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -302,10 +289,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO \
-'s3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
-AS OF SYSTEM TIME '-10s'
-WITH DETACHED;
+BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s' WITH DETACHED;
 ~~~
 
 The job ID is returned after the backup [job creation](backup-architecture.html#job-creation-phase) completes:
@@ -321,7 +305,7 @@ The job ID is returned after the backup [job creation](backup-architecture.html#
 
 ~~~
 job_id             |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
+-------------------+-----------+--------------------+------+---------------+--------
 652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
@@ -334,6 +318,8 @@ To associate your backup objects with a [specific storage class](use-cloud-stora
 ~~~ sql
 BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' AS OF SYSTEM TIME '-10s';
 ~~~
+
+To use an external connection URI to back up to cloud storage with an associated S3 storage class, you need to include the `S3_STORAGE_CLASS` parameter when you [create the external connection](create-external-connection.html).
 
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 

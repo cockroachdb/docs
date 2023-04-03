@@ -32,7 +32,7 @@ CockroachDB now only supports `SERIALIZABLE` isolation, so transactions can no l
 
 ### Set priority
 
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transaction-retry-error-reference.html#client-side-retry-handling">client-side retry handling</a>.{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

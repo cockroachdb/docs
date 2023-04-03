@@ -299,6 +299,10 @@ Use the following options to define the format and schema registry:
     - The `Endpoint URL` from the Schema Registry's details created in [Step 4](#step-4-create-a-confluent-schema-registry). Make sure to add the `:443` port to the end of this URL. For example, `psrc-x77pq.us-central1.gcp.confluent.cloud:443`.
 - Any other options you need to configure your changefeed. See [Options](create-changefeed.html#options) for a list of all available {{ site.data.products.enterprise }} changefeed options.
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+{{site.data.alerts.end}}
+
 ## Step 9. Verify the output
 
 Move to the terminal window in which you started the Kafka consumer. As the changefeed runs, you will see the change data messages similar to the following:

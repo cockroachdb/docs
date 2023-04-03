@@ -104,9 +104,9 @@ You can use the `@primary` alias to use the table's primary key in your query if
 
 ### Preserving `DELETE` performance over time
 
-CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) variable in the applicable [zone configuration](show-zone-configurations.html) has passed. By default, this period is 25 hours.
+CockroachDB relies on [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc) to process concurrent requests while guaranteeing [strong consistency](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent). As such, when you delete a row, it is not immediately removed from disk. The MVCC values for the row will remain until the garbage collection period defined by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) variable in the applicable [zone configuration](show-zone-configurations.html) has passed.
 
-This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within the last 25 hours. If you try to delete 10,000 rows 10 times within the same 25 hour period, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
+This means that with the default settings, each iteration of your `DELETE` statement must scan over all of the rows previously marked for deletion within [the defined GC TTL window](configure-replication-zones.html#gc-ttlseconds). If you try to delete 10,000 rows 10 times within the GC TTL window, the 10th command will have to scan over the 90,000 rows previously marked for deletion.
 
 To preserve performance over iterative `DELETE` queries, we recommend taking one of the following approaches:
 

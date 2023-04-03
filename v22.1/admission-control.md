@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like node liveness heartbeats, are high priority. The admission control system also prioritizes transactions that hold locks, to reduce contention by releasing locks in a timely manner.
+CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like [node liveness heartbeats](cluster-setup-troubleshooting.html#node-liveness-issues), are high priority. The admission control system also prioritizes transactions that hold [locks](crdb-internal.html#cluster_locks), to reduce [contention](performance-best-practices-overview.html#transaction-contention) and release locks earlier.
 
 {{site.data.alerts.callout_info}}
 Admission control is not available for {{ site.data.products.serverless }} clusters.
@@ -13,7 +13,7 @@ Admission control is not available for {{ site.data.products.serverless }} clust
 
 ## Use cases for admission control
 
-A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop hot spots that last until the cluster rebalances itself. When hot spots occur, they should not cause failures or degraded performance for important work.
+A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop [hot spots](performance-best-practices-overview.html#hot-spots) that last until the cluster rebalances itself. When hot spots occur, they should not cause failures or degraded performance for important work.
 
 This is particularly important for {{ site.data.products.serverless }}, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
 
@@ -44,7 +44,7 @@ When you enable admission control Cockroach Labs recommends that you enable it f
 
 When admission control is enabled, request and response operations are sorted into work queues where the operations are organized by priority and transaction start time.
 
-Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](architecture/storage-layer.html) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine](cockroach-start.html#storage-engine) from experiencing high read amplification. Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold locks in order to avoid [contention](performance-recipes.html#transaction-contention) by releasing locks.
+Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](architecture/storage-layer.html) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine](architecture/storage-layer.html#pebble) from experiencing high [read amplification](architecture/storage-layer.html#read-amplification). Critical cluster operations like node heartbeats are processed as high priority, as are transactions that hold [locks](crdb-internal.html#cluster_locks) in order to avoid [contention](performance-recipes.html#transaction-contention) and release locks earlier.
 
 The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
 
