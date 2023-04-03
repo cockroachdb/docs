@@ -389,7 +389,7 @@ Sysbench
 Sysdig
 Syslog
 tablespaces?
-tabset[s]
+tabsets?
 tcp
 Teradata
 timeframe
