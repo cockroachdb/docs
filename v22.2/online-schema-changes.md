@@ -24,9 +24,7 @@ CockroachDB [does not support schema changes](#limitations) within explicit [tra
 
 To see a demo of an online schema change, watch the following video:
 
-<div class="foreign-key-video__container">
-  <iframe src="https://youtu.be/xvBBQVIGYio" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+{% include_cached youtube.html video_id="xvBBQVIGYio" %}
 
 ## How online schema changes work
 
