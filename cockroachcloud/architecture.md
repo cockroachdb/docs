@@ -64,7 +64,7 @@ Your cluster's resource limits are the maximum amount of storage and RUs you can
 
 #### Free
 
-All {{ site.data.products.db }} organizations are given 50 million [Request Units](learn-about-request-units.html) and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+All {{ site.data.products.db }} organizations are given 50 million [Request Units](learn-about-request-units.html) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 #### Paid
 

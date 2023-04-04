@@ -25,7 +25,7 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 ### What are the usage limits of {{ site.data.products.serverless }}?
 
-All {{ site.data.products.db }} organizations are given 50M RUs and 5 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+All {{ site.data.products.db }} organizations are given 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 Setting higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
@@ -37,7 +37,7 @@ With {{ site.data.products.serverless }}, you are charged for the storage and ac
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
-No, you can create one {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 5 GiB of storage per month. If you need more resources, you can set higher limits for your cluster. You will only be charged for your usage beyond the free threshold.
+No, you can create one {{ site.data.products.serverless }} cluster for free. The free cluster can use up to 50M RUs and 10 GiB of storage per month. If you need more resources, you can set higher limits for your cluster. You will only be charged for your usage beyond the free threshold.
 
 ### What regions are available for {{ site.data.products.serverless }} clusters?
 
