@@ -24,7 +24,9 @@ CockroachDB [does not support schema changes](#limitations) within explicit [tra
 
 To see a demo of an online schema change, watch the following video:
 
-<iframe width="560" height="315" src="https://youtu.be/xvBBQVIGYio" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="foreign-key-video__container">
+  <iframe src="https://youtu.be/xvBBQVIGYio" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ## How online schema changes work
 
