@@ -102,7 +102,7 @@ When you run `cockroach start-single-node`, some helpful details are printed to 
 
 ~~~ shell
 CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
-build:               CCL {{page.release_info.version}} @ {{ site.data.releases | where_exp: "release", "release.major_version == page.version.version" | where: "withdrawn", "false" | sort: "release_date" | last | map: "release_date" | date: "%Y/%m/%d 12:34:56" }} {{ site.data.releases | where_exp: "release", "release.major_version == page.version.version" | where: "withdrawn", "false" | sort: "release_date" | last | map: "go_version" }}
+build:               CCL {{page.release_info.version}} @ {{ site.data.releases | where_exp: "release", "release.major_version == page.version.version" | where_exp: "release", "release.withdrawn != true" | sort: "release_date" | last | map: "release_date" | date: "%Y/%m/%d 12:34:56" }} {{ site.data.releases | where_exp: "release", "release.major_version == page.version.version" | where_exp: "release", "release.withdrawn != true" | sort: "release_date" | last | map: "go_version" }}
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
 sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root

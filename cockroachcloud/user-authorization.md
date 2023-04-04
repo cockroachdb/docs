@@ -1,13 +1,24 @@
 ---
-title: User Authorization
-summary: Learn about the user authorization features for CockroachDB Cloud clusters.
+title: Managing User Authorization in CockroachDB Cloud
+summary: Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles.
 toc: true
 docs_area: manage
 ---
 
+{{ site.data.products.db }} has a two-level authorization model: users have permissions within organizations, and on specific database clusters within organizations.
+
+Before proceeding, it is recommended to review the {{ site.data.products.db }} authorization model, which is detailed in [Authorization in {{ site.data.products.db }}](authorization.html).
+
+This page shows how to manage {{ site.data.products.db }} organization users and roles:
+
+- Adding users to your organization, by creating them or inviting them from another organization.
+- Managing organization-level users roles.
+- Granting organization users access to clusters through cluster roles.
+- Managing the privileges associated with cluster roles.
+
 {{ site.data.products.db }} requires you to create SQL users to access the cluster.
 
-By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+By default, a new SQL user created by a [Console Admin](console-access-management.html#console-admin) is granted the `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
 
 ## Create a SQL user
 

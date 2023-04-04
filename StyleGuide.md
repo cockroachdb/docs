@@ -1164,14 +1164,14 @@ The general process to follow and use this is as follows:
 2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
     ```
     {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
-    {% assign html_page_names = "page-name-1.html;page-name-2.html;page-name-3.html" %}
+    {% assign html_page_filenames = "page-name-1.html;page-name-2.html;page-name-3.html" %}
 
-    {% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=<CRDB version> %}
+    {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=<CRDB version> %}
     ```
     - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
-    - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
+    - `html_page_filenames` is a semicolon-separated list of the page filenames with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
-3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+3. For each page listed in `html_page_filenames`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
   
 #### Technical limitations of include files
 

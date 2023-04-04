@@ -49,9 +49,9 @@ To resolve this issue, use the [`cockroach cert create-client`](cockroach-cert.h
 
 ## restart transaction
 
-Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about how to implement client-side retries, see [client-side retry handling](transactions.html#client-side-intervention).
+Messages with the error code `40001` and the string `restart transaction` indicate that a transaction failed because it conflicted with another concurrent or recent transaction accessing the same data. The transaction needs to be retried by the client. For more information about how to implement client-side retries, see [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 
-For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
+For more information about the different types of transaction retry errors such as "retry write too old", "read within uncertainty interval", etc., see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
 
 ## node belongs to cluster \<cluster ID> but is attempting to connect to a gossip network for cluster \<another cluster ID>
 
@@ -128,7 +128,7 @@ When running a multi-node CockroachDB cluster, if you see an error like the one 
 
 ## split failed while applying backpressure; are rows updated in a tight loop?
 
-In CockroachDB, a table row is stored on disk as a key-value pair. Whenever the row is updated, CockroachDB also stores a distinct version of the key-value pair to enable concurrent request processing while guaranteeing consistency (see [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc)). All versions of a key-value pair belong to a larger ["range"](architecture/overview.html#architecture-range) of the total key space, and the historical versions remain until the garbage collection period defined by the `gc.ttlseconds` variable in the applicable [zone configuration](configure-replication-zones.html#gc-ttlseconds) has passed (25 hours by default). Once a range reaches a size threshold (512 MiB by default), CockroachDB splits the range into two ranges. However, this message indicates that a range cannot be split as intended.
+In CockroachDB, a table row is stored on disk as a key-value pair. Whenever the row is updated, CockroachDB also stores a distinct version of the key-value pair to enable concurrent request processing while guaranteeing consistency (see [multi-version concurrency control (MVCC)](architecture/storage-layer.html#mvcc)). All versions of a key-value pair belong to a larger ["range"](architecture/overview.html#architecture-range) of the total key space, and the historical versions remain until the garbage collection period defined by the `gc.ttlseconds` variable in the applicable [zone configuration](configure-replication-zones.html#gc-ttlseconds) has passed. Once a range reaches a [size threshold](configure-replication-zones.html#range-max-bytes), CockroachDB [splits the range](architecture/distribution-layer.html#range-splits) into two ranges. However, this message indicates that a range cannot be split as intended.
 
 One possible cause is that the range consists only of MVCC version data due to a row being repeatedly updated, and the range cannot be split because doing so would spread MVCC versions for a single row across multiple ranges.
 

@@ -47,9 +47,9 @@ Each node caches values of the `meta2` range it has accessed before, which optim
 
 After the node's meta ranges is the KV data your cluster stores.
 
-Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches 512 MiB in size, it splits into two ranges. This process continues as a table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for both the table and a secondary index. 
+Each table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as a range reaches [the default range size](../configure-replication-zones.html#range-max-bytes), it splits into two ranges. This process continues as a table and its indexes continue growing. Once a table is split across multiple ranges, it's likely that the table and secondary indexes will be stored in separate ranges. However, a range can still contain data for both the table and a secondary index. 
 
-The default 512 MiB range size represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
+The [default range size](../configure-replication-zones.html#range-max-bytes) represents a sweet spot for us between a size that's small enough to move quickly between nodes, but large enough to store a meaningfully contiguous set of data whose keys are more likely to be accessed together. These ranges are then shuffled around your cluster to ensure survivability.
 
 These table ranges are replicated (in the aptly named replication layer), and have the addresses of each replica stored in the `meta2` range.
 
@@ -186,13 +186,13 @@ All of these updates to the range descriptor occur locally on the range, and the
 
 ### Range splits
 
-By default, CockroachDB attempts to keep ranges/replicas at the default range size (currently 512 MiB). Once a range reaches that limit, we split it into two smaller ranges (composed of contiguous key spaces).
+By default, CockroachDB attempts to keep ranges/replicas at [the default range size](../configure-replication-zones.html#range-max-bytes). Once a range reaches that limit, we split it into two smaller ranges (composed of contiguous key spaces).
 
 During this range split, the node creates a new Raft group containing all of the same members as the range that was split. The fact that there are now two ranges also means that there is a transaction that updates `meta2` with the new keyspace boundaries, as well as the addresses of the nodes using the range descriptor.
 
 ### Range merges
 
-By default, CockroachDB automatically merges small ranges of data together to form fewer, larger ranges (up to the default range size). This can improve both query latency and cluster survivability.
+By default, CockroachDB automatically merges small ranges of data together to form fewer, larger ranges (up to [the default range size](../configure-replication-zones.html#range-max-bytes)). This can improve both query latency and cluster survivability.
 
 #### How range merges work
 

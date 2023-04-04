@@ -4,9 +4,6 @@
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Clusters** page, click **Create Cluster**.
 1. On the **Create your cluster** page, select **Serverless**.
-
-    Unless you change your monthly budget, this cluster will be free.
-
 1. Click **Create cluster**.
 
     Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.

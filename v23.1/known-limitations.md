@@ -28,8 +28,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-- [CDC transformations](cdc-transformations.html).
-
 #### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a [UDF](user-defined-functions.html):
@@ -83,6 +81,10 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
 
 ## Unresolved limitations
+
+### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
 ### Unsupported trigram syntax
 
@@ -583,7 +585,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ### Max size of a single column family
 
-When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the max range size (512 MiB by default) for the table, the operation may fail, or cluster performance may suffer.
+When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the [max range size](configure-replication-zones.html#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
 
 As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
 
@@ -669,4 +671,4 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
-{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
+{% include {{ page.version.version }}/known-limitations/cdc-queries.md %}

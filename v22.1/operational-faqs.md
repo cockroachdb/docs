@@ -129,7 +129,7 @@ In addition to using ballast files, it is important to actively [monitor remaini
 
 If queries operate on different data, then increasing the number of nodes should improve the overall throughput (transactions/second or QPS).
 
-However, if your queries operate on the same data, you may be observing transaction contention. For details, see [SQL Performance Best Practices](performance-best-practices-overview.html#transaction-contention).
+However, if your queries operate on the same data, you may be observing transaction contention. For details, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 ## Why does CockroachDB collect anonymized cluster usage details by default?
 

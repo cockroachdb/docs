@@ -185,10 +185,6 @@ Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink](changefeed-sin
 
 Use a [webhook sink](changefeed-sinks.html#webhook-sink) to deliver changefeed messages to an arbitrary HTTP endpoint.
 
-### Change data capture transformations
-
-[Change data capture transformations](cdc-transformations.html) allow you to define the change data emitted to your sink when you create a changefeed. The expression syntax provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
-
 ## See Also
 
 - [`SHOW {session variable}`](show-vars.html)

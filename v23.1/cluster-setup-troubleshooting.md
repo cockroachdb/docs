@@ -407,9 +407,9 @@ CockroachDB's built-in disk stall detection works as follows:
 
 - Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://en.wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
 
-- Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to stderr / `cockroach.log`:
+- Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
 
-    - `disk stall detected: unable to sync log files within %s`
+    - `file write stall detected: %s`
 
 - During [node liveness heartbeats](#node-liveness-issues), the [storage engine](architecture/storage-layer.html) writes to disk as part of the node liveness heartbeat process.
 

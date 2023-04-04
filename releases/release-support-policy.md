@@ -47,7 +47,7 @@ Date format: YYYY-MM-DD
 		</tr>
 	</thead>
   {% for v in versions %}
-    {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v.major_version" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %} {% comment %} Calculate the latest non-withdrawn release for a version v. {% endcomment %}
+    {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v.major_version" | where_exp: "r_latest", "r_latest.withdrawn != true" | sort: "release_date" | last | map: "version" %} {% comment %} Calculate the latest non-withdrawn release for a version v. {% endcomment %}
 
     <tr{% if v.asst_supp_exp_date < today %} class=eol{% endif %}>
       <td><a href="{{ v.major_version }}.html">{{ v.major_version }}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
