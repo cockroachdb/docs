@@ -13,9 +13,8 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
 
 To learn more about the basics of foreign keys, watch the following video:
-<div class="foreign-key-video__container">
-  <iframe src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+
+{% include_cached youtube.html video_id="5kiMg7GXAsY" %}
 
 {{site.data.alerts.callout_success}}
 To read more about how foreign keys work, see our [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/) blog post.

@@ -103,7 +103,7 @@
       	      ]
       	    },
 						{
-      	      "title": "Private clusters (Preview)",
+      	      "title": "Create Private Clusters",
       	      "urls": [
       		      "/cockroachcloud/private-clusters.html"
       	      ]
@@ -111,7 +111,7 @@
             {
               "title": "Egress Perimeter Controls (Preview)",
               "urls": [
-                "/cockroachcloud/private-clusters.html"
+                "/cockroachcloud/egress-perimeter-controls.html"
               ]
             },
       	    {

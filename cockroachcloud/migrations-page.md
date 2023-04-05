@@ -1,5 +1,5 @@
 ---
-title: Migrations Page
+title: Use the Schema Conversion Tool
 summary: Use the Schema Conversion Tool to begin a database migration to CockroachDB.
 toc: true
 cloud: true

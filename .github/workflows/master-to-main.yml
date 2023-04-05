@@ -1,0 +1,79 @@
+name: Convert the master branch to the main branch and set up a monorepo
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  master-to-main:
+    if: github.triggering_actor == 'nickvigilante'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.0
+        with:
+          ref: master
+          path: source
+      - uses: actions/checkout@v3.5.0
+        with:
+          ref: main
+          path: target
+      - name: Copy new file changes from master to main
+        run: |
+          cp -rf source/v1.0 target/docs/docs
+          cp -rf source/v1.1 target/docs/docs
+          cp -rf source/v2.0 target/docs/docs
+          cp -rf source/v2.1 target/docs/docs
+          cp -rf source/v19.1 target/docs/docs
+          cp -rf source/v19.2 target/docs/docs
+          cp -rf source/v20.1 target/docs/docs
+          cp -rf source/v20.2 target/docs/docs
+          cp -rf source/v21.1 target/docs/docs
+          cp -rf source/v21.2 target/docs/docs
+          cp -rf source/v22.1 target/docs/docs
+          cp -rf source/v22.2 target/docs/docs
+          cp -rf source/v23.1 target/docs/docs
+
+          cp -rf source/_data target/docs/docs
+          cp -rf source/_includes target/docs/docs
+          cp -rf source/_layouts target/docs/docs
+          cp -rf source/_plugins target/docs/docs
+
+          cp -rf source/advisories target/docs/docs
+          cp -rf source/api target/docs/docs
+          cp -rf source/cockroachcloud target/docs/docs
+          cp -rf source/css target/docs/docs
+          cp -rf source/fonts target/docs/docs
+          cp -rf source/images target/docs/docs
+          cp -rf source/jekyll-algolia-dev target/docs/docs
+          cp -f source/Gemfile target/docs/docs
+
+          cp -rf source/js target/docs/docs
+          cp -rf source/releases target/docs/docs
+          cp -rf source/tutorials target/docs/docs
+
+          cp -f source/Makefile target/docs/docs
+          cp -f source/_config_base.yml target/docs/docs
+          cp -f source/_config_cockroachdb_local.yml target/docs/docs
+          cp -f source/_config_cockroachdb_no_remote_cache.yml target/docs/docs
+          cp -f source/_config_cockroachdb.yml target/docs/docs
+          cp -f source/_redirects target/docs/docs
+
+          cp -f source/404.md target/docs/docs
+          cp -f source/index.md target/docs/docs
+          cp -f source/search.html target/docs/docs
+          cp -f source/sitemap.xml target/docs/docs
+
+          echo "date=$(date)" >> $GITHUB_ENV
+      - name: Add, commit, and push new file changes to main branch
+        uses: EndBug/add-and-commit@v9.1.1
+        with:
+          cwd: 'target/'
+          author_name: CockroachDB Docs
+          author_email: docs@cockroachlabs.com
+          committer_name: CockroachDB Docs
+          committer_email: docs@cockroachlabs.com
+          default_author: github_actions
+          message: 'New changes to main branch as of ${{ env.date}}'
+          pathspec_error_handling: ignore
+          push: true

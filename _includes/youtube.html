@@ -1,0 +1,13 @@
+{% comment %}
+This include is meant to embed YouTube videos within pages in the docs.
+
+If the video you want to embed is at this URL: https://www.youtube.com/watch?v=5kiMg7GXAsY
+
+Then the suggested syntax of this include is as follows:
+
+{% include_cached youtube.html video_id="5kiMg7GXAsY" %}
+{% endcomment %}
+
+<div class="youtube-video__container">
+    <iframe src="https://www.youtube.com/embed/{{ include.video_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

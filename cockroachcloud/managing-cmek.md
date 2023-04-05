@@ -18,9 +18,8 @@ See also:
 
 ## Before you begin
 
-- You need a {{ site.data.products.dedicated }} cluster. CMEK is not supported for {{ site.data.products.serverless }} clusters.
-- Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
-- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts with API keys in CockroachDB Cloud Console. Refer to [Service Accounts](console-access-management.html#service-accounts).
+- A new {{ site.data.products.dedicated }} private cluster] is required. CMEK is not supported on {{ site.data.products.serverless }}. An existing cluster cannot be migrated to a private cluster. Refer to [Create Private Clusters](private-clusters.html).
+- A service account with `admin` privilege on clusters in your organization is required. Refer to [Service Accounts](console-access-management.html#service-accounts).
 
 ## Overview of CMEK management procedures
 
@@ -28,7 +27,6 @@ This section gives a high level overview of the operations involved with impleme
 
 - [Enabling CMEK](#enable-cmek) for a {{ site.data.products.dedicated }} requires several steps:
 
-  - Request enrollment of your {{ site.data.products.db }} organization in the CMEK preview.
   - Provision an encryption key with your cloud provider's key management service (KMS).
   - Grant {{ site.data.products.db }} access to use the new encryption key.
   - Switch your cluster to use the new encryption key for CMEK.
@@ -45,23 +43,16 @@ This section gives a high level overview of the operations involved with impleme
 
 ### Step 1. Prepare your {{ site.data.products.dedicated }} Organization
 
-1. To start the process, contact {{ site.data.products.dedicated }} by reaching out to your account team, or [creating a support ticket](https://support.cockroachlabs.com/). You must provide your **Organization ID**, which you can find in your [Organization settings page](https://cockroachlabs.cloud/settings).
-
-Your account team will enable the CMEK feature for your {{ site.data.products.db }} organization.
-
 1. [Create a {{ site.data.products.db }} service account](console-access-management.html#service-accounts).
 1. [Create an API key](console-access-management.html#create-api-keys) for the service account to use.
 
 ### Step 2. Provision your cluster
 
-Create a new {{ site.data.products.dedicated }} cluster. There are two ways to do this:
-
-- [Using the {{ site.data.products.db }} console clusters page](https://cockroachlabs.cloud/cluster).
-- [Using the Cloud API](cloud-api.html#create-a-new-cluster).
+[Create a new private cluster](private-clusters.html) on {{ site.data.products.dedicated }}. To create a private cluster, you must use [{{ site.data.products.db }} API](cloud-api.html) or [CockroachDB's Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster). An existing cluster cannot be migrated to be a private cluster.
 
 ### Step 3. Provision IAM and KMS in your Cloud
 
-Next, you must provision the resources required resources in your Cloud, whether this is AWS or GCP:
+Next, you must provision the required resources in your cloud provider's KMS platform, whether this is AWS or GCP:
 
 1. The key itself.
 1. The principal that is authorized to encrypt and decrypt using the key, which is an IAM role in AWS or a cross-tenant service account in GCP.
@@ -73,9 +64,9 @@ Follow the instructions that correspond to your cluster's deployment environment
 
 ### Step 4. Activate CMEK for your {{ site.data.products.dedicated }} Cluster
 
-Activate CMEK with a call to the clusters CMEK endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#step-3-provision-iam-and-kms-in-your-cloud).
+Follow the steps in this section to activate CMEK with a call to the cluster's `/cmek` endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#step-3-provision-iam-and-kms-in-your-cloud).
 
-See the [API specification](../api/cloud/v1.html).
+Refer to the [API specification](../api/cloud/v1.html).
 
 1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
@@ -167,9 +158,7 @@ curl --request GET \
 
 The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
-<!-- TODO update when available
 See the [API specification](../api/cloud/v1.html).
--->
 
 To rotate the CMEK keys for one or more cluster regions:
 
@@ -319,7 +308,6 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-
     CLUSTER_ID= #{ your cluster ID }
     API_KEY= #{ your API key }
     curl --request PATCH \
@@ -328,7 +316,6 @@ To add a region to a cluster that already has CMEK enabled, update your cluster'
       --header 'content-type: application/json' \
       --data "@cmek_config.json"
     ~~~
-
 
 ## Revoke CMEK for a cluster
 
@@ -343,7 +330,7 @@ Do not delete the CMEK key.
 Deleting the CMEK key will permanently prevent decryption of your data, preventing all possible access and rendering the data inaccessible.
 {{site.data.alerts.end}}
 
-First, revoke {{ site.data.products.dedicated }}'s access to your key at the IAM level with your cloud provider.
+First, revoke {{ site.data.products.dedicated }}'s access to your key at the IAM level in your cloud provider's KMS platform.
 
 You can do this two ways:
 
@@ -379,4 +366,4 @@ Once you have resolved the security incident, re-authorize CMEK for your cluster
 
 ## Restore CMEK following a revocation event
 
-To restore CMEK after the incident has been resolved, reach out to your account team, or [create a support ticket](https://support.cockroachlabs.com/).
+To restore CMEK after the incident has been resolved, contact your account team, or [create a support ticket](https://support.cockroachlabs.com/).
