@@ -36,11 +36,11 @@ In the meantime, you can [back up and restore data manually](take-and-restore-cu
 
 ## Backups page
 
-A list of your full and incremental cluster backups displays on your cluster's **Backups** page.
+<div class="filter-content" markdown="1" data-scope="dedicated">
+Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date. 
 
 For each backup, the following details display:
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
 - The date and time the backup was taken (**Data From**) 
 - The **Status** of the backup 
 - The **Type** of backup
@@ -53,6 +53,11 @@ For each backup, the following details display:
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
+
+Your cluster's **Backups** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+For each backup, the following details display:
+
 - The date and time the backup was taken (**Data From**)
 - The **Status** of the backup
 - The remaining number of days the backup will be retained (**Expires In**)
