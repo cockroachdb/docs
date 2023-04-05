@@ -37,7 +37,7 @@ In the meantime, you can [back up and restore data manually](take-and-restore-cu
 ## Backups page
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-A list of your full and incremental cluster backups displays on your cluster's **Backups** page. Use the calendar drop-down to view all backups taken on a certain date. 
+Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date. 
 
 For each backup, the following details display:
 
