@@ -343,6 +343,8 @@ Each node has a default SQL memory size of `25%`. This memory is used as-needed 
     SQL memory size applies a limit globally to all sessions at any point in time. Certain disk-spilling operations also respect a memory limit that applies locally to a single operation within a single query. This limit is configured via a separate cluster setting. For details, see [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
     {{site.data.alerts.end}}
 
+    If a node runs out of its allocated SQL memory, a `memory budget exceeded` error occurs and the `cockroach` process may be at risk of crashing due to an out-of-memory (OOM) error. To mitigate this issue, refer to [`memory budget exceeded](common-errors.html#memory-budget-exceeded).
+
 To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags. As long as all machines are [provisioned with sufficient RAM](#memory), you can experiment with increasing each value up to `35%`.
 
 {% include_cached copy-clipboard.html %}
@@ -353,7 +355,7 @@ $ cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
 
-Because CockroachDB manages its own memory caches, disable Linux memory swapping to avoid over-allocating memory.
+Because CockroachDB manages its own memory caches, disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory.
 {{site.data.alerts.end}}
 
 ## Dependencies
@@ -558,12 +560,24 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 <section id="linuxinstall" markdown="1">
 
+#### Recent kernel versions
+
+On recent Linux kernels versions, the default per-process hard limit for file descriptors is 524288, and most processes (including CockroachDB) automatically adjusts its soft limit until it reaches this hard limit. In most cases, there is no need to adjust the per-process or system-wide file descriptor limit. If you do need to increase this limit, adjust the process's maximum allocated memory in your process manager, which indirectly increases its maximum number of file descriptors. For systems that use `systemctl`, set or adjust `MemoryHigh` and `MemoryMax` in the service's configuration file. To allow a process to use unlimited memory, you can set `MemoryHigh` to `infinity`. For more information, refer to the output of `man 5 systemd.exec` and `man 5 systemd.resource-control`.
+
+{{site.data.alerts.callout_danger}}
+The steps for [older kernel versions](#older-kernel-versions) do not work for newer kernel versions. For example, the `/etc/security/limits.conf` file is ignored, and adjusting a `systemd` service's `LimitNOFILE` value directly is not recommended.
+{{site.data.alerts.end}}
+
+#### Older kernel versions
+
+On older Linux versions, such as those based on Red Hat Enterprise Linux (RHEL) 7, you may need to adjust the per-process or system-wide file descriptor limit, as discussed in the following sections. Cockroach Labs recommends that you consider upgrading to a newer Linux version, which has additional security and performance fixes and improvements.
+
 - [Per-Process Limit](#per-process-limit)
 - [System-Wide Limit](#system-wide-limit)
 
-#### Per-Process Limit
+##### Per-Process Limit
 
-To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
+To adjust the file descriptors limit for a single process, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows:
 
@@ -612,7 +626,7 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     $ systemctl daemon-reload
     ~~~
 
-#### System-Wide Limit
+##### System-Wide Limit
 
 You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
 
@@ -622,11 +636,24 @@ You should also confirm that the file descriptors limit for the entire Linux sys
     $ cat /proc/sys/fs/file-max
     ~~~
 
-1. If necessary, increase the system-wide limit in the `proc` file system:
+1. If necessary, increase the system-wide limit in the `proc` file system.
 
-    ~~~ shell
-    $ echo 150000 > /proc/sys/fs/file-max
-    ~~~
+   - If you use `systemctl`:
+
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      sudo sysctl -w fs.file-max=150000
+      ~~~
+
+    - If you do not use `systemctl`:
+
+      ~~~ shell
+      sudo echo 150000 > /proc/sys/fs/file-max
+      ~~~
+
+      {{site.data.alerts.callout_danger}}
+      This command does not persist after the system is restarted; you must add the command to a system initialization script that runs when the system starts.
+      {{site.data.alerts.end}}
 
 </section>
 <section id="windowsinstall" markdown="1">

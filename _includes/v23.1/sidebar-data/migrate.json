@@ -9,7 +9,7 @@
       ]
     },
     {
-      "title": "Migrations Page",
+      "title": "Use the Schema Conversion Tool",
       "urls": [
         "/cockroachcloud/migrations-page.html"
       ]
@@ -74,6 +74,12 @@
           "title": "Qlik Replicate",
           "urls": [
             "/${VERSION}/qlik.html"
+          ]
+        },
+        {
+          "title": "Striim",
+          "urls": [
+            "/${VERSION}/striim.html"
           ]
         }
       ]

@@ -36,7 +36,8 @@ In the meantime, you can [back up and restore data manually](take-and-restore-cu
 
 ## Backups page
 
-A list of your full and incremental cluster backups displays on your cluster's **Backups** page.
+<div class="filter-content" markdown="1" data-scope="dedicated">
+Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date. 
 
 For each backup, the following details display:
 
@@ -52,6 +53,10 @@ For each backup, the following details display:
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
+Your cluster's **Backups** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+For each backup, the following details display:
+
 - **Data From**: The date and time the backup was taken. 
 - **Status**: Whether the backup is `In Progress` or `Complete`. 
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
@@ -296,6 +301,6 @@ Find the cluster backup you want to restore, and click **Restore**.
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud), which requires [billing information](billing-management.html) for your organization even if you don't set a spend limit. 
+You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud). 
 
 </section>

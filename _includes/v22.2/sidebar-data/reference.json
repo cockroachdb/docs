@@ -1310,6 +1310,12 @@
             "urls": [
               "/cockroachcloud/cmek.html"
             ]
+          },
+          {
+            "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+            "urls": [
+              "/cockroachcloud/pci-dss.html"
+            ]
           }
         ]
       },

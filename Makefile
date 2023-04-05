@@ -88,7 +88,6 @@ vale:
 vendor:
 	gem install bundler
 	bundle install
-	go install github.com/wjdp/htmltest@master
 
 bootstrap: Gemfile | vendor
 	touch $@

@@ -53,6 +53,7 @@ Included in this guide:
   - [Lists](#lists)
   - [Images](#images)
   - [Include files](#include-files)
+  - [Tabs](#tabs)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -1164,14 +1165,14 @@ The general process to follow and use this is as follows:
 2. Create an include Markdown file within `_includes/<CRDB version>/filter-tabs` with the following structure:
     ```
     {% assign tab_names_html = "Tab Name 1;Tab Name 2;Tab Name 3" %}
-    {% assign html_page_names = "page-name-1.html;page-name-2.html;page-name-3.html" %}
+    {% assign html_page_filenames = "page-name-1.html;page-name-2.html;page-name-3.html" %}
 
-    {% include filter-tabs.md tab_names=tab_names_html page_names=html_page_names page_folder=<CRDB version> %}
+    {% include filter-tabs.md tab_names=tab_names_html page_filenames=html_page_filenames page_folder=<CRDB version> %}
     ```
     - `tab_names_html` is a semicolon-separated list of the HTML-supported tab names.
-    - `html_page_names` is a semicolon-separated list of the page filenames with the `.html` extension.
+    - `html_page_filenames` is a semicolon-separated list of the page filenames with the `.html` extension.
     - `<crdb_version>` is `"cockroachcloud"` (with quotes) for any CockroachDB Cloud docs and `page.version.version` (without quotes) for any versioned docs (v21.2 and later).
-3. For each page listed in `html_page_names`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
+3. For each page listed in `html_page_filenames`, paste `{% include <CRDB version>/filter-tabs/<filter-tab-include>.html %}` in the position where you want the tabs to be included.
   
 #### Technical limitations of include files
 
@@ -1180,6 +1181,76 @@ Include files have the following technical limitations:
 - They cannot be used in [Markdown tables](#tables). For example, this is why [the guidance about how to use version tags in tables](#version-tags-tables) is provided.
 - A [remote include](#remote-includes) file in another repo that contains an [include file](#include-files) that references something in `cockroachdb/docs` will fail to pull in and render that include file.
 - Include files containing a paragraph followed by a code block do not render correctly in the context of both paragraphs and lists in the files they are included from due to a limitation in our [Markdown](#markdown) renderer.
+
+<a name="tabs"></a>
+
+### Tabs
+  
+To allow your reader to select from two or more versions of on-page content, use a tabset. This might be appropriate for:
+  - Install procedurals with different steps for the different supported platforms (like macOS, Windows, Linux).
+  - Reference material where the Enterprise and non-Enterprise versions of a feature differ.
+  - Demonstrating how to connect from an example application in each supported programming language (like Python, C++, Java, etc.).
+
+To add tabs to your copy, you first define the tabset for use later on the page, then you declare each tab's content within each tab.
+
+To define the tabset:
+
+```
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="macos-install-steps">macOS</button>
+  <button class="filter-button" data-scope="windows-install-steps">Windows</button>
+</div>
+```
+
+This example defines two tabs (named `macOS` and `Windows`) and defines a unique `data-scope` for each (`macos-install-steps` and `windows-install-steps` respectively).
+
+Then, to declare the content within each tab:
+  
+```
+<section class="filter-content" markdown="1" data-scope="macos-install-steps">
+
+1. To install CockroachDB on macOS, first you need to ...
+...
+</section>
+
+<section class="filter-content" markdown="1" data-scope="windows-install-steps">
+
+1. To install CockroachDB on Windows, first you need to ...
+...
+</section>
+
+## This section outside of tabs
+
+```
+
+Now the user can freely switch between the `macOS` and `Windows` tabs as needed. 
+
+Tip: Do your tabs share a lot of common content betwen them? Tabs are often a great place to make use of [include files](#include-files)!
+
+#### Linking into tabbed content
+
+To link to content that is contained within a tab, add the `filter` component to your link, specifying the `data-scope` you provided in your tabset definition. You can do this in the following two ways:
+
+- To link to the top of a target page, with a specific tab selected:
+
+  ```
+  [Core changefeeds](create-and-configure-changefeeds.html?filters=core)
+  ```
+
+  This takes us to the top of `create-and-configure-changefeeds.html` and ensures the tab matching `data-scope: core` is selected. See [Create and Configure Changefeeds](https://www.cockroachlabs.com/docs/stable/create-and-configure-changefeeds.html?filters=core) to see this in action.
+ 
+- For linking to a header contained within a tabset:
+
+  ```
+  [Create with column families](changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families)
+  ```
+  
+  This takes us directly to the `create-a-core-changefeed-on-a-table-with-column-families` header, within the `data-scope: core` tab. See [Create a Core changefeed on a table with column families](https://www.cockroachlabs.com/docs/stable/changefeeds-on-tables-with-column-families.html?filters=core#create-a-core-changefeed-on-a-table-with-column-families) to see this in action.
+
+Considerations:
+
+- If you intend to link to a header present on two or more tabsets on the same page, the header targets must be uniquely named. If you require identical header names, use explicit, unique HTML anchor names for each (in form `<a name="uniquename"></a>` as shown under [Links](#links).
+- For the first-defined tab, specifying its `filter` value in a link is functionally the same as omitting it. For all other tabs, the explicit filter name is required. You can think of this first tab as the "default" tab in this context: if not otherwise specificed, Jekyll will always open with the first tab's contents displayed.
 
 ## Terminology and word usage
 

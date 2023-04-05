@@ -113,6 +113,10 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 | [`TIMESTAMPTZ`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
 | [`ARRAY`](array.html) | Encoded as a repeated field; <br>each array value is encoded as per the preceding types. | `nil` |
 
+## Exports and `AS OF SYSTEM TIME`
+
+The [`AS OF SYSTEM TIME`](as-of-system-time.html) clause is not required in `EXPORT` statements, even though they are long-running queries. If it is omitted, `AS OF SYSTEM TIME` is implicitly set to the start of the statement's execution. The risk of [contention](performance-best-practices-overview.html#transaction-contention) is low because other transactions would need to have exactly the same transaction start time as the `EXPORT` statement's start time.
+
 ## Examples
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}

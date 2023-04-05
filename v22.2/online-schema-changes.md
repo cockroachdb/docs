@@ -22,6 +22,10 @@ Schema changes consume additional resources, and if they are run when the cluste
 CockroachDB [does not support schema changes](#limitations) within explicit [transactions][txns] with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
 {{site.data.alerts.end}}
 
+To see a demo of an online schema change, watch the following video:
+
+{% include_cached youtube.html video_id="xvBBQVIGYio" %}
+
 ## How online schema changes work
 
 At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:

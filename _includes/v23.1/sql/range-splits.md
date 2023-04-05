@@ -1,4 +1,4 @@
-CockroachDB breaks data into ranges. By default, CockroachDB attempts to keep ranges below a size of 512 MiB. To do this, the system will automatically [split a range](architecture/distribution-layer.html#range-splits) if it grows larger than this limit. For most use cases, this automatic range splitting is sufficient, and you should never need to worry about when or where the system decides to split ranges.
+CockroachDB breaks data into ranges. By default, CockroachDB attempts to keep ranges below [the default range size](configure-replication-zones.html#range-max-bytes). To do this, the system will automatically [split a range](architecture/distribution-layer.html#range-splits) if it grows larger than this limit. For most use cases, this automatic range splitting is sufficient, and you should never need to worry about when or where the system decides to split ranges.
 
 However, there are reasons why you may want to perform manual splits on the ranges that store tables or indexes:
 

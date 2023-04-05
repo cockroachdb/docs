@@ -66,7 +66,7 @@ When writing your own queries of this type, use a known minimum value for the ke
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-We use [`AS OF SYSTEM TIME`](as-of-system-time.html) in these examples to ensure that we are operating on a consistent snapshot of the database as of the specified timestamp. This reduces the chance that there will be any concurrent updates to the data the query is accessing, and thus no missing or duplicated rows during the pagination. It also reduces the risk of [transaction retries](transactions.html#client-side-intervention) due to concurrent data access. The value of `-1m` passed to `AS OF SYSTEM TIME` may need to be updated depending on your application's data access patterns.
+We use [`AS OF SYSTEM TIME`](as-of-system-time.html) in these examples to ensure that we are operating on a consistent snapshot of the database as of the specified timestamp. This reduces the chance that there will be any concurrent updates to the data the query is accessing, and thus no missing or duplicated rows during the pagination. It also reduces the risk of [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling) due to concurrent data access. The value of `-1m` passed to `AS OF SYSTEM TIME` may need to be updated depending on your application's data access patterns.
 {{site.data.alerts.end}}
 
 To get the second page of results, run:
