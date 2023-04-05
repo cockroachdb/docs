@@ -41,4 +41,4 @@ Cluster Single Sign-On (SSO) for {{ site.data.products.db }} allows authorized o
 
 However, because organization roles and roles on any given SQL cluster are logically separate, a corresponding SQL role must be created for each SSO organization user, on each particular cluster.
 
-This correspondence lies in the SQL role name, which must be: `sso_{email_name}`, where 'email_name' refers to everything up to the '@'' in an email address. For example, the SQL user `sso_docs` would result from docs@cockroachlabs.com. `ccloud` prompts you to create this user if it does not already exist, in which case an admin must create it manually.
+This correspondence lies in the SQL role name, which must be: `sso_{email_name}`, where 'email_name' refers to everything up to the '@' in an email address. For example, the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` prompts you to create this user if it does not already exist, in which case an admin must create it manually.
