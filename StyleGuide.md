@@ -12,48 +12,98 @@ Included in this guide:
 - [Style and tone](#style-and-tone)
 - [Inclusive language](#inclusive-language)
   - [Avoid ableist language](#avoid-ableist-language)
+    - [Examples](#examples)
   - [Avoid unnecessarily gendered language](#avoid-unnecessarily-gendered-language)
+    - [Examples](#examples-1)
   - [Write diverse and inclusive examples](#write-diverse-and-inclusive-examples)
   - [Avoid unnecessarily violent language](#avoid-unnecessarily-violent-language)
+    - [Examples](#examples-2)
   - [Write accessible documentation](#write-accessible-documentation)
   - [Write about features and users in inclusive ways](#write-about-features-and-users-in-inclusive-ways)
+    - [Examples](#examples-3)
 - [Capitalization and punctuation](#capitalization-and-punctuation)
   - [Capitalization rules](#capitalization-rules)
   - [Punctuation rules](#punctuation-rules)
 - [Vale](#vale)
 - [File conventions](#file-conventions)
+  - [Examples](#examples-4)
+  - [File naming](#file-naming)
 - [Content types](#content-types)
   - [Concept](#concept)
+    - [Examples](#examples-5)
   - [Task](#task)
+    - [Examples](#examples-6)
   - [Reference](#reference)
+    - [Examples](#examples-7)
   - [Definition](#definition)
+    - [Examples](#examples-8)
 - [Standard sections](#standard-sections)
   - [Glossary](#glossary)
-  - [See also](#see-also)
+    - [Examples](#examples-9)
   - [Before you begin](#before-you-begin)
+  - [See also](#see-also)
 - [Page types](#page-types)
-  - [Tutorial](#tutorials)
+  - [Tutorial](#tutorial)
+    - [Examples](#examples-10)
   - [Best practice](#best-practice)
+    - [Examples](#examples-11)
   - [Troubleshooting](#troubleshooting)
+    - [Examples](#examples-12)
   - [FAQ](#faq)
+    - [Examples](#examples-13)
   - [Release note](#release-note)
+    - [Examples](#examples-14)
 - [Components](#components)
   - [Page title](#page-title)
   - [Headings](#headings)
+    - [Examples](#examples-15)
   - [Text format](#text-format)
+    - [Bold](#bold)
+    - [Monospace](#monospace)
+    - [Quotation marks](#quotation-marks)
+    - [Italics](#italics)
+    - [Underline](#underline)
   - [Links](#links)
+    - [GitHub issues and pull requests](#github-issues-and-pull-requests)
   - [Tips, notes, and warnings](#tips-notes-and-warnings)
+    - [Tips](#tips)
+    - [Notes](#notes)
+    - [Warnings](#warnings)
+    - [CockroachDB version callout](#cockroachdb-version-callout)
   - [Known limitations](#known-limitations)
+    - [What are known limitations?](#what-are-known-limitations)
+    - [Where to find known limitations](#where-to-find-known-limitations)
+    - [When to document known limitations](#when-to-document-known-limitations)
+    - [Who documents known limitations](#who-documents-known-limitations)
+    - [Where to document known limitations](#where-to-document-known-limitations)
+    - [How to document known limitations](#how-to-document-known-limitations)
   - [Product names](#product-names)
   - [Code](#code)
-  - [Examples](#examples)
+    - [Inline code](#inline-code)
+    - [Code block](#code-block)
+    - [Placeholders](#placeholders)
+    - [How to escape special characters](#how-to-escape-special-characters)
+  - [Examples](#examples-16)
   - [Version tags](#version-tags)
   - [Version references](#version-references)
   - [Tables](#tables)
+    - [Markdown](#markdown)
+    - [HTML](#html)
   - [Lists](#lists)
+    - [Nest lists](#nest-lists)
+    - [Nest paragraphs or code blocks](#nest-paragraphs-or-code-blocks)
+    - [Use ordered lists when there are multiple steps in a section](#use-ordered-lists-when-there-are-multiple-steps-in-a-section)
   - [Images](#images)
+  - [Videos](#videos)
   - [Include files](#include-files)
+    - [Basic include file usage](#basic-include-file-usage)
+    - [Advanced include file usage](#advanced-include-file-usage)
+      - [Different content depending on page name](#different-content-depending-on-page-name)
+      - [Remote includes](#remote-includes)
+    - [Filter tabs](#filter-tabs)
+    - [Technical limitations of include files](#technical-limitations-of-include-files)
   - [Tabs](#tabs)
+    - [Linking into tabbed content](#linking-into-tabbed-content)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -1069,6 +1119,26 @@ Use the following HTML and Liquid to include an image in a Markdown page:
 ~~~
 
 Example: [Decommission Nodes](https://www.cockroachlabs.com/docs/stable/remove-nodes.html#step-1-check-the-node-before-decommissioning)
+
+<a name="videos"></a>
+
+### Videos
+
+Like images, use videos to clarify a topic, but only use them as needed. Typically, videos should be hosted on the official [CockroachDB YouTube page](https://www.youtube.com/@cockroachdb) and are surfaced by our Marketing team.
+
+Use the following Liquid to include an embedded video in a Markdown page:
+
+~~~ md
+{% include_cached youtube.html video_id="<YouTube ID>" [widescreen=true] %}
+~~~
+
+The `video_id` parameter is required and is whatever is after the `?v=` portion of the URL. If the URL to the video you wish to embed is `https://www.youtube.com/watch?v=5kiMg7GXAsY`, for example, then the value of `video_id` should be `5kiMg7GXAsY`. The `widescreen` parameter is optional and meant for videos with wide banners such as our video on [Foreign Key Constraints](https://www.youtube.com/watch?v=5kiMg7GXAsY).
+
+You can optionally pass in a start time to the `video_id` parameter to make the video start at a specific timestamp. The below example embeds the [How to Create Tables with Foreign Keys in SQL](https://www.youtube.com/watch?v=mFQk1VsIkZA) video and starts playing it at 25 seconds:
+
+~~~ md
+{% include_cached youtube.html video_id="mFQk1VsIkZA?start=25" %}
+~~~
 
 <a name="include-files"></a>
 
