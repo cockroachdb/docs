@@ -7,9 +7,11 @@ docs_area: manage
 
 {{ site.data.products.db }}'s authorization model has two levels: the {{ site.data.products.db }} organization and clusters within that organization.
 
-A CockroachDB Cloud *organization* corresponds to a an authorization hierarchy rooted in a billing account. Each {{ site.data.products.db }} cluster is created within an organization. The user of the billing account can create or invite other users to the organization, and can grant roles to those users, such as **Cluster Admin** or **Cluster Creator**.. 
+A CockroachDB Cloud *organization* corresponds to a an authorization hierarchy rooted in a billing account. Each {{ site.data.products.db }} cluster is created within an organization. The user of the billing account can:
 
-A user who has the Cluster Admin or Cluster Creator role can create clusters in the organization, create SQL users and roles on those clusters, and grant access to those users and roles by managing the associated credentials or single sign-on (SSO) authentication flows.
+- Create or invite other users to the organization, and can change their role.
+- Create clusters in the organization.
+- Manage SQL users and roles on clusters in the organization, and grant access to those users and roles by managing the associated credentials or single sign-on (SSO) authentication flows.
 
 See:
 
