@@ -3,8 +3,8 @@ Note: macOS users may need to manually enable Alt-based shortcuts in their termi
 | Shortcut                | Description |
 |-------------------------|------------------------------------------------------------------------------------|
 | Tab                     | Use [context-sensitive command completion](#tab-completion). |
-| Ctrl+C                  | Clear / Cancel the input. |
-| Ctrl+M, Enter           | New line / enter. |
+| Ctrl+C                  | Clear/cancel the input. |
+| Ctrl+M, Enter           | New line/enter. |
 | Ctrl+O                  | Force a new line on the current statement, even if the statement has a semicolon. |
 | Ctrl+F, Right arrow     | Forward one character. |
 | Ctrl+B, Left arrow      | Backward one character. |
