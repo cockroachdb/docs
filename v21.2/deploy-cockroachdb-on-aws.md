@@ -37,30 +37,34 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
 
 - You should have familiarity with configuring the following AWS components:
   - [Amazon VPC](https://docs.aws.amazon.com/vpc/index.html)
-  - [Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
-  - [Internet gateways](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
-  - [Route tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
+  - [VPC Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
+  - [VPC Internet gateways](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
+  - [VPC Route tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
+  - [EC2 Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
   - [AWS VPN](https://aws.amazon.com/vpn/)
-  - [Virtual private gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
-  - [Elastic Load Balancing](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html)
+  - [VPC Virtual Private Gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
+  - [AWS Application Load
+    Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
+    and [AWS Network Load
+    Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html)
 
-- All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html). For an example, see [AWS architecture](#aws-architecture).
+- All Amazon EC2 instances running CockroachDB should be members of the same [Security Group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html). For an example, see [AWS Architecture](#aws-architecture).
 
-- Follow the [AWS IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) to harden the AWS environment. Use [roles](security-reference/authorization.html#roles) to grant access to the deployment, following a [policy of least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege).
+- Follow the [AWS IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) to harden the AWS environment. Use [IAM Roles](security-reference/authorization.html#roles) to grant access to the deployment, following a [policy of least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege).
 
-- The [AWS root user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html) is _not_ necessary.
+- The [AWS root user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html) is _not_ necessary, and [its use is discouraged](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#lock-away-credentials).
 
-- Review the [AWS Config service limits](https://docs.aws.amazon.com/config/latest/developerguide/configlimits.html) and contact AWS support to request a quota increase, if necessary.
+- Review the [AWS Config Service Limits](https://docs.aws.amazon.com/config/latest/developerguide/configlimits.html) and contact AWS support to request a quota increase, if necessary.
 
-### AWS architecture
+### AWS Architecture
 
-In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones. These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53/) (which is not used in this tutorial) and a load balancer.
+In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones (see the [AWS-specific Recommendations](recommended-production-settings.html#aws) for additional production recommendations). These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53/) (which is not used in this tutorial) and a load balancer.
 
 <img src="{{ 'images/v21.2/aws-architecture.png' | relative_url }}" alt="Architecture diagram for a three-node CockroachDB cluster deployed on AWS" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 1. Create instances
 
-Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and [launch an instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html#launch-instance-console) for each node you plan to have in your cluster. If you plan to [run our sample workload](#step-9-run-a-sample-workload) against the cluster, create a separate instance for that workload.
+Open the [Amazon EC2 Console](https://console.aws.amazon.com/ec2/) and [launch an instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html#launch-instance-console) for each node you plan to have in your cluster. If you plan to [run our sample workload](#step-9-run-a-sample-workload) against the cluster, create a separate instance for that workload.
 
 - Run at least 3 nodes to ensure survivability.
 
