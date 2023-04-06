@@ -3354,6 +3354,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3369,6 +3371,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3385,6 +3389,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3427,6 +3433,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3443,6 +3451,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3485,6 +3495,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3501,6 +3513,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3531,6 +3545,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
   source: true
@@ -3576,6 +3592,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3595,6 +3613,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3614,6 +3634,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3647,6 +3669,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3666,6 +3690,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3699,6 +3725,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3717,6 +3745,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3736,6 +3766,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3769,6 +3801,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3803,6 +3837,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3822,6 +3858,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3841,6 +3879,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3874,6 +3914,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3893,6 +3935,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3912,6 +3956,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -3945,6 +3991,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3964,6 +4012,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -3983,6 +4033,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -4003,6 +4055,8 @@
   windows: true
   linux:
     linux_arm: false
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: false
@@ -4022,6 +4076,8 @@
   windows: true
   linux:
     linux_arm: false
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: false
@@ -4041,6 +4097,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach
     docker_arm: true
@@ -4060,6 +4118,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true
@@ -4079,6 +4139,8 @@
   windows: true
   linux:
     linux_arm: true
+    linux_intel_fips: false
+    linux_arm_fips: false
   docker:
     docker_image: cockroachdb/cockroach-unstable
     docker_arm: true

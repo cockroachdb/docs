@@ -36,26 +36,30 @@ In the meantime, you can [back up and restore data manually](take-and-restore-cu
 
 ## Backups page
 
-A list of your full and incremental cluster backups displays on your cluster's **Backups** page.
+<div class="filter-content" markdown="1" data-scope="dedicated">
+Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date. 
 
 For each backup, the following details display:
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-- The date and time the backup was taken (**Data From**) 
-- The **Status** of the backup 
-- The **Type** of backup
-- The **Size** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
-- The number of [**Databases**](#databases) included in the backup
+- **Data From**: The date and time the backup was taken. 
+- **Type**: Whether the backup is a [full](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) or [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) backup. 
+- **Size**: The size of the backup, measured in `KiB`.
+- **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
+- [**Databases**](#databases): The number of databases included in the backup.
 
 <img src="{{ 'images/cockroachcloud/backups-dedicated.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
-- The date and time the backup was taken (**Data From**)
-- The **Status** of the backup
-- The remaining number of days the backup will be retained (**Expires In**)
+Your cluster's **Backups** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+For each backup, the following details display:
+
+- **Data From**: The date and time the backup was taken. 
+- **Status**: Whether the backup is `In Progress` or `Complete`. 
+- **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 
 <img src="{{ 'images/cockroachcloud/backups-serverless.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
 
@@ -69,14 +73,14 @@ To view the databases included in the backup, click the number in the **Database
 
 For each database in the backup, the following details display:
 
-- The **Name** of the database
-- The **Size** of the database data captured in the backup
+- The **Name** of the database.
+- The **Size** of the database data captured in the backup.
 
     {{site.data.alerts.callout_info}}
     If the **Size** listed for a database in an incremental backup is **0 B**, it means no changes were made in the database since the last full backup.
     {{site.data.alerts.end}}
 
-- The number of [**Tables**](#tables) in the database
+- The number of [**Tables**](#tables) in the database.
 
     To view the tables in the database, click the number in the [**Tables**](#tables) column.
 
@@ -92,14 +96,25 @@ To view the tables in a database, click the number in the **Tables** column on t
 
 For each table in the database, the following details display:
 
-- The **Name** of the table
-- The **Size** of the table data captured in the backup
+- The **Name** of the table.
+- The **Size** of the table data captured in the backup.
 
     {{site.data.alerts.callout_info}}
     If the **Size** listed for a table in an incremental backup is **0.00 B**, it means no changes were made in the table since the last full backup.
     {{site.data.alerts.end}}
 
-- The number of **Rows** captured in the backup
+- The number of **Rows** captured in the backup.
+
+### Incomplete Backups
+
+To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backups** page. 
+
+For each incomplete backup, the following details display:
+
+- **Started**: The date and time the backup job began.  
+- **Duration**: The amount of time the backup job ran for.  
+- **Status**: The error code and message for failed backup jobs.
+- **Description**: The SQL command corresponding to the failed or pending backup job. 
 
 ## Ways to restore data
 

@@ -7,7 +7,7 @@ docs_area: manage
 
 Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PKpCcAtXxjo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="PKpCcAtXxjo" %}
 
 ## Step 1. Select your cluster size
 
@@ -37,7 +37,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 3. Prepare to upgrade
 
- Before starting the upgrade, it's important to complete the following steps.
+Before starting the upgrade, it's important to complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 

@@ -18,7 +18,7 @@ In a multi-region deployment, the duplicate indexes pattern is a good choice for
 
 In general, this pattern is suited well for immutable/reference tables that are rarely or never updated.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/xde_Oz-dJxM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="xde_Oz-dJxM" %}
 
 {{site.data.alerts.callout_success}}
 **See It In Action** - Read about how a [financial software company](https://www.cockroachlabs.com/guides/banking-guide-to-the-cloud/) is using the Duplicate Indexes topology for low latency reads in their identity access management layer.

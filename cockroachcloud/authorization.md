@@ -16,7 +16,6 @@ See:
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
 - [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
 
-
 ## Organization user roles
 
 - **Org member**: the default role given to all organization users upon creation or invitation. This role grants no permissions to perform cluster or org actions.
@@ -36,4 +35,4 @@ Cluster Single Sign-On (SSO) for {{ site.data.products.db }} allows authorized o
 
 However, because organization roles and roles on any given SQL cluster are logically separate, a corresponding SQL role must be created for each SSO organization user, on each particular cluster.
 
-This correspondence lies in the SQL role name, which must be: `sso_{email_name}`, where 'email_name' refers to everything up to the '@'' in an email address. For example, the SQL user `sso_docs` would result from docs@cockroachlabs.com. `ccloud` prompts you to create this user if it does not already exist, in which case an admin must create it manually.
+This correspondence lies in the SQL role name, which must be in the format `sso_{email_name}`. Replace '(email_name}' with the portion of the user's email address before `@`. For example, the SQL role name of a user with the email address `docs@cockroachlabs.com`  is `sso_docs`. If the role is not set up correctly, `ccloud` prompts you to create or add it. Only an admin can manage users/roles, so you must contact your cluster administrator if you do not permissions to create SQL roles on the cluster.

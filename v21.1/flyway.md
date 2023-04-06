@@ -8,7 +8,7 @@ This page guides you through a series of simple database schema changes using Fl
 
 ## Watch the demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/xz4j5tU0ZRU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="xz4j5tU0ZRU" %}
 
 ## Before You Begin
 
