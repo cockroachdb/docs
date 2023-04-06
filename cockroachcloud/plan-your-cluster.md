@@ -19,8 +19,7 @@ All {{ site.data.products.db }} clusters use 3 Availability Zones (AZs). For bal
 
 #### {{ site.data.products.dedicated }} advanced
 
-You should choose {{ site.data.products.dedicated }} advanced if your cluster needs access to all features required for [PCI readiness](../{{site.versions["stable"]}}/security-reference/security-overview.html). {{ site.data.products.dedicated }} advanced clusters have all the same features as {{ site.data.products.dedicated }} standard clusters with the addition of these security features.
-
+You should choose {{ site.data.products.dedicated }} advanced if your cluster needs access to all features required for [PCI readiness](../{{site.versions["stable"]}}/security-reference/security-overview.html). {{ site.data.products.dedicated }} advanced clusters have all the features of {{ site.data.products.dedicated }} standard clusters plus these security features.
 
 #### Multi-region clusters
 
