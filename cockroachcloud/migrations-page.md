@@ -273,7 +273,7 @@ This is necessary in order to verify that the schema has zero errors and can be 
 
 ## Finalize the schema
 
-You can finalize the schema when the number of errors is zero. This value is displayed on the [Migrations table](#migrations-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
+You can finalize the schema when the number of errors is zero. This value is displayed on the [Schemas table](#schemas-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
 
 To finalize the schema, click **Finalize Schema** when viewing the **Summary Report** or **Statements** list. A modal will open:
 
