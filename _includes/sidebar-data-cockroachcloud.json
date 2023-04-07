@@ -307,9 +307,9 @@
       ]
     },
     {
-      "title": "Manage Console Access",
+      "title": "Managing Access in CockroachDB Cloud",
       "urls": [
-	       "/cockroachcloud/console-access-management.html"
+	       "/cockroachcloud/access-management.html"
       ]
     },
     {
