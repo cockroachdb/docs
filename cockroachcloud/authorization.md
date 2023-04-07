@@ -7,16 +7,19 @@ docs_area: manage
 
 {{ site.data.products.db }}'s authorization model has two levels: the {{ site.data.products.db }} organization and clusters within that organization.
 
-A CockroachDB Cloud *organization* corresponds to a an authorization hierarchy rooted in a billing account. Each {{ site.data.products.db }} cluster is created within an organization. The user of the organization billing account can create or invite other users to the organization, and can grant roles to those organization users.
+A CockroachDB Cloud *organization* corresponds to an authorization hierarchy rooted in a billing account. Each {{ site.data.products.db }} cluster is created within an organization. The user of the organization billing account can create or invite other users to the organization, and can grant roles to those organization users.
 
-**Organization users/roles SQL users/roles are distinct from SQL users/roles.** Each CockroachDB cluster has its own set of SQL roles, which allow authenticated users to execute SQL statements via any PostgreSQL-compatible client. An organization user who has the Cluster Admin or Cluster Creator role can create clusters in the organization, create SQL users/roles on those clusters, and grant access to those users and roles by managing the associated credentials or single sign-on (SSO) authentication flows.
+**Organization users/roles SQL users/roles are distinct from SQL users/roles.** Each CockroachDB cluster has its own set of SQL roles, which allow authenticated users to execute SQL statements via any PostgreSQL-compatible client. An organization user who has the Cluster Admin or Cluster Creator role can create clusters in the organization, create SQL users/roles on those clusters, and grant access to those users and roles by managing the associated credentials or [cluster single sign-on (SSO)](cloud-sso-sql.html) authentication flows.
 
 See:
-
+- [Managing User Authorization in CockroachDB Cloud](user-authorization.html)
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
 - [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
 
 ## Organization user roles
+
+The following roles may be granted users in an organization. When first added to an organization, a user will have the default role, **Org member**. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the [CockroachDB Cloud API]().
+
 
 - **Org member**: the default role given to all organization users upon creation or invitation. This role grants no permissions to perform cluster or org actions.
 - **Org. Administrator (legacy)**: the administrator role for organization functions. This role grants the user permissions to perform all functions pertaining to clusters, org users, cluster users, and billing for the organization. In a future release, this role will be deprecated in favor of more fine-grained roles for separately administrating organization-level user-management functions, cluster functions, and billing functions.
@@ -28,6 +31,17 @@ See:
 Within an organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB database nodes. All SQL operations and data storage are distributed across the cluster.
 
 Each cluster has its own set of SQL roles, which allow authenticated users to execute SQL statements using any PostgreSQL-compatible client.
+
+## Service accounts
+
+### unified access management
+
+### legacy service accounts
+
+
+
+
+
 
 ## Cluster roles for organization users using Cluster SSO
 
