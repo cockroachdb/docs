@@ -450,6 +450,12 @@
       "title": "Tutorials",
       "items": [
         {
+          "title": "Tutorials Overview",
+          "urls": [
+            "/${VERSION}/tutorials-overview.html"
+          ]
+        },
+        {
           "title": "Schema Migration Tools",
           "items": [
             {
