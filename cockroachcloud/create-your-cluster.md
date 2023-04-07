@@ -20,7 +20,11 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
-1. Selected the **Dedicated** plan.
+1. Select the **Dedicated standard** or **Dedicated advanced** plan.
+
+{{site.data.alerts.callout_info}}
+{{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
+{{site.data.alerts.end}}
 
 ## Step 2. Select the cloud provider
 

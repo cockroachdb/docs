@@ -15,6 +15,10 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
+### What is the difference between {{ site.data.products.dedicated }} standard and advanced?
+
+{{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
+
 ### In what clouds and regions is {{ site.data.products.dedicated }} available?
 
 The following regions are available for {{ site.data.products.dedicated }}:
