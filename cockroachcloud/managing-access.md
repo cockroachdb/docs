@@ -44,7 +44,7 @@ As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. 
 1. Click **Invite**.
 
 {{site.data.alerts.callout_success}}
-We recommend [creating a SQL user](user-authorization.html) for each Team Member you invite.
+We recommend [creating a SQL user](managing-access.html) for each Team Member you invite.
 {{site.data.alerts.end}}
 
 

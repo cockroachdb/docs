@@ -27,7 +27,7 @@ In {{ site.data.products.db }}, an organization corresponds to an authorization 
 1. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
 See:
-- [Managing Organization User Authorization in CockroachDB Cloud](user-authorization.html)
+- [Managing Organization User Authorization in CockroachDB Cloud](managing-access.html)
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
 - [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
 
@@ -35,7 +35,7 @@ See:
 
 When a user is first added to an organization, they will have the default role, **Org member**, which grants no permissions. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the CockroachDB Cloud API.
 
-See: [Managing Access in CockroachDB Cloud: Manage organization users](user-authorization.html#manage-organization-users)
+See: [Managing Access in CockroachDB Cloud: Manage organization users](managing-access.html#manage-organization-users)
 
 The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization.
 
@@ -44,7 +44,7 @@ The following roles may be granted to {{ site.data.products.db }} organization u
   - [Create a cluster](create-your-cluster.html)
   - [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachdb-cloud)
   - [Manage Team Members](#manage-team-members)
-  - [Create and manage SQL users](user-authorization.html#create-a-sql-user)
+  - [Create and manage SQL users](managing-access.html#create-a-sql-user)
   - [Manage billing for the organization](billing-management.html)
   - [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
   - [Delete an organization](#delete-an-organization)

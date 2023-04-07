@@ -93,7 +93,7 @@
             {
               "title": "Managing User Authorization in CockroachDB Cloud",
               "urls": [
-                "/cockroachcloud/user-authorization.html"
+                "/cockroachcloud/managing-access.html"
               ]
             },
             {

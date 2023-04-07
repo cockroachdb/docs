@@ -164,7 +164,7 @@ Your cluster will be created in approximately 20-30 minutes.
 To start using your {{ site.data.products.db }} cluster, see the following pages:
 
 - [Connect to your cluster](connect-to-your-cluster.html)
-- [Authorize users](user-authorization.html)
+- [Authorize users](managing-access.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
 
 If you created a multi-region cluster, it is important to carefully choose:

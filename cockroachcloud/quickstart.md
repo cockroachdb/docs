@@ -165,7 +165,7 @@ Now that you have a free {{ site.data.products.serverless }} cluster running, tr
 
 - Build a simple CRUD application in [Go](../{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.html), [Java](../{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.html), [Node.js](../{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.html), or [Python](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html).
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- [Create and manage SQL users](user-authorization.html).
+- [Create and manage SQL users](managing-access.html).
 - Explore our [example apps](../{{site.current_cloud_version}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data](../{{site.current_cloud_version}}/migration-overview.html).
 - Learn more about [`ccloud`](ccloud-get-started.html).

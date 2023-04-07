@@ -26,7 +26,7 @@ The **Connect to cluster** dialog shows information about how to connect to your
 Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
 
 {{site.data.alerts.callout_info}}
-The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/user-authorization.html).
+The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/managing-access.html).
 {{site.data.alerts.end}}
 
 </section>

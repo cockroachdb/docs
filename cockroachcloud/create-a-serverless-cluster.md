@@ -78,7 +78,7 @@ Your cluster will be created in a few seconds.
 ## What's next
 
 - [Connect to your {{ site.data.products.serverless }} cluster](connect-to-a-serverless-cluster.html)
-- [Authorize users](user-authorization.html)
+- [Authorize users](managing-access.html)
 
 ## Usage examples
 

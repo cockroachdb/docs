@@ -18,7 +18,7 @@ The settings and information about the organization are found on the **Settings*
 
 ## SQL users
 
-[Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
+[Console Admins](#console-admin) can [create and manage SQL users](managing-access.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
 
 SQL users created in the Console have the [`admin` role](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) on the cluster by default, even if the user has [Developer](#developer) privileges for the organization. Therefore, anyone with the username and password of a default SQL user has privileges for all resources across the cluster.
 
@@ -26,31 +26,7 @@ For this reason, while creating SQL users in the Console is quick and easy, it i
 
 Learn more about [managing SQL users' privileges](../{{site.current_cloud_version}}/security-reference/authorization.html#users-and-roles).
 
-## Roles
 
-Every {{ site.data.products.db }} user is either a Developer or a Console Admin for the organization.
-
-{{site.data.alerts.callout_danger}}
-Both Console Admins and Developers have access to all the information on the **SQL Activity** and **Databases** pages.
-{{site.data.alerts.end}}
-
-### Developer
-
-A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users. Note that Developers can still create [SQL Users](#sql-users) with the [`admin` role](../{{site.current_cloud_version}}/security-reference/authorization.html#admin-role) on a cluster.
-
-To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who your Console Admin is, check the **Access** page.
-
-### Console Admin
-
-A Console Admin is an all-access role. A Console Admin can perform the following tasks:
-
-- [Create a cluster](create-your-cluster.html)
-- [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachdb-cloud)
-- [Manage Team Members](#manage-team-members)
-- [Create and manage SQL users](user-authorization.html#create-a-sql-user)
-- [Manage billing for the organization](billing-management.html)
-- [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
-- [Delete an organization](#delete-an-organization)
 
 ## Service accounts
 

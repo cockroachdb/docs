@@ -91,7 +91,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 1. In your terminal, run the connection string provided in the third step of the dialog to connect to CockroachDB's built-in SQL client. Your username and cluster name are pre-populated for you in the dialog.
 
     {{site.data.alerts.callout_danger}}
-    This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](managing-access.html).
     {{site.data.alerts.end}}
 
     {% include cockroachcloud/sql-connection-string.md %}

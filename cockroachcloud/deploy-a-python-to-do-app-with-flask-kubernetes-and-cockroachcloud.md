@@ -55,7 +55,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. Enter a **Username** and **Password**.
 1. Click **Save**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](managing-access.html#grant-privileges) and [Using roles](managing-access.html#use-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 

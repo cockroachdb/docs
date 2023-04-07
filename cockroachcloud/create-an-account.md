@@ -117,7 +117,7 @@ If you registered with an email address, you can change your account password in
 1. Click **Save**.
 
 {{site.data.alerts.callout_info}}
-Changing your account password will _not_ change your [SQL user](user-authorization.html#create-a-sql-user) password.
+Changing your account password will _not_ change your [SQL user](managing-access.html#create-a-sql-user) password.
 {{site.data.alerts.end}}
 
 ### Change your organization name

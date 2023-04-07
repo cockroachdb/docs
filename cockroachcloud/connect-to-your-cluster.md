@@ -12,7 +12,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 ## Before you start
 
 - [Create a cluster](create-your-cluster.html).
-- [Create a SQL user](user-authorization.html#create-a-sql-user).
+- [Create a SQL user](managing-access.html#create-a-sql-user).
 
 ## Step 1. Authorize your network
 

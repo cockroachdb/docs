@@ -43,7 +43,7 @@ Before starting the upgrade, it's important to complete the following steps.
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Tools**](tools-page.html) pages in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) pages in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 
@@ -81,7 +81,7 @@ Once your cluster is running v20.1, but before the upgrade has been finalized:
 
 - [`GRANT`](../{{site.current_cloud_version}}/grant.html) and [`REVOKE`](../{{site.current_cloud_version}}/revoke.html) statements will be blocked and return an error. This is because privileges are stored with table metadata and, therefore, privilege changes are considered schema changes, from an internal perspective. Update your application or tooling to prevent privilege changes during this period. Once the upgrade has been finalized, changes to user privileges can resume.
 
-   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](user-authorization.html#create-a-sql-user) tab of the {{ site.data.products.db }} Console until the upgrade has been finalized. Attempting to do so will result in an error.
+   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](managing-access.html#create-a-sql-user) tab of the {{ site.data.products.db }} Console until the upgrade has been finalized. Attempting to do so will result in an error.
 
 {{site.data.alerts.callout_info}}
 Note that these limitations are specific to upgrades from v19.2 to v20.1; they do not apply to other upgrades.
