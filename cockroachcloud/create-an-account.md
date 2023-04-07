@@ -8,7 +8,7 @@ docs_area: deploy
 Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub, Google, or Microsoft account or an email address and password.
 
 {{site.data.alerts.callout_info}}
-If your organization uses [Cloud Organization SSO](cloud-org-sso.html#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with a [console admin](console-access-management.html#console-admin). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
+If your organization uses [Cloud Organization SSO](cloud-org-sso.html#cloud-organization-sso), you may be able to sign in without registering or waiting to be invited. Check with an [org admin](authorization.html#org-administrator-legacy). If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is enabled for your organization.
 {{site.data.alerts.end}}
 
 ## Choose an authentication method
@@ -122,7 +122,7 @@ Changing your account password will _not_ change your [SQL user](managing-access
 
 ### Change your organization name
 
-If you are a [Console Admin](console-access-management.html#console-admin), you can change your organization name:
+If you are an [org admin](authorization.html#org-administrator-legacy), you can change your organization name:
 
 1. Navigate to the **Settings** page.
 

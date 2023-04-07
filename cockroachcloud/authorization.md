@@ -1,11 +1,15 @@
 ---
-title: Access Management in CockroachDB Cloud
+title: CockroachDB Cloud Access Management Overview and FAQ
 summary: Learn about the CockroachDB Cloud Authorization features and concepts
 toc: true
 docs_area: manage
 ---
 
-This page covers essential concepts related to access management in {{ site.data.products.db }}:
+This page covers the essential concepts related to access management (authorization) in {{ site.data.products.db }}
+
+Procedures for managing access are covered in [Managing Access in {{ site.data.products.db }}](managing-access.html).
+
+**Contents**:
 
 - Overview of the {{ site.data.products.db }} two-level authorization
 - Organization User Roles
@@ -13,59 +17,70 @@ This page covers essential concepts related to access management in {{ site.data
 - Cluster roles for organization users using Cluster SSO
 - CockroachDB Cloud Authorization Frequently Asked Questions (FAQ)
 
-**The {{ site.data.products.db }} console** is a 'single pane of glass' for managing users, billing, and all functions for adminstering CockroachDB Dedicated clusters. When accessing the console, users must sign in to a CockroachDB Cloud **organization** (or create a new one).
+
+## Overview of the CockroachDB Cloud two-level authorization model
+
+**The {{ site.data.products.db }} console** is a 'single pane of glass' for managing users, billing, and all functions for adminstering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a CockroachDB Cloud **organization** (or create a new one).
 
 Many administrative functions can also be executed using the `ccloud` command line utility and the CockroachDB Cloud API:
+
 - `ccloud` allows human users to authenticate their terminal via a browser token from the {{ site.data.products.db }} console.
-- The {{ site.data.products.db }} API allows [service accounts]() to authenticate via API keys, which are issued through the console.
+- The {{ site.data.products.db }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
 
 In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy rooted in a billing account. Within each CockroachDB Cloud organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB database nodes. SQL operations and data storage are distributed over a cluster. Every clusters belong to an organization.
 
 {{ site.data.products.db }} has a two-level authorization model:
 
-1. Cluster/SQL level: Each CockroachDB cluster has its own set of SQL users and roles defined on it. Roles allow users with to execute some set of SQL statements against some set of database resources on the cluster.
-1. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
+1. Cluster/SQL level: Each CockroachDB cluster has its own set of SQL users and roles defined on it. Roles grant users permission to execute some set of SQL statements against some set of database resources on the cluster.
+2. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
-See:
-- [Managing Organization User Authorization in CockroachDB Cloud](managing-access.html)
+This page primarily covers the latter, organization level. However, the two levels intersect because administrating SQL-level users on specific clusters within an organization is an organization-level function.
+
+For the main pages covering users and roles at the SQL level&mdash;within a specific database cluster, see:
+callout
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
 - [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
+
 
 ## Organization user roles
 
 When a user is first added to an organization, they will have the default role, **Org member**, which grants no permissions. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the CockroachDB Cloud API.
 
-See: [Managing Access in CockroachDB Cloud: Manage organization users](managing-access.html#manage-organization-users)
+See: [Managing Access in CockroachDB Cloud: Manage organization users](managing-access.html#manage-an-organization-users)
 
-The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization.
+The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
 
-- **Org member**: the default role given to all organization users upon creation or invitation. This role grants no permissions to perform cluster or org actions.
-- **Org. Administrator (legacy)**: the administrator role for organization functions. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
-  - [Create a cluster](create-your-cluster.html)
-  - [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachdb-cloud)
-  - [Manage Team Members](#manage-team-members)
-  - [Create and manage SQL users](managing-access.html#create-a-sql-user)
-  - [Manage billing for the organization](billing-management.html)
-  - [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
-  - [Delete an organization](#delete-an-organization)
-  {{site.data.alerts.callout_info}}
-  In a future release, this role will be deprecated in favor of more fine-grained roles for separately administrating organization-level user-management functions, cluster functions, and billing functions.
-  {{site.data.alerts.end}}
-- **Org developer (legacy)**: this role allows the user to read information for all clusters, and to create and manage SQL users on all clusters. It is considered deprecated in favor of the more fine-grained cluster roles below.
-- **Cluster developer**: the minimum access role for clusters. This role allows users to view the details of one or more specified clusters, as well as change their IP allowlist configuration.
-- **Cluster admin**: the administrator role for a specific database cluster, including managing SQL users/roles. This role can be granted to an organization user for one or more specific clusters, or for all clusters in the organization.
-- **Cluster creator**: allows an organization user to create clusters in an organization; the cluster creator is automatically granted the cluster admin role on clusters they create.
+- Org member
+- Org. Administrator (legacy)
+- Org developer (legacy)
+- Cluster developer
+- Cluster admin
+- Cluster creator
 
-### Console Admin
+### Org member
+The default role given to all organization users upon creation or invitation. This role grants no permissions to perform cluster or org actions.
+### Org. Administrator (legacy)
+The administrator role for organization functions. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
 
-A Console Admin is an all-access role. A Console Admin can perform the following tasks:
-
-
-
-
-Within an organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB database nodes. All SQL operations and data storage are distributed across the cluster.
-
-Each cluster has its own set of SQL roles, which allow authenticated users to execute SQL statements using any PostgreSQL-compatible client.
+- [Create a cluster](create-your-cluster.html)
+- [Invite Team Members to the organization](managing-access.html#invite-team-members-to-an-organization)
+- [Manage an organization's users and their roles](managing-access.html#manage-an-organizations-users)
+- [Create and manage SQL users](managing-access.html#create-a-sql-user)
+- [Manage billing for the organization](billing-management.html)
+- [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
+- [Delete an organization](managing-access.html#delete-an-organization)
+{{site.data.alerts.callout_info}}
+In a future release, this role will be deprecated in favor of more fine-grained roles for separately administrating organization-level user-management functions, cluster functions, and billing functions.
+{{site.data.alerts.end}}
+  
+### Org developer (legacy)
+This role allows the user to read information for all clusters, and to create and manage SQL users on all clusters. It is considered deprecated in favor of the more fine-grained cluster roles below.
+### Cluster developer
+The minimum access role for clusters. This role allows users to view the details of one or more specified clusters, as well as change their IP allowlist configuration.
+### Cluster admin
+The administrator role for a specific database cluster, including managing SQL users/roles. This role can be granted to an organization user for one or more specific clusters, or for all clusters in the organization.
+### Cluster creator
+This role alows an organization user to create clusters in an organization; the cluster creator is automatically granted the cluster admin role on clusters they create.
 
 ## Service accounts
 
@@ -74,6 +89,8 @@ Service accounts differ from users in that they authenticate with API keys, rath
 Service accounts currently operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users.
 
 However, 'legacy service accounts'&mdash;service accounts created prior to April 15 ???&mdash;still may have roles assigned under the legacy model.
+
+See: [Managing service accounts](managing-access.html#manage-service-accounts)
 
 ## Cluster roles for organization users using Cluster SSO
 

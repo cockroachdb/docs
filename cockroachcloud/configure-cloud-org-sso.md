@@ -44,7 +44,7 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
 - Some members may need to be re-added to your organization:
   - All members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the [console admin](console-access-management.html#console-admin) role, it must be granted to them again.
+  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the [org admin](authorization.html#org-administrator-legacy) role, it must be granted to them again.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
@@ -62,7 +62,7 @@ If all of your administrators belongs to multiple organizations, you must create
 
 To enable Cloud Organization SSO:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a [console admin](console-access-management.html#console-admin).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
 1. Go to **Organization** > **Authentication**.
 1. Next to **Enable Authentication**, click **Enable**.
 1. In the dialog, configure the custom URL your members will use to sign in. This value must be unique across {{ site.data.products.db }}. For more details, refer to [Update the custom URL](#update-the-custom-url).
@@ -104,7 +104,7 @@ When you enable or disable an authentication method, a notification is displayed
 
 To enable or disable an authentication method:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a [console admin](console-access-management.html#console-admin).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. To enable or disable the authentication method, toggle **Enable**.
@@ -127,7 +127,7 @@ The following sections describe the advanced settings you can configure for an S
 
 By default, members can access your {{ site.data.products.db }} organization from any email domain. To restrict access to a specific list of email domains:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a [console admin](console-access-management.html#console-admin).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. At the top of the page, click **Edit**.
@@ -139,13 +139,13 @@ By default, members can access your {{ site.data.products.db }} organization fro
 By default, autoprovisioning is disabled. In order to log in to {{ site.data.products.db }} using SSO without autoprovisioning:
 
 - A member's email address must exist in the SSO IdP.
-- A [console admin](console-access-management.html#console-admin) must have already invited the member to the {{ site.data.products.db }} organization.
+- An [org admin](authorization.html#org-administrator-legacy) must have already invited the member to the {{ site.data.products.db }} organization.
 
-Autoprovisioning allows members to access your organization without an invitation. Members are assigned the [Developer role](/docs/cockroachcloud/console-access-management.html#developer) by default. If you enable autoprovisioning, Cockroach Labs recommends that you also limit the [allowed email domains](#allowed-email-domains) for the authentication method.
+Autoprovisioning allows members to access your organization without an invitation. Members are assigned the [Developer role](/docs/cockroachcloud/authorization.html#org-developer-legacy) by default. If you enable autoprovisioning, Cockroach Labs recommends that you also limit the [allowed email domains](#allowed-email-domains) for the authentication method.
 
 To enable autoprovisioning for an SSO authentication method:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a [console admin](console-access-management.html#console-admin).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
 1. Go to **Organization** > **Authentication**.
 1. Click the name of an authentication method.
 1. Click **Advanced Settings**.
@@ -160,7 +160,7 @@ You can add a custom authentication method to connect to any IdP that supports [
 To configure a custom OIDC authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure {{ site.data.products.db }} SSO:<ul><li>Issuer URL</li><li>Client ID</li><li>Client secret</li><li>Callback URL</li></ul>
-1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a [console admin](console-access-management.html#console-admin).
+1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **OIDC (OpenID Connect)**.
@@ -179,7 +179,7 @@ To configure a custom OIDC authentication method:
 To configure a custom SAML authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure {{ site.data.products.db }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
-1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a [console admin](console-access-management.html#console-admin).
+1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **SAML**.

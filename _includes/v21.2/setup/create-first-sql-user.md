@@ -5,4 +5,4 @@ The **Create SQL user** dialog allows you to create a new SQL user and password.
 1. Copy the generated password and save it in a secure location.
 1. Click **Next**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](../cockroachcloud/managing-access.html#grant-privileges) and [Using roles](../cockroachcloud/managing-access.html#use-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [[Manage SQL users on a cluster](../cockroachcloud/managing-access.html#manage-sql-users-on-a-cluster).

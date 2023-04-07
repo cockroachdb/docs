@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.html) is available, your [org admin](authorization.html#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
 
 {% include_cached youtube.html video_id="PKpCcAtXxjo" %}
 

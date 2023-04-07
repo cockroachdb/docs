@@ -118,7 +118,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-[Console Admin](console-access-management.html#console-admin) can perform the following from the Console:
+[Org Administrators](authorization.html#org-administrator-legacy) can perform the following from the Console:
 
 - [Restore a database](#restore-a-database)
 - [Restore a table](#restore-a-table)

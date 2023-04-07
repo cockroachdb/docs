@@ -39,14 +39,14 @@ To enable and configure Cloud Organization SSO, refer to [Configure Cloud Organi
 
 ### Autoprovisioning
 
-Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](console-access-management.html#invite-team-members-to-cockroachdb-cloud). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Developer role](console-access-management.html#developer) by default.
+Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](managing-access.html#invite-team-members-to-an-organization). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Org Member role](authorization.html#org-member) by default.
 
 Together with [Allowed Email Domains](configure-cloud-org-sso.html#allowed-email-domains), autoprovisioning allows new users to get started as soon as they are provisioned in your IdP, without waiting for an invitation.
 
 Autoprovisioning is optional, and can be configured separately for each enabled SSO authentication method.
 
 {{site.data.alerts.callout_danger}}
-{{ site.data.products.db }} users are identified by their email address. To reduce the risk of duplicated users, ensure that users have unique email addresses before you enable autoprovisioning for an authentication method. If duplicate users result from enabling autoprovisioning, you must delete them manually. Refer to [Manage Team Members](/docs/cockroachcloud/console-access-management.html#manage-team-members).
+{{ site.data.products.db }} users are identified by their email address. To reduce the risk of duplicated users, ensure that users have unique email addresses before you enable autoprovisioning for an authentication method. If duplicate users result from enabling autoprovisioning, you must delete them manually. Refer to [Manage an organization's users](managing-access.html#manage-an-organizations-users).
 {{site.data.alerts.end}}
 
 Cockroach Labs recommends that you enable autoprovisioning on only a single SSO method at a time, and that you migrate your users gradually. Most organizations aim to manage users in a single centralized IdP. It may be necessary to temporarily enable autoprovisioning to migrate a group of users from your centralized IdP who have yet not been onboarded to your Cloud organization.
@@ -79,17 +79,17 @@ A user can view their current authentication method by clicking **My Account** i
 
 No. With Basic SSO, only one authentication method can be active for each {{ site.data.products.db }} Console user. To view or update their active authentication method, a user can click **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) .
 
-#### Does this change how console admins invite users?
+#### Does this change how org admins invite users?
 
-The [workflow for inviting team members](console-access-management.html#invite-team-members-to-cockroachdb-cloud) to your {{ site.data.products.db }} organization remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method a member uses to sign in, then an account is created automatically upon successfully authentication.
+The [workflow for inviting team members](managing-access.html#invite-team-members-to-an-organization) to your {{ site.data.products.db }} organization remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method a member uses to sign in, then an account is created automatically upon successfully authentication.
 
-#### As a console admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
+#### As an org admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
 
 If Cloud Organization SSO is enabled, then deprovisioning a user at the level of the IdP also removes their access to the {{ site.data.products.db }} organization.
 
-To remove a user's access to {{ site.data.products.db }} without deprovisioning the user from the IdP (such as when a user changes teams but does not leave the organization entirely), you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](console-access-management.html#delete-a-team-member).
+To remove a user's access to {{ site.data.products.db }} without deprovisioning the user from the IdP (such as when a user changes teams but does not leave the organization entirely), you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](managing-access.html#delete-a-team-member).
 
-#### Can console admins require a particular authentication method for their {{ site.data.products.db }} organization?
+#### Can org admins require a particular authentication method for their {{ site.data.products.db }} organization?
 
 Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization, only the [authentication methods you have enabled](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) are displayed to your users.
 

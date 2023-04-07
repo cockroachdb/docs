@@ -7,7 +7,7 @@ docs_area:
 
 The **Billing** page contains an overview of your charges and the payment details on file for your {{ site.data.products.db }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
-[Console Admins](console-access-management.html#console-admin) can set up and manage billing for the organization.
+[Org admins](authorization.html#org-administrator-legacy) can set up and manage billing for the organization.
 
 ## Set up billing for an organization
 

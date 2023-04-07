@@ -45,7 +45,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 {% include cockroachcloud/postgresql-special-characters.md %}
 
 {{site.data.alerts.callout_info}}
-If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
+If you forget your SQL user's password, an [org admin](authorization.html#org-administrator-legacy) can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
 For connection examples and code snippets in your language, see the following:

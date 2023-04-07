@@ -20,7 +20,7 @@ Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
 - Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
-- Create a [service account](console-access-management.html#service-accounts) and [API key](console-access-management.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud).
+- Create a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud).
 
 ## Create the Terraform configuration files
 
@@ -60,7 +60,7 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster 
     sql_user_password = "NotAGoodPassword"
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](console-access-management.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -129,7 +129,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cidr_mask = 32
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](console-access-management.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

@@ -5,9 +5,10 @@ toc: true
 docs_area: manage
 ---
 
-Before proceeding, it is recommended to review the {{ site.data.products.db }} authorization model, which is detailed in [Authorization in {{ site.data.products.db }}](authorization.html).
+This page details procedures for managing {{ site.data.products.db }} access to {{ site.data.products.db }}.
+Before proceeding, it is recommended to review the concepts related to {{ site.data.products.db }} model, which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ](authorization.html).
 
-This page shows how to manage {{ site.data.products.db }} organization users and roles:
+**Contents**:
 
 - Adding users to your organization, by creating them or inviting them from another organization.
 - Managing organization-level users roles.
@@ -20,7 +21,7 @@ The {{ site.data.products.db }} console **Access** page allows organization admi
 
 {% include cockroachcloud/prefer-sso.md %}
 
-## Managing your organizations
+## Manage your organizations
 
 An **organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations.
 
@@ -33,8 +34,8 @@ The settings and information about the organization are found on the **Settings*
 
 ## Manage an organization's users
 ### Invite Team Members to an organization
-
-As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
+<!-- change for FGAC ??? -->
+As an org admin, you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access** page, click **Add Team Member**.
@@ -43,19 +44,15 @@ As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. 
 1. (Optional) Click **Add another** to invite another team member.
 1. Click **Invite**.
 
-{{site.data.alerts.callout_success}}
-We recommend [creating a SQL user](managing-access.html) for each Team Member you invite.
-{{site.data.alerts.end}}
-
-
 #### Change a Team Member's role
 
+<!-- change for FGAC ??? -->
 1. On the **Access** page, locate the Team Member's details whose role you want to change.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. If the Team Member is a Developer, click **Change to Admin** to grant them Admin access. If the Team Member is an Admin, click **Change to Developer** to grant them only Developer access.
 
 {{site.data.alerts.callout_info}}
-As a Console Admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you will not be allowed to change your role until you assign another Team Member to be the Console Admin.
+As an org admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with org admin access, you will not be allowed to change your role until you assign another Team Member to be the org admin.
 {{site.data.alerts.end}}
 
 #### Delete a Team Member
@@ -92,7 +89,7 @@ If you are sure you want to delete the organization, proceed with the following 
 
 ## Manage service accounts
 
-## Create a service account
+### Create a service account
 
 1.  On the **Access** page, select the **Service Accounts** tab.
 1. Click **Create Service Account**.
@@ -169,8 +166,6 @@ To change the API key name for an existing API key:
 1. Select **Edit**.
 1. In the **Edit API key name** dialog modify the API key name and click **Save changes**.
 
-
-
 ## Manage SQL users on a cluster
 
 - [View all users in your cluster](#view-all-users-in-your-cluster)
@@ -180,7 +175,7 @@ To change the API key name for an existing API key:
 ### Create a SQL user
 
 {{site.data.alerts.callout_danger}}
-By default, a new SQL user created by a [Console Admin](console-access-management.html#console-admin) is granted the `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
+By default, a new SQL user created by a [org admin](authorization.html#org-administrator-legacy) is granted the `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
 When possible, it is best practice to limit each user's privileges to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
@@ -204,7 +199,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. Click **Generate & save password**.
 1. Copy the generated password and save it in a secure location.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges](#grant-privileges) and [Use roles](#use-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges](#grant-privileges) and [Use roles to manage access](#use-roles-to-manage-access).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
@@ -252,7 +247,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 ~~~
 </section>
 
-### Change a user's password
+### Change a users password
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
@@ -261,8 +256,10 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 <p></p>
 
 <section class="filter-content" markdown="1" data-scope="console">
+
+<!-- change for FGAC ??? -->
 {{site.data.alerts.callout_info}}
-Only [Console Admins](console-access-management.html#console-admin) can change a user's password. If you are a [Developer](console-access-management.html#developer), you need to ask your Console Admin to change the password. To find out who your Console Admin is, [log in](https://cockroachlabs.cloud/) and navigate to **Cluster Overview** > **Access**.
+Only users with the [org admin](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not the required permissions, ask your cluster or org admin to change the password. To find out who your admin is, [log in](https://cockroachlabs.cloud/) and navigate to **Cluster Overview** > **Access**.
 {{site.data.alerts.end}}
 
 To change a user's password:
@@ -416,7 +413,7 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#manage-privileges) before the role can be dropped.
+    All of a role's privileges must be [revoked](#revoke-a-users-privileges) before the role can be dropped.
     {{site.data.alerts.end}}
 
 ## See also

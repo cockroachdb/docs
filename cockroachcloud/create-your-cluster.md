@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
+This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} org administrators](authorization.html#org-administrator-legacy) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart](quickstart-trial-cluster.html).
@@ -18,7 +18,7 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 1. Select the **Dedicated standard** or **Dedicated advanced** plan.
 

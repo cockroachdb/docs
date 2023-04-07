@@ -12,4 +12,4 @@
 1. Click **Generate & save password**.
 1. Copy the **Generated password** and save it in a secure location.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](managing-access.html#grant-privileges) and [Using roles](managing-access.html#use-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster).

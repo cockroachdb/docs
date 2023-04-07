@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} org administrators](authorization.html#org-administrator-legacy) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 ## Before you begin
 
@@ -17,7 +17,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 {% include cockroachcloud/prefer-sso.md %}
-1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
 ## Step 2. Select a cloud provider & region

@@ -8,7 +8,7 @@ docs_area: manage
 The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} Organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
 
 {{site.data.alerts.callout_info}}
-The **Alerts** page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} clusters, all [Console Admins](console-access-management.html#console-admin) will automatically receive email alerts when your cluster reaches 75% and 100% of its burst capacity or storage limit. If you set a spend limit, you will also receive alerts at 50%, 75%, and 100% of your spend limit.
+The **Alerts** page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} clusters, all [org admins](authorization.html#org-administrator-legacy) will automatically receive email alerts when your cluster reaches 75% and 100% of its burst capacity or storage limit. If you set a spend limit, you will also receive alerts at 50%, 75%, and 100% of your spend limit.
 {{site.data.alerts.end}}
 
 If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
@@ -35,7 +35,7 @@ If alerts are enabled, {{ site.data.products.db }} will send alerts to [specifie
 
 If you receive an alert repeatedly, you may need to [optimize your workload](../stable/make-queries-fast.html) or [scale your {{ site.data.products.db }} cluster](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
-[Console Admins](console-access-management.html#console-admin) will also receive email alerts when your cluster undergoes an automatic [patch version upgrade](upgrade-policy.html#patch-version-upgrades).
+[Org admins](authorization.html#org-administrator-legacy) will also receive email alerts when your cluster undergoes an automatic [patch version upgrade](upgrade-policy.html#patch-version-upgrades).
 
 {{site.data.alerts.callout_success}}
 When scaling your cluster, we recommend first scaling VMs to include more than 2 vCPUs each. If this doesn't sufficiently improve performance, then add more nodes.

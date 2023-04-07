@@ -212,12 +212,6 @@
               ]
             },
             {
-              "title": "User Authorization",
-              "urls": [
-                "/cockroachcloud/managing-access.html"
-              ]
-            },
-            {
               "title": "Network Authorization",
               "urls": [
                 "/cockroachcloud/network-authorization.html"
@@ -230,9 +224,9 @@
               ]
             },
             {
-              "title": "Manage Console Access",
+              "title": "Managing Access in CockroachDB Cloud",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/managing-access.html"
               ]
             }
           ]

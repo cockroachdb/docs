@@ -377,6 +377,7 @@ layout: null
 /docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/cockroachcloud/cloud-sso.html /docs/cockroachcloud/cloud-org-sso.html 301
+/docs/cockroachcloud/console-access-management.html /docs/cockroachcloud/managing-access.html 301
 /docs/cockroachcloud/connect-to-a-free-cluster.html /docs/cockroachcloud/connect-to-a-serverless-cluster.html 301
 /docs/cockroachcloud/create-a-free-cluster.html /docs/cockroachcloud/create-a-serverless-cluster.html 301
 /docs/cockroachcloud/planning-your-serverless-cluster.html /docs/cockroachcloud/learn-about-pricing.html 301

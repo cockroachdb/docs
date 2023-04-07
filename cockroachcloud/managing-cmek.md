@@ -19,7 +19,7 @@ See also:
 ## Before you begin
 
 - A new {{ site.data.products.dedicated }} private cluster] is required. CMEK is not supported on {{ site.data.products.serverless }}. An existing cluster cannot be migrated to a private cluster. Refer to [Create Private Clusters](private-clusters.html).
-- A service account with `admin` privilege on clusters in your organization is required. Refer to [Service Accounts](console-access-management.html#service-accounts).
+- A service account with `admin` privilege on clusters in your organization is required. Refer to [Service Accounts](managing-access.html#manage-service-accounts).
 
 ## Overview of CMEK management procedures
 
@@ -43,8 +43,8 @@ This section gives a high level overview of the operations involved with impleme
 
 ### Step 1. Prepare your {{ site.data.products.dedicated }} Organization
 
-1. [Create a {{ site.data.products.db }} service account](console-access-management.html#service-accounts).
-1. [Create an API key](console-access-management.html#create-api-keys) for the service account to use.
+1. [Create a {{ site.data.products.db }} service account](managing-access.html#manage-service-accounts).
+1. [Create an API key](managing-access.html#create-api-keys) for the service account to use.
 
 ### Step 2. Provision your cluster
 
