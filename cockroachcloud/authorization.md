@@ -37,10 +37,9 @@ In {{ site.data.products.db }}, an organization corresponds to an authorization 
 This page primarily covers the latter, organization level. However, the two levels intersect because administrating SQL-level users on specific clusters within an organization is an organization-level function.
 
 For the main pages covering users and roles at the SQL level&mdash;within a specific database cluster, see:
-callout
+
 - [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
 - [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
-
 
 ## Organization user roles
 
