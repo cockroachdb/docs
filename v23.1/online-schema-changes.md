@@ -74,6 +74,8 @@ The following statements use the declarative schema changer by default:
 - [`DROP SCHEMA`](drop-schema.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP TYPE`](drop-type.html)
+- {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`](create-function.html)
+- {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`](drop-function.html)
 
 Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html).
 
