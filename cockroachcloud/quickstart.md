@@ -7,117 +7,58 @@ referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to get started with CockroachDB quickly. You'll use `ccloud`, {{ site.data.products.db }}'s command-line interface (CLI) tool, to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java sample application.
+This page shows you how to get started with CockroachDB quickly. You'll use the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java sample application.
 
-## Install <code>ccloud</code>
+## Create a {{ site.data.products.serverless }} cluster
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-{% assign ccloud_version = "0.3.7" %}
+## Create a SQL user
+
+{% include cockroachcloud/quickstart/create-first-sql-user.md %}
+
+## Connect to the cluster
+
+Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
+
+1. Select **Java** from the **Select option/language** dropdown.
+1. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
+
+    This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
+
+    {{site.data.alerts.callout_info}} 
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [SQL Users page](user-authorization.html).
+    {{site.data.alerts.end}}
+    
+## Configure the connection environment variable
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
-    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
-    <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
+  <button class="filter-button" data-scope="mac">Mac</button>
+  <button class="filter-button" data-scope="linux">Linux</button>
+  <button class="filter-button" data-scope="windows">Windows</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="mac">
-
-1. [Install Homebrew](http://brew.sh/).
-1. Install using the `ccloud` tap:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    brew install cockroachdb/tap/ccloud
-    ~~~
-
-</section>
-<section class="filter-content" markdown="1" data-scope="linux">
-In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+<section class="filter-content" markdown="1" data-scope="mac linux">
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_{{ ccloud_version }}.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+export JDBC_DATABASE_URL="<jdbc-connection-string>"
 ~~~
-
-</section>
-<section class="filter-content" markdown="1" data-scope="windows">
-In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_{{ ccloud_version }}.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
-~~~
-</section>
-
-## Run `ccloud quickstart`
-
-The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new {{ site.data.products.serverless }} with a $0 spend limit, and connecting to the new cluster. 
-
-1. In a terminal, run `ccloud quickstart`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    ccloud quickstart
-    ~~~
-
-1. Log in to {{ site.data.products.db }} using the browser window opened by `ccloud quickstart`. 
-
-    If you are new to {{ site.data.products.db }}, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
-
-1. In your terminal, follow the `ccloud quickstart` prompts to choose a cluster name, cloud provider, and cloud provider region, and then create the cluster.
-
-    Each prompt has default values that you can select, or change if you want a different option.
-
-1. Once your cluster has been created, follow the prompts in your terminal to connect to your cluster.
-    
-    You will have to create a SQL user and password, but you can use the default values for the database name and CA certificate path.
-
-1. From the list of available connection options, select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting with `postgresql://`:
-
-    ~~~
-    ? How would you like to connect? General connection string
-    Retrieving cluster info: succeeded
-     Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
-    postgresql://maxroach:ThisIsNotAGoodPassword@dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
-    ~~~
-
-1. Use the `cockroach convert-url` command to convert the connection string that you copied earlier to a [valid connection string for JDBC connections](../{{site.current_cloud_version}}/connect-to-the-database.html?filters=java):
-
-      {% include_cached copy-clipboard.html %}
-      ~~~ shell
-      cockroach convert-url --url "<connection-string>"
-      ~~~
-
-      ~~~
-      ...
-      # Connection URL for JDBC (Java and JVM-based languages):
-      jdbc:postgresql://{host}:{port}/{database}?password={password}&sslmode=verify-full&user={username}
-      ~~~
-    
-1. Run the following command to set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
-
-    <section class="filter-content" markdown="1" data-scope="mac linux">
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    export JDBC_DATABASE_URL="<jdbc-connection-string>"
-    ~~~
-
-    </section>
-    {% comment %} End mac linux {% endcomment %}
-    <section class="filter-content" markdown="1" data-scope="windows">
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
-    ~~~
-    
-    </section>
 
 The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="windows">
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
+~~~
+
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+</section>
 
 ## Run the Java sample code
 
@@ -168,7 +109,6 @@ Now that you have a free {{ site.data.products.serverless }} cluster running, tr
 - [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.current_cloud_version}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data](../{{site.current_cloud_version}}/migration-overview.html).
-- Learn more about [`ccloud`](ccloud-get-started.html).
 
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
 
