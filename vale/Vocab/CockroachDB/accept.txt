@@ -82,7 +82,7 @@ deallocated
 decorrelat(ed?|ion)
 decrypter
 denormalization
-deprovision
+deprovision(s|ed)?
 dereference
 deserializ(ation|ed?)
 dev
@@ -148,6 +148,8 @@ href
 (?i)html
 https?
 hyperthreads?
+IdP
+IdP's
 img
 Inconsolata
 incrementals
@@ -235,7 +237,10 @@ nullab(ility|le)
 numerics
 offboard
 OIDs?
+Okta
+Okta's
 OOMs
+onboard(s|ed)
 ons
 onwards
 OpenID
@@ -418,6 +423,7 @@ ukwest
 unanonymized
 unarchived
 unary
+unassign(s|ed)?
 uncategorized
 uncollated
 uncomment(ed)

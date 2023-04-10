@@ -32,7 +32,7 @@ All enabled authentication methods appear on your custom URL and are available t
 - Google
 - Microsoft
 
-In addition, you can create authentication methods that connect to your IdP using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+In addition, you can create authentication methods that connect to your identity provider (IdP) using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language), [System for Cross-Domain Identity Management SCIM](https://www.rfc-editor.org/rfc/rfc7644), and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 
 Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your IdPs. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
 
@@ -44,19 +44,19 @@ Before you enable Cloud Organization SSO, notify your members about what to expe
 - Which authentication methods they can use and whether they have autoprovisioning enabled.
 - Some members may need to be re-added to your organization:
   - All members of your {{ site.data.products.db }} organization who were using [Basic SSO](cloud-org-sso.html#basic-sso) rather than an email and password must sign in again to regain access to your organization. After signing in, members retain the same access they had before the migration.
-  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited. If they previously had the [Org Administrator](authorization.html#org-administrator-legacy) role, it must be granted to them again.
+  - Members who are also members of other organizations must be re-added to your organization. If they sign in using an authentication method with [autoprovisioning](#autoprovisioning) enabled, they are automatically added upon successful sign-in. Otherwise, they must be re-invited or [provisioned using SCIM](configure-scim-provisioning.html). If a re-invited member previously had the [org admin](authorization.html#org-administrator-legacy) role, it must be granted to them again.
 
 During enablement of the feature, a list of affected members is shown, and those members are also notified individually.
 
-### Ensure that at least one organization admin belongs to no other CockroachDB Cloud Organization
+### Ensure that at least one organization admin belongs to no other {{ site.data.products.db }} organization
 
 {{site.data.alerts.callout_success}}
-Troubleshooting tip: If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that at least one organization admin belongs to no other CockroachDB Cloud Organization.
+If your migration fails with the error: `Cloud Organization SSO cannot be enabled`, confirm that the admin who is enabling {{ site.data.products.db }} Organization SSO is not a member of any other {{ site.data.products.db }} organization.
 {{site.data.alerts.end}}
 
-For your migration to succeed, you must ensure that at least one admin belongs to no other CockroachDB Cloud Organization than the one to be migrated. If all admins belong to multiple organizations, the migration will fail with the generic error `Cloud Organization SSO cannot be enabled`.
+For your migration to succeed, you must ensure that at least one admin belongs to no other {{ site.data.products.db }} organization than the one to be migrated. If all admins belong to multiple organizations, the migration will fail with the generic error `Cloud Organization SSO cannot be enabled`.
 
-If all of your administrators belongs to multiple organizations, you must create a temporary admin user without SSO (authenticating with username/password) to perform the migration. This powerful but weakly secured admin user should be deleted after the migration, in keeping with the general practices of minimizing unnecessary and weakly secured (without SSO) access.
+If all of your administrators belongs to multiple organizations, you can create a temporary user in your SSO provider or directly in {{ site.data.products.db }}. Grant the [**Org Administrator (legacy)** role](authorization.html#org-administrator-legacy) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Org Administrator (legacy)** role from it.
 
 ## Enable Cloud Organization SSO
 
@@ -136,12 +136,13 @@ By default, members can access your {{ site.data.products.db }} organization fro
 
 ### Autoprovisioning
 
-By default, autoprovisioning is disabled. In order to log in to {{ site.data.products.db }} using SSO without autoprovisioning:
+Autoprovisioning allows members to sign up for an account without waiting for an invitation. By default, autoprovisioning is disabled, and a member must exist in the SSO provider and must be [invited by a user with the **Org Administrator (legacy)** role](managing-access.html#invite-team-members-to-an-organization) before they can create an account. When autoprovisioning is enabled, no invitation is required.
 
-- A member's email address must exist in the SSO IdP.
-- An [Org Administrator](authorization.html#org-administrator-legacy) must have already invited the member to the {{ site.data.products.db }} organization.
+Autoprovisioned accounts are initially assigned the [**Organization Member** role](authorization.html#organization-member), which grants no permissions to perform cluster or org actions. Additional roles can be granted by a user with the [**Org Administrator (legacy)** role](authorization.html#org-administrator-legacy).
 
-Autoprovisioning allows members to access your organization without an invitation. Members are assigned the [Developer role](/docs/cockroachcloud/authorization.html#org-developer-legacy) by default. If you enable autoprovisioning, Cockroach Labs recommends that you also limit the [allowed email domains](#allowed-email-domains) for the authentication method.
+If a member's identity is removed from the SSO provider, they can no longer log in to {{ site.data.products.db }}, but their account is not automatically deprovisioned. If you require automatic deprovisioning or other centralized account automation features, refer to [SCIM Pprovisioning](configure-scim-provisioning.html).
+
+Cockroach Labs does not recommend enabling both autoprovisioning and SCIM provisioning for the same authentication method.
 
 To enable autoprovisioning for an SSO authentication method:
 
@@ -195,6 +196,7 @@ To configure a custom SAML authentication method:
 1. Download metadata required by your IdP. Click **Download**. Open the file and make a note of the following values:<ul><li><b>Entity ID</b>: The <code>entityID</code> attribute of the <code>&lt;EntityDescriptor&gt;</code> tag.</li><li><b>Login URL</b>: The <code>location</code> attribute of the <code>&lt;AssertionConsumerService&gt;</code> tag.</li></ul>
 1. In the browser where you are logged in to your IdP, update the authentication configuration to use the Entity ID and Login URL from the metadata file.
 1. Configure the SAML assertions that your IdP sends to {{ site.data.products.db }}. Your IdP must send an assertion with a `name` field and a second assertion with an `email` field, each mapped to the relevant fields in your IdP. Refer to the documentation for your IdP.
+1. (Optional) To configure SCIM provisioning, refer to [Configure SCIM autoprovisioning](configure-scim-provisioning.html).
 
 ## Require SSO
 
@@ -220,4 +222,5 @@ Members must still sign in using your organization's custom URL.
 ## What next?
 
 - [Cloud Organization SSO Frequently Asked Questions](cloud-org-sso.html#frequently-asked-questions-faq).
+- [Configure SCIM Provisioning](configure-scim-provisioning.html)
 - Learn more about [authenticating to {{ site.data.products.db }}](authentication.html).

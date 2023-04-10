@@ -276,6 +276,12 @@
 										]
 									},
                   {
+										"title": "Configure SCIM provisioning",
+										"urls": [
+											"/cockroachcloud/configure-scim-provisioning.html"
+										]
+									},
+                  {
                     "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
