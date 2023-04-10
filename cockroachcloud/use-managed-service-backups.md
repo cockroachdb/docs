@@ -41,7 +41,6 @@ Your cluster's **Backups** page displays a list of your full and incremental clu
 
 For each backup, the following details display:
 
-<div class="filter-content" markdown="1" data-scope="dedicated">
 - **Data From**: The date and time the backup was taken. 
 - **Type**: Whether the backup is a [full](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) or [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) backup. 
 - **Size**: The size of the backup, measured in `KiB`.
