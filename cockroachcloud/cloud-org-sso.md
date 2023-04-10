@@ -39,7 +39,7 @@ To enable and configure Cloud Organization SSO, refer to [Configure Cloud Organi
 
 ### Autoprovisioning
 
-Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](managing-access.html#invite-team-members-to-an-organization). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Org Member role](authorization.html#org-member) by default.
+Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](managing-access.html#invite-team-members-to-an-organization). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Organization Member role](authorization.html#organization-member) by default.
 
 Together with [Allowed Email Domains](configure-cloud-org-sso.html#allowed-email-domains), autoprovisioning allows new users to get started as soon as they are provisioned in your IdP, without waiting for an invitation.
 
@@ -87,7 +87,7 @@ The [workflow for inviting team members](managing-access.html#invite-team-member
 
 If Cloud Organization SSO is enabled, then deprovisioning a user at the level of the IdP also removes their access to the {{ site.data.products.db }} organization.
 
-To remove a user's access to {{ site.data.products.db }} without deprovisioning the user from the IdP (such as when a user changes teams but does not leave the organization entirely), you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](managing-access.html#delete-a-team-member).
+To remove a user's access to {{ site.data.products.db }} without deprovisioning the user from the IdP (such as when a user changes teams but does not leave the organization entirely), you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](managing-access.html#remove-a-team-member).
 
 #### Can org admins require a particular authentication method for their {{ site.data.products.db }} organization?
 

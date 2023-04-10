@@ -85,7 +85,7 @@ docs_area:
         <li><a href="../{{site.current_cloud_version}}/performance-best-practices-overview.html">Tune Performance</a></li>
         <li><a href="{{ '/cockroachcloud/production-checklist.html' | relative_url }}">Move into Production</a></li>
         <li><a href="{{ '/cockroachcloud/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
-        <li><a href="{{ '/cockroachcloud/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
+        <li><a href="{{ '/cockroachcloud/managing-access.htm' | relative_url }}l">Managing Access in CockroachDB Cloud</a></li>
         <li><a href="{{ '/cockroachcloud/billing-management.htm' | relative_url }}l">Manage Billing</a></li>
         </ul>
       </div>

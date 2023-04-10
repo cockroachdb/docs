@@ -7,6 +7,15 @@ docs_area: manage
 
 This page documents procedures for managing the lifecycle of SQL users and roles on CockroachDB clusters.
 
+Procedures for managing access are covered in [Managing Access in {{ site.data.products.db }}](../cockroachcloud/managing-access.html).
+
+{{site.data.alerts.callout_info}}
+The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of {{ site.data.products.db }} users within {{ site.data.products.db }} organizations.
+
+Learn more: [Overview of the CockroachDB Cloud two-level authorization model](../cockroachcloud/authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+{{site.data.alerts.end}}
+
+
 For reference documentation and explanation of related concepts, see [Security Reference&mdash;Authorization](security-reference/authorization.html).
 ## Create CockroachDB users
 

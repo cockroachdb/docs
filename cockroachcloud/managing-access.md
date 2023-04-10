@@ -1,25 +1,18 @@
 ---
-title: Managing Access in CockroachDB Cloud
+title: Managing Access (Authorization) in CockroachDB Cloud
 summary: Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles.
 toc: true
 docs_area: manage
 ---
 
 This page details procedures for managing {{ site.data.products.db }} access to {{ site.data.products.db }}.
-Before proceeding, it is recommended to review the concepts related to {{ site.data.products.db }} model, which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ](authorization.html).
+Before proceeding, it is recommended to review the concepts related to the two levels of {{ site.data.products.db }} access management model (the organization level and the cluster level), which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ](authorization.html).
 
-**Contents**:
+Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and the manage the access roles granted to both.
 
-- Adding users to your organization, by creating them or inviting them from another organization.
-- Managing organization-level users roles.
-- Granting organization users access to clusters through cluster roles.
-- Managing the privileges associated with cluster roles.
+Access management tasks at the cluster level are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the roles that govern permissions on the cluster for SQL users must be managed in the SQL interface. Furthermore, SQL users created with the console or with `ccloud` utility have the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user, revoking the `admin` role and replacing it with a role with privileges required for its task, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
-{{ site.data.products.db }} requires you to create SQL users to access the cluster.
-
-The {{ site.data.products.db }} console **Access** page allows organization administrators to manage users, service accounts, and the roles granted to them. To view the **Access** page, [log in](https://cockroachlabs.cloud/), select the correct organization from the organizations tab, and either click **Access** or visit `https://cockroachlabs.cloud/access`.
-
-{% include cockroachcloud/prefer-sso.md %}
+See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
 ## Manage your organizations
 
@@ -35,32 +28,27 @@ The settings and information about the organization are found on the **Settings*
 ## Manage an organization's users
 ### Invite Team Members to an organization
 <!-- change for FGAC ??? -->
-As an org admin, you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
+As an [org admin](authorization.html#org-administrator-legacy), you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
-1. On the **Access** page, click **Add Team Member**.
-1. In the **Email Address** field, enter the email address of the team member you want to invite.
-1. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
-1. (Optional) Click **Add another** to invite another team member.
-1. Click **Invite**.
+1. On the **Access** page, click **Invite**.
+1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member](authorization.html#organization-member) role; this default role grants no access.
 
 #### Change a Team Member's role
 
-<!-- change for FGAC ??? -->
-1. On the **Access** page, locate the Team Member's details whose role you want to change.
-1. In the **Action** column, click the three dots to view the allowed actions.
-1. If the Team Member is a Developer, click **Change to Admin** to grant them Admin access. If the Team Member is an Admin, click **Change to Developer** to grant them only Developer access.
+1. On the **Access** page, locate the Team Member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
+1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
+1. Note that a number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
 
-{{site.data.alerts.callout_info}}
-As an org admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with org admin access, you will not be allowed to change your role until you assign another Team Member to be the org admin.
+{{site.data.alerts.callout_danger}}
+As an [org administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
 {{site.data.alerts.end}}
 
-#### Delete a Team Member
+#### Remove a Team Member
 
-1. On the **Access** page, locate the Team Member you want to delete.
+1. On the **Access** page, locate the Team Member you want to remove.
 1. In the **Action** column, click the three dots to view the allowed actions.
-1. Click **Delete Member**.
-1. On the confirmation window, click **Delete**.
+1. Click **Remove Member** and confirm.
 
 #### Revoke a pending invite
 
@@ -89,37 +77,33 @@ If you are sure you want to delete the organization, proceed with the following 
 
 ## Manage service accounts
 
+{{site.data.alerts.callout_info}}
+The access management model for service accounts changed with release v23.1. Service accounts created prior to this release may still have the following legacy roles:
+
+- The `ADMIN` role  allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
+- The `CREATE` role allows the service account to create new clusters within the organization.
+- The `DELETE` role allows the service account to delete clusters within the organization.
+- The `EDIT` role allows the service account to modify clusters within the organization.
+- The `READ` role allows the service account to get details about clusters within the organization.
+{{site.data.alerts.end}}
+
 ### Create a service account
 
-1.  On the **Access** page, select the **Service Accounts** tab.
-1. Click **Create Service Account**.
-1. In the **Create service account** dialog:
-    1. Enter the **Account name**.
-    1. (Optional) Enter a **Description** of the service account.
-    1. Set the **Permissions** of the service account.
+1. On the **Access** page, select the **Service Accounts** tab.
+1. Click **Create**.
+1. Enter a **Name** and **Description**.
+1. Create and export an **API key**.
+1. Confirm creation of the service account.
 
-        Granting `ADMIN` permissions allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
+{{site.data.alerts.callout_info}}
+Service accounts, like users, are given only the organization member role default upon creation. This role grants no access.
+{{site.data.alerts.end}}
 
-        The `CREATE` permission allows the service account to create new clusters within the organization.
+### Edit roles on a service account
 
-        The `DELETE` permission allows the service account to delete clusters within the organization.
-
-        The `EDIT` permission allows the service account to modify clusters within the organization.
-
-        The `READ` permission allows the service account to get details about clusters within the organization.
-
-    1. Click **Create**.
-
-1. [Create an API key](#create-api-keys) for the newly created service account, or click **Skip** to go back to the Service Accounts table.
-
-### Modify a service account
-
-To modify the name, description, or permissions of a service account:
-
-1. Click the **Action** button for the service account name in the **Service Accounts** table.
-1. Select **Edit**.
-1. In the **Edit service account** dialog, modify the name, description, or permissions for the service account.
-1. Click **Save changes**.
+1. On the **Access** page, select the **Service Accounts** tab.
+1. In the row for the target service account, click, click the three-dots **Action** button and select **Edit Roles**.
+1. Note that a number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](authorization.html#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
 
 ### API access
 
@@ -175,7 +159,7 @@ To change the API key name for an existing API key:
 ### Create a SQL user
 
 {{site.data.alerts.callout_danger}}
-By default, a new SQL user created by a [org admin](authorization.html#org-administrator-legacy) is granted the `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
+By default, a new SQL user created by a [cluster administrator](authorization.html#cluster-administrator) is granted the `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
 When possible, it is best practice to limit each user's privileges to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
@@ -187,8 +171,6 @@ When possible, it is best practice to limit each user's privileges to the minimu
 
 <section class="filter-content" markdown="1" data-scope="console">
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
-
-Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to create a new user:
 
 1. Navigate to your cluster's **SQL Users** page in the **Security** section of the left side navigation.
 1. Click the **Add User** button in the top right corner.
@@ -259,7 +241,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 
 <!-- change for FGAC ??? -->
 {{site.data.alerts.callout_info}}
-Only users with the [org admin](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not the required permissions, ask your cluster or org admin to change the password. To find out who your admin is, [log in](https://cockroachlabs.cloud/) and navigate to **Cluster Overview** > **Access**.
+Only users with the [org admin](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or org admin to change the password.
 {{site.data.alerts.end}}
 
 To change a user's password:
