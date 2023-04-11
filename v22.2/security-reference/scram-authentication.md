@@ -140,10 +140,11 @@ SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.e
 
 It is not possible to automatically convert credentials to SCRAM in bulk, without client participation. To implement SCRAM for all SQL user accounts, take the following steps:
 
-1. Turn on the `server.user_login.cert_password_method.auto_scram_promotion.enabled` [cluster setting](../cluster-settings.html#setting-server-user-login-cert-password-method-auto-scram-promotion-enabled):
+1. Set the following [cluster settings](../cluster-settings.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
+    SET CLUSTER SETTING server.user_login.cert_password_method.auto_scram_promotion.enabled = true;
     SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = true;
     ~~~
 

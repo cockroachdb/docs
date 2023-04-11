@@ -97,30 +97,48 @@ To mitigate against this situation while keeping SCRAM authentication enabled, C
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
+If the above steps don't work, you can try lowering the default hashing cost and reapplying the password as described below.
+
+##### Lower default hashing cost and reapply the password
+
+To decrease the CPU usage of SCRAM password hashing while keeping SCRAM enabled:
+
+1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting](cluster-settings.html#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.password_hashes.default_cost.scram_sha_256 = 4096;
+    ~~~
+
+1. Make sure the [`server.user_login.rehash_scram_stored_passwords_on_cost_change.enabled` cluster setting](cluster-settings.html) is set to `true` (the default).
+
+{{site.data.alerts.callout_success}}
+When lowering the default hashing cost, we recommend that you use strong, complex passwords for [SQL users](security-reference/authorization.html#sql-users).
+{{site.data.alerts.end}}
+
+If you are still seeing higher connection latencies than before, you can [downgrade from SCRAM authentication](#downgrade-from-scram-authentication).
+
 #### Downgrade from SCRAM authentication
 
-As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication by taking the following steps.
+As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication to bcrypt as follows:
 
-1. Turn off the `server.user_login.cert_password_method.auto_scram_promotion.enabled` [cluster setting](cluster-settings.html#setting-server-user-login-cert-password-method-auto-scram-promotion-enabled):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = false;
-    ~~~
-
-1. Change the user password encryption algorithm to [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) by setting the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
+1. Set the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING server.user_login.password_encryption='crdb-bcrypt';
+    SET CLUSTER SETTING server.user_login.password_encryption = 'crdb-bcrypt';
     ~~~
 
-1. For each [SQL user](create-user.html) in the system, run [`ALTER USER {user} .. WITH PASSWORD`](alter-user.html#change-a-users-password) to encode the user's password using bcrypt.  Note that this can be the same password as the user's current password.
+1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting](cluster-settings.html#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER USER {user} WITH PASSWORD {password};
+    SET CLUSTER SETTING server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled = true;
     ~~~
+
+{{site.data.alerts.callout_info}}
+The [`server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting](cluster-settings.html#setting-server-user-login-upgrade-bcrypt-stored-passwords-to-scram-enabled) can be left at its default value of `true`.
+{{site.data.alerts.end}}
 
 ## See also
 
