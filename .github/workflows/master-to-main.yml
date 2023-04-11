@@ -63,6 +63,8 @@ jobs:
           cp -f source/index.md target/docs/docs
           cp -f source/search.html target/docs/docs
           cp -f source/sitemap.xml target/docs/docs
+          
+          cp -rf source/archived target/docs/archived
 
           echo "date=$(date)" >> $GITHUB_ENV
       - name: Add, commit, and push new file changes to main branch
