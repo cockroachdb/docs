@@ -7,6 +7,7 @@ docs_area: manage
 
 This page covers the essential concepts related to access management (authorization) in {{ site.data.products.db }}. Procedures for managing access are covered in [Managing Access in {{ site.data.products.db }}](managing-access.html).
 
+{% include_cached cockroachcloud/fgac-transition-callout.md %}
 
 ## Overview of the CockroachDB Cloud two-level authorization model
 

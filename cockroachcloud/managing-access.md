@@ -14,6 +14,8 @@ Access management tasks at the cluster level are a bit distributed. SQL users on
 
 See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
+{% include_cached cockroachcloud/fgac-transition-callout.md %}
+
 ## Manage your organizations
 
 An **organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations.
