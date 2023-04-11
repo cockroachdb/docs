@@ -8,15 +8,15 @@
 
 ### Organization
 
-In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy rooted in a billing account. The user of the billing account can add or invite other users to the organization.
+In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy rooted linked to a billing account. The admins of the organization can add or invite other users to it.
 
-Learn more: [Overview of the CockroachDB Cloud two-level authorization model]({{ link_prefix }}authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+To learn more, refer to [Overview of the CockroachDB Cloud two-level authorization model]({{ link_prefix }}authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
 
 ### User
-A {{ site.data.products.db }} organization user belongs to one or more organizations
+A {{ site.data.products.db }} user can belong to one or more organizations
 
 {{site.data.alerts.callout_info}}
-The concept of *Organization user* is distinct from *SQL user/role* on any given cluster.
+The concept of *Organization user* is distinct from *SQL user/role* in any given cluster.
 
 Learn more: [Overview of the CockroachDB Cloud two-level authorization model]({{ link_prefix }}authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 {{site.data.alerts.end}}
