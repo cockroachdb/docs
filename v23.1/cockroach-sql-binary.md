@@ -25,7 +25,7 @@ The output of `cockroach-sql` when used non-interactively is part of a stable in
 
 Download the binary and copy it into your `PATH`.
 
-<div class="filter-content" markdown="1" data-scope="linux">
+<section class="filter-content" markdown="1" data-scope="linux">
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -34,20 +34,41 @@ curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version
 
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
 
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="mac">
+<section class="filter-content" markdown="1" data-scope="mac">
+
+You can install `cockroach-sql` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+1. Install using the `cockroach-sql` tap:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    brew install cockroachdb/tap/cockroach-sql
+    ~~~
+
+### Download the Binary
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
 ~~~
 
+Use the ARM 64 binary if you have an M-series Mac:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl https://binaries.cockroachdb.com/cockroach-sql-{{ page.release_info.version }}.darwin-11.0-arm64.tgz | tar -xz && sudo cp -i cockroach-sql-{{ page.release_info.version }}.darwin-11.0-arm64/cockroach-sql /usr/local/bin && if [ ! -f /usr/local/bin/cockroach ]; then sudo ln -s /usr/local/bin/cockroach-sql /usr/local/bin/cockroach; fi
+~~~
+
 If you don't have an existing `cockroach` binary in `/usr/local/bin` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
 
-</div>
+</section>
 
-<div class="filter-content" markdown="1" data-scope="windows">
+<section class="filter-content" markdown="1" data-scope="windows">
 
 Open a PowerShell terminal as an Administrator, then run the following command:
 
@@ -58,7 +79,7 @@ $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [
 
 If you don't have an existing `cockroach` binary in `$env:appdata/cockroach/` this will create a symbolic link to `cockroach` so you can use the `cockroach sql` command.
 
-</div>
+</section>
 
 Or you can download the [binary from the releases page](../releases/{{ page.version.version }}.html) and install it manually.
 
@@ -66,7 +87,6 @@ Or you can download the [binary from the releases page](../releases/{{ page.vers
 
 - The [role option of the user](security-reference/authorization.html#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user has been set to use the `NOLOGIN` role or the `NOSQLLOGIN` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `NOSQLLOGIN` role option), the user cannot log in using the SQL CLI with any authentication method.
 - **macOS users only:** By default, macOS-based terminals do not enable handling of the Alt key modifier. This prevents access to many keyboard shortcuts in the unix shell and `cockroach sql`. See the section [macOS terminal configuration](#macos-terminal-configuration) below for details.
-
 
 ## Synopsis
 
