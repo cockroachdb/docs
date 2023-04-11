@@ -120,7 +120,7 @@ We discourage further use of the Legacy Org Developer role as that may have a br
 
 ### Does the CockroachDB Cloud authorization model apply similarly to both service accounts and human users in a CockroachDB Cloud organization?
 
-Yes, for service accounts created after release v23.1. Older, legacy service accounts use an older authorization model. See [Service Accounts](#service-accounts).
+Yes, for service accounts created after the updated authorization model is enabled for your organization. Service accounts created previously continue to use the older authorization model. See [Service Accounts](#service-accounts).
 
 ### Could I assign a cluster level role to a few users such that they have the relevant entitlements on all clusters in the CockroachDB Cloud organization?
 
