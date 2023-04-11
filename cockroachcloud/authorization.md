@@ -17,6 +17,7 @@ You can also execute many administrative commands using the `ccloud` command-lin
 
 - `ccloud` allows human users to authenticate their terminal via a browser token from the {{ site.data.products.db }} console.
 - The {{ site.data.products.db }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
+- You can [use Terraform to provision users and other aspects of your {{ site.data.products.db }} clusters](provision-a-cluster-with-terraform.html). However, note that currently Terraform can only be used to provision admin SQL users, as this is a current limitation of the API, on which Terraform depends.
 
 In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy rooted in a billing account. Within each CockroachDB Cloud organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB database nodes. SQL operations and data storage are distributed over a cluster. Every clusters belong to an organization.
 
