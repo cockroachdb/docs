@@ -22,7 +22,7 @@ In {{ site.data.products.db }}, an organization corresponds to an authorization 
 
 {{ site.data.products.db }} has a two-level authorization model:
 
-1. Cluster/SQL level: Each CockroachDB cluster has its own set of SQL users and roles defined on it. Roles grant users permission to execute some set of SQL statements against some set of database resources on the cluster.
+1. SQL level within a cluster: Each CockroachDB cluster has its own set of SQL users and roles defined in it. Roles grant users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
 2. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
 This page primarily covers the latter, organization level. However, the two levels intersect because administrating SQL-level users on specific clusters within an organization is an organization-level function.
@@ -121,7 +121,7 @@ We discourage further use of the Legacy Org Developer role as that may have a br
 
 ### Does the CockroachDB Cloud authorization model apply similarly to both service accounts and human users in a CockroachDB Cloud organization?
 
-Yes, for service accounts created after release v23.1. Older, legacy service accounts use an older authorization model. See [Service Accounts](#service-accounts).
+Yes, for service accounts created after the updated authorization model is enabled for your organization. Service accounts created previously continue to use the older authorization model. See [Service Accounts](#service-accounts).
 
 ### Could I assign a cluster level role to a few users such that they have the relevant entitlements on all clusters in the CockroachDB Cloud organization?
 
