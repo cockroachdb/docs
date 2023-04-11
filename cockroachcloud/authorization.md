@@ -10,9 +10,9 @@ This page covers the essential concepts related to access management (authorizat
 
 ## Overview of the CockroachDB Cloud two-level authorization model
 
-**The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for adminstering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a CockroachDB Cloud **organization** (or create a new one).
+**The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a CockroachDB Cloud **organization** (or create a new one).
 
-Many administrative functions can also be executed using the `ccloud` command line utility and the CockroachDB Cloud API:
+You can also execute many administrative commands using the `ccloud` command-line utility and the {{ site.data.products.db }} API:
 
 - `ccloud` allows human users to authenticate their terminal via a browser token from the {{ site.data.products.db }} console.
 - The {{ site.data.products.db }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
