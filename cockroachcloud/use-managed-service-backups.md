@@ -5,9 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include cockroachcloud/ccloud/backup-types.md %}
-
-This page describes how to use managed-service backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
+This page describes how to use [managed-service backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html#cockroachdb-backup-types) from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
 
 To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backups** in the **Data** section of the left side navigation.
 

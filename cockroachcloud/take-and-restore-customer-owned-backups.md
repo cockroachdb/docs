@@ -5,9 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{% include cockroachcloud/ccloud/backup-types.md %}
-
-This page describes how to take and restore customer-owned backups from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
+This page describes how to take and restore [customer-owned backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html#cockroachdb-backup-types) from **{{ site.data.products.serverless }}** and **{{ site.data.products.dedicated }}** clusters. 
 
 The examples demonstrate how to back up and restore from cloud storage and `userfile` storage. We recommend using cloud storage for your backups.
 
