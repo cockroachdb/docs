@@ -20,7 +20,7 @@ Before you start this tutorial, you must
 
 - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli).
 - Install the [`wget` command line utility](https://www.gnu.org/software/wget/).
-- Create a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud).
+- Create a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud), and assign `admin` privilege or Cluster Creator / Cluster Admin role at the organization scope.
 
 ## Create the Terraform configuration files
 

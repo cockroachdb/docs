@@ -25,7 +25,7 @@ To configure and manage log export for your {{ site.data.products.dedicated }} c
 https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 ~~~
 
-Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions.
+Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
 
 The following methods are available for use with the `logexport` endpoint, and require the listed service account permissions:
 
