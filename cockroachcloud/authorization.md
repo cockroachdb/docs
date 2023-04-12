@@ -149,7 +149,7 @@ Yes, an admin could assign a cluster level role like Cluster Admin or Cluster De
 
 ### If an admin removes all role assignments for a particular user, is that user automatically removed from the {{ site.data.products.db }} organization?
 
-When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added {{ site.data.products.db }} member, and the member is not automatically removed from the organization. To manually remove a member, refer to [Manage Team Members](../cockroachcloud/console-access-management.html#manage-team-members).
+When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added {{ site.data.products.db }} member, and the member is not automatically removed from the organization. Refer to: [Remove a Team Member](managing-access.html#remove-a-team-member)
 
 ### Which roles grant the ability to add, remove, and manage members in in a {{ site.data.products.db }} organization?
 
@@ -170,11 +170,16 @@ This overlap allows admins to give users from different projects or teams access
 1. SQL level in a cluster: Each CockroachDB cluster has its own set of SQL users and roles defined in it. Roles grant users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
 2. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined in it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
-### What methods can an admin use to assign organization-wide and cluster-specific roles service accounts and human users?
+### What methods can an admin use to assign organization-wide and cluster-specific roles to human users and service accounts?
 
-To manage roles for human users, you can use [Cloud Console](../cockroachcloud/console-access-management.htm), the [Cloud API](../cockroachcloud/cloud-api.html), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest).
+You can use Cloud Console, the [Cloud API](../cockroachcloud/cloud-api.html), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest) to assign roles to human users.
 
-To manage roles for service accounts, you must use the [Cloud API](../cockroachcloud/cloud-api.html).
+To manage roles for service accounts, you must use the Cloud API.
+
+Refer to:
+- [Manage organization users](managing-access.html#manage-an-organizations-users)
+- [Manage service accounts](managing-access.html#manage-service-accounts)
+
 
 ### How can we track and audit role-assignment actions in a {{ site.data.products.db }} organization?
 

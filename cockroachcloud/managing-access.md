@@ -154,9 +154,9 @@ To change the API key name for an existing API key:
 
 ## Manage SQL users on a cluster
 
-- [View all users in your cluster](#view-all-users-in-your-cluster)
-- [Change a user's password](#change-a-users-password)
-- [Remove a user](#remove-a-user)
+- [View all SQL users in your cluster](#view-all-sql-users-in-your-cluster)
+- [Change a SQL user's password](#change-a-sql-users-password)
+- [Remove a SQL user](#remove-a-sql-user)
 
 ### Create a SQL user
 
@@ -183,7 +183,7 @@ When possible, it is best practice to limit each user's privileges to the minimu
 1. Click **Generate & save password**.
 1. Copy the generated password and save it in a secure location.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges](#grant-privileges) and [Use roles to manage access](#use-roles-to-manage-access).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
