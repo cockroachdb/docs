@@ -81,10 +81,8 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
 {{site.data.alerts.callout_success}}
-In order to create new clusters, the service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` or `CREATE` [permission](authorization.html#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` or `CREATE` [permission](authorization.html#service-accounts) if it is a legacy service account.
 {{site.data.alerts.end}}
-
-
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -218,7 +216,11 @@ Where:
 
 ## Get information about a specific cluster
 
-To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](managing-access.html#manage-service-accounts) to retrieve information about an organization's clusters.
+To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `Read` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -285,7 +287,12 @@ Where:
 
 ## Get information about a cluster's nodes
 
-To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](managing-access.html#manage-service-accounts) to retrieve information about an organization's clusters.
+To retrieve information about a cluster's nodes, including the node status, make a `GET` request to the `/v1/clusters/{cluster_id}/nodes` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
+
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -333,7 +340,13 @@ Where:
 
 ## Set the maximum spend limit of a Serverless cluster
 
-To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` [permission](managing-access.html#manage-service-accounts) to retrieve information about an organization's clusters.
+To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. 
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
+
+The service account associated with the secret key must have `ADMIN` or `EDIT` [permission](managing-access.html#manage-service-accounts) to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -376,7 +389,11 @@ If the request was successful, the client will not receive a response payload.
 
 ## Delete a cluster
 
-To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` [permission](managing-access.html#manage-service-accounts) to delete an organization's clusters.
+To delete a cluster, send a `DELETE` request to the `/v1/clusters/{cluster_id}` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` or `DELETE` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
 
@@ -405,7 +422,11 @@ If the `DELETE` request was successful the client will not receive a response pa
 {% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint. The service account associated with the secret key must have `ADMIN` [permission](managing-access.html#manage-service-accounts).
+To export audit logs for activities and events related to your Cloud organization, send a `GET` request to the `/v1/auditlogevents` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -447,7 +468,11 @@ Where:
 
 ## List all clusters in an organization
 
-To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](managing-access.html#manage-service-accounts) to list an organization's clusters.
+To list all active clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -523,7 +548,11 @@ Where:
 
 ## List the available regions for a cloud infrastructure provider
 
-To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](managing-access.html#manage-service-accounts) to list the available regions.
+To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud_provider}` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -554,7 +583,11 @@ Where:
 
 ## List all the SQL users in a cluster
 
-To list the SQL users in a cluster send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` [permission](managing-access.html#manage-service-accounts) to list the SQL users.
+To list the SQL users in a cluster send a `GET` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -587,7 +620,16 @@ Where `{user name}` is the SQL username of the user.
 
 ## Create a new SQL user
 
-To create a new SQL user send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint. The service account associated with the secret key must have `ADMIN` [permission](managing-access.html#manage-service-accounts) to create new SQL users. By default the newly created SQL user is a member of the `admin` role. An `admin` SQL user has full privileges for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+To create a new SQL user send a `POST` request to the `/v1/clusters/{cluster_id}/sql-users` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+By default, a new SQL user created using the UI or Cloud API is granted the SQL `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
+When possible, it is best practice to [limit each user's privileges](managing-access.html#use-sql-roles-to-manage-access) to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -618,7 +660,11 @@ Where `{sql_username}` is the username of the newly created SQL user.
 
 ## Delete a SQL user
 
-To delete a SQL user send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint. The service account associated with the secret key must have `ADMIN` [permission](managing-access.html#manage-service-accounts) to delete SQL users.
+To delete a SQL user send a `DELETE` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -646,7 +692,11 @@ Where `{sql_username}` is the username of the deleted SQL user.
 
 ## Change a SQL user's password
 
-To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint. The service account associated with the secret key must have `ADMIN` [permission](managing-access.html#manage-service-accounts) to change a SQL user's password.
+To change a SQL user's password send a `PUT` request to the `/v1/clusters/{cluster_id}/sql-users/{sql_username}/password` endpoint.
+
+{{site.data.alerts.callout_success}}
+The service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
