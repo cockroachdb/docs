@@ -6,11 +6,11 @@ docs_area: manage
 ---
 
 This page details procedures for managing {{ site.data.products.db }} access to {{ site.data.products.db }}.
-Before proceeding, it is recommended to review the concepts related to the two levels of {{ site.data.products.db }} access management model (the organization level and the cluster level), which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ](authorization.html).
+Before proceeding, it is recommended to review the concepts related to the two levels of {{ site.data.products.db }} access management model (the organization level and the SQL level in a cluster), which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ](authorization.html).
 
-Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and the manage the access roles granted to both.
+Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster.
 
-Access management tasks at the cluster level are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the roles that govern permissions on the cluster for SQL users must be managed in the SQL interface. Furthermore, SQL users created with the console or with `ccloud` utility have the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user, revoking the `admin` role and replacing it with a role with privileges required for its task, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
 See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
@@ -25,7 +25,7 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 1. From the drop-down box in the top-right corner, select the organization you want to access.
 
-The settings and information about the organization are found on the **Settings** page. The organization ID and organization label used by the `ccloud` CLI are listed under **Organization settings**.
+The settings and information about the organization are found on the **Information** page. The organization ID and organization label used by the `ccloud` CLI are listed on that page.
 
 ## Manage an organization's users
 ### Invite Team Members to an organization
@@ -33,7 +33,7 @@ The settings and information about the organization are found on the **Settings*
 As an [org admin](authorization.html#org-administrator-legacy), you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
-1. On the **Access** page, click **Invite**.
+1. On the **Access Management** page, under the *Members* tab, click **Invite**.
 1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member](authorization.html#organization-member) role; this default role grants no access.
 
 #### Change a Team Member's role
