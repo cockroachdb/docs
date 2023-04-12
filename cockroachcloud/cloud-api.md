@@ -78,7 +78,13 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` [permission](managing-access.html#manage-service-accounts) to create new clusters.
+To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
+
+{{site.data.alerts.callout_success}}
+In order to create new clusters, the service account associated with the secret key must have the Cluster Administrator or Cluster Creator [role](authorization.html#organization-user-roles), or the `ADMIN` or `CREATE` [permission](authorization.html#service-accounts) if it is a legacy service account.
+{{site.data.alerts.end}}
+
+
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>

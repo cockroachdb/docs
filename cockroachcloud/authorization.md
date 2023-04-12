@@ -49,8 +49,11 @@ The following roles may be granted to {{ site.data.products.db }} organization u
 - Cluster creator
 
 ### Organization member
+
 This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
+
 ### Org Administrator (legacy)
+
 Org Administrators can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
 
 - [Create a cluster](create-your-cluster.html)
@@ -65,15 +68,22 @@ In a future release, this role will be deprecated in favor of more fine-grained 
 {{site.data.alerts.end}}
   
 ### Org developer (legacy)
+
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
 In a future release, this role will be deprecated in favor of more fine-grained roles introduced below.
 {{site.data.alerts.end}}
+
 ### Cluster developer
+
 Cluster Developers can view the details of clusters and can change their IP allowlist configuration. This role can be granted for specific clusters or for all clusters in the organization.
+
 ### Cluster administrator
+
 Cluster Administrators can manage SQL users and roles for a cluster. This role can be granted for one or more specific clusters, or for all clusters in the organization.
+
 ### Cluster creator
+
 Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted this role for that cluster.
 
 ## Service accounts
