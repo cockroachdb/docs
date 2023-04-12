@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} org administrators](authorization.html#org-administrator-legacy) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} org administrators](authorization.html#org-administrator-legacy) or users with cluster creator / cluster admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 ## Before you begin
 
