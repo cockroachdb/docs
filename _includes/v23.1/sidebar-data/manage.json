@@ -302,7 +302,7 @@
               ]
             },
             {
-              "title": "Access Management Overview and FAQ",
+              "title": "CockroachdB Cloud Access Management Overview and FAQ",
               "urls": [
                  "/cockroachcloud/authorization.html"
               ]
