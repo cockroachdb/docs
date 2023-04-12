@@ -104,7 +104,7 @@ When you enable or disable an authentication method, a notification is displayed
 
 To enable or disable an authentication method:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as user with the [Org Admin](authorization.html#org-administrator-legacy) role.
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. To enable or disable the authentication method, toggle **Enable**.
@@ -127,7 +127,7 @@ The following sections describe the advanced settings you can configure for an S
 
 By default, members can access your {{ site.data.products.db }} organization from any email domain. To restrict access to a specific list of email domains:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a user with the [Org Admin](authorization.html#org-administrator-legacy) role.
 1. Go to **Organization** > **Authentication**.
 1. To configure an authentication method, click its name.
 1. At the top of the page, click **Edit**.
@@ -145,7 +145,7 @@ Autoprovisioning allows members to access your organization without an invitatio
 
 To enable autoprovisioning for an SSO authentication method:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a user with the [Org Admin](authorization.html#org-administrator-legacy) role.
 1. Go to **Organization** > **Authentication**.
 1. Click the name of an authentication method.
 1. Click **Advanced Settings**.
@@ -160,7 +160,7 @@ You can add a custom authentication method to connect to any IdP that supports [
 To configure a custom OIDC authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure {{ site.data.products.db }} SSO:<ul><li>Issuer URL</li><li>Client ID</li><li>Client secret</li><li>Callback URL</li></ul>
-1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
+1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a user with the [Org Admin](authorization.html#org-administrator-legacy) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **OIDC (OpenID Connect)**.
@@ -179,7 +179,7 @@ To configure a custom OIDC authentication method:
 To configure a custom SAML authentication method:
 
 1. Log in to your IdP and gather the following information, which you will use to configure {{ site.data.products.db }} SSO:<ul><li>Sign-in URL</li><li>Signing certificate</li></ul>
-1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
+1. In a separate browser, log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as a user with the [Org Admin](authorization.html#org-administrator-legacy) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Authentication Methods**, click **Add**.
 1. Set **Configuration** to **SAML**.
