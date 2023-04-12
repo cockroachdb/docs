@@ -70,19 +70,19 @@ Org Developers can read high-level information for all clusters, and monitor all
 In a future release, this role will be deprecated in favor of more fine-grained roles introduced below.
 {{site.data.alerts.end}}
 ### Cluster developer
-The minimum access role for clusters. This role allows users to view the details of one or more specified clusters, as well as change their IP allowlist configuration.
+Cluster Developers can view the details of clusters and can change their IP allowlist configuration. This role can be granted for specific clusters or for all clusters in the organization.
 ### Cluster administrator
-The administrator role for a specific database cluster, including managing SQL users/roles. This role can be granted to an organization user for one or more specific clusters, or for all clusters in the organization.
+Cluster Administrators can manage SQL users and roles for a cluster. This role can be granted for one or more specific clusters, or for all clusters in the organization.
 ### Cluster creator
-This role alows an organization user to create clusters in an organization; the cluster creator is automatically granted the cluster admin role on clusters they create.
+Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted this role for that cluster.
 
 ## Service accounts
 
-Service accounts differ from users in that they authenticate with API keys, rather than through the {{ site.data.products.db }} console.
+Service accounts authenticate with API keys and the {{ site.data.products.db }} API, rather than  {{ site.data.products.db }} Console.
 
-Service accounts currently operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users.
+Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users.
 
-However, 'legacy service accounts'andmdash;service accounts created prior to April 15 ???andmdash;still may have roles assigned under the legacy model.
+However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
 
 See: [Managing service accounts](managing-access.html#manage-service-accounts)
 
