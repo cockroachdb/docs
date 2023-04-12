@@ -137,7 +137,7 @@ Yes, for service accounts created after the updated authorization model is enabl
 
 Yes, an admin could assign a cluster level role like Cluster Admin or Cluster Developer on the entire CockroachDB DB Cloud organization or on one or more specific clusters. There are two scopes in the authorization model - organization and clusters, with organization being the parent, and clusters being the children in the hierarchy. So if an admin assigns cluster level roles at the organization scope, they are automatically applicable on all clusters in the CockroachDB DB Cloud organization. Such access should be granted only to users who need to work with all clusters.
 
-### What happens if an admin removes all role assignments for a particular user? Is that user removed from the CockroachDB Cloud organization?
+### If an admin removes all role assignments for a particular user, is that user automatically removed from the {{ site.data.products.db }} organization?
 
 When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added {{ site.data.products.db }} member, and the member is not automatically removed from the organization. To manually remove a member, refer to [Manage Team Members](../cockroachcloud/console-access-management.html#manage-team-members).
 
