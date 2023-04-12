@@ -307,12 +307,6 @@
       ]
     },
     {
-      "title": "Managing Access in CockroachDB Cloud",
-      "urls": [
-	       "/cockroachcloud/managing-access.html"
-      ]
-    },
-    {
       "title": "Manage Billing",
       "urls": [
          "/cockroachcloud/billing-management.html"
