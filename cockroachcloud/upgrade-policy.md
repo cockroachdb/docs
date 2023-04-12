@@ -27,7 +27,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 Major version [releases](../releases/) (for example, v21.1.x → v21.2.x) contain new functionality and potentially backward-incompatible changes to CockroachDB.
 
-Major version upgrades are automatic for {{ site.data.products.serverless }} clusters and opt-in for {{ site.data.products.dedicated }} clusters. [Console Admins](console-access-management.html#console-admin) must initiate major version upgrades for {{ site.data.products.dedicated }} clusters. When a new major version is available, Admins will be able to [start an upgrade](upgrade-to-v21.2.html) from the {{ site.data.products.db }} Console for clusters using the paid version of {{ site.data.products.dedicated }}. When a major version upgrade is initiated for a cluster, it will upgrade to the latest patch version as well.
+Major version upgrades are automatic for {{ site.data.products.serverless }} clusters and opt-in for {{ site.data.products.dedicated }} clusters. [Org admins](authorization.html#org-administrator-legacy) must initiate major version upgrades for {{ site.data.products.dedicated }} clusters. When a new major version is available, Admins will be able to [start an upgrade](upgrade-to-v21.2.html) from the {{ site.data.products.db }} Console for clusters using the paid version of {{ site.data.products.dedicated }}. When a major version upgrade is initiated for a cluster, it will upgrade to the latest patch version as well.
 
 ### Rollback support
 
@@ -43,7 +43,7 @@ As CockroachDB releases new major versions, older versions reach their End of Su
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
 
-If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. A Console Admin can [upgrade your cluster](upgrade-to-v21.2.html) directly from the {{ site.data.products.db }} Console.
+If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. A org admin can [upgrade your cluster](upgrade-to-v21.2.html) directly from the {{ site.data.products.db }} Console.
 
 ## See also
 

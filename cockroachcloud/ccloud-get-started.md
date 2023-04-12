@@ -41,7 +41,7 @@ In order to use the `ccloud` commands to configure and manage your clusters, you
 
 1. Close the browser window and return to your terminal.
 
-If you are a member of more than one [CockroachDB Cloud organization](console-access-management.html#organization), use the `--org` flag to set the organization name when authenticating.
+If you are a member of more than one [CockroachDB Cloud organization](../{{site.versions["stable"]}}/architecture/glossary.html#organization), use the `--org` flag to set the organization name when authenticating.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
