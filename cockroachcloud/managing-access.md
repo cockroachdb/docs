@@ -217,8 +217,8 @@ To view a list of all of the users in your cluster, navigate to the **SQL Users*
 On the **SQL Users** page, you can do the following:
 
 - [Create a user](#create-a-sql-user)
-- [Change a user's password](#change-a-users-password)
-- [Remove a user](#remove-a-user)
+- [Change a user's password](#change-a-sql-users-password)
+- [Remove a user](#remove-a-sql-user)
 
 </section>
 
@@ -300,7 +300,7 @@ To remove a user, use the [`DROP USER`](../{{site.current_cloud_version}}/drop-u
 </section>
 
 {{site.data.alerts.callout_info}}
-All of a user's privileges must be [revoked](#revoke-a-users-privileges) before the user can be dropped.
+All of a user's privileges must be [revoked](#revoke-a-sql-users-privileges) before the user can be dropped.
 {{site.data.alerts.end}}
 
 ### Grant privileges to a SQL user
@@ -397,7 +397,7 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#revoke-a-users-privileges) before the role can be dropped.
+    All of a role's privileges must be [revoked](#revoke-a-sql-users-privileges) before the role can be dropped.
     {{site.data.alerts.end}}
 
 ## See also
