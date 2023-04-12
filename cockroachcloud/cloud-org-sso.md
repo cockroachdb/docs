@@ -81,9 +81,9 @@ No. With Basic SSO, only one authentication method can be active for each {{ sit
 
 #### Does this change how org admins invite users?
 
-The [workflow for inviting team members](managing-access.html#invite-team-members-to-an-organization) to your {{ site.data.products.db }} organization remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method a member uses to sign in, then an account is created automatically upon successfully authentication.
+The [workflow for inviting team members](managing-access.html#invite-team-members-to-an-organization) to your {{ site.data.products.db }} organization remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method a member uses to sign in, then an account is created automatically upon successfully authentication and no invitation is required.
 
-#### As an org admin, how do I deprovision a user's access to {{ site.data.products.db }} Console if they leave the relevant project?
+#### How do I deprovision a user's access to the {{ site.data.products.db }} organization if they leave the relevant project?
 
 If Cloud Organization SSO is enabled, then deprovisioning a user at the level of the IdP also removes their access to the {{ site.data.products.db }} organization.
 

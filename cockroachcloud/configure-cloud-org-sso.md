@@ -62,7 +62,7 @@ If all of your administrators belongs to multiple organizations, you must create
 
 To enable Cloud Organization SSO:
 
-1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an [org admin](authorization.html#org-administrator-legacy).
+1. Log in to [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) as an user with the [Org Admin](authorization.html#org-administrator-legacy) role.
 1. Go to **Organization** > **Authentication**.
 1. Next to **Enable Authentication**, click **Enable**.
 1. In the dialog, configure the custom URL your members will use to sign in. This value must be unique across {{ site.data.products.db }}. For more details, refer to [Update the custom URL](#update-the-custom-url).
