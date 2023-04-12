@@ -8,9 +8,9 @@ docs_area: manage
 This page details procedures for managing {{ site.data.products.db }} access to {{ site.data.products.db }}.
 Before proceeding, it is recommended to review the concepts related to the two levels of {{ site.data.products.db }} access management model (the organization level and the SQL level in a cluster), which are detailed in [{{ site.data.products.db }} Access Management Overview and FAQ](authorization.html).
 
-Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster.
+Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster.
 
-Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
 See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
@@ -18,7 +18,7 @@ See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
 
 ## Manage your organizations
 
-An **organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations.
+An **organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization which has [CockroachDB Cloud credits](billing-management.html#view-credits-balance) to map to all application clusters.
 
 To switch between the organizations:
 
