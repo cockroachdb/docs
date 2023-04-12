@@ -312,6 +312,13 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 ### Restrict nodes executing a backup job by locality
 
+
+
+ You have network restrictions where only region us-west-1 has access to your storage bucket --> How would you set up your backup
+
+
+
+
 {% include_cached new-in.html version="v23.1" %} Use the `EXECUTION LOCALITY` option to set locality filter requirements that a node must meet in order to take part in executing a backup job. This will pin the [coordination of the backup job](backup-architecture.html#job-creation-phase) and the nodes that process the row data to the defined locality.
 
 When you start or [resume](resume-job.html) a backup with `EXECUTION LOCALITY`, it is necessary to determine the coordinating node for the job. If a node that does not match the locality filter is the first node to claim the job, it will find a node that does match the filter and transfer the execution to it. This can result in a short delay in starting or resuming a backup job that has execution locality requirements. 
@@ -327,6 +334,7 @@ For an overview of the backup job phases, see the [Backup Architecture](backup-a
 
 To specify the locality requirements for the coordinating node, run `EXECUTION LOCALITY` with key-value pairs:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP DATABASE movr INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws';
 ~~~

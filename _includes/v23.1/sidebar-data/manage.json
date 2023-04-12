@@ -145,6 +145,12 @@
               ]
             },
             {
+              "title": "Execution Locality Backups",
+              "urls": [
+                "/${VERSION}/execution-locality-backup.html"
+              ]
+            },
+            {
               "title": "Locality-aware Backup and Restore",
               "urls": [
                 "/${VERSION}/take-and-restore-locality-aware-backups.html"
