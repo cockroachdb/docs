@@ -35,7 +35,7 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they are granted the default role, **Org member**, which grants no permissions and just indicates the membership in the organization. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
+When a user is first added to an organization, they are granted the default role, **Org member**, which grants no permissions and just indicates the membership in the organization. Org. or Cluster Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
 
 To learn more, refer to [Manage organization users](managing-access.html#manage-an-organizations-users)
 
@@ -80,11 +80,11 @@ Cluster Developers can view the details of clusters and can change their IP allo
 
 ### Cluster administrator
 
-Cluster Administrators can manage SQL users and roles for a cluster. This role can be granted for one or more specific clusters, or for all clusters in the organization.
+Cluster Administrators can manage SQL users and roles for a cluster, and perform all management functions on that cluster (like enabling CMEK, configuring Log Export). This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
 ### Cluster creator
 
-Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted this role for that cluster.
+Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the Cluster Administrator role for that cluster once created.
 
 ## Service accounts
 
@@ -152,7 +152,7 @@ When all role assignments have been removed for a user, they still implicitly ha
 
 ### Which roles grant the ability to add, remove, and manage members in in a {{ site.data.products.db }} organization?
 
-Users with the Org Admin (legacy) role are allowed to manage users and roles at both the organization and the cluster levels. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster level.
+Users with the Org Admin (legacy) role are allowed to manage users and roles at both the organization and the cluster scopes. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster scope.
 
 ### What is the Cluster Creator role useful for when there’s a Cluster Admin role as well?
 
