@@ -79,7 +79,7 @@ A user can view their current authentication method by clicking **My Account** i
 
 No. With Basic SSO, only one authentication method can be active for each {{ site.data.products.db }} Console user. To view or update their active authentication method, a user can click **My Account** in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) .
 
-#### Does this change how org admins invite users?
+#### Does this change to invite users?
 
 The [workflow for inviting team members](managing-access.html#invite-team-members-to-an-organization) to your {{ site.data.products.db }} organization remains the same. However, if Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization and autoprovisioning is enabled for the authentication method a member uses to sign in, then an account is created automatically upon successfully authentication and no invitation is required.
 
