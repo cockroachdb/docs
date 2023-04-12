@@ -35,9 +35,9 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they will have the default role, **Org member**, which grants no permissions. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the CockroachDB Cloud API.
+When a user is first added to an organization, they are granted the default role, **Org member**, which grants no permissions and just indicates the membership in the organization. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the CockroachDB Cloud API / Terraform Provider.
 
-See: [Managing Access in CockroachDB Cloud: Manage organization users](managing-access.html#manage-an-organizations-users)
+To learn more, refer to [Manage organization users](managing-access.html#manage-an-organizations-users)
 
 The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
 
@@ -49,9 +49,9 @@ The following roles may be granted to {{ site.data.products.db }} organization u
 - Cluster creator
 
 ### Organization member
-The default role given to all organization users upon creation or invitation. This role grants no permissions to perform cluster or org actions.
+This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
 ### Org Administrator (legacy)
-The administrator role for organization functions. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
+Org Administrators can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
 
 - [Create a cluster](create-your-cluster.html)
 - [Invite Team Members to the organization](managing-access.html#invite-team-members-to-an-organization)
@@ -61,11 +61,14 @@ The administrator role for organization functions. This role grants the user per
 - [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
 - [Delete an organization](managing-access.html#delete-an-organization)
 {{site.data.alerts.callout_info}}
-In a future release, this role will be deprecated in favor of more fine-grained roles for separately administrating organization-level user-management functions, cluster functions, and billing functions.
+In a future release, this role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
 {{site.data.alerts.end}}
   
 ### Org developer (legacy)
-This role allows the user to read information for all clusters, and to create and manage SQL users on all clusters. It is considered deprecated in favor of the more fine-grained cluster roles below.
+Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
+{{site.data.alerts.callout_info}}
+In a future release, this role will be deprecated in favor of more fine-grained roles introduced below.
+{{site.data.alerts.end}}
 ### Cluster developer
 The minimum access role for clusters. This role allows users to view the details of one or more specified clusters, as well as change their IP allowlist configuration.
 ### Cluster administrator
