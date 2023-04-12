@@ -1,6 +1,6 @@
 ---
 title: CockroachDB Cloud Access Management Overview and FAQ
-summary: Learn about the CockroachDB Cloud Authorization features and concepts
+summary: Learn about the {{ site.data.products.db }} Authorization features and concepts
 toc: true
 docs_area: manage
 ---
@@ -9,9 +9,9 @@ This page covers the essential concepts related to access management (authorizat
 
 {% include_cached cockroachcloud/fgac-transition-callout.md %}
 
-## Overview of the CockroachDB Cloud two-level authorization model
+## Overview of the {{ site.data.products.db }} two-level authorization model
 
-**The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a CockroachDB Cloud **organization** (or create a new one).
+**The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a {{ site.data.products.db }} **organization** (or create a new one).
 
 You can also execute many administrative commands using the `ccloud` command-line utility and the {{ site.data.products.db }} API:
 
@@ -19,7 +19,7 @@ You can also execute many administrative commands using the `ccloud` command-lin
 - The {{ site.data.products.db }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
 - You can [use Terraform to provision users and other aspects of your {{ site.data.products.db }} clusters](provision-a-cluster-with-terraform.html). However, note that currently Terraform can only be used to provision admin SQL users, as this is a current limitation of the API, on which Terraform depends.
 
-In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each CockroachDB Cloud organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belong to an organization.
+In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each {{ site.data.products.db }} organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belong to an organization.
 
 {{ site.data.products.db }} has a two-level authorization model:
 
@@ -35,7 +35,7 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they are granted the default role, **Org member**, which grants no permissions and just indicates the membership in the organization. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the CockroachDB Cloud API / Terraform Provider.
+When a user is first added to an organization, they are granted the default role, **Org member**, which grants no permissions and just indicates the membership in the organization. Org. Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
 
 To learn more, refer to [Manage organization users](managing-access.html#manage-an-organizations-users)
 
@@ -108,17 +108,17 @@ This correspondence lies in the SQL user name, which must be in the format `sso_
 
 ### What role is assigned to new  {{ site.data.products.db }} members? What entitlements are included?
 
-Org Member is the default and only role assignable to new users as they are added to a CockroachDB Cloud organization. This role has most minimum entitlements across all the available roles, including just the ability to view the list of available clusters and high-level organization information like ID, Name, Label etc. 
+Org Member is the default and only role assignable to new users as they are added to a {{ site.data.products.db }} organization. This role has most minimum entitlements across all the available roles, including just the ability to view the list of available clusters and high-level organization information like ID, Name, Label etc. 
 
 ### What is the minimum access role that can be granted on a cluster?
 
 Cluster Developer is the minimum access role that can be assigned to a cluster user on a cluster. Cluster Developers can view the details of the target cluster and can modify its IP allowlist.
 
-### What roles are assigned to the user that creates a CockroachDB Cloud organization and thus becomes the first and only user in that organization?
+### What roles are assigned to the user that creates a {{ site.data.products.db }} organization and thus becomes the first and only user in that organization?
 
-Org Member, Org Admin (legacy), and Cluster Admin are assigned to the first and only user in a CockroachDB Cloud organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc. 
+Org Member, Org Admin (legacy), and Cluster Admin are assigned to the first and only user in a {{ site.data.products.db }} organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc. 
 
-Once the initial user has added more users to the CockroachDB Cloud organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
+Once the initial user has added more users to the {{ site.data.products.db }} organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
 
 {{site.data.alerts.callout_info}}
 In a future release, Org Admin (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
@@ -126,11 +126,11 @@ In a future release, Org Admin (legacy) role will be deprecated in favor of more
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the CockroachDB Cloud organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Admin (legacy), and Cluster Admin roles when they create the CockroachDB Cloud organization. 
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Admin (legacy), and Cluster Admin roles when they create the {{ site.data.products.db }} organization. 
 
-### Can we follow the least privilege principle by using the roles available in the CockroachDB Cloud authorization model?
+### Can we follow the least privilege principle by using the roles available in the {{ site.data.products.db }} authorization model?
 
-Yes, the roles available in the CockroachDB Cloud authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
+Yes, the roles available in the {{ site.data.products.db }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
 
 Cluster level roles like Cluster Admin or Cluster Developer allow to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements. Whereas, the Organization level roles like Org Admin (legacy), Org Developer (legacy) allow admin and non-admin access respectively for the entire organization.
 
@@ -138,10 +138,9 @@ Cluster level roles like Cluster Admin or Cluster Developer allow to perform per
 In a future release, legacy roles will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
 {{site.data.alerts.end}}
 
-
 ### Is the same authorization model used for both service accounts and human users in a {{ site.data.products.db }} organization?
 
-Yes, for service accounts created after the updated authorization model is enabled for your organization. Service accounts created previously continue to use the older authorization model. See [Service Accounts](#service-accounts).
+Yes, for service accounts created after the updated authorization model is enabled for your organization. Service accounts created previously continue to use the previous, less fine-grained authorization model. See [Service Accounts](#service-accounts).
 
 ### Can I assign a cluster-level role to a few users such that they have the relevant entitlements on all clusters in the {{ site.data.products.db }} organization?
 
@@ -163,7 +162,7 @@ After the cluster is created, its creator is automatically granted the Cluster A
 
 This overlap allows admins to give users from different projects or teams access to create and fully manage their own clusters without the ability to manage clusters owned by other projects or teams. For example, two different users from different teams could each be granted the Cluster Creator role so that they can fully manage clusters they own but not clusters owned by anyone else.
 
-### Are SQL roles part of the CockroachDB Cloud authorization model?
+### Are SQL roles part of the {{ site.data.products.db }} authorization model?
 
 {{ site.data.products.db }} has a two-level authorization model:
 
@@ -183,4 +182,4 @@ Refer to:
 
 ### How can we track and audit role-assignment actions in a {{ site.data.products.db }} organization?
 
-Any user with the Org Admin role can access [Cloud Organization audit logs](cloud-org-audit-logs.html) capability to track when users are added and removed in the CockroachDB Cloud organization, and whenever any role assignment changes are performed for those users.
+Any user with the Org Admin role can access [Cloud Organization audit logs](cloud-org-audit-logs.html) capability to track when users are added and removed in the {{ site.data.products.db }} organization, and whenever any role assignment changes are performed for those users.

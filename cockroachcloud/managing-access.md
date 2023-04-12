@@ -22,19 +22,21 @@ An **organization** allows you to manage your clusters under a shared [billing](
 
 To switch between the organizations:
 
-1. [Log in](https://cockroachlabs.cloud/).
+1. Log in to the console at `https://cockroachlabs.cloud/` or your organization's custom domain.
 1. From the drop-down box in the top-right corner, select the organization you want to access.
 
 The settings and information about the organization are found on the **Information** page. The organization ID and organization label used by the `ccloud` CLI are listed on that page.
 
 ## Manage an organization's users
 ### Invite Team Members to an organization
-<!-- change for FGAC ??? -->
+
 As an [org admin](authorization.html#org-administrator-legacy), you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
 1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member](authorization.html#organization-member) role; this default role grants no access. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
+
+It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisioning) for your organization, which removes the need to invite Team Members.
 
 #### Change a Team Member's role
 
@@ -241,7 +243,6 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 
 <section class="filter-content" markdown="1" data-scope="console">
 
-<!-- change for FGAC ??? -->
 {{site.data.alerts.callout_info}}
 Only users with the [org admin](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or org admin to change the password.
 {{site.data.alerts.end}}
