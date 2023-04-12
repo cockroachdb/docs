@@ -39,7 +39,7 @@ To enable and configure Cloud Organization SSO, refer to [Configure Cloud Organi
 
 ### Autoprovisioning
 
-Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](managing-access.html#invite-team-members-to-an-organization). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Organization Member role](authorization.html#organization-member) by default.
+Autoprovisioning allows you to centralize management of your users in an IdP and removes the need to [invite users to your organization](managing-access.html#invite-team-members-to-an-organization). When autoprovisioning is enabled, the first time a new user successfully signs in using the custom sign-in page, a {{ site.data.products.db }} account is automatically created for them and the user is assigned the [Organization Member role](authorization.html#organization-member) by default (if updated authorization model is enabled for the organization).
 
 Together with [Allowed Email Domains](configure-cloud-org-sso.html#allowed-email-domains), autoprovisioning allows new users to get started as soon as they are provisioned in your IdP, without waiting for an invitation.
 
