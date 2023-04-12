@@ -139,31 +139,33 @@ Yes, an admin could assign a cluster level role like Cluster Admin or Cluster De
 
 ### What happens if an admin removes all role assignments for a particular user? Is that user removed from the CockroachDB Cloud organization?
 
-When all role assignments have been removed for a user, they still retain the Org Member role which is added at the time when a user is added to the CockroachDB Cloud organization. The user is not automatically removed at that point. To remove a user from the CockroachDB Cloud organization, the admin should take the specific remove action.
+When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added {{ site.data.products.db }} member, and the member is not automatically removed from the organization. To manually remove a member, refer to [Manage Team Members](../cockroachcloud/console-access-management.html#manage-team-members).
 
-### Which roles are allowed to add and remove users, and manage their role assignments in a CockroachDB Cloud organization?
+### Which roles grant the ability to add, remove, and manage members in in a {{ site.data.products.db }} organization?
 
-Only users with the Org Admin role are allowed to add and remove users at the organization level. Users with the Cluster Admin role are allowed to manage role assignments at the cluster level. If a user has been assigned both Org Admin and Cluster Admin roles at the organization scope (which is true for the initial user by default), they can manage role assignments at both organization and cluster scopes.
+Users with the Org Admin (legacy) role are allowed to manage users and roles at both the organization and the cluster levels. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster level.
 
-### Why is the Cluster Creator role useful for when there’s a Cluster Admin role as well?
+### What is the Cluster Creator role useful for when there’s a Cluster Admin role as well?
 
-Cluster Creator role entitles a user to create new clusters in the CockroachDB Cloud organization, and is thus only assignable at the organization scope. Once the cluster is created, the user is additionally granted Cluster Admin role on that cluster automatically. Now, if a user has been already assigned the Cluster Admin role at the organization scope, they are allowed to create new clusters too. So why is the Cluster Creator role needed?
+A user with the Cluster Creator role can create new clusters in the {{ site.data.products.db }} organization, so this role can be assigned only at the organization scope.
 
-This slight duplication is intentional and it allows admins to provide users from different projects or teams access to create and fully manage their own clusters, while not having automatic access to clusters of other projects or teams. E.g. Users A and B from two different teams could both be assigned the Cluster Creator role, and then they are allowed to fully manage the clusters for their respective teams (by the virtue of automatically assigned Cluster Admin role), without having any access to the clusters of the other team.
+After the cluster is created, its creator is automatically granted the Cluster Admin role on that cluster. If that user already had the Cluster Admin role at the organization scope, this cluster-specific grant appears to have no effect.
+
+This overlap allows admins to give users from different projects or teams access to create and fully manage their own clusters without the ability to manage clusters owned by other projects or teams. For example, two different users from different teams could each be granted the Cluster Creator role so that they can fully manage clusters they own but not clusters owned by anyone else.
 
 ### Are SQL roles part of the CockroachDB Cloud authorization model?
 
 {{ site.data.products.db }} has a two-level authorization model:
 
-1. Cluster/SQL level: Each CockroachDB cluster has its own set of SQL users and roles defined on it. Roles grant users permission to execute some set of SQL statements against some set of database resources on the cluster.
-2. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
+1. SQL level in a cluster: Each CockroachDB cluster has its own set of SQL users and roles defined in it. Roles grant users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
+2. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined in it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
-### What are the possible ways to assign roles available in the CockroachDB Cloud authorization model to service accounts and human users?
+### What methods can an admin use to assign organization-wide and cluster-specific roles service accounts and human users?
 
-An admin could assign roles to human users using either the access management UI in the CockroachDB Cloud Console or using the role assignment API (also available through CockroachDB Cloud Terraform Provider).
+To manage roles for human users, you can use [Cloud Console](../cockroachcloud/console-access-management.htm), the [Cloud API](../cockroachcloud/cloud-api.html), or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest).
 
-Role assignment for service accounts can only be done using the role assignment API for now. Relevant support will be available in the access management UI soon.
+To manage roles for service accounts, you must use the [Cloud API](../cockroachcloud/cloud-api.html).
 
-### Is there a way to track who is assigning what roles to which users in a CockroachDB Cloud Organization?
+### How can we track and audit role-assignment actions in a {{ site.data.products.db }} organization?
 
-Yes, a user with the Org Admin role could use the [Cloud Organization Audit Logs](cloud-org-audit-logs.html) capability to track when users are added and removed in the CockroachDB Cloud organization, and whenever any role assignment changes are performed for those users.
+Any user with the Org Admin role can access [Cloud Organization audit logs](cloud-org-audit-logs.html) capability to track when users are added and removed in the CockroachDB Cloud organization, and whenever any role assignment changes are performed for those users.
