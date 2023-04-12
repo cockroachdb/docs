@@ -23,7 +23,7 @@ Cloud metrics sink | Metrics export endpoint
 AWS Cloudwatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
 Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/datadog`
 
-Access to the `metricexport` endpoints requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions.
+Access to the `metricexport` endpoints requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
 
 The following methods are available for use with the `metricexport` endpoints, and require the listed service account permissions:
 
