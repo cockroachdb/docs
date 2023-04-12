@@ -27,7 +27,7 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
     This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
 
     {{site.data.alerts.callout_info}} 
-    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [SQL Users page](user-authorization.html).
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
     {{site.data.alerts.end}}
     
 ## Configure the connection environment variable
