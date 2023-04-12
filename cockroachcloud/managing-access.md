@@ -185,7 +185,7 @@ When possible, it is best practice to limit each user's privileges to the minimu
 1. Click **Generate & save password**.
 1. Copy the generated password and save it in a secure location.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
+    Currently, all new users are created with SQL admin privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
@@ -199,7 +199,7 @@ To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../{{site.curren
 ~~~
 
 {{site.data.alerts.callout_info}}
-Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](../{{site.current_cloud_version}}/alter-user.html) statement.
+Be sure to create a password for each new user. Without a password, or being enrolled in cluster single sign-on (SSO), a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](../{{site.current_cloud_version}}/alter-user.html) statement.
 {{site.data.alerts.end}}
 </section>
 
