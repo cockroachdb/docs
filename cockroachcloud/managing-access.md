@@ -34,11 +34,11 @@ As an [org admin](authorization.html#org-administrator-legacy), you can invite T
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
-1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member](authorization.html#organization-member) role; this default role grants no access.
+1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member](authorization.html#organization-member) role; this default role grants no access. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
 
 #### Change a Team Member's role
 
-1. On the **Access** page, locate the Team Member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
+1. On the **Access Management** page, locate the Team Member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
 1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
 1. Note that a number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
 
@@ -48,13 +48,13 @@ As an [org administrator](authorization.html#org-administrator-legacy), you may 
 
 #### Remove a Team Member
 
-1. On the **Access** page, locate the Team Member you want to remove.
+1. On the **Access Management** page, locate the Team Member you want to remove.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Remove Member** and confirm.
 
 #### Revoke a pending invite
 
-1. On the **Access** page, locate the Team Member's details whose pending invite you want to revoke.
+1. On the **Access Management** page, locate the Team Member's details whose pending invite you want to revoke.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Revoke Invite**.
 
@@ -70,7 +70,7 @@ Deleting an organization will delete all clusters and user data within the organ
 
 If you are sure you want to delete the organization, proceed with the following steps:
 
-1. Navigate to the **Settings** page for the organization you want to delete.
+1. Navigate to the **Information** page for the organization you want to delete.
 1. Click **Delete**.
 1. Enter the name of the organization.
 1. Click **Delete**.
@@ -80,7 +80,7 @@ If you are sure you want to delete the organization, proceed with the following 
 ## Manage service accounts
 
 {{site.data.alerts.callout_info}}
-The access management model for service accounts changed with release v23.1. Service accounts created prior to this release may still have the following legacy roles:
+The access management model for service accounts is unified with users if the updated model is enabled for your organization. Service accounts created prior to that may still have the following legacy roles:
 
 - The `ADMIN` role  allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
 - The `CREATE` role allows the service account to create new clusters within the organization.
@@ -91,19 +91,19 @@ The access management model for service accounts changed with release v23.1. Ser
 
 ### Create a service account
 
-1. On the **Access** page, select the **Service Accounts** tab.
+1. On the **Access Management** page, select the **Service Accounts** tab.
 1. Click **Create**.
-1. Enter a **Name** and **Description**.
+1. Enter a **Account name** and **Description**.
 1. Create and export an **API key**.
 1. Confirm creation of the service account.
 
 {{site.data.alerts.callout_info}}
-Service accounts, like users, are given only the organization member role default upon creation. This role grants no access.
+Service accounts, like users, are given only the **Org Member** role by default upon creation. This role grants no access in the organization.
 {{site.data.alerts.end}}
 
 ### Edit roles on a service account
 
-1. On the **Access** page, select the **Service Accounts** tab.
+1. On the **Access Management** page, select the **Service Accounts** tab.
 1. In the row for the target service account, click, click the three-dots **Action** button and select **Edit Roles**.
 1. Note that a number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](authorization.html#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
 
@@ -111,13 +111,13 @@ Service accounts, like users, are given only the organization member role defaul
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
 
-We recommend creating service accounts with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own API key. This allows fine-grained permission and API key access to the cluster.
+We recommend creating service accounts with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster.
 
 #### Create API keys
 
 To create an API key:
 
-1. On the **Access** page, select the **Service Accounts** tab.
+1. On the **Access Management** page, select the **Service Accounts** tab.
 1. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
 1. Click **Create API Key**.
 1. Enter the **API key name** and click **Create**. The name should identify how the API key will be used. For example, you could name your API key for the application that will use the key.
@@ -135,7 +135,7 @@ To create an API key:
 
 To delete an API key associated with a service account:
 
-1. On the **Access** page, select the **Service Accounts** tab.
+1. On the **Access Management** page, select the **Service Accounts** tab.
 1. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
 1. Click the **Action** button for the API key ID in the **API Access** table.
 1. Select **Delete**.
@@ -145,7 +145,7 @@ To delete an API key associated with a service account:
 
 To change the API key name for an existing API key:
 
-1. On the **Access** page, select the **Service Accounts** tab.
+1. On the **Access Management** page, select the **Service Accounts** tab.
 1. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
 1. Find the API key ID in the **API Access** table.
 1. Click the **Action** button.
@@ -161,7 +161,7 @@ To change the API key name for an existing API key:
 ### Create a SQL user
 
 {{site.data.alerts.callout_danger}}
-By default, a new SQL user created by a [cluster administrator](authorization.html#cluster-administrator) is granted the `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
+By default, a new SQL user created using the UI or Cloud API is granted the SQL `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
 When possible, it is best practice to limit each user's privileges to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
@@ -201,7 +201,7 @@ Be sure to create a password for each new user. Without a password, a user canno
 {{site.data.alerts.end}}
 </section>
 
-### View all users in your cluster
+### View all SQL users in your cluster
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
@@ -231,7 +231,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 ~~~
 </section>
 
-### Change a users password
+### Change a SQL user's password
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
@@ -268,7 +268,7 @@ To change a user's password, use the [`ALTER USER`](../{{site.current_cloud_vers
 ~~~
 </section>
 
-### Remove a user
+### Remove a SQL user
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
@@ -303,7 +303,7 @@ To remove a user, use the [`DROP USER`](../{{site.current_cloud_version}}/drop-u
 All of a user's privileges must be [revoked](#revoke-a-users-privileges) before the user can be dropped.
 {{site.data.alerts.end}}
 
-### Grant privileges
+### Grant privileges to a SQL user
 
 Access to the data in your cluster is controlled by [privileges](../{{site.current_cloud_version}}/security-reference/authorization.html#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
@@ -323,7 +323,7 @@ To assign a user more limited privileges for one table in a database:
 
 For more details, see [Privileges](../{{site.current_cloud_version}}/security-reference/authorization.html#managing-privileges) and [`GRANT`](../{{site.current_cloud_version}}/grant.html).
 
-### View a user's privileges
+### View a SQL user's privileges
 
 To show privileges granted to a user, use the [`SHOW GRANTS`](../{{site.current_cloud_version}}/show-grants.html) statement:
 
@@ -332,7 +332,7 @@ To show privileges granted to a user, use the [`SHOW GRANTS`](../{{site.current_
 > SHOW GRANTS ON DATABASE <database> FOR <user>;
 ~~~
 
-### Revoke a user's privileges
+### Revoke a SQL user's privileges
 
 To revoke privileges from a user, use the [`REVOKE`](../{{site.current_cloud_version}}/revoke.html) statement:
 
@@ -341,7 +341,7 @@ To revoke privileges from a user, use the [`REVOKE`](../{{site.current_cloud_ver
 > REVOKE INSERT ON TABLE <database>.<table> FROM <user>;
 ~~~
 
-### Use roles to manage access
+### Use SQL roles to manage access
 
 Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
 
