@@ -116,23 +116,23 @@ Cluster Developer is the minimum access role that can be assigned to a cluster u
 
 ### What roles are assigned to the user that creates a {{ site.data.products.db }} organization and thus becomes the first and only user in that organization?
 
-Org Member, Org Admin (legacy), and Cluster Admin are assigned to the first and only user in a {{ site.data.products.db }} organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc. 
+Org Member, Org Administrator (legacy), and Cluster Admin are assigned to the first and only user in a {{ site.data.products.db }} organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc. 
 
 Once the initial user has added more users to the {{ site.data.products.db }} organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
 
 {{site.data.alerts.callout_info}}
-In a future release, Org Admin (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
+In a future release, Org Administrator (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
 {{site.data.alerts.end}}
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Admin (legacy), and Cluster Admin roles when they create the {{ site.data.products.db }} organization. 
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator (legacy), and Cluster Admin roles when they create the {{ site.data.products.db }} organization. 
 
 ### Can we follow the least privilege principle by using the roles available in the {{ site.data.products.db }} authorization model?
 
 Yes, the roles available in the {{ site.data.products.db }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
 
-Cluster level roles like Cluster Admin or Cluster Developer allow to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements. Whereas, the Organization level roles like Org Admin (legacy), Org Developer (legacy) allow admin and non-admin access respectively for the entire organization.
+Cluster level roles like Cluster Admin or Cluster Developer allow to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements. Whereas, the Organization level roles like Org Administrator (legacy), Org Developer (legacy) allow admin and non-admin access respectively for the entire organization.
 
 {{site.data.alerts.callout_info}}
 In a future release, legacy roles will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
@@ -152,7 +152,7 @@ When all role assignments have been removed for a user, they still implicitly ha
 
 ### Which roles grant the ability to add, remove, and manage members in in a {{ site.data.products.db }} organization?
 
-Users with the Org Admin (legacy) role are allowed to manage users and roles at both the organization and the cluster scopes. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster scope.
+Users with the Org Administrator (legacy) role are allowed to manage users and roles at both the organization and the cluster scopes. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster scope.
 
 ### What is the Cluster Creator role useful for when there’s a Cluster Admin role as well?
 
@@ -182,4 +182,4 @@ Refer to:
 
 ### How can we track and audit role-assignment actions in a {{ site.data.products.db }} organization?
 
-Any user with the Org Admin role can access [Cloud Organization audit logs](cloud-org-audit-logs.html) capability to track when users are added and removed in the {{ site.data.products.db }} organization, and whenever any role assignment changes are performed for those users.
+Any user with the Org Administrator role can access [Cloud Organization audit logs](cloud-org-audit-logs.html) capability to track when users are added and removed in the {{ site.data.products.db }} organization, and whenever any role assignment changes are performed for those users.

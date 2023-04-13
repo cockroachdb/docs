@@ -30,7 +30,7 @@ The settings and information about the organization are found on the **Informati
 ## Manage an organization's users
 ### Invite Team Members to an organization
 
-As an [org admin](authorization.html#org-administrator-legacy), you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
+As an [Org Administrator](authorization.html#org-administrator-legacy), you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
@@ -45,7 +45,7 @@ It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisio
 1. Note that a number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
 
 {{site.data.alerts.callout_danger}}
-As an [org administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
+As an [Org Administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
 {{site.data.alerts.end}}
 
 #### Remove a Team Member
@@ -244,7 +244,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 <section class="filter-content" markdown="1" data-scope="console">
 
 {{site.data.alerts.callout_info}}
-Only users with the [org admin](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or org admin to change the password.
+Only users with the [Org Administrator](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or Org Administrator to change the password.
 {{site.data.alerts.end}}
 
 To change a user's password:
