@@ -18,8 +18,8 @@ The output of `cockroach-sql` when used non-interactively is part of a stable in
 ## Install `cockroach-sql`
 
 <div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
     <button class="filter-button page-level" data-scope="mac"><strong>Mac</strong></button>
+    <button class="filter-button page-level" data-scope="linux"><strong>Linux</strong></button>
     <button class="filter-button page-level" data-scope="windows"><strong>Windows</strong></button>
 </div>
 
