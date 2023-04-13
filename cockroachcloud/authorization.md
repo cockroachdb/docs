@@ -43,10 +43,10 @@ The following roles may be granted to {{ site.data.products.db }} organization u
 
 - Org Member
 - Org Administrator (legacy)
-- Org developer (legacy)
-- Cluster developer
+- Org Developer (legacy)
+- Cluster Developer
 - Cluster Admin
-- Cluster creator
+- Cluster Creator
 
 ### Organization member
 
@@ -67,14 +67,14 @@ Org Administrators can manage the organization and its members, clusters, and co
 In a future release, this role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
 {{site.data.alerts.end}}
   
-### Org developer (legacy)
+### Org Developer (legacy)
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
 In a future release, this role will be deprecated in favor of more fine-grained roles introduced below.
 {{site.data.alerts.end}}
 
-### Cluster developer
+### Cluster Developer
 
 Cluster Developers can view the details of clusters and can change their IP allowlist configuration. This role can be granted for specific clusters or for all clusters in the organization.
 
@@ -82,7 +82,7 @@ Cluster Developers can view the details of clusters and can change their IP allo
 
 Cluster Administrators can manage SQL users and roles for a cluster, and perform all management functions on that cluster (like enabling CMEK, configuring Log Export). This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
-### Cluster creator
+### Cluster Creator
 
 Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the Cluster Administrator role for that cluster once created.
 
