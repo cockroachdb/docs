@@ -64,3 +64,10 @@ For an example, see [Implicit casting to `ARRAY`s](array.html#implicit-casting).
 
 You can find each data type's supported conversion and casting on its
 respective page in its section **Supported casting & conversion**.
+
+## See also
+
+- [`CREATE TYPE`](create-type.html)
+- [`ALTER TYPE`](alter-type.html)
+- [`DROP TYPE`](drop-type.html)
+- [`SHOW TYPES`](show-types.html)

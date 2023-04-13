@@ -161,7 +161,7 @@ The rest of the columns are `STRING`-typed.
 
 Note that values in the `type` column will likely only be `STRING` values from a fixed list of values. Specifically, the vehicle type can only be one of the vehicle types supported by the MovR platform (e.g., a `bike`, a `scooter`, or a `skateboard`). For values like this, we recommend using a [user-defined, enumerated type](enum.html).
 
-To create a user-defined type, use a `CREATE TYPE` statement. For example, above the `CREATE TABLE` statement for the `vehicles` table, add the following statements:
+To create a user-defined type, use a [`CREATE TYPE`](create-type.html) statement. For example, above the `CREATE TABLE` statement for the `vehicles` table, add the following statements:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -281,6 +281,8 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 ### Revoke privileges on user-defined types
 
+To revoke privileges on [user-defined types](create-type.html), use the following statements.
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE status AS ENUM ('available', 'unavailable');

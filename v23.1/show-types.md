@@ -23,6 +23,8 @@ The `CONNECT` [privilege](security-reference/authorization.html#managing-privile
 
 ## Examples
 
+The following example creates a [user-defined type](create-type.html).
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');

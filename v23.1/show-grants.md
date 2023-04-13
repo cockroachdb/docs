@@ -292,6 +292,8 @@ To list all grants for all users and roles on the current database and its table
 
 ### Show grants on user-defined types
 
+To show privileges on [user-defined types](create-type.html), use the following statements.
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TYPE status AS ENUM ('available', 'unavailable');
