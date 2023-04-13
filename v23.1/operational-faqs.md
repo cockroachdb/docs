@@ -27,13 +27,13 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 ## Why is disk usage increasing despite lack of writes?
 
-The time-series data used in the [DB Console](ui-overview-dashboard.html) is stored within the cluster and accumulates for 10 days before it starts to be truncated. As a result, for the first 10 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you are not writing data to the cluster.
+By default, [DB Console](ui-overview-dashboard.html) stores time-series cluster metrics within the cluster. By default, data is retained at 10-second granularity for 10 days, and at 30-minute granularity for 90 days. An automatic job periodically runs and prunes historical data. For the first several days of your cluster's life, the cluster's time-series data grows continually.
 
 CockroachDB writes about 15 KiB per second per node to the time-series database. About half of that is optimized away by the storage engine. Therefore an estimated calculation of how much data will be stored in the time-series database is:
 
 `8 KiB * 24 hours * 3600 seconds/hour * number of days`
 
-Given the 10 day accumulation period, you can expect storage per node to increase by about the following amount:
+For the first 10 days of your cluster's life, you can expect storage per node to increase by about the following amount:
 
 `8 * 24 * 3600 * 10 = 6912000`
 
@@ -49,11 +49,9 @@ After reducing or disabling time-series storage, it can take up to 24 hours for 
 
 ### Reduce the interval for time-series storage
 
-By default, CockroachDB stores time-series data at 10s resolution for 10 days. This data is aggregated into time-series data at 30m resolution, which is stored for 90 days.
-
 To reduce the interval for storage of time-series data:
 
-- For data stored at 10s resolution, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days).
+- For data stored at 10-second resolution, reduce the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days).
 
   For example, to change the storage interval for time-series data at 10s resolution to 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
@@ -74,13 +72,17 @@ To reduce the interval for storage of time-series data:
   (1 row)
   ~~~
 
-  Note that this data is still aggregated into data at 30m resolution, which is stored for 90 days by default.
+  This setting has no effect on time-series data aggregated at 30-minute resolution, which is stored for 90 days by default.
 
-- For data stored at 30m resolution, change the `timeseries.storage.resolution_30m.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `2160h0m0s` (90 days).
+- For data stored at 30-minute resolution, reduce the `timeseries.storage.resolution_30m.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `2160h0m0s` (90 days).
+
+Cockroach Labs recommends that you avoid _increasing_ the period of time that DB Console retains time-series metrics. If you need to retain this data for a longer period, consider using a third-party tool such as Prometheus to collect the cluster's metrics and disabling the DB Console's collection of time-series metrics. Refer to [Monitoring and Alerting](monitoring-and-alerting.html).
 
 ### Disable time-series storage
 
 Disabling time-series storage is recommended only if you exclusively use a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for time-series monitoring. Prometheus and other such tools do not rely on CockroachDB-stored time-series data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.
+
+When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
 
 To disable the storage of time-series data, run the following command:
 
@@ -101,7 +103,7 @@ To disable the storage of time-series data, run the following command:
 (1 row)
 ~~~
 
-If you want all existing time-series data to be deleted, also change both the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster settings:
+This setting only prevents the collection of new time-series data. To also delete all existing time-series data, also change both the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster settings:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -112,6 +114,8 @@ If you want all existing time-series data to be deleted, also change both the `t
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_30m.ttl = '0s';
 ~~~
+
+Historical data is not deleted immediately, but is eventually removed by a background job within 24 hours.
 
 ## What happens when a node runs out of disk space?
 

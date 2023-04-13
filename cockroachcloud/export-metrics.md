@@ -8,13 +8,19 @@ cloud: true
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
+{{site.data.alerts.callout_success}}
+{{ site.data.products.dedicated }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](/docs/{{site.versions["dev"]}}/monitoring-and-alerting.html) instead of this page.
+{{site.data.alerts.end}}
+
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-## The `metricexport` endpoint
+<a id="the-metricexport-endpoint"></a>
+
+## `metricexport` endpoint
 
 To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster, use the `metricexport` endpoint appropriate for your desired cloud metrics sink:
 
