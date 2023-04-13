@@ -1,3 +1,4 @@
+*  @cockroachdb/docs-prs
 /.bundle/ @cockroachdb/docs-infra-prs
 /.github/ @cockroachdb/docs-infra-prs
 /__tests__/ @cockroachdb/docs-infra-prs
@@ -17,6 +18,7 @@ _redirects  @cockroachdb/docs-infra-prs
 .vale.ini @cockroachdb/docs-infra-prs
 Gemfile @cockroachdb/docs-infra-prs
 Makefile  @cockroachdb/docs-infra-prs
+netlify.toml  @cockroachdb/docs-infra-prs
 package.json  @cockroachdb/docs-infra-prs
 search.html @cockroachdb/docs-infra-prs
 sitemap.xml @cockroachdb/docs-infra-prs
