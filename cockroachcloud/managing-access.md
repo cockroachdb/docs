@@ -244,7 +244,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.current_
 <section class="filter-content" markdown="1" data-scope="console">
 
 {{site.data.alerts.callout_info}}
-Only users with the [Org Administrator](authorization.html#org-administrator-legacy), or [cluster admin](authorization.html#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or Org Administrator to change the password.
+Only users with the [Org Administrator](authorization.html#org-administrator-legacy), or [Cluster Admin](authorization.html#cluster-administrator) can change a user's password. If you do not have the required permissions, ask your cluster or Org Administrator to change the password.
 {{site.data.alerts.end}}
 
 To change a user's password:

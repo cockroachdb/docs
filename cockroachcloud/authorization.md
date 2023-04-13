@@ -35,17 +35,17 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they are granted the default role, **Org member**, which grants no permissions and just indicates the membership in the organization. Org. or Cluster Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
+When a user is first added to an organization, they are granted the default role, **Org Member**, which grants no permissions and just indicates the membership in the organization. Org. or Cluster Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
 
 To learn more, refer to [Manage organization users](managing-access.html#manage-an-organizations-users)
 
 The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
 
-- Org member
+- Org Member
 - Org Administrator (legacy)
 - Org developer (legacy)
 - Cluster developer
-- Cluster admin
+- Cluster Admin
 - Cluster creator
 
 ### Organization member
@@ -78,7 +78,7 @@ In a future release, this role will be deprecated in favor of more fine-grained 
 
 Cluster Developers can view the details of clusters and can change their IP allowlist configuration. This role can be granted for specific clusters or for all clusters in the organization.
 
-### Cluster administrator
+### Cluster Administrator
 
 Cluster Administrators can manage SQL users and roles for a cluster, and perform all management functions on that cluster (like enabling CMEK, configuring Log Export). This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
