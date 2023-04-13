@@ -6,7 +6,7 @@
       {% for card in site.data.cards.[page.docs_area] %}
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex">
-          <a href="{{ card.link | relative_url }}" class="h-100">
+          <a href="{{ card.link | replace: "PREFIX", page.version.version | relative_url }}" class="h-100">
             <div class="card-body p-4 flex-column justify-content-center align-items-left h-100 card-header-overlap">
               {% if card.icon %}
               <img class="m-0 mb-4 mt-auto" src="{{ card.icon | relative_url }}" alt="link icon" />
