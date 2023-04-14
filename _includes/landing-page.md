@@ -4,7 +4,7 @@
     <h1 class="m-0 text-white">{{ page.title }}</h1>
     <p class="mt-0 pb-4 text-white">{{ page.summary }}</p>
       <div class="row d-lg-flex mx-0">
-      {% for card in site.data.cards.[page.docs_area] %}
+      {% for card in site.data.cards.[page.cards_section] %}
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex">
           <a href="{{ card.link | replace: "PREFIX", page_version | relative_url }}" class="h-100">
