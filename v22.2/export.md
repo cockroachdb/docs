@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
+`EXPORT` no longer requires an {{ site.data.products.enterprise }} license.
+{{site.data.alerts.end}}
+
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to the following:
 
 - CSV files
@@ -15,7 +19,7 @@ Using the [CockroachDB distributed execution engine](architecture/sql-layer.html
 If you do not need distributed exports, you can [export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
 
 {{site.data.alerts.callout_info}}
-`EXPORT` no longer requires an {{ site.data.products.enterprise }} license.
+**Cockroach Labs recommends using [changefeeds to export data](export-data-with-changefeeds.html)** because they provide better performance for growing workloads. Additionally, changefeeds operate as jobs, which offer [observability](monitor-and-debug-changefeeds.html) and [job management](create-and-configure-changefeeds.html).
 {{site.data.alerts.end}}
 
 ## Cancelling export
