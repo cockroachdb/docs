@@ -63,30 +63,32 @@ See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/creat
 
 #### Azure Key Vault URI format
 
-{% include_cached new-in.html version="v23.1" %} The Azure Key Vault URI must use the following format:
+{% include_cached new-in.html version="v23.1" %} The Azure Key Vault URI must use one of two formats:
 
-~~~
-azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}
-~~~
+- Explicit authentication using the `AUTH=specified` parameter (or omitting this as per the example) with the tenant ID, client ID, client secret, and key vault name parameters:
 
-To use `implicit` authentication for KMS URI for an Azure encrypted backup, include the Azure Key Vault name:
+    ~~~
+    azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}
+    ~~~
 
-~~~
-azure-kms:///{key}/{key version}?AUTH=implicit&AZURE_VAULT_NAME={key vault name}
-~~~
+- Implicit authentication with the `AUTH=implicit` and key vault name parameters:
 
-See [Cloud Storage Authentication](cloud-storage-authentication.html) for more detail on `implicit` authentication.
+    ~~~
+    azure-kms:///{key}/{key version}?AUTH=implicit&AZURE_VAULT_NAME={key vault name}
+    ~~~
 
-The Azure Key Vault URI **requires** the following:
+    See [Cloud Storage Authentication](cloud-storage-authentication.html?filters=azure#azure-blob-storage-implicit-authentication) for more detail on `implicit` authentication.
+
+The Azure Key Vault URI uses the following parameters:
 
  Component                  | Description
 ----------------------------+------------------------------------------------------------------------
 `azure-kms:///`             | The Azure scheme. Note the triple slash (`///`).
 `{key}`                     | Name of the key stored in your key vault.
 `{key version}`             | Current version of the key in your key vault.
-`AZURE_TENANT_ID={tenant ID}` | Directory (tenant) ID for your App Registration.
-`AZURE_CLIENT_ID={client ID}` | Application (client) ID for your App Registration.
-`AZURE_CLIENT_SECRET={client secret}` | Client credentials secret generated for your App Registration.
+`AZURE_TENANT_ID={tenant ID}` | Directory (tenant) ID for your App Registration. (This is not required for `implicit` authentication.)
+`AZURE_CLIENT_ID={client ID}` | Application (client) ID for your App Registration. (This is not required for `implicit` authentication.)
+`AZURE_CLIENT_SECRET={client secret}` | Client credentials secret generated for your App Registration. (This is not required for `implicit` authentication.)
 `AZURE_VAULT_NAME={key vault name}` | Name of your key vault.
 
 To run an encrypted Azure backup, it is necessary to create the following:
@@ -138,7 +140,7 @@ The following examples provide connection strings to Amazon S3 and Google Cloud 
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-#### Take an encrypted S3 backup
+#### Take an encrypted Amazon S3 backup
 
 To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#options):
 
@@ -161,9 +163,9 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
     );
 ~~~
 
-#### Restore from an encrypted S3 backup
+#### Restore from an encrypted Amazon S3 backup
 
-To decrypt an [encrypted backup](#take-an-encrypted-s3-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
+To decrypt an [encrypted backup](#take-an-encrypted-amazon-s3-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -175,7 +177,7 @@ RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
-#### Take an encrypted Azure backup
+#### Take an encrypted Azure Blob Storage backup
 
 To take an encrypted backup with Azure KMS, use the `kms` [option](backup.html#options):
 
@@ -198,9 +200,9 @@ BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account
     );
 ~~~
 
-#### Restore from an encrypted Azure backup
+#### Restore from an encrypted Azure Blob Storage backup
 
-To decrypt an [encrypted backup](#take-an-encrypted-azure-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
+To decrypt an [encrypted backup](#take-an-encrypted-azure-blob-storage-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -212,7 +214,7 @@ RESTORE FROM LATEST IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NA
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-#### Take an encrypted Google Storage backup
+#### Take an encrypted Google Cloud Storage backup
 
 To take an encrypted backup with Google Cloud KMS, use the `kms` [option](backup.html#options):
 
@@ -235,9 +237,9 @@ BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     );
 ~~~
 
-#### Restore from an encrypted Google Storage backup
+#### Restore from an encrypted Google Cloud Storage backup
 
-To decrypt an [encrypted backup](#take-an-encrypted-google-storage-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
+To decrypt an [encrypted backup](#take-an-encrypted-google-cloud-storage-backup), use the `kms` option and any subset of the KMS URIs that was used to take the backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -618,7 +618,7 @@ In this SQL statement, `AUTH=implicit` uses the workload identity service accoun
 
 <section class="filter-content" markdown="1" data-scope="azure">
 
-## Azure specified authentication
+## Azure Blob Storage specified authentication
 
 You can authenticate to Azure with explicit credentials in the following ways:
 
@@ -645,7 +645,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
     azure://{container name}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}&AZURE_ENVIRONMENT=AZUREUSGOVERNMENTCLOUD
     ~~~
 
-## Azure Storage implicit authentication
+## Azure Blob Storage implicit authentication
 
 {{site.data.alerts.callout_danger}}
 Implicit authentication to Azure is only available for {{ site.data.products.core }} clusters.
