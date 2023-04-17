@@ -240,7 +240,7 @@ In this step, you will create a changefeed authenticating with Okta.
 The Kafka URI must follow this format:
 
 ~~~
-'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your Okta developer token URL}'
+'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your url-encoded Okta developer token URL}'
 ~~~
 
 Note the following:
@@ -253,7 +253,7 @@ Since this is a long URI to run, you can create an [external connection](create-
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE EXTERNAL CONNECTION kafka_oauth AS 'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your Okta developer token URL}';
+CREATE EXTERNAL CONNECTION kafka_oauth AS 'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your url-encoded Okta developer token URL}';
 ~~~
 
 Create a changefeed that will emit messages to the topic consumer:
