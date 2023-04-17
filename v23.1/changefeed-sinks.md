@@ -190,7 +190,7 @@ A Pub/Sub sink URI follows this example:
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
 `project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`region`           | (Required) The single region to which all output will be sent.
+`region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`](create-changefeed.html#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
@@ -201,7 +201,7 @@ URI Parameter      | Description
 When using Pub/Sub as your downstream sink, consider the following:
 
 - Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
-- You must specify the `region` parameter in the URI to maintain [ordering guarantees](changefeed-messages.html#ordering-guarantees). Unordered messages are not supported, see [Known Limitations](change-data-capture-overview.html#known-limitations) for more information.
+- Use the [`unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
 
 Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
