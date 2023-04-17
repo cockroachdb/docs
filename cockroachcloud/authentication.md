@@ -7,7 +7,7 @@ docs_area: manage
 
 Users may connect with {{ site.data.products.db }} in two ways:
 
-- The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administrating or connecting to clusters.
+- The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administering or connecting to clusters.
 - SQL clients, including the [CockroachDB CLI](../{{site.current_cloud_version}}/cockroach-start.html) client and the [various supported drivers and ORMs](../{{site.current_cloud_version}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.current_cloud_version}}/sql-feature-support.html).
 
 
@@ -23,11 +23,26 @@ If you have not done so, [create your own free {{ site.data.products.serverless 
 
 To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.current_cloud_version}}/install-client-drivers.html).
 
-To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+Clients can be authenticated with either username/password combination, or PKI security certificate.
+
+### Username/Password
 
 To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 
-### Node identity verification
+### Public Key Infrastructure (PKI) Security Certificate
+
+SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates. 
+
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
+
+Refer to [Managing Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
+
+{{site.data.alerts.callout_info}}
+This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
+{{site.data.alerts.end}}
+
+
+## Node identity verification
 
 The [connection string](connect-to-your-cluster.html) generated to connect to your application uses the `verify-full` [SSL mode](#ssl-mode-settings) by default to verify a node’s identity. This mode encrypts the data in-flight as well as verifies the identity of the CockroachDB node, thus ensuring a secure connection to your cluster. Using this mode prevents MITM (Machine in the Middle) attacks, impersonation attacks, and eavesdropping.
 
@@ -38,13 +53,10 @@ To connect securely to your cluster using the `verify-full` mode:
 
 You can also use the `require` SSL mode, although we do not recommend using it since it can make the cluster susceptible to MITM and impersonation attacks. For more information, see the "Protection Provided in Different Modes" section in PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
 
-### Client identity verification
-
-{{ site.data.products.db }} uses password authentication for verifying a client’s identity. If no password has been set up for a user, password authentication will always fail for that user and you won’t be able to connect to the cluster.
 
 For more information about creating SQL users and passwords, see [User Authorization](managing-access.html).
 
-### SSL mode settings
+## SSL mode settings
 
 The table below lists the `sslmode` settings you can use to [connect to your cluster](connect-to-your-cluster.html) and their associated security risks. Other settings are not recommended.
 

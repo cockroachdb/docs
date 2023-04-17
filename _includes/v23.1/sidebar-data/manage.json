@@ -286,6 +286,12 @@
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
                     ]
+                  },
+                  {
+                    "title": "Managing Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "urls": [
+                      "/cockroachcloud/client-certs-dedicated.html"
+                    ]
                   }
 								]
       	    },
