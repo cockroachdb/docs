@@ -673,8 +673,8 @@ layout: null
 {% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
-{%- capture old_url -%}releases/{{ r.version }}{%- endcapture -%}
-{%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endcapture -%}
+{%- capture old_url -%}releases/{{ r.release_name }}{%- endcapture -%}
+{%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.release_name | replace: ".", "-" }}{% endcapture -%}
 {{ old_url | relative_url }} {{ new_url | relative_url }} 301
 {{ old_url | append: ".html" | relative_url }} {{ new_url | relative_url }} 301
 {% endfor -%}
