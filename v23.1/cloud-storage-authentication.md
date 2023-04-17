@@ -647,7 +647,7 @@ You can authenticate to Azure with explicit credentials in the following ways:
 
 ## Azure Blob Storage implicit authentication
 
-{{site.data.alerts.callout_danger}}
+{{site.data.alerts.callout_info}}
 Implicit authentication to Azure is only available for {{ site.data.products.core }} clusters.
 {{site.data.alerts.end}}
 

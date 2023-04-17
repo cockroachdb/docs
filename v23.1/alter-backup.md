@@ -73,7 +73,9 @@ To list backup directories at a collection's URI, see [`SHOW BACKUP`](show-backu
 
 ### Add an Azure KMS key to an encrypted backup
 
-{% include_cached new-in.html version="v23.1" %} To add a new KMS key to the most recent backup:
+{% include_cached new-in.html version="v23.1" %} 
+
+To add a new KMS key to the most recent backup:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
