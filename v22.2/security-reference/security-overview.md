@@ -132,7 +132,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td>Cockroach Labs's proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AED)</a></td>
+  <td>Cockroach Labs's proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></td>
  </tr>
  <tr>
    <td rowspan="2" ><a href="authorization.html">Authorization</a></td>

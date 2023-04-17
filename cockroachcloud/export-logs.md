@@ -166,7 +166,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     1. To enable log export for your {{ site.data.products.dedicated }} cluster with custom logging configuration:
 
-        1. Consult the log export entry on the [Cockroach Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
+        1. Consult the log export entry on the [{{ site.data.products.db }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
 
             For example, consider the following configuration:
 
@@ -310,7 +310,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     1. To enable log export for your {{ site.data.products.dedicated }} cluster with custom logging configuration:
 
-        1. Consult the log export entry on the [Cockroach Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
+        1. Consult the log export entry on the [{{ site.data.products.db }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
         
             For example, consider the following configuration:
 
@@ -453,7 +453,7 @@ No, the {{ site.data.products.dedicated }} log export feature does not support u
 
 ### Does log export configuration use the same syntax as CockroachDB log configuration?
 
-No, log export configuration uses the [Cockroach Cloud API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities), while CockroachDB uses `filter`.
+No, log export configuration uses the [{{ site.data.products.db }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities), while CockroachDB uses `filter`.
 
 ### Why are some logs appearing without a node number in the name?
 

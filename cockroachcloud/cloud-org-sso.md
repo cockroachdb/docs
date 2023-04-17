@@ -89,7 +89,7 @@ If Cloud Organization SSO is enabled, then deprovisioning a user at the level of
 
 To remove a user's access to {{ site.data.products.db }} without deprovisioning the user from the IdP (such as when a user changes teams but does not leave the organization entirely), you can [remove their {{ site.data.products.db }} user identity from your {{ site.data.products.db}} organization](managing-access.html#remove-a-team-member).
 
-#### Can org admins require a particular authentication method for their {{ site.data.products.db }} organization?
+#### Can Org Administrators require a particular authentication method for their {{ site.data.products.db }} organization?
 
 Yes. When Cloud Organization SSO is enabled for your {{ site.data.products.db }} organization, only the [authentication methods you have enabled](configure-cloud-org-sso.html#enable-or-disable-an-authentication-method) are displayed to your users.
 
