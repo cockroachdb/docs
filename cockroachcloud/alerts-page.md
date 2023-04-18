@@ -8,7 +8,7 @@ docs_area: manage
 The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} Organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
 
 {{site.data.alerts.callout_info}}
-The **Alerts** page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} clusters, all [Org Administrators](authorization.html#org-administrator-legacy) will automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits).
+The **Alerts** page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} clusters, all [Org Administrators](authorization.html#org-administrator-legacy) will automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits).
 {{site.data.alerts.end}}
 
 If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:

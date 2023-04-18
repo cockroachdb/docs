@@ -71,7 +71,7 @@ Your cluster will be created in a few seconds.
 
 1. Click **Next: Payment**.
 
-1. Verify your cluster configuration and [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits).
+1. Verify your cluster configuration and [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits).
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.

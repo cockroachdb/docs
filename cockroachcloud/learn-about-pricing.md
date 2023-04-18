@@ -26,7 +26,7 @@ Your cluster's resource limits are the maximum amount of storage and RUs you can
 
 We recommend setting your resource limits to about 30% higher than your expected usage to prevent unexpected throttling. To learn about tuning your workload to reduce costs, see [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html).
 
-All [Org Administrators](authorization.html#org-administrator-legacy) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits).
+All [Org Administrators](authorization.html#org-administrator-legacy) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits).
 
 ## Free vs. paid usage
 

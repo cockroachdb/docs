@@ -53,7 +53,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit your resource limits
 
-You can edit your [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits) from the **Overview** page. The change in your resource limits will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
+You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) from the **Overview** page. The change in your resource limits will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
