@@ -26,13 +26,13 @@ Your cluster's resource limits are the maximum amount of storage and RUs you can
 
 We recommend setting your resource limits to about 30% higher than your expected usage to prevent unexpected throttling. To learn about tuning your workload to reduce costs, see [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html).
 
-All [Console Admins](console-access-management.html#console-admin) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its resource limits.
+All [Org Administrators](authorization.html#org-administrator-legacy) will receive email alerts when a cluster reaches 50%, 75%, and 100% of its [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits).
 
 ## Free vs. paid usage
 
 {{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. All {{ site.data.products.db }} organizations are given 50 million RUs and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice. 
 
-You must set resource limits if you've already created one free {{ site.data.products.serverless }} cluster. Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
+You must [set resource limits](serverless-cluster-management.html#edit-your-resource-limits) if you've already created one free {{ site.data.products.serverless }} cluster. Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
 ## Learn more
 

@@ -8,11 +8,19 @@
 
 ### Organization
 
-An authorization hierarchy rooted in a billing account. All {{ site.data.products.db }} database clusters belong to an organization. The user of the billing account at the root creates or invites other admin users to the organization.
+In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy rooted linked to a billing account. The admins of the organization can add or invite other users to it.
+
+To learn more, refer to [Overview of the CockroachDB Cloud two-level authorization model]({{ link_prefix }}authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
 
 ### User
 
-A {{ site.data.products.db }} user belongs to one or more organizations, either as an `admin` or `developer`. Note *organization user* is distinct from *SQL user/role* on any given cluster.
+A {{ site.data.products.db }} user can belong to one or more organizations.
+
+{{site.data.alerts.callout_info}}
+The concept of *Organization user* is distinct from *SQL user/role* in any given cluster.
+
+Learn more: [Overview of the CockroachDB Cloud two-level authorization model]({{ link_prefix }}authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
+{{site.data.alerts.end}}
 
 ### {{ site.data.products.serverless }} cluster
 
@@ -24,7 +32,7 @@ A {{ site.data.products.db }} cluster deployed on request for a specific custome
 
 ### Request Unit (RU)
 
-Represents the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview]({{ link_prefix }}serverless-cluster-management.html#view-cluster-overview) page.
+Represents the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a [full table scan]({{ link prefix }}show-full-table-scans.html) with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview]({{ link_prefix }}serverless-cluster-management.html#view-cluster-overview) page.
 
 ### Resource limits
 

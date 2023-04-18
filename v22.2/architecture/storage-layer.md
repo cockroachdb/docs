@@ -154,10 +154,8 @@ CockroachDB regularly garbage collects MVCC values to reduce the size of data st
 
 Garbage collection can only run on MVCC values which are not covered by a *protected timestamp*. The protected timestamp subsystem exists to ensure the safety of operations that rely on historical data, such as:
 
-- [Imports](../import.html), including [`IMPORT INTO`](../import-into.html)
 - [Backups](../backup.html)
 - [Changefeeds](../change-data-capture-overview.html)
-- [Online schema changes](../online-schema-changes.html)
 
 Protected timestamps ensure the safety of historical data while also enabling shorter [GC TTLs](../configure-replication-zones.html#gc-ttlseconds). A shorter GC TTL means that fewer previous MVCC values are kept around. This can help lower query execution costs for workloads which update rows frequently throughout the day, since [the SQL layer](sql-layer.html) has to scan over previous MVCC values to find the current value of a row.
 

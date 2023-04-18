@@ -8,7 +8,7 @@ docs_area: manage
 [Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog)
+This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
 {{site.data.alerts.end}}
 
 The {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
@@ -170,6 +170,12 @@ The example alert below will trigger when [a node has less than 15% of storage c
 The timeseries graph at the top of the page indicates the configured metric and threshold:
 
 <img src="{{ 'images/v23.1/datadog-crdb-storage-alert.png' | relative_url }}" alt="CockroachDB Threshold Alert in Datadog" style="border:1px solid #eee;max-width:100%" />
+
+## Step 7. Disable DB Console's local storage of metrics (optional)
+
+If you rely on external tools such as Datadog for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
+
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Datadog based on the data it is collecting from your cluster's Prometheus endpoint.
 
 ## Limitations
 

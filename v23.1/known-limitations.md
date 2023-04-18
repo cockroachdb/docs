@@ -82,6 +82,10 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 
 ## Unresolved limitations
 
+### Limited SQL cursor support
+
+{% include {{page.version.version}}/known-limitations/sql-cursors.md %}
+
 ### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
 
 {% include {{page.version.version}}/sql/select-for-update-limitations.md %}

@@ -7,7 +7,12 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Transactions** page offers two views on transactions: **Transaction Fingerprints**, which represents one or more completed SQL transactions; and **Active Executions**, which represents individual transaction executions in progress.
+The **Transactions** page provides information about the execution of SQL transactions in your cluster, using data in the cluster's [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Transactions**.
+
+It offers two views:
+
+- **Transaction Fingerprints** show information about completed SQL transactions.
+- **Active Executions**, show information about SQL transactions which are currently executing.
 
 Choose a view by selecting the **Transaction Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 

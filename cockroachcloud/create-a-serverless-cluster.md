@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Org Administrators](authorization.html#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 ## Before you begin
 
@@ -19,7 +19,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 {% include cockroachcloud/prefer-sso.md %}
-1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
 ## Step 2. Select a cloud provider & region
@@ -71,7 +71,7 @@ Your cluster will be created in a few seconds.
 
 1. Click **Next: Payment**.
 
-1. Verify your cluster configuration resource limits.
+1. Verify your cluster configuration and [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits).
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
@@ -88,13 +88,13 @@ Your cluster will be created in a few seconds.
 ## What's next
 
 - [Connect to your {{ site.data.products.serverless }} cluster](connect-to-a-serverless-cluster.html)
+- [Authorize users](managing-access.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.current_cloud_version}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data](../{{site.current_cloud_version}}/migration-overview.html).
 - Build a simple CRUD application in [Go](../{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.html), [Java](../{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.html), [Node.js](../{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.html), or [Python](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html).
 - For examples of applications that use free {{ site.data.products.db }} clusters, check out the following [Hack the North](https://hackthenorth.com/) projects:
-
     - [flock](https://devpost.com/software/flock-figure-out-what-film-to-watch-with-friends)
     - [mntr.tech](https://devpost.com/software/mntr-tech)
     - [curbshop.online](https://devpost.com/software/curbshop-online)

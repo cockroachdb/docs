@@ -7,9 +7,13 @@ docs_area: reference.security
 
 Authorization, generally, is the control over **who** (users/roles) can perform **which actions** (e.g read, write, update, delete, grant, etc.) to **which resources or targets** (databases, functions, tables, clusters, schemas, rows, users, jobs, etc.).
 
-CockroachDB has a unified authorization model, meaning that a given user's permissions are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
+This page describes authorization of SQL users on particular [CockroachDB database clusters](../architecture/glossary.html#cluster). This is distinct from authorization of {{ site.data.products.db }} users on {{ site.data.products.db }} organiations.
+
+Learn more: [Overview of the {{ site.data.products.db }} two-level authorization model](../../cockroachcloud/authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 
 ## Authorization models
+
+Authorization in CockroachDB is *unified*, meaning that a given SQL user's permissions on a given cluster are governed by the same policies in different contexts such as accessing the SQL shell or viewing data from the DB Console.
 
 {{site.data.alerts.callout_info}}
 Starting in v22.2, CockroachDB introduces a new granular [system-level privilege model](#system-level-privileges) that provides finer control over a user's ability to work with the database. This new system-level privilege model is intended to replace the existing [role options model](#role-options) in a future release of CockroachDB. As such, any legacy role options that now have corresponding system-level privilege versions are **deprecated in CockroachDB v22.2**, though both are supported alongside each other in v22.2. We recommend familiarizing yourself with the new system-level privilege model, and implementing it where possible.

@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
+This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Org Administrators](authorization.html#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart](quickstart-trial-cluster.html).
@@ -18,9 +18,13 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
-1. Selected the **Dedicated** plan.
+1. Select the **Dedicated standard** or **Dedicated advanced** plan.
+
+{{site.data.alerts.callout_info}}
+{{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
+{{site.data.alerts.end}}
 
 ## Step 2. Select the cloud provider
 
@@ -160,7 +164,7 @@ Your cluster will be created in approximately 20-30 minutes.
 To start using your {{ site.data.products.db }} cluster, see the following pages:
 
 - [Connect to your cluster](connect-to-your-cluster.html)
-- [Authorize users](user-authorization.html)
+- [Authorize users](managing-access.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
 
 If you created a multi-region cluster, it is important to carefully choose:

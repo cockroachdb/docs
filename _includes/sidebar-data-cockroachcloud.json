@@ -85,15 +85,15 @@
 								]
       	    },
             {
-              "title": "Authorization in CockroachDB Cloud",
+              "title": "Access Management Overview and FAQ",
               "urls": [
                 "/cockroachcloud/authorization.html"
               ]
             },
             {
-              "title": "Managing User Authorization in CockroachDB Cloud",
+              "title": "Managing Access in CockroachDB Cloud",
               "urls": [
-                "/cockroachcloud/user-authorization.html"
+                "/cockroachcloud/managing-access.html"
               ]
             },
             {
@@ -304,12 +304,6 @@
       	    }
       	  ]
       	}
-      ]
-    },
-    {
-      "title": "Manage Console Access",
-      "urls": [
-	       "/cockroachcloud/console-access-management.html"
       ]
     },
     {

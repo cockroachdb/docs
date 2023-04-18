@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.2](../releases/v20.2.html#v20-2-0) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v20.2](../releases/v20.2.html#v20-2-0) is available, your [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
 
 ## Step 1. Verify that you can upgrade
 
@@ -45,7 +45,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.2, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.2, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 

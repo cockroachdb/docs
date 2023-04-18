@@ -12,7 +12,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 ## Before you start
 
 - [Create a cluster](create-your-cluster.html).
-- [Create a SQL user](user-authorization.html#create-a-sql-user).
+- [Create a SQL user](managing-access.html#create-a-sql-user).
 
 ## Step 1. Authorize your network
 
@@ -162,7 +162,7 @@ To connect to your cluster with the [built-in SQL client](../{{site.current_clou
     {% include cockroachcloud/postgresql-special-characters.md %}
 
     {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
+    If you forget your SQL user's password, an [Org Administrator](authorization.html#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page. Refer to: [Change a User's password](../cockroachcloud/managing-access.html#change-a-sql-users-password).
     {{site.data.alerts.end}}
 
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
@@ -219,7 +219,7 @@ To connect to your cluster with your application, use the connection string prov
     {% include cockroachcloud/postgresql-special-characters.md %}
 
     {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
+    If you forget your SQL user's password, an [Org Administrator](authorization.html#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}
 
 For examples, see the following:

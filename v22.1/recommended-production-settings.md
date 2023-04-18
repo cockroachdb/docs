@@ -170,7 +170,7 @@ Disk I/O especially affects [performance on write-heavy workloads](architecture/
 
 In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended before using it in a production environment.
 
-These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x c5d.4xlarge nodes, each with 5 TiB of gp2 EBS storage.
+These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x `c5d.4xlarge` nodes, each with 5 TiB of gp2 EBS storage.
 
 Results:
 
@@ -199,7 +199,27 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 - [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are the most cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned, which can be very expensive.
 
-- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), a [Network Load Balancer (NLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html), and [Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+
+- [AWS Network Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) are recommended with client applications configuring their application's database connection pool's maximum connection age (or health check interval) to 5 minutes to stay under [NLB idle connection timeouts](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html#connection-idle-timeout).
+
+- EC2 instances SHOULD be provisioned using an [AWS Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#placement-groups-strategies) *and* the `partition` strategy.  Not specifying an AWS Placement Group or specifying the `cluster` strategy puts your cluster at increased risk of unavailability and is not a supported configuration by Cockroach Labs (the `spread` Placement Group strategy limits the maximum size of a cluster and is not recommended for this reason).
+
+- Incorporate the AWS Placement Group ID into every node's `--locality` flag.  For instance, `--locality=country=us,region=us-west-2,az=us-west-2b,pg=us-west-2b2`.  The trailing partition number can be determined at instance create time or process startup time using a command similar to:
+
+```
+country="us"
+region=${AWS_DEFAULT_REGION}
+az="us-west-2"
+partition_locality=""
+partition_number=$(aws ec2 describe-instances --instance-ids "${instance_id}" | jq -r '.Reservations[].Instances[].Placement.PartitionNumber')
+if [[ "${partition_number}" != "null" ]]; then
+	partition_locality="${partition_number}"
+fi
+exec /usr/local/bin/cockroach start \
+	--locality="country=${country},region=${region},az=${az},pg=${az}${partition_locality}" \
+	# other installation-specific cockroach start flags
+```
 
 #### Azure
 

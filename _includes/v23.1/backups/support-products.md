@@ -1,3 +1,3 @@
 ## Supported products
 
-The feature described on this page is available in **{{ site.data.products.dedicated }}**, **{{ site.data.products.serverless }}**, and **{{ site.data.products.core }}**.
+The feature described on this page is available in **{{ site.data.products.dedicated }}**, **{{ site.data.products.serverless }}**, and **{{ site.data.products.core }}** clusters when you are running [customer-owned backups](backup-and-restore-overview.html#cockroachdb-backup-types). For a full list of features, see [Backup and restore product support](backup-and-restore-overview.html#backup-and-restore-product-support).

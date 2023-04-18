@@ -24,7 +24,7 @@ This page describes how Egress Perimeter Controls can enhance the security of {{
 
 By default, clusters can access external resources via the internet without restriction, and even [private clusters](private-clusters.html) can access their private network. This potentially leaves a cluster open to a *data exfiltration* scenario, wherein an attacker, often a [malicious insider](https://www.cisa.gov/defining-insider-threats), steals data by sending backups, changefeeds, data, or logs to a source that they control.
 
-Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable cluster administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
+Operators of {{ site.data.products.dedicated }} clusters can mitigate against this risk by using Egress Perimeter Controls, which enable Cluster Administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration. Along with other measures such as [Private Clusters](private-clusters.html), Egress Perimeter Controls are an important component in an overall strategy for maximizing network security.
 
 Further reading: [review how CockroachDB products differs in advanced security features](../{{site.current_cloud_version}}/security-reference/security-overview.html).
 
@@ -36,7 +36,7 @@ Regardless of user-specific Egress Perimeter Control policy, egress is always pe
 
 - You need a {{ site.data.products.dedicated }} cluster. Egress Perimeter Controls are not supported for {{ site.data.products.serverless }} clusters.
 - Your cluster must be a **Private Cluster**, with no public IP addresses on its nodes. Refer to [Private Clusters](private-clusters.html).
-- You need a service account with `admin` privilege on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts](console-access-management.html#service-accounts).
+- You need a service account with `admin` privilege or Cluster Admin role on clusters in your organization. You can provision service accounts and API keys in CockroachDB Cloud Console. Refer to [Service Accounts](managing-access.html#manage-service-accounts).
 
 {{site.data.alerts.callout_danger}}
 The operations described in this page require an API key with very broad permissions, such as the ability to modify dedicated clusters, including adding potentially malicious egress rules that could defeat the type of attack that this feature is meant to prevent. Do not allow this key to be copied or transmitted in any form, including by capturing an image of your computer screen.
