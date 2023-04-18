@@ -5,6 +5,8 @@ toc: true
 docs_area: manage
 ---
 
+{{ site.data.products.db }} has two levels of user identity and access management, the Organization level, and the cluster level. Refer to [CockroachDB Cloud Access Management Overview and FAQ: Overview of the {{ site.data.products.db }} two-level authorization model](authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
+
 Users may connect with {{ site.data.products.db }} in two ways:
 
 - The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administering or connecting to clusters.
@@ -24,6 +26,11 @@ If you have not done so, [create your own free {{ site.data.products.serverless 
 To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.current_cloud_version}}/install-client-drivers.html).
 
 Clients can be authenticated with either username/password combination, or PKI security certificate.
+
+Refer to:
+
+- [Manage SQL users on a cluster](authorization.html#manage-sql-users-on-a-cluster)
+- [] 
 
 ### Username/Password
 

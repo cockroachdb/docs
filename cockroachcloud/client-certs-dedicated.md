@@ -15,12 +15,17 @@ Refer to [Authenticating to {{ site.data.products.db }}](authentication.html) fo
 This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
 {{site.data.alerts.end}}
 
-
-## Appendix: Provision a PKI hierarchy
+## Provision your cluster's PKI hierarchy
 
 There are many ways to create, manage and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates, without the need to reveal the CA private key.
 
-Alternatively, you can generate certificates using CockroachDB's `cockroach cert` command or with [OpenSSL](https://www.openssl.org/). However, generating certificates this way and manually handling cryptographic material is not considered secure. For more information, refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault: PKI Strategy](../{{site.versions["stable"]}}/manage-certs-vault.html#pki-strategy).
+Alternatively, you can generate certificates using CockroachDB's `cockroach cert` command or with [OpenSSL](https://www.openssl.org/). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error, and sound policy should be followed for managing PKI cryptographic material related to your {{ site.data.products.db }} organizations, particularly in any production systems.
+
+Refer to:
+
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault: PKI Strategy](../{{site.versions["stable"]}}/manage-certs-vault.html#pki-strategy)
+- [Create certificates with `cockroach cert`](../{{site.versions["stable"]}}/cockroach-cert.html#synopsis)
+- [Create Security Certificates using OpenSSL](../{{site.versions["stable"]}}/create-security-certificates-openssl.html)
 
 ### Initialize your Vault workstation
 
@@ -50,75 +55,246 @@ Alternatively, you can generate certificates using CockroachDB's `cockroach cert
 
 1. Authenticate with your admin token 
 
-  {% include_cached copy-clipboard.html %}
-  ~~~shell
-  vault login
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    vault login
+    ~~~
 
-#### Create the certificate authority
+### Create the certificate authority (CA) certificate
 
 1. Create a PKI secrets engine to serve as your client CA.
 
-  {% include_cached copy-clipboard.html %}
-  ~~~shell
-  vault secrets enable -path=cockroach_client_ca pki
-  ~~~
-
-  ~~~txt
-  Success! Enabled the pki secrets engine at: cockroach_client_ca/
-  ~~~
-    
-1. Set a maximum validity duration for certificates signed by your CAs. In this example this maximum duration is 48 hours, appropriate for a scenario where the certificates are provisioned each day, with another 24 hours grace period.
-
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    vault secrets tune -max-lease-ttl=1000h cockroach_client_ca
+    vault secrets enable -path=cockroach_client_ca pki
     ~~~
 
     ~~~txt
-    Success! Tuned the secrets engine at: cockroach_client_ca/
+    Success! Enabled the pki secrets engine at: cockroach_client_ca/
+    ~~~
+    
+1. Generate a root credential pair for the CA. Certificates created with this CA/secrets engine will be signed with the private key generated here and held within Vault; this key cannot be exported, safeguarding it from being leaked and used to issue fraudulent certificates. The CA public certificate is downloaded in the resulting JSON payload.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    vault write \
+    cockroach_client_ca/root/generate/internal \
+    ttl=1000h \
+    --format=json > "${SECRETS_DIR}/certs/cockroach_client_ca_cert.json"
     ~~~
 
-1. Generate a root credential pair for each CA. Certificates created with this CA/secrets engine will be signed with the private key generated here. 
+1. Format the public certificate for upload.
 
-  {{site.data.alerts.callout_info}}
-  The CA private key cannot be exported from Vault. This safeguards it from being leaked and used to issue fraudulent certificates.
+    In order to upload your certificate to {{ site.data.products.db }}, you must create a JSON file with the public certificate itself as the value for a key `x509_pem_cert`, as in the following example.
 
-  The CA public certificate is downloaded in the resulting JSON payload. 
-  {{site.data.alerts.end}}
+    ~~~json
+    {
+      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\nMzE1MjMyNTMxWjBZMQswCQYDVQQGEwJ1czELMAkGA1UECAwCV0ExDTALBgNVBAoM\nBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNVBAcMB1NlYXR0bGUxDTALBgNVBAsM\n
+    ...\n-----END CERTIFICATE-----
+    "
+    }
+    ~~~
 
-  {% include_cached copy-clipboard.html %}
-  ~~~shell
-  vault write \
-  cockroach_client_ca/root/generate/internal \
-  ttl=1000h \
-  --format=json > "${secrets_dir}/certs/cockroach_client_ca.json"
-  ~~~
+    The public certificate can be found in the JSON file created by Vault at `.data.certificate`, for example, using the `jq` utility:
 
-1. Parse the CA's public certificate from the corresponding JSON payload.
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cat "${SECRETS_DIR}/certs/cockroach_client_ca_cert.json" | jq .data.certificate
+    ~~~
 
-  {% include_cached copy-clipboard.html %}
-  ~~~shell
-  echo -e $(cat "${secrets_dir}/certs/cockroach_cluster_ca.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/certs/ca.crt"
+    ~~~txt
+    "-----BEGIN CERTIFICATE-----\nMIIC8TCCAdmgAwIBAgIUBMV/L6InS7DmJCWv4eyDwazEihkwDQYJKoZIhvcNAQEL\nBQAwADAeFw0yMzA0MTgxNzI5MzhaFw0yMzA1MzAwOTMwMDhaMAAwggEiMA0GCSqG\nSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDPGJYjOxAUtZ0bfSGd1eoCRyZHmXKdfoPq\nENRyatgzZqJguqv6q6y6IHH3DhGNqMJXzn/wfDWGjd5tao+QSwjiJ/m0VhGDeap3\ngLkGXZ/NDsSLARecZNx/DI349PpeV3LgG9in7JbAAw0qRm+o061xGwB2Z9vH9EMM\naAZ2yRqXNlqCanD9EHruYdFBzvNnmnxkMmtaaMM7S4SiJ7yee4ZZZ6hBvILxRhSg\nUXdTL6I4Wu/JLcyk41haAwie/VXeNydqEo23wJDH2Ishm0jhE/p31f/17v8UILZ4\n6SFr84UUfH6jcZVYQbyg9lSb9QP70TWt2rO2K3knZXjwvOl5FpLhAgMBAAGjYzBh\nMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRtg99q\nfugnDm+OAF12MWX7vtHVnTAfBgNVHSMEGDAWgBRtg99qfugnDm+OAF12MWX7vtHV\nnTANBgkqhkiG9w0BAQsFAAOCAQEAvRqy/O9Y+l1ikLjmg4Y/+Cj/er28aAYtgkIA\nk8DsrwnvnwwTkfFyjMcv8+ZVZr7hukhvbKP6ElWuw6Zh13DP8FuR8vbFuPmoPGA3\nF9TdmKobZI0qf26F1eUPAUemEbYajBtdFHxzfJIXiG/ZM+JpX+OpCV1+LsZRz3n2\nGbzwuNc5nm1UNYZZ5CaEp0Yckfd3tuhTKyZi+mpAs3zPGuflGdKREBlc6XLfswhL\nqS7Ke0sTUR3YT/wGcWyVh822aQtH7+zucWQkvNXkdAwxjo8qD8XcxWLB5/Pj9XVM\n/5Na4xRIi+sgdMOgPpSm5a+gbUrjwa18LXxX9kc2aOEHTqpssQ==\n-----END CERTIFICATE-----"
+    ~~~
 
-  echo -e $(cat "${secrets_dir}/certs/cockroach_client_ca.json" | jq .data.certificate | tr -d '"') > "${secrets_dir}/certs/ca-client.crt"
-  ~~~
+### Create a PKI role and issue credentials for client
+
+1.  Define a client PKI role in Vault:
+    
+    ~~~txt
+    vault write cockroach_client_ca/roles/client \
+    allow_any_name=true \
+    client_flag=true \
+    enforce_hostnames=false \
+    allow_ip_sans=false \
+    allow_localhost=false \
+    max_ttl=48h
+    ~~~
+
+1. Create PKI authentication credentials (a private key and public certificate) for a root user. 
+
+    {{site.data.alerts.callout_info}}
+    CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
+    {{site.data.alerts.end}}
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    vault write "cockroach_client_ca/issue/client" \
+    common_name=root \
+    --format=json > "${SECRETS_DIR}/clients/certs.json"
+    ~~~
+
+1. Parse the client key and certificate pair from the payload.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.private_key | tr -d '"') > "${SECRETS_DIR}/clients/client.root.key"
+    echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.certificate | tr -d '"') > "${SECRETS_DIR}/clients/client.root.crt"
+    ~~~
+
+1. Set key file permissions.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    chmod 0600  ${SECRETS_DIR}/clients/client.root.key
+    chown $USER ${SECRETS_DIR}/clients/client.root.key
+    ~~~
+
+## Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster
+
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="api">Using the API</button>
+  <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
+</div>
+<p></p>
+
+<section class="filter-content" markdown="1" data-scope="api">
+
+1. Submit the asynchronous request, supplying your cluster ID, API key, and the path to the certificate JSON with your CA certificate, as described in [Create the certificate authority (CA) certificate](#create-the-certificate-authority-ca-certificate).
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+CLUSTER_ID=#{ your cluster ID }
+API_KEY=#{ your service account API key }
+curl --request POST \
+  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+  --header "Authorization: Bearer ${API_KEY}" \
+  --header 'content-type: application/json' \
+  --data "@cockroach_client_ca_cert.json"
+~~~
+
+~~~txt
+200 OK
+~~~
+
+1. Confirm success of the operation.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request GET \
+  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+  --header "Authorization: Bearer ${API_KEY}"
+~~~
+
+~~~txt
+{
+  "status": "PENDING",
+  "x509_pem_cert": ""
+}
+~~~
+
+~~~txt
+{
+  "status": "IS_SET",
+  "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\n
+...\n-----END CERTIFICATE-----",
+}
+~~~
+
+</section>
+<section class="filter-content" markdown="1" data-scope="tf">
 
 
-## Uploading a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster
+Add the following block to your terraform configuration and apply:
 
-### Using the API
+{% include_cached copy-clipboard.html %}
+~~~shell
+resource "cockroach_client_ca_cert" "yourclustername" {
+  id = cockroach_cluster.example.id
+  x509_pem_cert = file("cockroach_client_ca_cert.json")
+}
+~~~
+</section>
 
-### Using Terraform
 
-## Updating the certificate authority (CA) certificate for a dedicated cluster
-### Using the API
 
-### Using Terraform
+## Update the certificate authority (CA) certificate for a dedicated cluster
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="api">Using the API</button>
+  <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
+</div>
+<p></p>
 
-## Deleting the certificate authority (CA) certificate for a dedicated cluster
-### Using the API
+<section class="filter-content" markdown="1" data-scope="api">
 
-### Using Terraform
+{% include_cached copy-clipboard.html %}
+~~~shell
+CLUSTER_ID= #{ your cluster ID }
+API_KEY= #{ your API key for service account }
+curl --request PATCH \
+  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+  --header "Authorization: Bearer ${API_KEY}" \
+  --header 'content-type: application/json' \
+  --data "@cockroach_client_ca_cert.json"
+~~~
+
+~~~txt
+200 OK
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="tf">
+Update the `cockroach_client_ca_cert` block in your terraform configuration, pointing to the updated certificate JSON file, and apply:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+resource "cockroach_client_ca_cert" "yourclustername" {
+  id = cockroach_cluster.example.id
+  x509_pem_cert = file("cockroach_client_ca_cert.json")
+}
+~~~
+</section>
+
+## Delete the certificate authority (CA) certificate for a dedicated cluster
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="api">Using the API</button>
+  <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
+</div>
+<p></p>
+
+<section class="filter-content" markdown="1" data-scope="api">
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+CLUSTER_ID= #{ your cluster ID }
+API_KEY= #{ your API key for service account }
+curl --request DELETE \
+  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+  --header "Authorization: Bearer ${API_KEY}"
+~~~
+
+~~~txt
+200 OK
+~~~
+</section>
+<section class="filter-content" markdown="1" data-scope="tf">
+
+
+To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your terraform configuration, then run `terraform apply`.
+</section>
 
 ## Authenticating a SQL client against a {{ site.data.products.dedicated }} cluster
+
+First, obtain a connection string for your cluster from it's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, by clicking on the **Connect** button.
+
+You must modify the provided connection string by removing the placeholder password, and adding the `sslkey` and `sslcert` parameters with the paths to a private key/public certificate pair pair. Refer to [Provision your cluster's PKI hierarchy ](#provision-your-clusters-pki-hierarchy).
+
+{{site.data.alerts.callout_success}}
+Make sure you **Download the CA Cert** for your cluster, from the **Connect** UI.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+cockroach sql --url "postgresql://root@flooping-frogs-74bn.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
+~~~
+
+
