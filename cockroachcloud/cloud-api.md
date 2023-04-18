@@ -340,7 +340,7 @@ Where:
 
 ## Set the maximum resource limits of a Serverless cluster
 
-To set the maximum [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits) for a serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. 
+To set the maximum [resource limits](../{{site.versions["stable"]}}/glossary.html#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint. 
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role](authorization.html#organization-user-roles), or the `ADMIN` or `READ` [permission](authorization.html#service-accounts) if it is a legacy service account.
