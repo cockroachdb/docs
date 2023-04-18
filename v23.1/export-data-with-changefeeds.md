@@ -7,7 +7,7 @@ docs_area: stream_data
 
 When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database. 
 
-{% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-data) to use a changefeed initial scan for exporting data on a regular cadence. 
+{% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence. 
 
 The benefits of using changefeeds for this use case compared to an export, include:
 
@@ -24,30 +24,30 @@ The benefits of using changefeeds for this use case compared to an export, inclu
 
 To create a changefeed that will only complete an initial scan of a table(s), run the following:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_parameters}' WITH initial_scan = 'only', format=csv;
 ~~~
 
+Or, use [CDC queries](cdc-queries.html) to filter the data that your changefeed emits:
+
+~~~ sql
+CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}' 
+  WITH initial_scan = 'only', format=csv AS SELECT name, city FROM movr.users;
+~~~
+
 The job will return a job ID once it has started. You can use `SHOW CHANGEFEED JOBS` to check on the status:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW CHANGEFEED JOB {job ID};
 ~~~
 
 When the scan has completed you will find the output shows `succeeded` in the `status` field.
 
-### Create a scheduled changefeed to export data
+### Create a scheduled changefeed to export filtered data
 
-This example creates a nightly export of some filtered table data with a scheduled changefeed that will run just after midnight every night. The changefeed uses [CDC transformations](cdc-transformations.html) to query the table and filter the data it will send to the sink: 
-
-~~~ sql
-CREATE SCHEDULE sf_skateboard FOR CHANGEFEED INTO 'external://cloud-sink' WITH format=csv AS SELECT current_location AS sf_address, id, type, status FROM vehicles WHERE city = 'san francisco' AND type = 'skateboard' RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS on_execution_failure=retry, on_previous_running=start;
-~~~
-
-The [schedule options](create-schedule-for-changefeed.html#schedule-options) control the schedule's behavior:
-
-- If it runs into a failure, `on_execution_failure=retry` will ensure that the schedule retries the changefeed immediately. 
-- If the previous scheduled changefeed is still running, `on_previous_running=start` will start a new changefeed at the defined cadence.
+{% include {{ page.version.version }}/cdc/schedule-query-example.md %}
 
 ## See also
 

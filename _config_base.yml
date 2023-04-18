@@ -6,6 +6,14 @@ algolia:
   - search.html
   index_name: cockroachcloud_docs
   search_api_key: 372a10456f4ed7042c531ff3a658771b
+  settings:                                                                      
+    attributesForFaceting:                                                       
+      - searchable(categories)                                                   
+      - searchable(collection)                                                   
+      - docs_area                                                                
+      - searchable(tags)                                                         
+      - searchable(title)                                                        
+      - type                                                                     
 defaults:
 - scope:
     path: ''
@@ -126,26 +134,26 @@ release_info:
     start_time: 2022-10-13 17:45:03.909127 +0000 UTC
     version: v21.2.17
   v22.1:
-    build_time: 2023-03-03 00:00:00 (go1.19)
+    build_time: 2023-03-27 00:00:00 (go1.19)
     crdb_branch_name: release-22.1
     docker_image: cockroachdb/cockroach
-    name: v22.1.16
-    start_time: 2023-03-01 13:20:01.002036 +0000 UTC
-    version: v22.1.16
+    name: v22.1.18
+    start_time: 2023-03-24 10:33:31.241199 +0000 UTC
+    version: v22.1.18
   v22.2:
-    build_time: 2023-03-03 00:00:00 (go1.19)
+    build_time: 2023-04-17 00:00:00 (go1.19)
     crdb_branch_name: release-22.2
     docker_image: cockroachdb/cockroach
-    name: v22.2.6
-    start_time: 2023-02-28 13:49:22.362179 +0000 UTC
-    version: v22.2.6
+    name: v22.2.8
+    start_time: 2023-04-17 12:53:26.338251 +0000 UTC
+    version: v22.2.8
   v23.1:
-    build_time: 2023-03-20 00:00:00 (go1.19)
-    crdb_branch_name: master
+    build_time: 2023-04-17 00:00:00 (go1.19)
+    crdb_branch_name: release-23.1
     docker_image: cockroachdb/cockroach-unstable
-    name: v23.1.0-alpha.7
-    start_time: 2023-03-17 12:32:36.434585 +0000 UTC
-    version: v23.1.0-alpha.7
+    name: v23.1.0-beta.2
+    start_time: 2023-04-14 12:18:53.306028 +0000 UTC
+    version: v23.1.0-beta.2
 sass:
   quiet_deps: 'true'
   sass_dir: css

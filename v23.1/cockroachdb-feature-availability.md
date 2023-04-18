@@ -185,9 +185,9 @@ Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink](changefeed-sin
 
 Use a [webhook sink](changefeed-sinks.html#webhook-sink) to deliver changefeed messages to an arbitrary HTTP endpoint.
 
-### Change data capture transformations
+### Multiple active portals
 
-[Change data capture transformations](cdc-transformations.html) allow you to define the change data emitted to your sink when you create a changefeed. The expression syntax provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
+The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals](postgresql-compatibility.html#multiple-active-portals).
 
 ## See Also
 

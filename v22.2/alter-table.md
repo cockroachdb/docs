@@ -1756,7 +1756,7 @@ To unhide the column, run:
 
 #### Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/MPx-LXY2D-c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
 
 #### Alter a single-column primary key
 

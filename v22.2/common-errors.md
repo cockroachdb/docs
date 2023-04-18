@@ -191,19 +191,27 @@ When importing into an existing table with [`IMPORT INTO`](import-into.html), th
 
 ## memory budget exceeded
 
-This message usually indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. A `memory budget exceeded` error also suggests that a node is close to an [OOM crash](cluster-setup-troubleshooting.html#out-of-memory-oom-crash), which might be prevented by failing the query.
+If a node runs out of its allocated SQL memory (the memory allocated to the SQL layer), a `memory budget exceeded` error occurs.
 
-{% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
+To mitigate this issue, ensure that the node has enough RAM and that enough memory is allocated to the SQL layer. The best approach depends upon the cluster's workload. Try the following approaches:
 
-Increasing `--max-sql-memory` can alleviate `memory budget exceeded` errors. However, allocating more `--max-sql-memory` can also increase the probability of [OOM crashes](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) relative to the amount of memory currently provisioned on each node. For guidance on configuring this flag, see [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
+- {% include {{ page.version.version }}/prod-deployment/resolution-untuned-query.md %}
 
-For [disk-spilling operations](vectorized-execution.html#disk-spilling-operations) such as hash joins that are memory-intensive, another solution is to increase the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html) to allocate more memory to the operation before it spills to disk and likely consumes more memory. This improves the performance of the query, though at a possible reduction in the concurrency of the workload.
+- Increase the amount of memory on the node. Cockroach Labs recommends that you use the same hardware, operating system, and software configuration on each node.
 
-For example, if a query contains a hash join that requires 128 MiB of memory before spilling to disk, values of `sql.distsql.temp_storage.workmem=64MiB` and `--max-sql-memory=1GiB` allow the query to run with a concurrency of 16 without errors. The 17th concurrent instance will exceed `--max-sql-memory` and produce a `memory budget exceeded` error. Increasing `sql.distsql.temp_storage.workmem` to `128MiB` reduces the workload concurrency to 8, but allows the queries to finish without spilling to disk. For more information, see [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
+- Increase [`--max-sql-memory`](cockroach-start.html#flags) on the node. A `memory budget exceeded` error is an early warning that the `cockroach` process on a node is at risk of crashing due to an [out-of-memory (OOM) crash](cluster-setup-troubleshooting.html#out-of-memory-oom-crash). To protect the node, CockroachDB fails the query.
 
-{{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/prod-deployment/resolution-oom-crash.md %}
-{{site.data.alerts.end}}
+  However, do not set `--max-sql-memory` too high. The operating system dynamically increases the amount of memory available to the `cockroach` process, and by default, 25% of the memory allocated to the `cockroach` process is reserved for the SQL layer. If the demand exceeds the amount of RAM on the node, the `cockroach` process may crash or become very slow by falling back to using disk-based swap. Try different values and monitor your cluster's performance. Avoid increasing the value further as soon the total memory usage under load grows beyond 80% of overall capacity available to the process.
+
+- For [disk-spilling operations](vectorized-execution.html#disk-spilling-operations) such as hash joins that are memory-intensive, consider allocating more memory to the operation before it spills to disk and risks consuming more memory. To do this, increase the value of the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html). This improves the performance of the query, with the risk of a reduction in the concurrency of the workload. Try different values and monitor your cluster's performance.
+
+  For example, if a query contains a hash join that requires 128 MiB of memory before spilling to disk, you can set `sql.distsql.temp_storage.workmem=64MiB` and `--max-sql-memory=1GiB` to allow the query to run 16 times concurrently. A 17th concurrent instance of the query exceeds `--max-sql-memory` and produces a `memory budget exceeded` error. To allow only 8 instances to run in parallel but allow all queries to finish without spilling to disk, set `sql.distsql.temp_storage.workmem` to `128MiB`.
+
+For more information, refer to:
+
+- [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
+- [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
+- [Memory usage in CockroachDB](https://cockroachlabs.com/blog/memory-usage-cockroachdb/) in the CockroachDB blog.
 
 ## Something else?
 

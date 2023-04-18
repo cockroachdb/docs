@@ -15,6 +15,10 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
+### What is the difference between {{ site.data.products.dedicated }} standard and advanced?
+
+{{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
+
 ### In what clouds and regions is {{ site.data.products.dedicated }} available?
 
 The following regions are available for {{ site.data.products.dedicated }}:
@@ -176,7 +180,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
-Yes, a Console Admin can apply major release upgrades directly [through the {{ site.data.products.db }} Console](upgrade-to-v21.2.html); however, patch release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version updates, so previously established connections will need to be [reestablished after the restart](../v21.2/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, an [Org Administrator](authorization.html#org-administrator-legacy) can apply major release upgrades directly [through the {{ site.data.products.db }} Console](upgrade-to-v21.2.html); however, patch release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted one node at a time for patch version updates, so previously established connections will need to be [reestablished after the restart](../v21.2/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 

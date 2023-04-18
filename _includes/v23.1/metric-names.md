@@ -181,11 +181,12 @@ Name | Description
 `ranges` | Number of ranges
 `rangevalbytes` | Number of bytes taken up by range key values (e.g., MVCC range tombstones)
 `rangevalcount` | Count of all range key values (e.g., MVCC range tombstones)
-`rebalancing.readbytespersecond` | Average number of bytes written recently per second
-`rebalancing.readspersecond` | Average number of keys read recently per second
-`rebalancing.requestspersecond` | Average number of requests received recently per second
-`rebalancing.writebytespersecond` | Average number of bytes read recently per second
-`rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
+`rebalancing.queriespersecond` | Number of kv-level requests received per second by the store, considering the last 30 minutes, as used in rebalancing decisions.
+`rebalancing.readbytespersecond` | Number of bytes written per second, considering the last 30 minutes.
+`rebalancing.readspersecond` | Number of keys read recently per second, considering the last 30 minutes.
+`rebalancing.requestspersecond` | Number of requests received recently per second, considering the last 30 minutes.
+`rebalancing.writebytespersecond` | Number of bytes read recently per second, considering the last 30 minutes.
+`rebalancing.writespersecond` | Number of keys written (i.e. applied by Raft) per second to the store, considering the last 30 minutes.
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
 `replicas.commandqueue.combinedwritecount` | Number of read-write commands in all CommandQueues combined
@@ -258,6 +259,20 @@ Name | Description
 `sql.txn.contended.count` | Number of SQL transactions that experienced contention
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
+`storage.l0-level-score` | Compaction score of level 0
+`storage.l1-level-score` | Compaction score of level 1
+`storage.l2-level-score` | Compaction score of level 2
+`storage.l3-level-score` | Compaction score of level 3
+`storage.l4-level-score` | Compaction score of level 4
+`storage.l5-level-score` | Compaction score of level 5
+`storage.l6-level-score` | Compaction score of level 6
+`storage.l0-level-size` | Size of the SSTables in level 0
+`storage.l1-level-size` | Size of the SSTables in level 1
+`storage.l2-level-size` | Size of the SSTables in level 2
+`storage.l3-level-size` | Size of the SSTables in level 3
+`storage.l4-level-size` | Size of the SSTables in level 4
+`storage.l5-level-size` | Size of the SSTables in level 5
+`storage.l6-level-size` | Size of the SSTables in level 6
 `storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.
 `storage.marked-for-compaction-files` | Count of SSTables marked for compaction
 `sys.cgo.allocbytes` | Current bytes of memory allocated by cgo

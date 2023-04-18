@@ -84,12 +84,18 @@
 									}
 								]
       	    },
-      	    {
-      	      "title": "User Authorization",
-      	      "urls": [
-      		      "/cockroachcloud/user-authorization.html"
-      	      ]
-      	    },
+            {
+              "title": "Access Management Overview and FAQ",
+              "urls": [
+                "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing Access in CockroachDB Cloud",
+              "urls": [
+                "/cockroachcloud/managing-access.html"
+              ]
+            },
             {
       	      "title": "Network Authorization",
       	      "urls": [
@@ -97,7 +103,7 @@
       	      ]
       	    },
 						{
-      	      "title": "Private clusters (Preview)",
+      	      "title": "Create Private Clusters",
       	      "urls": [
       		      "/cockroachcloud/private-clusters.html"
       	      ]
@@ -105,7 +111,7 @@
             {
               "title": "Egress Perimeter Controls (Preview)",
               "urls": [
-                "/cockroachcloud/private-clusters.html"
+                "/cockroachcloud/egress-perimeter-controls.html"
               ]
             },
       	    {
@@ -298,12 +304,6 @@
       	    }
       	  ]
       	}
-      ]
-    },
-    {
-      "title": "Manage Console Access",
-      "urls": [
-	       "/cockroachcloud/console-access-management.html"
       ]
     },
     {

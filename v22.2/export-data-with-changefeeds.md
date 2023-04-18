@@ -16,7 +16,9 @@ The benefits of using changefeeds for this function compared to an export, inclu
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
-## Example
+## Examples
+
+### Export data with changefeeds
 
 To create a changefeed that will only complete an initial scan of a table(s), run the following:
 
@@ -31,6 +33,22 @@ SHOW CHANGEFEED JOB {job ID};
 ~~~
 
 When the scan has completed you will find the output shows `succeeded` in the `status` field.
+
+### Export filtered data with changefeeds
+
+{{site.data.alerts.callout_info}}
+CDC transformations are in [preview](https://www.cockroachlabs.com/docs/v22.2/cockroachdb-feature-availability).
+{{site.data.alerts.end}}
+
+Use CDC transformations with the `initial_scan = 'only'` option to run a changefeed to export specific columns from your table:
+
+~~~ sql
+CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}' 
+  WITH initial_scan = 'only', format=csv, schema_change_policy = 'stop' 
+  AS SELECT name, city FROM movr.users;
+~~~
+
+See the [Change Data Capture Transformations](cdc-transformations.html) page for more examples.
 
 ## See also
 

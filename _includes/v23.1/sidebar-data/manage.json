@@ -219,6 +219,12 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
+              "title": "Create Private Clusters",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
+            {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
               "urls": [],
               "items": [
@@ -241,7 +247,7 @@
                   ]
                 },
                 {
-                  "title": "Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
+                  "title": "FAQs",
                   "urls": [
                     "/cockroachcloud/cmek-faq.html"
                   ]
@@ -278,12 +284,6 @@
 								]
       	    },
             {
-              "title": "User Authorization",
-              "urls": [
-                "/cockroachcloud/user-authorization.html"
-              ]
-            },
-            {
               "title": "Network Authorization",
               "urls": [
                 "/cockroachcloud/network-authorization.html"
@@ -302,9 +302,15 @@
               ]
             },
             {
-              "title": "Manage Console Access",
+              "title": "CockroachdB Cloud Access Management Overview and FAQ",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing Access in CockroachDB Cloud",
+              "urls": [
+                 "/cockroachcloud/managing-access.html"
               ]
             }
           ]

@@ -6,10 +6,9 @@ toc: true
 
 CockroachDB's flexible [replication controls](configure-replication-zones.html) make it trivially easy to run a single CockroachDB cluster across cloud platforms and to migrate data from one cloud to another without any service interruption. This page walks you through a local simulation of the process.
 
-
 ## Watch a Live Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cCJkgZy6s2Q" frameborder="0" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="cCJkgZy6s2Q" %}
 
 ## Step 1. Install prerequisites
 

@@ -277,6 +277,7 @@ preloaded
 preparable
 prepend(ed|ing|s)
 Prisma
+procedurals?
 profiler
 proofer
 proto(bufs?|s)?
@@ -388,6 +389,7 @@ Sysbench
 Sysdig
 Syslog
 tablespaces?
+tabsets?
 tcp
 Teradata
 timeframe

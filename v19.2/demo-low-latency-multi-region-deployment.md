@@ -16,9 +16,6 @@ This tutorial walks you through the process of deploying a 9-node CockroachDB cl
 
 Watch [this webinar recording](https://www.cockroachlabs.com/webinars/implementation-topologies-for-distributed-sql/) to see a demonstration of the concepts and features in this tutorial.
 
-<!-- Older demo video
-<iframe width="640" height="385" src="https://www.youtube.com/embed/TgnQwOOk9Js" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
-
 ### Read a case study
 
 Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/case-studies/european-electronic-lock-manufacturer-modernizes-iam-system-with-managed-cockroachdb/) and [multi-national bank](https://www.cockroachlabs.com/case-studies/top-five-multinational-bank-modernizes-its-european-core-banking-services-migrating-from-oracle-to-cockroachdb/) are using the Geo-Partitioned Replicas topology in production for improved performance and regulatory compliance.

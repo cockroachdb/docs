@@ -76,7 +76,7 @@
   }
 }
 
-.foreign-key-video__container {
+.widescreen-youtube-video__container {
   height: 0;
 	overflow: hidden;
 	padding-bottom: 34.25%;
@@ -94,4 +94,11 @@
 td > div.anchored
 {
    scroll-margin-top: 100px;
+}
+
+table {
+  overflow-x: auto;
+  width: 100%;
+  display: block;
+  border: none;
 }

@@ -14,7 +14,7 @@ An individual instance of CockroachDB. One or more nodes form a cluster.
 <a name="architecture-range"></a>
 CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a sorted map of key-value pairs. This keyspace is divided into contiguous chunks called _ranges_, such that every key is found in one range.
 
-From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches 512 MiB ([the default](../configure-replication-zones.html#range-max-bytes)), it is split into two ranges. This process continues for these new ranges as the table and its indexes continue growing.
+From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches [the default range size](../configure-replication-zones.html#range-max-bytes), it is [split into two ranges](distribution-layer.html#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
 
 ### Replica
 <a name="architecture-replica"></a>

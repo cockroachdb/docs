@@ -20,7 +20,7 @@ The **Transaction Executions** view provides an overview of all transaction exec
 {{site.data.alerts.callout_info}}
 The rows in this page are populated from the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) table.
 
-- The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) table exists and as long as the rows in each node use less space than `sql.contention.event_store.capacity`.
+- The results displayed in the **Transaction Executions** view will be available as long as the corresponding row in the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) table exists. Rows will exist as long as `sql.contention.event_store.capacity` is not reached in each node.
 - The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 {{site.data.alerts.end}}
 
@@ -174,7 +174,7 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
     - **Create Index**, **Alter Index**, or **Replace Index**: A **Statement Fingerprint** field displays the statement fingerprint that would be optimized with the creation, alteration, or replacement of the index; and a **Recommendation** field displays the SQL query to create, alter, or replace the index.
     - **Drop Unused Index**: An **Index** field displays the name of the index to drop; and a **Description** field displays the reason for dropping the index.
 
-To realize the schema insight, click the action button in the final column to execute the SQL statement. A confirmation dialog displays a warning about the cost of [online schema changes]({{ link_prefix }}online-schema-changes.html) and a button to copy the SQL statement for later execution in a SQL client.
+[Admin users]({{ link_prefix }}security-reference/authorization.html#admin-role) will see an action button in the final column, which will execute the SQL statement suggested by the schema insight, for example "Create Index". Upon clicking the action button, a confirmation dialog displays a warning about the cost of [online schema changes]({{ link_prefix }}online-schema-changes.html) and the option to copy the SQL statement for later execution in a SQL client.
 
 ## Configuration
 
