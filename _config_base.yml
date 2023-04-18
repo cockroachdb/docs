@@ -85,12 +85,14 @@ release_info:
     version: v1.1.9
   v19.1:
     build_time: 2020/07/07 14:48:26 (go1.11.6)
+    crdb_branch_name: release-19.1
     docker_image: cockroachdb/cockroach
     name: v19.1.11
     start_time: 2020-07-07 15:10:52.34274101 +0000 UTC
     version: v19.1.11
   v19.2:
     build_time: 2021/01/19 11:00:26 (go1.12.12)
+    crdb_branch_name: release-19.2
     docker_image: cockroachdb/cockroach
     name: v19.2.12
     start_time: 2021-01-19 11:01:26.34274101 +0000 UTC
@@ -109,12 +111,14 @@ release_info:
     version: v2.1.11
   v20.1:
     build_time: 2021/05/17 11:00:26 (go1.13.4)
+    crdb_branch_name: release-20.1
     docker_image: cockroachdb/cockroach
     name: v20.1.17
     start_time: 2021-05-17 11:01:26.34274101 +0000 UTC
     version: v20.1.17
   v20.2:
     build_time: 2022/02/09 11:00:26 (go1.13.4)
+    crdb_branch_name: release-20.2
     docker_image: cockroachdb/cockroach
     name: v20.2.19
     start_time: 2022-02-09 11:01:26.34274101 +0000 UTC
