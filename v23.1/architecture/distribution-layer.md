@@ -87,7 +87,11 @@ In relationship to other layers in CockroachDB, the distribution layer:
 
 gRPC is the software nodes use to communicate with one another. Because the distribution layer is the first layer to communicate with other nodes, CockroachDB implements gRPC here.
 
-gRPC requires inputs and outputs to be formatted as protocol buffers (protobufs). To leverage gRPC, CockroachDB implements a protocol-buffer-based API defined in `api.proto`.
+gRPC requires inputs and outputs to be formatted as protocol buffers (protobufs). To leverage gRPC, CockroachDB implements a protocol-buffer-based API.
+
+By default, the network timeout for RPC connections between nodes is {{site.data.constants.cockroach_network_timeout}}, with a connection timeout of {{site.data.constants.cockroach_network_connection_timeout}}, in order to reduce unavailability and tail latencies during infrastructure outages. This can be changed via the environment variable `COCKROACH_NETWORK_TIMEOUT` which defaults to {{site.data.cockroach_network_timeout}}.
+
+Note that the gRPC network timeouts described above are defined from the server's point of view, not the client's (the client is any other node that is trying to make an inbound connection). From the client, we send an additional RPC ping every {{site.data.constants.cockroach_network_client_ping_interval}} to check that connections are alive. These pings have a fairly high timeout of {{site.data.constants.cockroach_network_client_ping_timeout}} (a multiple of the value of `COCKROACH_NETWORK_TIMEOUT`) because they are subject to contention with other RPC traffic; e.g., during a large [`IMPORT`](../import.html) they can be delayed by several seconds.
 
 For more information about gRPC, see the [official gRPC documentation](http://www.grpc.io/docs/guides/).
 
