@@ -13,27 +13,13 @@ The **Migrations** page on the {{ site.data.products.db }} Console features a **
 - Convert a schema from a PostgreSQL, MySQL, Oracle, or Microsoft SQL Server database for use with CockroachDB.
 - Create a new {{ site.data.products.serverless }} database that uses the converted schema. You specify the target database and database owner when [finalizing the schema](#finalize-the-schema). {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-{{site.data.alerts.callout_info}}
-The **Migrations** page is used to convert a schema for use with CockroachDB and creating a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).
-{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}
+    The **Migrations** page is used to convert a schema for use with CockroachDB and to create a new database that uses the schema. It does not include moving data to the new database. For details on all steps required to complete a database migration, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html).
+    {{site.data.alerts.end}}
 
 To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Migration** in the **Data** section of the left side navigation.
 
-## Schemas table
-
-If you have [attempted a schema conversion](#add-a-schema-to-convert), the following details are displayed when the **Schemas** tab is open:
-
-|     Column     |                                                                                         Description                                                                                          |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Migration Name | The filename of the `.sql` file that you added.                                                                                                                       |
-| Status         | The status of the migration: `READY FOR REVIEW`, `READY TO FINALIZE`, or `FINALIZED`. You can [finalize](#finalize-the-schema) migrations with `READY TO FINALIZE` status.                    |
-| Date Imported  | The timestamp when the SQL dump was uploaded.                                                                                                                                                |
-| Last Updated   | The timestamp when the [SQL statements](#statements-list) were updated.                                                                                                                      |
-| Errors         | The number of SQL errors preventing a migration from attaining `READY TO FINALIZE` status. |
-
-To view the [**Summary Report**](#summary-report) or [**Statements** list](#statements-list) for a migration, click the migration name.
-
-### Add a schema to convert
+## Convert a schema
 
 The steps to convert your schema depend on your source dialect.
 
@@ -85,7 +71,7 @@ The steps to convert your schema depend on your source dialect.
 </section>
 </ol>
 
-#### Upload File
+### Upload File
 
 The Schema Conversion Tool expects to analyze a SQL dump file containing only [data definition statements](../{{version_prefix}}sql-statements.html#data-definition-statements). 
 
@@ -112,34 +98,22 @@ The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be 
 1. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
 
 <section class="filter-content" markdown="1" data-scope="postgres mysql">
-#### Use Credentials
+### Use Credentials
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL database to obtain the schema. To add a schema using credentials:
 
-1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) from the pulldown menu.
+1. In step 2 of the **Add SQL Schema** dialog, click **Use Credential**. Select the credentials to use. If the list is empty, this is because no credentials have been created for the selected database type. You can [add credentials](#add-database-credentials) directly from the pulldown menu.
 1. Click **Convert** and wait for the schema to be analyzed. In the background, the Schema Conversion Tool runs the [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html) or [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) utility to obtain the schema.
 
     A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
 
 1. When analysis is complete, review the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
 
-</section>
-
-## Credentials table
-
-If you have [added any database credentials](#add-database-credentials), the following details are displayed when the **Credentials** tab is open:
-
-|      Column     |                                                    Description                                                    |
-|-----------------|-------------------------------------------------------------------------------------------------------------------|
-| Credential Name | The name associated with the access credentials. A `VERIFIED` badge will display if the credentials are verified. |
-| Dialect         | The type of database being accessed.                                                                              |
-| Host / Port     | The host and port used to access the database.                                                                    |
-| Database Name   | The name of the database being accessed.                                                                          |
-| Created At      | The timestamp when the credentials were successfully created.                                                     |
-
-To delete or verify a set of credentials, select the appropriate option in the **Actions** column.
-
-### Add database credentials
+#### Add database credentials
 
 {{site.data.alerts.callout_info}}
 Credentials can be added for PostgreSQL and MySQL databases.
@@ -160,7 +134,11 @@ Credentials can be added for PostgreSQL and MySQL databases.
 
 If the credentials are valid, they will be added to the [**Credentials** table](#credentials-table) with a `VERIFIED` badge.
 
-## Summary Report
+</section>
+
+## Review the schema
+
+### Summary Report
 
 The **Summary Report** displays the results of the schema analysis:
 
@@ -177,11 +155,11 @@ The **Summary Report** displays the results of the schema analysis:
 <li>The number of <b>Suggestions</b> regarding <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">CockroachDB best practices</a>.</li>
 </ul>
 
-To review and [update the schema](#update-the-schema), click **View Statements** or the **Statements** tab to open the [**Statements** list](#statements-list).
+To [update the schema](#update-the-schema), click **View Statements** or the **Statements** tab to open the [**Statements** list](#statements-list). Errors and suggestions are displayed for each statement.
 
 To [finalize the schema](#finalize-the-schema) and create a new database for migration, click **Finalize Schema**. The schema must have zero errors.
 
-### Statement Status
+#### Statement Status
 
 The **Statement Status** graph displays the number of successful statements (green), the number of failed statements (red), and the number of incidental errors (orange):
 
@@ -199,7 +177,7 @@ The **Statement Status** graph displays the number of successful statements (gre
 <li><b>Incidental Error</b> represents a statement that failed because another SQL statement encountered one of the preceding error types.</li>
 </ul>
 
-### Suggestions
+#### Suggestions
 
 The **Suggestions** graph displays the number of each suggestion type:
 
@@ -211,7 +189,7 @@ The **Suggestions** graph displays the number of each suggestion type:
 For more details on why these suggestions are made, see [Schema design best practices](../{{version_prefix}}migration-overview.html#schema-design-best-practices).
 {{site.data.alerts.end}}
 
-## Statements list
+### Statements list
 
 The **Statements** list displays the result of analyzing each statement in the `.sql` file that you uploaded. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
 
@@ -245,9 +223,9 @@ To edit a statement, click the **Edit** button or the statement itself and enter
 
 To remove or add a statement, click the ellipsis above the statement and then click **Delete statement**, **Add statement above**, or **Add statement below**.
 
-### Update the schema
+## Update the schema
 
-Respond to errors and suggestions according to the following guidelines:
+Respond to errors and [suggestions](#suggestions) according to the following guidelines:
 
 |                       Type                       |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         | Required for finalization |
 |--------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
@@ -271,7 +249,7 @@ To analyze a schema that you have [updated](#update-the-schema), click **Retry M
 
 This is necessary in order to verify that the schema has zero errors and can be [finalized](#finalize-the-schema).
 
-## Finalize the schema
+### Finalize the schema
 
 You can finalize the schema when the number of errors is zero. This value is displayed on the [Schemas table](#schemas-table), [**Summary Report**](#summary-report), and [**Statements** list](#statements-list).
 
@@ -284,6 +262,34 @@ To finalize the schema, click **Finalize Schema** when viewing the **Summary Rep
 1. Click **Finalize** to create the new database.
 
 After finalizing the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application).
+
+## Schemas table
+
+If you have [added a schema to convert](#convert-a-schema), the following details are displayed when the **Schemas** tab is open:
+
+|     Column     |                                                                                         Description                                                                                          |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Migration Name | The filename of the `.sql` file that you added.                                                                                                                       |
+| Status         | The status of the migration: `READY FOR REVIEW`, `READY TO FINALIZE`, or `FINALIZED`. You can [finalize](#finalize-the-schema) migrations with `READY TO FINALIZE` status.                    |
+| Date Imported  | The timestamp when the SQL dump was uploaded.                                                                                                                                                |
+| Last Updated   | The timestamp when the [SQL statements](#statements-list) were updated.                                                                                                                      |
+| Errors         | The number of SQL errors preventing a migration from attaining `READY TO FINALIZE` status. |
+
+To view the [**Summary Report**](#summary-report) or [**Statements** list](#statements-list) for a migration, click the migration name.
+
+## Credentials table
+
+If you have added any external database credentials (PostgreSQL or MySQL only), the following details are displayed when the **Credentials** tab is open:
+
+|      Column     |                                                    Description                                                    |
+|-----------------|-------------------------------------------------------------------------------------------------------------------|
+| Credential Name | The name associated with the access credentials. A `VERIFIED` badge will display if the credentials are verified. |
+| Dialect         | The type of database being accessed.                                                                              |
+| Host / Port     | The host and port used to access the database.                                                                    |
+| Database Name   | The name of the database being accessed.                                                                          |
+| Created At      | The timestamp when the credentials were successfully created.                                                     |
+
+To delete or verify a set of credentials, select the appropriate option in the **Actions** column.
 
 ## See also
 
