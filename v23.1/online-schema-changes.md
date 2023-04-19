@@ -76,6 +76,12 @@ The following statements use the declarative schema changer by default:
 - [`DROP TYPE`](drop-type.html)
 - {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`](create-function.html)
 - {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`](drop-function.html)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... VALIDATE CONSTRAINT`](alter-table.html#drop-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... DROP CONSTRAINT`](alter-table.html#validate-constraint)
 
 Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html).
 
