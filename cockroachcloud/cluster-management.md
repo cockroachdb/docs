@@ -171,15 +171,13 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 
 ## Restore data from a backup
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days. To restore your data, use the [Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) to restore from automatic backups. 
+
+Additionally, you can [backup and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.dedicated }} cluster manually. You can take backups locally to [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) or backup to [cloud storage](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
-
-To restore your data, [contact us](https://support.cockroachlabs.com).
-
-Additionally, you can [backup and restore](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) data on your own.
 
 ## Configure PCI ready features (Dedicated advanced)
 
