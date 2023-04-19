@@ -1,0 +1,20 @@
+- title: Change Data Capture Overview
+  urls:
+  - "/PREFIX/change-data-capture-overview.html"
+
+- title: Get Started with Changefeeds
+  sidebar: "changefeeds_get_started"
+
+- title: Work with Changefeeds
+  sidebar: "work_with_changefeeds"
+
+- title: Monitor and Debug Changefeeds
+  urls:
+  - "/PREFIX/monitor-and-debug-changefeeds.html"
+
+- title: Tutorials
+  sidebar: "changefeeds_tutorials"
+
+- title: Advanced Changefeed Configuration
+  urls:
+  - "/PREFIX/advanced-changefeed-configuration.html"

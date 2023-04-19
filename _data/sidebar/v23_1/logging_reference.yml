@@ -1,0 +1,11 @@
+- title: Logging Levels and Channels
+  urls:
+  - "/PREFIX/logging.html"
+
+- title: Log Formats
+  urls:
+  - "/PREFIX/log-formats.html"
+
+- title: Notable Event Types
+  urls:
+  - "/PREFIX/eventlog.html"

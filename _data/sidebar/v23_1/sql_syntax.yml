@@ -1,0 +1,39 @@
+- title: Full SQL Grammar
+  urls:
+  - "/PREFIX/sql-grammar.html"
+
+- title: Keywords & Identifiers
+  urls:
+  - "/PREFIX/keywords-and-identifiers.html"
+
+- title: Constants
+  urls:
+  - "/PREFIX/sql-constants.html"
+
+- title: Selection Queries
+  urls:
+  - "/PREFIX/selection-queries.html"
+
+- title: Cursors
+  urls:
+  - "/PREFIX/cursors.html"
+
+- title: Table Expressions
+  urls:
+  - "/PREFIX/table-expressions.html"
+
+- title: Common Table Expressions
+  urls:
+  - "/PREFIX/common-table-expressions.html"
+
+- title: Scalar Expressions
+  urls:
+  - "/PREFIX/scalar-expressions.html"
+
+- title: User-Defined Functions
+  urls:
+  - "/PREFIX/user-defined-functions.html"
+
+- title: "<code>NULL</code> Handling"
+  urls:
+  - "/PREFIX/null-handling.html"

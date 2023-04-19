@@ -1,0 +1,35 @@
+  - title: Architecture Overview
+    urls:
+    - "/PREFIX/architecture/overview.html"
+
+  - title: SQL Layer
+    urls:
+    - "/PREFIX/architecture/sql-layer.html"
+
+  - title: Transaction Layer
+    urls:
+    - "/PREFIX/architecture/transaction-layer.html"
+
+  - title: Distribution Layer
+    urls:
+    - "/PREFIX/architecture/distribution-layer.html"
+
+  - title: Replication Layer
+    urls:
+    - "/PREFIX/architecture/replication-layer.html"
+
+  - title: Storage Layer
+    urls:
+    - "/PREFIX/architecture/storage-layer.html"
+
+  - title: Life of a Distributed Transaction
+    urls:
+    - "/PREFIX/architecture/life-of-a-distributed-transaction.html"
+
+  - title: Reads and Writes Overview
+    urls:
+    - "/PREFIX/architecture/reads-and-writes-overview.html"
+
+  - title: CockroachDB Cloud Architecture
+    urls:
+    - "/cockroachcloud/architecture.html"

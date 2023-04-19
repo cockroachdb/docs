@@ -1,0 +1,10 @@
+- title: CockroachDB Serverless Pricing
+  sidebar: "crdb_serverless_pricing"
+
+- title: Create a CockroachDB Serverless Cluster
+  urls:
+  - "/cockroachcloud/create-a-serverless-cluster.html"
+  
+- title: Connect to Your Cluster
+  urls:
+  - "/cockroachcloud/connect-to-a-serverless-cluster.html"

@@ -1,0 +1,79 @@
+- title: Overview
+  urls:
+  - "/PREFIX/data-types.html"
+
+- title: "<code>ARRAY</code>"
+  urls:
+  - "/PREFIX/array.html"
+
+- title: "<code>BIT</code>"
+  urls:
+  - "/PREFIX/bit.html"
+
+- title: "<code>BOOL</code>"
+  urls:
+  - "/PREFIX/bool.html"
+
+- title: "<code>BYTES</code>"
+  urls:
+  - "/PREFIX/bytes.html"
+
+- title: "<code>COLLATE</code>"
+  urls:
+  - "/PREFIX/collate.html"
+
+- title: "<code>DATE</code>"
+  urls:
+  - "/PREFIX/date.html"
+
+- title: "<code>DECIMAL</code>"
+  urls:
+  - "/PREFIX/decimal.html"
+
+- title: "<code>ENUM</code>"
+  urls:
+  - "/PREFIX/enum.html"
+
+- title: "<code>FLOAT</code>"
+  urls:
+  - "/PREFIX/float.html"
+
+- title: "<code>INET</code>"
+  urls:
+  - "/PREFIX/inet.html"
+
+- title: "<code>INT</code>"
+  urls:
+  - "/PREFIX/int.html"
+
+- title: "<code>INTERVAL</code>"
+  urls:
+  - "/PREFIX/interval.html"
+
+- title: "<code>JSONB</code>"
+  urls:
+  - "/PREFIX/jsonb.html"
+
+- title: "<code>OID</code>"
+  urls:
+  - "/PREFIX/oid.html"
+
+- title: "<code>SERIAL</code>"
+  urls:
+  - "/PREFIX/serial.html"
+
+- title: "<code>STRING</code>"
+  urls:
+  - "/PREFIX/string.html"
+
+- title: "<code>TIME</code>"
+  urls:
+  - "/PREFIX/time.html"
+
+- title: "<code>TIMESTAMP</code>"
+  urls:
+  - "/PREFIX/timestamp.html"
+
+- title: "<code>UUID</code>"
+  urls:
+  - "/PREFIX/uuid.html"

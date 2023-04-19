@@ -1,0 +1,15 @@
+  - title: Overview
+    urls:
+    - "/PREFIX/logging-overview.html"
+
+  - title: Configure Logs
+    urls:
+    - "/PREFIX/configure-logs.html"
+
+  - title: Logging Use Cases
+    urls:
+    - "/PREFIX/logging-use-cases.html"
+
+  - title: Export Logs From CockroachDB Dedicated
+    urls:
+    - "/cockroachcloud/export-logs.html"

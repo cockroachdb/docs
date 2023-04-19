@@ -1,0 +1,51 @@
+- title: Overview Dashboard
+  urls:
+  - "/PREFIX/ui-overview-dashboard.html"
+
+- title: Hardware Dashboard
+  urls:
+  - "/PREFIX/ui-hardware-dashboard.html"
+
+- title: Runtime Dashboard
+  urls:
+  - "/PREFIX/ui-runtime-dashboard.html"
+
+- title: SQL Dashboard
+  urls:
+  - "/PREFIX/ui-sql-dashboard.html"
+
+- title: Storage Dashboard
+  urls:
+  - "/PREFIX/ui-storage-dashboard.html"
+
+- title: Replication Dashboard
+  urls:
+  - "/PREFIX/ui-replication-dashboard.html"
+
+- title: Distributed Dashboard
+  urls:
+  - "/PREFIX/ui-distributed-dashboard.html"
+
+- title: Queues Dashboard
+  urls:
+  - "/PREFIX/ui-queues-dashboard.html"
+
+- title: Slow Requests Dashboard
+  urls:
+  - "/PREFIX/ui-slow-requests-dashboard.html"
+
+- title: Changefeeds Dashboard
+  urls:
+  - "/PREFIX/ui-cdc-dashboard.html"
+
+- title: Overload Dashboard
+  urls:
+  - "/PREFIX/ui-overload-dashboard.html"
+
+- title: TTL Dashboard
+  urls:
+  - "/PREFIX/ui-ttl-dashboard.html"
+
+- title: Custom Chart
+  urls:
+  - "/PREFIX/ui-custom-chart-debug-page.html"

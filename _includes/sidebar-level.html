@@ -1,0 +1,16 @@
+{% for item in site.data.sidebar.[include.folder][include.level] %}
+<li>
+    {% if item.urls.size > 0 %}
+    <a href="{{ item.urls[0] | replace: "PREFIX", page.version.version | absolute_url }}">{{ item.title }}</a>
+    {% else %}
+    <p>{{ item.title }}</p>
+    {% endif %}
+    {% if item.sidebar %}
+    <ul>
+        {% include sidebar-level.html level=item.sidebar folder=include.folder %}
+    </ul>
+    {% elsif item.releases %}
+        {% include sidebar-releases.html %}
+    {% endif %}
+</li>
+{% endfor %}

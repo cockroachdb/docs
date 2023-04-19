@@ -20,7 +20,12 @@
           </div>
         </div>
         <nav id="sidebarMenu" class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0">
-{% include sidebar.html %}
+{% assign old_sidebar_versions = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2,v22.1,v22.2" | split: "," %}
+{% if old_sidebar_versions contains page.version.version %}
+  {% include sidebar.html %}
+{% else %}
+  {% include sidebar-v2.html %}
+{% endif %}
         </nav>
 {% if page.toc == true %}
   {% if page.homepage != true %}
@@ -55,7 +60,12 @@
 
 {% include_cached footer.html %}
 
-{% include sidebar.js.html %}
+{% assign old_sidebar_versions = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2,v22.1,v22.2" | split: "," %}
+{% if page.version.version == nil or old_sidebar_versions contains page.version.version %}
+  {% include sidebar.js.html %}
+{% else %}
+    {% include_cached sidebar-v2.html %}
+{% endif %}
     <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" defer></script>
     <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}" defer></script>
     <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}" defer></script>

@@ -1,0 +1,3 @@
+- title: SASL/SCRAM-SHA-256 Secure Password-based Authentication
+  urls:
+  - "/PREFIX/security-reference/scram-authentication.html"

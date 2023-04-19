@@ -1,0 +1,28 @@
+- title: Overview
+  urls:
+  - "/PREFIX/manual-deployment.html"
+
+- title: On-Premises Deployment
+  urls:
+  - "/PREFIX/deploy-cockroachdb-on-premises.html"
+  - "/PREFIX/deploy-cockroachdb-on-premises-insecure.html"
+
+- title: Deploy on AWS
+  urls:
+  - "/PREFIX/deploy-cockroachdb-on-aws.html"
+  - "/PREFIX/deploy-cockroachdb-on-aws-insecure.html"
+
+- title: Deploy on Azure
+  urls:
+  - "/PREFIX/deploy-cockroachdb-on-microsoft-azure.html"
+  - "/PREFIX/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+
+- title: Deploy on Digital Ocean
+  urls:
+  - "/PREFIX/deploy-cockroachdb-on-digital-ocean.html"
+  - "/PREFIX/deploy-cockroachdb-on-digital-ocean-insecure.html"
+  
+- title: Deploy on Google Cloud Platform GCE
+  urls:
+  - "/PREFIX/deploy-cockroachdb-on-google-cloud-platform.html"
+  - "/PREFIX/deploy-cockroachdb-on-google-cloud-platform-insecure.html"

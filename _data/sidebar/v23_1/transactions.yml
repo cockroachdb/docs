@@ -1,0 +1,7 @@
+  - title: Transactions Overview
+    urls:
+    - "/PREFIX/transactions.html"
+    
+  - title: Advanced Client-side Transaction Retries
+    urls:
+    - "/PREFIX/advanced-client-side-transaction-retries.html"

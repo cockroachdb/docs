@@ -1,0 +1,27 @@
+- title: Replication & Rebalancing
+  urls:
+  - "/PREFIX/demo-replication-and-rebalancing.html"
+
+- title: Fault Tolerance & Recovery
+  urls:
+  - "/PREFIX/demo-fault-tolerance-and-recovery.html"
+
+- title: Multi-Region Performance
+  urls:
+  - "/PREFIX/demo-low-latency-multi-region-deployment.html"
+
+- title: Serializable Transactions
+  urls:
+  - "/PREFIX/demo-serializable.html"
+
+- title: Spatial Data
+  urls:
+  - "/PREFIX/spatial-tutorial.html"
+
+- title: Cross-Cloud Migration
+  urls:
+  - "/PREFIX/demo-automatic-cloud-migration.html"
+
+- title: JSON Support
+  urls:
+  - "/PREFIX/demo-json-support.html"

@@ -1,0 +1,27 @@
+- title: Pod Scheduling
+  urls:
+  - "/PREFIX/schedule-cockroachdb-kubernetes.html"
+
+- title: Resource Management
+  urls:
+  - "/PREFIX/configure-cockroachdb-kubernetes.html"
+
+- title: Certificate Management
+  urls:
+  - "/PREFIX/secure-cockroachdb-kubernetes.html"
+
+- title: Cluster Scaling
+  urls:
+  - "/PREFIX/scale-cockroachdb-kubernetes.html"
+
+- title: Cluster Monitoring
+  urls:
+  - "/PREFIX/monitor-cockroachdb-kubernetes.html"
+
+- title: Cluster Upgrades
+  urls:
+  - "/PREFIX/upgrade-cockroachdb-kubernetes.html"
+
+- title: Optimizing Performance
+  urls:
+  - "/PREFIX/kubernetes-performance.html"

@@ -1,0 +1,11 @@
+- title: Pricing Overview
+  urls:
+  - "/cockroachcloud/learn-about-pricing.html"
+
+- title: Learn about Request Units
+  urls:
+  - "/cockroachcloud/learn-about-request-units.html"
+
+- title: Optimize Your CockroachDB Serverless Workload
+  urls:
+  - "/cockroachcloud/optimize-serverless-workload.html"

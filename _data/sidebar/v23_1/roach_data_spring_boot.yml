@@ -1,0 +1,7 @@
+- title: Spring Boot with JDBC
+  urls:
+  - "/PREFIX/build-a-spring-app-with-cockroachdb-jdbc.html"
+
+- title: Spring Boot with JPA
+  urls:
+  - "/PREFIX/build-a-spring-app-with-cockroachdb-jpa.html"

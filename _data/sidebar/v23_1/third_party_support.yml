@@ -1,0 +1,7 @@
+- title: Tools Supported by Cockroach Labs
+  urls:
+  - "/PREFIX/third-party-database-tools.html"
+  
+- title: Tools Supported by the Community
+  urls:
+  - "/PREFIX/community-tooling.html"

@@ -1,0 +1,15 @@
+- title: Overview
+  urls:
+  - "/PREFIX/performance.html"
+
+- title: Benchmarking Instructions
+  urls:
+  - "/PREFIX/performance-benchmarking-with-tpcc-local.html"
+  - "/PREFIX/performance-benchmarking-with-tpcc-local-multiregion.html"
+  - "/PREFIX/performance-benchmarking-with-tpcc-small.html"
+  - "/PREFIX/performance-benchmarking-with-tpcc-medium.html"
+  - "/PREFIX/performance-benchmarking-with-tpcc-large.html"
+
+- title: Serverless Performance Benchmarking
+  urls:
+  - "/cockroachcloud/serverless-benchmarking.html"

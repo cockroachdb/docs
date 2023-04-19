@@ -1,0 +1,13 @@
+- title: Overview of Example Applications
+  urls:
+  - "/PREFIX/example-apps.html"
+
+- title: Build the Roach Data Application using Spring Boot
+  sidebar: "roach_data_spring_boot"
+
+- title: The MovR Example Application
+  sidebar: "movr_example_app"
+
+- title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
+  urls:
+  - "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"

@@ -1,0 +1,16 @@
+- title: Overview
+  urls:
+  - "/PREFIX/kubernetes-overview.html"
+
+- title: Single-Cluster Deployment
+  urls:
+  - "/PREFIX/deploy-cockroachdb-with-kubernetes.html"
+  - "/PREFIX/deploy-cockroachdb-with-kubernetes-insecure.html"
+
+- title: OpenShift Deployment
+  urls:
+  - "/PREFIX/deploy-cockroachdb-with-kubernetes-openshift.html"
+
+- title: Multi-Cluster Deployment
+  urls:
+  - "/PREFIX/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"

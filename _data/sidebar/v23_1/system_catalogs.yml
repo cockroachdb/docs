@@ -1,0 +1,19 @@
+- title: Overview
+  urls:
+  - "/PREFIX/system-catalogs.html"
+
+- title: "<code>crdb_internal</code>"
+  urls:
+  - "/PREFIX/crdb-internal.html"
+
+- title: "<code>information_schema</code>"
+  urls:
+  - "/PREFIX/information-schema.html"
+
+- title: "<code>pg_catalog</code>"
+  urls:
+  - "/PREFIX/pg-catalog.html"
+
+- title: "<code>pg_extension</code>"
+  urls:
+  - "/PREFIX/pg-extension.html"

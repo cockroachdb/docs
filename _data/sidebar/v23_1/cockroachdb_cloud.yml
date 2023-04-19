@@ -1,0 +1,9 @@
+- title: Create an Account
+  urls:
+  - "/cockroachcloud/create-an-account.html"
+
+- title: CockroachDB Serverless
+  sidebar: "cockroachdb_serverless"
+
+- title: CockroachDB Dedicated
+  sidebar: "cockroachdb_dedicated"

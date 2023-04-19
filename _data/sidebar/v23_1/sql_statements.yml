@@ -1,0 +1,495 @@
+- title: Overview
+  urls:
+  - "/PREFIX/sql-statements.html"
+
+- title: "<code>ALTER BACKUP</code> (Enterprise)"
+  urls:
+  - "/PREFIX/alter-backup.html"
+
+- title: "<code>ALTER BACKUP SCHEDULE</code>"
+  urls:
+  - "/PREFIX/alter-backup-schedule.html"
+
+- title: "<code>ALTER CHANGEFEED</code> (Enterprise)"
+  urls:
+  - "/PREFIX/alter-changefeed.html"
+
+- title: "<code>ALTER DATABASE</code>"
+  urls:
+  - "/PREFIX/alter-database.html"
+
+- title: "<code>ALTER DEFAULT PRIVILEGES</code>"
+  urls:
+  - "/PREFIX/alter-default-privileges.html"
+
+- title: "<code>ALTER FUNCTION</code>"
+  urls:
+  - "/PREFIX/alter-function.html"
+
+- title: "<code>ALTER INDEX</code>"
+  urls:
+  - "/PREFIX/alter-index.html"
+
+- title: "<code>ALTER PARTITION</code> (Enterprise)"
+  urls:
+  - "/PREFIX/alter-partition.html"
+
+- title: "<code>ALTER RANGE</code>"
+  urls:
+  - "/PREFIX/alter-range.html"
+
+- title: "<code>ALTER ROLE</code>"
+  urls:
+  - "/PREFIX/alter-role.html"
+
+- title: "<code>ALTER SCHEMA</code>"
+  urls:
+  - "/PREFIX/alter-schema.html"
+
+- title: "<code>ALTER SEQUENCE</code>"
+  urls:
+  - "/PREFIX/alter-sequence.html"
+
+- title: "<code>ALTER TABLE</code>"
+  urls:
+  - "/PREFIX/alter-table.html"
+
+- title: "<code>ALTER TYPE</code>"
+  urls:
+  - "/PREFIX/alter-type.html"
+
+- title: "<code>ALTER USER</code>"
+  urls:
+  - "/PREFIX/alter-user.html"
+
+- title: "<code>ALTER VIEW</code>"
+  urls:
+  - "/PREFIX/alter-view.html"
+
+- title: "<code>BACKUP</code>"
+  urls:
+  - "/PREFIX/backup.html"
+
+- title: "<code>BEGIN</code>"
+  urls:
+  - "/PREFIX/begin-transaction.html"
+
+- title: "<code>CANCEL JOB</code>"
+  urls:
+  - "/PREFIX/cancel-job.html"
+
+- title: "<code>CANCEL QUERY</code>"
+  urls:
+  - "/PREFIX/cancel-query.html"
+
+- title: "<code>CANCEL SESSION</code>"
+  urls:
+  - "/PREFIX/cancel-session.html"
+
+- title: "<code>COMMENT ON</code>"
+  urls:
+  - "/PREFIX/comment-on.html"
+
+- title: "<code>COMMIT</code>"
+  urls:
+  - "/PREFIX/commit-transaction.html"
+
+- title: "<code>COPY FROM</code>"
+  urls:
+  - "/PREFIX/copy-from.html"
+
+- title: "<code>CREATE CHANGEFEED</code> (Enterprise)"
+  urls:
+  - "/PREFIX/create-changefeed.html"
+
+- title: "<code>CREATE DATABASE</code>"
+  urls:
+  - "/PREFIX/create-database.html"
+
+- title: "<code>CREATE EXTERNAL CONNECTION</code>"
+  urls:
+  - "/PREFIX/create-external-connection.html"
+
+- title: "<code>CREATE FUNCTION</code>"
+  urls:
+  - "/PREFIX/create-function.html"
+
+- title: "<code>CREATE INDEX</code>"
+  urls:
+  - "/PREFIX/create-index.html"
+
+- title: "<code>CREATE ROLE</code>"
+  urls:
+  - "/PREFIX/create-role.html"
+
+- title: "<code>CREATE SCHEDULE FOR BACKUP</code>"
+  urls:
+  - "/PREFIX/create-schedule-for-backup.html"
+
+- title: "<code>CREATE SCHEDULE FOR CHANGEFEED</code>"
+  urls:
+  - "/PREFIX/create-schedule-for-changefeed.html"
+
+- title: "<code>CREATE SCHEMA</code>"
+  urls:
+  - "/PREFIX/create-schema.html"
+
+- title: "<code>CREATE SEQUENCE</code>"
+  urls:
+  - "/PREFIX/create-sequence.html"
+
+- title: "<code>CREATE STATISTICS</code>"
+  urls:
+  - "/PREFIX/create-statistics.html"
+
+- title: "<code>CREATE TABLE</code>"
+  urls:
+  - "/PREFIX/create-table.html"
+
+- title: "<code>CREATE TABLE AS</code>"
+  urls:
+  - "/PREFIX/create-table-as.html"
+
+- title: "<code>CREATE TYPE</code>"
+  urls:
+  - "/PREFIX/create-type.html"
+
+- title: "<code>CREATE USER</code>"
+  urls:
+  - "/PREFIX/create-user.html"
+
+- title: "<code>CREATE VIEW</code>"
+  urls:
+  - "/PREFIX/create-view.html"
+
+- title: "<code>DELETE</code>"
+  urls:
+  - "/PREFIX/delete.html"
+
+- title: "<code>DROP DATABASE</code>"
+  urls:
+  - "/PREFIX/drop-database.html"
+
+- title: "<code>DROP EXTERNAL CONNECTION</code>"
+  urls:
+  - "/PREFIX/drop-external-connection.html"
+
+- title: "<code>DROP FUNCTION</code>"
+  urls:
+  - "/PREFIX/drop-function.html"
+
+- title: "<code>DROP OWNED BY</code>"
+  urls:
+  - "/PREFIX/drop-owned-by.html"
+
+- title: "<code>DROP TYPE</code>"
+  urls:
+  - "/PREFIX/drop-type.html"
+
+- title: "<code>DROP INDEX</code>"
+  urls:
+  - "/PREFIX/drop-index.html"
+
+- title: "<code>DROP ROLE</code>"
+  urls:
+  - "/PREFIX/drop-role.html"
+
+- title: "<code>DROP SCHEDULES</code>"
+  urls:
+  - "/PREFIX/drop-schedules.html"
+
+- title: "<code>DROP SCHEMA</code>"
+  urls:
+  - "/PREFIX/drop-schema.html"
+
+- title: "<code>DROP SEQUENCE</code>"
+  urls:
+  - "/PREFIX/drop-sequence.html"
+
+- title: "<code>DROP TABLE</code>"
+  urls:
+  - "/PREFIX/drop-table.html"
+
+- title: "<code>DROP USER</code>"
+  urls:
+  - "/PREFIX/drop-user.html"
+
+- title: "<code>DROP VIEW</code>"
+  urls:
+  - "/PREFIX/drop-view.html"
+
+- title: "<code>EXPERIMENTAL CHANGEFEED FOR</code>"
+  urls:
+  - "/PREFIX/changefeed-for.html"
+
+- title: "<code>EXPLAIN</code>"
+  urls:
+  - "/PREFIX/explain.html"
+
+- title: "<code>EXPLAIN ANALYZE</code>"
+  urls:
+  - "/PREFIX/explain-analyze.html"
+
+- title: "<code>EXPORT</code>"
+  urls:
+  - "/PREFIX/export.html"
+
+- title: "<code>GRANT</code>"
+  urls:
+  - "/PREFIX/grant.html"
+
+- title: "<code>IMPORT</code>"
+  urls:
+  - "/PREFIX/import.html"
+
+- title: "<code>IMPORT INTO</code>"
+  urls:
+  - "/PREFIX/import-into.html"
+
+- title: "<code>INSERT</code>"
+  urls:
+  - "/PREFIX/insert.html"
+
+- title: "<code>JOIN</code>"
+  urls:
+  - "/PREFIX/joins.html"
+
+- title: "<code>LIMIT</code>/<code>OFFSET</code>"
+  urls:
+  - "/PREFIX/limit-offset.html"
+
+- title: "<code>ORDER BY</code>"
+  urls:
+  - "/PREFIX/order-by.html"
+
+- title: "<code>PAUSE JOB</code>"
+  urls:
+  - "/PREFIX/pause-job.html"
+
+- title: "<code>PAUSE SCHEDULES</code>"
+  urls:
+  - "/PREFIX/pause-schedules.html"
+
+- title: "<code>REASSIGN OWNED</code>"
+  urls:
+  - "/PREFIX/reassign-owned.html"
+
+- title: "<code>REFRESH</code>"
+  urls:
+  - "/PREFIX/refresh.html"
+
+- title: "<code>RELEASE SAVEPOINT</code>"
+  urls:
+  - "/PREFIX/release-savepoint.html"
+
+- title: "<code>RESET CLUSTER SETTING</code>"
+  urls:
+  - "/PREFIX/reset-cluster-setting.html"
+
+- title: "<code>RESET &#123;session variable&#125;</code>"
+  urls:
+  - "/PREFIX/reset-vars.html"
+
+- title: "<code>RESTORE</code>"
+  urls:
+  - "/PREFIX/restore.html"
+
+- title: "<code>RESUME JOB</code>"
+  urls:
+  - "/PREFIX/resume-job.html"
+
+- title: "<code>RESUME SCHEDULES</code>"
+  urls:
+  - "/PREFIX/resume-schedules.html"
+
+- title: "<code>REVOKE</code>"
+  urls:
+  - "/PREFIX/revoke.html"
+
+- title: "<code>ROLLBACK</code>"
+  urls:
+  - "/PREFIX/rollback-transaction.html"
+
+- title: "<code>SAVEPOINT</code>"
+  urls:
+  - "/PREFIX/savepoint.html"
+
+- title: "<code>SELECT</code>"
+  urls:
+  - "/PREFIX/select-clause.html"
+
+- title: "<code>SELECT FOR UPDATE</code>"
+  urls:
+  - "/PREFIX/select-for-update.html"
+
+- title: "<code>SET CLUSTER SETTING</code>"
+  urls:
+  - "/PREFIX/set-cluster-setting.html"
+
+- title: "<code>SET &#123;session variable&#125;</code>"
+  urls:
+  - "/PREFIX/set-vars.html"
+
+- title: "<code>SET TRANSACTION</code>"
+  urls:
+  - "/PREFIX/set-transaction.html"
+
+- title: "<code>SHOW BACKUP</code>"
+  urls:
+  - "/PREFIX/show-backup.html"
+
+- title: "<code>SHOW CLUSTER SETTING</code>"
+  urls:
+  - "/PREFIX/show-cluster-setting.html"
+
+- title: "<code>SHOW COLUMNS</code>"
+  urls:
+  - "/PREFIX/show-columns.html"
+
+- title: "<code>SHOW CONSTRAINTS</code>"
+  urls:
+  - "/PREFIX/show-constraints.html"
+
+- title: "<code>SHOW CREATE</code>"
+  urls:
+  - "/PREFIX/show-create.html"
+
+- title: "<code>SHOW CREATE EXTERNAL CONNECTION</code>"
+  urls:
+  - "/PREFIX/show-create-external-connection.html"
+
+- title: "<code>SHOW CREATE SCHEDULE</code>"
+  urls:
+  - "/PREFIX/show-create-schedule.html"
+
+- title: "<code>SHOW DATABASES</code>"
+  urls:
+  - "/PREFIX/show-databases.html"
+
+- title: "<code>SHOW DEFAULT PRIVILEGES</code>"
+  urls:
+  - "/PREFIX/show-default-privileges.html"
+
+- title: "<code>SHOW ENUMS</code>"
+  urls:
+  - "/PREFIX/show-enums.html"
+
+- title: "<code>SHOW FULL TABLE SCANS</code>"
+  urls:
+  - "/PREFIX/show-full-table-scans.html"
+
+- title: "<code>SHOW GRANTS</code>"
+  urls:
+  - "/PREFIX/show-grants.html"
+
+- title: "<code>SHOW INDEX</code>"
+  urls:
+  - "/PREFIX/show-index.html"
+
+- title: "<code>SHOW JOBS</code>"
+  urls:
+  - "/PREFIX/show-jobs.html"
+
+- title: "<code>SHOW LOCALITY</code>"
+  urls:
+  - "/PREFIX/show-locality.html"
+
+- title: "<code>SHOW PARTITIONS</code> (Enterprise)"
+  urls:
+  - "/PREFIX/show-partitions.html"
+
+- title: "<code>SHOW RANGES</code>"
+  urls:
+  - "/PREFIX/show-ranges.html"
+
+- title: "<code>SHOW RANGE FOR ROW</code>"
+  urls:
+  - "/PREFIX/show-range-for-row.html"
+
+- title: "<code>SHOW REGIONS</code>"
+  urls:
+  - "/PREFIX/show-regions.html"
+
+- title: "<code>SHOW &#123;session variable&#125;</code>"
+  urls:
+  - "/PREFIX/show-vars.html"
+
+- title: "<code>SHOW SUPER REGIONS</code>"
+  urls:
+  - "/PREFIX/show-super-regions.html"
+
+- title: "<code>SHOW SYSTEM GRANTS</code>"
+  urls:
+  - "/PREFIX/show-system-grants.html"
+
+- title: "<code>SHOW ROLES</code>"
+  urls:
+  - "/PREFIX/show-roles.html"
+
+- title: "<code>SHOW SCHEDULES</code>"
+  urls:
+  - "/PREFIX/show-schedules.html"
+
+- title: "<code>SHOW SCHEMAS</code>"
+  urls:
+  - "/PREFIX/show-schemas.html"
+
+- title: "<code>SHOW SEQUENCES</code>"
+  urls:
+  - "/PREFIX/show-sequences.html"
+
+- title: "<code>SHOW SESSIONS</code>"
+  urls:
+  - "/PREFIX/show-sessions.html"
+
+- title: "<code>SHOW STATEMENTS</code>"
+  urls:
+  - "/PREFIX/show-statements.html"
+
+- title: "<code>SHOW STATISTICS</code>"
+  urls:
+  - "/PREFIX/show-statistics.html"
+
+- title: "<code>SHOW SAVEPOINT STATUS</code>"
+  urls:
+  - "/PREFIX/show-savepoint-status.html"
+
+- title: "<code>SHOW TABLES</code>"
+  urls:
+  - "/PREFIX/show-tables.html"
+
+- title: "<code>SHOW TRACE FOR SESSION</code>"
+  urls:
+  - "/PREFIX/show-trace.html"
+
+- title: "<code>SHOW TRANSACTIONS</code>"
+  urls:
+  - "/PREFIX/show-transactions.html"
+
+- title: "<code>SHOW TYPES</code>"
+  urls:
+  - "/PREFIX/show-types.html"
+
+- title: "<code>SHOW USERS</code>"
+  urls:
+  - "/PREFIX/show-users.html"
+
+- title: "<code>SHOW ZONE CONFIGURATIONS</code>"
+  urls:
+  - "/PREFIX/show-zone-configurations.html"
+
+- title: "<code>TRUNCATE</code>"
+  urls:
+  - "/PREFIX/truncate.html"
+
+- title: "<code>UPDATE</code>"
+  urls:
+  - "/PREFIX/update.html"
+
+- title: "<code>UPSERT</code>"
+  urls:
+  - "/PREFIX/upsert.html"
+
+- title: "<code>WITH &#123;storage parameter&#125;</code>"
+  urls:
+  - "/PREFIX/with-storage-parameter.html"

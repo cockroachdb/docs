@@ -1,0 +1,19 @@
+- title: Third-Party Monitoring Integration Overview
+  urls:
+  - "/PREFIX/third-party-monitoring-tools.html"
+
+- title: Export Metrics From a CockroachDB Dedicated Cluster
+  urls:
+  - "/cockroachcloud/export-metrics.html"
+
+- title: Monitor CockroachDB Self-Hosted with Datadog
+  urls:
+  - "/PREFIX/datadog.html"
+
+- title: Monitor CockroachDB Self-Hosted with DBmarlin
+  urls:
+  - "/PREFIX/dbmarlin.html"
+
+- title: Monitor CockroachDB Self-Hosted with Kibana
+  urls:
+  - "/PREFIX/kibana.html"

@@ -1,0 +1,25 @@
+- title: Overview
+  urls:
+  - "/PREFIX/schema-design-overview.html"
+  
+- title: Create a Database
+  urls:
+  - "/PREFIX/schema-design-database.html"
+
+- title: Create a User-defined Schema
+  urls:
+  - "/PREFIX/schema-design-schema.html"
+
+- title: Create a Table
+  urls:
+  - "/PREFIX/schema-design-table.html"
+
+- title: Secondary Indexes
+  urls:
+  - "/PREFIX/schema-design-indexes.html"
+
+- title: Update a Database Schema
+  sidebar: "update_a_db_schema"
+
+- title: Advanced Schema Design
+  sidebar: "advanced_schema_design"

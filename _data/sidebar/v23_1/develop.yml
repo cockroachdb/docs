@@ -1,0 +1,43 @@
+- title: Developer Guide Overview
+  urls:
+  - "/PREFIX/developer-guide-overview.html"
+
+- title: Developer Basics
+  urls:
+  - "/PREFIX/developer-basics.html"
+  
+- title: Connect to CockroachDB
+  sidebar: "connect_to_crdb"
+
+- title: Design a Database Schema
+  sidebar: "design_a_db_schema"
+
+- title: Write Data
+  sidebar: "write_data"
+  
+- title: Read Data
+  sidebar: "read_data"
+
+- title: Transactions
+  sidebar: "transactions"
+
+- title: Test Your Application Locally
+  urls:
+  - "/PREFIX/local-testing.html"
+
+- title: Troubleshoot Common Problems
+  urls:
+  - "/PREFIX/error-handling-and-troubleshooting.html"
+
+- title: Optimize Statement Performance
+  sidebar: "optimize_stmt_perf"
+
+- title: Example Applications
+  sidebar: "example_apps"
+
+- title: Tutorials
+  sidebar: "tutorials"
+
+- title: SQL Playground
+  urls:
+  - "/tutorials/sql-playground.html"

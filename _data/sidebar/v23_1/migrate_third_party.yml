@@ -1,0 +1,11 @@
+- title: AWS DMS
+  urls:
+  - "/PREFIX/aws-dms.html"
+
+- title: Qlik Replicate
+  urls:
+  - "/PREFIX/qlik.html"
+
+- title: Striim
+  urls:
+  - "/PREFIX/striim.html"

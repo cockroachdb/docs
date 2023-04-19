@@ -1,0 +1,35 @@
+- title: Cluster Overview Page
+  urls:
+  - "/cockroachcloud/cluster-overview-page.html"
+
+- title: Alerts Page
+  urls:
+  - "/cockroachcloud/alerts-page.html"
+
+- title: Monitoring Page
+  urls:
+  - "/cockroachcloud/tools-page.html"
+  
+- title: Metrics Page
+  urls:
+  - "/cockroachcloud/metrics-page.html"
+
+- title: Statements Page
+  urls:
+  - "/cockroachcloud/statements-page.html"
+
+- title: Sessions Page
+  urls:
+  - "/cockroachcloud/sessions-page.html"
+
+- title: Transactions Page
+  urls:
+  - "/cockroachcloud/transactions-page.html"
+
+- title: Databases Page
+  urls:
+  - "/cockroachcloud/databases-page.html"
+
+- title: Jobs Page
+  urls:
+  - "/cockroachcloud/jobs-page.html"

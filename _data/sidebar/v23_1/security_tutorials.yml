@@ -1,0 +1,7 @@
+- title: Configure SQL Authentication for Hardened Serverless Cluster Security
+  urls:
+  - "/PREFIX/security-reference/config-secure-hba.html"
+
+- title: Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security
+  urls:
+  - "/PREFIX/vault-db-secrets-tutorial.html"

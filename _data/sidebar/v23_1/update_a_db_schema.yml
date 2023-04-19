@@ -1,0 +1,7 @@
+- title: Change and Remove Objects
+  urls:
+  - "/PREFIX/schema-design-update.html"
+
+- title: Online Schema Changes
+  urls:
+  - "/PREFIX/online-schema-changes.html"

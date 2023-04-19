@@ -1,0 +1,28 @@
+- title: Security Overview
+  urls:
+  - "/PREFIX/security-reference/security-overview.html"
+
+- title: Authentication
+  urls:
+  - "/PREFIX/security-reference/authentication.html"
+  sidebar: "authentication"
+
+- title: Authorization
+  urls:
+  - "/PREFIX/security-reference/authorization.html"
+
+- title: Encryption
+  urls:
+  - "/PREFIX/security-reference/encryption.html"
+
+- title: Public Key Infrastructure (PKI) and Transport Layer Security (TLS)
+  urls:
+  - "/PREFIX/security-reference/transport-layer-security.html"
+
+- title: Customer-Managed Encryption Keys (CMEK)
+  urls:
+  - "/cockroachcloud/cmek.html"
+
+- title: Payment Card Industry Data Security Standard (PCI DSS)
+  urls:
+  - "/cockroachcloud/pci-dss.html"

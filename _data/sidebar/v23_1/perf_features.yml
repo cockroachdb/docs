@@ -1,0 +1,23 @@
+- title: Overview
+  urls:
+  - "/PREFIX/performance-features-overview.html"
+
+- title: Indexes
+  urls:
+  - "/PREFIX/indexes.html"
+
+- title: Cost-Based Optimizer
+  urls:
+  - "/PREFIX/cost-based-optimizer.html"
+
+- title: Vectorized Execution Engine
+  urls:
+  - "/PREFIX/vectorized-execution.html"
+
+- title: Load-Based Splitting
+  urls:
+  - "/PREFIX/load-based-splitting.html"
+
+- title: Admission Control
+  urls:
+  - "/PREFIX/admission-control.html"

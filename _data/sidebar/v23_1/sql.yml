@@ -1,0 +1,37 @@
+- title: SQL Overview
+  urls:
+  - "/PREFIX/sql-feature-support.html"
+
+- title: PostgreSQL Compatibility
+  urls:
+  - "/PREFIX/postgresql-compatibility.html"
+
+- title: SQL Syntax
+  sidebar: "sql_syntax"
+
+- title: SQL Statements
+  sidebar: "sql_statements"
+
+- title: Data Types
+  sidebar: "data_types"
+
+- title: Constraints
+  sidebar: "constraints"
+
+- title: Functions and Operators
+  urls:
+  - "/PREFIX/functions-and-operators.html"
+
+- title: Window Functions
+  urls:
+  - "/PREFIX/window-functions.html"
+
+- title: Name Resolution
+  urls:
+  - "/PREFIX/sql-name-resolution.html"
+
+- title: System Catalogs
+  sidebar: "system_catalogs"
+
+- title: Spatial Features
+  sidebar: "spatial_features"

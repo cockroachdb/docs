@@ -1,0 +1,19 @@
+- title: Monitoring Clusters Overview
+  urls:
+  - "/PREFIX/monitoring-and-alerting.html"
+
+- title: Common Issues to Monitor
+  urls:
+  - "/PREFIX/common-issues-to-monitor.html"
+
+- title: Enable the Node Map
+  urls:
+  - "/PREFIX/enable-node-map.html"
+
+- title: Use Prometheus and Alertmanager
+  urls:
+  - "/PREFIX/monitor-cockroachdb-with-prometheus.html"
+
+- title: Cluster API
+  urls:
+  - "/PREFIX/cluster-api.html"

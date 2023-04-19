@@ -1,0 +1,31 @@
+- title: Troubleshooting Overview
+  urls:
+  - "/PREFIX/troubleshooting-overview.html"
+  
+- title: Common Errors and Solutions
+  urls:
+  - "/PREFIX/common-errors.html"
+
+- title: Troubleshoot Cluster Setup
+  urls:
+  - "/PREFIX/cluster-setup-troubleshooting.html"
+
+- title: Troubleshoot Statement Behavior
+  urls:
+  - "/PREFIX/query-behavior-troubleshooting.html"
+
+- title: Troubleshoot CockroachDB Cloud
+  urls:
+  - "/cockroachcloud/troubleshooting-page.html"
+
+- title: Replication Reports
+  urls:
+  - "/PREFIX/query-replication-reports.html"
+
+- title: Support Resources
+  urls:
+  - "/PREFIX/support-resources.html"
+
+- title: File an Issue
+  urls:
+  - "/PREFIX/file-an-issue.html"

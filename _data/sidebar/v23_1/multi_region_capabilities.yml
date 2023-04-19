@@ -1,0 +1,34 @@
+- title: Overview
+  urls:
+  - "/PREFIX/multiregion-overview.html"
+
+- title: How to Choose a Multi-Region Configuration
+  urls:
+  - "/PREFIX/choosing-a-multi-region-configuration.html"
+
+- title: When to Use ZONE vs. REGION Survival Goals
+  urls:
+  - "/PREFIX/when-to-use-zone-vs-region-survival-goals.html"
+
+- title: When to Use REGIONAL vs. GLOBAL Tables
+  urls:
+  - "/PREFIX/when-to-use-regional-vs-global-tables.html"
+
+- title: Data Domiciling with CockroachDB
+  urls:
+  - "/PREFIX/data-domiciling.html"
+
+- title: Migrate to Multi-Region SQL
+  urls:
+  - "/PREFIX/migrate-to-multiregion-sql.html"
+
+- title: Table Partitioning
+  urls:
+  - "/PREFIX/partitioning.html"
+
+- title: Multi-Region Zone Config Extensions
+  urls:
+  - "/PREFIX/zone-config-extensions.html"
+
+- title: Topology Patterns
+  sidebar: "topology_patterns"

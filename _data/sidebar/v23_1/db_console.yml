@@ -1,0 +1,54 @@
+- title: DB Console Overview
+  urls:
+  - "/PREFIX/ui-overview.html"
+
+- title: Cluster Overview Page
+  urls:
+  - "/PREFIX/ui-cluster-overview-page.html"
+
+- title: Metrics Dashboards
+  sidebar: "metrics_dashboards"
+
+- title: Databases Page
+  urls:
+  - "/PREFIX/ui-databases-page.html"
+  
+- title: Sessions Page
+  urls:
+  - "/PREFIX/ui-sessions-page.html"
+
+- title: Statements Page
+  urls:
+  - "/PREFIX/ui-statements-page.html"
+
+- title: Transactions Page
+  urls:
+  - "/PREFIX/ui-transactions-page.html"
+
+- title: Insights Page
+  urls:
+  - "/PREFIX/ui-insights-page.html"
+
+- title: Network Latency Page
+  urls:
+  - "/PREFIX/ui-network-latency-page.html"
+
+- title: Hot Ranges Page
+  urls:
+  - "/PREFIX/ui-hot-ranges-page.html"
+
+- title: Jobs Page
+  urls:
+  - "/PREFIX/ui-jobs-page.html"
+
+- title: Schedules Page
+  urls:
+  - "/PREFIX/ui-schedules-page.html"
+
+- title: Advanced Debug Page
+  urls:
+  - "/PREFIX/ui-debug-pages.html"
+
+- title: Key Visualizer
+  urls:
+  - "/PREFIX/ui-key-visualizer.html"

@@ -1,0 +1,7 @@
+- title: Satori
+  urls:
+  - "/PREFIX/satori-integration.html"
+
+- title: HashiCorp Vault
+  urls:
+  - "/PREFIX/hashicorp-integration.html"

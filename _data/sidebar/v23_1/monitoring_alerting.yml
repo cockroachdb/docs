@@ -1,0 +1,9 @@
+- title: Monitor a CockroachDB Cloud Cluster
+  sidebar: "monitoring_cc"
+
+- title: Monitor a CockroachDB Self-Hosted Cluster
+  sidebar: "monitoring_sh"
+
+- title: Third-Party Monitoring Integrations
+  sidebar: "third_party_monitoring"
+

@@ -1,0 +1,12 @@
+- title: Get Started
+  sidebar: "sh_get_started"
+
+- title: Production Checklist
+  urls:
+  - "/PREFIX/recommended-production-settings.html"
+
+- title: Kubernetes Deployment
+  sidebar: "kubernetes_deployment"
+
+- title: Manual Deployment
+  sidebar: "manual_deployment"

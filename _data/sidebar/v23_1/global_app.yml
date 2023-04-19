@@ -1,0 +1,23 @@
+- title: Overview
+  urls:
+  - "/PREFIX/movr-flask-overview.html"
+
+- title: Global Application Use Case
+  urls:
+  - "/PREFIX/movr-flask-use-case.html"
+
+- title: Multi-region Database Schema
+  urls:
+  - "/PREFIX/movr-flask-database.html"
+
+- title: Set up a Development Environment
+  urls:
+  - "/PREFIX/movr-flask-setup.html"
+
+- title: Develop a Global Application
+  urls:
+  - "/PREFIX/movr-flask-application.html"
+  
+- title: Deploy a Global Application
+  urls:
+  - "/PREFIX/movr-flask-deployment.html"

@@ -1,0 +1,15 @@
+- title: Authentication Overview
+  urls:
+  - "/cockroachcloud/authentication.html"
+
+- title: Single Sign-On (SSO) for CockroachDB Cloud Organizations
+  urls:
+  - "/cockroachcloud/cloud-org-sso.html"
+
+- title: Configure Cloud Organization SSO
+  urls:
+  - "/cockroachcloud/configure-cloud-org-sso.html"
+
+- title: Cluster Single Sign-On (SSO) using CockroachDB Cloud Console
+  urls:
+  - "/cockroachcloud/cloud-sso-sql.html"

@@ -1,0 +1,9 @@
+- title: Secure CockroachDB Cloud Clusters
+  sidebar: "secure_cc_clusters"
+
+- title: Secure CockroachDB Self-Hosted Clusters
+  sidebar: "secure_sh_clusters"
+
+- title: CockroachDB General Security Tutorials
+  sidebar: "security_tutorials"
+

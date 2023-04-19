@@ -1,0 +1,9 @@
+- title: Install CockroachDB
+  urls:
+  - "/PREFIX/install-cockroachdb.html"
+  - "/PREFIX/install-cockroachdb-mac.html"
+  - "/PREFIX/install-cockroachdb-linux.html"
+  - "/PREFIX/install-cockroachdb-windows.html"
+
+- title: Start a Local Cluster
+  sidebar: "start_a_local_cluster"

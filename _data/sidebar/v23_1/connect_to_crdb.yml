@@ -1,0 +1,11 @@
+- title: Install a Driver or ORM Framework
+  urls:
+  - "/PREFIX/install-client-drivers.html"
+
+- title: Connect to a Cluster
+  urls:
+  - "/PREFIX/connect-to-the-database.html"
+  
+- title: Use Connection Pools
+  urls:
+  - "/PREFIX/connection-pooling.html"

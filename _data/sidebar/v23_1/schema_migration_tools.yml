@@ -1,0 +1,11 @@
+- title: Alembic
+  urls:
+  - "/PREFIX/alembic.html"
+
+- title: Flyway
+  urls:
+  - "/PREFIX/flyway.html"
+
+- title: Liquibase
+  urls:
+  - "/PREFIX/liquibase.html"

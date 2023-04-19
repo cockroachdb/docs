@@ -1,0 +1,12 @@
+- title: Tutorials Overview
+  urls:
+  - "/PREFIX/tutorials-overview.html"
+
+- title: Schema Migration Tools
+  sidebar: "schema_migration_tools"
+
+- title: GUIs & IDEs
+  sidebar: "guis_ides"
+
+- title: Data Security Tools
+  sidebars: "data_security_tools"

@@ -1,0 +1,7 @@
+- title: DBeaver GUI
+  urls:
+  - "/PREFIX/dbeaver.html"
+
+- title: IntelliJ IDEA
+  urls:
+  - "/PREFIX/intellij-idea.html"

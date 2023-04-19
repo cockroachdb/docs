@@ -1,0 +1,33 @@
+- title: Docs Home
+  urls:
+    - "/"
+
+- title: Get Started
+  sidebar: "get_started"
+
+- title: Develop
+  sidebar: "develop"
+
+- title: Deploy
+  sidebar: "deploy_crdb"
+  # deploy.yml is a reserved file with structure that interferes 
+  # with VS Code, so I renamed this to deploy_crdb.yml
+
+- title: Manage
+  sidebar: "manage"
+
+- title: Migrate
+  sidebar: "migrate"
+
+- title: Stream Data
+  sidebar: "stream_data"
+
+- title: Reference
+  sidebar: "reference"
+
+- title: Releases
+  sidebar: "releases"
+
+- title: Online Courses
+  urls:
+    - "https://www.cockroachlabs.com/cockroach-university/"

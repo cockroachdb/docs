@@ -1,0 +1,27 @@
+- title: Overview
+  urls:
+  - "/PREFIX/constraints.html"
+
+- title: Check
+  urls:
+  - "/PREFIX/check.html"
+
+- title: Default Value
+  urls:
+  - "/PREFIX/default-value.html"
+
+- title: Foreign Key
+  urls:
+  - "/PREFIX/foreign-key.html"
+
+- title: Not Null
+  urls:
+  - "/PREFIX/not-null.html"
+
+- title: Primary Key
+  urls:
+  - "/PREFIX/primary-key.html"
+
+- title: Unique
+  urls:
+  - "/PREFIX/unique.html"

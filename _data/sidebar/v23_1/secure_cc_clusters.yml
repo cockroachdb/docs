@@ -1,0 +1,29 @@
+- title: Create Private Clusters
+  urls:
+  - "/cockroachcloud/private-clusters.html"
+
+- title: Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated
+  sidebar: "cmek_cc_dedicated"
+
+- title: Authentication
+  sidebar: "cc_authentication"
+
+- title: Network Authorization
+  urls:
+  - "/cockroachcloud/network-authorization.html"
+
+- title: SQL Audit Logging
+  urls:
+  - "/cockroachcloud/sql-audit-logging.html"
+
+- title: Export Cloud Organization Audit Logs
+  urls:
+  - "/cockroachcloud/cloud-org-audit-logs.html"
+
+- title: CockroachdB Cloud Access Management Overview and FAQ
+  urls:
+  - "/cockroachcloud/authorization.html"
+  
+- title: Managing Access in CockroachDB Cloud
+  urls:
+  - "/cockroachcloud/managing-access.html"

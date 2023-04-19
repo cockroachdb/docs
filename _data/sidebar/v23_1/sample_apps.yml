@@ -1,0 +1,39 @@
+- title: JavaScript/TypeScript
+  urls:
+  - "/PREFIX/build-a-nodejs-app-with-cockroachdb.html"
+  - "/PREFIX/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+  - "/PREFIX/build-a-nodejs-app-with-cockroachdb-knexjs.html"
+  - "/PREFIX/build-a-nodejs-app-with-cockroachdb-prisma.html"
+  - "/PREFIX/build-a-typescript-app-with-cockroachdb.html"
+- title: Python
+  urls:
+  - "/PREFIX/build-a-python-app-with-cockroachdb-psycopg3.html"
+  - "/PREFIX/build-a-python-app-with-cockroachdb.html"
+  - "/PREFIX/build-a-python-app-with-cockroachdb-sqlalchemy.html"
+  - "/PREFIX/build-a-python-app-with-cockroachdb-django.html"
+  - "/PREFIX/build-a-python-app-with-cockroachdb-pony.html"
+- title: Golang
+  urls:
+  - "/PREFIX/build-a-go-app-with-cockroachdb.html"
+  - "/PREFIX/build-a-go-app-with-cockroachdb-gorm.html"
+  - "/PREFIX/build-a-go-app-with-cockroachdb-pq.html"
+  - "/PREFIX/build-a-go-app-with-cockroachdb-upperdb.html"
+- title: Java
+  urls:
+  - "/PREFIX/build-a-java-app-with-cockroachdb.html"
+  - "/PREFIX/build-a-java-app-with-cockroachdb-hibernate.html"
+  - "/PREFIX/build-a-java-app-with-cockroachdb-jooq.html"
+  - "/PREFIX/build-a-spring-app-with-cockroachdb-mybatis.html"
+- title: Ruby
+  urls:
+  - "/PREFIX/build-a-ruby-app-with-cockroachdb.html"
+  - "/PREFIX/build-a-ruby-app-with-cockroachdb-activerecord.html"
+- title: C# (.NET)
+  urls:
+  - "/PREFIX/build-a-csharp-app-with-cockroachdb.html"
+- title: Rust
+  urls:
+  - "/PREFIX/build-a-rust-app-with-cockroachdb.html"
+- title: Hasura (GraphQL)
+  urls:
+  - "/PREFIX/hasura-getting-started.html"

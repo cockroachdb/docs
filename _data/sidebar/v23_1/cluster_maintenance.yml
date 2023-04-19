@@ -1,0 +1,14 @@
+- title: Upgrade a Cluster
+  sidebar: "upgrade_cluster"
+
+- title: Manage Long-Running Queries
+  urls:
+  - "/PREFIX/manage-long-running-queries.html"
+
+- title: Node Shutdown
+  urls:
+  - "/PREFIX/node-shutdown.html"
+  
+- title: Disaster Recovery
+  urls:
+  - "/PREFIX/disaster-recovery.html"

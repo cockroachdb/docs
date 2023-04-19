@@ -1,0 +1,19 @@
+- title: AWS Lambda
+  urls:
+  - "/PREFIX/deploy-lambda-function.html"
+
+- title: Google Cloud Run
+  urls:
+  - "/PREFIX/deploy-app-gcr.html"
+
+- title: Netlify
+  urls:
+  - "/PREFIX/deploy-app-netlify.html"
+
+- title: Vercel
+  urls:
+  - "/PREFIX/deploy-app-vercel.html"
+  
+- title: Serverless Function Best Practices
+  urls:
+  - "/PREFIX/serverless-function-best-practices.html"

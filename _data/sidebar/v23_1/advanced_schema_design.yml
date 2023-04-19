@@ -1,0 +1,35 @@
+- title: Computed Columns
+  urls:
+  - "/PREFIX/computed-columns.html"
+
+- title: Group Columns into Families
+  urls:
+  - "/PREFIX/column-families.html"
+
+- title: Index a Subset of Rows
+  urls:
+  - "/PREFIX/partial-indexes.html"
+
+- title: Index Sequential Keys
+  urls:
+  - "/PREFIX/hash-sharded-indexes.html"
+
+- title: Index JSON and Array Data
+  urls:
+  - "/PREFIX/inverted-indexes.html"
+
+- title: Index Trigrams
+  urls:
+  - "/PREFIX/trigram-indexes.html"
+
+- title: Index Expressions
+  urls:
+  - "/PREFIX/expression-indexes.html"
+
+- title: Index Spatial Data
+  urls:
+  - "/PREFIX/spatial-indexes.html"
+
+- title: Scale to Multiple Regions
+  urls:
+  - "/PREFIX/multiregion-scale-application.html"

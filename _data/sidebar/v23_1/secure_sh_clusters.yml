@@ -1,0 +1,34 @@
+  - title: Managing Security Certificates
+    sidebar: "sh_manage_sec_cert"
+
+  - title: Authentication
+    urls:
+    - "/PREFIX/authentication.html"
+
+  - title: Encryption
+    urls:
+    - "/PREFIX/encryption.html"
+
+  - title: Authorization
+    urls:
+    - "/PREFIX/authorization.html"
+
+  - title: SQL Audit Logging
+    urls:
+    - "/PREFIX/sql-audit-logging.html"
+
+  - title: GSSAPI Authentication
+    urls:
+    - "/PREFIX/gssapi_authentication.html"
+
+  - title: Cluster Single Sign-on (SSO) using JSON web tokens (JWT)
+    urls:
+    - "/PREFIX/sso-sql.html"
+
+  - title: Single Sign-on (SSO) for DB Console
+    urls:
+    - "/PREFIX/sso-db-console.html"
+
+  - title: Rotate Security Certificates
+    urls:
+    - "/PREFIX/rotate-certificates.html"

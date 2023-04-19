@@ -1,0 +1,15 @@
+- title: Change Data Capture Queries
+  urls:
+  - "/PREFIX/cdc-queries.html"
+
+- title: Changefeeds on Tables with Column Families
+  urls:
+  - "/PREFIX/changefeeds-on-tables-with-column-families.html"
+
+- title: Export Data with Changefeeds
+  urls:
+  - "/PREFIX/export-data-with-changefeeds.html"
+
+- title: Changefeeds in Multi-Region Deployments
+  urls:
+  - "/PREFIX/changefeeds-in-multi-region-deployments.html"

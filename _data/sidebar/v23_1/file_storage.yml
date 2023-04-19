@@ -1,0 +1,10 @@
+  - title: Cloud Storage
+    sidebar: "cloud_storage"
+
+  - title: Userfile Storage
+    urls:
+    - "/PREFIX/use-userfile-storage.html"
+    
+  - title: Local File Server
+    urls:
+    - "/PREFIX/use-a-local-file-server.html"

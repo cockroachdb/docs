@@ -1,0 +1,14 @@
+- title: "<code>cockroach</code> Commands Overview"
+  urls:
+  - "/PREFIX/cockroach-commands.html"
+  
+- title: Client Connection Parameters
+  urls:
+  - "/PREFIX/connection-parameters.html"
+
+- title: "<code>cockroach</code> Commands"
+  sidebar: "cockroach_commands"
+
+- title: The <code>cockroach-sql</code> command
+  urls:
+  - "/PREFIX/cockroach-sql-binary.html"

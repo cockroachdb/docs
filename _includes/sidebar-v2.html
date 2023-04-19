@@ -1,0 +1,14 @@
+<div class="col-sidebar" data-nosnippet>
+  <div class="col-sidebar-content">
+    <div class="mb-3 px-3">
+      <form action="/docs/search.html">
+        <input class="form-control" name="query" type="text" placeholder="Search">
+      </form>
+    </div>
+    <ul id="sidebar" class="nav">
+      {% assign page_version_folder = page.version.version | replace: ".", "_" %}
+      {% include_cached sidebar-level.html level="top_level" folder=page_version_folder %}
+    </ul>
+  </div>
+  <div class="stiky-spacer"></div>
+</div>

@@ -1,0 +1,23 @@
+- title: Insert Data
+  urls:
+  - "/PREFIX/insert-data.html"
+
+- title: Update Data
+  urls:
+  - "/PREFIX/update-data.html"
+
+- title: Bulk-update Data
+  urls:
+  - "/PREFIX/bulk-update-data.html"
+
+- title: Delete Data
+  urls:
+  - "/PREFIX/delete-data.html"
+
+- title: Bulk-delete Data
+  urls:
+  - "/PREFIX/bulk-delete-data.html"
+
+- title: Batch Delete Expired Data with Row-Level TTL
+  urls:
+  - "/PREFIX/row-level-ttl.html"

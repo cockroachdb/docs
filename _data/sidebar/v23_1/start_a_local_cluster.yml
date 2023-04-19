@@ -1,0 +1,19 @@
+- title: Start From Binary
+  urls:
+  - "/PREFIX/secure-a-cluster.html"
+  - "/PREFIX/start-a-local-cluster.html"
+
+- title: Start In Kubernetes
+  urls:
+  - "/PREFIX/orchestrate-a-local-cluster-with-kubernetes.html"
+  - "/PREFIX/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+
+- title: Start In Docker
+  urls:
+  - "/PREFIX/start-a-local-cluster-in-docker-mac.html"
+  - "/PREFIX/start-a-local-cluster-in-docker-linux.html"
+  - "/PREFIX/start-a-local-cluster-in-docker-windows.html"
+
+- title: Simulate a Multi-Region Cluster on localhost
+  urls:
+  - "/PREFIX/simulate-a-multi-region-cluster-on-localhost.html"

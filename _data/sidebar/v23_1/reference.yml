@@ -1,0 +1,63 @@
+- title: Architecture
+  sidebar: "architecture"
+
+- title: SQL
+  sidebar: "sql"
+
+- title: Cluster Settings
+  urls:
+  - "/PREFIX/cluster-settings.html"
+
+- title: Security
+  sidebar: "security_reference"
+
+- title: CLI
+  sidebar: "cli"
+
+- title: DB Console
+  sidebar: db_console
+
+- title: Metrics
+  urls:
+  - "/PREFIX/metrics.html"
+
+- title: Transaction Retry Error Reference
+  urls:
+  - "/PREFIX/transaction-retry-error-reference.html"
+
+- title: Transaction Retry Error Example
+  urls:
+  - "/PREFIX/transaction-retry-error-example.html"
+
+- title: Cluster API
+  urls:
+  - "/api/cluster/v2.html"
+
+- title: Cloud API
+  urls:
+  - "/api/cloud/v1.html"
+
+- title: Logging
+  sidebar: "logging_reference"
+
+- title: API Support Policy
+  urls:
+  - "/PREFIX/api-support-policy.html"
+
+- title: Diagnostics Reporting
+  urls:
+  - "/PREFIX/diagnostics-reporting.html"
+
+- title: Benchmarking
+  sidebar: "benchmarking"
+
+- title: CockroachDB Feature Availability
+  urls:
+  - "/PREFIX/cockroachdb-feature-availability.html"
+
+- title: Unsupported Features in CockroachDB Serverless
+  urls:
+  - "/cockroachcloud/serverless-unsupported-features.html"
+
+- title: Third-Party Support
+  sidebar: "third_party_support"

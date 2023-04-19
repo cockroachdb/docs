@@ -1,0 +1,15 @@
+- title: Create and Configure Changefeeds
+  urls:
+  - "/PREFIX/create-and-configure-changefeeds.html"
+
+- title: Changefeed Messages
+  urls:
+  - "/PREFIX/changefeed-messages.html"
+
+- title: Changefeed Sinks
+  urls:
+  - "/PREFIX/changefeed-sinks.html"
+
+- title: Changefeed Examples
+  urls:
+  - "/PREFIX/changefeed-examples.html"

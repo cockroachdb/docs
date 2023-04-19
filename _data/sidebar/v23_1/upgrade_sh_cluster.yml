@@ -1,0 +1,3 @@
+  - title: Upgrade to CockroachDB v23.1
+    urls:
+    - "/PREFIX/upgrade-cockroach-version.html"

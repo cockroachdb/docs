@@ -1,0 +1,31 @@
+- title: Manage CockroachDB Cloud Clusters
+  sidebar: "manage_cc_clusters"
+
+- title: Operate CockroachDB on Kubernetes
+  sidebar: "kubernetes_operator"
+
+- title: Backups and Restores
+  sidebar: "backups_restores"
+
+- title: File Storage
+  sidebar: "file_storage"
+
+- title: Security
+  sidebar: "cluster_security"
+  
+- title: Monitoring and Alerting
+  sidebar: "monitoring_alerting"
+
+- title: Logging
+  sidebar: "logging"
+
+- title: Cluster Maintenance
+  sidebar: "cluster_maintenance"
+
+- title: Replication Controls
+  urls:
+  - "/PREFIX/configure-replication-zones.html"
+
+- title: Troubleshooting
+  sidebar: "troubleshooting"
+

@@ -1,0 +1,9 @@
+- title: Choose a Deployment Option
+  urls:
+  - "/PREFIX/choose-a-deployment-option.html"
+
+- title: CockroachDB Cloud
+  sidebar: "cockroachdb_cloud"
+
+- title: CockroachDB Self-Hosted
+  sidebar: "crdb_self_hosted"

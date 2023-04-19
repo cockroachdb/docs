@@ -1,0 +1,7 @@
+- title: Use Cloud Storage
+  urls:
+  - "/PREFIX/use-cloud-storage.html"
+
+- title: Cloud Storage Authentication
+  urls:
+  - "/PREFIX/cloud-storage-authentication.html"

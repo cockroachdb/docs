@@ -1,0 +1,6 @@
+- title: Overview
+  urls:
+  - "/PREFIX/movr.html"
+
+- title: Global Application
+  sidebar: "global_app"

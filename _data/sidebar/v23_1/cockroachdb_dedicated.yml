@@ -1,0 +1,11 @@
+- title: Create a CockroachDB Dedicated Cluster
+  urls:
+  - "/cockroachcloud/create-your-cluster.html"
+
+- title: Connect to Your Cluster
+  urls:
+  - "/cockroachcloud/connect-to-your-cluster.html"
+
+- title: Move into Production
+  urls:
+  - "/cockroachcloud/production-checklist.html"

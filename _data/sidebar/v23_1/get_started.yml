@@ -1,0 +1,22 @@
+- title: Quickstart
+  urls:
+    - "/cockroachcloud/quickstart.html"
+
+- title: Learn CockroachDB SQL
+  urls:
+    - "/cockroachcloud/learn-cockroachdb-sql.html"
+    - "/PREFIX/learn-cockroachdb-sql.html"
+
+- title: Build a Sample Application
+  sidebar: "sample_apps"
+
+- title: "Build a Serverless Application"
+  sidebar: "serverless_apps"
+
+- title: Glossary
+  urls:
+    - "/PREFIX/learn-cockroachdb-sql.html"
+
+- title: FAQs
+  sidebar: faq
+

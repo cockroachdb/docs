@@ -1,0 +1,5 @@
+- title: Uprade a CockroachDB Cloud Cluster
+  sidebar: "upgrade_cc_cluster"
+
+- title: Upgrade a CockroachDB Self-Hosted Cluster
+  sidebar: "upgrade_sh_cluster"

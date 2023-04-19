@@ -1,0 +1,103 @@
+- title: "<code>cockroach start</code>"
+  urls:
+  - "/PREFIX/cockroach-start.html"
+
+- title: "<code>cockroach init</code>"
+  urls:
+  - "/PREFIX/cockroach-init.html"
+
+- title: "<code>cockroach start-single-node</code>"
+  urls:
+  - "/PREFIX/cockroach-start-single-node.html"
+
+- title: "<code>cockroach cert</code>"
+  urls:
+  - "/PREFIX/cockroach-cert.html"
+
+- title: "<code>cockroach sql</code>"
+  urls:
+  - "/PREFIX/cockroach-sql.html"
+
+- title: "<code>cockroach sqlfmt</code>"
+  urls:
+  - "/PREFIX/cockroach-sqlfmt.html"
+
+- title: "<code>cockroach node</code>"
+  urls:
+  - "/PREFIX/cockroach-node.html"
+
+- title: "<code>cockroach nodelocal upload</code>"
+  urls:
+  - "/PREFIX/cockroach-nodelocal-upload.html"
+
+- title: "<code>cockroach auth-session</code>"
+  urls:
+  - "/PREFIX/cockroach-auth-session.html"
+
+- title: "<code>cockroach demo</code>"
+  urls:
+  - "/PREFIX/cockroach-demo.html"
+
+- title: "<code>cockroach debug ballast</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-ballast.html"
+
+- title: "<code>cockroach debug encryption-active-key</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-encryption-active-key.html"
+
+- title: "<code>cockroach debug job-trace</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-job-trace.html"
+
+- title: "<code>cockroach debug list-files</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-list-files.html"
+
+- title: "<code>cockroach debug merge-logs</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-merge-logs.html"
+
+- title: "<code>cockroach debug tsdump</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-tsdump.html"
+
+- title: "<code>cockroach debug zip</code>"
+  urls:
+  - "/PREFIX/cockroach-debug-zip.html"
+
+- title: "<code>cockroach statement-diag</code>"
+  urls:
+  - "/PREFIX/cockroach-statement-diag.html"
+
+- title: "<code>cockroach gen</code>"
+  urls:
+  - "/PREFIX/cockroach-gen.html"
+
+- title: "<code>cockroach userfile upload</code>"
+  urls:
+  - "/PREFIX/cockroach-userfile-upload.html"
+
+- title: "<code>cockroach userfile list</code>"
+  urls:
+  - "/PREFIX/cockroach-userfile-list.html"
+
+- title: "<code>cockroach userfile get</code>"
+  urls:
+  - "/PREFIX/cockroach-userfile-get.html"
+
+- title: "<code>cockroach userfile delete</code>"
+  urls:
+  - "/PREFIX/cockroach-userfile-delete.html"
+
+- title: "<code>cockroach version</code>"
+  urls:
+  - "/PREFIX/cockroach-version.html"
+
+- title: "<code>cockroach workload</code>"
+  urls:
+  - "/PREFIX/cockroach-workload.html"
+
+- title: "<code>cockroach import</code>"
+  urls:
+  - "/PREFIX/cockroach-import.html"

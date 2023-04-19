@@ -1,0 +1,31 @@
+- title: Take and Restore Customer-Owned Backups on CockroachDB Cloud
+  urls:
+  - "/cockroachcloud/take-and-restore-customer-owned-backups.html"
+
+- title: Full and Incremental Backups
+  urls:
+  - "/PREFIX/take-full-and-incremental-backups.html"
+
+- title: Backups with Revision History and Point-in-time Restore
+  urls:
+  - "/PREFIX/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+
+- title: Encrypted Backup and Restore
+  urls:
+  - "/PREFIX/take-and-restore-encrypted-backups.html"
+
+- title: Locality-aware Backup and Restore
+  urls:
+  - "/PREFIX/take-and-restore-locality-aware-backups.html"
+
+- title: Scheduled Backups
+  urls:
+  - "/PREFIX/manage-a-backup-schedule.html"
+
+- title: Backup Validation
+  urls:
+  - "/PREFIX/backup-validation.html"
+
+- title: Backup and Restore Monitoring
+  urls:
+  - "/PREFIX/backup-and-restore-monitoring.html"

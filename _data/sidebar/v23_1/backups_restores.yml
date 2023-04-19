@@ -1,0 +1,18 @@
+- title: Backup and Restore Overview
+  urls:
+  - "/PREFIX/backup-and-restore-overview.html"
+
+- title: Backup Architecture
+  urls:
+  - "/PREFIX/backup-architecture.html"
+
+- title: Managed-Service Backups
+  urls:
+  - "/cockroachcloud/use-managed-service-backups.html"
+
+- title: Customer-Owned Backups
+  sidebar: "customer_owned_backups"
+
+- title: Restoring Backups Across Versions
+  urls:
+  - "/PREFIX/restoring-backups-across-versions.html"

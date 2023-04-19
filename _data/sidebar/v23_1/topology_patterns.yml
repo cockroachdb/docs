@@ -1,0 +1,27 @@
+- title: Overview
+  urls:
+  - "/PREFIX/topology-patterns.html"
+
+- title: Development
+  urls:
+  - "/PREFIX/topology-development.html"
+
+- title: Basic Production
+  urls:
+  - "/PREFIX/topology-basic-production.html"
+
+- title: Regional Tables
+  urls:
+  - "/PREFIX/regional-tables.html"
+
+- title: Global Tables
+  urls:
+  - "/PREFIX/global-tables.html"
+
+- title: Follower Reads
+  urls:
+  - "/PREFIX/topology-follower-reads.html"
+
+- title: Follow-the-Workload
+  urls:
+  - "/PREFIX/topology-follow-the-workload.html"

@@ -1,0 +1,27 @@
+- title: Migrate from CSV
+  urls:
+  - "/PREFIX/migrate-from-csv.html"
+
+- title: Migrate from Avro
+  urls:
+  - "/PREFIX/migrate-from-avro.html"
+
+- title: Migrate from Shapefiles
+  urls:
+  - "/PREFIX/migrate-from-shapefiles.html"
+
+- title: Migrate from OpenStreetMap
+  urls:
+  - "/PREFIX/migrate-from-openstreetmap.html"
+
+- title: Migrate from GeoJSON
+  urls:
+  - "/PREFIX/migrate-from-geojson.html"
+
+- title: Migrate from GeoPackage
+  urls:
+  - "/PREFIX/migrate-from-geopackage.html"
+  
+- title: Import Performance Best Practices
+  urls:
+  - "/PREFIX/import-performance-best-practices.html"

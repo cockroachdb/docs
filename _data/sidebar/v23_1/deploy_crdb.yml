@@ -1,0 +1,9 @@
+- title: Deployment Options
+  sidebar: "deployment_options"
+
+- title: Multi-Region Capabilities
+  sidebar: "multi_region_capabilities"
+
+- title: Explore CockroachDB Features
+  sidebar: "explore_crdb_features"
+
