@@ -1,6 +1,6 @@
 ## Workload Insights tab
 
-The **Workload Insights** tab displays insights related to transaction and statement executions.
+The **Workload Insights** tab displays insights related to [transaction]({{ link_prefix }}transactions.html) and [statement]({{ link_prefix }}show-statements.html) executions.
 
 ### Transaction Executions view
 
@@ -12,7 +12,7 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 To display this view, click **Insights** in the left-hand navigation of the Cloud Console and select **Workload Insights > Transaction Executions**.
 {% endif -%}
 
-The **Transaction Executions** view provides an overview of all transaction executions that have been flagged with insights.
+The **Transaction Executions** view provides an overview of all [transaction executions]({{ link_prefix }}transactions.html) that have been flagged with insights.
 
 {{site.data.alerts.callout_info}}
 The rows in this page are populated from the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) and  `crdb_internal.transaction_execution_insights` tables.
@@ -71,7 +71,7 @@ This section provides details of the transaction executions that block the trans
 
 ### Statement Executions view
 
-The **Statement Executions** view provides an overview of all statement executions that have been flagged with insights.
+The **Statement Executions** view provides an overview of all [statement executions]({{ link_prefix }}show-statements.html) that have been flagged with insights.
 
 {% if page.cloud != true -%}
 To display this view, click **Insights** in the left-hand navigation of the DB Console and select **Workload Insights > Statement Executions**.
@@ -152,7 +152,7 @@ To display this view, click **Insights** in the left-hand navigation of the DB C
 To display this view, click **Insights** in the left-hand navigation of the Cloud Console  and select **Schema Insights**.
 {% endif -%}
 
-This view lists the indexes that have not been used and should be dropped, and/or the ones that should be created, altered, or replaced (based on statement execution).
+This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been used and should be dropped, and/or the ones that should be created, altered, or replaced (based on statement execution).
 
 - The drop recommendations are the same as those on the [**Databases**]({{ link_prefix }}ui-databases-page.html) page.
 - The create, alter, and replace recommendations are the same as those on the [Explain Plans tab]({{ link_prefix }}ui-statements-page.html#insights) on the Statements page. Whereas the **Explain Plans** tab shows all recommendations, the **Schema Insights** view shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
@@ -181,24 +181,24 @@ You can configure the behavior of insights using the following [cluster settings
 
 You can configure [**Workload Insights**](#workload-insights-tab) with the following [{{ link_prefix }}cluster settings]({{ link_prefix }}cluster-settings.html):
 
-| Setting                                                                | Default value | Description                                                                                                                                                                                   | Where used                           |
-|------------------------------------------------------------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-|`sql.insights.anomaly_detection.enabled`                                | `true`        | Whether or not anomaly insight detection is enabled. When true, CockroachDB checks if [execution latency]({{ link_prefix }}ui-sql-dashboard.html#kv-execution-latency-99th-percentile) was greater than the p99 latency and more than double the median latency. | Statement executions                 |
-|`sql.insights.anomaly_detection.latency_threshold`                      | `50 ms`       | The latency threshold that triggers monitoring a statement fingerprint for unusually slow execution.                                                                                          | Statement executions                 |
-|`sql.insights.anomaly_detection.memory_limit`                           | `1` MiB       | The maximum amount of memory allowed for tracking statement latencies.                                                                                                                        | Statement executions                 |
-|`sql.insights.latency_threshold`                                        | `100 ms`      | The threshold at which the contention duration of a contended transaction is considered **High Contention** or statement execution is flagged for insights.                                   | Statement and Transaction executions |
-|`sql.insights.high_retry_count.threshold`                               | `10`          | The threshold at which a retry count is considered **High Retry Count**.                                                                                                                      | Statement executions                 |
-|`sql.insights.execution_insights_capacity`                              | `1000`        | The maximum number of execution insights stored in each node.                                                                                                                                 | Statement executions                 |
-|`sql.contention.event_store.capacity`                                   | `64 MiB`      | The in-memory storage capacity of the contention event store in each nodes.                                                                                                                   | Transaction executions               |
-|`sql.contention.event_store.duration_threshold`                         | `0`           | The minimum contention duration to cause contention events to be collected into the `crdb_internal.transaction_contention_events` table.                                                      | Transaction executions               |
+| Setting                                                                | Description                                                                                                                                                                                   | Where used                           |
+|------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+|[`sql.insights.anomaly_detection.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-enabled)                                | Whether or not anomaly insight detection is enabled. When true, CockroachDB checks if [execution latency]({{ link_prefix }}ui-sql-dashboard.html#kv-execution-latency-99th-percentile) was greater than the p99 latency and more than double the median latency. | [Statement executions](#statement-executions-view)                 |
+|[`sql.insights.anomaly_detection.latency_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-latency-threshold)                                  | The latency threshold that triggers monitoring a statement fingerprint for unusually slow execution.                                                                                          | [Statement executions](#statement-executions-view)                 |
+|[`sql.insights.anomaly_detection.memory_limit`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-memory-limit)                           | The maximum amount of memory allowed for tracking statement latencies.                                                                                                                        | [Statement executions](#statement-executions-view)                 |
+|[`sql.insights.latency_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold)                                          | The threshold at which the contention duration of a contended transaction is considered **High Contention** or statement execution is flagged for insights.                                   | [Statement](#statement-executions-view) and [Transaction executions](#transaction-executions-view) |
+|[`sql.insights.high_retry_count.threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-high-retry-count-threshold)                               | The threshold at which a retry count is considered **High Retry Count**.                                                                                                                      | [Statement executions](#statement-executions-view)                 |
+|[`sql.insights.execution_insights_capacity`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-execution-insights-capacity)                              | The maximum number of execution insights stored in each node.                                                                                                                                 | [Statement executions](#statement-executions-view)                 |
+|[`sql.contention.event_store.capacity`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-event-store-capacity)                                   | The in-memory storage capacity of the contention event store in each nodes.                                                                                                                   | [Transaction executions](#transaction-executions-view)               |
+|[`sql.contention.event_store.duration_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-contention-event-store-duration-threshold)                         | The minimum contention duration to cause contention events to be collected into the `crdb_internal.transaction_contention_events` table.                                                      | [Transaction executions](#transaction-executions-view)               |
 
 #### Detect slow executions
 
 There are two different methods for detecting slow executions. By default, they are both enabled and you can configure them based on your workload.
 
-The first method flags all executions running longer than `sql.insights.latency_threshold`. This is analogous to checking the [slow query log]({{ link_prefix }}logging-use-cases.html#sql_perf).
+The first method flags all executions running longer than [`sql.insights.latency_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold). This is analogous to checking the [slow query log]({{ link_prefix }}logging-use-cases.html#sql_perf).
 
-The second method attempts to detect **unusually slow executions**. You can enable this detection with `sql.insights.anomaly_detection.enabled` and configure it with `sql.insights.anomaly_detection.latency_threshold`.
+The second method attempts to detect **unusually slow executions**. You can enable this detection with [`sql.insights.anomaly_detection.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-enabled) and configure it with [`sql.insights.anomaly_detection.latency_threshold`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-latency-threshold).
 CockroachDB will then keep a streaming histogram in memory for each distinct statement fingerprint that has seen an execution latency longer than `sql.insights.anomaly_detection.latency_threshold`, and will flag any execution with a latency in the 99th percentile (greater than p99) for its fingerprint.
 
 Additional controls filter out executions that are less actionable:
@@ -206,16 +206,16 @@ Additional controls filter out executions that are less actionable:
 - The execution's latency must also be longer than twice the median latency (`> 2*p50`) for that fingerprint. This ensures that the elevated latency is significant enough to warrant attention.
 - The execution's latency must also be longer than `sql.insights.anomaly_detection.latency_threshold`. Some executions are slower than usual, but are still fast enough for the workload.
 
-The [`sql.insights.anomaly_detection.memory_limit` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-memory-limit) cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default of `1 MiB` is sufficient for tracking about 1,000 fingerprints.
+The [`sql.insights.anomaly_detection.memory_limit` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-memory-limit) cluster setting limits the amount of memory available for tracking these streaming latency histograms. When this threshold is surpassed, the least-recently touched histogram is evicted. The default setting is sufficient for tracking about 1,000 fingerprints.
 
-You can track the `sql.insights.anomaly_detection.memory` and `sql.insights.anomaly_detection.evictions` [metrics]({{ link_prefix }}ui-custom-chart-debug-page.html) to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage; or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
+You can track the [`sql.insights.anomaly_detection.memory`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-memory) and [`sql.insights.anomaly_detection.evictions`]({{ link_prefix }}cluster-settings.html#setting-sql-insights-anomaly-detection-evictions) [metrics]({{ link_prefix }}ui-custom-chart-debug-page.html) to determine if the settings are appropriate for your workload. If you see a steady stream of evictions or churn, you can either raise the `sql.insights.anomaly_detection.memory_limit` cluster setting, to allow for more storage; or raise the `sql.insights.anomaly_detection.latency_threshold` cluster setting, to examine fewer statement fingerprints.
 
 ### Schema insights settings
 
 You can configure the index recommendations in the [**Schema Insights** tab](#schema-insights-tab), [**Explain Plans** tab]({{ link_prefix }}ui-statements-page.html#insights), and [**Databases** page]({{ link_prefix }}ui-databases-page.html) with the following [cluster settings]({{ link_prefix }}cluster-settings.html):
 
-| Setting                                                                | Default value | Description                                                                                                             | Where used                           |
-|------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
-|`sql.metrics.statement_details.index_recommendation_collection.enabled` | `true`        | Whether or not index recommendations are enabled for indexes that could be or are used during statement execution.      | Schema Insights and Explain Plans tab|
-|`sql.index_recommendation.drop_unused_duration`                         | `7 days`      | The duration of time an index must be unused before a recommendation to drop it.                                            | Schema Insights and Databases        |
-|`sql.metrics.statement_details.max_mem_reported_idx_recommendations`    | `5000`        | The maximum number of reported index recommendations stored in memory.                                                  | Schema Insights and Explain Plans tab|
+| Setting                                                                | Description                                                                                                             | Where used                           |
+|------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+|[`sql.metrics.statement_details.index_recommendation_collection.enabled`]({{ link_prefix }}cluster-settings.html#setting-sql-metrics-statement-details-index-recommendation-collection-enabled) | Whether or not index recommendations are enabled for indexes that could be or are used during statement execution.      | [Schema Insights](#schema-insights-tab) and [Explain Plans tab]({{ link_prefix }}ui-statements-page.html#explain-plans) |
+|[`sql.index_recommendation.drop_unused_duration`]({{ link_prefix }}cluster-settings.html#setting-sql-index-recommendation-drop-unused-duration)                         | The duration of time an index must be unused before a recommendation to drop it.                                            | [Schema Insights](#schema-insights-tab) and [Databases]({{ link_prefix }}ui-databases-page.html)        |
+|[`sql.metrics.statement_details.max_mem_reported_idx_recommendations`]({{ link_prefix }}cluster-settings.html#setting-sql-metrics-statement-details-mex-mem-reported-idx-recommendations)    | The maximum number of reported index recommendations stored in memory.                                                  | [Schema Insights](#schema-insights-tab) and [Explain Plans tab]({{ link_prefix }}ui-statements-page.html#explain-plans) |
