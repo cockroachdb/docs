@@ -20,7 +20,7 @@ RU and storage consumption is prorated at the following prices:
 
 ## Choosing resource limits
 
-Your cluster's resource limits are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
+Your cluster's [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
   {% include cockroachcloud/serverless-usage.md %}
 

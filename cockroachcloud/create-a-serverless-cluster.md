@@ -36,7 +36,7 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Set resource limits
 
-Your cluster's resource limits are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+Your cluster's [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
 All {{ site.data.products.db }} organizations get 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 
@@ -90,7 +90,6 @@ Your cluster will be created in a few seconds.
 - [Connect to your {{ site.data.products.serverless }} cluster](connect-to-a-serverless-cluster.html)
 - [Authorize users](managing-access.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- [Create and manage SQL users](user-authorization.html).
 - Explore our [example apps](../{{site.current_cloud_version}}/example-apps.html) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
 - [Migrate your existing data](../{{site.current_cloud_version}}/migration-overview.html).
 - Build a simple CRUD application in [Go](../{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb.html), [Java](../{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb.html), [Node.js](../{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb.html), or [Python](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html).
