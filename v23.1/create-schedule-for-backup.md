@@ -94,7 +94,10 @@ The data being backed up will not be eligible for garbage collection until a suc
 
 You can also use the `exclude_data_from_backup` option with a scheduled backup as a way to prevent protected timestamps from prolonging garbage collection on a table. See the example [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) for usage information.
 
-We recommend monitoring for your backup schedule to alert for failed backups. See [Set up monitoring for the backup schedule](manage-a-backup-schedule.html#set-up-monitoring-for-the-backup-schedule) for more detail.
+We recommend monitoring for your backup schedule to alert for failed backups: 
+
+- See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for a general overview and list of metrics available for backup, scheduled backup, and restore jobs.
+- See [Set up monitoring for the backup schedule](manage-a-backup-schedule.html#set-up-monitoring-for-the-backup-schedule) for metrics and monitoring backup schedules specifically.
 
 ## View and control backup schedules
 

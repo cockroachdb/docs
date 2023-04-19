@@ -180,7 +180,17 @@ Protected timestamps will protect changefeed data from garbage collection in the
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
 - You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
-However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
+However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can:
+
+- [Cancel](cancel-job.html) the changefeed job.
+- [Resume](resume-job.html) a paused changefeed job.
+- {% include_cached new-in.html version="v23.1" %} Set the [`gc_protect_expires_after`](create-changefeed.html#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
+
+    For example, if the following changefeed is paused or runs into an error and then pauses, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed does not resume, the protected timestamp records will expire and the changefeed job will be cancelled. This releases the protected timestamp records and allows garbage collection to resume:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', protect_data_from_gc_on_pause, gc_protect_expires_after='24h';
+    ~~~
 
 We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is [retrying](monitor-and-debug-changefeeds.html#changefeed-retry-errors), it will (without limit) accumulate garbage while it retries to run.
 

@@ -42,6 +42,27 @@ Parameter | Description
 `for_schedules_clause` |  The schedule you want to pause jobs for. You can pause jobs for a specific schedule (`FOR SCHEDULE id`) or pause jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#pause-jobs-for-a-schedule) below.
 `WITH REASON = ...` |  The reason to pause the job. CockroachDB stores the reason in the job's metadata, but there is no way to display it.
 
+## Monitoring paused jobs
+
+Pausing a job will release existing [protected timestamp records](architecture/storage-layer.html#protected-timestamps) that are protecting historical data from [garbage collection](architecture/storage-layer.html#garbage-collection). As a result, you could lose historical data that certain jobs need, if the job remains paused longer than the [garbage collection window](configure-replication-zones.html#gc-ttlseconds).
+
+When a [changefeed](create-changefeed.html) job is paused, the changefeed will protect data from garbage collection up to the time of the changefeed [checkpoint](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). Changefeeds also provide options for protecting changefeed data while paused. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail.
+
+{% include_cached new-in.html version="v23.1" %} To ensure that data is not lost to garbage collection, or a paused changefeed does not cause data storage issues, use the `jobs.{job_type}.currently_paused` metric to track the number of jobs (for each job type) that are currently considered paused.
+
+You can monitor protected timestamps relating to particular CockroachDB jobs with the following metrics:
+
+- `jobs.{job_type}.protected_age_sec` tracks the oldest protected timestamp record protecting `{job_type}` jobs.
+- `jobs.{job_type}.protected_record_count` tracks the	number of protected timestamp records held by `{job_type}` jobs.
+
+For a full list of the available job types, access your cluster's [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint.
+
+See the following pages for details on metrics:
+
+- [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html)
+- [Backup and Restore Monitoring](backup-and-restore-monitoring.html)
+- [Metrics](metrics.html)
+
 ## Examples
 
 ### Pause a single job

@@ -59,6 +59,17 @@ By default, changefeeds will retry errors with [some exceptions](#changefeed-ret
 - `changefeed.error_retries`: The total number of retryable errors encountered by all changefeeds.
 - `changefeed.failures`: The total number of changefeed jobs that have failed.
 
+#### Protected timestamp and garbage collection monitoring
+
+Protected timestamps will protect changefeed data from garbage collection in particular scenarios, but if a changefeed lags too far behind, the protected changes could cause data storage issues. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for detail on when changefeed data is protected from garbage collection.
+
+{% include_cached new-in.html version="v23.1" %} You can monitor changefeed jobs for protected timestamp usage. We recommend setting up monitoring for the following metrics:
+
+- `jobs.changefeed.currently_paused`: Tracks the number of changefeed jobs currently considered [paused](pause-job.html). Since paused changefeed jobs can accumulate garbage, it is important to monitor the number of changefeeds paused.
+- `jobs.changefeed.expired_pts_records`: Tracks the number of expired protected timestamp records owned by changefeed jobs. You can monitor this metric in conjunction with the [`gc_protect_expires_after` option](create-changefeed.html#gc-protect-expire).
+- `jobs.changefeed.protected_age_sec`: Tracks the age of the oldest protected timestamp record protected by changefeed jobs.
+- `jobs.changefeed.protected_record_count`: Tracks the number of protected timestamp records held by changefeed jobs.
+
 ### Using changefeed metrics labels
 
 {{site.data.alerts.callout_info}}
