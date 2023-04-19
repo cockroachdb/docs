@@ -201,7 +201,7 @@ URI Parameter      | Description
 When using Pub/Sub as your downstream sink, consider the following:
 
 - Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
-- Use the [`unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub.
+- Use the [`unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. Google Cloud's multi-region Pub/Sub will have lower latency when emitting from multiple regions, but Google Cloud Pub/Sub does not support message ordering for multi-region topics.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
 
 Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
