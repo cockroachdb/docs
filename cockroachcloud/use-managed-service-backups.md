@@ -25,9 +25,7 @@ Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/tak
 Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. Backups are stored in the same region that a [single-region cluster](plan-your-cluster.html#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
 
 {{site.data.alerts.callout_info}}
-Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
-
-In the meantime, you can [back up and restore data manually](take-and-restore-customer-owned-backups.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster). Note that you cannot restore a backup of a multi-region database into a single-region database.
+You cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
 
 </section>
@@ -117,6 +115,7 @@ For each incomplete backup, the following details display:
 
 [Org Administrators](authorization.html#org-administrator-legacy) can perform the following from the Console:
 
+- [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)
 - [Restore a table](#restore-a-table)
 
@@ -124,6 +123,25 @@ Additional ways to restore data:
 
 - [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster)
 - [Back up and restore data manually](take-and-restore-customer-owned-backups.html)
+
+### Restore a cluster
+
+To restore a cluster:
+
+1. Find the cluster backup on the **Backups** page.
+1. Click **Restore** for the cluster you want to restore.
+
+    The **Restore cluster** module displays with backup details.
+
+1. Click **Continue**. 
+    
+    {{site.data.alerts.callout_danger}}
+    The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
+    {{site.data.alerts.end}}
+
+1. Once you have reviewed the restore details, click **Restore**.
+
+    The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully. 
 
 ### Restore a database
 
@@ -145,10 +163,10 @@ To restore a database:
     - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
-1. Click **Continue**
-1. Once you have reviewed the restore details, click **Restore**.
+1. Click **Continue**. 
+1. Once you have reviewed the restore details, click **Restore**. 
 
-   When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
+    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
 When the restore is complete, be sure to set any database-specific [zone configurations](../{{site.current_cloud_version}}/configure-replication-zones.html) and, if applicable, [grant privileges](../{{site.current_cloud_version}}/grant.html).
 
@@ -184,7 +202,7 @@ To restore a table:
     - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
-1. Click **Continue**
+1. Click **Continue**. 
 1. Once you have reviewed the restore details, click **Restore**.
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
