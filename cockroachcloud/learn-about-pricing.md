@@ -16,7 +16,7 @@ RU and storage consumption is prorated at the following prices:
   Unit                    | Cost
   ------------------------|------
   10M Request Units       | $1.00
-  1 GiB storage per month | $1.00
+  1 GiB storage           | $1.00
 
 ## Choosing a spend limit
 
@@ -26,11 +26,11 @@ Your cluster's spend limit is the maximum you could be charged in a month. If yo
 
 We recommend setting your spend limit to about 30% higher than your expected usage to prevent unexpected throttling. To learn about tuning your workload to reduce costs, see [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html).
 
-All [Console Admins](console-access-management.html#console-admin) will receive email alerts when a free cluster reaches 75% and 100% of its burst capacity or storage limit. For clusters with a spend limit, you will receive alerts at 50%, 75%, and 100% of your spend limit.
+All [Org Administrators](authorization.html#org-administrator-legacy) will receive email alerts when a free cluster reaches 75% and 100% of its burst capacity or storage limit. For clusters with a spend limit, you will receive alerts at 50%, 75%, and 100% of your spend limit.
 
 ## Free vs. paid usage
 
-{{ site.data.products.serverless }} clusters scale based on your workload. Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](architecture.html#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+{{ site.data.products.serverless }} clusters scale based on your workload. Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](architecture.html#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 50M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 You can set your spend limit higher to maintain a high level of performance with larger workloads. If you have set a spend limit, you will get the equivalent number of RUs upfront each month as burst capacity, in addition to your free burst capacity. When you run out of all burst capacity, you will return to the baseline performance of 100 RUs per second.
 

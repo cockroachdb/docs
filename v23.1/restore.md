@@ -278,14 +278,18 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 ## Examples
 
-{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
-
 There are two ways to specify a backup to restore:
 
 - [Restoring from the most recent backup](#restore-the-most-recent-backup)
 - [Restoring from a specific backup](#restore-a-specific-backup)
 
-The examples in this section demonstrate restoring from the most recent backup using the `LATEST` syntax.
+In this section, each example demonstrates restoring from the most recent backup using the `LATEST` syntax.
+
+The examples in this section use external connections, which allow you to represent an external storage or sink URI. This means that you can specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](create-external-connection.html) page.
+
+For guidance on connecting to cloud storage or using other authentication parameters, read [Use Cloud Storage](use-cloud-storage.html#example-file-urls).
+ 
+If you need to limit the control specific users have over your storage buckets, see [Assume role authentication](cloud-storage-authentication.html) for setup instructions.
 
 ### View the backup subdirectories
 
@@ -293,7 +297,7 @@ The examples in this section demonstrate restoring from the most recent backup u
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+SHOW BACKUPS IN 'external://backup_s3';
 ~~~
 
 ~~~
@@ -313,7 +317,7 @@ To restore from the most recent backup in the collection's location, use the `LA
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE FROM LATEST IN 'external://backup_s3';
 ~~~
 
 ### Restore a specific backup
@@ -322,7 +326,7 @@ To restore a specific backup, use the backup's subdirectory in the collection's 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE FROM '2021/03/23-213101.37' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE FROM '2021/03/23-213101.37' IN 'external://backup_s3';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
@@ -333,7 +337,7 @@ To restore a full cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE FROM LATEST IN 'external://backup_s3';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
@@ -344,7 +348,7 @@ To restore a database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
@@ -359,14 +363,14 @@ To restore a single table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE TABLE bank.customers FROM LATEST IN 'external://backup_s3';
 ~~~
 
 To restore multiple tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 'external://backup_s3';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
@@ -377,7 +381,7 @@ To restore the most recent [incremental backup](take-full-and-incremental-backup
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
 ~~~
 
 {% include {{ page.version.version }}/backups/no-incremental-restore.md %}
@@ -396,7 +400,7 @@ First, find the times that are available for a point-in-time-restore by listing 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+SHOW BACKUPS IN 'external://backup_s3';
 ~~~
 ~~~
           path
@@ -410,7 +414,7 @@ SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS
 From the output use the required date directory and run the following to get the details of the backup:
 
 ~~~sql
-SHOW BACKUP '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+SHOW BACKUP '2023/01/23-185448.11' IN 'external://backup_s3';
 ~~~
 ~~~
   database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows | is_full_cluster
@@ -427,7 +431,7 @@ Finally, use the `start_time` and `end_time` detail to define the required time 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' AS OF SYSTEM TIME '2023-01-23 18:56:48';
+RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 'external://backup_s3' AS OF SYSTEM TIME '2023-01-23 18:56:48';
 ~~~
 
 ### Restore a backup asynchronously
@@ -436,7 +440,7 @@ Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.ht
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+> RESTORE FROM LATEST IN 'external://backup_s3'
 WITH DETACHED;
 ~~~
 
@@ -475,7 +479,7 @@ By default, tables and views are restored to the database they originally belong
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE bank.customers FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    > RESTORE bank.customers FROM LATEST IN 'external://backup_s3'
     WITH into_db = 'newdb';
     ~~~
 
@@ -485,7 +489,7 @@ To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE DATABASE bank FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3'
 WITH new_db_name = 'new_bank';
 ~~~
 
@@ -507,7 +511,7 @@ By default, tables with [foreign key](foreign-key.html) constraints must be rest
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.accounts FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+> RESTORE bank.accounts FROM LATEST IN 'external://backup_s3'
 WITH skip_missing_foreign_keys;
 ~~~
 
@@ -528,7 +532,7 @@ After it's restored into a new database, you can write the restored `users` tabl
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > RESTORE system.users  FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}'
+    > RESTORE system.users  FROM LATEST IN 'external://backup_s3'
     WITH into_db = 'newdb';
     ~~~
 
@@ -555,7 +559,7 @@ To restore an incremental backup that was taken using the [`incremental_location
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-RESTORE TABLE movr.users FROM LATEST IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' WITH incremental_location = '{incremental_backup_URI}';
+RESTORE TABLE movr.users FROM LATEST IN 'external://backup_s3' WITH incremental_location = '{incremental_backup_URI}';
 ~~~
 
 For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations).

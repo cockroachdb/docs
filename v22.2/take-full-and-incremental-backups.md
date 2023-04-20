@@ -18,6 +18,8 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Backup collections
 
  A _backup collection_ defines a set of backups and their metadata. The collection can contain multiple full backups and their subsequent [incremental backups](#incremental-backups). The path to a backup is created using a date-based naming scheme and stored at the [collection URI](backup.html#collectionURI-param) passed with the `BACKUP` statement.

@@ -89,7 +89,7 @@ The approaches described above are likely to create hot spots for both reads and
 |--------------------------------------------------------------------------------------+--------------------------------------------------+-----------------------------------------------------------------------------------------|
 | 1. [Use multi-column primary keys](#use-multi-column-primary-keys)                   | Potentially fastest, if done right               | Complex, requires up-front design and testing to ensure performance                     |
 | 2. [Use `UUID` to generate unique IDs](#use-uuid-to-generate-unique-ids)             | Good performance; spreads load well; easy choice | May leave some performance on the table; requires other columns to be useful in queries |
-| 3. [Use `INSERT` with the `RETURNING` clause](#use-insert-with-the-returning-clause-to-generate-unique-ids) | Easy to query against; familiar design           | Slower performance than the other options; higher chance of transaction contention      |
+| 3. [Use `INSERT` with the `RETURNING` clause](#use-insert-with-the-returning-clause-to-generate-unique-ids) | Easy to query against; familiar design           | Slower performance than the other options; higher chance of [transaction contention](#transaction-contention)      |
 
 ### Use multi-column primary keys
 
@@ -336,7 +336,7 @@ To reduce hot spots:
 
     - Benefits:
 
-        - Allows separate transactions to modify related underlying data without causing contention.
+        - Allows separate transactions to modify related underlying data without causing [contention](#transaction-contention).
         - Can improve performance for read-heavy workloads.
 
     - Drawbacks:
@@ -366,7 +366,7 @@ To reduce hot spots:
 
 ## Transaction contention
 
-Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions "lock" rows to prevent hazardous interactions with concurrent transactions. However, locking can lead to processing delays if multiple transactions are trying to access the same "locked" data at the same time. This is referred to as _transaction_ (or _lock_) _contention_.
+Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows](architecture/transaction-layer.html#writing) to prevent hazardous interactions with concurrent transactions. However, locking can lead to processing delays if multiple transactions are trying to access the same "locked" data at the same time. This is referred to as _transaction_ (or _lock_) _contention_.
 
 Transaction contention occurs when the following three conditions are met:
 
@@ -374,9 +374,13 @@ Transaction contention occurs when the following three conditions are met:
 - They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
 - At least one of the transactions modify the data.
 
-Transactions that experience contention typically show delays in completion or restarts. The possibility of transaction restarts requires clients to implement [transaction retries](transactions.html#client-side-intervention).
+Transactions that experience contention typically show [delays in completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries) or [`restart transaction` errors with the error code `40001`](common-errors.html#restart-transaction). The possibility of transaction restarts requires clients to implement [transaction retries](transactions.html#client-side-intervention).
 
 For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
+
+### Indicators your application is experiencing transaction contention
+
+{% include {{page.version.version}}/performance/contention-indicators.md %}
 
 ### Find transaction contention
 
@@ -397,15 +401,15 @@ To reduce transaction contention:
 
 - Use the [`SELECT FOR UPDATE`](select-for-update.html) statement in scenarios where a transaction performs a read and then updates the row(s) it just read. The statement orders transactions by controlling concurrent access to one or more rows of a table. It works by locking the rows returned by a [selection query](selection-queries.html), such that other transactions trying to access those rows are forced to wait for the transaction that locked the rows to finish. These other transactions are effectively put into a queue that is ordered based on when they try to read the value of the locked row(s).
 
-- When replacing values in a row, use [`UPSERT`](upsert.html) and specify values for all columns in the inserted rows. This will usually have the best performance under contention, compared to combinations of [`SELECT`](select-clause.html), [`INSERT`](insert.html), and [`UPDATE`](update.html).
+- When replacing values in a row, use [`UPSERT`](upsert.html) and specify values for all columns in the inserted rows. This will usually have the best performance under [contention](#transaction-contention), compared to combinations of [`SELECT`](select-clause.html), [`INSERT`](insert.html), and [`UPDATE`](update.html).
 
 ### Improve transaction performance by sizing and configuring the cluster
 
-To maximize transaction performance, you'll need to maximize the performance of a single range. To achieve this, you can apply multiple strategies:
+To maximize transaction performance, you'll need to maximize the performance of a single [range](architecture/glossary.html#architecture-range). To achieve this, you can apply multiple strategies:
 
-- Minimize the network distance between the replicas of a range, possibly using zone configs and partitioning.
-- Use the fastest storage devices available.
-- If the contending transactions operate on different keys within the same range, add more CPU power (more cores) per node. However, if the transactions all operate on the same key, this may not provide an improvement.
+- Minimize the network distance between the [replicas of a range](architecture/overview.html#architecture-replica), possibly using [zone configs](configure-replication-zones.html) and [partitioning](partitioning.html), or the newer [Multi-region SQL capabilities](multiregion-overview.html).
+- Use the fastest [storage devices](recommended-production-settings.html#storage) available.
+- If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node](recommended-production-settings.html#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
 
 ## See also
 

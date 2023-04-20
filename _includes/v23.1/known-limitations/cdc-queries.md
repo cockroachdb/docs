@@ -1,0 +1,8 @@
+- You can only apply CDC queries on a single table in each statement.
+- Some [stable functions](functions-and-operators.html#built-in-functions), notably functions that return MVCC timestamps, are overridden to return the MVCC timestamp of the event, e.g., `transaction_timestamp` or `statement_timestamp`. Additionally, some [time-based functions](functions-and-operators.html#date-and-time-functions), such as `now()` are not supported. We recommend using the `transaction_timestamp()` function or the {% if page.name == "cdc-queries.md" %} `crdb_internal_mvcc_timestamp` {% else %}[`crdb_internal_mvcc_timestamp`](cdc-queries.html#crdb-internal-mvcc-timestamp) {% endif %} column instead.
+- You cannot [alter](alter-changefeed.html) a changefeed that uses CDC queries. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83033)
+- The following are not permitted in CDC queries:
+    - [Volatile functions](functions-and-operators.html#function-volatility)
+    - Sub-select queries
+    - [Aggregate](functions-and-operators.html#aggregate-functions) and [window functions](window-functions.html) (i.e., functions operating over many rows). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/98237)
+- `delete` changefeed events will not contain any content in the output message. [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/83835)

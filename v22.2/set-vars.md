@@ -393,7 +393,12 @@ When setting a time zone, note the following:
 
 - Timezone abbreviations are case-insensitive.
 
-- Timezone abbreviations must be part of the [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), as recognized by the [`tzdata` Golang package](https://golang.org/pkg/time/tzdata/).
+- To see a list of supported timezones, their nicknames, and their offsets, run the following query:
+
+  {% include_cached copy-clipboard.html %}
+  ~~~ sql
+  SELECT * FROM pg_timezone_names;
+  ~~~
 
 - `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
 

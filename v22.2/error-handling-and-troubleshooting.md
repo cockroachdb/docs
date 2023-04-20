@@ -13,7 +13,7 @@ If you are not satisfied with your SQL query performance, follow the instruction
 
 If you have already optimized your SQL queries as described in [Optimize Statement Performance Overview][fast] and are still having issues such as:
 
-- [Hanging or "stuck" queries](query-behavior-troubleshooting.html#hanging-or-stuck-queries), usually due to contention with long-running transactions
+- [Hanging or "stuck" queries](query-behavior-troubleshooting.html#hanging-or-stuck-queries), usually due to [contention](performance-best-practices-overview.html#transaction-contention) with long-running transactions
 - Queries that are slow some of the time (but not always)
 - Low throughput of queries
 
@@ -23,7 +23,7 @@ Take a look at [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html).
 
 ## Transaction retry errors
 
-Messages with the PostgreSQL error code `40001` indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#transaction-contention). The transaction needs to be retried by the client.
+Messages with [the PostgreSQL error code `40001` and the string `restart transaction`](common-errors.html#restart-transaction) indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#transaction-contention). The transaction needs to be retried by the client.
 
 If your language's client driver or ORM implements transaction retry logic internally (e.g., if you are using Python and [SQLAlchemy with the CockroachDB dialect](build-a-python-app-with-cockroachdb-sqlalchemy.html)), then you do not need to handle this logic from your application.
 
@@ -32,7 +32,7 @@ If your driver or ORM does not implement this logic, then you will need to imple
 {% include {{page.version.version}}/misc/client-side-intervention-example.md %}
 
 {{site.data.alerts.callout_info}}
-If a consistently high percentage of your transactions are resulting in transaction retry errors, then you may need to evaluate your schema design and data access patterns to find and remove sources of contention. For more information about contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
+If a consistently high percentage of your transactions are resulting in [transaction retry errors with the error code `40001` and the string `restart transaction`](common-errors.html#restart-transaction), then you may need to evaluate your [schema design](schema-design-overview.html) and data access patterns to find and remove sources of contention. For more information about contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 For more information about what is causing a specific transaction retry error code, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 {{site.data.alerts.end}}
@@ -97,30 +97,48 @@ To mitigate against this situation while keeping SCRAM authentication enabled, C
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
+If the above steps don't work, you can try lowering the default hashing cost and reapplying the password as described below.
+
+##### Lower default hashing cost and reapply the password
+
+To decrease the CPU usage of SCRAM password hashing while keeping SCRAM enabled:
+
+1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting](cluster-settings.html#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.password_hashes.default_cost.scram_sha_256 = 4096;
+    ~~~
+
+1. Make sure the [`server.user_login.rehash_scram_stored_passwords_on_cost_change.enabled` cluster setting](cluster-settings.html) is set to `true` (the default).
+
+{{site.data.alerts.callout_success}}
+When lowering the default hashing cost, we recommend that you use strong, complex passwords for [SQL users](security-reference/authorization.html#sql-users).
+{{site.data.alerts.end}}
+
+If you are still seeing higher connection latencies than before, you can [downgrade from SCRAM authentication](#downgrade-from-scram-authentication).
+
 #### Downgrade from SCRAM authentication
 
-As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication by taking the following steps.
+As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication to bcrypt as follows:
 
-1. Turn off the `server.user_login.cert_password_method.auto_scram_promotion.enabled` [cluster setting](cluster-settings.html#setting-server-user-login-cert-password-method-auto-scram-promotion-enabled):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    SET CLUSTER SETTING server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled = false;
-    ~~~
-
-1. Change the user password encryption algorithm to [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) by setting the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
+1. Set the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SET CLUSTER SETTING server.user_login.password_encryption='crdb-bcrypt';
+    SET CLUSTER SETTING server.user_login.password_encryption = 'crdb-bcrypt';
     ~~~
 
-1. For each [SQL user](create-user.html) in the system, run [`ALTER USER {user} .. WITH PASSWORD`](alter-user.html#change-a-users-password) to encode the user's password using bcrypt.  Note that this can be the same password as the user's current password.
+1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting](cluster-settings.html#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    ALTER USER {user} WITH PASSWORD {password};
+    SET CLUSTER SETTING server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled = true;
     ~~~
+
+{{site.data.alerts.callout_info}}
+The [`server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting](cluster-settings.html#setting-server-user-login-upgrade-bcrypt-stored-passwords-to-scram-enabled) can be left at its default value of `true`.
+{{site.data.alerts.end}}
 
 ## See also
 

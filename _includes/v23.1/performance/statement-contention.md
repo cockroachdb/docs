@@ -1,4 +1,4 @@
-Find the transactions and statements within the transactions that are experiencing contention. CockroachDB has several tools to help you track down such transactions and statements:
+Find the transactions and statements within the transactions that are experiencing [contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). CockroachDB has several tools to help you track down such transactions and statements:
 
 * In the DB Console:
   - Visit the [**Transaction Executions** view](ui-insights-page.html) on the **Insights** page and look for transaction executions with the **High Contention** insight.

@@ -55,7 +55,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 1. Enter a **Username** and **Password**.
 1. Click **Save**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster).
 
 ### Step 3. Generate the CockroachDB client connection string
 
@@ -438,7 +438,7 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ### Step 1. Access the DB Console
 
-1. On the Console, navigate to the cluster's **Monitoring** page and click **Open DB Console**.
+1. On the Console, navigate to the cluster's **Tools** page and click **Open DB Console**.
 
     You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 

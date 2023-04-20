@@ -11,7 +11,7 @@ Most Recent Statement | The most recently executed statement in the transaction.
 Status | The status of the execution: `Preparing`, `Waiting`, or `Executing`.
 Start Time (UTC) | The timestamp when the execution started.
 Elapsed Time | The time elapsed since the transaction started.
-Time Spent Waiting | The amount of time the execution experienced lock contention.
+Time Spent Waiting | The amount of time the execution experienced [lock contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 Statements | The number of statements in the transaction.
 Retries | The number of times statements in the transaction were retried.
 Application | The name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
@@ -33,7 +33,7 @@ The transaction execution details page provides the following details on the tra
 - **Most Recent Statement Execution ID**: Link to the ID of the most recently [executed statement](ui-statements-page.html#active-executions-table) in the transaction.
 - **Session ID**: Link to the ID of the [session](ui-sessions-page.html) in which the transaction is running.
 
-If a transaction execution is waiting, the transaction execution details are followed by Contention Insights and details of the transaction execution on which the blocked transaction execution is waiting.
+If a transaction execution is waiting, the transaction execution details are followed by Contention Insights and details of the transaction execution on which the blocked transaction execution is waiting. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
 <img src="{{ 'images/v22.2/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 

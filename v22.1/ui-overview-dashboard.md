@@ -29,7 +29,7 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 ## SQL Statement Contention
 
-The statement contention metric is a counter that represents the number of statements that have experienced contention. If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+The statement contention metric is a counter that represents the number of statements that have experienced [contention](performance-best-practices-overview.html#transaction-contention). If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
 
 - In the node view, the graph shows the total number of SQL statements that experienced [contention](transactions.html#transaction-contention) on that node.
 

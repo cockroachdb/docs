@@ -211,7 +211,7 @@ Here are some best practices to follow when selecting primary key columns:
 
 - Avoid defining primary keys over a single column of sequential data.
 
-    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`](int.html) column, or a [`TIMESTAMP`](timestamp.html) value) can result in single-range hot spots that negatively affect performance, or cause [transaction contention](transactions.html#transaction-contention).
+    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`](int.html) column, or a [`TIMESTAMP`](timestamp.html) value) can result in single-range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance, or cause [transaction contention](transactions.html#transaction-contention).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 

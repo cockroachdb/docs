@@ -9,7 +9,7 @@ This page guides you through a series of simple database schema changes using Fl
 
 ## Watch the demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/xz4j5tU0ZRU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="xz4j5tU0ZRU" %}
 
 ## Before You Begin
 
@@ -164,7 +164,7 @@ When used with most databases, [Flyway wraps the statements in a migration withi
 
 ### Transaction retries
 
-When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
+When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a [`40001 SQLSTATE` (i.e., a serialization failure)](common-errors.html#restart-transaction), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
 
 ### Transactional schema changes
 

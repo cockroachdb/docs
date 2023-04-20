@@ -15,7 +15,7 @@ We recommend reading the [Changefeed Messages](changefeed-messages.html) page fo
 
 The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds see the following pages:
 
-- [Change Data Capture Transformations](cdc-transformations.html)
+- [Change Data Capture Queries](cdc-queries.html)
 - [Changefeeds on Tables with Column Families](changefeeds-on-tables-with-column-families.html)
 - [Export Data with Changefeeds](export-data-with-changefeeds.html)
 
@@ -41,9 +41,9 @@ Parameter | Description
 `sink` | The location of the configurable sink. The scheme of the URI indicates the type. For more information, see [Sink URI](#sink-uri).<br><br>**Note:** If you create a changefeed without a sink, your changefeed will run as a [core-style changefeed](changefeed-for.html) sending messages to the SQL client. For more detail, see [create-and-configure-changefeed.html#create].
 `option` / `value` | For a list of available options and their values, see [Options](#options).
 
-### CDC transformation parameters
+### CDC query parameters
 
-Change data capture transformations allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Transformations](cdc-transformations.html) page for detail on the functionality, syntax, and use cases for changefeeds created with transformations.
+Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Queries](cdc-queries.html) page for detail on the functionality, syntax, and use cases for changefeeds created with queries.
 
 Parameter | Description
 ----------|------------
@@ -68,6 +68,8 @@ URI Component      | Description
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
 
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
 See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
 
 #### Kafka
@@ -77,8 +79,6 @@ Example of a Kafka sink URI:
 ~~~
 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
 ~~~
-
-{% include {{ page.version.version }}/misc/external-connection-kafka.md %}
 
 #### Google Cloud Pub/Sub
 
@@ -151,7 +151,7 @@ Option | Value | Description
 `avro_schema_prefix` | Schema prefix name | Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 <a name="compression-opt"></a>`compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
 <a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`. <br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}
-<a name="cursor-option"></a>`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
+<a name="cursor-option"></a>`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than [the default MVCC garbage collection interval](configure-replication-zones.html#gc-ttlseconds) in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
 <a name="diff-opt"></a>`diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
 <a name="end-time"></a>`end_time` | [Timestamp](as-of-system-time.html#parameters) | Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://en.wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`. You cannot use `end_time` and [`initial_scan = 'only'`](#initial-scan) simultaneously.
 `envelope` | `key_only` / `row`* / `wrapped` | `key_only` emits only the key and no value, which is faster if you only want to know when the key changes.<br><br>`row` emits the row without any additional metadata fields in the message. *You can only use `row` with Kafka sinks or sinkless changefeeds. `row` does not support [`avro` format](#format).<br><br>`wrapped` emits the full message including any metadata fields. See [Responses](changefeed-messages.html#responses) for more detail on message format.<br><br>Default: `envelope=wrapped`
@@ -232,6 +232,8 @@ Before running any of the examples in this section it is necessary to enable the
 
 The following examples show the syntax for managing changefeeds and starting changefeeds to specific sinks. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations see the [Changefeed Sinks](changefeed-sinks.html) page.
 
+{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
+
 ### Create a changefeed connected to Kafka
 
 {% include_cached copy-clipboard.html %}
@@ -268,7 +270,11 @@ For step-by-step guidance on creating a changefeed connected to Kafka, see the [
 (1 row)
 ~~~
 
-For more information on how to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record, see [this step-by-step example](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro). The parameters table on the [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page provides a list of all kafka-specific query parameters.
+For more information, see:
+
+- The [Create a changefeed connected to Kafka using Avro](changefeed-examples.html#create-a-changefeed-connected-to-kafka-using-avro) tutorial to create a changefeed that emits an [Avro](https://avro.apache.org/docs/1.8.2/spec.html) record.
+- The [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial to set up a Confluent Cloud Kafka cluster using the Confluent Cloud Schema Registry.
+- The [Changefeed Sinks](changefeed-sinks.html#kafka-parameters) page to see a list of all kafka-specific query parameters.
 
 ### Create a changefeed connected to a cloud storage sink
 

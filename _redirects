@@ -377,6 +377,8 @@ layout: null
 /docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html 301
 /docs/cockroachcloud/cloud-sso.html /docs/cockroachcloud/cloud-org-sso.html 301
+/docs/cockroachcloud/user-authorization.html /docs/cockroachcloud/managing-access.html 301
+/docs/cockroachcloud/console-access-management.html /docs/cockroachcloud/managing-access.html 301
 /docs/cockroachcloud/connect-to-a-free-cluster.html /docs/cockroachcloud/connect-to-a-serverless-cluster.html 301
 /docs/cockroachcloud/create-a-free-cluster.html /docs/cockroachcloud/create-a-serverless-cluster.html 301
 /docs/cockroachcloud/planning-your-serverless-cluster.html /docs/cockroachcloud/learn-about-pricing.html 301
@@ -401,6 +403,12 @@ layout: null
 /docs/stable/use-a-local-file-server-for-bulk-operations.html /docs/stable/use-a-local-file-server.html 301
 /docs/dev/use-a-local-file-server-for-bulk-operations.html /docs/dev/use-a-local-file-server.html 301
 /docs/v23.1/use-a-local-file-server-for-bulk-operations.html /docs/v23.1/use-a-local-file-server.html 301
+/docs/cockroachcloud/monitoring-page.html /docs/cockroachcloud/tools-page.html 301
+{% unless site.versions["stable"] == "v22.2" %}
+/docs/stable/cdc-transformations.html /docs/stable/cdc-queries.html 301
+{% endunless %}
+/docs/dev/cdc-transformations.html /docs/dev/cdc-queries.html 301
+/docs/v23.1/cdc-transformations.html /docs/v23.1/cdc-queries.html 301
 
 # Removed pages
 /docs/dev/add-column.html /docs/dev/alter-table.html#add-column 301
@@ -665,8 +673,8 @@ layout: null
 {% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
-{%- capture old_url -%}releases/{{ r.version }}{%- endcapture -%}
-{%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.version | replace: ".", "-" }}{% endcapture -%}
+{%- capture old_url -%}releases/{{ r.release_name }}{%- endcapture -%}
+{%- capture new_url %}releases/{{ r.major_version }}.html#{{ r.release_name | replace: ".", "-" }}{% endcapture -%}
 {{ old_url | relative_url }} {{ new_url | relative_url }} 301
 {{ old_url | append: ".html" | relative_url }} {{ new_url | relative_url }} 301
 {% endfor -%}

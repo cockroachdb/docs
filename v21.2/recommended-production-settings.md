@@ -97,7 +97,7 @@ Under-provisioning RAM results in reduced performance (due to reduced caching an
 
 #### Storage
 
-We recommend provisioning volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
+We recommend provisioning volumes with <b>{% include {{ page.version.version }}/prod-deployment/provision-storage.md %}</b>. It's fine to have less storage per vCPU if your workload does not have significant capacity needs.
 
 - The maximum recommended storage capacity per node is 2.5 TiB, regardless of the number of vCPUs.
 
@@ -123,7 +123,7 @@ Under-provisioning storage leads to node crashes when the disks fill up. Once th
 
 ##### Disk I/O
 
-Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.
+Disks must be able to achieve <b>{% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}</b>.
 
 - [Monitor IOPS](common-issues-to-monitor.html#disk-iops) using the DB Console and `iostat`. Ensure that they remain within acceptable values.
 
@@ -141,7 +141,7 @@ Disk I/O especially affects [performance on write-heavy workloads](architecture/
 
 In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended before using it in a production environment.
 
-These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x c5d.4xlarge nodes, each with 5 TiB of gp2 EBS storage.
+These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x `c5d.4xlarge` nodes, each with 5 TiB of gp2 EBS storage.
 
 Results:
 
@@ -170,7 +170,27 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 - [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are the most cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned, which can be very expensive.
 
-- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), a [Network Load Balancer (NLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html), and [Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+
+- [AWS Network Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) are recommended with client applications configuring their application's database connection pool's maximum connection age (or health check interval) to 5 minutes to stay under [NLB idle connection timeouts](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html#connection-idle-timeout).
+
+- EC2 instances SHOULD be provisioned using an [AWS Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#placement-groups-strategies) *and* the `partition` strategy.  Not specifying an AWS Placement Group or specifying the `cluster` strategy puts your cluster at increased risk of unavailability and is not a supported configuration by Cockroach Labs (the `spread` Placement Group strategy limits the maximum size of a cluster and is not recommended for this reason).
+
+- Incorporate the AWS Placement Group ID into every node's `--locality` flag.  For instance, `--locality=country=us,region=us-west-2,az=us-west-2b,pg=us-west-2b2`.  The trailing partition number can be determined at instance create time or process startup time using a command similar to:
+
+```
+country="us"
+region=${AWS_DEFAULT_REGION}
+az="us-west-2"
+partition_locality=""
+partition_number=$(aws ec2 describe-instances --instance-ids "${instance_id}" | jq -r '.Reservations[].Instances[].Placement.PartitionNumber')
+if [[ "${partition_number}" != "null" ]]; then
+	partition_locality="${partition_number}"
+fi
+exec /usr/local/bin/cockroach start \
+	--locality="country=${country},region=${region},az=${az},pg=${az}${partition_locality}" \
+	# other installation-specific cockroach start flags
+```
 
 #### Azure
 
@@ -517,12 +537,24 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
 <section id="linuxinstall" markdown="1">
 
+#### Recent kernel versions
+
+On recent Linux kernels versions, the default per-process hard limit for file descriptors is 524288, and most processes (including CockroachDB) automatically adjusts its soft limit until it reaches this hard limit. In most cases, there is no need to adjust the per-process or system-wide file descriptor limit. If you do need to increase this limit, adjust the process's maximum allocated memory in your process manager, which indirectly increases its maximum number of file descriptors. For systems that use `systemctl`, set or adjust `MemoryHigh` and `MemoryMax` in the service's configuration file. To allow a process to use unlimited memory, you can set `MemoryHigh` to `infinity`. For more information, refer to the output of `man 5 systemd.exec` and `man 5 systemd.resource-control`.
+
+{{site.data.alerts.callout_danger}}
+The steps for [older kernel versions](#older-kernel-versions) do not work for newer kernel versions. For example, the `/etc/security/limits.conf` file is ignored, and adjusting a `systemd` service's `LimitNOFILE` value directly is not recommended.
+{{site.data.alerts.end}}
+
+#### Older kernel versions
+
+On older Linux versions, such as those based on Red Hat Enterprise Linux (RHEL) 7, you may need to adjust the per-process or system-wide file descriptor limit, as discussed in the following sections. Cockroach Labs recommends that you consider upgrading to a newer Linux version, which has additional security and performance fixes and improvements.
+
 - [Per-Process Limit](#per-process-limit)
 - [System-Wide Limit](#system-wide-limit)
 
-#### Per-Process Limit
+##### Per-Process Limit
 
-To adjust the file descriptors limit for a single process on Linux, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
+To adjust the file descriptors limit for a single process, enable PAM user limits and set the hard limit to the recommendation mentioned [above](#file-descriptors-limit). Note that CockroachDB always uses the hard limit, so it's not technically necessary to adjust the soft limit, although we do so in the steps below.
 
 For example, for a node with 3 stores, we would set the hard limit to at least 35000 (10000 per store and 5000 for networking) as follows:
 
@@ -532,7 +564,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     session    required   pam_limits.so
     ~~~
 
-2.  Edit `/etc/security/limits.conf` and append the following lines to the file:
+1.  Edit `/etc/security/limits.conf` and append the following lines to the file:
 
     ~~~
     *              soft     nofile          35000
@@ -541,11 +573,11 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
 
     Note that `*` can be replaced with the username that will be running the CockroachDB server.
 
-4.  Save and close the file.
+1.  Save and close the file.
 
-5.  Restart the system for the new limits to take effect.
+1.  Restart the system for the new limits to take effect.
 
-6.  Verify the new limits:
+1.  Verify the new limits:
 
     ~~~ shell
     $ ulimit -a
@@ -565,13 +597,13 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
     {{site.data.alerts.end}}
 
-2.  Reload Systemd for the new limit to take effect:
+1.  Reload Systemd for the new limit to take effect:
 
     ~~~ shell
     $ systemctl daemon-reload
     ~~~
 
-#### System-Wide Limit
+##### System-Wide Limit
 
 You should also confirm that the file descriptors limit for the entire Linux system is at least 10 times higher than the per-process limit documented above (e.g., at least 150000).
 
@@ -581,11 +613,24 @@ You should also confirm that the file descriptors limit for the entire Linux sys
     $ cat /proc/sys/fs/file-max
     ~~~
 
-2. If necessary, increase the system-wide limit in the `proc` file system:
+1. If necessary, increase the system-wide limit in the `proc` file system.
 
-    ~~~ shell
-    $ echo 150000 > /proc/sys/fs/file-max
-    ~~~
+   - If you use `systemctl`:
+
+      {% include_cached copy-clipboard.html %}
+      ~~~ shell
+      sudo sysctl -w fs.file-max=150000
+      ~~~
+
+    - If you do not use `systemctl`:
+
+      ~~~ shell
+      sudo echo 150000 > /proc/sys/fs/file-max
+      ~~~
+
+      {{site.data.alerts.callout_danger}}
+      This command does not persist after the system is restarted; you must add the command to a system initialization script that runs when the system starts.
+      {{site.data.alerts.end}}
 
 </section>
 <section id="windowsinstall" markdown="1">

@@ -20,6 +20,8 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 {% include {{ page.version.version }}/backups/pts-schedules-incremental.md %}
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a backup with revision history
 
 {% include_cached copy-clipboard.html %}

@@ -4,7 +4,7 @@
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% comment %}
-{%- capture stable_pages_names -%}{%- include_cached stable_page_names.md -%}{%- endcapture -%}
+{%- capture stable_pages_names -%}{%- include_cached stable_page_filenames.md -%}{%- endcapture -%}
 {%- comment -%} Fetch all the names of all the stable pages to compare against the dev pages {%- endcomment -%}
 {%- assign dev_page_has_matching_stable_page = false -%}
 {%- if page.url contains site.versions["dev"] and site.versions["dev"] != site.versions["stable"] and stable_pages_names contains page.name -%}

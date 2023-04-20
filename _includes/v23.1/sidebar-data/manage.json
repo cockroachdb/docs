@@ -97,7 +97,7 @@
       ]
     },
     {
-      "title": "Back Up and Restore Data",
+      "title": "Backups and Restores",
       "items": [
         {
           "title": "Backup and Restore Overview",
@@ -112,25 +112,20 @@
           ]
         },
         {
-          "title": "Back Up and Restore CockroachDB Cloud Clusters",
+          "title": "Managed-Service Backups",
+          "urls": [
+            "/cockroachcloud/use-managed-service-backups.html"
+          ]
+        },
+        {
+          "title": "Customer-Owned Backups",
           "items": [
             {
-              "title": "Take and Restore Customer-Owned Backups",
+              "title": "Take and Restore Customer-Owned Backups on CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/take-and-restore-customer-owned-backups.html"
               ]
             },
-            {
-              "title": "Use Managed-Service Backups",
-              "urls": [
-                "/cockroachcloud/use-managed-service-backups.html"
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Back Up and Restore CockroachDB Self-Hosted Clusters",
-          "items": [
             {
               "title": "Full and Incremental Backups",
               "urls": [
@@ -160,13 +155,19 @@
               "urls": [
                 "/${VERSION}/manage-a-backup-schedule.html"
               ]
+            },
+            {
+              "title": "Backup Validation",
+              "urls": [
+                "/${VERSION}/backup-validation.html"
+              ]
+            },
+            {
+              "title": "Backup and Restore Monitoring",
+              "urls": [
+                "/${VERSION}/backup-and-restore-monitoring.html"
+              ]
             }
-          ]
-        },
-        {
-          "title": "Backup Validation",
-          "urls": [
-            "/${VERSION}/backup-validation.html"
           ]
         },
         {
@@ -218,6 +219,12 @@
           "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
+              "title": "Create Private Clusters",
+              "urls": [
+                "/cockroachcloud/private-clusters.html"
+              ]
+            },
+            {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
               "urls": [],
               "items": [
@@ -240,7 +247,7 @@
                   ]
                 },
                 {
-                  "title": "Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
+                  "title": "FAQs",
                   "urls": [
                     "/cockroachcloud/cmek-faq.html"
                   ]
@@ -277,12 +284,6 @@
 								]
       	    },
             {
-              "title": "User Authorization",
-              "urls": [
-                "/cockroachcloud/user-authorization.html"
-              ]
-            },
-            {
               "title": "Network Authorization",
               "urls": [
                 "/cockroachcloud/network-authorization.html"
@@ -301,9 +302,15 @@
               ]
             },
             {
-              "title": "Manage Console Access",
+              "title": "CockroachdB Cloud Access Management Overview and FAQ",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing Access in CockroachDB Cloud",
+              "urls": [
+                 "/cockroachcloud/managing-access.html"
               ]
             }
           ]
@@ -430,7 +437,13 @@
             {
               "title": "Monitoring Page",
               "urls": [
-                "/cockroachcloud/monitoring-page.html"
+                "/cockroachcloud/tools-page.html"
+              ]
+            },
+            {
+              "title": "Metrics Page",
+              "urls": [
+                "/cockroachcloud/metrics-page.html"
               ]
             },
             {
@@ -451,6 +464,12 @@
                 "/cockroachcloud/transactions-page.html"
               ]
             },
+            {
+              "title": "Insights Page",
+              "urls": [
+                "/cockroachcloud/insights-page.html"
+              ]
+            },            
             {
               "title": "Databases Page",
               "urls": [

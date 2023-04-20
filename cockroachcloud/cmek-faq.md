@@ -1,11 +1,11 @@
 ---
-title: Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)
-summary: Frequently Asked Questions (FAQ)concerning Customer-Managed Encryption Keys (CMEK) for CockroachDB Cloud Dedicated
+title: FAQs
+summary: Frequently Asked Questions (FAQs) about Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated
 toc: true
 docs_area: manage.security
 ---
 
-This article provides answers to common questions about [Customer-Managed Encryption Keys (CMEK)](cmek.html).
+This page provides answers to frequently-asked questions (FAQs) about [Customer-Managed Encryption Keys (CMEK)](cmek.html).
 
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
@@ -15,11 +15,11 @@ Yes, the {{ site.data.products.dedicated }} clusters are encrypted by default by
 
 ## What steps should I take before enabling CMEK for a cluster?
 
-Contact your Cockroach Labs account team to enroll your organization in limited access for CMEK. CMEK can only be enabled on a private cluster, so your organization must also be enrolled in limited access for private clusters.
+CMEK can be enabled only on a private cluster. Refer to [Create Private Clusters](private-clusters.html).
 
 ## Can we enable CMEK for an existing cluster that wasn't created as a private cluster?
 
-CMEK can be enabled only on a private cluster. Contact your account team for advice about how to migrate or restore your existing cluster's data to a new private cluster.
+An existing cluster cannot be migrated to a private cluster. Contact your account team for advice about how to migrate or restore your existing cluster's data to a new private cluster.
 
 ## If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
 

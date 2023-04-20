@@ -44,6 +44,10 @@ For documentation on all other parameters of a `SELECT` statement, see [Selectio
 
 The user must have the `SELECT` and `UPDATE` [privileges](security-reference/authorization.html#managing-privileges) on the tables used as operands.
 
+## Known limitations
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
+
 ## Examples
 
 ### Enforce transaction order when updating the same rows

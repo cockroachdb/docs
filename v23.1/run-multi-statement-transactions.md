@@ -75,7 +75,7 @@ The best way to run a multi-statement transaction from Python code is to use one
 Reference information related to this task:
 
 - [Transactions](transactions.html)
-- [Transaction retries](transactions.html#client-side-intervention)
+- [Client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling)
 - [Batched statements](transactions.html#batched-statements)
 - [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [`BEGIN`](begin-transaction.html)

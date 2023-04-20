@@ -2,7 +2,7 @@
 
 The **Index Stats** table displays index statistics for a table.
 
-Index statistics accumulate from the time an index was created or when statistics were reset. To reset index statistics for the cluster, click **Reset all index stats**.
+Index statistics accumulate from the time an index was created or when statistics were reset. If desired, [admin users]({{ link_prefix }}security-reference/authorization.html#admin-role) may reset index statistics for the cluster by clicking **Reset all index stats**. This link does not appear for non-admin users.
 
 The following information is displayed for each index:
 

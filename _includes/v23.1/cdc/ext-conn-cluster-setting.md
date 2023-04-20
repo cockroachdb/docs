@@ -1,0 +1,1 @@
+{% include_cached new-in.html version="v23.1" %} To restrict a user's access to changefeed data and sink credentials, enable the `changefeed.permissions.enforce_external_connections` cluster setting. When you enable this setting, users with the `CHANGEFEED` privilege on a set of tables can only create changefeeds into [external connections](create-external-connection.html).

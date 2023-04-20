@@ -15,6 +15,8 @@ This doc provides information about how to take and restore encrypted backups in
 Encrypted [`BACKUP`](backup.html) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Use Key Management Service
 
 You can encrypt full or incremental backups with AWS or Google Cloud Key Management Service (KMS) by using the [`kms` option](backup.html#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.

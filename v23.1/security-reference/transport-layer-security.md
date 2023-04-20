@@ -146,7 +146,7 @@ See [Revoking Certificates in CockroachDB](#revoking-certificates-in-cockroachdb
 
 ## PKI in CockroachDB
 
-In a CockroachDB cluster, each node must be able to initiate HTTP requests to any of the others. In a normal operating mode, these requests are be TLS encrypted with mutual authentication, requiring that each node present its own certificate, signed by the same CA.
+In a CockroachDB cluster, each node must be able to initiate HTTP requests to any of the others. In a normal operating mode, these requests are TLS encrypted with mutual authentication, requiring that each node present its own certificate, signed by the same CA.
 
 In addition, SQL clients and DB Console clients must be able to reach the nodes. The client must authenticate the server with a certificate signed by a trusted CA, and the server must authenticate the client, either with its own certificate, or with another method, such as username/password.
 

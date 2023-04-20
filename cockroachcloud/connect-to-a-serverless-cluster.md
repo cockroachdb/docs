@@ -12,7 +12,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 ## Before you start
 
 - [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
-- _(Optional)_ [Create a new SQL user](user-authorization.html#create-a-sql-user).
+- (Optional) [Create a new SQL user](managing-access.html#create-a-sql-user).
 
 ## Step 1. Select a connection method
 
@@ -45,7 +45,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 {% include cockroachcloud/postgresql-special-characters.md %}
 
 {{site.data.alerts.callout_info}}
-If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
+If you forget your SQL user's password, an [Org Administrator](authorization.html#org-administrator-legacy) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
 {{site.data.alerts.end}}
 
 For connection examples and code snippets in your language, see the following:
@@ -66,7 +66,7 @@ For connection examples and code snippets in your language, see the following:
 
     Parameter | Description
     ----------|------------
-    `{username}`  | The [SQL user](user-authorization.html#create-a-sql-user) connecting to the cluster.
+    `{username}`  | The [SQL user](managing-access.html#create-a-sql-user) connecting to the cluster.
     `{password}`  | The password for the SQL user connecting to the cluster.
     `{host}`  | The host on which the CockroachDB node is running.
     `{port}`  | The port at which the CockroachDB node is listening.

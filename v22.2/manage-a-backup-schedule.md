@@ -15,6 +15,8 @@ docs_area: manage
 
 For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:
@@ -39,6 +41,8 @@ Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage
 ## Set up monitoring for the backup schedule
 
 We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time&mdash; at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
+
+{% include {{ page.version.version }}/backups/metrics-per-node.md %}
 
 Metrics for scheduled backups fall into two categories:
 

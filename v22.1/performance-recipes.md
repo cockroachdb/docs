@@ -35,7 +35,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <li>The <a href="ui-sql-dashboard.html#sql-statement-errors">SQL Statement Errors graph</a> in the DB Console is showing spikes in retries over time.</li>
     </ul>
     </td>
-    <td><ul><li>Your application is experiencing transaction contention.</li></ul></td>
+    <td><ul><li>Your application is experiencing <a href="performance-best-practices-overview.html#transaction-contention">transaction contention</a>.</li></ul></td>
     <td><ul><li><a href="#transaction-contention">Reduce transaction contention.</a></li></ul></td>
   </tr>
   <tr>
@@ -72,14 +72,11 @@ This section provides solutions for common performance issues in your applicatio
 
 ### Transaction contention
 
-Transaction contention occurs when transactions issued from multiple clients at the same time operate on the same data. This can cause transactions to wait on each other (like when many people try to check out with the same cashier at a store) and decrease performance.
+[Transaction contention](performance-best-practices-overview.html#transaction-contention) occurs when transactions issued from multiple clients at the same time operate on the same data. This can cause transactions to wait on each other (like when many people try to check out with the same cashier at a store) and decrease performance.
 
 #### Indicators that your application is experiencing transaction contention
 
-* Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
-* The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) is showing spikes over time.
-<img src="{{ 'images/v22.1/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
-* The [Transaction Restarts graph](ui-sql-dashboard.html) is showing spikes in retries over time.
+{% include {{page.version.version}}/performance/contention-indicators.md %}
 
 #### Fix transaction contention problems
 

@@ -7,7 +7,7 @@ docs_area: manage
 
 This page provides an overview of the backup and restore features available in CockroachDB:
 
-- [Types of backups supported](#cockroachdb-cloud-backup-types) in {{ site.data.products.db }} 
+- [Types of backup available in CockroachDB](#cockroachdb-backup-types)
 - [Backup and restore product support](#backup-and-restore-product-support)
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
@@ -16,9 +16,9 @@ You can create full or incremental backups of a [cluster](backup.html#backup-a-c
 
 For an explanation of how a backup works, see [Backup Architecture](backup-architecture.html).
 
-## {{ site.data.products.db }} backup types
+## CockroachDB backup types
 
-{% include cockroachcloud/ccloud/backup-types.md %} 
+{% include cockroachcloud/backup-types.md %} 
 
 ## Backup and restore product support
 
@@ -70,6 +70,16 @@ For detail on additional cloud storage features CockroachDB supports:
 - [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
+
+## Backup and restore observability
+
+You can verify that your stored backups are restorable with backup validation. While a successful restore completely validates a backup, the validation tools offer a faster alternative and return an error message if a backup is not valid. There are three "levels" of verifying backups that give increasing validation coverage depending on the amount of runtime you want to invest in validating backups.
+
+See the [Backup Validation](backup-validation.html) page for detail and examples.
+
+You can track backup jobs using metrics that cover scheduled backups, status of running jobs, and details on completed or failed jobs. You can alert on these metrics via the Prometheus endpoint or the Datadog integration.
+
+See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for product availability and a list of the available metrics.
 
 ## See also
 

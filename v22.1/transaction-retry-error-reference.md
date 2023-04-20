@@ -7,11 +7,11 @@ docs_area: reference.transaction_retry_error_reference
 
 This page has a list of the transaction retry error codes emitted by CockroachDB.
 
-Transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string `restart transaction`. The most common transaction retry errors are also known as serialization errors. Serialization errors indicate that a transaction failed because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions.
+Transaction retry errors use the `SQLSTATE` error code `40001`, and emit error messages with the string [`restart transaction`](common-errors.html#restart-transaction). The most common transaction retry errors are also known as serialization errors. Serialization errors indicate that a transaction failed because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions.
 
-The failure to place a transaction into a serializable ordering usually happens due to a [transaction conflict](architecture/transaction-layer.html#transaction-conflicts) with another concurrent or recent transaction that is trying to write to the same data. When multiple transactions are trying to write to the same data, this state is also known as contention. When serialization errors occur due to contention, the transaction needs to be retried by the client as described in [client-side retry handling](transactions.html#client-side-intervention).
+The failure to place a transaction into a serializable ordering usually happens due to a [transaction conflict](architecture/transaction-layer.html#transaction-conflicts) with another concurrent or recent transaction that is trying to write to the same data. When multiple transactions are trying to write to the same data, this state is also known as [contention](performance-best-practices-overview.html#transaction-contention). When serialization errors occur due to contention, the transaction needs to be retried by the client as described in [client-side retry handling](transactions.html#client-side-intervention).
 
-In less common cases, transaction retry errors are not caused by contention, but by the internal state of the CockroachDB cluster. For example, the cluster could be overloaded. In such cases, other actions may need to be taken above and beyond client-side retries.
+In less common cases, transaction retry errors are not caused by contention, but by the internal state of the CockroachDB cluster. For example, the cluster could be [overloaded](ui-overload-dashboard.html). In such cases, other actions may need to be taken above and beyond client-side retries.
 
 See below for a complete list of retry error codes. For each error code, we describe:
 

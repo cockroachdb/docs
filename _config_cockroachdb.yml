@@ -1,8 +1,8 @@
 baseurl: /docs
-current_cloud_date: '2023-03-06'
+current_cloud_date: '2023-04-10'
 current_cloud_version: v22.2
-current_dedicated_hotfix: v22.2.5
-current_serverless_hotfix: v22.2.5
+current_dedicated_hotfix: v22.2.7
+current_serverless_hotfix: v22.2.7
 destination: _site/docs
 homepage_title: CockroachDB Docs
 versions:

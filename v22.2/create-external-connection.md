@@ -26,6 +26,7 @@ To create an external connection, a user must have the `EXTERNALCONNECTION` [sys
 
 For example: 
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 GRANT SYSTEM EXTERNALCONNECTION TO user;
 ~~~
@@ -34,6 +35,7 @@ To use a specific external connection during an operation, the user must also ha
 
 For example:
 
+{% include_cached copy-clipboard.html %}
 ~~~sql
 GRANT USAGE ON EXTERNAL CONNECTION backup_bucket TO user;
 ~~~

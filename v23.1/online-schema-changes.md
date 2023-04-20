@@ -22,6 +22,10 @@ Schema changes consume additional resources, and if they are run when the cluste
 CockroachDB [does not support schema changes](#limitations) within explicit [transactions][txns] with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
 {{site.data.alerts.end}}
 
+To see a demo of an online schema change, watch the following video:
+
+{% include_cached youtube.html video_id="xvBBQVIGYio" %}
+
 ## How online schema changes work
 
 At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:
@@ -70,6 +74,14 @@ The following statements use the declarative schema changer by default:
 - [`DROP SCHEMA`](drop-schema.html)
 - [`DROP TABLE`](drop-table.html)
 - [`DROP TYPE`](drop-type.html)
+- {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`](create-function.html)
+- {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`](drop-function.html)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`](alter-table.html#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... VALIDATE CONSTRAINT`](alter-table.html#drop-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... DROP CONSTRAINT`](alter-table.html#validate-constraint)
 
 Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html).
 

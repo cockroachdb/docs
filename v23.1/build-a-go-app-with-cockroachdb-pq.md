@@ -62,7 +62,7 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 - Read values from the table.
 - Execute a batch of statements as an atomic [transaction](transactions.html).
 
-    Note that CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in the case of read/write contention. The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
+    Note that CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in the case of read/write [contention](performance-best-practices-overview.html#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
 
 1. Initialize the module:
 

@@ -58,7 +58,15 @@ Change data capture (CDC) provides efficient, distributed, row-level changefeeds
 
 {% include {{ page.version.version }}/known-limitations/show-backup-locality-incremental-location.md %}
 
+### Limited SQL cursor support
+
+{% include {{page.version.version}}/known-limitations/sql-cursors.md %}
+
 ## Unresolved limitations
+
+### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 

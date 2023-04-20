@@ -8,7 +8,7 @@ docs_area: develop
 This page has instructions for authors of [database drivers and ORMs](install-client-drivers.html) who would like to implement client-side retries in their database driver or ORM for maximum efficiency and ease of use by application developers.
 
 {{site.data.alerts.callout_info}}
-If you are an application developer who needs to implement an application-level retry loop, see the [Client-side intervention example](transactions.html#client-side-intervention-example).
+If you are an application developer who needs to implement an application-level retry loop, see the [client-side retry handling example](transaction-retry-error-example.html).
 {{site.data.alerts.end}}
 
 ## Overview

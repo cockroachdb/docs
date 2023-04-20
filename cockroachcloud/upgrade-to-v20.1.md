@@ -5,9 +5,9 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v20.1](../releases/v20.1.html) is available, your [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PKpCcAtXxjo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="PKpCcAtXxjo" %}
 
 ## Step 1. Select your cluster size
 
@@ -37,13 +37,13 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 3. Prepare to upgrade
 
- Before starting the upgrade, it's important to complete the following steps.
+Before starting the upgrade, it's important to complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) pages in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 
@@ -81,7 +81,7 @@ Once your cluster is running v20.1, but before the upgrade has been finalized:
 
 - [`GRANT`](../{{site.current_cloud_version}}/grant.html) and [`REVOKE`](../{{site.current_cloud_version}}/revoke.html) statements will be blocked and return an error. This is because privileges are stored with table metadata and, therefore, privilege changes are considered schema changes, from an internal perspective. Update your application or tooling to prevent privilege changes during this period. Once the upgrade has been finalized, changes to user privileges can resume.
 
-   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](user-authorization.html#create-a-sql-user) tab of the {{ site.data.products.db }} Console until the upgrade has been finalized. Attempting to do so will result in an error.
+   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](managing-access.html#create-a-sql-user) tab of the {{ site.data.products.db }} Console until the upgrade has been finalized. Attempting to do so will result in an error.
 
 {{site.data.alerts.callout_info}}
 Note that these limitations are specific to upgrades from v19.2 to v20.1; they do not apply to other upgrades.
@@ -113,7 +113,7 @@ Once your cluster is running v20.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 

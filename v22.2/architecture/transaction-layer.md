@@ -198,8 +198,14 @@ The manager accommodates this by allowing transactional requests to acquire lock
 
 However, not all locks are stored directly under the manager's control, so not all locks are discoverable during sequencing. Specifically, write intents (replicated, exclusive locks) are stored inline in the MVCC keyspace, so they are not detectable until request evaluation time. To accommodate this form of lock storage, the manager integrates information about external locks with the concurrency manager structure.
 
+<a name="unreplicated-locks"></a>
+
 {{site.data.alerts.callout_info}}
-Currently, the concurrency manager operates on an unreplicated lock table structure. In the future, we intend to pull all locks, including those associated with [write intents](#write-intents), into the concurrency manager directly through a replicated lock table structure.
+The concurrency manager operates on an unreplicated lock table structure. Unreplicated locks are held only on a single replica in a [range](overview.html#architecture-range), which is typically the [leaseholder](replication-layer.html#leases). They are very fast to acquire and release, but provide no guarantee of survivability across [lease transfers or leaseholder crashes](replication-layer.html#how-leases-are-transferred-from-a-dead-node).
+
+This lack of survivability for unreplicated locks affects SQL statements implemented using them, such as [`SELECT ... FOR UPDATE`](../select-for-update.html#known-limitations).
+
+In the future, we intend to pull all locks, including those associated with [write intents](#write-intents), into the concurrency manager directly through a replicated lock table structure.
 {{site.data.alerts.end}}
 
 Fairness is ensured between requests. In general, if any two requests conflict then the request that arrived first will be sequenced first. As such, sequencing guarantees first-in, first-out (FIFO) semantics. The primary exception to this is that a request that is part of a transaction which has already acquired a lock does not need to wait on that lock during sequencing, and can therefore ignore any queue that has formed on the lock. For other exceptions to this sequencing guarantee, see the [lock table](#lock-table) section below.

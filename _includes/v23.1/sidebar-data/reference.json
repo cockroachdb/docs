@@ -104,6 +104,12 @@
                 ]
               },
               {
+                "title": "Cursors",
+                "urls": [
+                  "/${VERSION}/cursors.html"
+                ]
+              },
+              {
                 "title": "Table Expressions",
                 "urls": [
                   "/${VERSION}/table-expressions.html"
@@ -1316,6 +1322,12 @@
             "urls": [
               "/cockroachcloud/cmek.html"
             ]
+          },
+          {
+            "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+            "urls": [
+              "/cockroachcloud/pci-dss.html"
+            ]
           }
         ]
       },
@@ -1660,7 +1672,13 @@
             "urls": [
               "/${VERSION}/ui-debug-pages.html"
             ]
-          }
+          },
+          {
+           "title": "Key Visualizer",
+           "urls": [
+             "/${VERSION}/ui-key-visualizer.html"
+           ]
+         }
         ]
       },
       {
@@ -1675,6 +1693,12 @@
           "/${VERSION}/transaction-retry-error-reference.html"
         ]
       },
+      {
+       "title": "Transaction Retry Error Example",
+       "urls": [
+         "/${VERSION}/transaction-retry-error-example.html"
+       ]
+     },
       {
         "title": "Cluster API",
         "urls": [

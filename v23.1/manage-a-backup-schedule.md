@@ -15,6 +15,8 @@ docs_area: manage
 
 For detail on how the garbage collection window interacts with scheduled backups, see [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups).
 
+{% include {{ page.version.version }}/backups/support-products.md %}
+
 ## Create a new backup schedule
 
 To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) statement. For example:

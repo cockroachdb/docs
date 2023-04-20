@@ -14,7 +14,7 @@ When used in an explicit transaction combined with other schema changes to the s
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
- By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including [partial indexes](partial-indexes.html) with predicates that reference the column and indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
+ By default, `DROP COLUMN` drops any [indexes](indexes.html) on the column being dropped, and any indexes that reference the column, including indexes with [`STORING` clauses](create-index.html#store-columns) that reference the column.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
@@ -39,6 +39,10 @@ The user must have the `CREATE` [privilege](security-reference/authorization.htm
 ## Viewing schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
+## Known limitations
+
+- CockroachDB prevents a column from being dropped if it is referenced by a [partial index](partial-indexes.html) predicate. To drop such a column, the partial indexes need to be dropped first using [`DROP INDEX`](drop-index.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/97813).
 
 ## Examples
 

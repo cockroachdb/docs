@@ -93,7 +93,7 @@ The `index.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DEL
 ~~~
 
 {{site.data.alerts.callout_info}}
-In [production](recommended-production-settings.html#transaction-retries), we recommend implementing [client-side transaction retries](transactions.html#client-side-intervention) for all database operations.
+In [production](recommended-production-settings.html#transaction-retries), we recommend implementing [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling) for all database operations.
 {{site.data.alerts.end}}
 
 Run the application code:
