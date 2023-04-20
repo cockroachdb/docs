@@ -134,9 +134,12 @@ To restore a cluster:
     The **Restore cluster** module displays with backup details.
 
 1. Click **Continue**
+
+    The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
+
 1. Once you have reviewed the restore details, click **Restore**.
 
-   The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully.
+   The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully. 
 
 ### Restore a database
 
@@ -159,7 +162,7 @@ To restore a database:
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
 1. Click **Continue**
-1. Once you have reviewed the restore details, click **Restore**.
+1. Once you have reviewed the restore details, click **Restore**. 
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
