@@ -134,12 +134,12 @@ To restore a cluster:
     The **Restore cluster** module displays with backup details.
 
 1. Click **Continue**
-
+    
     The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
 
 1. Once you have reviewed the restore details, click **Restore**.
 
-   The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully. 
+    The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully. 
 
 ### Restore a database
 
@@ -164,7 +164,7 @@ To restore a database:
 1. Click **Continue**
 1. Once you have reviewed the restore details, click **Restore**. 
 
-   When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
+    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
 When the restore is complete, be sure to set any database-specific [zone configurations](../{{site.current_cloud_version}}/configure-replication-zones.html) and, if applicable, [grant privileges](../{{site.current_cloud_version}}/grant.html).
 
