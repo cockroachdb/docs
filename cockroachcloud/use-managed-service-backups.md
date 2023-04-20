@@ -133,9 +133,11 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Click **Continue**
+1. Click **Continue**. 
     
+    {{site.data.alerts.callout_danger}}
     The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
+    {{site.data.alerts.end}}
 
 1. Once you have reviewed the restore details, click **Restore**.
 
@@ -161,7 +163,7 @@ To restore a database:
     - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
-1. Click **Continue**
+1. Click **Continue**. 
 1. Once you have reviewed the restore details, click **Restore**. 
 
     When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
@@ -200,7 +202,7 @@ To restore a table:
     - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
-1. Click **Continue**
+1. Click **Continue**. 
 1. Once you have reviewed the restore details, click **Restore**.
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
