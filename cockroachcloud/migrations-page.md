@@ -72,6 +72,7 @@ The steps to convert your schema depend on your source dialect.
 </ol>
 
 ### Upload File
+<a name="upload-a-sql-dump"></a>
 
 The Schema Conversion Tool expects to analyze a SQL dump file containing only [data definition statements](../{{version_prefix}}sql-statements.html#data-definition-statements). 
 
