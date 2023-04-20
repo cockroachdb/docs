@@ -25,13 +25,10 @@
               "items": [
                 {
                   "title": "CockroachDB Serverless Pricing",
+                  "urls": [
+                    "/cockroachcloud/learn-about-pricing.html"
+                  ],
                   "items": [
-                    {
-                      "title": "Pricing Overview",
-                      "urls": [
-                        "/cockroachcloud/learn-about-pricing.html"
-                      ]
-                    },
                     {
                       "title": "Learn about Request Units",
                       "urls": [
@@ -143,13 +140,10 @@
             },
             {
               "title": "Kubernetes Deployment",
+              "urls": [
+                "/${VERSION}/kubernetes-overview.html"
+              ],
               "items": [
-                {
-                  "title": "Overview",
-                  "urls": [
-                    "/${VERSION}/kubernetes-overview.html"
-                  ]
-                },
                 {
                   "title": "Single-Cluster Deployment",
                   "urls": [
@@ -173,13 +167,10 @@
             },
             {
               "title": "Manual Deployment",
+              "urls": [
+                "/${VERSION}/manual-deployment.html"
+              ],
               "items": [
-                {
-                  "title": "Overview",
-                  "urls": [
-                    "/${VERSION}/manual-deployment.html"
-                  ]
-                },
                 {
                   "title": "On-Premises Deployment",
                   "urls": [
@@ -223,13 +214,10 @@
     },
     {
       "title": "Multi-Region Capabilities",
+      "urls": [
+        "/${VERSION}/multiregion-overview.html"
+      ],
       "items": [
-        {
-          "title": "Overview",
-          "urls": [
-            "/${VERSION}/multiregion-overview.html"
-          ]
-        },
         {
           "title": "How to Choose a Multi-Region Configuration",
           "urls": [
@@ -274,13 +262,10 @@
         },
         {
           "title": "Topology Patterns",
+          "urls": [
+            "/${VERSION}/topology-patterns.html"
+          ],
           "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/topology-patterns.html"
-              ]
-            },
             {
               "title": "Development",
               "urls": [
@@ -323,7 +308,8 @@
     },
     {
       "title": "Explore CockroachDB Features",
-      "items": [{
+      "items": [
+        {
           "title": "Replication & Rebalancing",
           "urls": [
             "/${VERSION}/demo-replication-and-rebalancing.html"
