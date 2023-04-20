@@ -9,7 +9,7 @@ When you create an {{ site.data.products.enterprise }} changefeed, you can inclu
 
 {% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence. 
 
-The benefits of using changefeeds for this use case compared to an [export](export.html), include:
+The benefits of using changefeeds for this use case instead of [export](export.html), include:
 
 - Changefeeds are jobs, which can be [paused](pause-job.html), [resumed](resume-job.html), [cancelled](cancel-job.html), [scheduled](create-schedule-for-changefeed.html), and [altered](alter-changefeed.html).
 - There is observability into a changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs) and the [Changefeeds Dashboard](ui-cdc-dashboard.html) in the DB Console.
