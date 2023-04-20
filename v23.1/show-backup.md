@@ -103,20 +103,9 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
 
-To view a list of [locality-aware backups](take-and-restore-locality-aware-backups.html), pass the endpoint [collection URI](backup.html#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`: 
+### Show locality-aware backups
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUPS IN 's3://{default collection URI}/{path}?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}';
-~~~
-
-~~~
-        path
--------------------------
-/2023/02/23-150925.62
-/2023/03/08-192859.44
-(2 rows)
-~~~
+{% include {{ page.version.version }}/backups/locality-aware-backups.md %}
 
 ### Show the most recent backup
 
