@@ -103,10 +103,6 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
 
-### Show locality-aware backups
-
-{% include {{ page.version.version }}/backups/locality-aware-backups.md %}
-
 ### Show the most recent backup
 
 To view the most recent backup, use the `LATEST` syntax:
@@ -193,6 +189,10 @@ movr          | public             | users                      | table       | 
 movr          | public             | vehicles                   | table       | incremental | 2022-04-13 20:01:15.177739 | 2022-04-13 20:05:04.2049   |      57755 |   296 |      true
 . . .
 ~~~
+
+### Show locality-aware backups
+
+{% include {{ page.version.version }}/backups/locality-aware-backups.md %}
 
 ### Show a backup with schemas
 
