@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
+**Cockroach Labs recommends using [changefeeds to export data](export-data-with-changefeeds.html)** because they provide better performance for growing workloads. Additionally, changefeeds operate as jobs, which offer [observability](monitor-and-debug-changefeeds.html), [scheduling](export-data-with-changefeeds.html#create-a-scheduled-changefeed-to-export-filtered-data), and [job management](create-and-configure-changefeeds.html).
+{{site.data.alerts.end}}
+
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to the following:
 
 - CSV files
