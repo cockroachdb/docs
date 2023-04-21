@@ -317,7 +317,7 @@
 	background-color: white;
 	color: $electric-purple;
 	&:hover {
-	  @extend .shadow;
+	  //@extend .shadow;
 	  color: $electric-purple;
 	}
   }
