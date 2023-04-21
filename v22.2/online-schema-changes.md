@@ -85,6 +85,93 @@ Declarative schema changer statements and legacy schema changer statements opera
 
 ## Best practices for online schema changes
 
+### Estimate your storage capacity before performing online schema changes
+
+Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming at least three times the storage space of the range size while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
+
+To find the range size of the indexes in your table, use the following query:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+WITH x AS (
+            SELECT *, row_number() OVER ()
+              FROM (
+                    SELECT DISTINCT index_name
+                      FROM [SHOW INDEXES FROM {table name}]
+                   )
+         )
+SELECT x.index_name,
+       round(l.range_size / 1048576, 4) AS range_size_mb
+  FROM crdb_internal.ranges AS l, x
+ WHERE     start_key
+           < (
+                (crdb_internal.index_span((SELECT id FROM system.namespace WHERE name = '{table name}'), x.row_number)::STRING[])[2]
+            )::BYTES
+       AND end_key
+           > (
+                (crdb_internal.index_span((SELECT id FROM system.namespace WHERE name = '{table name}'), x.row_number)::STRING[])[1]
+            )::BYTES;
+~~~
+
+Where `{table name}` is the name of the table.
+
+The output includes a `range_size_mb` column that shows the size of the range in megabytes for each index.
+
+In many cases this range size is trivial, but when the range size is many gigabytes or terabytes, you will need at least three times that amount of free storage space to successfully apply an online schema change.
+
+#### Example of finding the range size of an index
+
+1. Start a 3 node [`cockroach demo`](cockroach-demo.html) cluster with the MovR dataset.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach demo --nodes 3
+    ~~~
+
+1. Find the range size of the indexes in the `movr.vehicles` table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    WITH x AS (
+                SELECT *, row_number() OVER ()
+                  FROM (
+                        SELECT DISTINCT index_name
+                          FROM [SHOW INDEXES FROM vehicles]
+                      )
+            )
+    SELECT x.index_name,
+          round(l.range_size / 1048576, 4) AS range_size_mb
+      FROM crdb_internal.ranges AS l, x
+    WHERE     start_key
+              < (
+                    (crdb_internal.index_span((SELECT id FROM system.namespace WHERE name = 'vehicles'), x.row_number)::STRING[])[2]
+                )::BYTES
+          AND end_key
+              > (
+                    (crdb_internal.index_span((SELECT id FROM system.namespace WHERE name = 'vehicles'), x.row_number)::STRING[])[1]
+                )::BYTES;
+    ~~~
+
+    ~~~
+                  index_name               | range_size_mb
+    ----------------------------------------+----------------
+      vehicles_pkey                         |        0.0003
+      vehicles_pkey                         |        0.0001
+      vehicles_pkey                         |        0.0004
+      vehicles_pkey                         |        0.0006
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0001
+      vehicles_pkey                         |        0.0001
+      vehicles_pkey                         |        0.0001
+      vehicles_pkey                         |        0.0014
+      vehicles_auto_index_fk_city_ref_users |        0.0014
+    (10 rows)
+    ~~~
+
+### Run schema changes with large backfills during off-peak hours
+
+Online schema changes that result in large backfill operations (for example, [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system](admission-control.html) will help keep high-priority operations running, but it's better to run backfill-heavy schema changes during times with low loads.
+
 ### Schema changes in multi-region clusters
 
 {% include {{ page.version.version }}/performance/lease-preference-system-database.md %}

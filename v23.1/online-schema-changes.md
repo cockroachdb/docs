@@ -64,6 +64,8 @@ If a schema change job is paused, any jobs waiting on that schema change will st
 If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, see [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
 {{site.data.alerts.end}}
 
+See [Estimate your storage capacity before performing online schema changes](#estimate-your-storage-capactity-before-performing-online-schema-changes) for information on how to avoid running out of space during an online schema change.
+
 ## Declarative schema changer
 
 CockroachDB only guarantees atomicity for schema changes within single statement transactions, either implicit transactions or in an explicit transaction with a single schema change statement. The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes possible. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
@@ -92,6 +94,65 @@ Declarative schema changer statements and legacy schema changer statements opera
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
 ## Best practices for online schema changes
+
+### Estimate your storage capacity before performing online schema changes
+
+Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming at least three times the storage space of index while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
+
+To estimate the size of the indexes in your table, use the [`SHOW RANGES`](show-ranges.html) statement.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+SHOW RANGES FROM TABLE {table name} WITH DETAILS, KEYS, INDEXES;
+~~~
+
+The output includes a `range_size_mb` column that shows the size of the range in megabytes for each index.
+
+In many cases this range size is trivial, but when the range size is many gigabytes or terabytes, you will need at least three times that amount of free storage space to successfully apply an online schema change.
+
+#### Example of finding the range size of an index
+
+1. Start a 3 node [`cockroach demo`](cockroach-demo.html) cluster with the MovR dataset.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach demo --nodes 3
+    ~~~
+
+1. Turn off the deprecated behavior of `SHOW RANGES`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled TO 'false';
+    ~~~
+
+1. Find the range size of the indexes in the `movr.vehicles` table:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    WITH x AS (
+            SHOW RANGES FROM TABLE movr.vehicles WITH DETAILS, KEYS, INDEXES
+         )
+    SELECT index_name,
+           raw_index_start_key,
+           raw_index_end_key,
+           range_size_mb
+      FROM x;
+    ~~~
+
+    ~~~
+                   index_name               | raw_index_start_key | raw_index_end_key |     range_size_mb
+    ----------------------------------------+---------------------+-------------------+-------------------------
+  vehicles_pkey                         | \xfe8af389          | \xfe8af38a        | 0.51177800000000000000
+  vehicles_auto_index_fk_city_ref_users | \xfe8af38a          | \xfe8af38b        | 0.51177800000000000000
+    (2 rows)
+    ~~~
+
+    The size of the range for each index is 0.511778 MB, or about 511 KB. You will need at least three times that amount of free space, over 1.5 MB, to perform, for example, an online schema change that adds a column to `movr.vehicles`.
+
+### Run schema changes with large backfills during off-peak hours
+
+Online schema changes that result in large backfill operations (for example, [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system](admission-control.html) will help keep high-priority operations running, but it's better to run backfill-heavy schema changes during times with low loads.
 
 ### Schema changes in multi-region clusters
 
