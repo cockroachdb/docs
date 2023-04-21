@@ -57,29 +57,28 @@ To handle errors in transactions, you should check for the following types of se
 
 Type | Description
 -----|------------
-**Retry Errors** | Errors with [the code `40001` or string `restart transaction`](common-errors.html#restart-transaction), which indicate that a transaction failed because it could not be placed in a serializable ordering of transactions by CockroachDB. This is often due to [contention](#transaction-contention): conflicts with another concurrent or recent transaction accessing the same data. In such cases, the transaction needs to be retried by the client as described in [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling). For a reference listing all of the retry error codes emitted by CockroachDB, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#transaction-retry-error-reference).
+**Transaction Retry Errors** | Errors with the code `40001` and string `restart transaction`, which indicate that a transaction failed due to [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data. For details on transaction retry errors and how to resolve them, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html#actions-to-take).
 **Ambiguous Errors** | Errors with the code `40003` which indicate that the state of the transaction is ambiguous, i.e., you cannot assume it either committed or failed. How you handle these errors depends on how you want to resolve the ambiguity. For information about how to handle ambiguous errors, see [here](common-errors.html#result-is-ambiguous).
 **SQL Errors** | All other errors, which indicate that a statement in the transaction failed. For example, violating the `UNIQUE` constraint generates a `23505` error. After encountering these errors, you can either issue a [`COMMIT`](commit-transaction.html) or [`ROLLBACK`](rollback-transaction.html) to abort the transaction and revert the database to its state before the transaction began.<br><br>If you want to attempt the same set of statements again, you must begin a completely new transaction.
 
 ## Transaction retries
 
-Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
-
-To mitigate read-write contention and reduce the need for transaction retries, use the following techniques:
-
-- Perform reads using [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
-- Use [`SELECT FOR UPDATE`](select-for-update.html) to order transactions by controlling concurrent access to one or more rows of a table.  This reduces retries in scenarios where a transaction performs a read and then updates the same row it just read.
+Transactions may require retries due to [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data.
 
 There are two cases in which transaction retries can occur:
 
-- [Automatic retries](#automatic-retries), which CockroachDB processes for you.
-- [Client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling), which your application must handle.
+- [Automatic retries](#automatic-retries), which CockroachDB silently processes for you.
+- [Client-side retries](transaction-retry-error-reference.html#client-side-retry-handling), which your application must handle after receiving a [*transaction retry error*](transaction-retry-error-reference.html).
+
+To reduce the need for transaction retries, see [Reduce transaction contention](performance-best-practices-overview.html#reduce-transaction-contention).
 
 ### Automatic retries
 
-CockroachDB automatically retries individual statements (implicit transactions) and transactions sent from the client as a single batch, as long as the size of the results being produced for the client, including protocol overhead, is less than 16KiB by default. Once that buffer overflows, CockroachDB starts streaming results back to the client, at which point automatic retries cannot be performed any more. As long as the results of a single statement or batch of statements are known to stay clear of this limit, the client does not need to worry about transaction retries.
+CockroachDB automatically retries individual statements (implicit transactions) and [transactions sent from the client as a single batch](#batched-statements), as long as the size of the results being produced for the client, including protocol overhead, is less than 16KiB by default. Once that buffer overflows, CockroachDB starts streaming results back to the client, at which point automatic retries cannot be performed any more. As long as the results of a single statement or batch of statements are known to stay clear of this limit, the client does not need to worry about transaction retries.
 
-You can change the results buffer size for all new sessions using the `sql.defaults.results_buffer.size` [cluster setting](cluster-settings.html), or for a specific session using the `results_buffer_size` [session variable](set-vars.html). Decreasing the buffer size can increase the number of transaction retry errors a client receives, whereas increasing the buffer size can increase the delay until the client receives the first result row.
+You can increase the occurrence of automatic retries as a way to [minimize transaction retry errors](transaction-retry-error-reference.html#minimize-transaction-retry-errors):
+
+{% include {{ page.version.version }}/performance/increase-server-side-retries.md %}
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
@@ -133,31 +132,6 @@ The [`enable_implicit_transaction_for_batch_statements` session variable](set-va
 #### Bounded staleness reads
 
 In the event [bounded staleness reads](follower-reads.html#bounded-staleness-reads) are used along with either the [`with_min_timestamp` function or the `with_max_staleness` function](functions-and-operators.html#date-and-time-functions) and the `nearest_only` parameter is set to `true`, the query will throw an error if it can't be served by a nearby replica.
-
-### Client-side intervention
-
-Your application should include client-side retry handling when the statements are sent individually, such as:
-
-~~~
-> BEGIN;
-
-> UPDATE products SET inventory = 0 WHERE sku = '8675309';
-
-> INSERT INTO orders (customer, status) VALUES (1, 'new');
-
-> COMMIT;
-~~~
-
-To indicate that a transaction must be retried, CockroachDB signals an error with the `SQLSTATE` error code `40001` (serialization error) and an error message that begins with the string `"restart transaction"`. These errors **cannot** be [resolved automatically](#automatic-retries), and require client-side intervention:
-
-- See [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling) for a list of actions to take when encountering transaction retry errors.
-- See [Transaction retry error reference](transaction-retry-error-reference.html#transaction-retry-error-reference) for a complete list of transaction retry error codes.
-
-## Transaction contention
-
-Transactions in CockroachDB [lock](crdb-internal.html#cluster_locks) data resources that are written during their execution. When a pending write from one transaction conflicts with a write of a concurrent transaction, the concurrent transaction must wait for the earlier transaction to complete before proceeding. When a dependency cycle is detected between transactions, the transaction with the higher priority aborts the dependent transaction to avoid deadlock, which must be [retried](#client-side-intervention).
-
-For more details about transaction contention and best practices for avoiding contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 ## Nested transactions
 

@@ -105,7 +105,7 @@ Whenever a write occurs, its timestamp is checked against the timestamp cache. I
 
 ### Closed timestamps
 
-Each CockroachDB range tracks a property called its _closed timestamp_, which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a transaction retry error (see [read refreshing](#read-refreshing)).
+Each CockroachDB range tracks a property called its _closed timestamp_, which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a [transaction retry error](transaction-retry-error-reference.html) (see [read refreshing](#read-refreshing)).
 
 In other words, a closed timestamp is a promise by the range's [leaseholder](replication-layer.html#leases) to its follower replicas that it will not accept writes below that timestamp. Generally speaking, the leaseholder continuously closes timestamps a few seconds in the past.
 
@@ -190,7 +190,7 @@ For more details about how the concurrency manager works with the latch manager 
 
 #### Concurrency manager
 
- The concurrency manager is a structure that sequences incoming requests and provides isolation between the transactions that issued those requests that intend to perform conflicting operations. During sequencing, conflicts are discovered and any found are resolved through a combination of passive queuing and active pushing. Once a request has been sequenced, it is free to evaluate without concerns of conflicting with other in-flight requests due to the isolation provided by the manager. This isolation is guaranteed for the lifetime of the request but terminates once the request completes.
+The concurrency manager is a structure that sequences incoming requests and provides isolation between the transactions that issued those requests that intend to perform conflicting operations. During sequencing, conflicts are discovered and any found are resolved through a combination of passive queuing and active pushing. Once a request has been sequenced, it is free to evaluate without concerns of conflicting with other in-flight requests due to the isolation provided by the manager. This isolation is guaranteed for the lifetime of the request but terminates once the request completes.
 
 Each request in a transaction should be isolated from other requests, both during the request's lifetime and after the request has completed (assuming it acquired locks), but within the surrounding transaction's lifetime.
 
@@ -263,7 +263,7 @@ To make this simpler to understand, we'll call the first transaction `TxnA` and 
 
 CockroachDB proceeds through the following steps:
 
-1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted (in the write/write case) or has its timestamp pushed (in the write/read case).
+1. If the transaction has an explicit priority set (i.e., `HIGH` or `LOW`), the transaction with the lower priority is aborted (in the write/write case) or has its timestamp [pushed](#timestamp-cache) (in the write/read case).
 
 1. If the encountered transaction is expired, it's `ABORTED` and conflict resolution succeeds. We consider a write intent expired if:
 	- It doesn't have a transaction record and its timestamp is outside of the transaction liveness threshold.
@@ -297,8 +297,9 @@ If there is a deadlock between transactions (i.e., they're each blocked by each 
 
 ### Read refreshing
 
-Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`](../transaction-retry-error-reference.html#readwithinuncertaintyinterval) immediately, before continuing).
-If the refreshing is unsuccessful, then the transaction must be retried at the pushed timestamp.
+Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation.
+
+The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`](../transaction-retry-error-reference.html#readwithinuncertaintyintervalerror) immediately, before continuing). If the refreshing is unsuccessful (also known as *read invalidation*), then the transaction must be retried at the pushed timestamp.
 
 ### Transaction pipelining
 
@@ -398,7 +399,7 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 ## Non-blocking transactions
 
- CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
+CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
 
 The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
 

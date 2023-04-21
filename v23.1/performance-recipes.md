@@ -25,18 +25,25 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <td><ul><li>Use the correct <a href="topology-patterns.html">topology pattern</a> for your cluster.</li></ul></td>
     </tr>
     <td><ul>
-      <li>Your application is experiencing degraded performance with the following transaction retry errors:
-        <ul>
-          <li><code>SQLSTATE: 40001</code></li>
-          <li><code>RETRY_WRITE_TOO_OLD</code></li>
-          <li><code>RETRY_SERIALIZABLE</code></li>
-          </ul>
-      <li>The <a href="ui-sql-dashboard.html#sql-statement-contention">SQL Statement Contention dashboard</a> in the DB Console is showing spikes over time.</li>
-      <li>The <a href="ui-sql-dashboard.html#sql-statement-errors">SQL Statement Errors graph</a> in the DB Console is showing spikes in retries over time.</li>
-    </ul>
+      <li>The Transactions page in the <a href="../cockroachcloud/transactions-page.html">{{ site.data.products.db }} Console</a> or <a href="ui-transactions-page.html#active-executions-table">DB Console</a> shows transactions with <code>Waiting</code> status.</li>
+      <li>Your application is experiencing degraded performance with <code>SQLSTATE: 40001</code> and a <a href="transaction-retry-error-reference.html#transaction-retry-error-reference">transaction retry error</a> message.</li>
+      <li>Querying the <a href="crdb-internal.html#transaction_contention_events"><code>crdb_internal.transaction_contention_events</code></a> table indicates that your transactions have experienced contention.</li>
+      <li>The SQL Statement Contention graph in the <a href="../cockroachcloud/metrics-page.html#sql-statement-contention">{{ site.data.products.db }} Console</a> or <a href="ui-sql-dashboard.html#sql-statement-contention">DB Console</a> is showing spikes over time.</li>
+      <li>The Transaction Restarts graph in the <a href="../cockroachcloud/metrics-page.html#transaction-restarts">{{ site.data.products.db }} Console</a> or <a href="ui-sql-dashboard.html#transaction-restarts">DB Console</a> is showing spikes in retries over time.</li>
     </td>
     <td><ul><li>Your application is experiencing <a href="performance-best-practices-overview.html#transaction-contention">transaction contention</a>.</li></ul></td>
-    <td><ul><li><a href="#transaction-contention">Reduce transaction contention.</a></li></ul></td>
+    <td>
+      <ul>
+        <li><a href="#transaction-contention">Reduce transaction contention.</a></li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><ul>
+      <li>The <b>Hot Ranges</b> page (DB Console) displays a higher-than-expected QPS for a range.</li>
+      <li>The <b>Key Visualizer</b> (DB Console) shows ranges with much higher-than-average write rates for the cluster.</li>
+    </ul></td>
+    <td><ul><li>Your cluster has <a href="performance-best-practices-overview.html#hot-spots">hot spots</a>.</li></ul></td>
+    <td><ul><li><a href="#hot-spots">Reduce hot spots</a>.</li></ul></td>
   </tr>
   <tr>
     <td><ul>
@@ -77,15 +84,109 @@ This section provides solutions for common performance issues in your applicatio
 
 ### Transaction contention
 
-[Transaction contention](performance-best-practices-overview.html#transaction-contention) occurs when transactions issued from multiple clients at the same time operate on the same data. This can cause transactions to wait on each other (like when many people try to check out with the same cashier at a store) and decrease performance.
+[Transaction contention](performance-best-practices-overview.html#transaction-contention) is a state of conflict that occurs when a [transaction](transactions.html) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. When CockroachDB experiences transaction contention, it will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a [*transaction retry error*](transaction-retry-error-reference.html) is emitted to the client, requiring the client application to [retry the transaction](transaction-retry-error-reference.html#client-side-retry-handling). 
 
 #### Indicators that your application is experiencing transaction contention
 
-{% include {{page.version.version}}/performance/contention-indicators.md %}
+##### Waiting transaction
+
+These are indicators that a transaction is trying to access a row that has been ["locked"](architecture/transaction-layer.html#writing) by another, concurrent write transaction.
+
+- The **Active Executions** table on the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) or [DB Console](ui-transactions-page.html#active-executions-table)) shows transactions with `Waiting` in the **Status** column. You can sort the table by **Time Spent Waiting**.
+- Querying the [`crdb_internal.cluster_locks`](crdb-internal.html#cluster_locks) table shows transactions where [`granted`](crdb-internal.html#cluster-locks-columns) is `false`.
+
+If a long-running transaction is waiting due to [contention](performance-best-practices-overview.html#transaction-contention): 
+
+1. [Identify the blocking transaction](#identify-conflicting-transactions). 
+1. Evaluate whether you can cancel the transaction. If so, [cancel it](#cancel-a-blocking-transaction) to unblock the waiting transaction.
+1. Optimize the transaction to [reduce further contention](#reduce-transaction-contention). In particular, break down larger transactions such as [bulk deletes](bulk-delete-data.html) into smaller ones to have transactions hold locks for a shorter duration, and use [historical reads](as-of-system-time.html) when possible to reduce conflicts with other writes.
+
+##### Transaction retry error
+
+These are indicators that a transaction has failed due to [contention](performance-best-practices-overview.html#transaction-contention).
+
+- A [transaction retry error](transaction-retry-error-reference.html) with `SQLSTATE: 40001`, the string [`restart transaction`](common-errors.html#restart-transaction), and an error code such as [`RETRY_WRITE_TOO_OLD`](transaction-retry-error-reference.html#retry_write_too_old) or [`RETRY_SERIALIZABLE`](transaction-retry-error-reference.html#retry_serializable), is emitted to the client.
+- An event with `TransactionRetryWithProtoRefreshError` is emitted to the CockroachDB [logs](logging-use-cases.html#example-slow-sql-query).
+
+{% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
+
+##### Contention events
+
+These are indicators that your transactions experienced [contention](performance-best-practices-overview.html#transaction-contention). These contention events are only reported after the conflict has been resolved.
+
+- Querying the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table indicates that your transactions have experienced contention.
+
+  - This is also shown in the [**Transaction Executions** view](ui-insights-page.html#transaction-executions-view) on the **Insights** page (DB Console). Transaction executions will display the **High Contention** insight. 
+    {{site.data.alerts.callout_info}}
+    {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
+    {{site.data.alerts.end}}
+
+- The **SQL Statement Contention** graph ([{{ site.data.products.db }} Console](../cockroachcloud/metrics-page.html#sql-statement-contention) and [DB Console](ui-sql-dashboard.html#sql-statement-contention)) is showing spikes over time.
+  <img src="{{ 'images/v23.1/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
+
+- The **Transaction Restarts** graph ([{{ site.data.products.db }} Console](../cockroachcloud/metrics-page.html#transaction-restarts) and [DB Console](ui-sql-dashboard.html#transaction-restarts) is showing spikes in retries over time.
+
+If you detect contention events, take steps to [reduce transaction contention](#reduce-transaction-contention). It may help to [identify the transactions and objects that experienced contention](#identify-transactions-and-objects-that-experienced-contention).
 
 #### Fix transaction contention problems
 
-{% include {{ page.version.version }}/performance/statement-contention.md %}
+Identify the transactions that are in conflict, and unblock them if possible. In general, take steps to [reduce transaction contention](#reduce-transaction-contention).
+
+In addition, implement [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling) so that your application can respond to [transaction retry errors](transaction-retry-error-reference.html) that are emitted when CockroachDB cannot [automatically retry](transactions.html#automatic-retries) a transaction.
+
+##### Identify conflicting transactions
+
+- In the **Active Executions** table on the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) or [DB Console](ui-transactions-page.html#active-executions-table)), look for a **waiting** transaction (`Waiting` status).
+  {{site.data.alerts.callout_success}}
+  If you see many waiting transactions, a single long-running transaction may be blocking transactions that are, in turn, blocking others. In this case, sort the table by **Time Spent Waiting** to find the transaction that has been waiting for the longest amount of time. Unblocking this transaction may unblock the other transactions.
+  {{site.data.alerts.end}}
+  Click the transaction's execution ID and view the following transaction execution details:
+  <img src="{{ 'images/v23.1/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
+  - **Last Retry Reason** shows the last [transaction retry error](#transaction-retry-error) received for the transaction, if applicable.
+  - The details of the **blocking** transaction, directly below the **Contention Insights** section. Click the blocking transaction to view its details.
+
+##### Cancel a blocking transaction
+
+1. [Identify the **blocking** transaction](#identify-conflicting-transactions) and view its transaction execution details.
+1. Click its **Session ID** to open the **Session Details** page.
+  <img src="{{ 'images/v23.1/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
+1. Click **Cancel Statement** to cancel the **Most Recent Statement** and thus the transaction, or click **Cancel Session** to cancel the session issuing the transaction.
+
+##### Identify transactions and objects that experienced contention
+
+To identify transactions that experienced [contention](performance-best-practices-overview.html#transaction-contention) in the past:
+
+- In the [**Transaction Executions** view](ui-insights-page.html#transaction-executions-view) on the **Insights** page (DB Console), look for a transaction with the **High Contention** insight. Click the transaction's execution ID and view the [transaction execution details](ui-insights-page.html#transaction-execution-details), including the details of the blocking transaction.
+- Visit the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) and [DB Console](ui-transactions-page.html)) and sort transactions by **Contention Time**.
+
+To view tables and indexes that experienced [contention](performance-best-practices-overview.html#transaction-contention):
+
+- Query the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table to view [transactions that have blocked other transactions](crdb-internal.html#transaction-contention-example).
+- Query the [`crdb_internal.cluster_contended_tables`](crdb-internal.html#cluster_contended_tables) table to [view all tables that have experienced contention](crdb-internal.html#view-all-tables-that-have-experienced-contention).
+- Query the [`crdb_internal.cluster_contended_indexes`](crdb-internal.html#cluster_contended_indexes) table to [view all indexes that have experienced contention](crdb-internal.html#view-all-indexes-that-have-experienced-contention).
+- Query the [`crdb_internal.cluster_contention_events`](crdb-internal.html#cluster_contention_events) table 
+to [view the tables, indexes, and transactions with the most time under contention](crdb-internal.html#view-the-tables-indexes-with-the-most-time-under-contention).
+
+##### Reduce transaction contention
+
+Because [contention](performance-best-practices-overview.html#transaction-contention) affects your cluster performance, and is often [reported after it has already resolved](#contention-events), preventing contention is highly effective:
+
+{% include {{ page.version.version }}/performance/reduce-contention.md %}
+
+### Hot spots
+
+[Hot spots](performance-best-practices-overview.html#hot-spots) are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
+
+#### Indicators that your cluster has hot spots
+
+- The **Hot Ranges** list on the [**Hot Ranges** page](ui-hot-ranges-page.html) (DB Console) displays a higher-than-expected QPS for a range.
+- The [**Key Visualizer**](ui-key-visualizer.html) (DB Console) shows [ranges with much higher-than-average write rates](ui-key-visualizer.html#identifying-hot-spots) for the cluster.
+
+If you find hot spots, use the [**Range Report**](ui-hot-ranges-page.html#range-report) and [**Key Visualizer**](ui-key-visualizer.html) to identify the ranges with excessive traffic. Then take steps to [reduce hot spots](#reduce-hot-spots).
+
+#### Reduce hot spots
+
+{% include {{ page.version.version }}/performance/reduce-hot-spots.md %}
 
 ### Statements with full table scans
 
