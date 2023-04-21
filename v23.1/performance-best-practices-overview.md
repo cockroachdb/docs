@@ -324,7 +324,7 @@ Transaction contention occurs when the following three conditions are met:
 - They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
 - At least one of the transactions modifies the data.
 
-[When transactions are experiencing contention](performance-tuning-recipes.html#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
+[When transactions are experiencing contention](performance-recipes.html#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
 
 - [Delays in query completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries).
 - [Transaction retries](transactions.html#automatic-retries) performed automatically by CockroachDB.
