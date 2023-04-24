@@ -261,6 +261,8 @@ SHOW GRANTS ON SCHEMA cockroach_labs;
 
 ### Grant privileges on user-defined types
 
+To grant privileges on [user-defined types](create-type.html), use the following statements.
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TYPE IF NOT EXISTS status AS ENUM ('available', 'unavailable');

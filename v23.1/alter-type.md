@@ -5,12 +5,12 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in the current database.
+The `ALTER TYPE` [statement](sql-statements.html) modifies a [user-defined data type](create-type.html) in the current database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 {{site.data.alerts.callout_info}}
-You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the `ENUM` value, which could take a long time.
+You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the type's value, which could take a long time.
 
 All other `ALTER TYPE` schema change jobs are non-cancellable.
 {{site.data.alerts.end}}
@@ -47,6 +47,8 @@ on the type.
 - You can only reference a user-defined type from the database that contains the type.
 
 ## Example
+
+The following example uses a [user-defined type](create-type.html).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -154,5 +156,6 @@ To drop a value from the `account_status` type, use a `DROP VALUE` clause:
 - [`CREATE TYPE`](create-type.html)
 - [`ENUM`](enum.html)
 - [`SHOW ENUMS`](show-enums.html)
+- [`SHOW TYPES`](show-types.html)
 - [`DROP TYPE`](drop-type.html)
 - [Online Schema Changes](online-schema-changes.html)
