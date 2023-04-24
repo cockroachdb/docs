@@ -23,8 +23,8 @@ Prompt variable | Description
 ----------------|------------
 `%>` | The port of the node you are connected to.
 `%/` | The current database name.
-`%M` | The fully qualified host name of the node.
-`%m` | The short host name of the node.
+`%M` | The fully qualified host name and port of the node.
+`%m` | The fully qualified host name of the node.
 `%n` | The username of the connected SQL user.
 `%x` | The transaction status of the current statement.
 
