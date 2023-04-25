@@ -149,9 +149,11 @@ To view the available backup subdirectories, use [`SHOW BACKUPS`](show-backup.ht
 To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
-If your cluster grows too large for nightly [full backups](#full-backups), you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
+Incremental backups are chains between full backups and contain only the data that has changed since a base set of backups (which must include one full backup, and can include many incremental backups). Incremental backups are smaller and faster to produce than full backups. You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
-Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+CockroachDB recommends taking incremental backups every 10 minutes. We support up to 400 incremental backups between full backups. 
+
+If your cluster grows too large for nightly [full backups](#full-backups), you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
 If you are taking backups on a regular cadence, we recommend [creating a schedule](create-schedule-for-backup.html) for your backups.
 
