@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates. This page describes the procedures for administering the cluster's certificate authority (CA) certificate, and for authenticating to a cluster using client certificates.
+SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates, as an alternative to username/password authentication, [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](cloud-sso-sql.html), or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html). This page describes the procedures for administering the cluster's certificate authority (CA) certificate, and for authenticating to a cluster using client certificates.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
@@ -19,7 +19,9 @@ This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroach
 
 There are many ways to create, manage and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates, without the need to reveal the CA private key.
 
-Alternatively, you can generate certificates using CockroachDB's `cockroach cert` command or with [OpenSSL](https://www.openssl.org/). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error, and sound policy should be followed for managing PKI cryptographic material related to your {{ site.data.products.db }} organizations, particularly in any production systems.
+Refer to: [CockroachDB - HashiCorp Vault Integration](../{{site.versions["stable"]}}/hashicorp-integration.html)
+
+Alternatively, you can generate certificates using CockroachDB's `cockroach cert` command or with [OpenSSL](https://www.openssl.org/). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your {{ site.data.products.db }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
 
 Refer to:
 
@@ -219,8 +221,6 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 ~~~
 </section>
 
-
-
 ## Update the certificate authority (CA) certificate for a dedicated cluster
 
 Replace the CA certificate used by your cluster for certificate-based client authentication.
@@ -314,5 +314,3 @@ To use certificate authentication for a SQL client, you must include the filepat
     ~~~shell
     cockroach sql --url "postgresql://root@flooping-frogs-74bn.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
     ~~~
-
-
