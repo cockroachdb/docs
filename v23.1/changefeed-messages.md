@@ -66,14 +66,14 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     You'd expect the changefeed to emit:
 
-    ~~~ shell
+    ~~~json
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     ~~~
 
     It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
 
-    ~~~ shell
+    ~~~json
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
@@ -81,20 +81,20 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     However, you will **never** see an output like the following (i.e., an out of order row that you've never seen before):
 
-    ~~~ shell
+    ~~~json
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     ~~~
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
 
-- Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
+- Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html). To define another key to determine the partition for your messages, use the [`key_column`](create-changefeed.html#key-column) option.
 
 - <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
-    ~~~ shell
+    ~~~json
     {"__crdb__": {"updated": "1532377312562986715.0000000000"}, "id": 1, "name": "Petee H"}
     {"__crdb__": {"updated": "1532377306108205142.0000000000"}, "id": 2, "name": "Carl"}
     {"__crdb__": {"updated": "1532377358501715562.0000000000"}, "id": 3, "name": "Ernie"}
@@ -118,7 +118,7 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. For example, with default options, deleting the row with primary key `5` will output:
 
-~~~ shell
+~~~json
 [5] {"after": null}
 ~~~
 
@@ -138,7 +138,7 @@ When schema changes with column backfill (e.g., adding a column with a default, 
 
 For an example of a schema change with column backfill, start with the changefeed created in this [Kafka example](changefeed-examples.html#create-a-changefeed-connected-to-kafka):
 
-~~~
+~~~json
 [1]	{"id": 1, "name": "Petee H"}
 [2]	{"id": 2, "name": "Carl"}
 [3]	{"id": 3, "name": "Ernie"}
@@ -153,7 +153,7 @@ Add a column to the watched table:
 
 The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
 
-~~~
+~~~json
 [1]	{"id": 1, "name": "Petee H"}
 [2]	{"id": 2, "name": "Carl"}
 [3]	{"id": 3, "name": "Ernie"}
