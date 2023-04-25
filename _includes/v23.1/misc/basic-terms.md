@@ -31,6 +31,7 @@ For most types of tables and queries, the leaseholder is the only replica that c
 The [consensus protocol](replication-layer.html#raft) employed in CockroachDB that ensures that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
 
 ### Raft leader
+<a name="architecture-raft-leader"></a>
 For each range, the replica that is the "leader" for write requests. The leader uses the Raft protocol to ensure that a majority of replicas (the leader and enough followers) agree, based on their Raft logs, before committing the write. The Raft leader is almost always the same replica as the leaseholder.
 
 ### Raft log

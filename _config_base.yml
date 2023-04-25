@@ -6,14 +6,14 @@ algolia:
   - search.html
   index_name: cockroachcloud_docs
   search_api_key: 372a10456f4ed7042c531ff3a658771b
-  settings:                                                                      
-    attributesForFaceting:                                                       
-      - searchable(categories)                                                   
-      - searchable(collection)                                                   
-      - docs_area                                                                
-      - searchable(tags)                                                         
-      - searchable(title)                                                        
-      - type                                                                     
+  settings:
+    attributesForFaceting:
+    - searchable(categories)
+    - searchable(collection)
+    - docs_area
+    - searchable(tags)
+    - searchable(title)
+    - type
 defaults:
 - scope:
     path: ''
@@ -148,12 +148,12 @@ release_info:
     start_time: 2023-04-17 12:53:26.338251 +0000 UTC
     version: v22.2.8
   v23.1:
-    build_time: 2023-04-17 00:00:00 (go1.19)
+    build_time: 2023-04-19 00:00:00 (go1.19)
     crdb_branch_name: release-23.1
     docker_image: cockroachdb/cockroach-unstable
-    name: v23.1.0-beta.2
-    start_time: 2023-04-14 12:18:53.306028 +0000 UTC
-    version: v23.1.0-beta.2
+    name: v23.1.0-beta.3
+    start_time: 2023-04-19 15:06:51.923235 +0000 UTC
+    version: v23.1.0-beta.3
 sass:
   quiet_deps: 'true'
   sass_dir: css
