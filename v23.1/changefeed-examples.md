@@ -424,7 +424,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
     ~~~
 
-    You can include the `region` parameter for your topic, or, use the [WITH `unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail.
+    You can include the `region` parameter for your topic, or use the [WITH `unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail.
 
     The output will confirm the topic where the changefeed will emit messages to.
 
