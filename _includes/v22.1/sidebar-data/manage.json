@@ -187,6 +187,7 @@
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
+          "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",

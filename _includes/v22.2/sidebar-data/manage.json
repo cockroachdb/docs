@@ -217,6 +217,7 @@
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
+          "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
               "title": "Create Private Clusters",
