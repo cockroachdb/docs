@@ -29,7 +29,7 @@ Clients can be authenticated with either username/password combination, or PKI s
 
 Refer to:
 
-- [Manage SQL users on a cluster](authorization.html#manage-sql-users-on-a-cluster)
+- [Manage SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
 - [] 
 
 ### Username/Password

@@ -151,6 +151,10 @@ Refer to:
 
 ## Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster
 
+Add a CA certificate to your cluster's trust store for client authentication. Client certificates signed using the private key corresponding to this certificate will be accepted by your cluster for certificate-based client authentication.
+
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#the-cockroachdb-certificate-trust-store)
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="api">Using the API</button>
   <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
@@ -218,6 +222,9 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 
 
 ## Update the certificate authority (CA) certificate for a dedicated cluster
+
+Replace the CA certificate used by your cluster for certificate-based client authentication.
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="api">Using the API</button>
   <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
@@ -255,6 +262,9 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 </section>
 
 ## Delete the certificate authority (CA) certificate for a dedicated cluster
+
+Remove the configured CA certificate from the cluster. Clients will no longer be able to authenticate with certificates signed by this CA certificate.
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="api">Using the API</button>
   <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
@@ -282,19 +292,27 @@ curl --request DELETE \
 To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your terraform configuration, then run `terraform apply`.
 </section>
 
-## Authenticating a SQL client against a {{ site.data.products.dedicated }} cluster
+## Authenticating a SQL client to a {{ site.data.products.dedicated }} cluster
 
-First, obtain a connection string for your cluster from it's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, by clicking on the **Connect** button.
+To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate.
 
-You must modify the provided connection string by removing the placeholder password, and adding the `sslkey` and `sslcert` parameters with the paths to a private key/public certificate pair pair. Refer to [Provision your cluster's PKI hierarchy ](#provision-your-clusters-pki-hierarchy).
+1. From your cluster's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, click on the **Connect** button.
 
-{{site.data.alerts.callout_success}}
-Make sure you **Download the CA Cert** for your cluster, from the **Connect** UI.
-{{site.data.alerts.end}}
+1. Execute the command listed under **Download CA Cert** to download the required public certificate. This is used by your client to verify the identity of the cluster.
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-cockroach sql --url "postgresql://root@flooping-frogs-74bn.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
-~~~
+1. Obtain a connection string/command for your cluster. This connection string is designed for password authentication and must be modified.
+
+    1. Remove the placeholder password from the connection string.
+
+    1. Construct the full connection string by providing the paths to `sslrootcert` (the cluster's public CA certificate), `sslcert` (the client's public certificate, which must be signed by the same CA), and `sslkey` (the client's private key).
+    
+        Refer to: [Provision your cluster's PKI hierarchy ](#provision-your-clusters-pki-hierarchy).
+
+1. Connect using the `cockroach sql` command, or the SQL client of your choice:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    cockroach sql --url "postgresql://root@flooping-frogs-74bn.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
+    ~~~
 
 
