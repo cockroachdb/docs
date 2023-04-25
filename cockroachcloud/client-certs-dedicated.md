@@ -15,6 +15,8 @@ Refer to [Authenticating to {{ site.data.products.db }}](authentication.html) fo
 This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
 {{site.data.alerts.end}}
 
+
+
 ## Provision your cluster's PKI hierarchy
 
 There are many ways to create, manage and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates, without the need to reveal the CA private key.
@@ -64,6 +66,8 @@ Refer to:
 
 ### Create the certificate authority (CA) certificate
 
+This CA certificate will be used to [configure your cluster's Trust Store](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster). Any client certificate signed by the CA identified by this certificate will be trusted, and be able to authenticate to your cluster.
+
 1. Create a PKI secrets engine to serve as your client CA.
 
     {% include_cached copy-clipboard.html %}
@@ -91,13 +95,17 @@ Refer to:
 
     ~~~json
     {
-      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\nMzE1MjMyNTMxWjBZMQswCQYDVQQGEwJ1czELMAkGA1UECAwCV0ExDTALBgNVBAoM\nBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNVBAcMB1NlYXR0bGUxDTALBgNVBAsM\n
-    ...\n-----END CERTIFICATE-----
-    "
+      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\nMzE1MjMyNTMxWjBZMQswCQYDVQQGEwJ1czELMAkGA1UECAwCV0ExDTALBgNVBAoM\nBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNVBAcMB1NlYXR0bGUxDTALBgNVBAsM...\n-----END CERTIFICATE-----"
     }
     ~~~
 
     The public certificate can be found in the JSON file created by Vault at `.data.certificate`, for example, using the `jq` utility:
+
+    {{site.data.alerts.callout_info}}
+    On macOS, you can install `jq` from Homebrew: `brew install jq`
+    {{site.data.alerts.end}}
+
+
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -105,10 +113,12 @@ Refer to:
     ~~~
 
     ~~~txt
-    "-----BEGIN CERTIFICATE-----\nMIIC8TCCAdmgAwIBAgIUBMV/L6InS7DmJCWv4eyDwazEihkwDQYJKoZIhvcNAQEL\nBQAwADAeFw0yMzA0MTgxNzI5MzhaFw0yMzA1MzAwOTMwMDhaMAAwggEiMA0GCSqG\nSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDPGJYjOxAUtZ0bfSGd1eoCRyZHmXKdfoPq\nENRyatgzZqJguqv6q6y6IHH3DhGNqMJXzn/wfDWGjd5tao+QSwjiJ/m0VhGDeap3\ngLkGXZ/NDsSLARecZNx/DI349PpeV3LgG9in7JbAAw0qRm+o061xGwB2Z9vH9EMM\naAZ2yRqXNlqCanD9EHruYdFBzvNnmnxkMmtaaMM7S4SiJ7yee4ZZZ6hBvILxRhSg\nUXdTL6I4Wu/JLcyk41haAwie/VXeNydqEo23wJDH2Ishm0jhE/p31f/17v8UILZ4\n6SFr84UUfH6jcZVYQbyg9lSb9QP70TWt2rO2K3knZXjwvOl5FpLhAgMBAAGjYzBh\nMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRtg99q\nfugnDm+OAF12MWX7vtHVnTAfBgNVHSMEGDAWgBRtg99qfugnDm+OAF12MWX7vtHV\nnTANBgkqhkiG9w0BAQsFAAOCAQEAvRqy/O9Y+l1ikLjmg4Y/+Cj/er28aAYtgkIA\nk8DsrwnvnwwTkfFyjMcv8+ZVZr7hukhvbKP6ElWuw6Zh13DP8FuR8vbFuPmoPGA3\nF9TdmKobZI0qf26F1eUPAUemEbYajBtdFHxzfJIXiG/ZM+JpX+OpCV1+LsZRz3n2\nGbzwuNc5nm1UNYZZ5CaEp0Yckfd3tuhTKyZi+mpAs3zPGuflGdKREBlc6XLfswhL\nqS7Ke0sTUR3YT/wGcWyVh822aQtH7+zucWQkvNXkdAwxjo8qD8XcxWLB5/Pj9XVM\n/5Na4xRIi+sgdMOgPpSm5a+gbUrjwa18LXxX9kc2aOEHTqpssQ==\n-----END CERTIFICATE-----"
+    "-----BEGIN CERTIFICATE-----\nMIIC8TCCAdmgA123IUBMV/L6InS7DmJCWv4eyDwazEihkwDQYJKoZIhvcNAQEL\nBQAwADAeFw0yMzA0MTgxNzI5MzhaFw0yMzA1MzAwOTMwMDhaMAAwggEiMA0GCSqG\nSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDPGJYjOxAUtZ0bfSGd1eoCRyZHmXKdfoPq\nENRyatgzZqJguqv6q6y6IHH3DhGNqMJXzn/wfDWGjd5tao+QSwjiJ/m0VhGDeap3\ngLkGXZ/NDsSLARecZNx/DI349PpeV3LgG9in7JbAAw0qRm+o061xGwB2Z9vH9EMM\naAZ2yRqXNlqCanD9EHruYdFBzvNnmnxkMmtaaMM7S4SiJ7yee4ZZZ6hBvILxRhSg\nUXdTL6I4Wu/JLcyk41haAwie/VXeNydqEo23wJDH2Ishm0jhE/p31f/17v8UILZ4\n6SFr84UUfH6jcZVYQbyg9lSb9QP70TWt2rO2K3knZXjwvOl5FpLhAgMBAAGjYzBh\nMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRtg99q\nfugnDm+OAF12MWX7vtHVnTAfBgNVHSMEGDAWgBRtg99qfugnDm+OAF12MWX7vtHV\nnTANBgkqhkiG9w0BAQsFAAOCAQEAvRqy/O9Y+l1ikLjmg4Y/+Cj/er28aAYtgkIA\nk8DsrwnvnwwTkfFyjMcv8+ZVZr7hukhvbKP6ElWuw6Zh13DP8FuR8vbFuPmoPGA3\nF9TdmKobZI0qf26F1eUPAUemEbYajBtdFHxzfJIXiG/ZM+JpX+OpCV1+LsZRz3n2\nGbzwuNc5nm1UNYZZ5CaEp0Yckfd3tuhTKyZi+mpAs3zPGuflGdKREBlc6XLfswhL\nqS7Ke0sTUR3YT/wGcWyVh822aQtH7+zucWQkvNXkdAwxjo8qD8XcxWLB5/Pj9XVM\n/5Na4xRIi+sgdMOgPpSm5a+gbUrjwa18LXxX9kc2aOEHTqpssQ==\n-----END CERTIFICATE-----"
     ~~~
 
 ### Create a PKI role and issue credentials for client
+
+These credentials (private key and public certificate signed by the CA created earlier) can be used to authenticate to a cluster that has the corresponding CA configured in its trust store.
 
 1.  Define a client PKI role in Vault:
     
@@ -143,7 +153,7 @@ Refer to:
     echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.certificate | tr -d '"') > "${SECRETS_DIR}/clients/client.root.crt"
     ~~~
 
-1. Set key file permissions.
+1. Set key file permissions; CockroachDB will reject improperly permissioned private keys for authentication.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -157,6 +167,10 @@ Add a CA certificate to your cluster's trust store for client authentication. Cl
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#the-cockroachdb-certificate-trust-store)
 
+{{site.data.alerts.callout_success}}
+Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
+{{site.data.alerts.end}}
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="api">Using the API</button>
   <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
@@ -169,8 +183,6 @@ Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): Th
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-CLUSTER_ID=#{ your cluster ID }
-API_KEY=#{ your service account API key }
 curl --request POST \
   --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
   --header "Authorization: Bearer ${API_KEY}" \
@@ -225,6 +237,10 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 
 Replace the CA certificate used by your cluster for certificate-based client authentication.
 
+{{site.data.alerts.callout_success}}
+Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
+{{site.data.alerts.end}}
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="api">Using the API</button>
   <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
@@ -235,8 +251,6 @@ Replace the CA certificate used by your cluster for certificate-based client aut
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-CLUSTER_ID= #{ your cluster ID }
-API_KEY= #{ your API key for service account }
 curl --request PATCH \
   --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
   --header "Authorization: Bearer ${API_KEY}" \
@@ -265,6 +279,10 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 
 Remove the configured CA certificate from the cluster. Clients will no longer be able to authenticate with certificates signed by this CA certificate.
 
+{{site.data.alerts.callout_success}}
+Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
+{{site.data.alerts.end}}
+
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="api">Using the API</button>
   <button class="filter-button page-level" data-scope="tf">Using Terraform</button>
@@ -275,8 +293,6 @@ Remove the configured CA certificate from the cluster. Clients will no longer be
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-CLUSTER_ID= #{ your cluster ID }
-API_KEY= #{ your API key for service account }
 curl --request DELETE \
   --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
   --header "Authorization: Bearer ${API_KEY}"
@@ -292,9 +308,9 @@ curl --request DELETE \
 To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your terraform configuration, then run `terraform apply`.
 </section>
 
-## Authenticating a SQL client to a {{ site.data.products.dedicated }} cluster
+## Authenticate a SQL client to a {{ site.data.products.dedicated }} cluster
 
-To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate.
+To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a certificate authority (CA) who's public certificate is configured to be trusted by the cluster. Refer to [Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster)
 
 1. From your cluster's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, click on the **Connect** button.
 
@@ -312,5 +328,5 @@ To use certificate authentication for a SQL client, you must include the filepat
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    cockroach sql --url "postgresql://root@flooping-frogs-74bn.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
+    cockroach sql --url "postgresql://root@flooping-frogs-123.gcp-us-east1.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=${HOME}/Library/CockroachCloud/certs/2186fbdb-598c-4797-a463-aaaee865903e/flooping-frogs-ca.crt&sslcert=${SECRETS_DIR}/clients/client.root.crt&sslkey=${SECRETS_DIR}/clients/client.root.key"
     ~~~

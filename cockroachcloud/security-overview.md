@@ -7,9 +7,9 @@ docs_area: manage
 
 This page summarizes the security features available in the two database cluster types offered by {{ site.data.products.db }}, **Serverless** and **Dedicated**.
 
-A {{ site.data.products.serverless }} cluster deployed on request for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
+A {{ site.data.products.serverless }} cluster is deployed on request for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
 
-A {{ site.data.products.dedicated }} cluster is deployed on request for a specific customer, in a cloud provider's network and compute infrastructure *dedicated* to that customer, which can be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as PCI DSS compliance.
+A {{ site.data.products.dedicated }} cluster is deployed on request for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as PCI DSS compliance.
 
 Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated](pci-dss.html)
 
@@ -36,22 +36,22 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="scram-authentication.html">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
+    <td><a href="../{{site.versions['stable']}}/security-reference/scram-authentication.html">SASL/SCRAM-SHA-256 secure password-based authentication</a></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Web console authentication with third-party <a href="../sso.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+    <td>Web console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
   </tr>
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td>SQL Client authentication with <a href="../gssapi_authentication.html">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
+    <td>SQL Client authentication with <a href="cloud-sso-sql.html">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>SQL Client authentication with <a href="../gssapi_authentication.html">Cluster SSO</a> using customer-managed identity providers</td>
+    <td>SQL Client authentication with <a href="../{{site.versions['stable']}}/sso-sql.html">Cluster SSO</a> using customer-managed identity providers</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -69,7 +69,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td><a href="../{{site.current_cloud_version}}/cluster-api.html">Cluster API</a> access using login tokens</td>
   </tr>
   <tr>
-  <td rowspan="5" ><a href="encryption.html">Data Protection</a></td>
+  <td rowspan="5" >Data Protection</a></td>
     <td>✓</td>
     <td>✓</td>
     <td>Encryption-in-flight using TLS 1.3</td>
@@ -139,24 +139,24 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="../../cockroachcloud/network-authorization.html#vpc-peering">VPC Peering</a> for GCP clusters</td>
+    <td><a href="network-authorization.html#vpc-peering">VPC Peering</a> for GCP clusters</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="../../cockroachcloud/network-authorization.html#aws-privatelink"></a>PrivateLink for AWS clusters </td>
+    <td><a href="network-authorization.html#aws-privatelink"></a>PrivateLink for AWS clusters </td>
   </tr>
   <tr>
     <td><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
     <td>✓</td>
     <td>✓</td>
-    <td><a href="../sql-audit-logging.html">SQL Audit Logging</a></td>
+    <td><a href="../{{site.versions['stable']}}/sql-audit-logging.html">SQL Audit Logging</a></td>
   </tr>
   <tr>
-    <td><a href="../demo-fault-tolerance-and-recovery.html">Availability/Resilience</a></td>
+    <td><a href="../{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Availability/Resilience</a></td>
     <td>✓</td>
     <td>✓</td>
-    <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
+    <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
   </tr>
 </table>
 
