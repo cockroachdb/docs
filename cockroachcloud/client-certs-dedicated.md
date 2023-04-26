@@ -1,5 +1,5 @@
 ---
-title: Managing Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters
+title: Manage Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters
 summary: procedures for managing client certificates for dedicated clusters
 toc: true
 docs_area: manage.security

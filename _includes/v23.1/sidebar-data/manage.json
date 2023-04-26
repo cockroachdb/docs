@@ -289,7 +289,7 @@
                     ]
                   },
                   {
-                    "title": "Managing Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "title": "Manage Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
                     "urls": [
                       "/cockroachcloud/client-certs-dedicated.html"
                     ]
