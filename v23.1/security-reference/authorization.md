@@ -136,35 +136,13 @@ When a user connects to a database, either via the built-in SQL client or a clie
 
 ### Supported privileges
 
-Roles and users can be granted the following privileges:
-
-{% include {{ page.version.version }}/sql/privileges.md %}
-
-### System-level privileges 
-
-System-level privileges offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
-
-System-level privileges are a special kind of privilege that apply cluster-wide, meaning that the privilege is not tied to any specific object in the database.
+System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
 
 You can work with system-level privileges using the [`GRANT `](../grant.html) statement with the `SYSTEM` parameter, and the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.
 
-The following table lists the new system-level privileges introduced with CockroachDB v22.2, and indicates which system-level privileges replace role options:
+Roles and users can be granted the following privileges:
 
-New System-level Privilege  | Replaces Legacy Role Option
-----------------------------|---------------------------------------
-`MODIFYCLUSTERSETTING`      | Yes: the `MODIFYCLUSTERSETTING` and `NOMODIFYCLUSTERSETTING` role option
-`EXTERNALCONNECTION`        | No, new in v22.2
-`VIEWACTIVITY`              | Yes: the `VIEWACTIVITY` and `NOVIEWACTIVITY` role options
-`VIEWACTIVITYREDACTED`      | Yes: the `VIEWACTIVITYREDACTED` and `NOVIEWACTIVITYREDACTED` role options
-`VIEWCLUSTERSETTING`        | Yes: the `VIEWCLUSTERSETTING` and `NOVIEWCLUSTERSETTING` role options
-`CANCELQUERY`               | Yes: the `CANCELQUERY` and `NOCANCELQUERY` role options
-`NOSQLLOGIN`                | Yes: the `SQLLOGIN` and `NOSQLLOGIN` role options
-`VIEWCLUSTERMETADATA`       | No, new in v22.2
-`VIEWDEBUG`                 | No, new in v22.2
-`BACKUP`                    | No, new in v22.2
-`RESTORE`                   | No, new in v22.2
-`EXTERNALIOIMPLICITACCESS`  | No, new in v22.2
-`CHANGEFEED`                | No, new in v22.2
+{% include {{ page.version.version }}/sql/privileges.md %}
 
 If a system-level privilege exists with the same name as a role option, the system-level privilege should be used. Some role options do not have a corresponding system-level privilege, since they configure per-user attributes. For those system-level privileges that replace legacy role options (such as `VIEWACTIVITY`), if both the system-level privilege and its legacy role option are specified for a user/role, the system-level privilege will take precedence and the legacy role option will be ignored.
 

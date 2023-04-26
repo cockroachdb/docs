@@ -23,7 +23,7 @@ If a schema change job is paused, any jobs waiting on that schema change will st
 
 ## Required privileges
 
-To pause a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set.
+To pause a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](security-reference/authorization.html#role-options) set. Non-admin users cannot pause admin users' jobs.
 
 For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can pause changefeed jobs running on those tables.
 

@@ -31,9 +31,12 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 
 ## Required privileges
 
-By default, only the `root` user can execute `SHOW JOBS`.
+You can run `SHOW JOBS` in the following cases:
 
-For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can view changefeed jobs running on those tables.
+- {% include_cached new-in.html version="v23.1" %} Users with the `VIEWJOB` privilege can view all jobs (including `admin`-owned jobs).
+- The `admin` user.
+- Users have the (deprecated) `CONTROLJOB` role option.
+- For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can view changefeed jobs running on those tables.
 
 ## Synopsis
 
