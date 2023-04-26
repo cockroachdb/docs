@@ -55,7 +55,7 @@ To manage a restore job with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resum
 - Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
 - Have the [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
 
-To view a restore job with [`SHOW JOB`](show-job.html), you must:
+To view a restore job with [`SHOW JOB`](show-jobs.html), you must:
 
 - {% include_cached new-in.html version="v23.1" %} Have the [`VIEWJOB` privilege](security-reference/authorization.html#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
 - Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
@@ -76,7 +76,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
 - To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.

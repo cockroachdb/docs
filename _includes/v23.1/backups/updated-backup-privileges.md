@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#system-level-privileges) that provides finer control over a user's privilege to work with the database, including taking backups. 
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#supported-privileges) that provides finer control over a user's privilege to work with the database, including taking backups. 
 
 There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) for backups in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
 {{site.data.alerts.end}}
@@ -8,7 +8,7 @@ You can [grant](grant.html#grant-privileges-on-specific-tables-in-a-database) th
 
 Backup | Privilege
 -------+-----------
-Cluster | Grant a user the `BACKUP` [system-level privilege](security-reference/authorization.html#system-level-privileges). For example, `GRANT SYSTEM BACKUP TO user;`.
+Cluster | Grant a user the `BACKUP` [system-level privilege](security-reference/authorization.html#supported-privileges). For example, `GRANT SYSTEM BACKUP TO user;`.
 Database | Grant a user the `BACKUP` privilege on the target database. For example, `GRANT BACKUP ON DATABASE test_db TO user;`.
 Table | Grant a user the `BACKUP` privilege at the table level. This gives the user the privilege to back up the schema and all user-defined types that are associated with the table. For example, `GRANT BACKUP ON TABLE test_db.table TO user;`.
 
@@ -27,7 +27,7 @@ To manage a backup job with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume
 - Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
 - Have the [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
 
-To view a backup job with [`SHOW JOB`](show-job.html), you must:
+To view a backup job with [`SHOW JOB`](show-jobs.html), you must:
 
 - {% include_cached new-in.html version="v23.1" %} Have the [`VIEWJOB` privilege](security-reference/authorization.html#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
 - Be a member of the [`admin` role](security-reference/authorization.html#admin-role).

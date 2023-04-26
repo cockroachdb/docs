@@ -195,7 +195,7 @@ SHOW GRANTS ON TABLE usertable;
 
 ### Grant system-level privileges on the entire cluster
 
-[System-level privileges](security-reference/authorization.html#system-level-privileges) live above the database level and apply to the entire cluster.
+[System-level privileges](security-reference/authorization.html#supported-privileges) live above the database level and apply to the entire cluster.
 
 `root` and [`admin`](security-reference/authorization.html#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
 

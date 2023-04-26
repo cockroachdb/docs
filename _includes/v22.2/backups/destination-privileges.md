@@ -1,4 +1,4 @@
-{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges).
+{% include_cached new-in.html version="v22.2" %} You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges).
 
 Either the `EXTERNALIOIMPLICITACCESS` system-level privilege or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
