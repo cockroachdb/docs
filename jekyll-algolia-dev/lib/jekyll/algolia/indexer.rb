@@ -331,7 +331,13 @@ module Jekyll
           objectID: 'not visible',
           type: 'synonym',
           synonyms: ['not visible', 'invisible']
-        }, false)        
+        }, false)
+        
+        index.save_synonym('schema conversion tool', {
+          objectID: 'schema conversion tool',
+          type: 'synonym',
+          synonyms: ['schema conversion tool', 'sct']
+        }, false)
         
         return
       end
