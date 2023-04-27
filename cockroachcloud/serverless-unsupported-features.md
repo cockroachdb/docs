@@ -51,8 +51,8 @@ The Cloud Console provides a subset of observability information from the DB Con
 The Cloud Console also does not currently provide the following features available in the DB Console:
 
 - [Statement diagnostic bundles](../{{site.versions["stable"]}}/ui-statements-page.html#diagnostics) on the **Statements** Page
-- [Dropping unused indexes](../{{site.versions["stable"]}}/ui-databases-page.html#index-recommendations) on the **Insights** and **Databases** pages
-- [Creating missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) and [replacing existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) on the **Insights** page
+- [Direct actions to drop unused indexes](../{{site.versions["stable"]}}/ui-databases-page.html#index-recommendations) on the **Insights** and **Databases** pages
+- [Direct actions to create missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) and [replace existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) on the **Insights** page
 
 {{ site.data.products.serverless }} clusters do not expose [Prometheus endpoints](../{{site.current_cloud_version}}/monitor-cockroachdb-with-prometheus.html).
 
