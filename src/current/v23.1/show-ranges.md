@@ -50,7 +50,7 @@ The specific fields in the response vary depending on the values passed as [opti
 Field | Description | Emitted for option(s)
 ------|-------------|----------------------
 `start_key` | <a name="start-key"></a> The start key for the [range](architecture/overview.html#architecture-range). | Always emitted.
-`end_key` | The end key for the [range](architecture/overview.html#architecture-range). | Always emitted.
+`end_key` | <a name="end-key"></a> The end key for the [range](architecture/overview.html#architecture-range). | Always emitted.
 `raw_start_key` | The start key for the [range](architecture/overview.html#architecture-range), displayed as a [hexadecimal byte value](sql-constants.html#string-literals-with-character-escapes). | `KEYS`
 `raw_end_key` | The end key for the [range](architecture/overview.html#architecture-range), displayed as a [hexadecimal byte value](sql-constants.html#string-literals-with-character-escapes). | `KEYS`
 `range_id` | The internal [range](architecture/overview.html#architecture-range) ID. | Always emitted.
