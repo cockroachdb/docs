@@ -44,7 +44,7 @@ Parameter | Description
 
 ## Monitoring paused jobs
 
-Pausing a job will release existing [protected timestamp records](architecture/storage-layer.html#protected-timestamps) that are protecting historical data from [garbage collection](architecture/storage-layer.html#garbage-collection). As a result, you could lose historical data that certain jobs need, if the job remains paused longer than the [garbage collection window](configure-replication-zones.html#gc-ttlseconds).
+Pausing a job may release existing [protected timestamp records](architecture/storage-layer.html#protected-timestamps) that are protecting historical data from [garbage collection](architecture/storage-layer.html#garbage-collection). As a result, you could lose historical data that certain jobs need, if the job remains paused longer than the [garbage collection window](configure-replication-zones.html#gc-ttlseconds).
 
 When a [changefeed](create-changefeed.html) job is paused, the changefeed will protect data from garbage collection up to the time of the changefeed [checkpoint](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). Changefeeds also provide options for protecting changefeed data while paused. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail.
 
