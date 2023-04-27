@@ -50,16 +50,16 @@ Members of the [`admin` role](security-reference/authorization.html#admin-role) 
 
 ### Privileges for managing a restore job
 
-To manage a restore job with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), or [`CANCEL JOB`](cancel-job.html), users must:
+To manage a restore job with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), or [`CANCEL JOB`](cancel-job.html), users must have at least one of the following:
 
 - Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
-- Have the [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
 
-To view a restore job with [`SHOW JOB`](show-jobs.html), you must:
+To view a restore job with [`SHOW JOB`](show-jobs.html), users must have at least one of the following:
 
-- {% include_cached new-in.html version="v23.1" %} Have the [`VIEWJOB` privilege](security-reference/authorization.html#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
+- {% include_cached new-in.html version="v23.1" %} The [`VIEWJOB` privilege](security-reference/authorization.html#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
 - Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
-- Have the [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
 
 See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
