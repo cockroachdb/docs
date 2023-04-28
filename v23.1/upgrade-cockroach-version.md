@@ -130,10 +130,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE FUNCTION`](create-function.html) statement creates [user-defined functions](user-defined-functions.html).
-- [Trigram indexes](trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
-- [Predicates and projections in `CREATE CHANGEFEED` statements](create-changefeed.html). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
-
+- The [`CREATE FUNCTION`](create-function.html) statement creates [user-defined functions](user-defined-functions.html).The default value for the `server.user_login.password_hashes.default_cost.scram_sha_256` [cluster setting](../v23.1/cluster-settings.html) is now 10610. (Previously the default was 119680.) The old value was found to have been too high for many types of client hardware, and in some cases could cause regressions in connection latency. The new value was chosen by running tests with clients that have 1 or 2 vCPUs provisioned. Additionally, the new cluster setting `server.user_login.rehash_scram_stored_passwords_on_cost_change.enabled` was added, and defaults to `true`. If it is `true` and the stored SCRAM password for a user has a different cost than the configured default cost, then the next time the user logs in, their password will automatically be rehashed using the configured default cost. If the rehashing is not desired, then operators should update the `server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting to the value they desire before upgrading. [#98254][#98254]
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 
