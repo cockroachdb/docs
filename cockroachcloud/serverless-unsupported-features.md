@@ -41,13 +41,18 @@ The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/alter-table.h
 
 The [DB Console](../{{site.current_cloud_version}}/ui-overview.html) is not supported in {{ site.data.products.serverless }}. The CockroachDB [Cloud Console](cluster-overview-page.html) provides metrics and graphs to monitor the health, performance, and state of your cluster.
 
-The Cloud Console provides a subset of observability information from the DB Console including **SQL Metrics**, **SQL Activity**, and **Databases** information. The Cloud Console does not include information from the following DB Console pages:
+The Cloud Console provides a subset of observability information from the DB Console including [**SQL Metrics**](metrics-page.html), [**SQL Activity**](statements-page.html), [**Jobs**](jobs-page.html), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
 
 - Non-SQL metrics
 - Network Latency
 - Hot ranges
-- Jobs
 - Advanced Debug
+
+The Cloud Console also does not currently provide the following features available in the DB Console:
+
+- [Statement diagnostic bundles](../{{site.versions["stable"]}}/ui-statements-page.html#diagnostics) on the **Statements** Page
+- [Direct actions to drop unused indexes](../{{site.versions["stable"]}}/ui-databases-page.html#index-recommendations) on the **Insights** and **Databases** pages
+- [Direct actions to create missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) and [replace existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) on the **Insights** page
 
 {{ site.data.products.serverless }} clusters do not expose [Prometheus endpoints](../{{site.current_cloud_version}}/monitor-cockroachdb-with-prometheus.html).
 
