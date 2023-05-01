@@ -117,7 +117,7 @@ Note that closed timestamps are valid even if the leaseholder changes, since the
 
 Closed timestamps provide the guarantees that are used to provide support for low-latency historical (stale) reads, also known as [Follower Reads](../follower-reads.html). Follower reads can be particularly useful in [multi-region deployments](../multiregion-overview.html).
 
-When [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp can provide some mitigation. Increasing the closed timestamp interval can reduce the likelihood of long-running transactions having their [timestamps pushed](#timestamp-cache), and therefore, causing the transaction to retry. However, note that increasing the closed timestamp interval can have an impact on the following:
+When [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp can provide some mitigation. Increasing the closed timestamp interval can reduce the likelihood of long-running transactions having their [timestamps pushed](#timestamp-cache), and therefore, reduces the likelihood of the transaction retrying. However, note that increasing the closed timestamp interval can have an impact on the following:
 
 - [Follower reads](../follower-reads.html): Reads will be forced to read from the leaseholder, which may affect latency/throughput.
 - [Change data capture](../change-data-capture-overview.html): There could be a lag in changefeed messages.
