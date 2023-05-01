@@ -48,6 +48,19 @@ The listed privileges do not cascade to objects lower in the schema tree. For ex
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all three types of restore (cluster, database, and table) without the need to grant a specific `RESTORE` privilege.  However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
 
+### Privileges for managing a restore job
+
+To manage a restore job with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), or [`CANCEL JOB`](cancel-job.html), users must have at least one of the following:
+
+- Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+
+To view a restore job with [`SHOW JOB`](show-jobs.html), users must have at least one of the following:
+
+- {% include_cached new-in.html version="v23.1" %} The [`VIEWJOB` privilege](security-reference/authorization.html#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
+- Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+
 See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ## Required privileges using the legacy privilege model
@@ -63,7 +76,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
 - To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.

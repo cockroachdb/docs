@@ -1,26 +1,28 @@
 Privilege | Levels
 ----------|------------
 `ALL` | Database, Schema, Table, Sequence, Type
+`BACKUP` | System, Database, Table
+`CANCELQUERY` | System
+`CHANGEFEED` | Table
+`CONNECT` | Database
 `CREATE` | Database, Schema, Table, Sequence
+`DELETE` | Table, Sequence
 `DROP` | Database, Table, Sequence
 `EXECUTE` | Function
+`EXTERNALCONNECTION` | System
+`EXTERNALIOIMPLICITACCESS` | System
 `GRANT` | Database, Function, Schema, Table, Sequence, Type
-`CONNECT` | Database
-`SELECT` | Table, Sequence
 `INSERT` | Table, Sequence
-`DELETE` | Table, Sequence
+`MODIFYCLUSTERSETTING` | System
+`NOSQLLOGIN` | System
+`RESTORE` | System, Database
+`SELECT` | Table, Sequence
 `UPDATE` | Table, Sequence
 `USAGE`  | Function, Schema, Sequence, Type
-`ZONECONFIG` | Database, Table, Sequence
-`EXTERNALCONNECTION` | System
-`BACKUP` | System, Database, Table
-`RESTORE` | System, Database
-`EXTERNALIOIMPLICITACCESS` | System
-`MODIFYCLUSTERSETTING` | System
 `VIEWACTIVITY` | System
 `VIEWACTIVITYREDACTED` | System
 `VIEWCLUSTERMETADATA` | System
 `VIEWCLUSTERSETTING` | System
 `VIEWDEBUG` | System
-`CANCELQUERY` | System
-`NOSQLLOGIN` | System
+`VIEWJOB` | System
+`ZONECONFIG` | Database, Table, Sequence
