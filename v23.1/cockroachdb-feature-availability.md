@@ -31,17 +31,9 @@ General availability (GA)                     | Feature is production-ready and 
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
-### Customer-Managed Encryption Keys (CMEK) on {{ site.data.products.dedicated }}
-
-[Customer-Managed Encryption Keys (CMEK)](../cockroachcloud/cmek.html) allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform.
-
 ### Egress perimeter controls for {{ site.data.products.dedicated }}
 
 [Egress Perimeter Controls](../cockroachcloud/egress-perimeter-controls.html) can enhance the security of {{ site.data.products.dedicated }} clusters by enabling cluster administrators to restrict egress to a list of specified external destinations. This adds a strong layer of protection against malicious or accidental data exfiltration.
-
-### Private {{ site.data.products.dedicated }} clusters
-
-Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. [{{ site.data.products.dedicated }} private clusters](../cockroachcloud/private-clusters.html) allow organizations to meet this objective. A private {{ site.data.products.dedicated }} cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
 ### Export Cloud Organization audit logs (Cloud API)
 
