@@ -10,7 +10,7 @@ docs_area: manage
 Defining an execution locality for a backup job, could be useful in the following cases:
 
 - When nodes in a cluster operate in different locality tiers, networking rules can restrict nodes from accessing a storage bucket. For an example, see [Access backup storage restricted by network rules](#access-backup-storage-restricted-by-network-rules).
-- When a multi-region cluster is running heavy workloads and an agressive backup schedule, designating a region as the "backup" locality may improve latency. For an example, see [Create a non-primary region for backup jobs](#create-a-non-primary-region-for-backup-jobs).
+- When a multi-region cluster is running heavy workloads and an aggressive backup schedule, designating a region as the "backup" locality may improve latency. For an example, see [Create a non-primary region for backup jobs](#create-a-non-primary-region-for-backup-jobs).
 
 {{site.data.alerts.callout_info}}
 See [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html) to run backup jobs where each node writes files only to the backup storage bucket that matches the node locality configured at node startup.
