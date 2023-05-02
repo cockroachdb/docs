@@ -3,6 +3,7 @@ title: Authenticating to CockroachDB Cloud
 summary: Learn about the authentication features for CockroachDB Cloud clusters.
 toc: true
 docs_area: manage
+cloud: true
 ---
 
 {{ site.data.products.db }} has two levels of user identity and access management, the Organization level, and the cluster level. Refer to [CockroachDB Cloud Access Management Overview and FAQ: Overview of the {{ site.data.products.db }} two-level authorization model](authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).

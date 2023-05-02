@@ -3,6 +3,7 @@ title: Manage Certificate Authentication for SQL Clients
 summary: procedures for managing client certificates for dedicated clusters
 toc: true
 docs_area: manage.security
+cloud: true
 ---
 
 SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](cloud-sso-sql.html) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html). This page describes how to administer the cluster's certificate authority (CA) certificate and authenticate to a cluster using client certificates.
@@ -78,6 +79,8 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     ~~~
     
 1. Generate a root credential pair for the CA. Certificates created with this CA/secrets engine will be signed with the private key generated here and held within Vault; this key cannot be exported, safeguarding it from being leaked and used to issue fraudulent certificates. The CA public certificate is downloaded in the resulting JSON payload.
+
+    Refer to: [Vault documentation - PKI Secrets Engine: Setup and Usage](https://developer.hashicorp.com/vault/docs/secrets/pki/setup)
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -301,7 +304,7 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
 
 <section class="filter-content" markdown="1" data-scope="tf">
 
-Update the `cockroach_client_ca_cert` block in your terraform configuration, pointing to the updated certificate JSON file, and apply:
+Update the `cockroach_client_ca_cert` block in your Terraform template, then run `terraform apply`.:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -314,7 +317,7 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 
 ## Delete the certificate authority (CA) certificate for a dedicated cluster
 
-Remove the configured CA certificate from the cluster. Clients will no longer be able to authenticate with certificates signed by this CA certificate.
+This section shows how to remove the configured CA certificate from the cluster. Afterward, clients can no longer authenticate with certificates signed by this CA certificate.
 
 {{site.data.alerts.callout_success}}
 Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
@@ -373,16 +376,16 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
 </section>
 <section class="filter-content" markdown="1" data-scope="tf">
 
-To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your terraform configuration, then run `terraform apply`.
+To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your Terraform template, then run `terraform apply`.
 </section>
 
 ## Authenticate a SQL client to a {{ site.data.products.dedicated }} cluster
 
-To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a certificate authority (CA) who's public certificate is configured to be trusted by the cluster. Refer to [Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster)
+To use certificate authentication for a SQL client, you must include the filepaths to the client's private key and public certificate. The public certificate must be signed by a CA that the cluster has been configured to trust. Refer to [Upload a certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster).
 
-1. From your cluster's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, click on the **Connect** button.
+1. From your cluster's overview page, `https://cockroachlabs.cloud/cluster/{ your cluster ID }`, click the **Connect** button.
 
-1. Execute the command listed under **Download CA Cert** to download the required public certificate. This is used by your client to verify the identity of the cluster.
+1. Copy the command listed under **Download CA Cert** and run it locally to download the required public certificate, which your client will use to verify the identity of the cluster.
 
 1. Obtain your choice of connection string or CLI connection command for your cluster from the UI. This connection string is designed for password authentication and must be modified.
 
