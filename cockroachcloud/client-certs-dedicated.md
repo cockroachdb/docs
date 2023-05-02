@@ -116,7 +116,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     }
     ~~~
 
-### Create a PKI role and issue credentials for client
+### Create a PKI role and issue credentials for the client
 
 You can authenticate to a cluster using the private key and public certificate previously signed by the CA , as long as the cluster's trust store includes the corresponding CA.
 
