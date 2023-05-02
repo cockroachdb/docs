@@ -320,7 +320,7 @@ To use certificate authentication for a SQL client, you must include the filepat
 
     1. Remove the placeholder password from the connection string.
 
-    1. Construct the full connection string by providing the paths to `sslrootcert` (the cluster's public CA certificate), `sslcert` (the client's public certificate, which must be signed by the same CA), and `sslkey` (the client's private key).
+    1. Construct the full connection string by providing the paths to `sslrootcert` (the cluster's public CA certificate), `sslcert` (the client's public certificate, which must be signed by the CA specified in `sslrootcert`), and `sslkey` (the client's private key).
     
         Refer to: [Provision your cluster's PKI hierarchy ](#provision-your-clusters-pki-hierarchy).
 
