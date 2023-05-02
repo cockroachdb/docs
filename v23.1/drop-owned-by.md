@@ -31,7 +31,6 @@ The [role](security-reference/authorization.html#roles) must have the `DROP` [pr
 
 - [Enum](enum.html) types are not dropped.
 {% include {{page.version.version}}/known-limitations/drop-owned-by-role-limitations.md %}
-{% include {{page.version.version}}/known-limitations/drop-owned-by-function-limitations.md %}
 
 ## Examples
 
