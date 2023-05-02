@@ -38,7 +38,7 @@ Backup / Restore  | Description  | Product Support
 
 ### Additional backup and restore features
 
-- [Restrict nodes executing a backup job by locality](backup.html#restrict-nodes-executing-a-backup-job-by-locality)
+- [Execution Locality Backups](execution-locality-backups.html)
 - [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
 - [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups)
 

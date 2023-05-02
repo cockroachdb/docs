@@ -53,11 +53,13 @@ This section outlines some possible use cases for `EXECUTION LOCALITY` option.
 
 In certain cases, a cluster could be restricted by network rules across regions (or another locality requirement) for security purposes. This means that only nodes within the same region as the backup [cloud storage](use-cloud-storage.html) location can access the storage bucket. With `EXECUTION LOCALITY`, you can set up the backup to pin execution of the job to only the nodes with access to the bucket.
 
-The following diagram shows a CockroachDB cluster where each of the nodes can communicate with each other through a specific port, but any other network traffic is blocked. Leaseholders in regions that do not match the cloud storage cannot communicate with the storage to [export backup data](backup-architecture.html#export-phase).
+The following diagram shows a CockroachDB cluster where each of the nodes can communicate with each other through a specific port, but any other network traffic between regions is blocked. Leaseholders in regions that do not match the cloud storage region (Node 2) cannot access the storage to [export backup data](backup-architecture.html#export-phase). 
+
+Instead, Node 3's locality matches a backup job created with `EXECUTION LOCALITY`. Leaseholders and replicas within that locality designation holding the row data to back up will begin reading and exporting to cloud storage.
 
 <img src="{{ 'images/v23.1/network-restriction.png' | relative_url }}" alt="Using execution locality when there is a network restriction between locality requirements" style="border:0px solid #eee;max-width:100%" />
 
-To execute the backup from only the region with access to cloud storage, you specify locality filters that a node must match in order to take part in the backup job's execution.
+To execute the backup from only the region with access to cloud storage, you can specify [locality filters](cockroach-start.html#locality) that a node must match to take part in the backup job's execution.
 
 For example, you can pin the execution of the backup job to `us-west-1`: 
 
@@ -66,15 +68,20 @@ For example, you can pin the execution of the backup job to `us-west-1`:
 BACKUP DATABASE {database} INTO 'external://backup_storage_uswest' WITH EXECUTION LOCALITY = 'region=us-west-1';
 ~~~
 
-See the [`BACKUP`](backup.html) page for further detail on parameters and options. 
+See the [`BACKUP`](backup.html) page for further detail on other parameters and options. 
 
 ### Create a non-primary region for backup jobs
 
-When your [multi-region](multiregion-overview.html) cluster is running a frequent full backup and incremental backup schedule, it is necessary to balance the [backup schedule](create-schedule-for-backup.html) as well as the impact backup jobs may have on a cluster running data-intensive applications. One solution is to use node locality to section off part of the cluster, which will run backups, to minimize the impact running jobs have one the cluster.
+When your [multi-region](multiregion-overview.html) cluster is running a frequent full backup and incremental backup schedule, it is necessary to balance the [backup schedule](create-schedule-for-backup.html) as well as the impact backup jobs may have on a cluster running data-intensive applications. One solution is to use node locality to section off part of the cluster, which will run backups, to minimize the impact running jobs have on the cluster.
 
 This diagram shows a CockroachDB cluster in three regions. The node used to run the backup job was configured with [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) to provide low-latency reads. The node(s) in this region will complete the backup job coordination and data export to cloud storage.
 
 <img src="{{ 'images/v23.1/background-work.png' | relative_url }}" alt="Using execution locality to create a non-primary region for backup jobs" style="border:0px solid #eee;max-width:100%" />
+
+For detail on configuring a cluster as per the example, see:
+
+- The [`--locality`](cockroach-start.html#locality) flag to specify the locality tiers that describe the location of a node.
+- The `num_voters` and `voter_constraints` variables on the [Configure Replication Zones](configure-replication-zones.html#num_voters) page to configure non-voting replicas via zone configurations.
 
 With nodes in a specific region containing non-voting replicas, you can define the locality requirement for the nodes when creating the backup job:
 
@@ -82,11 +89,6 @@ With nodes in a specific region containing non-voting replicas, you can define t
 ~~~ sql
 BACKUP DATABASE {database} INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region={region},dc={datacenter}';
 ~~~
-
-For detail on configuring a cluster as per the example, see:
-
-- The [`--locality`](cockroach-start.html#locality) flag to specify the locality tiers that describe the location of a node.
-- The `num_voters` and `voter_constraints` variables on the [Configure Replication Zones](configure-replication-zones.html#num_voters) page to configure non-voting replicas via zone configurations.
 
 ## See also
 

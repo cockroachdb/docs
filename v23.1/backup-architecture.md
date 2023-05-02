@@ -59,7 +59,7 @@ Once one of the nodes has claimed the job from the system jobs table, it will ta
 
 To map out the storage location's directory to which the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-product-support) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup after any existing incremental layers discovered in it.
 
-To restrict the execution of the job to nodes meeting particular locality requirements, you can set the `EXECUTION LOCALITY` option. For detail on how this option affects the process of a backup job and an example, see [Restrict nodes executing the backup job by locality](backup.html#restrict-nodes-executing-a-backup-job-by-locality).
+To restrict the execution of the job to nodes meeting particular locality requirements, you can set the `EXECUTION LOCALITY` option. For detail on how this option affects the process of a backup job and an example, see [Execution Locality Backups](execution-locality-backups.html).
 
 For more information on how CockroachDB structures backups in storage, see [Backup collections](take-full-and-incremental-backups.html#backup-collections).
 

@@ -310,44 +310,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 (1 row)
 ~~~
 
-### Restrict nodes executing a backup job by locality
-
-
-
- You have network restrictions where only region us-west-1 has access to your storage bucket --> How would you set up your backup
-
-
-
-
-{% include_cached new-in.html version="v23.1" %} Use the `EXECUTION LOCALITY` option to set locality filter requirements that a node must meet in order to take part in executing a backup job. This will pin the [coordination of the backup job](backup-architecture.html#job-creation-phase) and the nodes that process the row data to the defined locality.
-
-When you start or [resume](resume-job.html) a backup with `EXECUTION LOCALITY`, it is necessary to determine the coordinating node for the job. If a node that does not match the locality filter is the first node to claim the job, it will find a node that does match the filter and transfer the execution to it. This can result in a short delay in starting or resuming a backup job that has execution locality requirements. 
-
-Once the coordinating node is determined, it will assign chunks of row data to nodes that are then responsible for reading that row data and backing it up. The coordinator will only assign row data to nodes that match the locality filter. The following will happen in different cases:
-
-- If the [leaseholder](architecture/reads-and-writes-overview.html#architecture-leaseholder) for part of the row data matches the filter, the coordinator will assign it that row data to process. 
-- If the leaseholder does not match the locality filter, the coordinator will select a node from those that match the locality filter with a preference for nodes with localities that are more similar to the leaseholder.
-
-When the coordinator assigns row data to a node matching the locality filter to back up, that node will read from the closest [replica](architecture/reads-and-writes-overview.html#architecture-replica). If the node is the leaseholder, or is itself a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas](configure-replication-zones.html), including potentially non-voting replicas that will have less impact on read latency in the locality or region that you plan on pinning for backup job execution.
-
-For an overview of the backup job phases, see the [Backup Architecture](backup-architecture.html) page.
-
-To specify the locality requirements for the coordinating node, run `EXECUTION LOCALITY` with key-value pairs:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-BACKUP DATABASE movr INTO 'external://backup_storage' WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws';
-~~~
-
-The key-value pairs represent the locality designations assigned to the [cluster](cockroach-start.html#locality).
-
-When you run `EXECUTION LOCALITY`, consider the following:
-
-- The backup job will fail if no nodes match the locality filter.
-- Selection of the coordinating node that matches the locality filter may noticeably increase the startup latency of the backup job.
-- Even though a backup job has been pinned to a locality, it does not guarantee the job will not read from another locality if there are no replicas in its locality.
-- You can not use `EXECUTION LOCALITY` in a locality-aware backup.
-
 ### Back up with an S3 storage class
 
 To associate your backup objects with a [specific storage class](use-cloud-storage.html#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
