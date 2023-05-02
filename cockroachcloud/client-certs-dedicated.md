@@ -1,11 +1,11 @@
 ---
-title: Manage Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters
+title: Manage Certificate Authentication for SQL Clients
 summary: procedures for managing client certificates for dedicated clusters
 toc: true
 docs_area: manage.security
 ---
 
-SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates, as an alternative to username/password authentication, [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](cloud-sso-sql.html), or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html). This page describes the procedures for administering the cluster's certificate authority (CA) certificate, and for authenticating to a cluster using client certificates.
+SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](cloud-sso-sql.html) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html). This page describes how to administer the cluster's certificate authority (CA) certificate and authenticate to a cluster using client certificates.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
@@ -19,7 +19,7 @@ This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroach
 
 ## Provision your cluster's PKI hierarchy
 
-There are many ways to create, manage and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates, without the need to reveal the CA private key.
+There are many ways to create, manage, and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates without revealing the CA private key.
 
 Refer to: [CockroachDB - HashiCorp Vault Integration](../{{site.versions["stable"]}}/hashicorp-integration.html)
 
@@ -33,7 +33,7 @@ Refer to:
 
 ### Initialize your Vault workstation
 
-1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on your workstation. Consider that your workstation must be secure in order for the PKI hierarchy you are establishing to be secure. Consider using a dedicated secure jumpbox, as described in [PKI Strategy](../{{site.versions["stable"]}}/manage-certs-vault.html#pki-strategy).
+1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on your workstation. Your workstation must be secure to ensure the security of the PKI hierarchy you are establishing. Consider using a dedicated secure jumpbox, as described in [PKI Strategy](../{{site.versions["stable"]}}/manage-certs-vault.html#pki-strategy).
 
 1. Obtain the required parameters to target and authenticate to Vault.
     
@@ -66,7 +66,7 @@ Refer to:
 
 ### Create the certificate authority (CA) certificate
 
-This CA certificate will be used to [configure your cluster's Trust Store](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster). Any client certificate signed by the CA identified by this certificate will be trusted, and be able to authenticate to your cluster.
+This CA certificate will be used to [configure your cluster's Trust Store](#upload-a-certificate-authority-ca-certificate-for-a-cockroachdb-dedicated-cluster). Any client certificate signed by the CA identified by this certificate will be trusted and can authenticate to your cluster.
 
 1. Create a PKI secrets engine to serve as your client CA.
 
@@ -89,23 +89,11 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     --format=json > "${SECRETS_DIR}/certs/cockroach_client_ca_cert.json"
     ~~~
 
-1. Format the public certificate for upload.
-
-    In order to upload your certificate to {{ site.data.products.db }}, you must create a JSON file with the public certificate itself as the value for a key `x509_pem_cert`, as in the following example.
-
-    ~~~json
-    {
-      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\nMzE1MjMyNTMxWjBZMQswCQYDVQQGEwJ1czELMAkGA1UECAwCV0ExDTALBgNVBAoM\nBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNVBAcMB1NlYXR0bGUxDTALBgNVBAsM...\n-----END CERTIFICATE-----"
-    }
-    ~~~
-
-    The public certificate can be found in the JSON file created by Vault at `.data.certificate`, for example, using the `jq` utility:
+    The public certificate can be found in the JSON file created by Vault at `.data.certificate`. You can extract it, for example, using the `jq` utility:
 
     {{site.data.alerts.callout_info}}
     On macOS, you can install `jq` from Homebrew: `brew install jq`
     {{site.data.alerts.end}}
-
-
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -113,12 +101,24 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     ~~~
 
     ~~~txt
-    "-----BEGIN CERTIFICATE-----\nMIIC8TCCAdmgA123IUBMV/L6InS7DmJCWv4eyDwazEihkwDQYJKoZIhvcNAQEL\nBQAwADAeFw0yMzA0MTgxNzI5MzhaFw0yMzA1MzAwOTMwMDhaMAAwggEiMA0GCSqG\nSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDPGJYjOxAUtZ0bfSGd1eoCRyZHmXKdfoPq\nENRyatgzZqJguqv6q6y6IHH3DhGNqMJXzn/wfDWGjd5tao+QSwjiJ/m0VhGDeap3\ngLkGXZ/NDsSLARecZNx/DI349PpeV3LgG9in7JbAAw0qRm+o061xGwB2Z9vH9EMM\naAZ2yRqXNlqCanD9EHruYdFBzvNnmnxkMmtaaMM7S4SiJ7yee4ZZZ6hBvILxRhSg\nUXdTL6I4Wu/JLcyk41haAwie/VXeNydqEo23wJDH2Ishm0jhE/p31f/17v8UILZ4\n6SFr84UUfH6jcZVYQbyg9lSb9QP70TWt2rO2K3knZXjwvOl5FpLhAgMBAAGjYzBh\nMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRtg99q\nfugnDm+OAF12MWX7vtHVnTAfBgNVHSMEGDAWgBRtg99qfugnDm+OAF12MWX7vtHV\nnTANBgkqhkiG9w0BAQsFAAOCAQEAvRqy/O9Y+l1ikLjmg4Y/+Cj/er28aAYtgkIA\nk8DsrwnvnwwTkfFyjMcv8+ZVZr7hukhvbKP6ElWuw6Zh13DP8FuR8vbFuPmoPGA3\nF9TdmKobZI0qf26F1eUPAUemEbYajBtdFHxzfJIXiG/ZM+JpX+OpCV1+LsZRz3n2\nGbzwuNc5nm1UNYZZ5CaEp0Yckfd3tuhTKyZi+mpAs3zPGuflGdKREBlc6XLfswhL\nqS7Ke0sTUR3YT/wGcWyVh822aQtH7+zucWQkvNXkdAwxjo8qD8XcxWLB5/Pj9XVM\n/5Na4xRIi+sgdMOgPpSm5a+gbUrjwa18LXxX9kc2aOEHTqpssQ==\n-----END CERTIFICATE-----"
+    "-----BEGIN CERTIFICATE-----\nMIIC8TCCAdmgA123IUBMV/L6InS7DmJCWv4eyDwazEihkwDQYJKoZIhvcNAQEL\nBQAwADAeFw0yMzA0MTgxNzI5MzhaFw0yM
+    ...
+    wGcWyVh822aQtH7+zucWQkvNXkdAwxjo8qD8XcxWLB5/Pj9XVM\n/5Na4xRIi+sgdMOgPpSm5a+gbUrjwa18LXxX9kc2aOEHTqpssQ==\n-----END CERTIFICATE-----"
+    ~~~
+
+1. Format a public certificate JSON for upload.
+
+    Create a JSON file that includes your certificate as the value for the `x509_pem_cert` key. You will use this JSON file to upload the certificate to {{ site.data.products.db }}. In this example, replace the certificate with the contents of your certificate.
+
+    ~~~json
+    {
+      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMzE1MjMyNTMxWjBZMQswCQYDVQQGEwJ1czELMAkGA1UECAwCV0ExDTALBgNVBAoM\nBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNVBAcMB1NlYXR0bGUxDTALBgNVBAsM...\n-----END CERTIFICATE-----"
+    }
     ~~~
 
 ### Create a PKI role and issue credentials for client
 
-These credentials (private key and public certificate signed by the CA created earlier) can be used to authenticate to a cluster that has the corresponding CA configured in its trust store.
+You can authenticate to a cluster using the private key and public certificate previously signed by the CA , as long as the cluster's trust store includes the corresponding CA.
 
 1.  Define a client PKI role in Vault:
     
@@ -132,7 +132,7 @@ These credentials (private key and public certificate signed by the CA created e
     max_ttl=48h
     ~~~
 
-1. Create PKI authentication credentials (a private key and public certificate) for a root user. 
+1. Create a PKI private key and public certificate for the `root` user. 
 
     {{site.data.alerts.callout_info}}
     CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
@@ -145,7 +145,7 @@ These credentials (private key and public certificate signed by the CA created e
     --format=json > "${SECRETS_DIR}/clients/certs.json"
     ~~~
 
-1. Parse the client key and certificate pair from the payload.
+1. Extract the client key and certificate pair from the payload.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -153,7 +153,7 @@ These credentials (private key and public certificate signed by the CA created e
     echo -e $(cat "${SECRETS_DIR}/clients/certs.json" | jq .data.certificate | tr -d '"') > "${SECRETS_DIR}/clients/client.root.crt"
     ~~~
 
-1. Set key file permissions; CockroachDB will reject improperly permissioned private keys for authentication.
+1. Ensure that the key file is owned by and readable only by the current user. CockroachDB will reject requests to authenticate using keys with overly-permissive permissions.
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -168,7 +168,7 @@ Add a CA certificate to your cluster's trust store for client authentication. Cl
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#the-cockroachdb-certificate-trust-store)
 
 {{site.data.alerts.callout_success}}
-Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
+The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -222,7 +222,7 @@ curl --request GET \
 <section class="filter-content" markdown="1" data-scope="tf">
 
 
-Add the following block to your terraform configuration and apply:
+Add the following block to your Terraform template and apply the change:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -233,9 +233,9 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 ~~~
 </section>
 
-## Update the certificate authority (CA) certificate for a dedicated cluster
+## Update the CA certificate for a dedicated cluster
 
-Replace the CA certificate used by your cluster for certificate-based client authentication.
+This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
 
 {{site.data.alerts.callout_success}}
 Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.

@@ -25,18 +25,18 @@ If you have not done so, [create your own free {{ site.data.products.serverless 
 
 To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.current_cloud_version}}/install-client-drivers.html).
 
-Clients can be authenticated with either username/password combination, or PKI security certificate.
+Clients can authenticate using either a username and password or a PKI security certificate.
 
 Refer to:
 
 - [Manage SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
 - [] 
 
-### Username/Password
+### Username and password
 
-To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username/password combination, and the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username and password, along with the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
 
-### Public Key Infrastructure (PKI) Security Certificate
+### Public key infrastructure (PKI) security certificate
 
 SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates. 
 

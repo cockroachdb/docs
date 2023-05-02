@@ -156,7 +156,7 @@ If the client is to use mutual authentication the client must have a private key
 
 ## PKI in {{ site.data.products.db }}
 
-PKI for internode communication within {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters is managed  automatically, without the need for any management by the user.
+PKI for internode communication within {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
 
 Authentication for SQL clients is available against {{ site.data.products.dedicated }} clusters.
 

@@ -5,11 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-This page summarizes the security features available in the two database cluster types offered by {{ site.data.products.db }}, **Serverless** and **Dedicated**.
+This page summarizes the security features available in the two database cluster types offered by {{ site.data.products.db }}, **serverless** and **dedicated**.
 
 A {{ site.data.products.serverless }} cluster is deployed on request for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
 
-A {{ site.data.products.dedicated }} cluster is deployed on request for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as PCI DSS compliance.
+A {{ site.data.products.dedicated }} cluster is deployed on request for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance](pci-dss.html).
 
 Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated](pci-dss.html)
 
@@ -31,7 +31,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>✓</td>
     <td>✓</td>
-    <td>Client identity authentication using username/password</td>
+    <td>Client identity authentication using a username and password</td>
   </tr>
   <tr>
     <td>✓</td>
@@ -41,7 +41,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Web console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a></td>
+    <td>Web console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
   </tr>
   <tr>
     <td>✓</td>
@@ -92,7 +92,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="https://www.cockroachlabs.com/docs/cockroachcloud/cmek">Customer Managed Encryption Keys (CMEK)</a>.
+    <td><a href="cockroachcloud/cmek">Customer Managed Encryption Keys (CMEK)</a>.
   </tr>
   <tr>
   <td rowspan="4" ><a href="authorization.html">Access Control (Authorization)</a></td>
@@ -134,7 +134,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Egress Perimiter Controls</td>
+    <td>Egress Perimeter Controls</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
