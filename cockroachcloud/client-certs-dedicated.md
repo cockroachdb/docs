@@ -9,13 +9,11 @@ SQL clients may authenticate to {{ site.data.products.dedicated }} clusters usin
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Authenticating to {{ site.data.products.db }}](authentication.html) for an overview of authentication in {{ site.data.products.db }}, both at the level of the organization and at the callout
+Refer to [Authenticating to {{ site.data.products.db }}](authentication.html) for an overview of authentication in {{ site.data.products.db }}, both at the level of the organization and at the cluster.
 
 {{site.data.alerts.callout_info}}
-This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
+{% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
-
-
 
 ## Provision your cluster's PKI hierarchy
 
@@ -181,42 +179,48 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
 
 1. Submit the asynchronous request, supplying your cluster ID, API key, and the path to the certificate JSON with your CA certificate, as described in [Create the certificate authority (CA) certificate](#create-the-certificate-authority-ca-certificate).
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request POST \
-  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
-  --header "Authorization: Bearer ${API_KEY}" \
-  --header 'content-type: application/json' \
-  --data "@cockroach_client_ca_cert.json"
-~~~
+    A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
 
-~~~txt
-200 OK
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request POST \
+      --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+      --header "Authorization: Bearer ${API_KEY}" \
+      --header 'content-type: application/json' \
+      --data "@cockroach_client_ca_cert.json"
+    ~~~
 
-1. Confirm success of the operation.
+    ~~~txt
+    200 OK
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request GET \
-  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
-  --header "Authorization: Bearer ${API_KEY}"
-~~~
+1. Confirm success of the operation with the following `GET` request.
 
-~~~txt
-{
-  "status": "PENDING",
-  "x509_pem_cert": ""
-}
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+      --header "Authorization: Bearer ${API_KEY}"
+    ~~~
 
-~~~txt
-{
-  "status": "IS_SET",
-  "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\n
-...\n-----END CERTIFICATE-----",
-}
-~~~
+    `PENDING` indicates that the operation is still in process.
+    
+    ~~~txt
+    {
+      "status": "PENDING",
+      "x509_pem_cert": ""
+    }
+    ~~~
+    
+    `IS_SET` indicates that the operation completed successfully, confirming the configured public CA cert.
+
+    ~~~txt
+    {
+      "status": "IS_SET",
+      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\n
+    ...\n-----END CERTIFICATE-----",
+    }
+    ~~~
 
 </section>
 <section class="filter-content" markdown="1" data-scope="tf">
@@ -238,7 +242,7 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
 
 {{site.data.alerts.callout_success}}
-Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
+The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -249,21 +253,54 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
 
 <section class="filter-content" markdown="1" data-scope="api">
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request PATCH \
-  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
-  --header "Authorization: Bearer ${API_KEY}" \
-  --header 'content-type: application/json' \
-  --data "@cockroach_client_ca_cert.json"
-~~~
+1. Submit the asynchronous request, supplying your cluster ID, API key, and the path to the certificate JSON with your CA certificate, as described in [Create the certificate authority (CA) certificate](#create-the-certificate-authority-ca-certificate).
 
-~~~txt
-200 OK
-~~~
+    A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request PATCH \
+      --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+      --header "Authorization: Bearer ${API_KEY}" \
+      --header 'content-type: application/json' \
+      --data "@cockroach_client_ca_cert.json"
+    ~~~
+
+    ~~~txt
+    200 OK
+    ~~~
+
+1. Confirm success of the operation with the following `GET` request.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+      --header "Authorization: Bearer ${API_KEY}"
+    ~~~
+
+    `PENDING` indicates that the operation is still in process.
+    
+    ~~~txt
+    {
+      "status": "PENDING",
+      "x509_pem_cert": ""
+    }
+    ~~~
+    
+    `IS_SET` indicates that the operation completed successfully, confirming the configured public CA cert.
+
+    ~~~txt
+    {
+      "status": "IS_SET",
+      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\n
+    ...\n-----END CERTIFICATE-----",
+    }
+    ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="tf">
+
 Update the `cockroach_client_ca_cert` block in your terraform configuration, pointing to the updated certificate JSON file, and apply:
 
 {% include_cached copy-clipboard.html %}
@@ -291,19 +328,50 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
 
 <section class="filter-content" markdown="1" data-scope="api">
 
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request DELETE \
-  --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
-  --header "Authorization: Bearer ${API_KEY}"
-~~~
+1. Submit the asynchronous `DELETE` request, supplying your cluster ID, API key, and the path to the certificate JSON with your CA certificate, as described in [Create the certificate authority (CA) certificate](#create-the-certificate-authority-ca-certificate).
 
-~~~txt
-200 OK
-~~~
+    A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
+ 
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request DELETE \
+      --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+      --header "Authorization: Bearer ${API_KEY}"
+    ~~~
+
+    ~~~txt
+    200 OK
+    ~~~
+
+1. Confirm success of the operation with the following `GET` request.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~shell
+    curl --request GET \
+      --url ${COCKROACH_SERVER}/api/v1/clusters/${CLUSTER_ID}/client-ca-cert \
+      --header "Authorization: Bearer ${API_KEY}"
+    ~~~
+
+    `PENDING` indicates that the operation is still in process.
+    
+    ~~~txt
+    {
+      "status": "PENDING",
+      "x509_pem_cert": ""
+    }
+    ~~~
+    
+    `IS_SET` indicates that the operation completed successfully, confirming the configured public CA cert.
+
+    ~~~txt
+    {
+      "status": "IS_SET",
+      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\n
+    ...\n-----END CERTIFICATE-----",
+    }
+    ~~~
 </section>
 <section class="filter-content" markdown="1" data-scope="tf">
-
 
 To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your terraform configuration, then run `terraform apply`.
 </section>

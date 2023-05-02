@@ -27,10 +27,7 @@ To execute SQL statements or perform database administration functions on a clus
 
 Clients can authenticate using either a username and password or a PKI security certificate.
 
-Refer to:
-
-- [Manage SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
-- [] 
+Refer to: [Manage SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
 
 ### Username and password
 
@@ -45,9 +42,8 @@ Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](..
 Refer to [Managing Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
 
 {{site.data.alerts.callout_info}}
-This feature is in [**limited access**](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
+{% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
-
 
 ## Node identity verification
 

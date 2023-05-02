@@ -92,7 +92,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="cockroachcloud/cmek.html">Customer Managed Encryption Keys (CMEK)</a>.
+    <td><a href="cmek.html">Customer Managed Encryption Keys (CMEK)</a>.
   </tr>
   <tr>
   <td rowspan="4" ><a href="authorization.html">Access Control (Authorization)</a></td>
