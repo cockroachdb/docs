@@ -52,7 +52,7 @@ The Cloud Console also does not currently provide the following features availab
 
 - [Statement diagnostic bundles](../{{site.versions["stable"]}}/ui-statements-page.html#diagnostics) on the **Statements** Page
 - [Direct actions to drop unused indexes](../{{site.versions["stable"]}}/ui-databases-page.html#index-recommendations) on the **Insights** and **Databases** pages
-- [Direct actions to create missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) and [replace existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-view) on the **Insights** page
+- [Direct actions to create missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-tab) and [replace existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-tab) on the **Insights** page
 
 {{ site.data.products.serverless }} clusters do not expose [Prometheus endpoints](../{{site.current_cloud_version}}/monitor-cockroachdb-with-prometheus.html).
 
