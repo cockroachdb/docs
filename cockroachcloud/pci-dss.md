@@ -79,7 +79,7 @@ When a system complies with PCI DSS, the system meets the goals of the standard 
 </tgroup>
 </table>
 
-{{ site.data.products.dedicated }} has implemented the requirements outlined in [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf) within the DBaaS platform. To take advantage of that compliance, you should take the actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer).
+{{ site.data.products.dedicated }} is certified by a PCI Qualified Security Assessor (QSA) to be compliant with [PCI DSS 3.2.1](https://listings.pcisecuritystandards.org/documents/SAQ_D_v3_Merchant.pdf). Customers are still responsible to ensure that their applications are PCI DSS compliant. Customers may need to take the additional actions outlined in [Responsibilities of the customer](#responsibilities-of-the-customer) to maintain their own PCI compliance when using CockroachDB Dedicated clusters for cardholder data or other sensitive data.
 
 ## Responsibilities of Cockroach Labs
 
@@ -92,7 +92,7 @@ Cockroach Labs takes actions to ensure that the operating procedures and the dep
 - Regularly scanning our environment using tools designated by PCI as [Approved Scanning Vendors (ASVs)](https://www.pcidssguide.com/what-is-a-pci-approved-scanning-vendor-asv/) to ensure our continued compliance with PCI DSS 3.2.1, and correcting issues as quickly as possible.
 - Regularly scanning our environment and software for known security vulnerabilities and applying updates and security patches in a timely manner.
 - Implementing [data loss prevention (DLP)](https://pcidss.com/listing-category/data-loss-protection-dlp) tools and techniques.
-- [Logging](cloud-org-audit-logs.html) cluster actions and events, redacting sensitive information in audit logs, and retaining audit logs according to the [PCI DSS logging requirements](https://listings.pcisecuritystandards.org/documents/Effective-Daily-Log-Monitoring-Guidance.pdf).
+- [Logging](cloud-org-audit-logs.html) cluster actions and events, redacting sensitive information in audit logs, and retaining audit logs according to the [PCI DSS 3.2.1 logging requirements](https://listings.pcisecuritystandards.org/documents/Effective-Daily-Log-Monitoring-Guidance.pdf).
 
 A comprehensive list of all actions that Cockroach Labs takes to ensure compliance with PCI DSS 3.2.1 is beyond the scope of this document. For more information, contact your Cockroach Labs account team.
 
