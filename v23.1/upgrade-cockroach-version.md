@@ -130,10 +130,8 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE FUNCTION`](create-function.html) statement creates [user-defined functions](user-defined-functions.html).
-- [Trigram indexes](trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
-- [Predicates and projections in `CREATE CHANGEFEED` statements](create-changefeed.html). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
-
+- The [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html) statement allows you to create scheduled changefeeds.
+- The [`MODIFYSQLCLUSTERSETTING` and `VIEWJOB` system privileges](security-reference/authorization.html#supported-privileges).
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 
