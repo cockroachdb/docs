@@ -2,7 +2,7 @@ Note: macOS users may need to manually enable Alt-based shortcuts in their termi
 
 | Shortcut                | Description |
 |-------------------------|------------------------------------------------------------------------------------|
-| Tab                     | Use [context-sensitive command completion](#tab-completion). |
+| Tab <a href="#new-shortcuts"><sup>*</sup></a> | Use [context-sensitive command completion](#tab-completion). |
 | Ctrl+C                  | Clear/cancel the input. |
 | Ctrl+M, Enter           | New line/enter. |
 | Ctrl+O                  | Force a new line on the current statement, even if the statement has a semicolon. |
@@ -17,21 +17,23 @@ Note: macOS users may need to manually enable Alt-based shortcuts in their termi
 | Alt+D, Alt+Delete       | Delete next word. |
 | Ctrl+W, Alt+Backspace   | Delete previous word. |
 | Ctrl+E, End             | End of line. |
-| Alt+>, Ctrl+End         | Move cursor to the end of a multi-line statement. |
+| Alt+>, Ctrl+End <a href="#new-shortcuts"><sup>*</sup></a> | Move cursor to the end of a multi-line statement. |
 | Ctrl+A, Home            | Move cursor to the beginning of the current line. |
-| Alt+<, Ctrl+Home        | Move cursor to the beginning of a multi-line statement. |
+| Alt+<, Ctrl+Home <a href="#new-shortcuts"><sup>*</sup></a> | Move cursor to the beginning of a multi-line statement. |
 | Ctrl+T                  | Transpose current and next characters. |
 | Ctrl+K                  | Delete from cursor position until end of line. |
 | Ctrl+U                  | Delete from beginning of line to cursor position. |
-| Alt+Q                   | Reflow/reformat the current line. |
-| Alt+Shift+Q, Alt+`      | Reflow/reformat the entire input. |
+| Alt+Q<a href="#new-shortcuts"><sup>*</sup></a> | Reflow/reformat the current line. |
+| Alt+Shift+Q, Alt+` <a href="#new-shortcuts"><sup>*</sup></a> | Reflow/reformat the entire input. |
 | Alt+L                   | Convert the current word to lowercase. |
 | Alt+U                   | Convert the current word to uppercase. |
-| Alt+.                   | Toggle the visibility of the prompt. |
-| Alt+2, Alt+F2           | Invoke external editor on current input. |
+| Alt+. <a href="#new-shortcuts"><sup>*</sup></a> | Toggle the visibility of the prompt. |
+| Alt+2, Alt+F2 <a href="#new-shortcuts"><sup>*</sup></a> | Invoke external editor on current input. |
 | Alt+P, Up arrow         | Recall previous history entry. |
 | Alt+N, Down arrow       | Recall next history entry. |
 | Ctrl+R                  | Start searching through input history. |
+
+<a name="new-shortcuts"><sup>*</sup></a>{% include_cached new-in.html version="v23.1" %}
 
 When searching for history entries, the following shortcuts are active:
 
@@ -45,4 +47,4 @@ When searching for history entries, the following shortcuts are active:
 
 #### Tab completion
 
-The SQL client offers context-sensitive tab completion when entering commands. Use the **Tab** key on your keyboard when entering a command to initiate the command completion interface. You can then navigate to database objects, keywords, and functions using the arrow keys. Press the **Tab** key again to select the object, function, or keyword from the command completion interface and return to the console.
+{% include_cached new-in.html version="v23.1" %} The SQL client offers context-sensitive tab completion when entering commands. Use the **Tab** key on your keyboard when entering a command to initiate the command completion interface. You can then navigate to database objects, keywords, and functions using the arrow keys. Press the **Tab** key again to select the object, function, or keyword from the command completion interface and return to the console.
