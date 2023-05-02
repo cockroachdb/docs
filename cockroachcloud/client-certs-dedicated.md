@@ -316,7 +316,7 @@ To use certificate authentication for a SQL client, you must include the filepat
 
 1. Execute the command listed under **Download CA Cert** to download the required public certificate. This is used by your client to verify the identity of the cluster.
 
-1. Obtain a connection string/command for your cluster. This connection string is designed for password authentication and must be modified.
+1. Obtain your choice of connection string or CLI connection command for your cluster from the UI. This connection string is designed for password authentication and must be modified.
 
     1. Remove the placeholder password from the connection string.
 
