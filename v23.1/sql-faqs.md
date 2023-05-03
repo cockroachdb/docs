@@ -133,11 +133,9 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 ## Does CockroachDB support full text search?
 
-If you need full text search in a production environment, Cockroach Labs recommends that you use a search engine like [Elasticsearch](https://www.elastic.co/elasticsearch) or [Solr](https://solr.apache.org/). You can use CockroachDB [change data capture (CDC)](change-data-capture-overview.html) to set up a [changefeed](changefeed-messages.html) to keep Elasticsearch and Solr indexes synchronized to your CockroachDB tables.
+Yes. For more information, see [Full-Text Search](full-text-search.html).
 
-Depending on your use case, you may be able to get by using [trigram indexes](trigram-indexes.html) to do fuzzy string matching and pattern matching. For more information about use cases for trigram indexes that could make having full text search unnecessary, see the 2022 blog post [Use cases for trigram indexes (when not to use Full Text Search)](https://www.cockroachlabs.com/blog/use-cases-trigram-indexes/).
-
-For an example showing how to build a simplified full text indexing and search solution using CockroachDB's support for [generalized inverted indexes (also known as GIN indexes)](inverted-indexes.html), see the 2020 blog post [Full Text Indexing and Search in CockroachDB](https://www.cockroachlabs.com/blog/full-text-indexing-search/).
+{% include {{ page.version.version }}/sql/use-case-trigram-indexes.md %}
 
 ## See also
 

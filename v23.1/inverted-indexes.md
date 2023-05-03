@@ -10,10 +10,11 @@ Generalized inverted indexes, or GIN indexes, store mappings from values within 
 
 CockroachDB stores the contents of the following data types in GIN indexes:
 
-- [JSONB](jsonb.html)
-- [Arrays](array.html)
+- [`JSONB`](jsonb.html)
+- [`ARRAY`](array.html)
 - [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](spatial-indexes.html)
-- [Strings (using trigram indexes)](trigram-indexes.html)
+- [`TSVECTOR` (for full-text search)](tsvector.html)
+- [`STRING` (using trigram indexes)](trigram-indexes.html)
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using GIN indexes to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
@@ -60,7 +61,7 @@ This lets you search based on subcomponents.
 
 ### Creation
 
-You can use GIN indexes to improve the performance of queries using `JSONB` or `ARRAY` columns. You can create them:
+You can use GIN indexes to improve the performance of queries using [`JSONB`](jsonb.html), [`ARRAY`](array.html), [`TSVECTOR`](tsvector.html) columns (for [full-text searches](full-text-search.html)), or [`STRING`](string.html) (for [fuzzy searches using trigrams](trigram-indexes.html)). You can create them:
 
 - Using the PostgreSQL-compatible syntax [`CREATE INDEX ... USING GIN`](create-index.html):
 
@@ -68,16 +69,26 @@ You can use GIN indexes to improve the performance of queries using `JSONB` or `
     CREATE INDEX {optional name} ON {table} USING GIN ({column});
     ~~~
 
-    You can also specify the `jsonb_ops` or `array_ops` opclass (for `JSONB` and `ARRAY` columns, respectively) using the syntax:
+    Also specify an opclass when [creating a trigram index](trigram-indexes.html#creation):
 
     ~~~ sql
     CREATE INDEX {optional name} ON {table} USING GIN ({column} {opclass});
     ~~~
 
+    {{site.data.alerts.callout_success}}
+    You can also use the preceding syntax to specify the `jsonb_ops` or `array_ops` opclass (for `JSONB` and `ARRAY` columns, respectively).
+    {{site.data.alerts.end}}
+
 - While creating the table, using the syntax [`CREATE INVERTED INDEX`](create-table.html#create-a-table-with-secondary-and-gin-indexes):
 
     ~~~ sql
     CREATE INVERTED INDEX {optional name} ON {table} ({column});
+    ~~~
+
+    Also specify an opclass when [creating a trigram index](trigram-indexes.html#creation):
+
+    ~~~ sql
+    CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
     ~~~
 
 ### Selection
@@ -193,7 +204,7 @@ CREATE TABLE users (
 
 ## Examples
 
-### Create a table with GIN index on a JSONB column
+### Create a table with GIN index on a `JSONB` column
 
 In this example, let's create a table with a `JSONB` column and a GIN index:
 
@@ -269,7 +280,7 @@ Now, run a query that filters on the `JSONB` column:
 (2 rows)
 ~~~
 
-### Add a GIN index to a table with an array column
+### Add a GIN index to a table with an `ARRAY` column
 
 In this example, let's create a table with an `ARRAY` column first, and add the GIN index later:
 
@@ -335,7 +346,7 @@ Now, let’s add a GIN index to the table and run a query that filters on the `A
 (2 rows)
 ~~~
 
-### Create a table with a partial GIN index on a JSONB column
+### Create a table with a partial GIN index on a `JSONB` column
 
 In the same `users` table from [Create a table with GIN index on a JSONB column](#create-a-table-with-gin-index-on-a-jsonb-column), create a partial GIN index for online users.
 
@@ -369,9 +380,13 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 (1 row)
 ~~~
 
-### Create a trigram index on a STRING column
+### Create a trigram index on a `STRING` column
 
 For an example showing how to create a trigram index on a [`STRING`](string.html) column, see [Trigram Indexes](trigram-indexes.html#examples).
+
+### Create a full-text index on a `TSVECTOR` column
+
+For an example showing how to create a full-text index on a [`TSVECTOR`](tsvector.html) column, see [Full-Text Search](full-text-search.html#examples).
 
 ### Inverted join examples
 

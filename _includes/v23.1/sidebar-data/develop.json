@@ -121,6 +121,12 @@
               ]
             },
             {
+              "title": "Index Full Text",
+              "urls": [
+                "/${VERSION}/full-text-search.html"
+              ]
+            },
+            {
               "title": "Index Trigrams",
               "urls": [
                 "/${VERSION}/trigram-indexes.html"
