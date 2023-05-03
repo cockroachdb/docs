@@ -10,21 +10,66 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### Limitations for `AS OF SYSTEM TIME`
+### Limitations for `EXPLAIN ANALYZE`
 
-- #30955 Support placeholder argument for AOST
+- [`EXPLAIN ANALYZE`](explain-analyze.html) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
 
-### Limitations for `ANALYZE`
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92036)
 
-- #92036 ANALYZE doesn't collect inverted stats on columns that are indexed with both forward and inverted
-- #96430 Add explicit AOST syntax to ANALYZE
+- [`EXPLAIN ANALYZE`](explain-analyze.html) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`](create-statistics.html#create-statistics-as-of-a-given-time) instead.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/96430)
 
 ### Limitations for index recommendations
 
-- #84681 index recommendations should be aware of hash sharding 
-- #84680 RBR tables
+- [Index](indexes.html) recommendations are not aware of [hash sharding](hash-sharded-indexes.html).
 
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
 
+- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
+
+### No support for placeholders in `AS OF SYSTEM TIME`
+
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). This means that the time value has to be embedded in the SQL string.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
+
+### `SELECT FOR UPDATE` places locks on each key scanned by the base index scan
+
+[`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+
+### Declarative schema changer does not track rows in `system.privileges`
+
+The [declarative schema changer](online-schema-changes.html#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`](drop-owned-by.html) statement.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
+
+### `null_ordered_last` does not produce correct results with tuples
+
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with Postgres, the `null_ordered_last` [session variable](set-vars.html) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
+
+### Inverted join for `tsvector` and `tsquery` types is not supported
+
+CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102731)
+
+### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
+
+There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`](cockroach-node.html) is interrupted in one of the following ways:
+
+- The `cockroach node decommission --wait-all` command was run and then interrupted
+- The `cockroach node decommission --wait=none` command was run
+
+This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
 
 ## Unresolved limitations
 
@@ -61,6 +106,12 @@ The following are not currently allowed within the body of a [UDF](user-defined-
 - References to other user-defined functions.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
+
+### Incorrect query plans for partitions with `NULL` values
+
+In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so is not likely to occur in production environments.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/82774)
 
 ### Limitations for `DROP OWNED BY`
 
@@ -120,6 +171,12 @@ The `transaction_rows_read_err` and `transaction_rows_written_err` [session sett
 The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
+
+### CockroachDB does not allow inverted indexes with `STORING`
+
+CockroachDB does not allow inverted indexes with a [`STORING` column](create-index#store-columns).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88278)
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
