@@ -6,15 +6,31 @@ docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.db }} has two levels of user identity and access management, the Organization level, and the cluster level. Refer to [CockroachDB Cloud Access Management Overview and FAQ: Overview of the {{ site.data.products.db }} two-level authorization model](authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
+Users may connect with {{ site.data.products.db }} at two levels, the organization and the cluster, both of which are covered in this page.
 
-Users may connect with {{ site.data.products.db }} in two ways:
+Refer to: [Overview of the {{ site.data.products.db }} two-level authorization model](authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
 
-- The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides an overview of your {{ site.data.products.db }} account, and offers functionality for administering or connecting to clusters.
-- SQL clients, including the [CockroachDB CLI](../{{site.current_cloud_version}}/cockroach-start.html) client and the [various supported drivers and ORMs](../{{site.current_cloud_version}}/install-client-drivers.html), connect directly to CockroachDB clusters using the [CockroachDB SQL interface](../{{site.current_cloud_version}}/sql-feature-support.html).
+## Overview of {{ site.data.products.db }} authentication
 
+**Organization level** functions can be performed through three different interfaces, each with its own authentication flows:
 
-## {{ site.data.products.db }} authentication
+- The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides a user with an overview of their {{ site.data.products.db }} account, and offers functionality for administering an organization and the clusters within it.
+
+	Refer to: [Console authentication](#console-authentication)
+
+- The `ccloud` utility allows users to execute cloud functions from the command line.
+
+	Refer to: [`ccloud` authentication](#ccloud-authentication)
+
+- The {{ site.data.products.db }} API allows [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account) to perform many organization and cluster administration functions.
+
+	Refer to: [Cloud API authentication](#cloud-api-authentication)
+
+**Cluster level functions**, i.e. SQL statements, are executed through the SQL interface via PostgreSQL clients.
+
+	Refer to: [SQL client authentication](#sql-client-authentication)
+
+## Console authentication
 
 You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for {{ site.data.products.db }}](cloud-org-sso.html).
 
@@ -22,19 +38,56 @@ You may log in to the [{{ site.data.products.db }} Console](https://cockroachlab
 
 If you have not done so, [create your own free {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 
-## Connecting SQL clients
+## `ccloud` authentication
+
+The `ccloud` utility offers Organization users a way to script many functions that must otherwise be performed in the console interface.
+
+For more information, refer to: [Get Started with the `ccloud` CLI
+](ccloud-get-started.html)
+
+To authenticate `ccloud` to a organization particular, run the following command. `ccloud` will open up your machine's default browser, attempt to authenticate to the console and export a temporary auth token.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+ccloud auth login --org <organization label>
+~~~
+
+Refer to: [Log in to CockroachDB Cloud using ccloud auth](ccloud-get-started.html#log-in-to-cockroachdb-cloud-using-ccloud-auth)
+
+## Cloud API authentication
+
+The [Cloud API](cloud-api.html) allows automated execution of organization functions. Unlike `ccloud` and the console, however, the API can not be authenticated by users, but by [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account).
+
+Service accounts authenticate to the API using API keys, which are provisioned through the console.
+
+Refer to: [Managing Service Accounts: API access](managing-access.html#api-access)
+
+## SQL client authentication
 
 To execute SQL statements or perform database administration functions on a cluster, you must connect to the cluster with a SQL client. CockroachDB clients include the CockroachDB CLI, and numerous [drivers and object-relational mapping (ORM) tools](../{{site.current_cloud_version}}/install-client-drivers.html).
 
-Clients can authenticate using either a username and password or a PKI security certificate.
+### The connection string
 
-Refer to: [Manage SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
+You can obtain a connection string or CLI command for your cluster, to use with your choice of SQL client, by visiting your cluster's overview page, and clicking **Connect** button, and following the instructions.
+
+`https://cockroachlabs.cloud/cluster/< your cluster UUID >/`
+
+Clients can authenticate in two ways. Your connection string must be modified depending on which you are using:
+
+- [Username and password](#username-and-password)
+- [PKI security certificate](#pki-security-certificate)
+
+Note that the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority) is also required for server authentication. This certificate can be downloaded by following the instructions in the **Connect** UI.
 
 ### Username and password
 
-To connect any SQL client to a {{ site.data.products.db }} cluster, you must have a username and password, along with the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority).
+A user can authenticate to a cluster by providing their username and password in the connection string.
 
-### Public key infrastructure (PKI) security certificate
+[The connection string](#the-connection-string) UI will indicate how to modify the string to user credentials.
+
+For information on managing SQL user credentials, including provisioning passwords, refer to [Manage SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster).
+
+### PKI security certificate
 
 SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates. 
 
@@ -56,7 +109,6 @@ To connect securely to your cluster using the `verify-full` mode:
 1. When connecting to the cluster, specify the path to the `certs` directory in the connection string. See [Connect to your cluster](connect-to-your-cluster.html) for more details.
 
 You can also use the `require` SSL mode, although we do not recommend using it since it can make the cluster susceptible to MITM and impersonation attacks. For more information, see the "Protection Provided in Different Modes" section in PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
-
 
 For more information about creating SQL users and passwords, see [User Authorization](managing-access.html).
 
