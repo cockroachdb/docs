@@ -174,7 +174,7 @@ The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) m
 
 ### CockroachDB does not allow inverted indexes with `STORING`
 
-CockroachDB does not allow inverted indexes with a [`STORING` column](create-index#store-columns).
+CockroachDB does not allow inverted indexes with a [`STORING` column](create-index.html#store-columns).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88278)
 
