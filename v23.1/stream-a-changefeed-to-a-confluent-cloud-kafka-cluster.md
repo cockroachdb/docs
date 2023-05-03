@@ -317,6 +317,8 @@ You can also [create external connections](create-external-connection.html) to d
     CREATE CHANGEFEED FOR TABLE users INTO "external://kafka" WITH updated, format = avro, confluent_schema_registry = "external://confluent_registry";
     ~~~
 
+    See [Options](create-changefeed.html#options) for a list of all available Enterprise changefeed options.
+
 ## Step 9. Verify the output
 
 Move to the terminal window in which you started the Kafka consumer. As the changefeed runs, you will see the change data messages similar to the following:
