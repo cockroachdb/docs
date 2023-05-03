@@ -180,7 +180,7 @@ Protected timestamps will protect changefeed data from garbage collection in the
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
 - You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
-However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can:
+However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
 
 - [Cancel](cancel-job.html) the changefeed job.
 - [Resume](resume-job.html) a paused changefeed job.

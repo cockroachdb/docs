@@ -165,6 +165,8 @@ Protected timestamps work by creating *protection records*, which are stored in 
 
 Upon successful creation of a protection record, the MVCC values for the specified data at timestamps less than or equal to the protected timestamp will not be garbage collected. When the job that created the protection record finishes its work, it removes the record, allowing the garbage collector to run on the formerly protected values.
 
+For further detail on protected timestamps, see the Cockroach Labs Blog [Protected Timestamps: For a future with less garbage](https://www.cockroachlabs.com/blog/protected-timestamps-for-less-garbage/).
+
 ## Interactions with other layers
 
 ### Storage and replication layers
