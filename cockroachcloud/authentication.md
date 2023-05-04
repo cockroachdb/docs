@@ -14,7 +14,7 @@ Refer to: [Overview of the {{ site.data.products.db }} two-level authorization m
 
 **Organization level** functions can be performed through three different interfaces, each with its own authentication flows:
 
-- The [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) provides a user with an overview of their {{ site.data.products.db }} account, and offers functionality for administering an organization and the clusters within it.
+- The [{{ site.data.products.db }} Console UI](https://cockroachlabs.cloud/) provides a user with an overview of their {{ site.data.products.db }} account, and offers functionality for administering an organization and the clusters within it.
 
 	Refer to: [Console authentication](#console-authentication)
 
@@ -26,11 +26,11 @@ Refer to: [Overview of the {{ site.data.products.db }} two-level authorization m
 
 	Refer to: [Cloud API authentication](#cloud-api-authentication)
 
-**Cluster level functions**, i.e. SQL statements, are executed through the SQL interface via PostgreSQL clients.
+**Cluster level functions**, i.e. SQL statements, are executed by SQL clients.
 
 	Refer to: [SQL client authentication](#sql-client-authentication)
 
-## Console authentication
+## Console UI authentication
 
 You may log in to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) with a username and password, or by using [Single Sign-on (SSO) for {{ site.data.products.db }}](cloud-org-sso.html).
 
@@ -45,7 +45,7 @@ The `ccloud` utility offers Organization users a way to script many functions th
 For more information, refer to: [Get Started with the `ccloud` CLI
 ](ccloud-get-started.html)
 
-To authenticate `ccloud` to a organization particular, run the following command. `ccloud` will open up your machine's default browser, attempt to authenticate to the console and export a temporary auth token.
+To authenticate `ccloud` to a particular organization, run the following command. `ccloud` will open up your machine's default browser, attempt to authenticate to the console and export a temporary auth token.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -56,9 +56,9 @@ Refer to: [Log in to CockroachDB Cloud using ccloud auth](ccloud-get-started.htm
 
 ## Cloud API authentication
 
-The [Cloud API](cloud-api.html) allows automated execution of organization functions. Unlike `ccloud` and the console, however, the API can not be authenticated by users, but by [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account).
+The [Cloud API](cloud-api.html) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account).
 
-Service accounts authenticate to the API using API keys, which are provisioned through the console.
+Service accounts authenticate to the API using API keys, which are provisioned through the console UI.
 
 Refer to: [Managing Service Accounts: API access](managing-access.html#api-access)
 
@@ -77,7 +77,7 @@ Clients can authenticate in two ways. Your connection string must be modified de
 - [Username and password](#username-and-password)
 - [PKI security certificate](#pki-security-certificate)
 
-Note that the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority) is also required for server authentication. This certificate can be downloaded by following the instructions in the **Connect** UI.
+Note that the [TLS public root certificate authority (CA) certificate of the cluster](../{{site.current_cloud_version}}/security-reference/transport-layer-security.html#certificates-signing-trust-and-authority) is also required for authenticating the cluster server against the SQL client. This certificate can be downloaded by following the instructions in the **Connect** UI.
 
 ### Username and password
 

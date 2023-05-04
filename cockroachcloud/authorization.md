@@ -88,7 +88,7 @@ Cluster Creators can create clusters in an organization. A cluster's creator is 
 
 ## Service accounts
 
-Service accounts authenticate with API keys and the {{ site.data.products.db }} API, rather than via the {{ site.data.products.db }} Console.
+Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users.
 

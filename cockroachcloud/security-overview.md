@@ -41,7 +41,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Web console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
+    <td>Cluster DB console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
   </tr>
   <tr>
     <td>✓</td>
@@ -49,7 +49,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td>SQL Client authentication with <a href="cloud-sso-sql.html">Cluster SSO</a> using CockroachDB Cloud as identity provider</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
+    <td>✓</td>
     <td>✓</td>
     <td>SQL Client authentication with <a href="../{{site.versions['stable']}}/sso-sql.html">Cluster SSO</a> using customer-managed identity providers</td>
   </tr>

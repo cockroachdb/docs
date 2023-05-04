@@ -26,9 +26,9 @@ Learn more: [Overview of the CockroachDB Cloud two-level authorization model]({{
 
 ### Service Account
 
-A service account is a unit of identity and access management similar to an Organization user, but is intended to be used for automation, rather than to be used by humans.
+A service account is a type of identity similar to an Organization user, but is intended to be used for automation.
 
-Service accounts authenticate with API keys and the {{ site.data.products.db }} API, rather than via the {{ site.data.products.db }} Console.
+Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles]({{ link_prefix }}authorization.html#organization-user-roles) as users.
 
