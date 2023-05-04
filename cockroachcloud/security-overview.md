@@ -7,9 +7,9 @@ docs_area: manage
 
 This page summarizes the security features available in the two database cluster types offered by {{ site.data.products.db }}, **serverless** and **dedicated**.
 
-A {{ site.data.products.serverless }} cluster is deployed on request for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
+A {{ site.data.products.serverless }} cluster is deployed for a specific customer in *shared* (multi-tenant) network and compute infrastrucutre.
 
-A {{ site.data.products.dedicated }} cluster is deployed on request for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance](pci-dss.html).
+A {{ site.data.products.dedicated }} cluster is deployed for a specific customer in a cloud provider's network and compute infrastructure *dedicated* to that customer. This deployment may be distributed over multiple regions for added disaster-resilience. In addition to infrastructure isolation, dedicated clusters can be customized with advanced network, identity-management, and encryption-related security features required for high benchmark security goals such as [PCI DSS compliance](pci-dss.html).
 
 Refer to [Payment Card Industry Data Security Standard (PCI DSS) Compliance in CockroachDB Dedicated](pci-dss.html)
 
@@ -23,7 +23,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <th>Feature</th>
   </tr>
   <tr>
-    <td rowspan="9"><a href="authentication.html">Authentication</a></td>
+    <td rowspan="8"><a href="authentication.html">Authentication</a></td>
     <td>✓</td>
     <td>✓</td>
     <td>Inter-node and node identity authentication using TLS 1.3</td>
@@ -64,11 +64,6 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td><a href="../{{site.versions['stable']}}/manage-certs-revoke-ocsp.html">OCSP</a> certificate revocation protocol</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>✓</td>
-    <td><a href="../{{site.current_cloud_version}}/cluster-api.html">Cluster API</a> access using login tokens</td>
-  </tr>
-  <tr>
   <td rowspan="5" >Data Protection</a></td>
     <td>✓</td>
     <td>✓</td>
@@ -95,7 +90,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td><a href="cmek.html">Customer Managed Encryption Keys (CMEK)</a>.
   </tr>
   <tr>
-  <td rowspan="4" ><a href="authorization.html">Access Control (Authorization)</a></td>
+  <td rowspan="3" ><a href="authorization.html">Access Control (Authorization)</a></td>
     <td>✓</td>
     <td>✓</td>
     <td>SQL users with direct privilege management</td>
@@ -104,11 +99,6 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td>✓</td>
     <td>✓</td>
     <td>SQL Role-based access control (RBAC)</td>
-  </tr>
-  <tr>
-    <td>✓</td>
-    <td>✓</td>
-    <td>Cloud Organization users with legacy roles</td>
   </tr>
   <tr>
     <td>✓</td>
@@ -147,10 +137,15 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td><a href="network-authorization.html#aws-privatelink"></a>PrivateLink for AWS clusters </td>
   </tr>
   <tr>
-    <td><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
+    <td rowspan="2"><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
     <td>✓</td>
     <td>✓</td>
     <td><a href="../{{site.versions['stable']}}/sql-audit-logging.html">SQL Audit Logging</a></td>
+  </tr>
+  <tr>
+    <td>✓</td>
+    <td>✓</td>
+    <td><a href="cloud-org-audit-logs.html">Cloud Organization Audit Logging</a></td>
   </tr>
   <tr>
     <td><a href="../{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Availability/Resilience</a></td>

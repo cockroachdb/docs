@@ -22,19 +22,13 @@ Refer to [Authenticating to {{ site.data.products.db }}](authentication.html) fo
 {% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
 
-## Provision your cluster's PKI hierarchy
+## Provision a PKI hierarchy for SQL authentication in your cluster
 
 There are many ways to create, manage, and distribute digital security certificates. Cockroach Labs recommends using a secure secrets server such as [HashiCorp Vault](https://www.vaultproject.io/), which can be used to securely generate certificates without revealing the CA private key.
 
 Refer to: [CockroachDB - HashiCorp Vault Integration](../{{site.versions["stable"]}}/hashicorp-integration.html)
 
-Alternatively, you can generate certificates using CockroachDB's `cockroach cert` command or with [OpenSSL](https://www.openssl.org/). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your {{ site.data.products.db }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
-
-Refer to:
-
-- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault: PKI Strategy](../{{site.versions["stable"]}}/manage-certs-vault.html#pki-strategy)
-- [Create certificates with `cockroach cert`](../{{site.versions["stable"]}}/cockroach-cert.html#synopsis)
-- [Create Security Certificates using OpenSSL](../{{site.versions["stable"]}}/create-security-certificates-openssl.html)
+Alternatively, you can generate certificates [using CockroachDB's `cockroach cert`](../{{site.versions["stable"]}}/cockroach-cert.html#synopsis) command or [with OpenSSL](../{{site.versions["stable"]}}/create-security-certificates-openssl.html). However, generating certificates this way and manually handling cryptographic material comes with considerable additional risk and room for error. PKI cryptographic material related to your {{ site.data.products.db }} organizations, particularly in any production systems, should be handled according to a considered policy appropriate to your security goals.
 
 ### Initialize your Vault workstation
 
@@ -235,7 +229,7 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
 <section class="filter-content" markdown="1" data-scope="tf">
 
 
-Add the following block to your Terraform template and apply the change:
+Add the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) to your Terraform template and apply the change:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -247,6 +241,12 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 </section>
 
 ## Update the CA certificate for a dedicated cluster
+
+{{site.data.alerts.callout_danger}}
+Clients must be provisioned with client certificates signed by the new CA prior to the update, or their new connections will be blocked.
+
+This operation also interrupts existing database connections. End users should be informed of a potential service interruption.
+{{site.data.alerts.end}}
 
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
 
@@ -310,7 +310,7 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
 
 <section class="filter-content" markdown="1" data-scope="tf">
 
-Update the `cockroach_client_ca_cert` block in your Terraform template, then run `terraform apply`.:
+Update the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) in your Terraform template, then run `terraform apply`.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -323,7 +323,11 @@ resource "cockroach_client_ca_cert" "yourclustername" {
 
 ## Delete the certificate authority (CA) certificate for a dedicated cluster
 
-This section shows how to remove the configured CA certificate from the cluster. Afterward, clients can no longer authenticate with certificates signed by this CA certificate.
+This section shows how to remove the configured CA certificate from the cluster.
+
+{{site.data.alerts.callout_danger}}
+After this operation is performed, clients can no longer authenticate with certificates signed by this CA certificate.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
 Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
@@ -370,19 +374,18 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
     }
     ~~~
     
-    `IS_SET` indicates that the operation completed successfully, confirming the configured public CA cert.
+    `NOT_SET` indicates that the operation completed successfully, confirming that no CA cert is currently set.
 
     ~~~txt
     {
-      "status": "IS_SET",
-      "x509_pem_cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmagAwIBAgIBADANBgkqhkiG9w0BAQ0FADBZMQswCQYDVQQGEwJ1czEL\nMAkGA1UECAwCV0ExDTALBgNVBAoMBHRlc3QxDTALBgNVBAMMBHRlc3QxEDAOBgNV\nBAcMB1NlYXR0bGUxDTALBgNVBAsMBHRlc3QwHhcNMjMwMzE2MjMyNTMxWhcNMjQw\n
-    ...\n-----END CERTIFICATE-----",
+      "status": "NOT_SET",
+      "x509_pem_cert": ""
     }
     ~~~
 </section>
 <section class="filter-content" markdown="1" data-scope="tf">
 
-To delete the client CA cert on a cluster, remove the `cockroach_client_ca_cert` resource from your Terraform template, then run `terraform apply`.
+To delete the client CA cert on a cluster, remove the [`cockroach_client_ca_cert` resource block](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/client_ca_cert) from your Terraform template, then run `terraform apply`.
 </section>
 
 ## Authenticate a SQL client to a {{ site.data.products.dedicated }} cluster
@@ -399,7 +402,7 @@ To use certificate authentication for a SQL client, you must include the filepat
 
     1. Construct the full connection string by providing the paths to `sslrootcert` (the cluster's public CA certificate), `sslcert` (the client's public certificate, which must be signed by the CA specified in `sslrootcert`), and `sslkey` (the client's private key).
     
-        Refer to: [Provision your cluster's PKI hierarchy ](#provision-your-clusters-pki-hierarchy).
+        Refer to: [Provision a PKI hierarchy for SQL authentication in your cluster ](#provision-a-pki-hierarchy-for-sql-authentication-in-your-cluster).
 
 1. Connect using the `cockroach sql` command, or the SQL client of your choice:
 
