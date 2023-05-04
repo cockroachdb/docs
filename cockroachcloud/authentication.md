@@ -16,7 +16,7 @@ Refer to: [Overview of the {{ site.data.products.db }} two-level authorization m
 
 - The [{{ site.data.products.db }} Console UI](https://cockroachlabs.cloud/) provides a user with an overview of their {{ site.data.products.db }} account, and offers functionality for administering an organization and the clusters within it.
 
-	Refer to: [Console authentication](#console-authentication)
+	Refer to: [Console authentication](#console-ui-authentication)
 
 - The `ccloud` utility allows users to execute cloud functions from the command line.
 
@@ -36,7 +36,6 @@ You may log in to the [{{ site.data.products.db }} Console](https://cockroachlab
 
 {% include cockroachcloud/prefer-sso.md %}
 
-If you have not done so, [create your own free {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 
 ## `ccloud` authentication
 
