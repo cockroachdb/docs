@@ -47,6 +47,10 @@ The following privileges can be revoked:
 
 - The `root` user cannot be revoked from the `admin` role.
 
+## Limitations
+
+{% include {{page.version.version}}/sql/grant-revoke-schema-changes.md %}
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
