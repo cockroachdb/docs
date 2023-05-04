@@ -20,17 +20,39 @@ If you need a single tenant cluster with no shared resources, we recommend {{ si
 
 ### Hardware
 
-We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run {{ site.data.products.db }} offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
+We use the Kubernetes offerings in AWS, GCP, and Azure (limited access) (EKS, GKE, and AKS respectively) to run {{ site.data.products.db }} offerings.
+
+- GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs).
+- AWS clusters use [M6 instance types](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
+- Azure clusters use [Dasv5-series VMs](https://learn.microsoft.com/en-us/azure/virtual-machines/dasv5-dadsv5-series) and [Premium SSDs](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds).
+
+Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ### Security and Connection
 
-{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network (VPC in AWS and GCP), compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
+{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering](network-authorization.html#vpc-peering) and [AWS PrivateLink](network-authorization.html#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
 
-{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
+
+{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication or [digital certificates](client-certs-dedicated.html) can be used for client identity verification. Refer to [Authentication](authentication.html) for more details.
 
 [Backups](use-managed-service-backups.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
 
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed-service backups are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html). Customers can take and restore from their own backups on Azure storage (Blob Storage or ADLS Gen 2). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
+
 ### Multi-region architecture
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 The diagram below shows a high-level representation of a {{ site.data.products.dedicated }} multi-region cluster:
 
