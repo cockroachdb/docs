@@ -49,11 +49,11 @@ We recommend monitoring paused jobs. Jobs that are paused for a long period of t
 - A paused [backup](backup.html), [restore](restore.html), or index backfill job ([schema change](online-schema-changes.html)) will continue to hold a [protected timestamp](architecture/storage-layer.html#protected-timestamps) record on the data the job is operating on. This could result in data accumulation as the older versions of the keys cannot be [garbage collected](architecture/storage-layer.html#garbage-collection). In turn, this may cause increased disk usage and degraded performance for some workloads. See [Protected timestamps and scheduled backups](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) for more detail.
 - A paused [changefeed](create-changefeed.html) job, if [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) is set, will also hold a protected timestamp record on the data the job is operating on. Depending on the value of [`gc_protect_expires_after`](create-changefeed.html#gc-protect-expire), this can lead to data accumulation. Once `gc_protect_expires_after` elapses, the protected timestamp record will be released and the changefeed job will be canceled. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail.
 
-{% include_cached new-in.html version="v23.1" %} To ensure that data is not lost to garbage collection, or a paused changefeed does not cause data storage issues, use the `jobs.{job_type}.currently_paused` metric to track the number of jobs (for each job type) that are currently considered paused.
+{% include_cached new-in.html version="v23.1" %} To avoid these issues, use the `jobs.{job_type}.currently_paused` metric to track the number of jobs (for each job type) that are currently considered paused.
 
 You can monitor protected timestamps relating to particular CockroachDB jobs with the following metrics:
 
-- `jobs.{job_type}.protected_age_sec` tracks the oldest protected timestamp record protecting `{job_type}` jobs.
+- `jobs.{job_type}.protected_age_sec` tracks the oldest protected timestamp record protecting `{job_type}` jobs. As this metric increases, garbage accumulation increases. Garbage collection will not progress on a table, database, or cluster if the protected timestamp record is present.
 - `jobs.{job_type}.protected_record_count` tracks the	number of protected timestamp records held by `{job_type}` jobs.
 
 For a full list of the available job types, access your cluster's [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint.

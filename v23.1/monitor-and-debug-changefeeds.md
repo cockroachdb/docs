@@ -65,7 +65,7 @@ Protected timestamps will protect changefeed data from garbage collection in par
 
 {% include_cached new-in.html version="v23.1" %} You can monitor changefeed jobs for protected timestamp usage. We recommend setting up monitoring for the following metrics:
 
-- `jobs.changefeed.protected_age_sec`: Tracks the age of the oldest protected timestamp record protected by changefeed jobs. We recommend monitoring if `protected_age_sec` is greater than [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds).
+- `jobs.changefeed.protected_age_sec`: Tracks the age of the oldest protected timestamp record protected by changefeed jobs. We recommend monitoring if `protected_age_sec` is greater than [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds). As `protected_age_sec` increases, garbage accumulation increases. Garbage collection will not progress on a table, database, or cluster if the protected timestamp record is present.
 - `jobs.changefeed.currently_paused`: Tracks the number of changefeed jobs currently considered [paused](pause-job.html). Since paused changefeed jobs can accumulate garbage, it is important to monitor the number of changefeeds paused.
 - `jobs.changefeed.expired_pts_records`: Tracks the number of expired protected timestamp records owned by changefeed jobs. You can monitor this metric in conjunction with the [`gc_protect_expires_after` option](create-changefeed.html#gc-protect-expire).
 - `jobs.changefeed.protected_record_count`: Tracks the number of protected timestamp records held by changefeed jobs.
