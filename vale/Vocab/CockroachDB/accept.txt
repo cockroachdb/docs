@@ -333,7 +333,7 @@ seeked
 [sS][eE][lL]inux
 Sequelize
 serializab(ility|le)
-serverless
+[sS]erverless
 servlet
 severities
 shapefiles?
