@@ -4,6 +4,7 @@ summary: Stream data out of CockroachDB with efficient, distributed, row-level c
 toc: true
 docs_area: stream_data
 key: stream-data-out-of-cockroachdb-using-changefeeds.html
+key: change-data-capture.html
 ---
 
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing.

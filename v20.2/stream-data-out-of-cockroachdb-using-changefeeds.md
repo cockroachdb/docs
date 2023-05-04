@@ -2,6 +2,7 @@
 title: Stream Data Out of CockroachDB Using Changefeeds
 summary: Stream data out of CockroachDB with efficient, distributed, row-level change subscriptions (changefeeds).
 toc: true
+key: change-data-capture.html
 ---
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing.
@@ -20,7 +21,6 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 | Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html). | Create with [`CREATE CHANGEFEED`](create-changefeed.html). |
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a configurable sink  ([Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed). |
-
 
 ## Enable rangefeeds
 
