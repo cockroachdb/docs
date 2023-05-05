@@ -83,7 +83,7 @@ Example of a Kafka sink URI:
 #### Google Cloud Pub/Sub
 
 {{site.data.alerts.callout_info}}
-The Google Cloud Pub/Sub sink is currently in **beta**.
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 Example of a Google Cloud Pub/Sub sink URI:
@@ -108,10 +108,6 @@ HTTP         | `'http://localhost:8080/{PATH}'`
 [Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
-
-{{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**.
-{{site.data.alerts.end}}
 
 Example of a webhook URI:
 
@@ -316,7 +312,7 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 ### Create a changefeed connected to a Google Cloud Pub/Sub
 
 {{site.data.alerts.callout_info}}
-The Google Cloud Pub/Sub sink is currently in **beta**.
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -337,8 +333,6 @@ The Google Cloud Pub/Sub sink is currently in **beta**.
 For step-by-step guidance on creating a changefeed connected to a Google Cloud Pub/Sub, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) page. The parameters table on the [Changefeed Sinks](changefeed-sinks.html#pub-sub-parameters) page provides a list of the available Google Cloud Pub/Sub parameters.
 
 ### Create a changefeed connected to a webhook sink
-
-{% include {{ page.version.version }}/cdc/webhook-beta.md %}
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

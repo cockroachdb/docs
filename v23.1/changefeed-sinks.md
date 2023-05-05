@@ -376,10 +376,6 @@ The following shows the default JSON messages for a changefeed emitting to a clo
 
 ## Webhook sink
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
 Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
 Example of a webhook sink URL:

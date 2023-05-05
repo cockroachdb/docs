@@ -173,10 +173,6 @@ For usage details, see the [Monitor and Debug Changefeeds](monitor-and-debug-cha
 
 Changefeeds can deliver messages to a [Google Cloud Pub/Sub sink](changefeed-sinks.html#google-cloud-pub-sub), which is integrated with Google Cloud Platform.
 
-### Webhook sink for changefeeds
-
-Use a [webhook sink](changefeed-sinks.html#webhook-sink) to deliver changefeed messages to an arbitrary HTTP endpoint.
-
 ### Multiple active portals
 
 The multiple active portals feature of the Postgres wire protocol (pgwire) is available, with limitations.  For more information, see [Multiple active portals](postgresql-compatibility.html#multiple-active-portals).
