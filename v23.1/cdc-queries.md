@@ -47,6 +47,8 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`](create-
 - CDC queries support [system columns](crdb-internal.html), for example:
   - <a name="crdb-internal-mvcc-timestamp"></a>`crdb_internal_mvcc_timestamp`: Records the timestamp of each row created in a table. If you do not have a timestamp column in the target table, you can access `crdb_internal_mvcc_timestamp` in a changefeed. See the [Determine the age of a row](#determine-the-age-of-a-row) example.
 
+{% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
+
 ## Limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc-queries.md %}
