@@ -86,8 +86,8 @@ This section provides solutions for common performance issues in your applicatio
 
 [Transaction contention](performance-best-practices-overview.html#transaction-contention) is a state of conflict that occurs when:
 
-- A [transaction](../transactions.html) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
-- A transaction is [automatically retried](../transactions.html#automatic-retries) because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*](../transaction-retry-error-reference.html) is emitted to the client, requiring the client application to [retry the transaction](../transaction-retry-error-reference.html#client-side-retry-handling).
+- A [transaction](transactions.html) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
+- A transaction is [automatically retried](transactions.html#automatic-retries) because it could not be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*](transaction-retry-error-reference.html) is emitted to the client, requiring the client application to [retry the transaction](transaction-retry-error-reference.html#client-side-retry-handling).
 
 #### Indicators that your application is experiencing transaction contention
 
