@@ -40,23 +40,13 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Select the region(s)
 
-In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
+In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster. If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
 {{site.data.alerts.callout_info}}
 Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 {{site.data.alerts.end}}
-
-**Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
-
-- Mumbai (`asia-south1`)
-- Osaka (`asia-northeast2`)
-- Hamina (`europe-north1`)
-- Frankfurt (`europe-west3`)
-- Zurich (`europe-west6`)
-
-If you want to create a cluster in a disabled or unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
