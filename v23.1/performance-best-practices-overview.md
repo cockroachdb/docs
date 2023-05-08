@@ -316,9 +316,9 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Transaction contention
 
-Transactions that operate on the *same index key values* (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows](architecture/transaction-layer.html#writing) to prevent hazardous interactions with concurrent transactions. However, locking can lead to processing delays if multiple transactions are trying to access the same "locked" data at the same time. This is referred to as *transaction contention* or *lock contention*.
+Transactions that operate on the *same index key values* (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows](architecture/transaction-layer.html#writing) to prevent hazardous interactions with concurrent transactions.
 
-Transaction contention occurs when the following three conditions are met:
+*Transaction contention* occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
 - They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
@@ -326,8 +326,8 @@ Transaction contention occurs when the following three conditions are met:
 
 [When transactions are experiencing contention](performance-recipes.html#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
 
-- [Delays in query completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries).
-- [Transaction retries](transactions.html#automatic-retries) performed automatically by CockroachDB.
+- [Delays in query completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
+- [Transaction retries](transactions.html#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions.
 - [Transaction retry errors](transaction-retry-error-reference.html), which are emitted to your client when an automatic retry is not possible or fails. Your application must address transaction retry errors with [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 - [Cluster hot spots](#hot-spots).
 
