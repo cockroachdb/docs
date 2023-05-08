@@ -50,7 +50,7 @@ The [declarative schema changer](online-schema-changes.html#declarative-schema-c
 
 ### `null_ordered_last` does not produce correct results with tuples
 
-By default, CockroachDB orders `NULL`s before all other values. For compatibility with Postgres, the `null_ordered_last` [session variable](set-vars.html) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable](set-vars.html) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
 
@@ -109,7 +109,7 @@ The following are not currently allowed within the body of a [UDF](user-defined-
 
 ### Incorrect query plans for partitions with `NULL` values
 
-In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so is not likely to occur in production environments.
+In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/82774)
 
