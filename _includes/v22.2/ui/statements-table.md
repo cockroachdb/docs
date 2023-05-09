@@ -1,6 +1,6 @@
 ## Statements table
 
-Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
+Click **Columns** to select the columns to display in the table.
 
 The Statements table gives details for each SQL statement fingerprint:
 
