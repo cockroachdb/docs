@@ -50,7 +50,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102904)
 
-- When CockroachDB serializes a user-defined composite (tuple) type to CSV, the metadata can be inconsistent.
+- Serializing a user-defined composite (tuple) type to CSV is in [preview](cockroachdb-feature-availability.html): the output format is likely to change in a future minor release, and alterations to the type may not be reflected properly in changefeeds.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102905)
 
