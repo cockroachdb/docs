@@ -40,7 +40,7 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Select the region(s)
 
-In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster. If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For example, if your client application is deployed in GCP's `us-east1` region, select GCP as your deployment environment and select `us-east1` as your cluster's region. If you want to create a cluster in an unavailable region, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
@@ -82,7 +82,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to <b>{{ cap_per_vcpu }}</b>. See [Pricing](https://www.cockroachlabs.com/pricing/) for pricing information. When selecting your storage capacity, consider the following factors:
+    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------

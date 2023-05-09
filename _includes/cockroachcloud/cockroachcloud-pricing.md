@@ -1,1 +1,1 @@
-Pricing depends on your cloud provider and region selections. See the [Pricing](https://www.cockroachlabs.com/pricing/) page for more information.
+Pricing depends on your cloud provider and region selections. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details.
