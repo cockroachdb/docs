@@ -1,5 +1,5 @@
 ---
-title: Connect to Your CockroachDB Cloud Cluster
+title: Connect to a CockroachDB Cloud Dedicated Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 docs_area: deploy
@@ -16,39 +16,11 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 
 ## Authorize your network
 
-{{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
+{{site.data.alerts.callout_info}}
+Removing or adding an authorized network on your {{ site.data.products.dedicated }} cluster may take several seconds to take effect.
+{{site.data.alerts.end}}
 
-- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
-- In a production environment, you need to authorize your application server’s network.
-- If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
-- If you have an AWS cluster, you can set up an [AWS PrivateLink](network-authorization.html#aws-privatelink) connection.
-- During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
-- You should use PrivateLink or VPC peering if you need to allowlist more than 20 IP addresses, if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
-
-### Add IP addresses to the allowlist
-
-1. Navigate to your cluster's **Networking > IP Allowlist** tab.
-
-    The **IP Allowlist** tab displays a list of authorized networks (i.e., an IP network allowlist) that can access the cluster.
-
-1. Check if the current network has been authorized. If not, proceed with the following steps.
-
-1. Click the **Add Network** button.
-
-    The **Add Network** dialog displays.
-
-1. _(Optional)_ Enter a **Network name**.
-
-1. From the **Network** dropdown, select:
-   - **New Network** to authorize your local machine's network or application server's network. Enter the public IPv4 address of the machine in the **Network** field.
-   - **Current Network** to auto-populate your local machine's IP address.
-   - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
-
-    {{site.data.alerts.callout_info}}
-    IPv6 addresses are currently not supported.
-    {{site.data.alerts.end}}
-
-    To add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. The CIDR notation is constructed from an IP address (e.g., `192.168.15.161`), a slash (`/`), and a number (e.g., `32`). The number is the count of leading 1-bits in the network identifier. In the example above, the IP address is 32-bits and the number is `32`, so the full IP address is also the network identifier. For more information, see Digital Ocean's [Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+{% include cockroachcloud/authorize-your-clusters-networks.md %}
 
 1. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
 
