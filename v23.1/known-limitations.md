@@ -30,17 +30,53 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
+### Limitations for `SELECT FOR UPDATE`
+
+- [`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+
+- [`SELECT FOR UPDATE`](select-for-update.html) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+
+### Limitations for composite types
+
+- Avro [changefeeds](create-and-configure-changefeeds.html) do not support user-defined composite (tuple) types.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102903)
+
+- Parquet [changefeeds](create-and-configure-changefeeds.html) do not support user-defined composite (tuple) types.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102904)
+
+- When CockroachDB serializes a user-defined composite (tuple) type to CSV, the metadata can be inconsistent.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102905)
+
+### Low estimated RUs are rounded to zero
+
+The RU estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates (i.e., very cheap queries) are rounded down to zero.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
+
+### Statistics for deleted tables in `system.table_statistics` do not get removed
+
+When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete old statistics.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+
+### Collect stats for virtual computed columns
+
+CockroachDB does not collect statistics for [virtual computed columns](computed-columns.html). This can prevent the [optimizer](cost-based-optimizer.html) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index](expression-indexes.html).
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
+
 ### No support for placeholders in `AS OF SYSTEM TIME`
 
 CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). This means that the time value has to be embedded in the SQL string.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
-
-### `SELECT FOR UPDATE` places locks on each key scanned by the base index scan
-
-[`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
 ### Declarative schema changer does not track rows in `system.privileges`
 
