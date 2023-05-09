@@ -4188,7 +4188,8 @@
     docker_arm: true
   source: true
   previous_release: v22.2.7
-  
+  withdrawn: true
+
 - release_name: v23.1.0-beta.2
   major_version: v23.1
   release_date: '2023-04-17'
@@ -4312,3 +4313,5 @@
     docker_arm: true
   source: true
   previous_release: v22.2.8
+
+
