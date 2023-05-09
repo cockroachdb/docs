@@ -54,6 +54,12 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102905)
 
+### Common table expressions are not supported in user-defined functions
+
+[Common table expressions](common-table-expressions.html) (CTE), recursive or non-recursive, are not supported in [user-defined functions](user-defined-functions.html) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
 ### Low estimated RUs are rounded to zero
 
 The RU estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates (i.e., very cheap queries) are rounded down to zero.
