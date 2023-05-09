@@ -9,41 +9,40 @@ The `TSVECTOR` [data type](data-types.html) stores a list of lexemes, optionally
 
 ## Syntax
 
-A `TSVECTOR` comprises individual lexemes in the form: `'These' 'lexemes' 'are' 'not' 'normalized.'`.
+A `TSVECTOR` comprises individual lexemes in the form: `'These' 'lexemes' 'are' 'not' 'normalized' 'lexemes.'`.
 
 You can optionally add the following to each lexeme:
 
-- Integer positions:
+- One or more comma-separated integer positions:
 
-	`'These':1 'lexemes':2 'are':3 'not':4 'normalized.':5`
+	`'These':1 'lexemes':2 'are':3 'not':4 'normalized':5 'lexemes.':6`
 
-- One or more weight letters (`A`, `B`, `C`, or `D`), in combination with an integer position:
+- A weight letter (`A`, `B`, `C`, or `D`), in combination with an integer position:
 
-	`'These':1 'lexemes':2B 'are':3 'not':4 'normalized.':5A`
+	`'These':1 'lexemes':2B 'are':3 'not':4 'normalized':5A 'lexemes.':6B`
 
-	If not specified, a lexeme's weight defaults to `D`. For more information about weights, see the [PostgreSQL documentation](https://www.postgresql.org/docs/15/datatype-textsearch.html#DATATYPE-TSVECTOR).
+	If not specified, a lexeme's weight defaults to `D`. The lexemes in a `TSQUERY` and `TSVECTOR` will only match if they have matching weights. For more information about weights, see the [PostgreSQL documentation](https://www.postgresql.org/docs/15/datatype-textsearch.html#DATATYPE-TSVECTOR).
 
 To be usable in [full-text search](full-text-search.html), the lexemes **must be normalized**. You can do this by using the `to_tsvector()` [built-in function](functions-and-operators.html#full-text-search-functions) to convert a string input to `TSVECTOR`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT to_tsvector('These lexemes are not normalized.');
+SELECT to_tsvector('These lexemes are not normalized lexemes.');
 ~~~
 
 ~~~
-      to_tsvector
-------------------------
-  'lexem':2 'normal':5
+       to_tsvector
+--------------------------
+  'lexem':2,6 'normal':5
 ~~~
 
 Normalization removes the following from the input:
 
-- Suffixes.
+- Derivatives of words, which are reduced using a [stemming](https://en.wikipedia.org/wiki/Stemming) algorithm. 
 - *Stop words*. These are words that are considered not useful for indexing and searching, based on the [text search configuration](full-text-search.html#text-search-configuration). In the preceding example, "These", "are", and "not" are identified as stop words.
 - Punctuation and capitalization.
-- Duplicates.
 
-In the preceding example, the integer positions indicate that `lexem` and `normal` are the second and fifth lexemes in the input, respectively.
+In the preceding output, the integers indicate that `normal` is in the fifth position and `lexem` is in both the second and sixth position in the input.
 
 {% comment %}
 ## PostgreSQL compatibility

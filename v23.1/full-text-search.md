@@ -22,6 +22,7 @@ A full-text search has the following advantages over pattern matching with `LIKE
 - A full-text search can specify a [text search configuration](#text-search-configuration) that enables language-specific searches.
 - The results of a full-text search can be [ranked](#rank-search-results).
 - A full-text search can be accelerated using a [full-text index](#full-text-indexes).
+- `LIKE` and `ILIKE` are only fast for prefix searches or when indexed with a [trigram index](trigram-indexes.html).
 
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/sql/use-case-trigram-indexes.md %}
@@ -46,10 +47,9 @@ SELECT to_tsvector('How do trees get on the internet?');
 
 This `TSVECTOR` consists of the lexemes `get`, `internet`, and `tree`. Normalization removes the following from the input:
 
-- Suffixes. In this example, "trees" is normalized to `tree`.
+- Derivatives of words, which are reduced using a [stemming](https://en.wikipedia.org/wiki/Stemming) algorithm. In this example, "trees" is normalized to `tree`.
 - *Stop words*. These are words that are considered not useful for indexing and searching, based on the [text search configuration](#text-search-configuration). This example does not specify a configuration, and `english` is used by default. "How", "do", "on", and "the" are identified as stop words.
 - Punctuation and capitalization.
-- Duplicates.
 
 The output also indicates the position of each lexeme in the document. For example, "tree" is the third word.
 
@@ -135,6 +135,8 @@ SELECT ts_rank(to_tsvector('How do trees get on the internet?'), plainto_tsquery
 Because a rank must be calculated for each matching document, ranking a full-text search can incur a performance overhead if there are many matching documents.
 {{site.data.alerts.end}}
 
+For more information about using `ts_rank()`, see the [PostgreSQL documentation](https://www.postgresql.org/docs/15/textsearch-controls.html#TEXTSEARCH-RANKING).
+
 ## Comparisons
 
 Full-text searches support the following comparison operator:
@@ -146,7 +148,7 @@ For usage examples, see [Match queries to documents](#match-queries-to-documents
 ## Full-text indexes
 
 {{site.data.alerts.callout_info}}
-You can perform full-text searches without a full-text index. However, an index can improve search performance. 
+You can perform full-text searches without a full-text index. However, an index will drastically improve search performance when searching a large number of documents.
 {{site.data.alerts.end}}
 
 To create a full-text index, use the [`CREATE INDEX`](create-index.html) syntax that defines an [inverted index](inverted-indexes.html), specifying a `TSVECTOR` column.
@@ -173,7 +175,7 @@ For more ways to define full-text indexes, see [Create a full-text index with an
 
 A *text search configuration* determines how inputs are parsed into `TSVECTOR` and `TSQUERY` values. This includes a dictionary that is used to identify derivatives of words, as well as stop words to exclude, when normalizing [documents](#process-a-document) and [queries](#form-a-query).
 
-The currently supported dictionaries are English, Danish, Dutch, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, Swedish, and Turkish.
+The currently supported dictionaries are English, Danish, Dutch, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, Swedish, and Turkish. An additional `simple` dictionary does not perform stemming or stopwording when normalizing [documents](#process-a-document) or [queries](#form-a-query).
 
 You can specify a text search configuration as the first parameter when calling any of the [built-in functions](functions-and-operators.html#full-text-search-functions) to [process a document](#process-a-document) or [form a query](#form-a-query). For example:
 
