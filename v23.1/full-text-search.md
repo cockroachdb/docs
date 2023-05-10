@@ -30,7 +30,7 @@ A full-text search has the following advantages over pattern matching with `LIKE
 
 ### Process a document
 
-To make a document searchable, convert it to the [`TSVECTOR`](tsvector.html) data type. A `TSVECTOR` value consists of individual *lexemes*, which are normalized strings used for text matching.
+To make a document searchable, convert it to the [`TSVECTOR`](tsvector.html) data type. A `TSVECTOR` value consists of individual *lexemes*, which are normalized strings used for text matching. Each lexeme also includes a list of integer positions that indicate where the lexeme existed in the original document.
 
 The `to_tsvector()` [built-in function](functions-and-operators.html#full-text-search-functions) converts a string input into a `TSVECTOR` value:
 
@@ -51,7 +51,7 @@ This `TSVECTOR` consists of the lexemes `get`, `internet`, and `tree`. Normaliza
 - *Stop words*. These are words that are considered not useful for indexing and searching, based on the [text search configuration](#text-search-configuration). This example does not specify a configuration, and `english` is used by default. "How", "do", "on", and "the" are identified as stop words.
 - Punctuation and capitalization.
 
-The output also indicates the position of each lexeme in the document. For example, "tree" is the third word.
+In the preceding output, the integers indicate that `get` is in the fourth position, `internet` is in the seventh position, and `tree` is in the third position in the input.
 
 ### Form a query
 
