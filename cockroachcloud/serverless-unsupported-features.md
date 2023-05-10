@@ -21,10 +21,6 @@ Automated database and table level backups are not supported in {{ site.data.pro
 
 Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](../{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.html). However, user managed locality-aware backups using user provided storage locations are supported in {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
 
-## Multi-region clusters
-
-{{ site.data.products.serverless }} is only supported in a single region, and does not support [multi-region](../{{site.current_cloud_version}}/multiregion-overview.html) features.
-
 ## Follower reads
 
 [Follower reads](../{{site.current_cloud_version}}/follower-reads.html) are not supported in {{ site.data.products.serverless }} clusters.

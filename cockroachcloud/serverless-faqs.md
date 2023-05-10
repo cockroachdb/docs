@@ -102,6 +102,18 @@ When a {{ site.data.products.serverless }} cluster is idle, it will scale down t
 
 {{ site.data.products.serverless }} clusters regularly store information about their own health and status in system tables. Once these tables hit their retention limit, storage will level off. However, the amount of stored data should be very small in relation to the overall storage limits.
 
+### How do I get the SQL endpoint for a specific region of my multi-region cluster?
+
+This information is not currently available in the {{ site.data.products.db }} Console. The connection string provided in the Console uses a geolocation routing policy to automatically route clients to the nearest region, so it should be unnecessary to use the DNS name for a specific region. However, if you need to determine region-specific DNS names, you can do either of the following:
+
+Make an [API request](cloud-api.html) to `GET /api/v1/clusters/{cluster_id}`. The SQL endpoint for each region will be visible in `regions` -> `sql_dns`.
+
+Or, manually create the region-specific DNS names using your cloud provider and the single region names. For example, a GCP Serverless cluster with the DNS name `<routing-id>.h4f.cockroachlabs.cloud` might have the following regional DNS names:
+
+`<routing-id>.h4f.gcp-us-east1.cockroachlabs.cloud`
+`<routing-id>.h4f.gcp-us-west2.cockroachlabs.cloud`
+`<routing-id>.h4f.gcp-europe-west2.cockroachlabs.cloud`.
+
 ## Security
 
 ### Is my cluster secure?
