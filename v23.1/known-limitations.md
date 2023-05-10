@@ -60,27 +60,27 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
 
-### Low estimated RUs are rounded to zero
+### Low estimated Request Units are rounded to zero
 
-The RU estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates (i.e., very cheap queries) are rounded down to zero.
+The [Request Units](../cockroachcloud/learn-about-request-units.html) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates (i.e., very cheap queries) are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
 
 ### Statistics for deleted tables in `system.table_statistics` do not get removed
 
-When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete old statistics.
+When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
 
-### Collect stats for virtual computed columns
+### Collection of statistics for virtual computed columns
 
 CockroachDB does not collect statistics for [virtual computed columns](computed-columns.html). This can prevent the [optimizer](cost-based-optimizer.html) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index](expression-indexes.html).
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
 
-### No support for placeholders in `AS OF SYSTEM TIME`
+### `AS OF SYSTEM TIME` does not support placeholders
 
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). This means that the time value has to be embedded in the SQL string.
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). The time value must be embedded in the SQL string.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
 
