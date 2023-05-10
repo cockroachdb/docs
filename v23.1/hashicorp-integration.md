@@ -30,8 +30,8 @@ Resources:
 - [CMEK overview](../cockroachcloud/cmek.html)
 - [CMEK FAQ](../cockroachcloud/cmek-faq.html)
 - [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](../cockroachcloud/managing-cmek.html)
-- [Provisioning GCP KMS Keys and Service Accounts for CMEK](cmek-ops-gcp.html)
-- [Provisioning AWS KMS Keys and IAM Roles for CMEK](cmek-ops-aws.html)
+- [Provisioning GCP KMS Keys and Service Accounts for CMEK](../cockroachcloud/cmek-ops-gcp.html)
+- [Provisioning AWS KMS Keys and IAM Roles for CMEK](../cockroachcloud/cmek-ops-aws.html)
 
 ## Use Vault's PKI Secrets Engine to manage a {{ site.data.products.dedicated }} cluster's certificate authority (CA) and client certificates.
 
