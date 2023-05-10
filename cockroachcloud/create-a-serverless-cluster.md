@@ -3,6 +3,7 @@ title: Create a CockroachDB Serverless Cluster
 summary: Learn how to create a cluster using CockroachDB Serverless.
 toc: true
 docs_area: deploy
+cloud: true
 ---
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
