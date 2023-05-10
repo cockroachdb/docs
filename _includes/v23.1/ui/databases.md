@@ -21,6 +21,8 @@ The following information is displayed for each database:
 | Range Count   | The number of ranges across all tables in the  database.                                                                |
 | Regions/Nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
 | Index Recommendations | The number of index recommendations for the database.                                                           |
+{% else %}
+| Regions | The regions on which the tables in the database are located.  |
 {% endif -%}
 
 Click a **database name** to open the **Tables** page.
@@ -45,6 +47,8 @@ The following information is displayed for each table:
 | Indexes                        | The number of indexes in the table.                                                                      |
 {% if page.cloud != true -%}
 | Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
+{% else %}
+| Regions                        | The regions on which the table data is stored.
 {% endif -%}
 | % of Live Data                 | Percent of total uncompressed logical data that has not been modified (updated or deleted).              |
 | Table Stats Last Updated (UTC) | The last time table statistics were created or updated.   |
@@ -71,6 +75,8 @@ The table details include:
 - **Auto Stats Collection**: Whether [automatic statistics collection]({{ link_prefix }}cost-based-optimizer.html#table-statistics) is enabled.
 {% if page.cloud != true %}
 - **Regions/Nodes**: The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
+{% else %}
+- **Regions**: The regions on which the table data is stored.
 {% endif %}
 - **Database**: The database in which the table is found.
 - **Indexes**: The names of the indexes defined on the table.
