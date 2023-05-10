@@ -24,8 +24,11 @@ The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** 
 Parameter          | Description
 -------------------|-----------
 `PLAN`             |  _(Default)_ Execute the statement and return a statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). See [`PLAN` option](#plan-option).
-`DISTSQL`          | Execute the statement and return a statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. See [`DISTSQL` option](#distsql-option).
+`VERBOSE`          | Execute the statement and show as much information as possible about the statement plan.
+`TYPES`            | Execute the statement and include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
 `DEBUG`            | Execute the statement and generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. See [`DEBUG` option](#debug-option).
+`REDACT`           | Execute the statement and redact constants, literal values, parameter values, and personally identifiable information (PII) from the output. See [`REDACT` option](#redact-option).
+`DISTSQL`          | Execute the statement and return a statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree. See [`DISTSQL` option](#distsql-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
 
 ## Required privileges
@@ -90,9 +93,9 @@ Statement plan tree properties | Description
 
 By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
 
-### `PLAN` options
+### `PLAN` suboptions
 
-The `PLAN` options `VERBOSE` and `TYPES` described in [`EXPLAIN` options](explain.html#options) are also supported. For an example, see [`EXPLAIN ANALYZE (VERBOSE)`](#explain-analyze-verbose).
+The `PLAN` suboptions `VERBOSE` and `TYPES` described in [`EXPLAIN` options](explain.html#options) are also supported. For an example, see [`EXPLAIN ANALYZE (VERBOSE)`](#explain-analyze-verbose).
 
 ## `DISTSQL` option
 
@@ -165,6 +168,14 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 {% include common/sql/statement-bundle-warning.md %}
 
+## `REDACT` option
+
+`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the physical statement plan or statement bundle. 
+
+You can use the `REDACT` flag in combination with the [`PLAN`](#plan-option) (including the `VERBOSE` and `TYPES` [suboptions](#plan-suboptions)) and [`DEBUG`](#debug-option) options.
+
+For an example, see [`EXPLAIN ANALYZE (REDACT)`](#explain-analyze-redact).
+
 ## Examples
 
 The following examples use the [`movr` example dataset](cockroach-demo.html#datasets).
@@ -179,7 +190,7 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
+EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
@@ -263,7 +274,7 @@ EXPLAIN ANALYZE SELECT * FROM vehicles JOIN rides ON rides.vehicle_id = vehicles
 
 ### `EXPLAIN ANALYZE (VERBOSE)`
 
-The `VERBOSE` option displays the physical statement plan with additional execution statistics.
+Use the `VERBOSE` suboption of `PLAN` to execute a query and display the physical statement plan with additional execution statistics.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -369,7 +380,7 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE (DEBUG) SELECT city, AVG(revenue) FROM rides GROUP BY city;
+EXPLAIN ANALYZE (DEBUG) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
@@ -386,6 +397,63 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
 ~~~
 
 To download the ZIP file containing the statement diagnostics, open the URL after **Direct link**, run the `\statement-diag download` command, or run `cockroach statement-diag download`. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
+
+### `EXPLAIN ANALYZE (REDACT)`
+
+Use the [`REDACT` option](redact-option) to execute a query and cause constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the physical statement plan or statement bundle.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+EXPLAIN ANALYZE (REDACT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
+~~~
+
+~~~
+                                             info
+----------------------------------------------------------------------------------------------
+  planning time: 836µs
+  execution time: 148ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 125,000 (21 MiB, 3 gRPC calls)
+  cumulative time spent in KV: 125ms
+  maximum memory usage: 14 MiB
+  network usage: 0 B (0 messages)
+  sql cpu time: 85ms
+  estimated RUs consumed: 0
+
+  • sort
+  │ nodes: n1
+  │ actual row count: 11,105
+  │ estimated max memory allocated: 4.0 MiB
+  │ estimated max sql temp disk usage: 0 B
+  │ sql cpu time: 8ms
+  │ estimated row count: 12,156
+  │ order: +revenue
+  │
+  └── • filter
+      │ nodes: n1
+      │ actual row count: 11,105
+      │ sql cpu time: 9ms
+      │ estimated row count: 12,156
+      │ filter: revenue > ‹×›
+      │
+      └── • scan
+            nodes: n1
+            actual row count: 125,000
+            KV time: 125ms
+            KV contention time: 0µs
+            KV rows read: 125,000
+            KV bytes read: 21 MiB
+            KV gRPC calls: 3
+            estimated max memory allocated: 10 MiB
+            sql cpu time: 68ms
+            estimated row count: 125,000 (100% of the table; stats collected 16 minutes ago)
+            table: rides@rides_pkey
+            spans: FULL SCAN
+(40 rows)
+~~~
+
+In the preceding output, the `revenue` comparison value is redacted as `‹×›`.
 
 ## See also
 
