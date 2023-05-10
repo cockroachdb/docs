@@ -20,7 +20,7 @@ The following define the categories of non-retryable errors:
 - The changefeed cannot convert the data to the specified [output format](changefeed-messages.html). For example, there are [Avro](changefeed-messages.html#avro) types that changefeeds do not support, or a [CDC query](cdc-queries.html) is using an unsupported or malformed expression.
 - The terminal error happens as part of established changefeed behavior. For example, you have specified the [`schema_change_policy=stop` option](create-changefeed.html#schema-policy) and a schema change happens.
 
-We recommend monitoring changefeeds with [Prometheus](monitoring-and-alerting.html#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with protected timestamps and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
+We recommend monitoring changefeeds with [Prometheus](monitoring-and-alerting.html#prometheus-endpoint) to avoid accumulation of garbage after a changefeed encounters an error. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how changefeeds interact with [protected timestamps](architecture/storage-layer.html#protected-timestamps) and garbage collection. In addition, see the [Recommended changefeed metrics to track](#recommended-changefeed-metrics-to-track) section for the essential metrics to track on a changefeed.
 
 ## Monitor a changefeed
 
@@ -61,7 +61,7 @@ By default, changefeeds will retry errors with [some exceptions](#changefeed-ret
 
 #### Protected timestamp and garbage collection monitoring
 
-Protected timestamps will protect changefeed data from garbage collection in particular scenarios, but if a changefeed lags too far behind, the protected changes could cause data storage issues. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for detail on when changefeed data is protected from garbage collection.
+[Protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from garbage collection in particular scenarios, but if a changefeed lags too far behind, the protected changes could cause data storage issues. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for detail on when changefeed data is protected from garbage collection.
 
 {% include_cached new-in.html version="v23.1" %} You can monitor changefeed jobs for protected timestamp usage. We recommend setting up monitoring for the following metrics:
 
@@ -171,7 +171,7 @@ I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kaf
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW CHANGEFEED JOBS;
+SHOW CHANGEFEED JOBS;
 ~~~
 
 ~~~
