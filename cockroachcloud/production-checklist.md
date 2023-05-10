@@ -36,7 +36,7 @@ To verify that you have authorized the application server's network, navigate to
 
 {{ site.data.products.dedicated }} advanced has access to all features required for [PCI readiness](pci-dss.html). You should configure these settings to make your cluster PCI ready:
 
-- [Audit logs](cloud-org-audit-logs.html)
+- [{{ site.data.products.db }} Organization Audit logs](cloud-org-audit-logs.html)
 - [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)
 - [Egress Perimeter Controls](egress-perimeter-controls.html)
 - Single Sign-On (SSO) for your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and your [clusters](cloud-sso-sql.html)
