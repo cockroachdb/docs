@@ -36,29 +36,17 @@ You do not need an account with the cloud provider you choose in order to create
 
 {{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
 
-For GCP clusters, each GiB of storage costs  $0.0011986 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005088 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per IOPS per hour.
-
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region(s)
 
-In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
+In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For example, if your client application is deployed in GCP's `us-east1` region, select GCP as your deployment environment and select `us-east1` as your cluster's region. If you want to create a cluster in an unavailable region, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
 {{site.data.alerts.callout_info}}
 Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
 {{site.data.alerts.end}}
-
-**Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
-
-- Mumbai (`asia-south1`)
-- Osaka (`asia-northeast2`)
-- Hamina (`europe-north1`)
-- Frankfurt (`europe-west3`)
-- Zurich (`europe-west6`)
-
-If you want to create a cluster in a disabled or unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
@@ -94,7 +82,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to <b>{{ cap_per_vcpu }}</b>. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
