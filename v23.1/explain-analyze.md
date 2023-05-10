@@ -170,9 +170,9 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## `REDACT` option
 
-`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the physical statement plan or statement bundle. 
+`EXPLAIN ANALYZE (REDACT)` executes a query and causes constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the output. 
 
-You can use the `REDACT` flag in combination with the [`PLAN`](#plan-option) (including the `VERBOSE` and `TYPES` [suboptions](#plan-suboptions)) and [`DEBUG`](#debug-option) options.
+You can use the `REDACT` flag in combination with the [`PLAN`](#plan-option) option (including the `VERBOSE` and `TYPES` [suboptions](#plan-suboptions)) to redact sensitive values in the physical statement plan, and with the [`DEBUG`](#debug-option) option to redact values in the statement bundle.
 
 For an example, see [`EXPLAIN ANALYZE (REDACT)`](#explain-analyze-redact).
 
