@@ -168,7 +168,7 @@ CREATE CHANGEFEED INTO sink AS SELECT * FROM table WHERE crdb_region = 'europe-w
 For more detail on targeting `REGIONAL BY ROW` tables with changefeeds, see [Changefeeds in Multi-Region Deployments](changefeeds-in-multi-region-deployments.html).
 
 {{site.data.alerts.callout_success}}
-If you are running changefeeds from a [multi-region](multiregion-overview.html) cluster, you may want to define which nodes take part in running the changefeed job. You can use the [`execution_locality` option](changefeeds-in-multi-region-deployments.html#syntax) with key-value pairs to specify the locality requirements nodes must meet.
+If you are running changefeeds from a [multi-region](multiregion-overview.html) cluster, you may want to define which nodes take part in running the changefeed job. You can use the [`execution_locality` option](changefeeds-in-multi-region-deployments.html#run-a-changefeed-job-by-locality) with key-value pairs to specify the [locality designations](cockroach-start.html#locality) nodes must meet.
 {{site.data.alerts.end}}
 
 ### Stabilize the changefeed message schema

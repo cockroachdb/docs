@@ -42,7 +42,7 @@ To define and filter the change data included in changefeed messages emitted to 
 
 ### Job coordination using the execution locality option
 
-When you start or [resume](resume-job.html) a changefeed with `execution_locality`, it is necessary to determine the coordinating node for the job. If a node that does not match the locality filter is the first node to claim the job, it will find a node that does match the filter and transfer the execution to it. This can result in a short delay in starting or resuming a changefeed job that has execution locality requirements. 
+When you start or [resume](resume-job.html) a changefeed with `execution_locality`, it is necessary to determine the coordinating node for the job. If a node that does not match the locality filter is the first node to claim the job, it will find a node that does match the filter and transfer the execution to it. This can result in a short delay in starting or resuming a changefeed job that has execution locality requirements. When there is no node matching the specified locality, CockroachDB will return an error.
 
 Once the coordinating node is determined, nodes that match the locality requirements will take part in emitting changefeed messages to the sink. The following will happen in different cases:
 
