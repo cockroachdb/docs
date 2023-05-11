@@ -85,7 +85,7 @@ To activate diagnostics collection:
 
 A row  with the activation time and collection status is added to the **Statement diagnostics** table.
 
-<img src="{{ 'images/v22.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics" style="border:1px solid #eee;max-width:100%" align="middle" />
+<img src="{{ 'images/v22.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics" style="border:1px solid #eee;max-width:100%" />
 
 The collection status values are:
 
