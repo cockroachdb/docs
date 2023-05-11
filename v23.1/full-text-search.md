@@ -5,17 +5,17 @@ toc: true
 docs_area: develop
 ---
 
-A full-text search is used to perform natural-language searches on documents such as articles, websites, or other written formats.
+{% include_cached new-in.html version="v23.1" %} A full-text search is used to perform natural-language searches on documents such as articles, websites, or other written formats.
 
 This page describes how to perform full-text searches using the provided [built-in functions](functions-and-operators.html#full-text-search-functions).
 
 {{site.data.alerts.callout_info}}
-Some PostgreSQL syntax and features are currently unsupported. For details, see [Unsupported features](#unsupported-features).
+Some PostgreSQL syntax and features are unsupported. For details, see [Unsupported features](#unsupported-features).
 {{site.data.alerts.end}}
 
 ## How does full-text search work?
 
-In the PostgreSQL terminology, a *document* is a natural-language text, typically stored within a single database row or concatenated from multiple fields, that you [convert to a data type](#process-a-document) that is searchable using [specially formatted queries](#form-a-query).
+In the PostgreSQL terminology, a *document* is a natural-language text [converted to a data type](#process-a-document) that is searchable using [specially formatted queries](#form-a-query). A document is typically stored within a single database row or concatenated from multiple fields.
 
 A full-text search has the following advantages over pattern matching with `LIKE` and `ILIKE`:
 
@@ -173,9 +173,9 @@ For more ways to define full-text indexes, see [Create a full-text index with an
 
 ## Text search configuration
 
-A *text search configuration* determines how inputs are parsed into `TSVECTOR` and `TSQUERY` values. This includes a dictionary that is used to identify derivatives of words, as well as stop words to exclude, when normalizing [documents](#process-a-document) and [queries](#form-a-query).
+A *text search configuration* determines how inputs are parsed into `TSVECTOR` and `TSQUERY` values. This includes a dictionary that is used to identify derivatives of words, as well as stop words to exclude when normalizing [documents](#process-a-document) and [queries](#form-a-query).
 
-The currently supported dictionaries are English, Danish, Dutch, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, Swedish, and Turkish. An additional `simple` dictionary does not perform stemming or stopwording when normalizing [documents](#process-a-document) or [queries](#form-a-query).
+The supported dictionaries are English, Danish, Dutch, Finnish, French, German, Hungarian, Italian, Norwegian, Portuguese, Russian, Spanish, Swedish, and Turkish. An additional `simple` dictionary does not perform stemming or stopwording when normalizing [documents](#process-a-document) or [queries](#form-a-query).
 
 You can specify a text search configuration as the first parameter when calling any of the [built-in functions](functions-and-operators.html#full-text-search-functions) to [process a document](#process-a-document) or [form a query](#form-a-query). For example:
 
@@ -445,7 +445,7 @@ CREATE INDEX ON t USING GIN (b);
 
 ## Unsupported features
 
-Some PostgreSQL syntax and features are currently unsupported. These include, but are not limited to:
+Some PostgreSQL syntax and features are unsupported. These include, but are not limited to:
 
 - Aspects of [text search configurations](#text-search-configuration) other than the specified dictionary.
 - `websearch_to_tsquery()` built-in function.

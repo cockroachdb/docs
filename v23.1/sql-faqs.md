@@ -131,7 +131,7 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 {% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
 
-## Does CockroachDB support full text search?
+## Does CockroachDB support full-text search?
 
 Yes. For more information, see [Full-Text Search](full-text-search.html).
 
