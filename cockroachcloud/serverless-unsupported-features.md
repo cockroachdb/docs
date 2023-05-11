@@ -21,6 +21,10 @@ Automated database and table level backups are not supported in {{ site.data.pro
 
 Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](../{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.html). However, user managed locality-aware backups using user provided storage locations are supported in {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
 
+## Adding and removing regions
+
+You cannot currently add or remove regions from a {{ site.data.products.serverless }} cluster once it has been created. If you want to edit a custer's regions, you can [backup and restore](take-and-restore-customer-owned-backups.html) your data into a new cluster with the desired region configuration.
+
 ## Follower reads
 
 [Follower reads](../{{site.current_cloud_version}}/follower-reads.html) are not supported in {{ site.data.products.serverless }} clusters.

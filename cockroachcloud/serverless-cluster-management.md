@@ -64,6 +64,7 @@ You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/
 
 1. Click **Update**.
 
+{% comment %}
 ## Add or remove regions from a cluster
 
 You can add or remove up to six regions at a time through the Console. 
@@ -102,6 +103,7 @@ To remove regions from your cluster:
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
+{% endcomment %}
 
 ## Create a database
 
