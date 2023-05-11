@@ -21,12 +21,10 @@ The rows in this page are populated from the [`crdb_internal.transaction_content
 - The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 {{site.data.alerts.end}}
 
-Transaction executions with the **High Contention** insight are transactions that experienced [contention]({{ link_prefix }}transactions.html#transaction-contention).
-
 {% if page.cloud != true -%}
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
-<img src="{{ 'images/v22.2/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v23.1/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
 {% endif -%}
 
 To view [details of the execution](#transaction-execution-details), click an execution ID in the **Latest Transaction Execution ID** column.
@@ -34,10 +32,15 @@ To view [details of the execution](#transaction-execution-details), click an exe
 - **Latest Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
 - **Transaction Execution**: The transaction fingerprint of the latest transaction execution.
+- **Status**: The transaction status.
 - **Insights**: The insight for the transaction execution.
   - **High Contention**: The transaction execution experienced high [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention) time according to the threshold set in the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold).
+  - **Suboptimal Plan**: The plan could be improved for some statement(s) in the transaction. Possible causes include outdated statistics and missing indexes.
+  - **Slow Execution**: The transaction took longer than the value of the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold) to execute.
+  - **Failed Execution**: The transaction execution failed.
 - **Start Time (UTC)**: The timestamp when the transaction execution started.
 - **Contention Time**: The amount of time the transaction execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
+- **CPU Time**: The amount of CPU time spent executing the transaction.
 - **Application Name**: The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
 
 ### Transaction execution details
