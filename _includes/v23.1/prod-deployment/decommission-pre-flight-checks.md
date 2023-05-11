@@ -14,5 +14,5 @@ Failed running "node decommission"
 These checks can be skipped by [passing the flag `--checks=skip` to `cockroach node decommission`](cockroach-node.html#decommission-checks).
 
 {{site.data.alerts.callout_info}}
-Remaining disk space on other nodes in the cluster is not yet considered as part of the decommissioning pre-flight checks. For more information, see [cockroachdb/cockroach#71757](https://github.com/cockroachdb/cockroach/issues/71757)
+The amount of remaining disk space on other nodes in the cluster is not yet considered as part of the decommissioning pre-flight checks. For more information, see [cockroachdb/cockroach#71757](https://github.com/cockroachdb/cockroach/issues/71757)
 {{site.data.alerts.end}}
