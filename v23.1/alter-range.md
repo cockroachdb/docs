@@ -115,7 +115,7 @@ SELECT store_id FROM crdb_internal.kv_store_status;
 
 #### Find range ID and leaseholder information
 
-To use `ALTER RANGE ... RELOCATE`, you need to know how to find the range ID, leaseholder, and other information for a [table](show-ranges.html#show-ranges-for-a-table-primary-index), [index](show-ranges.html#show-ranges-for-an-index), or [database](show-ranges.html#show-ranges-for-a-database). You can find this information using the [`SHOW RANGES`](show-ranges.html) statement.
+To use `ALTER RANGE ... RELOCATE`, you need to know how to find the range ID, leaseholder, and other information for a [table](show-ranges.html#show-ranges-for-a-table), [index](show-ranges.html#show-ranges-for-an-index), or [database](show-ranges.html#show-ranges-for-a-database). You can find this information using the [`SHOW RANGES`](show-ranges.html) statement.
 
 For example, to get all range IDs, leaseholder store IDs, and leaseholder localities for the [`movr.users`](movr.html) table, use the following query:
 
