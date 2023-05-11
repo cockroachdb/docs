@@ -400,7 +400,7 @@ To download the ZIP file containing the statement diagnostics, open the URL afte
 
 ### `EXPLAIN ANALYZE (REDACT)`
 
-Use the [`REDACT` option](redact-option) to execute a query and cause constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the physical statement plan or statement bundle.
+Use the [`REDACT` option](#redact-option) to execute a query and cause constants, literal values, parameter values, and personally identifiable information (PII) to be redacted as `‹×›` in the physical statement plan or statement bundle.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
