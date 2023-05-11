@@ -39,7 +39,7 @@ Name | Description
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
-`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp](architecture/storage-layer.html#protected-timestamps) records owned by [changefeed jobs](show-jobs.html#show-changefeed-jobs)
+`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp](architecture/storage-layer.html#protected-timestamps) records owned by [changefeed jobs](show-jobs.html#show-changefeed-jobs).
 `jobs.{job_type}.currently_paused` | Number of `{job_type}` [jobs](show-jobs.html) currently considered paused. See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
 `jobs.{job_type}.protected_age_sec` | The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protecting `{job_type}` [jobs](show-jobs.html). See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
 `jobs.{job_type}.protected_record_count` | Number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by `{job_type}` [jobs](show-jobs.html). See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.

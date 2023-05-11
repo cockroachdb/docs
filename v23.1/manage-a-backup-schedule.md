@@ -52,7 +52,7 @@ Metrics for scheduled backups fall into two categories:
 
         When `schedules.BACKUP.failed` increments, run [`SHOW SCHEDULES`](show-schedules.html) to check which schedule is affected and to inspect the error in the `status` column.
     - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by backup schedules.
-    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of protected timestamp records held by backup schedules.
+    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by backup schedules.
 
 - Scheduler-specific metrics:
 
