@@ -27,14 +27,15 @@ The user must have the `DELETE` and `SELECT` [privileges](security-reference/aut
 
  Parameter | Description
 -----------|-------------
- `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
- `table_name` | The name of the table that contains the rows you want to update.
- `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return   `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`](truncate.html) instead of `DELETE`.__
- `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements) for more details.
- `limit_clause` | A `LIMIT` clause. See [Limit Query Results](limit-offset.html) for more details.
- `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
- `ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
+`common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
+`table_name` | The name of the table that contains the rows you want to update.
+`AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
+`USING table_ref` | Delete rows based on a table [join](joins.html), where `table_ref` specifies another table to reference.
+`WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`](truncate.html) instead of `DELETE`.
+`sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements) for more details.
+`limit_clause` | A `LIMIT` clause. See [Limit Query Results](limit-offset.html) for more details.
+`RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
+`ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
 ## Success responses
 
@@ -86,14 +87,14 @@ The syntax to force a specific index for a delete is:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM table@my_idx;
+DELETE FROM table@my_idx;
 ~~~
 
 This is equivalent to the longer expression:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM table@{FORCE_INDEX=my_idx};
+DELETE FROM table@{FORCE_INDEX=my_idx};
 ~~~
 
 To view how the index hint modifies the query plan that CockroachDB follows for deleting rows, use an [`EXPLAIN`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
@@ -126,7 +127,7 @@ In this example, `code` is our primary key and we want to delete the row where t
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM promo_codes WHERE code = 'about_stuff_city';
+DELETE FROM promo_codes WHERE code = 'about_stuff_city';
 ~~~
 ~~~
 DELETE 1
@@ -138,13 +139,27 @@ Deleting rows using non-unique columns removes _every_ row that returns `TRUE` f
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00';
+DELETE FROM promo_codes WHERE creation_time > '2019-01-30 00:00:00+00:00';
 ~~~
 ~~~
 DELETE 4
 ~~~
 
 The example statement deleted four rows, which might be unexpected.
+
+### Delete rows using a table join
+
+You can delete rows based on a table [join](joins.html). Use the `USING` clause to specify another table.
+
+The following example deletes all codes from `promo_codes` that are present in `user_promo_codes`:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+DELETE FROM promo_codes USING user_promo_codes WHERE user_promo_codes.code = promo_codes.code;
+~~~
+~~~
+DELETE 5
+~~~
 
 ### Return deleted rows
 
@@ -160,7 +175,7 @@ To retrieve specific columns, name them in the `RETURNING` clause.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
+DELETE FROM promo_codes WHERE creation_time > '2019-01-29 00:00:00+00:00' RETURNING code, rules;
 ~~~
 ~~~
            code          |                    rules
@@ -180,7 +195,7 @@ When `RETURNING` specific columns, you can change their labels using `AS`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
+DELETE FROM promo_codes WHERE creation_time > '2019-01-28 00:00:00+00:00' RETURNING code, rules AS discount;
 ~~~
 ~~~
          code         |                   discount
@@ -196,7 +211,7 @@ To sort and return deleted rows, use a statement like the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
+WITH a AS (DELETE FROM promo_codes WHERE creation_time > '2019-01-27 00:00:00+00:00' RETURNING *)
   SELECT * FROM a ORDER BY expiration_time;
 ~~~
 
@@ -217,14 +232,14 @@ Suppose you create a multi-column index on the `users` table with the `name` and
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON users (name, city);
+CREATE INDEX ON users (name, city);
 ~~~
 
 Now suppose you want to delete the two users named "Jon Snow". You can use the [`EXPLAIN (OPT)`](explain.html#opt-option) command to see how the [cost-based optimizer](cost-based-optimizer.html) decides to perform the delete:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
+EXPLAIN (OPT) DELETE FROM users WHERE name='Jon Snow';
 ~~~
 
 ~~~
@@ -255,7 +270,7 @@ Now suppose that instead you want to perform a delete, but using the `id` column
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+EXPLAIN (OPT) DELETE FROM users WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
 
 ~~~
@@ -294,7 +309,7 @@ If you provide an index hint (i.e., force the index selection) to use the primar
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
+EXPLAIN (OPT) DELETE FROM users@users_pkey WHERE id IN ('70a3d70a-3d70-4400-8000-000000000016', '3d70a3d7-0a3d-4000-8000-00000000000c');
 ~~~
 
 ~~~
