@@ -32,7 +32,7 @@ Parameter | Description
 ----------|------------
 `func_create_name` | The name of the function.
 `func_param` | A function argument.
-`func_param_type` | The type returned by the function. 
+`func_return_type` | The type returned by the function. 
 `opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview](user-defined-functions.html#overview).
 
 ## Example of a simple function
@@ -68,7 +68,7 @@ The following statement defines a function that returns the total number of MovR
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE OR REPLACE FUNCTION num_users() RETURNS INT AS 'SELECT COUNT(*) FROM users' LANGUAGE SQL;
+CREATE OR REPLACE FUNCTION num_users() RETURNS INT AS 'SELECT count(*) FROM users' LANGUAGE SQL;
 ~~~
 
 {% include_cached copy-clipboard.html %}

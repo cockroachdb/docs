@@ -14,8 +14,8 @@ The basic components of a user-defined function are a name, list of arguments, r
 
 - An argument has a _mode_ and a _type_. CockroachDB supports the `IN` argument mode. The type can be a built-in type, [user-defined `ENUM`](enum.html), or implicit record type. CockroachDB **does not** support default values for arguments.
 - The return type can be a built-in [type](data-types.html), user-defined [`ENUM`](enum.html), [`RECORD`](create-function.html#create-a-function-that-returns-a-record-type), implicit record type, or `VOID`.
-    - Preceding a type with `SETOF` indicates that a set, or multiple rows, should be returned. For an example, see [Create a function that returns a set of results](create-function.html#create-a-function-that-returns-a-set-of-results).
-    - `VOID` indicates that there is no return type and `NULL` will always be returned. If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.
+    - Preceding a type with `SETOF` indicates that a set, or multiple rows, may be returned. For an example, see [Create a function that returns a set of results](create-function.html#create-a-function-that-returns-a-set-of-results).
+    - `VOID` indicates that there is no return type and `NULL` will always be returned. {% comment %}If the return type of the function is not `VOID`, the last statement of a UDF must be a `SELECT`.{% endcomment %}
 - The [volatility](functions-and-operators.html#function-volatility) indicates whether the function has side effects. `VOLATILE` and `NOT LEAKPROOF` are the default.
   - Annotate a function with side effects with `VOLATILE`. This also prevents the [cost-based optimizer](cost-based-optimizer.html) from pre-evaluating the function.
   - A `STABLE` or `IMMUTABLE` function does not mutate data.
@@ -204,7 +204,7 @@ The following example demonstrates how inlining improves a UDF's performance.
     (33 rows)
     ~~~
 
-    The query takes `77ms` to execute because the function is evaluated for each row in `a`.
+    The query takes `77ms` to execute because the function is invoked for each row scanned in table `a`.
 
 1. View the query plan when using `foo_s()` (the `STABLE` function) instead:
 
@@ -276,7 +276,7 @@ The following example demonstrates how inlining improves a UDF's performance.
     (57 rows)
     ~~~
 
-    The query takes only `4ms` to execute because the function is inlined as an equality comparison `(a) = (b)` with a much lower overhead.
+    The query takes only `4ms` to execute because the function is inlined and transformed to a [join](joins.html) with an equality comparison `(a) = (b)`, which has much less overhead than invoking a function for each row scanned in table `a`.
 
 ## Known limitations
 
