@@ -5,7 +5,57 @@ toc: true
 docs_area: stream_data
 ---
 
- Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
+This page describes features that you can use for changefeeds running on multi-region deployments.
+
+- {% include_cached new-in.html version="v23.1" %} [Run a changefeed job by locality](#run-a-changefeed-job-by-locality).
+- [Run changefeeds on regional by row tables](#run-changefeeds-on-regional-by-row-tables).
+
+## Run a changefeed job by locality
+
+{% include_cached new-in.html version="v23.1" %} Use the `execution_locality` option to set locality filter requirements that a node must meet to take part in executing a [changefeed](create-changefeed.html) job. This will pin the [coordination of the changefeed job](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) and the nodes that process the [changefeed messages](changefeed-messages.html) to the defined locality.
+
+Defining an execution locality for a changefeed job, could be useful in the following cases:
+
+- Your [changefeed sink](changefeed-sinks.html) is only available in one region. There is no network connectivity between regions and you need to send all changefeed messages through the node(s) in the sink's region.
+- Your cluster runs on a [hybrid topology](topology-patterns.html#multi-region) and you need to send changefeed messages within the same environment.
+- Your cluster is [multi-region](multiregion-overview.html) and you need the nodes that are physically closest to the sink to emit changefeed messages. This can avoid cross-regional traffic to reduce expense.
+- Your cluster is running through VPC peering connections and you need all the data sent through a particular locality.
+
+### Syntax
+
+To specify the locality requirements for the coordinating node, run `execution_locality` with key-value pairs that represent the [locality designations](cockroach-start.html#locality) assigned to the cluster at startup.
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'external://cdc' WITH execution_locality='region=us-east-2,cloud=aws';
+~~~
+
+When you run a changefeed with `execution_locality`, consider the following:
+
+- The changefeed job will fail if no nodes match the locality filter.
+- [Selection of the coordinating node](#job-coordination-using-the-execution-locality-option) that matches the locality filter may noticeably increase the startup latency of the changefeed job.
+- Even though a changefeed job has been pinned to a locality, it does not guarantee the job will **not** read from another locality if there are no replicas in the defined locality.
+
+{{site.data.alerts.callout_success}}
+To define and filter the change data included in changefeed messages emitted to the sink, see [Change Data Capture Queries](cdc-queries.html).
+{{site.data.alerts.end}}
+
+### Job coordination using the execution locality option
+
+When you start or [resume](resume-job.html) a changefeed with `execution_locality`, it is necessary to determine the coordinating node for the job. If a node that does not match the locality filter is the first node to claim the job, it will find a node that does match the filter and transfer the execution to it. This can result in a short delay in starting or resuming a changefeed job that has execution locality requirements. When there is no node matching the specified locality, CockroachDB will return an error.
+
+Once the coordinating node is determined, nodes that match the locality requirements will take part in emitting changefeed messages to the sink. The following will happen in different cases:
+
+- If the [leaseholder](architecture/reads-and-writes-overview.html#architecture-leaseholder) for the change data matches the filter, it will emit the changefeed messages. 
+- If the leaseholder does not match the locality filter, a node will be selected matching the locality filter with a preference for nodes with localities that are more similar to the leaseholder.
+
+When a node matching the locality filter takes part in the changefeed job, that node will read from the closest [replica](architecture/reads-and-writes-overview.html#architecture-replica). If the node is the leaseholder, or is itself a replica, it can read from itself. In the scenario where no replicas are available in the region of the assigned node, it may then read from a replica in a different region. As a result, you may want to consider [placing replicas](configure-replication-zones.html), including potentially [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) that will have less impact on read latency, in the locality or region that you plan on pinning for changefeed job execution.
+
+For an overview of how a changefeed job works, see the [How does an Enterprise changefeed work?](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) section.
+
+## Run changefeeds on regional by row tables
+
+Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
 
 - Setting a table's locality to [`REGIONAL BY ROW`](alter-table.html#regional-by-row) is equivalent to a [schema change](online-schema-changes.html) as the [`crdb_region` column](alter-table.html#crdb_region) becomes a hidden column for each of the rows in the table and is part of the [primary key](primary-key.html). Therefore, when existing tables targeted by changefeeds are made regional by row, it will trigger a backfill of the table through the changefeed. (See [Schema changes with a column backfill](changefeed-messages.html#schema-changes-with-column-backfill) for more details on the effects of schema changes on changefeeds.)
 
