@@ -161,7 +161,7 @@ CockroachDB recommends taking incremental backups every 10 minutes. We support u
 
 If your cluster grows too large for nightly [full backups](#full-backups), you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
-If you are taking backups on a regular cadence, we recommend [creating a schedule](create-schedule-for-backup.html) for your backups. When scheduling backups, if the [`FULL BACKUP`](create-schedule-for-backup.html#full-backup-clause) clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`.</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`.</li><li>Otherwise: Default to `FULL BACKUP ALWAYS` and all backups triggered by the `RECURRING` clause will be full backups.</li></ul>
+If you are taking backups on a regular cadence, we recommend [creating a schedule](create-schedule-for-backup.html) for your backups. When scheduling backups, if the [`FULL BACKUP`](create-schedule-for-backup.html#full-backup-clause) clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>Incremental backup frequency <= 1 hour: Default to `FULL BACKUP '@daily'`.</li><li>Incremental backup frequency <= 1 day: Default to `FULL BACKUP '@weekly'`.</li><li>Otherwise: Default to `FULL BACKUP ALWAYS` and all backups triggered by the `RECURRING` clause will be full backups.</li></ul>
 
 ### Garbage collection and backups
 
