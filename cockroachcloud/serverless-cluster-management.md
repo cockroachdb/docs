@@ -64,6 +64,41 @@ You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/
 
 1. Click **Update**.
 
+## Add or remove regions from a cluster
+
+You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding. -->
+
+## Add a region to your cluster
+
+To add regions to your cluster:
+
+1. Navigate to the cluster's **Overview** page.
+1. Select **Actions > Edit cluster**.
+
+    The **Edit cluster** page displays.
+
+1. Click **Add a region**.
+1. From the **Choose a region** dropdown, select the region you want to use.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Continue to payment**.
+1. In the **Confirmation** dialog, verify your new cluster configuration.
+1. Click **OK**.
+
+### Remove a region from your cluster
+
+To remove regions from your cluster:
+
+1. Navigate to the cluster's **Overview** page.
+1. Select **Actions > Edit cluster**.
+
+    The **Edit cluster** page displays.
+
+1. Click the **X** button next to each region you want to remove.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Continue to payment**.
+1. In the **Confirmation** dialog, verify your new cluster configuration.
+1. Click **OK**.
+
 ## Create a database
 
 You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
