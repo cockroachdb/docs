@@ -161,13 +161,13 @@
               "urls": [
                 "/${VERSION}/backup-validation.html"
               ]
-            },
-            {
-              "title": "Backup and Restore Monitoring",
-              "urls": [
-                "/${VERSION}/backup-and-restore-monitoring.html"
-              ]
             }
+          ]
+        },
+        {
+          "title": "Backup and Restore Monitoring",
+          "urls": [
+            "/${VERSION}/backup-and-restore-monitoring.html"
           ]
         },
         {
