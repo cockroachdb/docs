@@ -66,7 +66,11 @@ You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/
 
 ## Add or remove regions from a cluster
 
-You can add or remove up to nine regions at a time through the Console. Note that you cannot have a two-region cluster, and it will take about 30 minutes to add or remove each region. See [Planning your cluster](plan-your-cluster.html) for cluster requirements and recommendations before proceeding. -->
+You can add or remove up to six regions at a time through the Console. 
+
+{{site.data.alerts.callout_info}}
+You can only add regions to clusters created after May 16, 2023.
+{{site.data.alerts.end}}
 
 ## Add a region to your cluster
 

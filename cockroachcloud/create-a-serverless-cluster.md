@@ -39,7 +39,7 @@ You do not need an account with the cloud provider you choose in order to create
 
 In the **Regions** section, select a region. For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For example, if your client application is deployed in GCP's `us-east1` region, select GCP as your deployment environment and select `us-east1` as your cluster's region. If you want to create a cluster in an unavailable region, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
-To create a multi-region cluster, click **Add regions** until you have the desired number of regions. CockroachDB will optimize access to data from the **Primary region**. See [Multi-Region Capabilities Overview](../{{site.versions["stable"]}}/multiregion-overview.html) to learn more.
+To create a multi-region cluster, click **Add regions** until you have the desired number of regions. You can have up to six regions. CockroachDB will optimize access to data from the **Primary region**. See [Multi-Region Capabilities Overview](../{{site.versions["stable"]}}/multiregion-overview.html) to learn more.
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %}

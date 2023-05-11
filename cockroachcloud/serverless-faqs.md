@@ -54,7 +54,7 @@ GCP                                         | AWS
 
 
 
-If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+Multi-region clusters can have a maximum of all six available regions. If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ### How can I estimate how many RUs my workload will consume?
 
