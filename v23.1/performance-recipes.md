@@ -159,7 +159,7 @@ In addition, implement [client-side retry handling](transaction-retry-error-refe
 
 To identify transactions that experienced [lock contention](performance-best-practices-overview.html#transaction-contention) in the past:
 
-- In the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view), look for a transaction with the **High Contention** insight. Click the transaction's execution ID and view the transaction execution details, including the details of the blocking transaction.
+- In the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view)), look for a transaction with the **High Contention** insight. Click the transaction's execution ID and view the transaction execution details, including the details of the blocking transaction.
 - Visit the **Transactions** page ([{{ site.data.products.db }} Console](../cockroachcloud/transactions-page.html) and [DB Console](ui-transactions-page.html)) and sort transactions by **Contention Time**.
 
 To view tables and indexes that experienced [contention](performance-best-practices-overview.html#transaction-contention):
@@ -172,7 +172,7 @@ to [view the tables, indexes, and transactions with the most time under contenti
 
 ##### Reduce transaction contention
 
-Because [contention](performance-best-practices-overview.html#transaction-contention) affects your cluster performance, and is often reported after it has already resolved, preventing contention is highly effective:
+[Contention](performance-best-practices-overview.html#transaction-contention) is often reported after it has already resolved. Therefore, preventing contention before it affects your cluster's performance is a more effective approach:
 
 {% include {{ page.version.version }}/performance/reduce-contention.md %}
 
