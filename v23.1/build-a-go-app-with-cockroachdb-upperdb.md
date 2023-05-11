@@ -48,7 +48,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 {% include {{ page.version.version }}/app/upperdb-basic-sample/main.go %}
 ~~~
 
-Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](transactions.html#client-side-intervention) when transaction errors are thrown. As a result, this function forces a transaction retry.
+Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](transaction-retry-error-reference.html#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
 
 To run the code, copy the sample above, or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/upperdb-basic-sample/main.go" download>download it directly</a>.
 
@@ -85,7 +85,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 {% include {{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go %}
 ~~~
 
-Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](transactions.html#client-side-intervention) when transaction errors are thrown. As a result, this function forces a transaction retry.
+Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](transaction-retry-error-reference.html#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
 
 Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go" download>download it directly</a>.
 

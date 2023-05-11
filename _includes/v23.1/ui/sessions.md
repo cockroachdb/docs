@@ -35,7 +35,7 @@ Actions | Options to cancel the active statement and cancel the session. These r
 
 To view details of a session, click a **Session Start Time (UTC)** to display session details.
 
-## Session details
+## Session Details
 
 If a session is idle, the **Transaction** and **Most Recent Statement** panels will display **No Active [Transaction | Statement]**.
 

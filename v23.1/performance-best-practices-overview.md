@@ -47,7 +47,7 @@ You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert 
 For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
 
 {{site.data.alerts.callout_info}}
-Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
+Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `transaction deadline exceeded`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
 {{site.data.alerts.end}}
 
 ### Use `IMPORT` instead of `INSERT` for bulk-inserts into new tables
@@ -312,96 +312,32 @@ If you have long-running queries (such as analytics queries that perform full ta
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-## Hot spots
-
-A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots can cause problems as requests increase.
-
-They commonly occur with transactions that operate on the **same range but different index keys**, which are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#cockroachdb-architecture-terms) node.
-
-A hot spot can occur on a range that is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting](load-based-splitting.html). This creates a hot spot at the single range.
-
-Read hot spots can occur if you perform lots of scans of a portion of a table index or a single key.
-
-### Find hot spots
-
-To track down nodes experiencing hot spots, use the [Hot Ranges page](ui-hot-ranges-page.html) and the [Range Report](ui-hot-ranges-page.html#range-report). To track down ranges experiencing hot spots, use the [Key visualizer](ui-key-visualizer.html).
-
-### Reduce hot spots
-
-To reduce hot spots:
-
-- Use index keys with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) on row IDs for suggestions.
-
-- Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://en.wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
-
-    - Benefits:
-
-        - Allows separate transactions to modify related underlying data without causing [contention](#transaction-contention).
-        - Can improve performance for read-heavy workloads.
-
-    - Drawbacks:
-
-        - More complex data model.
-        - Increases the chance of data inconsistency.
-        - Increases data redundancy.
-        - Can degrade performance for write-heavy workloads.
-
-- If the application strictly requires operating on very few different index keys, consider using [`ALTER ... SPLIT AT`](alter-table.html#split-at) so that each index key can be served by a separate group of nodes in the cluster.
-
-- If you are working with a table that **must** be indexed on sequential keys, consider using [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/). As part of this, we recommend doing thorough performance testing with and without hash-sharded indexes to see which works best for your application.
-
-- To avoid read hot spots:
-
-    - Increase data distribution, which will allow for more ranges. The hot spot exists because the data being accessed is all co-located in one range.
-    - Increase load balancing across more nodes in the same range. Most transactional reads must go to the leaseholder in CockroachDB, which means that opportunities for load balancing over replicas are minimal.
-
-        However, the following features do permit load balancing over replicas:
-
-        - Global tables
-        - Follower reads (both the bounded staleness and the exact staleness kinds)
-
-        In these cases, more replicas will help, up to the number of nodes in the cluster. They all only help with reads, and they all come with their own tradeoffs.
-
 <a id="understanding-and-avoiding-transaction-contention"></a>
 
 ## Transaction contention
 
-Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows](architecture/transaction-layer.html#writing) to prevent hazardous interactions with concurrent transactions. However, locking can lead to processing delays if multiple transactions are trying to access the same "locked" data at the same time. This is referred to as _transaction_ (or _lock_) _contention_.
+Transactions that operate on the *same index key values* (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, writing transactions ["lock" rows](architecture/transaction-layer.html#writing) to prevent hazardous interactions with concurrent transactions.
 
-Transaction contention occurs when the following three conditions are met:
+*Transaction contention* occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
 - They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)).
-- At least one of the transactions modify the data.
+- At least one of the transactions modifies the data.
 
-Transactions that experience contention typically show [delays in completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries) or [`restart transaction` errors with the error code `40001`](common-errors.html#restart-transaction). The possibility of transaction restarts requires clients to implement [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling).
+[When transactions are experiencing contention](performance-recipes.html#indicators-that-your-application-is-experiencing-transaction-contention), you may observe: 
 
-For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
+- [Delays in query completion](query-behavior-troubleshooting.html#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as *lock contention*.
+- [Transaction retries](transactions.html#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a [serializable ordering](demo-serializable.html) among all of the currently-executing transactions.
+- [Transaction retry errors](transaction-retry-error-reference.html), which are emitted to your client when an automatic retry is not possible or fails. Your application must address transaction retry errors with [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
+- [Cluster hot spots](#hot-spots).
 
-### Indicators your application is experiencing transaction contention
-
-{% include {{page.version.version}}/performance/contention-indicators.md %}
-
-### Find transaction contention
-
-{% include {{ page.version.version }}/performance/statement-contention.md %}
-
-<a id="avoid-transaction-contention"></a>
+To mitigate these effects, [reduce the causes of transaction contention](performance-best-practices-overview.html#reduce-transaction-contention) and [reduce hot spots](#reduce-hot-spots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Reduce transaction contention
 
-To reduce transaction contention:
+You can reduce the causes of transaction contention:
 
-- Make transactions smaller, so that each transaction has less work to do. In particular, avoid multiple client-server exchanges per transaction. For example, use [common table expressions](common-table-expressions.html) to group multiple [`SELECT`](select-clause.html) and [`INSERT`](insert.html), [`UPDATE`](update.html), [`DELETE`](delete.html), and [`UPSERT`](upsert.html) clauses together in a single SQL statement.
-
-  - For an example showing how to break up large transactions in an application, see [Break up large transactions into smaller units of work](build-a-python-app-with-cockroachdb-sqlalchemy.html#break-up-large-transactions-into-smaller-units-of-work).
-  - If you are experiencing contention (retries) when doing bulk deletes, see [Bulk-delete data](bulk-delete-data.html).
-
-- [Send all of the statements in your transaction in a single batch](transactions.html#batched-statements) so that CockroachDB can automatically retry the transaction for you.
-
-- Use the [`SELECT FOR UPDATE`](select-for-update.html) statement in scenarios where a transaction performs a read and then updates the row(s) it just read. The statement orders transactions by controlling concurrent access to one or more rows of a table. It works by locking the rows returned by a [selection query](selection-queries.html), such that other transactions trying to access those rows are forced to wait for the transaction that locked the rows to finish. These other transactions are effectively put into a queue that is ordered based on when they try to read the value of the locked row(s).
-
-- When replacing values in a row, use [`UPSERT`](upsert.html) and specify values for all columns in the inserted rows. This will usually have the best performance under [contention](#transaction-contention), compared to combinations of [`SELECT`](select-clause.html), [`INSERT`](insert.html), and [`UPDATE`](update.html).
+{% include {{ page.version.version }}/performance/reduce-contention.md %}
 
 ### Improve transaction performance by sizing and configuring the cluster
 
@@ -410,6 +346,21 @@ To maximize transaction performance, you'll need to maximize the performance of 
 - Minimize the network distance between the [replicas of a range](architecture/overview.html#architecture-replica), possibly using [zone configs](configure-replication-zones.html) and [partitioning](partitioning.html), or the newer [Multi-region SQL capabilities](multiregion-overview.html).
 - Use the fastest [storage devices](recommended-production-settings.html#storage) available.
 - If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node](recommended-production-settings.html#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
+
+## Hot spots
+
+A *hot spot* is any location on the cluster receiving significantly more requests than another. Hot spots are a symptom of *resource contention* and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
+
+[Hot spots occur](performance-recipes.html#indicators-that-your-cluster-has-hot-spots) when an imbalanced workload access pattern causes significantly more reads and writes on a subset of data. For example:
+
+- Transactions operate on the **same range but different index keys**. These operations are limited by the overall hardware capacity of [the range leaseholder](architecture/overview.html#cockroachdb-architecture-terms) node.
+- A range is indexed on a column of data that is sequential in nature (e.g., [an ordered sequence](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid), or a series of increasing, non-repeating [`TIMESTAMP`s](timestamp.html)), such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. Because the system is unable to find a split point in the range that evenly divides the traffic, the range cannot benefit from [load-based splitting](load-based-splitting.html). This creates a hot spot at the single range.
+
+Read hot spots can occur if you perform lots of scans of a portion of a table index or a single key.
+
+### Reduce hot spots
+
+{% include {{ page.version.version }}/performance/reduce-hot-spots.md %}
 
 ## See also
 

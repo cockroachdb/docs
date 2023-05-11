@@ -5,13 +5,40 @@ toc: true
 docs_area: reference.transaction_retry_error_example
 ---
 
-When a [transaction](transactions.html) is unable to complete due to [contention](architecture/overview.html#architecture-overview-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a [transaction retry error](transaction-retry-error-reference.html)is emitted to the client.
+When a [transaction](transactions.html) is unable to complete due to [contention](performance-best-practices-overview.html#transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a [transaction retry error](transaction-retry-error-reference.html) is emitted to the client.
 
 This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#testing-transaction-retry-logic) against your application's needs.
 
 ## Client-side retry handling example
 
-{% include {{page.version.version}}/misc/client-side-intervention-example.md %}
+The Python-like pseudocode below shows how to implement an application-level retry loop; it does not require your driver or ORM to implement [advanced retry handling logic](advanced-client-side-transaction-retries.html), so it can be used from any programming language or environment. In particular, your retry loop must:
+
+- Raise an error if the `max_retries` limit is reached
+- Retry on `40001` error codes
+- [`COMMIT`](commit-transaction.html) at the end of the `try` block
+- Implement [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) logic as shown below for best performance
+
+~~~ python
+while true:
+    n++
+    if n == max_retries:
+        throw Error("did not succeed within N retries")
+    try:
+        # add logic here to run all your statements
+        conn.exec('COMMIT')
+        break
+    catch error:
+        if error.code != "40001":
+            throw error
+        else:
+            # This is a retry error, so we roll back the current transaction
+            # and sleep for a bit before retrying. The sleep time increases
+            # for each failed transaction.  Adapted from
+            # https://colintemple.com/2017/03/java-exponential-backoff/
+            conn.exec('ROLLBACK');
+            sleep_ms = int(((2**n) * 100) + rand( 100 - 1 ) + 1)
+            sleep(sleep_ms) # Assumes your sleep() takes milliseconds
+~~~
 
 ## Testing transaction retry logic
 
