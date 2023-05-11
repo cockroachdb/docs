@@ -29,7 +29,7 @@ When you run `EXECUTION LOCALITY`, consider the following:
 
 - The backup job will fail if no nodes match the locality filter.
 - Selection of the coordinating node that matches the locality filter may slightly increase the startup latency of the backup job.
-- Even though a backup job has been pinned to a locality, it does not guarantee the job will **not** read from another locality if there are no replicas in its locality.
+- Even though a backup job has been pinned to a locality, it may still read data from another locality if there are no replicas in its locality.
 - If the job is created on a node that does not match the locality filter, you will receive an error even when the **job creation was successful**. This error indicates that the job execution moved to another node. To avoid viewing this error, we recommend using the [`DETACHED`](backup.html#detached) option with `EXECUTION LOCALITY` when creating a manual job rather than a [scheduled job](create-schedule-for-backup.html). Then, use the [`SHOW JOB WHEN COMPLETE`](show-jobs.html#show-job-when-complete) statement to determine when the job has finished. See [Job coordination using the execution locality option](#job-coordination-using-the-execution-locality-option) for more detail.
 
 ## Job coordination using the execution locality option
