@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
-You can [backup a full cluster](#back-up-a-cluster), which includes:
+You can [back up a full cluster](#back-up-a-cluster), which includes:
 
 - Relevant system tables
 - All [databases](create-database.html)
@@ -33,7 +33,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 ## Considerations
 
 - Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/use-managed-service-backups.html).
-- Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#back-up-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
+- [Full cluster backups](#back-up-a-cluster) include [Enterprise license keys](enterprise-licensing.html). When you [restore](restore.html) a full cluster backup that includes an Enterprise license, the Enterprise license is also restored.
 - [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter.
@@ -88,9 +88,9 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 
 Target                             | Description
 -----------------------------------+-------------------------------------------------------------------------
-N/A                                | Backup the cluster. For an example of a full cluster backup, [see Backup a cluster](#back-up-a-cluster).
-`DATABASE {database_name} [, ...]` | The name of the database(s) you want to backup (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#back-up-a-database).
-`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to backup. For an example of backing up a table or view, see [Backup a table or view](#back-up-a-table-or-view).
+N/A                                | Back up the cluster. For an example of a full cluster backup, refer to [Back up a cluster](#back-up-a-cluster).
+`DATABASE {database_name} [, ...]` | The names of the databases to back up. A database backup includes all tables and views in the database. Refer to [Back Up a Database](#back-up-a-database).
+`TABLE {table_name} [, ...]`       | The names of the tables and [views](views.html) to back up. Refer to [Back Up a Table or View](#back-up-a-table-or-view).
 
 ### Options
 
@@ -198,7 +198,7 @@ If you need to limit the control specific users have over your storage buckets, 
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
+Cockroach Labs recommends using the `BACKUP ... INTO {collectionURI}` syntax shown in the following examples.
 {{site.data.alerts.end}}
 
 ### Back up a cluster
@@ -244,7 +244,7 @@ BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TI
 
 ### Back up all tables in a schema
 
- To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+ To back up all tables in a [schema](create-schema.html), use a wildcard (`*`) with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

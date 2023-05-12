@@ -145,9 +145,9 @@
               ]
             },
             {
-              "title": "Execution Locality Backups",
+              "title": "Locality-restricted Backup Execution",
               "urls": [
-                "/${VERSION}/execution-locality-backups.html"
+                "/${VERSION}/take-locality-restricted-backups.html"
               ]
             },
             {

@@ -38,7 +38,7 @@ Backup / Restore  | Description  | Product Support
 
 ### Additional backup and restore features
 
-- [Execution Locality Backups](execution-locality-backups.html)
+- [Execution Locality Backups](take-locality-restricted-backups.html)
 - [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
 - [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups)
 

@@ -94,7 +94,7 @@ In most cases, **it's recommended to take nightly full backups of your cluster**
 - Restore database(s) from the cluster
 - Restore a full cluster
 
-Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](backup.html#back-up-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
+[Full cluster backups](backup.html#back-up-a-cluster) include [Enterprise license keys](enterprise-licensing.html). When you [restore](restore.html) a full cluster backup that includes Enterprise license, the Enterprise license is also restored.
 
 {% include {{ page.version.version }}/backups/file-size-setting.md %}
 
