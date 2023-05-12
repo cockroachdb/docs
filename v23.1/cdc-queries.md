@@ -43,7 +43,7 @@ For a SQL diagram of the CDC query syntax, see the [`CREATE CHANGEFEED`](create-
 
 {% include_cached new-in.html version="v23.1" %} To emit different properties for a row, specify the following explicitly in CDC queries:
 
-- `cdc_prev`: A tuple-typed column that gives changefeeds access to the previous state of a row. For newly inserted rows in a table, the `cdc_prev` column will emit `NULL`. See the [Emit the previous state of a row](#emit-the-previous-state-of-a-row) example for more detail.
+- `cdc_prev`: A tuple-typed column that gives changefeeds access to the previous state of a row. For newly inserted rows in a table, the `cdc_prev` column will emit as `NULL`. See the [Emit the previous state of a row](#emit-the-previous-state-of-a-row) example for more detail.
 - CDC queries support [system columns](crdb-internal.html), for example:
   - <a name="crdb-internal-mvcc-timestamp"></a>`crdb_internal_mvcc_timestamp`: Records the timestamp of each row created in a table. If you do not have a timestamp column in the target table, you can access `crdb_internal_mvcc_timestamp` in a changefeed. See the [Determine the age of a row](#determine-the-age-of-a-row) example.
 
@@ -142,20 +142,20 @@ Filtering delete messages from your changefeed is helpful for certain outbox tab
 
 ### Capture delete messages
 
-Delete changefeed messages will only contain the primary key value and all other columns will emit as `NULL` (see the [Limitations](#limitations)). To emit the deleted values use the [`envelope=wrapped`](create-changefeed.html#envelope), [`format=json`](create-changefeed.html#format), and [`diff`](create-changefeed.html#diff-opt) options:
+Delete changefeed messages will only contain the [primary key](primary-key.html) value and all other columns will emit as `NULL` (see the [Limitations](#limitations)). To emit the deleted values, use the [`envelope=wrapped`](create-changefeed.html#envelope), [`format=json`](create-changefeed.html#format), and [`diff`](create-changefeed.html#diff-opt) options:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE CHANGEFEED INTO 'external://cloud' WITH envelope='wrapped', format='json', diff AS SELECT * FROM users WHERE event_op() = 'delete';
 ~~~
 
-This will produce a JSON object with `before` and `after` keys that contain the prior and current state of the row:
+This will produce a JSON object with `before` and `after` keys that contain the prior and current states of the row:
 
 ~~~
 {"after": null, "before": {"address": "95913 Thomas Key Apt. 99", "city": "washington dc", "credit_card": "2702281601", "id": "49a8c43d-8ed8-4d50-ad99-fb314cbe20a1", "name": "Tina Jones"}}
 ~~~
 
-The `before` value in the message, produced by the `diff` option, will include the entire row. That is, it will not include any [projections](#syntax) from a CDC query.
+The `before` value in the delete message, produced by the `diff` option, will include the entire row. That is, it will not include any [projections](#syntax) from a CDC query.
 
 ### Emit the previous state of a row
 
@@ -175,7 +175,7 @@ To emit the previous state of a column, you can specify this as a named field fr
 CREATE CHANGEFEED INTO 'external://sink' AS SELECT *, cdc_prev FROM movr.vehicles WHERE (cdc_prev).status = 'in_use';
 ~~~
 
-For newly inserted rows in a table, the `cdc_prev` column will emit `NULL`.
+For newly inserted rows in a table, the `cdc_prev` column will emit as `NULL`.
 
 ### Geofilter a changefeed
 
