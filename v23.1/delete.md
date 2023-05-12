@@ -30,7 +30,7 @@ The user must have the `DELETE` and `SELECT` [privileges](security-reference/aut
 `common_table_expr` | See [Common Table Expressions](common-table-expressions.html).
 `table_name` | The name of the table that contains the rows you want to update.
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
-`USING table_ref` | Delete rows based on a table [join](joins.html), where `table_ref` specifies another table to reference.
+`USING table_ref` | Delete rows based on a table [join](joins.html), where `table_ref` specifies another table or tables to reference.
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`](truncate.html) instead of `DELETE`.
 `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements) for more details.
 `limit_clause` | A `LIMIT` clause. See [Limit Query Results](limit-offset.html) for more details.
