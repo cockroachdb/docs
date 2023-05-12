@@ -24,12 +24,6 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 Clone the sample code's GitHub repo:
 
-{% comment %}
-  ###############################
-  # This repo doesn't exist yet, needs to be migrated from my personal org
-  ###############################
-{% endcomment %}
-
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachdb/example-app-python-asyncpg
