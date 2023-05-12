@@ -34,6 +34,12 @@
                   "urls": [
                     "/cockroachcloud/connect-to-a-serverless-cluster.html"
                   ]
+                },
+                {
+                  "title": "Optimize Your CockroachDB Serverless Workload",
+                  "urls": [
+                    "/cockroachcloud/optimize-serverless-workload.html"
+                  ]
                 }
               ]
             },
