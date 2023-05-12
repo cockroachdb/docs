@@ -13,15 +13,10 @@
           ]
         },
         {
-          "title": "Manage a CockroachDB Serverless Cluster",
+          "title": "Manage your Cluster",
           "urls": [
-            "/cockroachcloud/serverless-cluster-management.html"
-          ]
-        },
-        {
-          "title": "Manage a CockroachDB Dedicated Cluster",
-          "urls": [
-            "/cockroachcloud/cluster-management.html"
+            "/cockroachcloud/serverless-cluster-management.html",
+              "/cockroachcloud/cluster-management.html"
           ]
         },
         {
