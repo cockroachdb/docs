@@ -488,7 +488,7 @@
               "urls": [
                 "/cockroachcloud/insights-page.html"
               ]
-            },            
+            },
             {
               "title": "Databases Page",
               "urls": [
@@ -618,6 +618,12 @@
                   "title": "Upgrade Policy",
                   "urls": [
                      "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v23.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v23.1.html"
                   ]
                 },
                 {
