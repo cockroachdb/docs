@@ -124,11 +124,11 @@ Additional ways to restore data:
 - [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster)
 - [Back up and restore data manually](take-and-restore-customer-owned-backups.html)
 
+### Restore a cluster
+
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/limited-access.md %}
 {{site.data.alerts.end}}
-
-### Restore a cluster
 
 To restore a cluster:
 
