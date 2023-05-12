@@ -101,4 +101,13 @@ table {
   width: 100%;
   display: block;
   border: none;
+  tbody {
+    tr {
+      td {
+        strong {
+          line-height: 22px;
+        }
+      }
+    }
+  }
 }
