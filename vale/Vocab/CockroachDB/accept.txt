@@ -87,6 +87,7 @@ dereference
 deserializ(ation|ed?)
 dev
 distsql
+Dockerfiles?
 docstrings?
 downsamples?
 duplicative
@@ -333,7 +334,7 @@ seeked
 [sS][eE][lL]inux
 Sequelize
 serializab(ility|le)
-serverless
+[sS]erverless
 servlet
 severities
 shapefiles?

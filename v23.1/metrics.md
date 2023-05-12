@@ -5,7 +5,7 @@ toc: false
 docs_area: reference.metrics
 ---
 
-As part of normal operation, CockroachDB continuously records metrics that track performance, latency, usage, and many other runtime indicators. These metrics are often useful in diagnosing problems, troubleshooting performance, or planning cluster infrastructure modifications. This page documents locations where metrics are exposed for analysis, and includes the full list of available metrics in CockroachDB.
+As part of normal operation, CockroachDB continuously records metrics that track performance, latency, usage, and many other runtime indicators. These metrics are often useful in diagnosing problems, troubleshooting performance, or planning cluster infrastructure modifications. This page documents locations where metrics are exposed for analysis.
 
 ## Available metrics
 

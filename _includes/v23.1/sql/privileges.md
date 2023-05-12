@@ -14,6 +14,7 @@ Privilege | Levels
 `GRANT` | Database, Function, Schema, Table, Sequence, Type
 `INSERT` | Table, Sequence
 `MODIFYCLUSTERSETTING` | System
+`MODIFYSQLCLUSTERSETTING` | System
 `NOSQLLOGIN` | System
 `RESTORE` | System, Database
 `SELECT` | Table, Sequence

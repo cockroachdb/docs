@@ -1,4 +1,3 @@
-- Changefeeds cannot be [backed up](backup.html) or [restored](restore.html). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73434)
 - Changefeed target options are limited to tables and [column families](changefeeds-on-tables-with-column-families.html). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73435)
 - Using a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73432)
 - Webhook sinks only support HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/73431)

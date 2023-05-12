@@ -16,11 +16,25 @@ To learn more, refer to [Overview of the CockroachDB Cloud two-level authorizati
 
 A {{ site.data.products.db }} user can belong to one or more organizations.
 
+Organization users are granted permissions to perform organization and cluster administration functions through one or more roles: [Organization user roles]({{ link_prefix }}authorization.html#organization-user-roles).
+
 {{site.data.alerts.callout_info}}
 The concept of *Organization user* is distinct from *SQL user/role* in any given cluster.
 
 Learn more: [Overview of the CockroachDB Cloud two-level authorization model]({{ link_prefix }}authorization.html#overview-of-the-cockroachdb-cloud-two-level-authorization-model).
 {{site.data.alerts.end}}
+
+### Service Account
+
+A service account is a type of identity similar to an Organization user, but is intended to be used for automation.
+
+Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
+
+Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles]({{ link_prefix }}authorization.html#organization-user-roles) as users.
+
+However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
+
+To learn more, refer to [Manage Service Accounts]({{ link_prefix }})managing-access.html#manage-service-accounts)
 
 ### {{ site.data.products.serverless }} cluster
 
