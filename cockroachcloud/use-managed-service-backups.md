@@ -126,6 +126,10 @@ Additional ways to restore data:
 
 ### Restore a cluster
 
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
 To restore a cluster:
 
 1. Find the cluster backup on the **Backups** page.
