@@ -161,13 +161,13 @@
               "urls": [
                 "/${VERSION}/backup-validation.html"
               ]
-            },
-            {
-              "title": "Backup and Restore Monitoring",
-              "urls": [
-                "/${VERSION}/backup-and-restore-monitoring.html"
-              ]
             }
+          ]
+        },
+        {
+          "title": "Backup and Restore Monitoring",
+          "urls": [
+            "/${VERSION}/backup-and-restore-monitoring.html"
           ]
         },
         {
@@ -217,6 +217,7 @@
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
+          "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
               "title": "Create Private Clusters",
@@ -285,6 +286,12 @@
                     "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
+                    ]
+                  },
+                  {
+                    "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "urls": [
+                      "/cockroachcloud/client-certs-dedicated.html"
                     ]
                   }
 								]

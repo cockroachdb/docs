@@ -259,7 +259,9 @@ The operations in this section are performed by the`ca-admin` persona, and there
 
 1. Obtain the required parameters to target and authenticate to Vault.
     
-    1. Option 1: If using HashiCorp Cloud Platform (HCP):
+    1. Option 1: If using a development Vault server (*suitable only for tutorial/testing purposes*), start the Vault development server and obtain your admin token locally on your CA admin jumpbox by running `vault server --dev`.
+
+    1. Option 2: If using HashiCorp Cloud Platform (HCP):
 
         1. Go to the [HCP console](https://portal.cloud.hashicorp.com), choose Vault from the **Services** menu and then select your cluster.
 
@@ -267,16 +269,13 @@ The operations in this section are performed by the`ca-admin` persona, and there
 
         1. Generate an admin token by clicking **Generate token**. This will be set as the `VAULT_TOKEN` environment variable, in the following step.
 
-    1. Option 2: If using a Vault deployment internal to your organization, contact your Vault administrator for a token and the appropriate endpoint.
-
-    1. Option 3: If using a development Vault server (*suitable only for tutorial/testing purposes*), start the Vault development server and obtain credentials locally on your CA admin jumpbox by running `vault server --dev`.
+    1. Option 3: If using a Vault deployment internal to your organization, contact your Vault administrator for a token and the appropriate endpoint.
 
 1. Initialize your shell for Vault on the jumpbox
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     export VAULT_ADDR= # your Vault cluster's Public URL
-    export VAULT_TOKEN= # your Vault token
     export VAULT_NAMESPACE="admin"
     ~~~
 
@@ -284,7 +283,7 @@ The operations in this section are performed by the`ca-admin` persona, and there
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
-    vault login $VAULT_TOKEN
+    vault login
     ~~~
 
 #### Step 2. Create the certificate authority

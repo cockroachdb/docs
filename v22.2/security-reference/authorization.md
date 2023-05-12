@@ -138,7 +138,7 @@ Roles and users can be granted the following privileges:
 
 ### System-level privileges 
 
-<span class="version-tag">New in v22.2:</span> System-level privileges offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
+<span class="version-tag">New in v22.2:</span> System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
 
 System-level privileges are a special kind of privilege that apply cluster-wide, meaning that the privilege is not tied to any specific object in the database.
 
@@ -160,7 +160,6 @@ New System-level Privilege  | Replaces Legacy Role Option
 `BACKUP`                    | No, new in v22.2
 `RESTORE`                   | No, new in v22.2
 `EXTERNALIOIMPLICITACCESS`  | No, new in v22.2
-`CHANGEFEED`                | No, new in v22.2
 
 If a system-level privilege exists with the same name as a role option, the system-level privilege should be used. Some role options do not have a corresponding system-level privilege, since they configure per-user attributes. For those system-level privileges that replace legacy role options (such as `VIEWACTIVITY`), if both the system-level privilege and its legacy role option are specified for a user/role, the system-level privilege will take precedence and the legacy role option will be ignored.
 

@@ -460,7 +460,7 @@ SELECT '100.50'::JSONB::DECIMAL;
 (1 row)
 ~~~
 
-You use the [`parse_timestamp` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
+You can use the [`parse_timestamp` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `crdb_internal` [system catalog](system-catalogs.html) is a schema that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
+The `crdb_internal` [system catalog](system-catalogs.html) is a [schema](schema-design-overview.html#schemas) that contains information about internal objects, processes, and metrics related to a specific database. `crdb_internal` tables are read-only.
 
 <a id="data-exposed-by-crdb_internal"></a>
 
@@ -74,8 +74,8 @@ Table name | Description| Use in production
 `node_txn_stats` | Contains transaction statistics for nodes in your cluster.| ✗
 `partitions` | Contains information about [partitions](partitioning.html) in your cluster.| ✗
 `predefined_comments` | Contains predefined comments about your cluster.| ✗
-`ranges` | Contains information about ranges in your cluster.| ✗
-`ranges_no_leases` | Contains information about ranges in your cluster, without leases.| ✗
+`ranges` | Contains information about [ranges](architecture/overview.html#architecture-range) in your cluster.| ✗
+`ranges_no_leases` | Contains information about [ranges](architecture/overview.html#architecture-range) in your cluster, without [leases](architecture/replication-layer.html#leases).| ✗
 `regions` | Contains information about [cluster regions](multiregion-overview.html#cluster-regions).| ✗
 `schema_changes` | Contains information about schema changes in your cluster.| ✗
 `session_trace` | Contains session trace information for your cluster.| ✗
@@ -273,7 +273,7 @@ SELECT * FROM crdb_internal.cluster_contention_events;
 To view the [tables](create-table.html) and [indexes](indexes.html) with the most cumulative time under [contention](performance-best-practices-overview.html#transaction-contention) since the last server restart, run the query below.
 
 {{site.data.alerts.callout_info}}
-The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
+{% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -1161,7 +1161,7 @@ Column | Type | Description
 `contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
 `contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
 
-#### Example
+#### Transaction contention - example
 
 The following example shows how to join the `transaction_contention_events` table with `transaction_statistics` and `statement_statistics` tables to extract blocking and waiting transaction information.
 
