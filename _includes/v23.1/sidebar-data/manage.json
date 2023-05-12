@@ -8,8 +8,8 @@
         {
           "title": "Plan Your Cluster",
           "urls": [
-            "/cockroachcloud/plan-your-cluster.html",
-            "/cockroachcloud/plan-your-cluster-serverless.html"
+            "/cockroachcloud/plan-your-cluster-serverless.html",
+            "/cockroachcloud/plan-your-cluster.html"
           ]
         },
         {
