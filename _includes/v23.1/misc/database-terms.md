@@ -21,7 +21,7 @@ A set of operations performed on a database that satisfy the requirements of [AC
 <a name="architecture-overview-contention"></a> A [state of conflict](../performance-best-practices-overview.html#transaction-contention) that occurs when: 
 
 - A [transaction](../transactions.html) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. This is also called *lock contention*.
-- A transaction is [automatically retried](../transactions.html#automatic-retries) because it could not be placed into a [serializable ordering](../demo-serializable.html) among all of the currently executing transactions. If the automatic retry is not possible or fails, a [*transaction retry error*](../transaction-retry-error-reference.html) is emitted to the client, requiring the client application to [retry the transaction](../transaction-retry-error-reference.html#client-side-retry-handling).
+- A transaction is [automatically retried](../transactions.html#automatic-retries) because it could not be placed into a [serializable ordering](../demo-serializable.html) among all of the currently executing transactions. This is also called a *serializability conflict*. If the automatic retry is not possible or fails, a [*transaction retry error*](../transaction-retry-error-reference.html) is emitted to the client, requiring the client application to [retry the transaction](../transaction-retry-error-reference.html#client-side-retry-handling).
 
 Steps should be taken to [reduce transaction contention](../performance-best-practices-overview.html#reduce-transaction-contention) in the first place.
 
