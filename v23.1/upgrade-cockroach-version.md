@@ -99,6 +99,10 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
     1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
     1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
+### Back up cluster
+
+When upgrading to a major release, we recommend [taking a backup](../v23.1/backup-and-restore-overview.html) of your cluster. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. See our [support policy for restoring backups across versions](restoring-backups-across-versions.html#support-for-restoring-backups-into-a-higher-version). 
+
 ### Review breaking changes
 
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
