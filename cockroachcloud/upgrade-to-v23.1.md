@@ -6,7 +6,7 @@ docs_area: manage
 page_version: v23.1
 ---
 
-Now that [CockroachDB v22.2](../releases/v22.2.html) is available, an [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB v23.1](../releases/v23.1.html) is available, an [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
 Upgrading a {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the {{ site.data.products.db }} [upgrade policy](upgrade-policy.html).
@@ -30,13 +30,13 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 <section class="filter-content" markdown="1" data-scope="multi-node">
 In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
 
-Approximately 72 hours after all nodes are running v23.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v23.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v22.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+Approximately 72 hours after all nodes are running v23.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v23.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v22.2, so it's important to monitor your applications during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with v23.1.
 
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v23.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v22.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v23.1](#expect-temporary-limitations). Finalization also removes the ability to roll back to v22.2, so it's important to monitor your applications during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
 
 ## Step 4. Prepare to upgrade
@@ -82,7 +82,7 @@ Your single-node cluster will be unavailable for a few minutes while the node is
 
 ## Step 6. Monitor the upgrade
 
-Once your cluster is running v23.1, you will have approximately 72 hours before the upgrade is automatically finalized. During this time, it is important to [monitor your application](#monitor-your-application) and [respect temporary limitations](#expect-temporary-limitations).
+Once your cluster is running v23.1, you will have approximately 72 hours before the upgrade is automatically finalized. During this time, it is important to [monitor your applications](#monitor-your-application) and [respect temporary limitations](#expect-temporary-limitations).
 
 If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v22.2 during the 72-hour window.
 
