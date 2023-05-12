@@ -21,6 +21,8 @@ The rows in this page are populated from the [`crdb_internal.transaction_content
 - The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 {{site.data.alerts.end}}
 
+Transaction executions with the **High Contention** insight are transactions that experienced [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
+
 {% if page.cloud != true -%}
 The following screenshot shows the execution of a transaction flagged with **High Contention**:
 
@@ -87,8 +89,7 @@ To display this view, click **Insights** in the left-hand navigation of the Clou
 The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`]({{ link_prefix }}crdb-internal.html) table.
 
 - The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than the [`sql.insights.execution_insights_capacity` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-execution-insights-capacity).
-- The default tracing behavior enables captures a small percent of transactions so not all [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention) events will be recorded. When investigating query latency, you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
-
+- {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
 {{site.data.alerts.end}}
 
 {% if page.cloud != true -%}

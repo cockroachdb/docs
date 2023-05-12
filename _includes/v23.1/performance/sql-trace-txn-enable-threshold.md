@@ -1,0 +1,1 @@
+The default tracing behavior captures a small percent of transactions, so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.

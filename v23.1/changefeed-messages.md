@@ -114,6 +114,8 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
+{% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
+
 ## Delete messages
 
 Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. For example, with default options, deleting the row with primary key `5` will output:
