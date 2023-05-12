@@ -42,6 +42,13 @@ Backup / Restore  | Description  | Product Support
 - [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
 - [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups)
 
+## Backups with locality requirements
+
+CockroachDB supports two types of backup that use a node's locality to determine how a backup job runs or where the backup data is stored:
+
+- {% if page.name == "take-locality-restricted-backups.md" %}Locality-restricted backup execution{% else %} [Locality-restricted backup execution](take-locality-restricted-backups.html){% endif %}: Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
+- {% if page.name == "take-and-restore-locality-aware-backups.md" %}Locality-aware backup{% else %}[Locality-aware backup](take-and-restore-locality-aware-backups.html){% endif %}: Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
+
 ## Backup and restore SQL statements
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:

@@ -18,11 +18,11 @@ This is useful for:
 
 A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. Given a list of URIs that together contain the locations of all of the files for a single locality-aware backup, [`RESTORE` can read in that backup](#restore-from-a-locality-aware-backup).
 
-{{site.data.alerts.callout_info}}
-The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
-{{site.data.alerts.end}}
-
 Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder](architecture/replication-layer.html#leases) at the time the [distributed backup flow](architecture/sql-layer.html#distsql) was planned. The locality of the node running the distributed backup flow determines where the backup files will be placed in a locality-aware backup. The node running the backup flow, and the leaseholder node of the range being backed up are usually the same, but can differ when lease transfers have occurred during the execution of the backup. The leaseholder node returns the files to the node running the backup flow (usually a local transfer), which then writes the file to the external storage location with a locality that matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
+
+{{site.data.alerts.callout_info}}
+CockroachDB also supports [locality-restricted backup execution](take-locality-restricted-backups.html). For this type of backup, you can specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. 
+{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 
@@ -35,6 +35,10 @@ For example, to create a locality-aware backup where nodes with the locality `re
 BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
+
+{{site.data.alerts.callout_info}}
+The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
+{{site.data.alerts.end}}
 
 You can restore the backup by running:
 
