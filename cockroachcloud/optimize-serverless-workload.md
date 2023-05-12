@@ -2,7 +2,7 @@
 title: Optimize Your CockroachDB Serverless Workload
 summary: Tune your workload to reduce costs
 toc: true
-docs_area: deploy
+docs_area: manage
 ---
 
 This page describes how to tune your {{ site.data.products.serverless }} workload to reduce costs.

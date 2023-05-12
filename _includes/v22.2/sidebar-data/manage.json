@@ -24,6 +24,12 @@
           ]
         },
         {
+          "title": "Optimize Your CockroachDB Serverless Workload",
+          "urls": [
+            "/cockroachcloud/optimize-serverless-workload.html"
+          ]
+        },
+        {
           "title": "Manage Billing",
           "urls": [
              "/cockroachcloud/billing-management.html"

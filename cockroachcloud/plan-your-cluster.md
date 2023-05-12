@@ -5,6 +5,8 @@ toc: true
 docs_area: deploy
 ---
 
+{% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
+
 This page describes how to plan your {{ site.data.products.dedicated }} cluster.
 
 ## Planning your cluster

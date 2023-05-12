@@ -8,7 +8,8 @@
         {
           "title": "Plan Your Cluster",
           "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
+            "/cockroachcloud/plan-your-cluster.html",
+            "/cockroachcloud/plan-your-cluster-serverless.html"
           ]
         },
         {
@@ -21,6 +22,12 @@
           "title": "Manage a CockroachDB Dedicated Cluster",
           "urls": [
             "/cockroachcloud/cluster-management.html"
+          ]
+        },
+        {
+          "title": "Optimize Your CockroachDB Serverless Workload",
+          "urls": [
+            "/cockroachcloud/optimize-serverless-workload.html"
           ]
         },
         {
