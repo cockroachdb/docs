@@ -87,7 +87,7 @@ Declarative schema changer statements and legacy schema changer statements opera
 
 ### Estimate your storage capacity before performing online schema changes
 
-Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming up to three times the storage space of the range size while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
+Some schema change operations, like adding or dropping columns or altering primary keys, will temporarily increase a cluster's storage consumption. Specifically, these operations may temporarily require up to three times more storage space  for the range size while the schema change is being applied, and this may cause the cluster to run out of storage space or fail to apply the schema change.
 
 To find the range size of the indexes in your table, use the following query:
 
@@ -170,7 +170,7 @@ In many cases this range size is trivial, but when the range size is many gigaby
 
 ### Run schema changes with large backfills during off-peak hours
 
-Online schema changes that result in large backfill operations (for example, [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system](admission-control.html) will help keep high-priority operations running, but it's better to run backfill-heavy schema changes during times with low loads.
+Online schema changes that result in large backfill operations (for example, [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system](admission-control.html) will help keep high-priority operations running, but it's recommended to run backfill-heavy schema changes during times when the cluster is under relatively low loads.
 
 ### Schema changes in multi-region clusters
 
