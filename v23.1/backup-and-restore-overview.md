@@ -12,7 +12,7 @@ This page provides an overview of the backup and restore features available in C
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
 
-You can create full or incremental backups of a [cluster](backup.html#backup-a-cluster), [database](backup.html#backup-a-database), or [table](backup.html#backup-a-table-or-view). Taking regular backups of your data is an operational best practice.
+You can create full or incremental backups of a [cluster](backup.html#back-up-a-cluster), [database](backup.html#back-up-a-database), or [table](backup.html#back-up-a-table-or-view). Taking regular backups of your data is an operational best practice.
 
 For an explanation of how a backup works, see [Backup Architecture](backup-architecture.html).
 
@@ -32,9 +32,15 @@ Backup / Restore  | Description  | Product Support
 [Backups with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) | A backup with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
 [Point-in-time restore](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) | A restore from an arbitrary point in time within the revision history of a backup. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
 [Encrypted backup and restore](take-and-restore-encrypted-backups.html) | An encrypted backup using a KMS or passphrase. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
-[Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul> 
+[Locality-aware backup and restore](take-and-restore-locality-aware-backups.html) | A backup where each node writes files only to the backup destination that matches the node locality configured at node startup. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
+[Locality-restricted backup execution](take-locality-restricted-backups.html) | A backup with the `EXECUTION LOCALITY` option restricts the nodes that can execute a backup job with a defined locality filter. | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
 
 {% include {{ page.version.version }}/backups/scheduled-backups-tip.md %}
+
+### Additional backup and restore features
+
+- [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
+- [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups)
 
 ## Backup and restore SQL statements
 
