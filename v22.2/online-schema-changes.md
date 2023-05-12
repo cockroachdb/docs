@@ -87,7 +87,7 @@ Declarative schema changer statements and legacy schema changer statements opera
 
 ### Estimate your storage capacity before performing online schema changes
 
-Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming at least three times the storage space of the range size while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
+Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming up to three times the storage space of the range size while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
 
 To find the range size of the indexes in your table, use the following query:
 

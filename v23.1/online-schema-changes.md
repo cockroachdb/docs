@@ -97,7 +97,7 @@ Declarative schema changer statements and legacy schema changer statements opera
 
 ### Estimate your storage capacity before performing online schema changes
 
-Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming at least three times the storage space of index while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
+Some schema change operations like adding or dropping columns, or altering primary keys will result in temporary increases to a cluster's storage consumption. These operations will result in consuming up to three times the storage space of the index while the schema change is being applied, which may cause the cluster to run out of storage space and pause or fail to apply the schema change.
 
 To estimate the size of the indexes in your table, use the [`SHOW RANGES`](show-ranges.html) statement.
 
@@ -134,21 +134,25 @@ In many cases this range size is trivial, but when the range size is many gigaby
             SHOW RANGES FROM TABLE movr.vehicles WITH DETAILS, KEYS, INDEXES
          )
     SELECT index_name,
-           raw_index_start_key,
-           raw_index_end_key,
-           range_size_mb
+           round(range_size_mb, 4) as range_size_mb
       FROM x;
     ~~~
 
     ~~~
-                   index_name               | raw_index_start_key | raw_index_end_key |     range_size_mb
-    ----------------------------------------+---------------------+-------------------+-------------------------
-  vehicles_pkey                         | \xfe8af389          | \xfe8af38a        | 0.51177800000000000000
-  vehicles_auto_index_fk_city_ref_users | \xfe8af38a          | \xfe8af38b        | 0.51177800000000000000
-    (2 rows)
+                  index_name               | range_size_mb
+    ----------------------------------------+----------------
+      vehicles_pkey                         |        0.0005
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0005
+      vehicles_pkey                         |        0.0006
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0103
+      vehicles_auto_index_fk_city_ref_users |        0.0103
+    (10 rows)
     ~~~
-
-    The size of the range for each index is 0.511778 MB, or about 511 KB. You will need at least three times that amount of free space, over 1.5 MB, to perform, for example, an online schema change that adds a column to `movr.vehicles`.
 
 ### Run schema changes with large backfills during off-peak hours
 
