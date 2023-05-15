@@ -63,7 +63,7 @@ Targets:
 `WITH SCHEDULE OPTIONS schedule_option` | _Experimental feature._ Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
 {{site.data.alerts.callout_info}}
-For schedules that include both [full and incremental backups](take-full-and-incremental-backups.html), CockroachDB will create two schedules (one for each type).
+For schedules that include both [full and incremental backups](take-full-and-incremental-backups.html), CockroachDB will create two schedules (one for each type). The [incremental backup schedule](#incremental-backup-schedules) follows the full backup. 
 {{site.data.alerts.end}}
 
 ### Backup options
@@ -101,12 +101,12 @@ We recommend monitoring for your backup schedule to alert for failed backups:
 
 ### Incremental backup schedules
 
-Scheduled incremental backups only begin after the scheduled full backup is completed. On creation, the first incremental backup waits for the first full backup to finish, then continues at its specified cadence. 
+Scheduled incremental backups only begin after the scheduled full backup is complete. On creation, the first incremental backup waits for the first full backup to finish, then continues at its specified cadence. 
 
-Incremental backups will append to the latest full backup while the next full backup job is in progress. By default, incremental backups will wait for the latest incremental to finish when in the same schedule. You can adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
+Incremental backups append to the latest full backup while the next full backup job is in progress. By default, incremental backups will wait for the latest incremental to finish when they are part of the same schedule. You can adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
 
-Backup schedules created or altered with the option `on_previous_running` will have the full backup
-schedule created with the user specified option, but will **always default** the incremental backup schedule to `on_previous_running = wait`. All new jobs will wait until the running job for that schedule finishes.
+Backup schedules created or altered with the `on_previous_running` option will have the full backup
+schedule created with the user specified option, but will **always default** the incremental backup schedule option to `on_previous_running = wait`. All new incremental backup jobs will wait until the running incremental backup job for that schedule finishes.
 
 ## View and control backup schedules
 
@@ -244,6 +244,18 @@ This example creates a schedule for a backup of the table `movr.vehicles` with r
 ~~~
 
 Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
+
+### Create a scheduled backup with schedule options
+
+This example creates a schedule for a cluster backup with the `on_previous_running` option:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE SCHEDULE schedule_option
+  FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    SET SCHEDULE OPTION on_previous_running = 'start'
+    RECURRING '@daily';
+~~~
 
 ### View scheduled backup details
 
