@@ -111,6 +111,8 @@ In CockroachDB v23.1.0 and its testing releases, executing `COPY` to a target ta
 
 The data must be dropped and re-[imported](import.html) to be encoded correctly.
 
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/103220)
+
 ## Unresolved limitations
 
 ### Limitations for user-defined functions (UDFs)
@@ -510,8 +512,6 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 ### `COPY` syntax not supported by CockroachDB
 
 {% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/103220)
 
 ### Import with a high amount of disk contention
 
