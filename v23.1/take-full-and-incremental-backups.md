@@ -153,18 +153,17 @@ If your cluster grows too large for daily [full backups](#full-backups), you can
 
 If you are taking backups on a regular cadence, we recommend [creating a schedule](create-schedule-for-backup.html) for your backups.
 
-### Recommendations
+### Recommendations for incremental backup frequency
 
-Incremental backups are chains between full backups and contain only the data that has changed since a base set of backups (which must include one full backup, and can include many incremental backups). Incremental backups are smaller and faster to produce than full backups. You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+Incremental backups form chains between full backups. Each incremental backup only contains only the data that has changed since a base set of backups, which must include one full backup, and can include many incremental backups. Incremental backups are smaller and faster to produce than full backups. You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
-CockroachDB recommends taking incremental backups every 10 minutes. We support up to 400 incremental backups between full backups. This may vary based on your specific use-case, so we recommend testing within your own environment and workloads. This can look like:
-<ul>
-  <li>A full backup taken daily with incrementals taken every hour for a total of 24 incremental backups.</li>
-  <li>A full backup taken daily with incrementals taken every 10 minutes for a total of 144 incremental backups.</li>
-  <li>A full backup taken daily with incrementals taken every 5 minutes for a total of 288 incremental backups.</li>
-  <li>A full backup taken weekly with incrementals taken every hour for a total of 168 incremental backups.</li>
-  <li>A full backup taken weekly with incrementals taken every 30 minutes for a total of 336 incremental backups.</li>
-</ul>
+Cockroach Labs recommends taking incremental backups every 10 minutes. CockroachDB supports up to 400 incremental backups between full backups. This may vary based on your specific use-case, so we recommend testing within your own environment and workloads. This can look like:
+
+- A full backup taken daily with incrementals taken every hour for a total of 24 incremental backups
+- A full backup taken daily with incrementals taken every 10 minutes for a total of 144 incremental backups.
+- A full backup taken daily with incrementals taken every 5 minutes for a total of 288 incremental backups.
+- A full backup taken weekly with incrementals taken every hour for a total of 168 incremental backups.
+- A full backup taken weekly with incrementals taken every 30 minutes for a total of 336 incremental backups.
 
 ### Garbage collection and backups
 
