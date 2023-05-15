@@ -48,12 +48,6 @@ You can use the backup options in this table to control the behavior of your bac
 
 ### Schedule options
 
-{{site.data.alerts.callout_danger}}
-**The following schedule options are in preview.**  Their interface, options, and outputs are subject to change, and there may be bugs.
-
-If you encounter a bug, please [file an issue](file-an-issue.html).
-{{site.data.alerts.end}}
-
 You can use the schedule options in this table to control the behavior of your backup schedule. See [Apply different options to scheduled backups](#apply-different-options-to-scheduled-backups) for an example.
 
 {% include {{ page.version.version }}/backups/schedule-options.md %}
