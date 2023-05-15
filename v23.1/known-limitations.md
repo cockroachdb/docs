@@ -30,17 +30,59 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
-### No support for placeholders in `AS OF SYSTEM TIME`
+### Limitations for `SELECT FOR UPDATE`
 
-CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). This means that the time value has to be embedded in the SQL string.
+- [`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+
+- [`SELECT FOR UPDATE`](select-for-update.html) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+
+### Limitations for composite types
+
+- Avro [changefeeds](create-and-configure-changefeeds.html) do not support user-defined composite (tuple) types.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102903)
+
+- Parquet [changefeeds](create-and-configure-changefeeds.html) do not support user-defined composite (tuple) types.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102904)
+
+- Serializing a user-defined composite (tuple) type to CSV is in [preview](cockroachdb-feature-availability.html): the output format is likely to change in a future minor release, and alterations to the type may not be reflected properly in changefeeds.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102905)
+
+### Common table expressions are not supported in user-defined functions
+
+[Common table expressions](common-table-expressions.html) (CTE), recursive or non-recursive, are not supported in [user-defined functions](user-defined-functions.html) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
+### Low estimated Request Units are rounded to zero
+
+The [Request Units](../cockroachcloud/learn-about-request-units.html) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
+
+### Statistics for deleted tables in `system.table_statistics` do not get removed
+
+When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+
+### Collection of statistics for virtual computed columns
+
+CockroachDB does not collect statistics for [virtual computed columns](computed-columns.html). This can prevent the [optimizer](cost-based-optimizer.html) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index](expression-indexes.html).
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
+
+### `AS OF SYSTEM TIME` does not support placeholders
+
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). The time value must be embedded in the SQL string.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
-
-### `SELECT FOR UPDATE` places locks on each key scanned by the base index scan
-
-[`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
 
 ### Declarative schema changer does not track rows in `system.privileges`
 
