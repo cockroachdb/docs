@@ -33,7 +33,7 @@
             data-tooltip data-placement="left" data-container="body" title="This page does not exist in {{ v.version.version }}."
           {% endif %}>
             {{ v.version.name }}
-            {% if v.version.tag %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %})e{% endif %}
+            {% if v.version.tag %}({% if v.version.version == site.versions["stable"] %}Stable{% elsif v.version.version == site.versions["dev"] %}Dev{% endif %}){% endif %}
           </a>
         </li>
         {% endfor %}
