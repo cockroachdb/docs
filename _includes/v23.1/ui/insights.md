@@ -84,7 +84,11 @@ To display this view, click **Insights** in the left-hand navigation of the Clou
 The rows in this page are populated from the [`crdb_internal.cluster_execution_insights`]({{ link_prefix }}crdb-internal.html) table.
 
 - The results displayed on the **Statement Executions** view will be available as long as the number of rows in each node is less than the [`sql.insights.execution_insights_capacity` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-execution-insights-capacity).
+{% if include.version_prefix != nil %}
+- {% include {{ include.version_prefix }}performance/sql-trace-txn-enable-threshold.md version_prefix=version_prefix %}
+{% else %}
 - {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
+{% endif %}
 {{site.data.alerts.end}}
 
 {% if page.cloud != true -%}
