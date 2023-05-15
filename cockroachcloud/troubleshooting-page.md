@@ -159,3 +159,15 @@ This is a known issue. Use `sslmode=require` instead.
 {{site.data.alerts.callout_info}}
 Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
 {{site.data.alerts.end}}
+
+## {{ site.data.products.serverless }}
+
+### Hanging or stuck queries
+
+When you experience a hanging or stuck query using {{ site.data.products.serverless }}, the cause could be that you've reached your [resource limit](learn-about-pricing.html#choosing-resource-limits) for [Request Units](learn-about-request-units.html) or storage space. This can affect SQL Statements or `cockroach` CLI commands. To check your cluster's status, navigate to the [**Cluster Overview** page](cluster-overview-page.html) in the Cloud Console. In the **Usage this month** section, you will see your resource usage and limits. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will only be able to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
+
+<h4>Solution</h4>
+
+If you've reached your storage or RU limit, you can [increase your resource limits](serverless-cluster-management.html#edit-your-resource-limits) and then re-run the query.
+
+If you've only reached your RU limit, you can wait until the next billing cycle when [monthly free RUs](learn-about-pricing.html#free-vs-paid-usage) become available and then re-run the query.
