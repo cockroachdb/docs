@@ -24,7 +24,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 2. Select a cloud provider & region
 
-1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Serverless cluster on Azure is not supported.
 
 1. _(Optional)_ Select a region in the **Regions** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
@@ -50,11 +50,11 @@ All {{ site.data.products.db }} organizations get 50M RUs and 10 GiB of storage 
 <section class="filter-content" markdown="1" data-scope="free">
 
 1. Select the **Start for free** option.
-    
+
     {{site.data.alerts.callout_info}}
     This will only be available if you haven't already created a free {{ site.data.products.serverless }} cluster or set up billing information.
     {{site.data.alerts.end}}
-    
+
 1. Click **Create cluster**.
 
 Your cluster will be created in a few seconds.
@@ -64,9 +64,9 @@ Your cluster will be created in a few seconds.
 <section class="filter-content" markdown="1" data-scope="paid">
 
 1. If the option to **Start for free** is still available to you, select **Upgrade your resources** instead.
-    
+
 1. Enter your **Resource limits**.
-    - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.   
+    - If you select **Set a monthly limit**, you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.
     - If you select **Unlimited**, your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
 
 1. Click **Next: Payment**.
