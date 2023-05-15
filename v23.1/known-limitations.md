@@ -507,7 +507,7 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 ### `COPY` incorrectly encodes data with multiple column families
 
-In CockroachDB v23.1.0 and its testing releases, [`COPY`](copy.html) incorrectly encodes data with multiple column families. The data must be dropped and re-[imported](import.html) to be encoded correctly.
+In CockroachDB v23.1.0 and its testing releases, `COPY` incorrectly encodes data with multiple column families. The data must be dropped and re-[imported](import.html) to be encoded correctly.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/103220)
 
