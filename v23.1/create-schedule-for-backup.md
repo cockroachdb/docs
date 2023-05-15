@@ -99,6 +99,15 @@ We recommend monitoring for your backup schedule to alert for failed backups:
 - See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for a general overview and list of metrics available for backup, scheduled backup, and restore jobs.
 - See [Set up monitoring for the backup schedule](manage-a-backup-schedule.html#set-up-monitoring-for-the-backup-schedule) for metrics and monitoring backup schedules specifically.
 
+### Incremental backup schedules
+
+Scheduled incremental backups only begin after the scheduled full backup is completed. On creation, the first incremental backup waits for the first full backup to finish, then continues at its specified cadence. 
+
+Incremental backups will append to the latest full backup while the next full backup job is in progress. By default, incremental backups will wait for the latest incremental to finish when in the same schedule. You can adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
+
+Backup schedules created or altered with the option `on_previous_running` will have the full backup
+schedule created with the user specified option, but will **always default** the incremental backup schedule to `on_previous_running = wait`. All new jobs will wait until the running job for that schedule finishes.
+
 ## View and control backup schedules
 
 Once a backup schedule is successfully created, you can do the following:
