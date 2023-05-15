@@ -101,7 +101,8 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
 
 ### Back up cluster
 
-When upgrading to a major release, we recommend [taking a backup](../v23.1/backup-and-restore-overview.html) of your cluster. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from one of the backups created prior to performing the upgrade. See our [support policy for restoring backups across versions](restoring-backups-across-versions.html#support-for-restoring-backups-into-a-newer-version). 
+{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
+See our [support policy for restoring backups across versions](restoring-backups-across-versions.html#support-for-restoring-backups-into-a-newer-version). 
 
 ### Review breaking changes
 
