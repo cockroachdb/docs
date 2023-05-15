@@ -42,7 +42,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Limitations for composite types
 
-- {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}. The following limitations apply:
+- {% include {{page.version.version}}/cdc/types-udt-composite-general.md %} The following limitations apply:
     - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
     - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
