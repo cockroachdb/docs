@@ -17,6 +17,10 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
+{{site.data.alerts.end}}
+
 ## Responses
 
 By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
@@ -252,6 +256,7 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 
 - It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
 - It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+- {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
