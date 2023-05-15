@@ -8,8 +8,13 @@ Name | Description
 `capacity.reserved` | Capacity reserved for snapshots
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
+<<<<<<< HEAD
 `changefeed.failures` | Total number of [changefeed jobs](show-jobs.html#show-changefeed-jobs) which have failed.
 `changefeed.running` | Number of currently running changefeeds, including sinkless.
+=======
+`changefeed.failures` | Total number of changefeed jobs which have failed
+`changefeed.running` | Number of currently running changefeeds, including sinkless
+>>>>>>> 4d4e8c7cc (remove)
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
 `cluster.preserve-downgrade-option.last-updated` | Unix timestamp of last updated time for cluster.preserve_downgrade_option
