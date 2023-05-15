@@ -1,6 +1,6 @@
 [build]
   publish = "_site/"
-  command = "build/build-netlify.sh"
+  command = "./build-netlify.sh"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
