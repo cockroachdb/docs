@@ -42,17 +42,9 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Limitations for composite types
 
-- Avro [changefeeds](create-and-configure-changefeeds.html) do not support user-defined composite (tuple) types.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102903)
-
-- Parquet [changefeeds](create-and-configure-changefeeds.html) do not support user-defined composite (tuple) types.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102904)
-
-- Serializing a user-defined composite (tuple) type to CSV is in [preview](cockroachdb-feature-availability.html): the output format is likely to change in a future minor release, and alterations to the type may not be reflected properly in changefeeds.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102905)
+- {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}. The following limitations apply:
+    - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
+    - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 ### Common table expressions are not supported in user-defined functions
 
