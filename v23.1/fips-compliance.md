@@ -179,9 +179,9 @@ To download FIPS-ready CockroachDB runtimes, use the following links.
                     {% if r.withdrawn == true %} {% comment %} Suppress withdrawn releases. {% endcomment %}
             <span class="badge badge-gray">Withdrawn</span>
                     {% else %}
-            <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64-fips.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64.fips.tgz.sha256sum">SHA256</a>){% endif %}</div>
+            <div><a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64-fips.tgz">Full Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-{{ r.release_name }}.linux-amd64-fips.tgz.sha256sum">SHA256</a>){% endif %}</div>
                         {% if r.has_sql_only == true %}
-            <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-amd64-fips.tgz">SQL Shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-amd64.fips.tgz.sha256sum">SHA256</a>{% endif %})</div>
+            <div><a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-amd64-fips.tgz">SQL Shell Binary</a>{% if r.has_sha256sum == true %} (<a href="https://binaries.cockroachdb.com/cockroach-sql-{{ r.release_name }}.linux-amd64-fips.tgz.sha256sum">SHA256</a>{% endif %})</div>
                         {% endif %}
                     {% endif %}
         </td>
