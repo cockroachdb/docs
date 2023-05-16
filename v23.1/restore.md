@@ -22,6 +22,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 ## Considerations
 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
+- `RESTORE` only supports backups taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. 
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
 - [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).

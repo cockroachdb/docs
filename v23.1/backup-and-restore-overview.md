@@ -91,3 +91,4 @@ See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page
 
 - Considerations for using [backup](backup.html#considerations) and [restore](restore.html#considerations)
 - [Backup collections](take-full-and-incremental-backups.html#backup-collections) for details on how CockroachDB stores backups
+- [Restoring backups](restoring-backups-across-versions.html) across major versions of CockroachDB
