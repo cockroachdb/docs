@@ -23,6 +23,8 @@ RU and storage consumption is prorated at the following prices:
 Your cluster's [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
   {% include cockroachcloud/serverless-usage.md %}
+  
+For multi-region Serverless clusters, storage is billed at the same rate, but because data is replicated three times in the primary region and once in each additional region by default, storage costs will be multiplied based on the number of replicas. During the [public preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html#feature-availability-phases), RU usage for queries that cross regions will not account for inter-region bandwidth.
 
 We recommend setting your resource limits to about 30% higher than your expected usage to prevent unexpected throttling. To learn about tuning your workload to reduce costs, see [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html).
 

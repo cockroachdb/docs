@@ -3,6 +3,7 @@ title: Create a CockroachDB Serverless Cluster
 summary: Learn how to create a cluster using CockroachDB Serverless.
 toc: true
 docs_area: deploy
+cloud: true
 ---
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
@@ -22,7 +23,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
-## Step 2. Select a cloud provider & region
+## Step 2. Select the cloud provider
 
 1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Serverless cluster on Azure is not supported.
 
@@ -34,7 +35,17 @@ If you want to create a cluster in an unavailable region, please [contact Suppor
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 {{site.data.alerts.end}}
 
-## Step 3. Set resource limits
+## Step 3. Select the regions
+
+In the **Regions** section, select up to six regions. To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
+
+For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For example, if your client application is deployed in GCP's `us-east1` region, select GCP as your deployment environment and select `us-east1` as your cluster's region. For multi-region clusters, CockroachDB will optimize access to data from the **Primary region**. See [Multi-Region Capabilities Overview](../{{site.versions["stable"]}}/multiregion-overview.html) to learn more. If you want to create a cluster in an unavailable region, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
+
+{{site.data.alerts.callout_info}}
+**Multi-region for {{ site.data.products.serverless }} is in [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
+
+## Step 4. Set resource limits
 
 Your cluster's [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
