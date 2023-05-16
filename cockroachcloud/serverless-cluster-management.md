@@ -73,7 +73,7 @@ You can add or remove up to six regions at a time through the Console.
 You can only add regions to clusters created after May 16, 2023.
 {{site.data.alerts.end}}
 
-## Add a region to your cluster
+## Add a region
 
 To add regions to your cluster:
 
@@ -89,7 +89,7 @@ To add regions to your cluster:
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
-### Remove a region from your cluster
+### Remove a region
 
 To remove regions from your cluster:
 

@@ -52,9 +52,7 @@ GCP                                         | AWS
 `us-east1` (South Carolina )                | `us-east-1` (N. Virginia)              
 `us-west2` (California)                     | `us-west-2` (Oregon)
 
-
-
-Multi-region clusters can have a maximum of all six available regions. If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+A multi-region cluster can have a maximum of six available regions. To express interest in additional regions, contact your Cockroach Labs account team.
 
 ### How can I estimate how many RUs my workload will consume?
 
@@ -104,15 +102,15 @@ When a {{ site.data.products.serverless }} cluster is idle, it will scale down t
 
 ### How do I get the SQL endpoint for a specific region of my multi-region cluster?
 
-This information is not currently available in the {{ site.data.products.db }} Console. The connection string provided in the Console uses a geolocation routing policy to automatically route clients to the nearest region, so it should be unnecessary to use the DNS name for a specific region. However, if you need to determine region-specific DNS names, you can do either of the following:
+This information is not currently available in the {{ site.data.products.db }} Console. The connection string provided in the Console uses a geolocation routing policy to automatically route clients to the nearest region. However, if you need to determine region-specific DNS names, you can do either of the following:
 
 Make an [API request](cloud-api.html) to `GET /api/v1/clusters/{cluster_id}`. The SQL endpoint for each region will be visible in `regions` -> `sql_dns`.
 
 Or, manually create the region-specific DNS names using your cloud provider and the single region names. For example, a GCP Serverless cluster with the DNS name `<routing-id>.h4f.cockroachlabs.cloud` might have the following regional DNS names:
 
-`<routing-id>.h4f.gcp-us-east1.cockroachlabs.cloud`
-`<routing-id>.h4f.gcp-us-west2.cockroachlabs.cloud`
-`<routing-id>.h4f.gcp-europe-west2.cockroachlabs.cloud`.
+- `<routing-id>.h4f.gcp-us-east1.cockroachlabs.cloud`
+- `<routing-id>.h4f.gcp-us-west2.cockroachlabs.cloud`
+- `<routing-id>.h4f.gcp-europe-west2.cockroachlabs.cloud`.
 
 ## Security
 

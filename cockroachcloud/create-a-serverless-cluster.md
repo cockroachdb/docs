@@ -35,7 +35,7 @@ If you want to create a cluster in an unavailable region, please [contact Suppor
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 {{site.data.alerts.end}}
 
-## Step 3. Select the region(s)
+## Step 3. Select the regions
 
 In the **Regions** section, select up to six regions. To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
