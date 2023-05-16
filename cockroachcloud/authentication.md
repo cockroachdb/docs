@@ -88,7 +88,7 @@ For information on managing SQL user credentials, including provisioning passwor
 
 ### PKI security certificate
 
-SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates. 
+SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates.
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 

@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to use [managed-service backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html#cockroachdb-backup-types) from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. 
+This page describes how to use [managed-service backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html#cockroachdb-backup-types) from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters.
 
 To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backups** in the **Data** section of the left side navigation.
 
@@ -28,17 +28,19 @@ Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/tak
 You cannot restore a backup of a multi-region database into a single-region database.
 {{site.data.alerts.end}}
 
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed backups are not available for {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+
 </section>
 
 ## Backups page
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date. 
+Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
-- **Data From**: The date and time the backup was taken. 
-- **Type**: Whether the backup is a [full](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) or [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) backup. 
+- **Data From**: The date and time the backup was taken.
+- **Type**: Whether the backup is a [full](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) or [incremental](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) backup.
 - **Size**: The size of the backup, measured in `KiB`.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
@@ -52,8 +54,8 @@ Your cluster's **Backups** page displays a list of your full cluster backups. Us
 
 For each backup, the following details display:
 
-- **Data From**: The date and time the backup was taken. 
-- **Status**: Whether the backup is `In Progress` or `Complete`. 
+- **Data From**: The date and time the backup was taken.
+- **Status**: Whether the backup is `In Progress` or `Complete`.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 
 <img src="{{ 'images/cockroachcloud/backups-serverless.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
@@ -102,14 +104,14 @@ For each table in the database, the following details display:
 
 ### Incomplete Backups
 
-To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backups** page. 
+To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backups** page.
 
 For each incomplete backup, the following details display:
 
-- **Started**: The date and time the backup job began.  
-- **Duration**: The amount of time the backup job ran for.  
+- **Started**: The date and time the backup job began.
+- **Duration**: The amount of time the backup job ran for.
 - **Status**: The error code and message for failed backup jobs.
-- **Description**: The SQL command corresponding to the failed or pending backup job. 
+- **Description**: The SQL command corresponding to the failed or pending backup job.
 
 ## Ways to restore data
 
@@ -126,6 +128,10 @@ Additional ways to restore data:
 
 ### Restore a cluster
 
+{{site.data.alerts.callout_info}}
+{% include_cached feature-phases/limited-access.md %}
+{{site.data.alerts.end}}
+
 To restore a cluster:
 
 1. Find the cluster backup on the **Backups** page.
@@ -133,15 +139,15 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Click **Continue**. 
-    
+1. Click **Continue**.
+
     {{site.data.alerts.callout_danger}}
     The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
     {{site.data.alerts.end}}
 
 1. Once you have reviewed the restore details, click **Restore**.
 
-    The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully. 
+    The **Restore Jobs** tab will show you the status of your restore and update when the restore job has been created successfully.
 
 ### Restore a database
 
@@ -163,8 +169,8 @@ To restore a database:
     - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
-1. Click **Continue**. 
-1. Once you have reviewed the restore details, click **Restore**. 
+1. Click **Continue**.
+1. Once you have reviewed the restore details, click **Restore**.
 
     When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
@@ -202,7 +208,7 @@ To restore a table:
     - **Skip missing sequences**, which will ignore [sequence](../{{site.current_cloud_version}}/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../{{site.current_cloud_version}}/views.html) that cannot be restored because their dependencies are not being restored at the same time.
 
-1. Click **Continue**. 
+1. Click **Continue**.
 1. Once you have reviewed the restore details, click **Restore**.
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
@@ -316,6 +322,6 @@ Find the cluster backup you want to restore, and click **Restore**.
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud). 
+You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud).
 
 </section>

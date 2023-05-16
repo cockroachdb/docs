@@ -273,7 +273,7 @@ SELECT * FROM crdb_internal.cluster_contention_events;
 To view the [tables](create-table.html) and [indexes](indexes.html) with the most cumulative time under [contention](performance-best-practices-overview.html#transaction-contention) since the last server restart, run the query below.
 
 {{site.data.alerts.callout_info}}
-The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating transaction contention, you can set the `sql.trace.txn.enable_threshold` [cluster setting](cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
+{% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -873,6 +873,22 @@ Column | Type | Description
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
 `index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations](ui-insights-page.html#schema-insights-tab) of the format `{type} : {sql query}`.
 
+#### `fingerprint_id` column
+
+The value is in hexadecimal format. The following examples show how to use this value to query `statement_statistics`:
+
+1. Add the escape character `\x` at the start of the `fingerprint_id`:
+{% include_cached copy-clipboard.html %}
+~~~sql
+> SELECT * FROM crdb_internal.statement_statistics WHERE fingerprint_id='\x97ffc170783445fd';
+~~~
+
+1. Encode the `fingerprint_id` as `hex`:
+{% include_cached copy-clipboard.html %}
+~~~sql
+> SELECT * FROM crdb_internal.statement_statistics WHERE encode(fingerprint_id, 'hex')='97ffc170783445fd';
+~~~
+
 #### `metadata` column
 
 Field | Type | Description
@@ -1161,7 +1177,7 @@ Column | Type | Description
 `contention_duration` | `INTERVAL NOT NULL` | The interval of time the waiting transaction spent waiting for the blocking transaction.
 `contending_key` | `BYTES NOT NULL` | The key on which the transactions contended.
 
-#### Example
+#### Transaction contention - example
 
 The following example shows how to join the `transaction_contention_events` table with `transaction_statistics` and `statement_statistics` tables to extract blocking and waiting transaction information.
 

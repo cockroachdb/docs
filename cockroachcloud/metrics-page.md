@@ -72,7 +72,7 @@ This graph shows a moving average of the number of statements with [full table a
 
 ### SQL Statement Contention 
 
-This graph shows a moving average of the number of SQL statements that experienced [contention](../{{site.versions["stable"]}}/transactions.html#transaction-contention) across the cluster.
+This graph shows a moving average of the number of SQL statements that experienced [contention](../{{site.versions["stable"]}}/performance-best-practices-overview.html#transaction-contention) across the cluster.
 
 See the [Statements page](statements-page.html) for more details on the cluster's SQL statements.
 

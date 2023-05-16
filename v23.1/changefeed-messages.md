@@ -17,6 +17,10 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
+{{site.data.alerts.end}}
+
 ## Responses
 
 By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
@@ -113,6 +117,8 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
     Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
+
+{% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
 
 ## Delete messages
 
@@ -250,6 +256,7 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 
 - It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
 - It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+- {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
