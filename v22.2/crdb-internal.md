@@ -871,7 +871,23 @@ Column | Type | Description
 `statistics` | `JSONB NOT NULL` | Statistics for the statement. See [`statistics` column](#statistics-column).
 `sampled_plan` | `JSONB NOT NULL` | The sampled query plan of the current statement statistics. This column is unfilled if there is no sampled query plan.
 `aggregation_interval` | `INTERVAL NOT NULL` | The interval over which statistics are aggregated.
-`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations](ui-insights-page.html#schema-insights-view) of the format `{type} : {sql query}`.
+`index_recommendations` | `STRING[] NOT NULL` | An array of strings containing [index recommendations](ui-insights-page.html#schema-insights-tab) of the format `{type} : {sql query}`.
+
+#### `fingerprint_id` column
+
+The value is in hexadecimal format. The following examples show how to use this value to query `statement_statistics`:
+
+1. Add the escape character `\x` at the start of the `fingerprint_id`:
+{% include_cached copy-clipboard.html %}
+~~~sql
+> SELECT * FROM crdb_internal.statement_statistics WHERE fingerprint_id='\x97ffc170783445fd';
+~~~
+
+1. Encode the `fingerprint_id` as `hex`:
+{% include_cached copy-clipboard.html %}
+~~~sql
+> SELECT * FROM crdb_internal.statement_statistics WHERE encode(fingerprint_id, 'hex')='97ffc170783445fd';
+~~~
 
 #### `metadata` column
 

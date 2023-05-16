@@ -28,14 +28,13 @@ The user must be granted the `CONNECT` [privilege](security-reference/authorizat
 ~~~
 
 ~~~
-  database_name
-+---------------+
-  defaultdb
-  movr
-  postgres
-  startrek
-  system
-(5 rows)
+  database_name | owner | primary_region | secondary_region | regions | survival_goal
+----------------+-------+----------------+------------------+---------+----------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL
+  postgres      | root  | NULL           | NULL             | {}      | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL
+(4 rows)
 ~~~
 
 Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](cockroach-sql.html#commands) to list all databases:
@@ -46,14 +45,13 @@ Alternatively, within the built-in SQL shell, you can use the `\l` [shell comman
 ~~~
 
 ~~~
-  database_name
-+---------------+
-  defaultdb
-  movr
-  postgres
-  startrek
-  system
-(5 rows)
+  database_name | owner | primary_region | secondary_region | regions | survival_goal
+----------------+-------+----------------+------------------+---------+----------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL
+  postgres      | root  | NULL           | NULL             | {}      | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL
+(4 rows)
 ~~~
 
 ### Show databases with comments
@@ -62,7 +60,7 @@ You can use [`COMMENT ON`](comment-on.html) to add comments on a database.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
+COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
 ~~~
 
 To view a database's comments:
@@ -73,14 +71,13 @@ To view a database's comments:
 ~~~
 
 ~~~
-  database_name |                              comment
-+---------------+-------------------------------------------------------------------+
-  defaultdb     | NULL
-  movr          | This database holds information about users, vehicles, and rides.
-  postgres      | NULL
-  startrek      | NULL
-  system        | NULL
-(5 rows)
+   database_name | owner | primary_region | secondary_region | regions | survival_goal |                              comment
+----------------+-------+----------------+------------------+---------+---------------+--------------------------------------------------------------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL          | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL          | This database holds information about users, vehicles, and rides.
+  postgres      | root  | NULL           | NULL             | {}      | NULL          | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL          | NULL
+(4 rows)
 ~~~
 
 For more information, see [`COMMENT ON`](comment-on.html).

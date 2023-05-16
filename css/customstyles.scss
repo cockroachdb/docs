@@ -95,3 +95,19 @@ td > div.anchored
 {
    scroll-margin-top: 100px;
 }
+
+table {
+  overflow-x: auto;
+  width: 100%;
+  display: block;
+  border: none;
+  tbody {
+    tr {
+      td {
+        strong {
+          line-height: 22px;
+        }
+      }
+    }
+  }
+}

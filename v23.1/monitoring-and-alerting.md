@@ -7,31 +7,65 @@ docs_area: manage
 
 In addition to CockroachDB's [built-in safeguards against failure](frequently-asked-questions.html#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
-This page explains available monitoring tools and critical events and metrics to alert on.
+This page describes the monitoring and observability tools that are built into {{ site.data.products.core }} and shows how to collect your cluster's metrics using external tools like Prometheus's AlertManager for event-based alerting. To export metrics from a {{ site.data.products.db }} cluster, refer to [Export Metrics From a {{ site.data.products.dedicated }} Cluster](/docs/cockroachcloud/export-metrics.html) instead of this page. For more details, refer to:
+
+- [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html)
+- [Third-party Monitoring Tools](third-party-monitoring-tools.html)
 
 {% include {{ page.version.version }}/prod-deployment/cluster-unavailable-monitoring.md %}
 
-## Monitoring tools
+<a id="monitoring-tools"></a>
+
+## Built-in monitoring tools
+
+CockroachDB includes several tools to help you monitor your cluster's workloads and performance.
 
 {{site.data.alerts.callout_danger}}
-If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you use the [Prometheus endpoint](#prometheus-endpoint) or consult the [cluster logs](logging-overview.html).
+If a cluster becomes unavailable, most of the monitoring tools in the following sections become unavailable. In that case, Cockroach Labs recommends that you consult the [cluster logs](logging-overview.html). To maintain access to a cluster's historical metrics when the cluster is unavailable, configure a [third-party monitoring tool](third-party-monitoring-tools.html) like Prometheus or Datadog to collect metrics periodically from the [Prometheus endpoint](#prometheus-endpoint). The metrics are stored outside the cluster, and can be used to help troubleshoot what led up to an outage.
 {{site.data.alerts.end}}
 
 ### DB Console
 
-The [DB Console](ui-overview.html) displays essential metrics about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues. The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
+The [DB Console](ui-overview.html) collects time-series cluster metrics and displays basic information about a cluster's health, such as node status, number of unavailable ranges, and queries per second and service latency across the cluster. This tool is designed to help you optimize cluster performance and troubleshoot issues. The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
-For more information on accessing the DB Console, see [Access DB Console](ui-overview.html#db-console-access).
+The DB Console automatically runs in the cluster. The following sections describe some of the pages that can help you to monitor and observe your cluster. For more information on accessing the DB Console, see [Access DB Console](ui-overview.html#db-console-access).
+
+#### Metrics dashboards
+
+The [Metrics dashboards](ui-overview-dashboard.html), which are located within **Metrics** in DB Console, provide information about a cluster's performance, load, and resource utilization. The Metrics dashboards are built using time-series metrics collected from the cluster. By default, metrics are collected every 10 minutes and stored within the cluster, and data is retained at 10-second granularity for 10 days , and at 30-minute granularity for 90 days.
+
+To learn more, refer to [Overview Dashboard](ui-overview-dashboard.html).
+
+Each cluster automatically exposes its metrics at an [endpoint in Prometheus format](#prometheus-endpoint), enabling you to collect them in an external tool like Datadog or your own Prometheus, Grafana, and AlertManager instances. These tools:
+
+- Collect metrics from the cluster's Prometheus endpoint at an interval you define.
+- Store historical metrics according to your data retention requirements.
+- Allow you to create and share dashboards, reports, and alerts based on metrics.
+- Do not run within the cluster, and can help you to investigate a situation that led up to cluster outage even if the cluster is unavailable.
+
+Metrics collected by the DB Console are stored within the cluster, and the SQL queries that create the reports on the Metrics dashboards also impose load on the cluster. To avoid this additional load, or if you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
+
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+
+#### SQL Activity pages
+
+The SQL Activity pages, which are located within **SQL Activity** in DB Console, provide information about SQL [statements](ui-statements-page.html), [transactions](ui-transactions-page.html), and [sessions](ui-sessions-page.html).
+
+The information on the SQL Activity pages comes from the cluster's [`crdb_internal` system catalog](#crdb_internal-system-catalog). It is not exported via the cluster's [Prometheus endpoint](#prometheus-endpoint).
 
 ### Cluster API
 
-The [Cluster API](cluster-api.html) is a REST API that provides much of the same information about your cluster and nodes as is available from the DB Console and is accessible from each node at the same address and port as the DB Console.
+The [Cluster API](cluster-api.html) is a REST API that runs in the cluster and provides much of the same information about your cluster and nodes as is available from the [DB Console](#db-console) or the [Prometheus endpoint](#prometheus-endpoint), and is accessible from each node at the same address and port as the DB Console.
+
+If the cluster is unavailable, the Cluster API is also unavailable.
 
 For more information, see the Cluster API [overview](cluster-api.html) and [reference](../api/cluster/v2.html).
 
 ### `crdb_internal` system catalog
 
-The `crdb_internal` system catalog is a schema that contains information about internal objects, processes, and metrics related to a specific database.
+The `crdb_internal` system catalog is a schema in each database that contains information about internal objects, processes, and metrics about that database. [DBMarlin](https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb) provides a third-party tool that collects metrics from a cluster's `crdb_internal` system catalogs rather than the cluster's Prometheus endpoint. Refer to [Monitor CockroachDB with DBmarlin](dbmarlin.html).
+
+If the cluster is unavailable, a database's `crdb_internal` system catalog cannot be queried.
 
 For details, see [`crdb_internal`](crdb-internal.html).
 
@@ -40,6 +74,8 @@ For details, see [`crdb_internal`](crdb-internal.html).
 CockroachDB provides two HTTP endpoints for checking the health of individual nodes.
 
 These endpoints are also available through the [Cluster API](cluster-api.html) under `/v2/health/`.
+
+If the cluster is unavailable, these endpoints are also unavailable.
 
 #### /health
 
@@ -120,7 +156,9 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 ### Prometheus endpoint
 
-Every node of a CockroachDB cluster exports granular time series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus.html), an open source tool for storing, aggregating, and querying time series data, but the format is **easy-to-parse** and can be processed to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
+Every node of a CockroachDB cluster exports granular time-series metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](monitor-cockroachdb-with-prometheus.html), an open source tool for storing, aggregating, and querying time-series data. The Prometheus format is human-readable and can be processed to work with other third-party monitoring systems such as [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd). Many of the [third-party monitoring integrations](third-party-monitoring-tools.html), such as [Datadog](datadog.html) and [Kibana](kibana.html), collect metrics from a cluster's Prometheus endpoint.
+
+To access the Prometheus of a cluster running on `localhost:8080`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -147,19 +185,27 @@ replicas_quiescent{store="1"} 20
 In addition to using the exported time-series data to monitor a cluster via an external system, you can write alerting rules against them to make sure you are promptly notified of critical events or issues that may require intervention or investigation. See [Events to alert on](#events-to-alert-on) for more details.
 {{site.data.alerts.end}}
 
+If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
+
+When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
+
 ## Alerting tools
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.
 
-This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's Alertmanager.
+Many of the [third-party monitoring integrations](third-party-monitoring-tools.html), such as [Datadog](datadog.html) and [Kibana](kibana.html), also support event-based alerting using metrics collected from a cluster's [Prometheus endpoint](#prometheus-endpoint). Refer to the documentation for an integration for more details. This section identifies the most important events that you might want to create alerting rules for, and provides pre-defined rules definitions for these events appropriate for use with Prometheus's open source [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) service.
 
 ### Alertmanager
 
-If you have configured [Prometheus](monitor-cockroachdb-with-prometheus.html) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Prometheus's Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
+If you have configured [Prometheus](monitor-cockroachdb-with-prometheus.html) to monitor your CockroachDB instance, you can also configure alerting rule definitions to have Alertmanager detect [important events](#events-to-alert-on) and alert you when they occur.
+
+If you rely on external tools for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
+
+When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
 
 #### Prometheus alerting rules endpoint
 
-Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Prometheus's Alertmanager.
+Every CockroachDB node exports an alerting rules template at `http://<host>:<http-port>/api/v2/rules/`. These rule definitions are formatted for easy integration with Alertmanager.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

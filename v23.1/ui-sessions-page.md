@@ -6,12 +6,10 @@ docs_area: reference.db_console
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by users belonging to the `admin` role or a SQL user with the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITY` [role option](security-reference/authorization.html#role-options)) defined. Non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
+On a secure cluster, you must be an `admin` user or a SQL user with the `VIEWACTIVITY` [system privilege](security-reference/authorization.html#supported-privileges) (or the legacy `VIEWACTIVITY` [role option](security-reference/authorization.html#role-options)). Other users will see only their own sessions. Refer to [DB Console security](ui-overview.html#db-console-access).
 {{site.data.alerts.end}}
 
-The **Sessions** page  of the DB Console provides details of all open sessions in the cluster.
-
-To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. Click the **Sessions** tab.
+The **Sessions** page provides information about open SQL sessions in your cluster, using data in the cluster's [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Sessions**.
 
 {% include common/ui/sessions-page.md %}
 

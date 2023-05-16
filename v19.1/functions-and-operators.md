@@ -36,7 +36,7 @@ functions but have special evaluation rules:
 
 ## Built-in functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/functions.md %}
 
 ## Aggregate functions
 
@@ -44,11 +44,11 @@ functions but have special evaluation rules:
 For examples showing how to use aggregate functions, see [the `SELECT` clause documentation](select-clause.html#aggregate-functions).
 {{site.data.alerts.end}}
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/aggregates.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/aggregates.md %}
 
 ## Window functions
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-{{ page.version.version | replace: "v", "" }}/docs/generated/sql/window_functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/{{ page.release_info.crdb_branch_name }}/docs/generated/sql/window_functions.md %}
 
 ## Operators
 

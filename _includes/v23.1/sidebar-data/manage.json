@@ -145,6 +145,12 @@
               ]
             },
             {
+              "title": "Locality-restricted Backup Execution",
+              "urls": [
+                "/${VERSION}/take-locality-restricted-backups.html"
+              ]
+            },
+            {
               "title": "Locality-aware Backup and Restore",
               "urls": [
                 "/${VERSION}/take-and-restore-locality-aware-backups.html"
@@ -161,13 +167,13 @@
               "urls": [
                 "/${VERSION}/backup-validation.html"
               ]
-            },
-            {
-              "title": "Backup and Restore Monitoring",
-              "urls": [
-                "/${VERSION}/backup-and-restore-monitoring.html"
-              ]
             }
+          ]
+        },
+        {
+          "title": "Backup and Restore Monitoring",
+          "urls": [
+            "/${VERSION}/backup-and-restore-monitoring.html"
           ]
         },
         {
@@ -217,6 +223,7 @@
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
+          "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
               "title": "Create Private Clusters",
@@ -276,19 +283,25 @@
 										]
 									},
                   {
+										"title": "Configure SCIM provisioning",
+										"urls": [
+											"/cockroachcloud/configure-scim-provisioning.html"
+										]
+									},
+                  {
                     "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
                     ]
+                  },
+                  {
+                    "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "urls": [
+                      "/cockroachcloud/client-certs-dedicated.html"
+                    ]
                   }
 								]
       	    },
-            {
-              "title": "User Authorization",
-              "urls": [
-                "/cockroachcloud/user-authorization.html"
-              ]
-            },
             {
               "title": "Network Authorization",
               "urls": [
@@ -308,9 +321,15 @@
               ]
             },
             {
-              "title": "Manage Console Access",
+              "title": "CockroachdB Cloud Access Management Overview and FAQ",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                 "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing Access in CockroachDB Cloud",
+              "urls": [
+                 "/cockroachcloud/managing-access.html"
               ]
             }
           ]
@@ -465,6 +484,12 @@
               ]
             },
             {
+              "title": "Insights Page",
+              "urls": [
+                "/cockroachcloud/insights-page.html"
+              ]
+            },
+            {
               "title": "Databases Page",
               "urls": [
                 "/cockroachcloud/databases-page.html"
@@ -593,6 +618,12 @@
                   "title": "Upgrade Policy",
                   "urls": [
                      "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v23.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v23.1.html"
                   ]
                 },
                 {

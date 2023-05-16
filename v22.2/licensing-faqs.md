@@ -53,7 +53,7 @@ The table below shows how certain core and Enterprise features are licensed:
 
 Feature          | BSL | CCL (free)      | CCL (paid)
 -----------------|:-----:|:-----------------:|:---------------:
-**[Import](import.html)** | | ✓ |
+**[Import](import.html)** | ✓ | |
 **[Export](export.html)** | ✓ | |
 **[Restore](restore.html)** | | ✓ |
 **[Full backups](take-full-and-incremental-backups.html#full-backups)** | | ✓ |

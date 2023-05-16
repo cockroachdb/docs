@@ -14,7 +14,7 @@ docs_area: manage
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.version }}**.
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**.
 
 ## Terminology
 
@@ -22,7 +22,7 @@ Before upgrading, review the CockroachDB [release](../releases/) terminology:
 
 - A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest_prod.major_version }} (also written as {{ actual_latest_prod.major_version }}.0).
 - Each [supported](../releases/release-support-policy.html) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
-- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.version }}.
+- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
 - Prior to an upcoming major release, alpha and beta releases and release candidates are made available. These "testing releases" are not suitable for production usage. They are intended for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.
 
 {{site.data.alerts.callout_info}}
@@ -42,12 +42,12 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 > SHOW CLUSTER SETTING version;
 ~~~
 
-To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
+To upgrade to {{ latest.release_name }}, you must be running{% if prior.release_name %} either{% endif %}:
 
-{% if prior.version %}
-- **Any earlier {{ page.version.version }} release:** {{ earliest.version }} to {{ prior.version }}.
+{% if prior.release_name %}
+- **Any earlier {{ page.version.version }} release:** {{ earliest.release_name }} to {{ prior.release_name }}.
 {% endif %}
-- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}.
+- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.release_name }}.
 
 If you are running any other version, take the following steps **before** continuing on this page:
 
@@ -57,7 +57,7 @@ If you are running any other version, take the following steps **before** contin
 | Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                     |
 | {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                                                                     |
 
-When you are ready to upgrade to {{ latest.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
+When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -146,7 +146,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.version }}**.
+These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.release_name }}**.
 {{site.data.alerts.end}}
 
     <div class="filters clearfix">
@@ -156,7 +156,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
 1. [Drain and shut down the node](node-shutdown.html#perform-node-shutdown).
 
-1. Visit [What's New in {{ page.version.version }}?](/docs/releases/{{ page.version.version }}.html) and download the **CockroachDB {{ latest.version }} full binary** for your architecture.
+1. Visit [What's New in {{ page.version.version }}?](/docs/releases/{{ page.version.version }}.html) and download the **CockroachDB {{ latest.release_name }} full binary** for your architecture.
 
 1. Extract the archive. In the following instructions, replace `{COCKROACHDB_DIR}` with the path to the extracted archive directory.
 

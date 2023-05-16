@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-A user-defined `ENUM` [data type](data-types.html) consists of a set of enumerated, static values.
+A [user-defined `ENUM` data type](create-type.html#create-an-enumerated-data-type) consists of a set of enumerated, static values.
 
 ## Syntax
 
-To declare a new `ENUM` data type, use [`CREATE TYPE`](create-type.html):
+To declare a new enumerated data type, use [`CREATE TYPE`](create-type.html#create-an-enumerated-data-type):
 
 ~~~ sql
 > CREATE TYPE <name> AS ENUM ('<value1>', '<value2>', ...);

@@ -217,6 +217,7 @@
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
+          "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
               "title": "Create Private Clusters",
@@ -276,19 +277,25 @@
 										]
 									},
                   {
+										"title": "Configure SCIM provisioning",
+										"urls": [
+											"/cockroachcloud/configure-scim-provisioning.html"
+										]
+									},
+                  {
                     "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
                     "urls": [
                       "/cockroachcloud/cloud-sso-sql.html"
                     ]
+                  },
+                  {
+                    "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "urls": [
+                      "/cockroachcloud/client-certs-dedicated.html"
+                    ]
                   }
 								]
       	    },
-            {
-              "title": "User Authorization",
-              "urls": [
-                "/cockroachcloud/user-authorization.html"
-              ]
-            },
             {
               "title": "Network Authorization",
               "urls": [
@@ -308,9 +315,15 @@
               ]
             },
             {
-              "title": "Manage Console Access",
+              "title": "CockroachDB Cloud Access Management Overview and FAQ",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing Access in CockroachDB Cloud",
+              "urls": [
+                 "/cockroachcloud/managing-access.html"
               ]
             }
           ]
@@ -462,6 +475,12 @@
               "title": "Transactions Page",
               "urls": [
                 "/cockroachcloud/transactions-page.html"
+              ]
+            },
+            {
+              "title": "Insights Page",
+              "urls": [
+                "/cockroachcloud/insights-page.html"
               ]
             },
             {

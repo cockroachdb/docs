@@ -331,8 +331,20 @@ module Jekyll
           objectID: 'not visible',
           type: 'synonym',
           synonyms: ['not visible', 'invisible']
-        }, false)        
+        }, false)
         
+        index.save_synonym('schema conversion tool', {
+          objectID: 'schema conversion tool',
+          type: 'synonym',
+          synonyms: ['schema conversion tool', 'sct']
+        }, false)
+        
+        index.save_synonym('full text search', {
+          objectID: 'full text search',
+          type: 'synonym',
+          synonyms: ['full text search', 'fts']
+        }, false)
+
         return
       end
 

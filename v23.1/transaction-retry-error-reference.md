@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.transaction_retry_error_reference
 ---
 
-When a [transaction](transactions.html) is unable to complete due to [contention](architecture/overview.html#architecture-overview-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a _transaction retry error_ is emitted to the client.
+When a [transaction](transactions.html) is unable to complete due to [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a _transaction retry error_ is emitted to the client.
 
 Transaction retry errors fall into two categories:
 
@@ -26,11 +26,7 @@ The main reason why CockroachDB cannot auto-retry every serialization error with
 
 ## Actions to take
 
-In most cases, the correct actions to take when encountering transaction retry errors are:
-
-1. Update your application to support [client-side retry handling](#client-side-retry-handling) when transaction retry errors are encountered.
-
-1. Adjust your application logic to [minimize transaction retry errors](#minimize-transaction-retry-errors) in the first place.
+{% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
 
 ### Client-side retry handling
 
@@ -65,32 +61,24 @@ For a conceptual example of application-defined retry logic, and testing that lo
 
 ### Minimize transaction retry errors
 
-In addition to the steps described in [Client-side retry handling](#client-side-retry-handling), which detail how to configure your application to restart a failed transaction, there are also a number of changes you can make to your application logic to increase the chance that CockroachDB can [automatically retry](transactions.html#automatic-retries) a failed transaction, and to reduce the number of transaction retry errors that reach the client application in the first place:
+In addition to the steps described in [Client-side retry handling](#client-side-retry-handling), which detail how to configure your application to restart a failed transaction, there are also a number of changes you can make to your application logic to reduce the number of transaction retry errors that reach the client application in the first place.
 
-1. Limit the number of affected rows by following [performance-tuning best practices](apply-statement-performance-rules.html) (e.g., query performance tuning, index design and maintenance, etc.). Not only will transactions run faster and hold locks for a shorter duration, but the chances of [read invalidation](architecture/transaction-layer.html#read-refreshing) when the transaction’s [timestamp is pushed](architecture/transaction-layer.html#timestamp-cache) due to a conflicting write is decreased due to a smaller read set (i.e., a smaller number of rows read).
+Reduce failed transactions caused by [timestamp pushes](architecture/transaction-layer.html#timestamp-cache) or [read invalidation](architecture/transaction-layer.html#read-refreshing):
 
-1. Break down larger transactions into smaller ones (e.g., [bulk deletes](bulk-delete-data.html)) to have transactions hold locks for a shorter duration. This will also decrease the likelihood of [pushed timestamps](architecture/transaction-layer.html#timestamp-cache) and retry errors. For instance, as the size of writes (number of rows written) decreases, the chances of the (bulk delete) transaction’s timestamp getting bumped by concurrent reads decreases.
+{% include {{ page.version.version }}/performance/reduce-contention.md %}
 
-1. Design your applications to reduce network round trips by [sending statements in transactions as a single batch](transactions.html#batched-statements) (e.g., using [common table expressions](common-table-expressions.html)). Batching allows CockroachDB to [automatically retry](transactions.html#automatic-retries) a transaction when [previous reads are invalidated](architecture/transaction-layer.html#read-refreshing) at a [pushed timestamp](architecture/transaction-layer.html#timestamp-cache). When a multi-statement transaction is not batched, and takes more than a single round trip, CockroachDB cannot automatically retry the transaction.
+Increase the chance that CockroachDB can [automatically retry](transactions.html#automatic-retries) a failed transaction:
 
-1. Limit the size of the result sets of your transactions to under 16KB, so that CockroachDB is more likely to [automatically retry](transactions.html#automatic-retries) when [previous reads are invalidated](architecture/transaction-layer.html#read-refreshing) at a [pushed timestamp](architecture/transaction-layer.html#timestamp-cache). When a transaction returns a result set over 16KB, even if that transaction has been sent as a single batch, CockroachDB cannot automatically retry the transaction.
-
-1. Use [`SELECT FOR UPDATE`](select-for-update.html) to aggressively lock rows that will later be updated in the transaction. Locking (blocking) earlier in the transaction will not allow other concurrent write transactions to conflict which leads to a situation where we would return out-of-date information subsequently returning a retry error ([`RETRY_WRITE_TOO_OLD`](#retry_write_too_old)). See [When and why to use `SELECT FOR UPDATE` in CockroachDB](https://www.cockroachlabs.com/blog/when-and-why-to-use-select-for-update-in-cockroachdb/) for more information.
-
-1. Use historical reads ([`SELECT ... AS OF SYSTEM TIME`](as-of-system-time.html)), preferably [bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads) or [exact staleness with follower reads](follower-reads.html#run-queries-that-use-exact-staleness-follower-reads) when possible to reduce conflicts with other writes. This reduces the likelihood of conflicts as fewer writes will happen at the historical timestamp. More specifically, writes’ timestamps are less likely to be pushed by historical reads as they would [when the read has a higher priority level](architecture/transaction-layer.html#transaction-conflicts).
-
-1. If applicable to your workload, assign [column families](column-families.html#default-behavior) and separate columns that are frequently read and written into separate columns. Transactions will operate on disjoint column families and reduce the likelihood of conflicts. 
-
-1. As a last resort, consider adjusting the [closed timestamp interval](architecture/transaction-layer.html#closed-timestamps) using the `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.html) to reduce the likelihood of long-running write transactions having their [timestamps pushed](architecture/transaction-layer.html#timestamp-cache). This setting should be carefully adjusted if **no other mitigations are available** because there can be downstream implications (e.g., Historical reads, change data capture feeds, Stats collection, handling zone configurations, etc.). For example, a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](architecture/transaction-layer.html#closed-timestamps) interval (closed timestamps enable [Follower Reads](follower-reads.html#how-stale-follower-reads-work) and [Change Data Capture (CDC)](change-data-capture-overview.html)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read. See the reference entry for [`RETRY_SERIALIZABLE`](#retry_serializable) for more information.
+{% include {{ page.version.version }}/performance/increase-server-side-retries.md %}
 
 ## Transaction retry error reference
 
-Note that your application's retry logic does not need to distinguish between the different types of serialization errors. They are listed here for reference during advanced troubleshooting.
+Note that your application's retry logic does not need to distinguish between the different types of serialization errors. They are listed here for reference during [advanced troubleshooting](performance-recipes.html#transaction-contention).
 
 - [RETRY_WRITE_TOO_OLD](#retry_write_too_old)
 - [RETRY_SERIALIZABLE](#retry_serializable)
 - [RETRY_ASYNC_WRITE_FAILURE](#retry_async_write_failure)
-- [ReadWithinUncertaintyInterval](#readwithinuncertaintyinterval)
+- [ReadWithinUncertaintyIntervalError](#readwithinuncertaintyintervalerror)
 - [RETRY_COMMIT_DEADLINE_EXCEEDED](#retry_commit_deadline_exceeded)
 - [ABORT_REASON_ABORTED_RECORD_FOUND](#abort_reason_aborted_record_found)
 - [ABORT_REASON_CLIENT_REJECT](#abort_reason_client_reject)
@@ -182,7 +170,7 @@ The `RETRY_ASYNC_WRITE_FAILURE` error occurs when some kind of problem with your
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.
 
-### ReadWithinUncertaintyInterval
+### ReadWithinUncertaintyIntervalError
 
 ```
 TransactionRetryWithProtoRefreshError: ReadWithinUncertaintyIntervalError:
@@ -213,7 +201,7 @@ The solution is to do one of the following:
 1. If you [trust your clocks](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized), you can try lowering the [`--max-offset` option to `cockroach start`](cockroach-start.html#flags), which provides an upper limit on how long a transaction can continue to restart due to uncertainty.
 
 {{site.data.alerts.callout_info}}
-Uncertainty errors are a form of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
+Uncertainty errors are a sign of transaction conflict. For more information about transaction conflicts, see [Transaction conflicts](architecture/transaction-layer.html#transaction-conflicts).
 {{site.data.alerts.end}}
 
 See [Minimize transaction retry errors](#minimize-transaction-retry-errors) for the full list of recommended remediations.

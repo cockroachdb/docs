@@ -104,6 +104,12 @@
                 ]
               },
               {
+                "title": "Cursors",
+                "urls": [
+                  "/${VERSION}/cursors.html"
+                ]
+              },
+              {
                 "title": "Table Expressions",
                 "urls": [
                   "/${VERSION}/table-expressions.html"
@@ -999,6 +1005,18 @@
                 "title": "<code>TIMESTAMP</code>",
                 "urls": [
                   "/${VERSION}/timestamp.html"
+                ]
+              },
+              {
+                "title": "<code>TSQUERY</code>",
+                "urls": [
+                  "/${VERSION}/tsquery.html"
+                ]
+              },
+              {
+                "title": "<code>TSVECTOR</code>",
+                "urls": [
+                  "/${VERSION}/tsvector.html"
                 ]
               },
               {

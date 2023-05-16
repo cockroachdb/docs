@@ -77,6 +77,10 @@ The output shows the locality to which the node will write backup data. One of t
 Specifying both locality tier pairs (e.g., `region=us-east,az=az1`) from the output will cause the backup query to fail with: `tier must be in the form "key=value"`.
 {{site.data.alerts.end}}
 
+## Show locality-aware backups
+
+{% include {{ page.version.version }}/backups/locality-aware-backups.md %}
+
 ## Restore from a locality-aware backup
 
 Given a list of URIs that together contain the locations of all of the files for a single [locality-aware backup](#create-a-locality-aware-backup), [`RESTORE`](restore.html) can read in that backup. Note that the list of URIs passed to [`RESTORE`](restore.html) may be different from the URIs originally passed to [`BACKUP`](backup.html). This is because it's possible to move the contents of one of the parts of a locality-aware backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a locality-aware backup into a single location.

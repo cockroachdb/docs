@@ -76,6 +76,12 @@
     "title": "Tutorials",
     "items": [
       {
+        "title": "Connect to a Changefeed Kafka Sink with OAuth Using Okta",
+        "urls": [
+          "/${VERSION}/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html"
+        ]
+      },
+      {
         "title": "Stream a Changefeed from CockroachDB Cloud to Snowflake",
         "urls": [
           "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"

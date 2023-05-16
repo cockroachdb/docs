@@ -9,11 +9,12 @@ When you create an {{ site.data.products.enterprise }} changefeed, you can inclu
 
 {% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence. 
 
-The benefits of using changefeeds for this use case compared to an export, include:
+The benefits of using changefeeds for this use case instead of [export](export.html), include:
 
-- Changefeeds are jobs, which can be [paused](pause-job.html), [resumed](resume-job.html), and [cancelled](cancel-job.html).
+- Changefeeds are jobs, which can be [paused](pause-job.html), [resumed](resume-job.html), [cancelled](cancel-job.html), [scheduled](create-schedule-for-changefeed.html), and [altered](alter-changefeed.html).
 - There is observability into a changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs) and the [Changefeeds Dashboard](ui-cdc-dashboard.html) in the DB Console.
-- [Changefeed sinks](changefeed-sinks.html) provide additional endpoints to send your data.
+- Changefeed jobs have built-in [checkpointing](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) and [retries](monitor-and-debug-changefeeds.html#changefeed-retry-errors).
+- [Changefeed sinks](changefeed-sinks.html) provide additional endpoints for your data.
 - You can use the [`format=csv`](create-changefeed.html#format) option with `initial_scan= 'only'` to emit messages in CSV format.
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}

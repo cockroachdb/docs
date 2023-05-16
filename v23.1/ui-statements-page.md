@@ -7,7 +7,12 @@ docs_area: reference.db_console
 
 {% include {{ page.version.version }}/ui/admin-access.md %}
 
-The **Statements** page offers two views on statements: **Statement Fingerprints**, which represents one or more completed SQL statements; and **Active Executions**, which represents individual statement executions in progress.
+The **Statements** page provides information about the execution of SQL statements in your cluster, using data in the cluster's [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog). To view it, click **SQL Activity**, then click **Statements**.
+
+It offers two views:
+
+- **Statement Fingerprints** show information about completed SQL statements.
+- **Active Executions** show information about SQL statements which are currently executing.
 
 Choose a view by selecting the **Statement Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
 

@@ -345,6 +345,8 @@ If the rebalancing stalls during decommissioning, replicas that have yet to move
 Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/prod-deployment/decommission-pre-flight-checks.md %}
+
 ### Terminate the node process
 </section>
 
@@ -577,6 +579,15 @@ You can use [`cockroach node drain`](cockroach-node.html) to drain a node separa
 <section class="filter-content" markdown="1" data-scope="decommission">
 ### Remove nodes
 
+- [Prerequisites](#prerequisites)
+- [Step 1. Get the IDs of the nodes to decommission](#step-1-get-the-ids-of-the-nodes-to-decommission)
+- [Step 2. Drain the nodes manually](#step-2-drain-the-nodes-manually)
+- [Step 3. Decommission the nodes](#step-3-decommission-the-nodes)
+- [Step 4. Confirm the nodes are decommissioned](#step-4-confirm-the-nodes-are-decommissioned)
+- [Step 5. Terminate the process on decommissioned nodes](#step-5-terminate-the-process-on-decommissioned-nodes)
+
+#### Prerequisites
+
 In addition to the [graceful node shutdown](#prepare-for-graceful-shutdown) requirements, observe the following guidelines:
 
 - Before decommissioning nodes, verify that there are no [under-replicated or unavailable ranges](ui-cluster-overview-page.html#cluster-overview-panel) on the cluster.
@@ -652,6 +663,8 @@ The `is_decommissioning` field remains `true` after all replicas have been remov
 {{site.data.alerts.callout_danger}}
 Do **not** terminate the node process, delete the storage volume, or remove the VM before a `decommissioning` node has [changed its membership status](#status-change) to `decommissioned`. Prematurely terminating the process will prevent the node from rebalancing all of its range replicas onto other nodes gracefully, cause transient query errors in client applications, and leave the remaining ranges under-replicated and vulnerable to loss of [quorum](architecture/replication-layer.html#overview) if another node goes down.
 {{site.data.alerts.end}}
+
+{% include {{page.version.version}}/prod-deployment/decommission-pre-flight-checks.md %}
 
 #### Step 4. Confirm the nodes are decommissioned
 

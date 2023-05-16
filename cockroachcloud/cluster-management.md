@@ -23,7 +23,7 @@ For each cluster, the following details display:
 - The cluster's **Plan Type** (Serverless, Dedicated standard, or Dedicated advanced)
 - The date and time the cluster was **Created**
 - The cluster's current **State**
-- The cluster's **Cloud** provider, either GCP or AWS
+- The cluster's **Cloud** provider, GCP, AWS, or Azure
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
     - [**Add or remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster)
@@ -51,6 +51,10 @@ The [**Overview** page](cluster-overview-page.html?filter=dedicated) displays de
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 ## Scale your cluster
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), {{ site.data.products.dedicated }} clusters on Azure cannot be scaled. Refer to [{{ site.data.products.dedicated }} on Azure (cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ### Add or remove nodes from a cluster
 
@@ -171,15 +175,17 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 
 ## Restore data from a backup
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed backups are not available for {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html), including encrypted backups. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
+
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. See the [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) page for ways to restore data from your cluster's automatic backups in the Console.
+
+Additionally, you can [back up and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.dedicated }} cluster manually. For detail on taking backups to your cloud storage, see [Take and Restore Customer-Owned Backups](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
-
-To restore your data, [contact us](https://support.cockroachlabs.com).
-
-Additionally, you can [backup and restore](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html) data on your own.
 
 ## Configure PCI ready features (Dedicated advanced)
 

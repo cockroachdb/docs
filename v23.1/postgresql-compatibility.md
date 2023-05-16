@@ -17,17 +17,28 @@ This document currently only covers unsupported SQL and how to rewrite SQL expre
 
 ## Unsupported Features
 
-### Unsupported PostgreSQL features
-
 The following PostgreSQL features are not supported in CockroachDB {{ page.version.version }}:
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-### Unsupported PostgreSQL wire protocol features
+## Partially Supported Features
 
-The following features of the PostgreSQL wire protocol are not supported in CockroachDB {{ page.version.version }}:
+The following PostgreSQL features are partially supported in CockroachDB {{ page.version.version }}.
 
-- [Multiple active portals](https://github.com/cockroachdb/cockroach/issues/40195)
+### Multiple active portals
+
+CockroachDB {{ page.version.version }} supports pgwire's multiple active portals as a [preview feature](cockroachdb-feature-availability.html#features-in-preview).  The feature is off by default, and can be enabled by setting the [session variable `multiple_active_portals_enabled`](set-vars.html#multiple-active-portals-enabled) to `true`. 
+
+When set to `true`, multiple portals can be open at the same time, with their execution interleaved with each other. In other words, these portals can be paused.
+
+This feature has the following limitations:
+
+- Only read-only [`SELECT` queries](selection-queries.html) without [subqueries](subqueries.html) are supported.
+- Postqueries (which are how CockroachDB executes [foreign key checks](foreign-key.html), for example) are not supported - [cockroachdb/cockroach#96398](https://github.com/cockroachdb/cockroach/issues/96398)
+- [Distributed SQL execution](architecture/sql-layer.html#distsql) is not supported for multiple active portals; instead queries execute on the [gateway node](architecture/life-of-a-distributed-transaction.html#gateway) only - [cockroachdb/cockroach#100822](https://github.com/cockroachdb/cockroach/issues/100822)
+- Only the latest execution of a statement from a pausable portal is recorded by the [trace infrastructure](show-trace.html) - [cockroachdb/cockroach#99404](https://github.com/cockroachdb/cockroach/issues/99404)
+
+In addition to the known issues, additional performance testing is needed. The current list of known issues can be viewed [on GitHub using the `A-pausable-portals` label](https://github.com/cockroachdb/cockroach/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc++label%3AA-pausable-portals+), and we welcome bug reports.
 
 ## Features that differ from PostgreSQL
 

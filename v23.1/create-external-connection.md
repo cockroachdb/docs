@@ -18,7 +18,7 @@ You can also use the following SQL statements to work with external connections:
 
 ## Required privileges
 
-To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#system-level-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
+To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#supported-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
 
 For example: 
 
@@ -56,6 +56,7 @@ Storage or sink      | Operation support
 [Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
 [Azure Storage](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
+[Confluent Schema Registry](create-changefeed.html#confluent-registry) | Changefeeds
 [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) | Changefeeds
 [Google Cloud Storage](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
 [Google Cloud Storage KMS](take-and-restore-encrypted-backups.html#google-cloud-kms-uri-format) | Encrypted backups

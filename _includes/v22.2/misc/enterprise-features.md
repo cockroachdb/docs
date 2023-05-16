@@ -8,4 +8,4 @@ Feature | Description
 [Encryption at Rest](security-reference/encryption.html#encryption-at-rest-enterprise) | Supplementing CockroachDB's encryption in flight capabilities, this feature provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using AES in counter mode, with all key sizes allowed.
 [GSSAPI with Kerberos Authentication](gssapi_authentication.html) | CockroachDB supports the Generic Security Services API (GSSAPI) with Kerberos authentication, which lets you use an external enterprise directory system that supports Kerberos, such as Active Directory.
 [Single Sign-on (SSO) for DB Console](sso-db-console.html) | This feature allows you to grant access to DB Console to identities managed in an external identity provider (IdP).
-[Cluster Single Sign-on (SSO](sso-sql.html) | This feature allows you to grant SQL access to {{ site.data.products.core }} clusters to identities managed in an external IdP.
+[Cluster Single Sign-on (SSO)](sso-sql.html) | This feature allows you to grant SQL access to {{ site.data.products.core }} clusters to identities managed in an external IdP.

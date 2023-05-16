@@ -31,9 +31,12 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 
 ## Required privileges
 
-By default, only the `root` user can execute `SHOW JOBS`.
+You must have at least one of the following to run `SHOW JOBS`:
 
-For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can view changefeed jobs running on those tables.
+- {% include_cached new-in.html version="v23.1" %} The `VIEWJOB` privilege, which can view all jobs (including `admin`-owned jobs).
+- Be a member of the `admin` role.
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+- For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can view changefeed jobs running on those tables.
 
 ## Synopsis
 
@@ -97,6 +100,10 @@ Status | Description
 `reverting`| Job failed or was canceled and its changes are being reverted.
 `revert-failed` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
 `retrying` | Job is retrying another job that failed.
+
+{{site.data.alerts.callout_info}}
+We recommend monitoring paused jobs to protect historical data from [garbage collection](architecture/storage-layer.html#garbage-collection), or potential data accumulation in the case of [changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds). See [Monitoring paused jobs](pause-job.html#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps](architecture/storage-layer.html#protected-timestamps).
+{{site.data.alerts.end}}
 
 ## Examples
 
