@@ -92,6 +92,8 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
+{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+
 [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
@@ -114,6 +116,8 @@ Example of a webhook URI:
 ~~~
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
+
+{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 See [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
 
@@ -317,6 +321,8 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
@@ -335,6 +341,8 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 For step-by-step guidance on creating a changefeed connected to a Google Cloud Pub/Sub, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) page. The parameters table on the [Changefeed Sinks](changefeed-sinks.html#pub-sub-parameters) page provides a list of the available Google Cloud Pub/Sub parameters.
 
 ### Create a changefeed connected to a webhook sink
+
+{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
