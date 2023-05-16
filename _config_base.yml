@@ -156,7 +156,7 @@ release_info:
     crdb_branch_name: release-23.1
     docker_image: cockroachdb/cockroach
     name: v23.1.1
-    start_time: 2023-05-15 22:21:50.394565 +0000 UTC
+    start_time: 2023-05-16 00:21:50.394565 +0000 UTC
     version: v23.1.1
 sass:
   quiet_deps: 'true'
