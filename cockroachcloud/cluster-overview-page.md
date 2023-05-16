@@ -22,7 +22,7 @@ The **Cluster settings** panel displays the settings you chose during [cluster c
 |-----------|---------------------------------------------------------------------------------------------------------|
 | Cloud     | The cluster's [cloud provider](create-a-serverless-cluster.html#step-2-select-the-cloud-provider). |
 | Plan type | The plan type used to create the cluster.                                                               |
-| Region(s)    | The cluster's [region(s)](create-a-serverless-cluster.html#step-3-select-the-regions).         |
+| Regions    | The cluster's [regions](create-a-serverless-cluster.html#step-3-select-the-regions).         |
 
 ## Usage this month
 

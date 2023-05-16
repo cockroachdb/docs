@@ -52,7 +52,7 @@ GCP                                         | AWS
 `us-east1` (South Carolina )                | `us-east-1` (N. Virginia)              
 `us-west2` (California)                     | `us-west-2` (Oregon)
 
-A multi-region cluster can have a maximum of six available regions. To express interest in additional regions, contact your Cockroach Labs account team.
+A multi-region Serverless cluster can have a maximum of six regions. To express interest in additional regions, contact your Cockroach Labs account team.
 
 ### How can I estimate how many RUs my workload will consume?
 

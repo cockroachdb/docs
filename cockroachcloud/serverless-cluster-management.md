@@ -31,7 +31,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The **Overview** page displays details about the selected {{ site.data.products.serverless }} cluster:
 
-- The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Region**
+- The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Regions**
 - The **Usage this month** section, including the **Resource limits**, **Storage**, and **Request Units**
 - The cluster's **Current activity**
 - Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
