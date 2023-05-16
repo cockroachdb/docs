@@ -24,7 +24,7 @@ To create a database, the user must be a member of the `admin` role or must have
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error.
-`name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br /><br />Do not begin your database name with the string `cluster:`. If your database name begins with this string, you must append the following to the URI connection string to [connect to the cluster](connect-to-the-database.html): `&options=-ccluster=system`
 `encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case-insensitive.<br><br>Example: `CREATE DATABASE bank ENCODING = 'UTF-8'`.
 `CONNECTION LIMIT` |  Supported for compatibility with PostgreSQL. A value of `-1` indicates no connection limit. Values other than `-1` are currently not supported. By default, `CONNECTION LIMIT = -1`. ([*](#connlimit-note))
 `PRIMARY REGION region_name` |  Create a [multi-region database](multiregion-overview.html) with `region_name` as [the primary region](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
