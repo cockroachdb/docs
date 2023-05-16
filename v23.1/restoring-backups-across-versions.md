@@ -14,7 +14,7 @@ This page describes the support Cockroach Labs provides for restoring backups ac
 Since CockroachDB considers the cluster version when running a backup, this page refers to versions in a "v22.2.x" format. For example, both v22.2.8 and v22.2.14 are considered as v22.2 clusters for backup purposes.
 {{site.data.alerts.end}}
 
-{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}. See [how to upgrade to the latest version of CockroachDB](upgrade-cockroach-version.html). 
+{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%} See [how to upgrade to the latest version of CockroachDB](upgrade-cockroach-version.html). 
 
 ## Support for restoring backups into a newer version
 
