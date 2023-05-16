@@ -109,7 +109,9 @@ This is because the state flip is effected by the CLI program at the end. Only t
 
 In CockroachDB v23.1.0 and its testing releases, executing `COPY` to a target table that has multiple column families can corrupt the table. Future reads on the corrupted table will result in internal errors. If data was copied into a table with existing rows, the data in those rows may be irrecoverable.
 
-The data must be dropped and re-[imported](import.html) to be encoded correctly.
+The data must be dropped and re-[copied](copy-from.html) to be encoded correctly.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/103220)
 
 ## Unresolved limitations
 
@@ -510,8 +512,6 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 ### `COPY` syntax not supported by CockroachDB
 
 {% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/103220)
 
 ### Import with a high amount of disk contention
 
