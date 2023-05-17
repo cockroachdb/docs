@@ -8,7 +8,6 @@ security: true
 
 This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructure (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
 
-
 **Page contents:**
 
 - [What is Transport Layer Security (TLS)?](#what-is-transport-layer-security-tls)
@@ -23,8 +22,7 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 **Learn more:**
 
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](../manage-certs-vault.html)
-- [Use the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
-
+- [Certificate Authentication for SQL Clients in Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html)
 
 ## What is Transport Layer Security (TLS)?
 
@@ -154,18 +152,23 @@ Therefore, the nodes must each have a [private key/public certificate pair](#key
 
 If the client is to use mutual authentication the client must have a private key/public certificate pair, where the public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
 
+{{ site.data.products.core }} customers must provision PKI certificates for both internode and client-cluster communication.
+
+Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](../manage-certs-vault.html) for procedural information on administering and using client certificate authentication.
+
 ## PKI in {{ site.data.products.db }}
 
+{{site.data.alerts.callout_success}}
 PKI for internode communication within {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
+{{site.data.alerts.end}}
 
 Certificate authentication for SQL clients is available against {{ site.data.products.dedicated }} clusters.
 
-Refer to [Client Certificates for CockroachDB Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
 
 {{site.data.alerts.callout_info}}
 This feature is in [**limited access**](../cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
 {{site.data.alerts.end}}
-
 
 ## CockroachDB's TLS support and operating modes
 
