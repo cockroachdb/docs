@@ -5,16 +5,15 @@ toc: true
 docs_area: manage
 ---
 
-AWS PrivateLink allows customers to establish SQL access to their {{ site.data.products.dedicated }} clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
+Amazon Web Services (AWS) PrivateLink allows customers to establish SQL access to their {{ site.data.products.dedicated }} clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
-Refer to: [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
+For broader context, refer to [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
 
-There are four steps to setting up an AWS PrivateLink connection between your {{ site.data.products.dedicated }} cluster and AWS application:
+This page describes the steps to setting up an AWS PrivateLink connection for your {{ site.data.products.dedicated }} cluster from the AWS side. You must also configure the AWS PrivateLink connection from the cluster side. Refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
-
 
 1.  [Set up a cluster](#set-up-a-cluster)
 1.  [Create an AWS endpoint](#create-an-aws-endpoint)

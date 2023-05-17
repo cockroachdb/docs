@@ -71,4 +71,4 @@ Self-service VPC peering setup is not supported for {{ site.data.products.dedica
 
 If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. 
 
-Refer to: [Setting up AWS PrivateLink](aws-privatelink.html)
+Refer to: [Managing AWS PrivateLink for a Dedicated Cluster](aws-privatelink.html)
