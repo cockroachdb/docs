@@ -112,7 +112,7 @@ The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL databas
 
     A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
 
-1. When analysis is complete, apply bulk actions in the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+1. When analysis is complete, review and apply bulk actions in the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
 
 #### Add database credentials
 
@@ -149,12 +149,12 @@ The banner at the top of the page displays:
 
 <ul>
 <li>The number of <b>Statements Total</b> in the uploaded <code>.sql</code> file that were analyzed.</li>
-<li>The number of <b>Errors</b> in SQL statements that are blocking <a href="#migrate-the-schema">schema migration</a>. Errors are further categorized and counted on the <a href="#statement-status"><b>Statement Status</b></a> graph.</li>
+<li>The number of <b>Errors</b> in SQL statements that are blocking <a href="#migrate-the-schema">schema migration</a>. Errors are further categorized and counted in the <a href="#summary-report"><b>Summary Report</b></a>.</li>
 <li>The number of <b>Incidental Errors</b> in SQL statements that are caused by errors in other SQL statements.</li>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
 <li>The number of <b>Incompatible Statements</b> that could not be converted because they have no equivalent syntax on CockroachDB.</li>
-<li>The number of <b>Compatibility Notes</b> regarding differences in SQL syntax. Although these statements do not block schema migration, you should [update](#update-the-schema) them before migrating the schema.</li>
+<li>The number of <b>Compatibility Notes</b> on differences in SQL syntax. Although these statements do not block schema migration, you should [update](#update-the-schema) them before migrating the schema.</li>
 </section>
 
 <li>The number of <b>Suggestions</b> regarding <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">CockroachDB best practices</a>.</li>
@@ -281,7 +281,7 @@ You can migrate the schema when the number of errors is zero. This value is disp
 
 To migrate the schema, click **Migrate Schema** when viewing the **Summary Report** or **Statements** list. A modal will open:
 
-1. Name the new database and select a [SQL user](create-a-sql-user.html) to own the database. 
+1. Name the new database and select a SQL user to own the database. 
 1. Click **Migrate**.
 
 After migrating the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application).
