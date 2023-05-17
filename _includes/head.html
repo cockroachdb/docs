@@ -40,7 +40,8 @@
 <meta property="og:title" content="{{ page.title }}" />
 <meta property="og:type" content="article" />
 {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
-<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}" />
+{%- assign stable_path = "/" | append: site.versions["stable"] | append: "/" -%}
+<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" }}" />
 <meta property="og:image" content="{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}" />
 <meta property="og:site_name" content="{{ site.site_title }}" />
 {% if page.summary %}<meta property="og:description" content="{{ page.summary | strip_html | strip_newlines | truncate: 160 }}">{% endif %}
