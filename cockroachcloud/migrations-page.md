@@ -112,7 +112,7 @@ The Schema Conversion Tool can connect directly to a PostgreSQL or MySQL databas
 
     A loading screen is displayed. Depending on the size and complexity of the SQL dump, analyzing the schema can require up to several minutes.
 
-1. When analysis is complete, review and apply bulk actions in the [**Summary Report**](#summary-report) and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
+1. When analysis is complete, review errors and suggestions in the [**Summary Report**](#summary-report). Apply bulk actions in the **Summary Report** and edit, add, or remove SQL statements in the [**Statements** list](#statements-list).
 
 #### Add database credentials
 
@@ -141,14 +141,6 @@ If the credentials are valid, they will be added to the [**Credentials** table](
 
 Use the **Summary Report** and **Statements** list to [update the schema](#update-the-schema) and finalize it for migration.
 
-### Summary Report
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
-
-The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
-
 The banner at the top of the page displays:
 
 <ul>
@@ -163,6 +155,14 @@ The banner at the top of the page displays:
 
 <li>The number of <b>Suggestions</b> regarding <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">CockroachDB best practices</a>.</li>
 </ul>
+
+### Summary Report
+
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
 
 To apply bulk actions to statements, refer to the tables in the Summary Report:
 
@@ -262,13 +262,13 @@ To update the schema, apply bulk actions in the [**Summary Report**](#summary-re
 
 |                       Type                       |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         |   Bulk Actions   | Required for schema migration? |
 |--------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|--------------------------------|
-| Unimplemented feature                            | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html#unimplemented-features). | Delete           | ✓                              |
-| Missing user                                     | Click the **Add User** button next to the error message. You must be a member of the [`admin` role](managing-access.html). This adds the missing user to the cluster.                                                                                                                                                                                                                                                     | Add User, Delete | ✓                              |
-| Incidental error                                 | Resolve the error in the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                                       | Delete           | ✓                              |
-| Incompatible statement (non-PostgreSQL dialects) | There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check **Acknowledge**.                                                                                                                                                                                                                                             | Delete           | ✓                              |
-| Statement error, Not executed, or Uncategorized  | Edit the statement to fix the error. Otherwise, remove the statement from the schema.                                                                                                                                                                                                                                                                                                                                     | Delete           | ✓                              |
-| Compatibility note (non-PostgreSQL dialects)     | Edit the statement to match the CockroachDB syntax. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                                | Acknowledge      | ✗                              |
-| Suggestion                                       | Review and take any relevant actions indicated by the message. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                     | Acknowledge      | ✗                              |
+| Unimplemented feature                            | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html#unimplemented-features). | Delete           | Yes                            |
+| Missing user                                     | Click the **Add User** button next to the error message. You must be a member of the [`admin` role](managing-access.html). This adds the missing user to the cluster.                                                                                                                                                                                                                                                     | Add User, Delete | Yes                            |
+| Incidental error                                 | Resolve the error in the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                                       | Delete           | Yes                            |
+| Incompatible statement (non-PostgreSQL dialects) | There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check **Acknowledge**.                                                                                                                                                                                                                                             | Delete           | Yes                            |
+| Statement error, Not executed, or Uncategorized  | Edit the statement to fix the error. Otherwise, remove the statement from the schema.                                                                                                                                                                                                                                                                                                                                     | Delete           | Yes                            |
+| Compatibility note (non-PostgreSQL dialects)     | Edit the statement to match the CockroachDB syntax. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                                | Acknowledge      | No                             |
+| Suggestion                                       | Review and take any relevant actions indicated by the message. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                     | Acknowledge      | No                             |
 
 
 After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new {{ site.data.products.serverless }} database.
