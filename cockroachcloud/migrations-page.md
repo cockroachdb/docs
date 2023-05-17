@@ -143,6 +143,10 @@ Use the **Summary Report** and **Statements** list to [update the schema](#updat
 
 ### Summary Report
 
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
 The **Summary Report** displays the results of the schema analysis and provides bulk actions you can apply to [update the schema](#update-the-schema).
 
 The banner at the top of the page displays:
