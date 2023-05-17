@@ -16,7 +16,7 @@ Subcommand | Usage
 -----------|------
 `ls` | List the ID of each node in the cluster, excluding those that have been decommissioned and are offline.
 `status` | View the status of one or all nodes, excluding nodes that have been decommissioned and taken offline. Depending on flags used, this can include details about range/replicas, disk usage, and decommissioning progress.
-`decommission` | Decommission nodes for removal from the cluster. For details, see [Node Shutdown](node-shutdown.html?filters=decommission).
+`decommission` | Decommission nodes for removal from the cluster. For more information, see [Decommission nodes](#decommission-nodes).
 `recommission` | Recommission nodes that are decommissioning. If the decommissioning node has already reached the [draining stage](node-shutdown.html?filters=decommission#draining), you may need to restart the node after it is recommissioned. For details, see [Node Shutdown](node-shutdown.html#recommission-nodes).
 `drain` | Drain nodes in preparation for process termination. Draining always occurs when sending a termination signal or decommissioning a node. The `drain` subcommand is used to drain nodes without also decommissioning or shutting them down. For details, see [Node Shutdown](node-shutdown.html).
 
@@ -117,10 +117,12 @@ Flag | Description
 `--stats` | Show node disk usage details.
 `--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
-The `node decommission` subcommand also supports the following general flags:
+The `node decommission` subcommand also supports the following general flags. For more information, see `cockroach node decommission --help`.
 
 Flag | Description
 -----|------------
+`--checks` | <a name="decommission-checks"></a> Whether to perform a set of "decommissioning pre-flight checks". Possible values: `enabled`, `strict`, or `skip`. If `enabled`, CockroachDB will check if a node can successfully complete decommissioning given the current state of the cluster. If errors are detected that would result in the inability to complete node decommissioning, they will be printed to `STDERR` and the command will exit *without attempting to perform node decommissioning*. For more information, see [Remove nodes](node-shutdown.html?filters=decommission#remove-nodes).<br/><br/>**Default:** `enabled`
+`--dry-run` | Performs the same decommissioning checks as the `--checks` flag, but without attempting to decommission the node. When `cockroach node decommission {nodeID} --dry-run` is executed, it runs the checks, prints the status of those checks, and exits.
 `--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
 `--self` | **Deprecated.** Instead, specify a node ID explicitly in addition to the `--host` flag.
 

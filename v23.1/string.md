@@ -142,6 +142,8 @@ Type | Details
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
+`TSQUERY` | Requires supported [`TSQUERY`](tsquery.html) string format, e.g., `'Requires & supported & TSQUERY & string & format'`.<br>Note that casting a string to a `TSQUERY` will not normalize the tokens into lexemes. To do so, [use `to_tsquery()`, `plainto_tsquery()`, or `phraseto_tsquery()`](#convert-string-to-tsquery).
+`TSVECTOR` | Requires supported [`TSVECTOR`](tsvector.html) string format, e.g., `'Requires supported TSVECTOR string format.'`.<br>Note that casting a string to a `TSVECTOR` will not normalize the tokens into lexemes. To do so, [use `to_tsvector()`](#convert-string-to-tsvector).
 `UUID` | Requires supported [`UUID`](uuid.html) string format, e.g., `'63616665-6630-3064-6465-616462656562'`.
 
 ### `STRING` vs. `BYTES`
@@ -176,12 +178,12 @@ In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-fu
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 
-+ `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
++ `BYTES` gives a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
 ### Cast hexadecimal digits to `BIT`
 
- You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
+You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
 
 For example:
 
@@ -242,6 +244,58 @@ For example:
   NULL
 (1 row)
 ~~~
+
+### Convert `STRING` to `TIMESTAMP`
+
+You can use the [`parse_timestamp()` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
+~~~
+
+~~~
+      parse_timestamp
+--------------------------
+2022-05-28 10:53:25.16
+(1 row)
+~~~
+
+### Convert `STRING` to `TSVECTOR`
+
+You can use the [`to_tsvector()` function](functions-and-operators.html#full-text-search-functions) to parse strings in [`TSVECTOR`](tsvector.html) format. This will normalize the tokens into lexemes, and will add an integer position to each lexeme.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT to_tsvector('How do trees get on the internet?');
+~~~
+
+~~~
+           to_tsvector
+---------------------------------
+  'get':4 'internet':7 'tree':3
+~~~
+
+For more information on usage, see [Full-Text Search](full-text-search.html).
+
+### Convert `STRING` to `TSQUERY`
+
+You can use the [`to_tsquery()`, `plainto_tsquery()`, and `phraseto_tsquery()` functions](functions-and-operators.html#full-text-search-functions) to parse strings in [`TSQUERY`](tsquery.html) format. This will normalize the tokens into lexemes.
+
+When using `to_tsquery()`, the string input must be formatted as a [`TSQUERY`](tsquery.html#syntax), with operators separating tokens.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT to_tsquery('How & do & trees & get & on & the & internet?');
+~~~
+
+~~~
+          to_tsquery
+-------------------------------
+  'tree' & 'get' & 'internet'
+~~~
+
+For more information on usage, see [Full-Text Search](full-text-search.html).
 
 ## See also
 

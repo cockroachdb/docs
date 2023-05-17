@@ -101,6 +101,10 @@ Status | Description
 `revert-failed` | Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.
 `retrying` | Job is retrying another job that failed.
 
+{{site.data.alerts.callout_info}}
+We recommend monitoring paused jobs to protect historical data from [garbage collection](architecture/storage-layer.html#garbage-collection), or potential data accumulation in the case of [changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds). See [Monitoring paused jobs](pause-job.html#monitoring-paused-jobs) for detail on metrics to track paused jobs and [protected timestamps](architecture/storage-layer.html#protected-timestamps).
+{{site.data.alerts.end}}
+
 ## Examples
 
 ### Show jobs

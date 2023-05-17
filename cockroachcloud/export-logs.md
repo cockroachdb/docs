@@ -10,6 +10,8 @@ cloud: true
 
 {{site.data.alerts.callout_danger}}
 The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), log export is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -311,7 +313,7 @@ Perform the following steps to enable log export from your {{ site.data.products
     1. To enable log export for your {{ site.data.products.dedicated }} cluster with custom logging configuration:
 
         1. Consult the log export entry on the [{{ site.data.products.db }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
-        
+
             For example, consider the following configuration:
 
             {% include_cached copy-clipboard.html %}

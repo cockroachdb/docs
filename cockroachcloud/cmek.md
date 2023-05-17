@@ -108,8 +108,8 @@ Backups in {{ site.data.products.dedicated }} are triggered in two ways, only on
 ## Limitations
 The CMEK feature has the following limitations:
 
-- CMEK can be enabled only on clusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
-- The cluster must be a private cluster. Refer to [Create Private Clusters](private-clusters.html)
+- During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), CMEK is not yet available for {{ site.data.products.dedicated }} clusters on Azure. To express interest, contact your Cockroach Labs account team. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+- CMEK can be enabled only on [{{ site.data.products.dedicated }} advanced](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced)bclusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
 - To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
 - If you add a new region to a cluster with CMEK enabled, the new region will not be automatically protected by the CMEK key.
 
