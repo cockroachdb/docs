@@ -1,5 +1,5 @@
 ---
-title: Certificate Authentication for SQL Clients
+title: Certificate Authentication for SQL Clients in Dedicated Clusters
 summary: procedures for managing client certificates for dedicated clusters
 toc: true
 docs_area: manage.security

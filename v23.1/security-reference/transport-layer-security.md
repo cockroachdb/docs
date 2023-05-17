@@ -22,7 +22,7 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 **Learn more:**
 
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](../manage-certs-vault.html)
-- [CockroachDB Cloud: Certificate Authentication for SQL Clients](../../cockroachcloud/client-certs-dedicated.html)
+- [Certificate Authentication for SQL Clients in Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html)
 
 ## What is Transport Layer Security (TLS)?
 
@@ -164,7 +164,7 @@ PKI for internode communication within {{ site.data.products.dedicated }} and {{
 
 Certificate authentication for SQL clients is available against {{ site.data.products.dedicated }} clusters.
 
-Refer to [Client Certificates for CockroachDB Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
 
 {{site.data.alerts.callout_info}}
 This feature is in [**limited access**](../cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
