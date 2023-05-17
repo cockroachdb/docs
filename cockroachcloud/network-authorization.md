@@ -111,9 +111,9 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
 
-  </section>
+</section>
 
-  <section class="filter-content" markdown="1" data-scope="aws-cli">
+<section class="filter-content" markdown="1" data-scope="aws-cli">
 
 1.  Substitute the values from the previous steps and run the following AWS CLI command:
 
