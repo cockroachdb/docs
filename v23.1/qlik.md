@@ -64,12 +64,12 @@ Complete the following items before using Qlik Replicate:
 
     - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](alter-backup-schedule.html) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
-- Manually create all schema objects in the target CockroachDB cluster. This is required in order for Qlik Replicate to populate data successfully.
+- Manually create all schema objects in the target CockroachDB cluster. Qlik can create a basic schema, but does not create indexes or constraints such as foreign keys and defaults.
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add transformation rules. If you make substantial schema changes, the Qlik Replicate migration may fail.
 
-    {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-convert-your-schema).
-    {{site.data.alerts.end}}
+        {{site.data.alerts.callout_info}}
+        All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-convert-your-schema).
+        {{site.data.alerts.end}}
 
 ## Migrate and replicate data to CockroachDB
 
@@ -83,6 +83,8 @@ To use a {{ site.data.products.serverless }} cluster as the target endpoint, set
 
 - To perform both an initial load and continuous replication of ongoing changes to the target tables, select **Full Load** and **Apply Changes**. This minimizes downtime for your migration.
 - To perform a one-time migration to CockroachDB, select **Full Load** only.
+
+Select **TRUNCATE before loading** or **Do nothing** to preserve the schema you manually created.
 
 {% comment %}
 ## Replicate data from CockroachDB to a secondary source

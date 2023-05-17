@@ -43,7 +43,7 @@ Complete the following items before starting this tutorial:
 
     - If the output of [`SHOW SCHEDULES`](show-schedules.html) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`](alter-backup-schedule.html) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
-- Manually create all schema objects in the target CockroachDB cluster. This is required in order for AWS DMS to populate data successfully.
+- Manually create all schema objects in the target CockroachDB cluster. AWS DMS can create a basic schema, but does not create indexes or constraints such as foreign keys and defaults.
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your PostgreSQL tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
@@ -113,7 +113,7 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-1. For the **Target table preparation mode**, select **Truncate**, **Drop tables on target**, or **Do nothing**.
+1. For the **Target table preparation mode**, select **Truncate** or **Do nothing** to preserve the schema you manually created.
     <img src="{{ 'images/v22.2/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
 1. Optionally check **Enable validation** to compare the data in the source and target rows, and verify that the migration succeeded. You can view the results in the [**Table statistics**](#step-3-verify-the-migration) for your migration task. For more information about data validation, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html).
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 
@@ -190,6 +190,10 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     ~~~
 
     This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
+
+- If you are migrating from PostgreSQL, select **Enable validation** in your [task settings](#step-2-2-task-settings), and are using a [`STRING`](string.html) as a [`PRIMARY KEY`](primary-key.html), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
+
+    To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation](collate.html) such as `COLLATE "en_US"` in CockroachDB.
 
 ## Troubleshooting common issues
 
