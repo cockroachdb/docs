@@ -39,7 +39,9 @@ const cockroachDomains = [
   "support.cockroachlabs.com",
   "cockroa.ch",
   "forum.cockroachlabs.com",
-  "cockroachlabs.com"
+  "cockroachlabs.com",
+  "cockroachlabs.atlassian.net",
+  "wiki.crdb.io"
 ];
 
 $(function() {
