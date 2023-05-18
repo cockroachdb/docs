@@ -52,6 +52,20 @@ The following roles may be granted to {{ site.data.products.db }} organization u
 
 This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
 
+### Org Administrator
+
+Users with this role on an organization can [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization), and [manage the organization's users and their roles](managing-access.html#manage-an-organizations-users).
+
+### Billing Coordinator
+
+Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
+
+Note that billing can also be managed by the [Org Administrator (legacy) role].
+
+### Usage Reader
+
+This is a read-only role that allows a user to access usage metrics for an organization.
+
 ### Org Administrator (legacy)
 
 Org Administrators can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
@@ -76,11 +90,33 @@ In a future release, this role will be deprecated in favor of more fine-grained 
 
 ### Cluster Developer
 
-Cluster Developers can view the details of clusters and can change their IP allowlist configuration. This role can be granted for specific clusters or for all clusters in the organization.
+Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
+
+This role can be granted for specific clusters or for all clusters in the organization.
+
+### Cluster Operator
+
+This role grants different permissions to users and [service accounts](#service-accounts).
+
+Users with this role can perform the following console actions:
+
+- Configure authorize network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
+- Configure [egress perimeter controls](egress-perimeter-controls.html)
+
+Service accounts with this role can perform the following API functions:
+
+- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
+- [Export Logs From a CockroachDB Dedicated Cluster
+](export-logs.html)
+- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
+
+This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
 ### Cluster Administrator
 
-Cluster Administrators can manage SQL users and roles for a cluster, and perform all management functions on that cluster (like enabling CMEK, configuring Log Export). This role can be granted for one or more specific clusters, or for all clusters in the organization.
+Cluster Administrators can manage SQL users and roles for a cluster, as well as perform all of the [Cluster Operator actions](#cluster-operator).
+
+This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
 ### Cluster Creator
 
@@ -90,7 +126,7 @@ Cluster Creators can create clusters in an organization. A cluster's creator is 
 
 Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
 
-Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users.
+Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator))
 
 However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
 
