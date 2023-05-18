@@ -1,15 +1,17 @@
 name: PR Review
 on: 
   pull_request:
-    types:
-      - opened
-      - reopened
-      - ready_for_review
+    # types:
+    #   - opened
+    #   - reopened
+    #   - ready_for_review
   pull_request_review:
     types:
       - submitted
       - edited
       - dismissed
+
+permissions: read-all
     
 jobs:
   pr-review:
@@ -26,7 +28,7 @@ jobs:
 
     - name: Run PR review check
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_ORG_MEMBERSHIP }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
       run: go run .github/scripts/docs-prs-reviews.go

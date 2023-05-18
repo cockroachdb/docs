@@ -1,0 +1,19 @@
+name: Foo
+on: 
+  pull_request:
+    
+jobs:
+  foo:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+
+    - name: Run PR review check
+      env:
+        FOO: ${{ secrets.FOO }}
+      run: |
+        size=${#FOO}
+        echo "$size"

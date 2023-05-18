@@ -97,12 +97,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("error: %v\n", err)
 	}
+	fmt.Printf("%v\n", docsPrsMembers)
 	_, authorIsDocsPrsMember := docsPrsMembers[params.PrAuthor]
 	if authorIsDocsPrsMember {
 		fmt.Printf(`User "%s" is a member of docs-prs, so no docs-prs approval required.`, params.PrAuthor)
 		os.Exit(0)
 	}
-	fmt.Printf(`User "%s" is not a member of docs-prs. Checking for docs-prs team approval...\n`, params.PrAuthor)
+	fmt.Printf(`User "%s" is not a member of docs-prs. Checking for docs-prs team approval...`, params.PrAuthor)
 
 	prReviews, err := searchDocsPrReviewers(params.Token, params.PrNumber)
 	if err != nil {
