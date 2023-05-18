@@ -1,5 +1,5 @@
 ---
-title: Certificate Authentication for SQL Clients
+title: Certificate Authentication for SQL Clients in Dedicated Clusters
 summary: procedures for managing client certificates for dedicated clusters
 toc: true
 docs_area: manage.security
@@ -12,7 +12,7 @@ SQL clients may authenticate to {{ site.data.products.dedicated }} clusters usin
 Cockroach Labs recommends using single sign on (SSO) for authentication of human users where possible, and JWT or security certificate for authentication of your application users.
 {{site.data.alerts.end}}
 
-This page describes how to administer the cluster's certificate authority (CA) certificate and authenticate to a cluster using client certificates.
+This page describes how to administer [public key infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for a {{ site.data.products.dedicated }} cluster, using [HashiCorp Vault PKI Secrets Engine](../{{site.versions["stable"]}}/hashicorp-integration.html).
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 

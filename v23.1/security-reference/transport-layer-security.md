@@ -8,7 +8,6 @@ security: true
 
 This page provides a conceptual overview of Transport Layer Security (TLS) and the related notion of Public Key Infrastructure (PKI), and sketches the security-architecture considerations in play when using CockroachDB.
 
-
 **Page contents:**
 
 - [What is Transport Layer Security (TLS)?](#what-is-transport-layer-security-tls)
@@ -23,8 +22,7 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 **Learn more:**
 
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](../manage-certs-vault.html)
-- [Use the CockroachDB CLI to provision a development cluster](../manage-certs-cli.html)
-
+- [Certificate Authentication for SQL Clients in Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html)
 
 ## What is Transport Layer Security (TLS)?
 
@@ -154,18 +152,23 @@ Therefore, the nodes must each have a [private key/public certificate pair](#key
 
 If the client is to use mutual authentication the client must have a private key/public certificate pair, where the public certificate is signed by a CA trusted by the nodes, i.e. the CA's public certificate must be in the nodes' trust stores.
 
+{{ site.data.products.core }} customers must provision PKI certificates for both internode and client-cluster communication.
+
+Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](../manage-certs-vault.html) for procedural information on administering and using client certificate authentication.
+
 ## PKI in {{ site.data.products.db }}
 
+{{site.data.alerts.callout_success}}
 PKI for internode communication within {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters is managed automatically, without the need for any management by the user.
+{{site.data.alerts.end}}
 
 Certificate authentication for SQL clients is available against {{ site.data.products.dedicated }} clusters.
 
-Refer to [Client Certificates for CockroachDB Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](../../cockroachcloud/client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
 
 {{site.data.alerts.callout_info}}
 This feature is in [**limited access**](../cockroachdb-feature-availability.html), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
 {{site.data.alerts.end}}
-
 
 ## CockroachDB's TLS support and operating modes
 
@@ -296,7 +299,7 @@ CockroachDB can be [configured to check an OCSP responder](../manage-certs-revok
 
 #### Short-lived certificates
 
-For many self-hosted customers, we recommend a strategy of relying on a short "lifetime", i.e., validity duration, for credentials (private key/public certificate pairs) issued to CRDB nodes and SQL clients. This strategy is relatively easy to implement in an automated pipeline using cloud native secrets management tools such as GCP secrets manager or Hashicorp Vault to securely propagate certificates, and synergizes with the use of cloud native CA tools, such as GCP's Certificate Authority Service (CAS). Using these tools, an operator can create an automation pipeline to generate and propagate certificates.
+For many self-hosted customers, we recommend a strategy of relying on a short "lifetime", i.e., validity duration, for credentials (private key/public certificate pairs) issued to CRDB nodes and SQL clients. This strategy is relatively easy to implement in an automated pipeline using cloud native secrets management tools such as GCP secrets manager or HashiCorp Vault to securely propagate certificates, and synergizes with the use of cloud native CA tools, such as GCP's Certificate Authority Service (CAS). Using these tools, an operator can create an automation pipeline to generate and propagate certificates.
 
 By relying on certificates with a short validity duration, we can greatly reduce the threat posed by such a certificate being leaked, since the certificate's value to an attacker is limited by its validity duration.
 To maintain connection to a network secured by short-lived credentials, a would-be-attacker must maintain access to the secret manager used to propagate the credentials. This consolidates the risk surface of the certificate itself into the shadow of access to the secrets manager.

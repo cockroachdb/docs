@@ -92,6 +92,8 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
+{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+
 [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
@@ -114,6 +116,8 @@ Example of a webhook URI:
 ~~~
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
+
+{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 See [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
 
@@ -151,7 +155,7 @@ Option | Value | Description
 -------|-------|------------
 `avro_schema_prefix` | Schema prefix name | Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 <a name="compression-opt"></a>`compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
-<a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`. <br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}
+<a name="confluent-registry"></a>`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`. <br><br>{% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}<br><br>{% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
 <a name="cursor-option"></a>`cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than [the default MVCC garbage collection interval](configure-replication-zones.html#gc-ttlseconds) in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
 <a name="diff-opt"></a>`diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
 <a name="end-time"></a>`end_time` | [Timestamp](as-of-system-time.html#parameters) | Indicate the timestamp up to which the changefeed will emit all events and then complete with a `successful` status. Provide a future timestamp to `end_time` in number of nanoseconds since the [Unix epoch](https://en.wikipedia.org/wiki/Unix_time). For example, `end_time="1655402400000000000"`. You cannot use `end_time` and [`initial_scan = 'only'`](#initial-scan) simultaneously.
@@ -317,6 +321,8 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
@@ -335,6 +341,8 @@ CREATE CHANGEFEED FOR TABLE name INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY
 For step-by-step guidance on creating a changefeed connected to a Google Cloud Pub/Sub, see the [Changefeed Examples](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) page. The parameters table on the [Changefeed Sinks](changefeed-sinks.html#pub-sub-parameters) page provides a list of the available Google Cloud Pub/Sub parameters.
 
 ### Create a changefeed connected to a webhook sink
+
+{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
 {% include_cached copy-clipboard.html %}
 ~~~sql

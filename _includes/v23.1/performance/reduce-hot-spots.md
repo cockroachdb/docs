@@ -23,7 +23,7 @@
     - Increase data distribution, which will allow for more ranges. The hot spot exists because the data being accessed is all co-located in one range.
     - Increase [load balancing](recommended-production-settings.html#load-balancing) across more nodes in the same range. Most transactional reads must go to the leaseholder in CockroachDB, which means that opportunities for load balancing over replicas are minimal.
 
-        However, the following features do not permit load balancing over replicas:
+        However, the following features do permit load balancing over replicas:
 
         - [Global tables](global-tables.html).
         - [Follower reads](follower-reads.html) (both the bounded staleness and the exact staleness kinds).

@@ -154,4 +154,3 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td>CockroachDB, as a distributed SQL database, is uniquely resilient by nature. A cluster can tolerate node failures as long as the majority of nodes remain functional. See <a href="../{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Disaster Recovery.</a></td>
   </tr>
 </table>
-

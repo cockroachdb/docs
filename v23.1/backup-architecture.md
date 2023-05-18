@@ -57,9 +57,11 @@ Once one of the nodes has claimed the job from the system jobs table, it will ta
 - Determine the [leaseholder](architecture/overview.html#architecture-leaseholder) nodes for the keys to back up. 
 - Provide a plan to the nodes that will execute the data export (typically the leaseholder node).
 
-To map out the storage location's directory to which the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-product-support) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup in the target storage location, the upcoming backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore append to the full backup after any existing incremental layers discovered in it. 
+To map out the storage location's directory where the nodes will write the data, the coordinator identifies the [type](backup-and-restore-overview.html#backup-and-restore-product-support) of backup. This determines the name of the new (or edited) directory to store the backup files in. For example, if there is an existing full backup already exists in the target storage location, the next backup will be [incremental](take-full-and-incremental-backups.html#incremental-backups) and therefore will be appended to the full backup after any existing incremental layers discovered in it.
 
-For more information on how CockroachDB structures backups in storage, see [Backup collections](take-full-and-incremental-backups.html#backup-collections).
+To restrict the execution of the job to nodes that match a specific locality filter, you can set the `EXECUTION LOCALITY` option. For detail on how this option affects the process of a backup job and an example, refer to [Take Locality-restricted backups](take-locality-restricted-backups.html).
+
+For more information on how CockroachDB structures backups in storage, refer to [Backup collections](take-full-and-incremental-backups.html#backup-collections).
 
 ### Key and time range resolution
 
@@ -89,7 +91,7 @@ Once each of the nodes have fully completed their data export work, the coordina
 
 The backup metadata files describe everything a backup contains. That is, all the information a [restore](restore.html) job will need to complete successfully. A backup without metadata files would indicate that the backup did not complete properly and would not be restorable.
 
-With the full backup complete, the specified storage location will contain the backup data and its metadata ready for a potential [restore](restore.html). After subsequent backups of the `movr` database to this storage location, CockroachDB will create a _backup collection_. See [Backup collections](take-full-and-incremental-backups.html#backup-collections) for information on how CockroachDB structures a collection of multiple backups.
+With the full backup complete, the specified storage location will contain the backup data and its metadata ready for a potential [restore](restore.html). After subsequent backups of the `movr` database to this storage location, CockroachDB will create a _backup collection_. Refer to [Backup collections](take-full-and-incremental-backups.html#backup-collections) for information on how CockroachDB structures a collection of multiple backups.
 
 ## See also
 
