@@ -30,6 +30,18 @@ function renderTOC() {
 
 var $versionSwitcher, versionSwitcherBottom = Infinity;
 
+const cockroachDomains = [
+  "binaries.cockroachdb.com",
+  "resources.cockroachlabs.com",
+  "www.cockroachlabs.com",
+  "cockroachlabs.cloud",
+  "university.cockroachlabs.com",
+  "support.cockroachlabs.com",
+  "cockroa.ch",
+  "forum.cockroachlabs.com",
+  "cockroachlabs.com"
+];
+
 $(function() {
   var _viewport_width = window.innerWidth,
       cachedWidth = window.innerWidth,
@@ -465,7 +477,7 @@ $(function() {
       return
     }
 
-    return this.hostname && this.hostname !== location.hostname;
+    return this.hostname && this.hostname !== location.hostname && cockroachDomains.includes(this.hostname);
   }).addClass('external').attr("target","_blank").attr("rel","noopener");
 });
 
