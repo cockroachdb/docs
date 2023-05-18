@@ -253,9 +253,21 @@ This example creates a schedule for a cluster backup with the `on_previous_runni
 ~~~ sql
 > CREATE SCHEDULE schedule_option
   FOR BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
-    SET SCHEDULE OPTION on_previous_running = 'start'
-    RECURRING '@daily';
+    RECURRING '@daily'
+    WITH SCHEDULE OPTIONS on_previous_running = 'start';
 ~~~
+
+~~~
+     schedule_id     |      label      |                     status                     |          first_run           | schedule |                                                         backup_stmt
+---------------------+-----------------+------------------------------------------------+------------------------------+----------+------------------------------------------------------------------------------------------------------------------------------
+  866226603264475137 | schedule_option | PAUSED: Waiting for initial backup to complete | NULL                         | @daily   | BACKUP INTO LATEST IN 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
+  866226603270635521 | schedule_option | ACTIVE                                         | 2023-05-18 14:56:20.39198+00 | @weekly  | BACKUP INTO 's3://test/backups/schedule_test?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x' WITH detached
+(2 rows)
+~~~
+
+The schedule begins instantly because the user specified option for `on_previous_running = 'start'` but the [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete. 
+
+Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
 ### View scheduled backup details
 
