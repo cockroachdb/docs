@@ -15,7 +15,7 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
-- [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
+- [Message formats](#message-formats): The limitations and type mapping when creating a changefeed with different message formats.
 
 {{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
@@ -224,17 +224,32 @@ The only ways for changefeeds to **not** protect data are:
 - You cancel the changefeed.
 - The changefeed fails without [`on_error=pause`](create-changefeed.html#on-error) set.
 
-## Avro
+## Message formats
 
-The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available in Core and {{ site.data.products.enterprise }} changefeeds.
+By default, changefeeds emit messages in JSON format. You can use a different format by [creating a changefeed](create-changefeed.html) with the [`format`](create-changefeed.html#format) option. This section outlines the limitations and type mapping for relevant formats.
 
-### Avro limitations
+You can use the following message formats:
+
+- JSON
+- CSV
+- Avro
+- Parquet
+
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
+{{site.data.alerts.end}}
+
+### Avro
+
+The following sections provide information on Avro usage with CockroachDB changefeeds. Creating a changefeed using Avro is available in Core and {{ site.data.products.enterprise }} changefeeds with the [`confluent_schema_registry`](create-changefeed.html#confluent-registry) option.
+
+#### Avro limitations
 
 Below are clarifications for particular SQL types and values for Avro changefeeds:
 
 {% include {{ page.version.version }}/cdc/avro-limitations.md %}
 
-### Avro types
+#### Avro types
 
 Below is a mapping of CockroachDB types to Avro types:
 
@@ -266,7 +281,7 @@ CockroachDB Type | Avro Type | Avro Logical Type
 The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 {{site.data.alerts.end}}
 
-## CSV
+### CSV
 
 You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV format messages from your changefeed. However, there are the following limitations with this option:
 

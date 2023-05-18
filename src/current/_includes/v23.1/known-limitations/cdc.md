@@ -7,4 +7,5 @@
 - If a changefeed with [`on_error='pause`](create-changefeed.html#on-error) is running when a watched table is [truncated](truncate.html), the changefeed will pause but will not be able to resume reads from that table. Using [`ALTER CHANGEFEED`](alter-changefeed.html) to drop the table from the changefeed and then [resuming the job](resume-job.html) will work, but you cannot add the same table to the changefeed again. Instead, you will need to [create a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended) for that table. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/98506)
 - {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}. The following limitations apply:
     - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
+    - {% include {{page.version.version}}/cdc/parquet-udt-composite.md %}
     - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
