@@ -46,7 +46,7 @@ Backup / Restore  | Description  | Product Support
 
 CockroachDB supports two types of backup that use a node's locality to determine how a backup job runs or where the backup data is stored:
 
-- [Locality-restricted backup execution](take-locality-restricted-backups.html): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
+- [Locality-restricted backup execution](take-locality-restricted-backups.html): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
 - [Locality-aware backup](take-and-restore-locality-aware-backups.html): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
 
 ## Backup and restore SQL statements
