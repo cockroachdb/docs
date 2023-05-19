@@ -48,6 +48,8 @@ Metrics for scheduled backups fall into two categories:
 
         When `schedules_BACKUP_failed` increments, run [`SHOW SCHEDULES`](show-schedules.html) to check which schedule is affected and to inspect the error in the `status` column.
 
+        {% include {{ page.version.version }}/backups/retry-failure.md %}
+
 - Scheduler-specific metrics:
 
     - `schedules.round.reschedule-wait`: The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
