@@ -86,6 +86,8 @@ kafka_sink_config='{'RequiredAcks': 'ALL'}'
 
 Use [Kafka](changefeed-sinks.html#kafka) or [cloud storage](changefeed-sinks.html#cloud-storage-sink) sinks when tuning for high durability delivery in changefeeds. Both Kafka and cloud storage sinks offer built-in advanced protocols, whereas the [webhook sink](changefeed-sinks.html#webhook-sink), while flexible, requires an understanding of how messages are acknowledged and committed by the particular system used for the webhook in order to ensure the durability of message delivery.
 
+{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
+
 ### Defining schema change behavior
 
 Ensure that data is ingested downstream in its new format after a [schema change](online-schema-changes.html) by using the [`schema_change_events`](create-changefeed.html#schema-events) and [`schema_schange_policy`](create-changefeed.html#schema-policy) options. For example, setting `schema_change_events=column_changes` and `schema_change_policy=stop` will trigger an error to the `cockroach.log` file on a [schema change](changefeed-messages.html#schema-changes-with-column-backfill) and the changefeed to fail.
