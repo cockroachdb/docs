@@ -103,7 +103,7 @@
                     "/${VERSION}/install-cockroachdb.html",
                     "/${VERSION}/install-cockroachdb-mac.html",
                     "/${VERSION}/install-cockroachdb-linux.html",
-                    "/${VERSION}/fips-compliance.html",
+                    "/${VERSION}/fips.html",
                     "/${VERSION}/install-cockroachdb-windows.html"
                   ]
                 },
