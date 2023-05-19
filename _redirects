@@ -409,6 +409,10 @@ layout: null
 {% endunless %}
 /docs/dev/cdc-transformations.html /docs/dev/cdc-queries.html 301
 /docs/v23.1/cdc-transformations.html /docs/v23.1/cdc-queries.html 301
+/docs/v23.1/fips-compliance.html /docs/v23.1/fips.html 301
+/docs/stable/fips-compliance.html /docs/stable/fips.html 301
+/docs/dev/fips-compliance.html /docs/dev/fips.html 301
+
 
 # Removed pages
 /docs/dev/add-column.html /docs/dev/alter-table.html#add-column 301
