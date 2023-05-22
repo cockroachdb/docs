@@ -63,12 +63,14 @@ By default, changefeeds will retry errors with [some exceptions](#changefeed-ret
 
 [Protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from garbage collection in particular scenarios, but if a changefeed lags too far behind, the protected changes could cause data storage issues. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for detail on when changefeed data is protected from garbage collection.
 
-{% include_cached new-in.html version="v23.1" %} You can monitor changefeed jobs for [protected timestamp](architecture/storage-layer.html#protected-timestamps) usage. We recommend setting up monitoring for the following metrics:
+{% include {{ page.version.version }}/cdc/pts-gc-monitoring.md %}
 
-- `jobs.changefeed.protected_age_sec`: Tracks the age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by changefeed jobs. We recommend monitoring if `protected_age_sec` is greater than [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds). As `protected_age_sec` increases, garbage accumulation increases. Garbage collection will not progress on a table, database, or cluster if the protected timestamp record is present.
-- `jobs.changefeed.currently_paused`: Tracks the number of changefeed jobs currently considered [paused](pause-job.html). Since paused changefeed jobs can accumulate garbage, it is important to monitor the number of changefeeds paused.
-- `jobs.changefeed.expired_pts_records`: Tracks the number of expired [protected timestamp](architecture/storage-layer.html#protected-timestamps) records owned by changefeed jobs. You can monitor this metric in conjunction with the [`gc_protect_expires_after` option](create-changefeed.html#gc-protect-expire).
-- `jobs.changefeed.protected_record_count`: Tracks the number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by changefeed jobs.
+#### Schema registry metrics
+
+If you are running a changefeed with the [`confluent_schema_registry`](create-changefeed.html#confluent-registry) option, set up monitoring for the following metrics:
+
+- `changefeed.schema_registry.retry_count`: The number of retries encountered when sending requests to the schema registry. A non-zero value could indicate incorrect configuration of the schema registry or changefeed parameters.
+- `changefeed.schema_registry.registrations`: The number of registration attempts with the schema registry.
 
 ### Using changefeed metrics labels
 

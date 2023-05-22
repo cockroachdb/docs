@@ -23,7 +23,7 @@ The **Insights** page of the {{ site.data.products.db }} Console helps you:
 
 To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **Insights** in the **Monitoring** section of the left side navigation.
 
-{% include {{version_prefix}}ui/insights.md %}
+{% include {{version_prefix}}ui/insights.md version_prefix=version_prefix %}
 
 ## See also
 

@@ -4335,4 +4335,46 @@
     docker_arm: false
   source: true
   previous_release: v22.1.19
+  
+- release_name: v23.1.0
+  major_version: v23.1
+  release_date: '2023-05-15'
+  release_type: Production
+  go_version: go1.18
+  sha: 358e0d87912365b8976c55ab9b3292e999cf720d
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+  source: true
+  previous_release: v23.1.0-rc.2
+  withdrawn: true
 
+- release_name: v23.1.1
+  major_version: v23.1
+  release_date: '2023-05-16'
+  release_type: Production
+  go_version: go1.19
+  sha: 00f65ea04077b4256b4a351fd2703b81c7caed1e
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+  windows: true
+  linux:
+    linux_arm: true
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+  source: true
+  previous_release: v23.1.0

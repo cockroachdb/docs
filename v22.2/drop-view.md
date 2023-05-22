@@ -39,12 +39,10 @@ In this example, other views do not depend on the view being dropped.
 ~~~
 
 ~~~
-+---------------+-------------------+--------------------+------------+---------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
-+---------------+-------------------+--------------------+------------+---------+
-| def           | bank              | user_accounts      | VIEW       |       1 |
-| def           | bank              | user_emails        | VIEW       |       1 |
-+---------------+-------------------+--------------------+------------+---------+
+  table_catalog | table_schema |  table_name   | table_type | is_insertable_into | version
+----------------+--------------+---------------+------------+--------------------+----------
+  bank          | public       | user_accounts | VIEW       | NO                 |       2
+  bank          | public       | user_emails   | VIEW       | NO                 |       1
 (2 rows)
 ~~~
 
@@ -63,11 +61,9 @@ DROP VIEW
 ~~~
 
 ~~~
-+---------------+-------------------+--------------------+------------+---------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
-+---------------+-------------------+--------------------+------------+---------+
-| def           | bank              | user_accounts      | VIEW       |       1 |
-+---------------+-------------------+--------------------+------------+---------+
+  table_catalog | table_schema |  table_name   | table_type | is_insertable_into | version
+----------------+--------------+---------------+------------+--------------------+----------
+  bank          | public       | user_accounts | VIEW       | NO                 |       4
 (1 row)
 ~~~
 
@@ -83,12 +79,10 @@ In this example, another view depends on the view being dropped. Therefore, it's
 ~~~
 
 ~~~
-+---------------+-------------------+--------------------+------------+---------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
-+---------------+-------------------+--------------------+------------+---------+
-| def           | bank              | user_accounts      | VIEW       |       1 |
-| def           | bank              | user_emails        | VIEW       |       1 |
-+---------------+-------------------+--------------------+------------+---------+
+  table_catalog | table_schema |  table_name   | table_type | is_insertable_into | version
+----------------+--------------+---------------+------------+--------------------+----------
+  bank          | public       | user_accounts | VIEW       | NO                 |       2
+  bank          | public       | user_emails   | VIEW       | NO                 |       1
 (2 rows)
 ~~~
 
@@ -98,7 +92,8 @@ In this example, another view depends on the view being dropped. Therefore, it's
 ~~~
 
 ~~~
-pq: cannot drop view "user_accounts" because view "user_emails" depends on it
+ERROR: cannot drop relation "user_accounts" because view "user_emails" depends on it
+SQLSTATE: 2BP01
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -116,12 +111,9 @@ DROP VIEW
 ~~~
 
 ~~~
-+---------------+-------------------+--------------------+------------+---------+
-| TABLE_CATALOG |   TABLE_SCHEMA    |     TABLE_NAME     | TABLE_TYPE | VERSION |
-+---------------+-------------------+--------------------+------------+---------+
-| def           | bank              | create_test        | VIEW       |       1 |
-+---------------+-------------------+--------------------+------------+---------+
-(1 row)
+  table_catalog | table_schema | table_name | table_type | is_insertable_into | version
+----------------+--------------+------------+------------+--------------------+----------
+(0 rows)
 ~~~
 
 ## See also

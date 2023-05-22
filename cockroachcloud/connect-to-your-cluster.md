@@ -22,6 +22,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 - In a production environment, you need to authorize your application server’s network.
 - If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
 - If you have an AWS cluster, you can set up an [AWS PrivateLink](network-authorization.html#aws-privatelink) connection.
+- During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 - You should use PrivateLink or VPC peering if you need to allowlist more than 20 IP addresses, if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
 
 ### Add IP addresses to the allowlist
@@ -57,7 +58,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 
 ### Establish VPC Peering or AWS PrivateLink
 
-VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters.
+VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters. During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="gcp">VPC Peering</button>

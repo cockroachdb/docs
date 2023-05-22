@@ -51,9 +51,9 @@ if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
 fi;
 
 # Run Algolia if building master
-if [[ "$CONTEXT" = "production" ]]; then
+if [ "$CONTEXT" == "production" ]; then
 	echo "Building Algolia index..."
-	ALGOLIA_API_KEY=$PROD_ALGOLIA_API_KEY bundle exec jekyll algolia --config _config_base.yml,_config_url.yml --builds-config _config_cockroachdb.yml
+	ALGOLIA_API_KEY=${PROD_ALGOLIA_API_KEY} bundle exec jekyll algolia --config _config_base.yml,_config_url.yml --builds-config _config_cockroachdb.yml
 fi;
 
 # Run htmltest, but skip checking external links to speed things up

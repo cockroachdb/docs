@@ -70,6 +70,12 @@
                   ]
                 },
                 {
+                  "title": "CockroachDB Dedicated on Azure",
+                  "urls": [
+                    "/cockroachcloud/cockroachdb-dedicated-on-azure.html"
+                  ]
+                },
+                {
                   "title": "Connect to Your Cluster",
                   "urls": [
                     "/cockroachcloud/connect-to-your-cluster.html"
