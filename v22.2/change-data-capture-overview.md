@@ -23,10 +23,10 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a [configurable sink](changefeed-sinks.html) (e.g., [Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](create-and-configure-changefeeds.html?filters=core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](create-and-configure-changefeeds.html#create), [`PAUSE`](create-and-configure-changefeeds.html#pause), [`RESUME`](create-and-configure-changefeeds.html#resume), [`ALTER`](alter-changefeed.html), and [`CANCEL`](create-and-configure-changefeeds.html#cancel), as well as [monitor](monitor-and-debug-changefeeds.html#monitor-a-changefeed) and [debug](monitor-and-debug-changefeeds.html#debug-a-changefeed). |
 
-Refer to [Ordering Guarantees](changefeed-messages.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
+Refer to [Ordering Guarantees](changefeed-messages.html#ordering-guarantees) for details on CockroachDB's at-least-once-delivery-guarantee as well as an explanation on how rows are emitted.
 
 {{site.data.alerts.callout_success}}
-The [Advanced Changefeed Configuration](advanced-changefeed-configuration.html) page provides detail and recommendations for improving changefeed performance.
+The [Advanced Changefeed Configuration](advanced-changefeed-configuration.html) page provides details and recommendations for improving changefeed performance.
 {{site.data.alerts.end}}
 
 ## How does an Enterprise changefeed work?

@@ -106,7 +106,7 @@ When designing a system that needs to emit a lot of changefeed messages, whether
 
 When a changefeed emits a [resolved](create-changefeed.html#resolved-option) message, it force flushes all outstanding messages that have buffered, which will diminish your changefeed's throughput while the flush completes. Therefore, if you are aiming for higher throughput, we suggest setting the duration higher (e.g., 10 minutes), or **not** using the `resolved` option.
 
-If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option, which defaults to `30s`. This options controls how often nodes flush their progress to the [coordinating changefeed node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as high as your `resolved` option duration.
+If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option, which defaults to `30s`. This option controls how often nodes flush their progress to the [coordinating changefeed node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as long as your `resolved` option duration.
 
 ### Batching and buffering messages
 
