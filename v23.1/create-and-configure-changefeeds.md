@@ -77,6 +77,16 @@ When you create a changefeed **without** specifying a sink, CockroachDB sends th
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
+### Show
+
+To show a list of {{ site.data.products.enterprise }} changefeed jobs:
+
+{% include {{ page.version.version }}/cdc/show-changefeed-job.md %}
+
+{% include {{ page.version.version }}/cdc/show-changefeed-job-retention.md %}
+
+For more information, refer to [`SHOW CHANGEFEED JOB`](show-jobs.html#show-changefeed-jobs).
+
 ### Pause
 
 To pause an {{ site.data.products.enterprise }} changefeed:
@@ -86,7 +96,7 @@ To pause an {{ site.data.products.enterprise }} changefeed:
 PAUSE JOB job_id;
 ~~~
 
-For more information, see [`PAUSE JOB`](pause-job.html).
+For more information, refer to [`PAUSE JOB`](pause-job.html).
 
 ### Resume
 
@@ -97,7 +107,7 @@ To resume a paused {{ site.data.products.enterprise }} changefeed:
 RESUME JOB job_id;
 ~~~
 
-For more information, see [`RESUME JOB`](resume-job.html).
+For more information, refer to [`RESUME JOB`](resume-job.html).
 
 ### Cancel
 
@@ -108,7 +118,7 @@ To cancel an {{ site.data.products.enterprise }} changefeed:
 CANCEL JOB job_id;
 ~~~
 
-For more information, see [`CANCEL JOB`](cancel-job.html).
+For more information, refer to [`CANCEL JOB`](cancel-job.html).
 
 ### Modify a changefeed
 
