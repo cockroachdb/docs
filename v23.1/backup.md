@@ -92,6 +92,15 @@ N/A                                | Back up the cluster. For an example of a fu
 `DATABASE {database_name} [, ...]` | The names of the databases to back up. A database backup includes all tables and views in the database. Refer to [Back Up a Database](#back-up-a-database).
 `TABLE {table_name} [, ...]`       | The names of the tables and [views](views.html) to back up. Refer to [Back Up a Table or View](#back-up-a-table-or-view).
 
+### Query parameters
+
+Query parameter | Value | Description
+-------------------------------------
+`COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html) for more detail and examples.
+`S3_STORAGE_CLASS` | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
+
+{% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
+
 ### Options
 
 {% include {{ page.version.version }}/backups/backup-options.md %}
@@ -154,15 +163,15 @@ A backup job will [pause](pause-job.html) instead of entering a `failed` state i
 
 Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:
 
-#### `bulkio.backup.file_size` 
+#### `bulkio.backup.file_size`
 
-Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job. 
+Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
 
 Note that if you lower `bulkio.backup.file_size` below the default, it will cause the backup job to create many small SST files, which could impact a restore job’s performance because it will need to keep track of so many small files.
 
 **Default:** `128 MiB`
 
-#### `cloudstorage.azure.concurrent_upload_buffers` 
+#### `cloudstorage.azure.concurrent_upload_buffers`
 
 Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. Note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.
 
@@ -192,7 +201,7 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
- 
+
 If you need to limit the control specific users have over your storage buckets, see [Assume role authentication](cloud-storage-authentication.html) for setup instructions.
 
 {{site.data.alerts.callout_info}}
