@@ -1,6 +1,6 @@
 [build]
   publish = "_site/"
-  command = "build/build-netlify.sh"
+  command = "netlify/build-netlify.sh"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
@@ -17,9 +17,13 @@
   [build.processing.images]
     compress = false
 
-#[[plugins]]
+[[edge_functions]]
+  function = "add-slash"
+  path = "/*"
+
+# [[plugins]]
 #  package = "@netlify/plugin-lighthouse"
 #  [plugins.inputs]
 #    output_path = "./reports/lighthouse.html"
 #    [[plugins.inputs.audits]]
-#      path = "./docs/index.html"
+#      path = "./docs/"

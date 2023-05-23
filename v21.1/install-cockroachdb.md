@@ -7,13 +7,17 @@ feedback: false
 
 <script>
 $(document).ready(function(){
+    let prefix = "";
+    if (location.pathname.endsWith("/")) {
+        prefix = "../"
+    }
     // Detect OS and redirect to corresponding install page by default.
     if (navigator.userAgent.indexOf("Linux") !== -1) {
-        location = 'install-cockroachdb-linux.html';
+        location = prefix.concat('install-cockroachdb-linux.html');
     } else if (navigator.userAgent.indexOf("Win") !== -1) {
-        location = 'install-cockroachdb-windows.html';
+        location = prefix.concat('install-cockroachdb-windows.html');
     } else {
-        location = 'install-cockroachdb-mac.html';
+        location = prefix.concat('install-cockroachdb-mac.html');
     }
 });
 </script>

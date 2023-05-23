@@ -102,19 +102,17 @@
             return url;
           });
 
-          // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
-          var activePathname
-          if (!/^https?:/.test(location.pathname)) {
-            activePathname = location.pathname
-          }
+          if (location.pathname.endsWith(".html")) {
+            var activePathnames = [location.pathname, location.pathname.replace(".html", ""), location.pathname.replace(".html", "/")];
+          } 
+          else if (location.pathname.endsWith("/")) {
+            var activePathnames = [location.pathname, location.pathname.slice(0, -1), location.pathname.slice(0, -1).concat(".html")];
+          } 
           else {
-            activePathname = location.pathname
+            var activePathnames = [location.pathname, location.pathname.concat("/"), location.pathname.concat(".html")];
           }
-          if (location.pathname.slice(-5) !== '.html') {
-            activePathname += '.html'
-          }
+          const active = activePathnames.filter(value => urls.includes(value)).length > 0;
 
-          const active = (urls.indexOf(activePathname) !== -1);
           if (active) {
             // This mutation inside an otherwise pure function is
             // unfortunate, but doing it here avoids a separate
