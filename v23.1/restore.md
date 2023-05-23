@@ -209,13 +209,15 @@ In general, two types are compatible if they are the same kind (e.g., an enum is
 
 ### Object dependencies
 
-Dependent objects must be restored at the same time as the objects they depend on. Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option. 
+Dependent objects must be restored at the same time as the objects they depend on. 
 
 Object | Depends On
 -------|-----------
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
 Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
+
+Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option. 
 
 ### Users and privileges
 
