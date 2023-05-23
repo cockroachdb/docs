@@ -21,6 +21,12 @@
               ]
             },
             {
+              "title": "CockroachDB Cloud Regions",
+              "urls": [
+                  "/cockroachcloud/regions.html"
+              ]
+            },
+            {
               "title": "CockroachDB Serverless",
               "items": [
                 {
