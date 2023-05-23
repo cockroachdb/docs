@@ -77,6 +77,7 @@ Field | Description
 `rows` | Number of rows in tables that are part of the backup.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` |  Whether the backup is of a full cluster or not.
+`regions` | Whether the database is multi-region or not. If the database is a multi-region database, a string of [`ALTER DATABASE`](alter-database.html) commands will show. If the database is single-region, `NULL` will show. 
 `file_bytes` | (With the `check_files` option only) The estimated bytes in external storage for a particular table object. This is the physical bytes that a given table object is taking up. For example, when the files are written to disk in storage they could be compressed. If you total all file bytes, the result is the physical bytes in your storage location. Note that for smaller tables the byte size in `file_bytes` may be larger than `size_bytes` because of the overhead required to create an SST file.
 `path` | The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN collectionURI` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 
@@ -115,18 +116,19 @@ SHOW BACKUP FROM LATEST IN 'external://backup_s3';
 ~~~
 
 ~~~
-database_name | parent_schema_name |        object_name         | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows  | is_full_cluster
-----------------+--------------------+----------------------------+-------------+-------------+---------------------------+----------------------------+------------+-------+------------------
-NULL          | NULL               | movr                       | database    | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false
-movr          | NULL               | public                     | schema      | full        | NULL                      | 2022-04-08 14:23:55.33557  |       NULL |  NULL |      false
-movr          | public             | users                      | table       | full        | NULL                      | 2022-04-08 14:23:55.33557  |      25856 |   281 |      false
-NULL          | NULL               | system                     | database    | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |       NULL |  NULL |      true
-system        | public             | users                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |         99 |     2 |      true
-system        | public             | zones                      | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        236 |     8 |      true
-system        | public             | settings                   | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        372 |     5 |      true
-system        | public             | ui                         | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |          0 |     0 |      true
-system        | public             | jobs                       | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |      30148 |    23 |      true
-system        | public             | locations                  | table       | incremental | 2022-04-08 14:23:55.33557 | 2022-04-08 14:26:01.699694 |        261 |     5 |      true
+database_name | parent_schema_name |        object_name         | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster |                                             regions
+----------------+--------------------+----------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+--------------------------------------------------------------------------------------------------
+NULL          | NULL               | movr                       | database    | full        | NULL       | 2023-05-23 15:27:33.251745 |       NULL | NULL |        f        | ALTER DATABASE movr SET PRIMARY REGION "us-east-2"; ALTER DATABASE movr ADD REGION "us-west-1";
+movr          | NULL               | public                     | schema      | full        | NULL       | 2023-05-23 15:27:33.251745 |       NULL | NULL |        f        | NULL
+movr          | public             | users                      | table       | full        | NULL       | 2023-05-23 15:27:33.251745 |      30069 |  327 |        f        | NULL
+movr          | public             | vehicles                   | table       | full        | NULL       | 2023-05-23 15:27:33.251745 |      17456 |   88 |        f        | NULL
+movr          | public             | rides                      | table       | full        | NULL       | 2023-05-23 15:27:33.251745 |     251254 |  862 |        f        | NULL
+movr          | public             | vehicle_location_histories | table       | full        | NULL       | 2023-05-23 15:27:33.251745 |     660910 | 9649 |        f        | NULL
+movr          | public             | promo_codes                | table       | full        | NULL       | 2023-05-23 15:27:33.251745 |     227789 | 1020 |        f        | NULL
+movr          | public             | user_promo_codes           | table       | full        | NULL       | 2023-05-23 15:27:33.251745 |       6973 |   83 |        f        | NULL
+movr          | public             | crdb_internal_region       | type        | full        | NULL       | 2023-05-23 15:27:33.251745 |       NULL | NULL |        f        | NULL
+movr          | public             | _crdb_internal_region      | type        | full        | NULL       | 2023-05-23 15:27:33.251745 |       NULL | NULL |        f        | NULL
+(10 rows)
 ~~~
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
