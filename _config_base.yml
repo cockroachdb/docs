@@ -6,14 +6,14 @@ algolia:
   - search.html
   index_name: cockroachcloud_docs
   search_api_key: 372a10456f4ed7042c531ff3a658771b
-  settings:                                                                      
-    attributesForFaceting:                                                       
-      - searchable(categories)                                                   
-      - searchable(collection)                                                   
-      - docs_area                                                                
-      - searchable(tags)                                                         
-      - searchable(title)                                                        
-      - type                                                                     
+  settings:
+    attributesForFaceting:
+    - searchable(categories)
+    - searchable(collection)
+    - docs_area
+    - searchable(tags)
+    - searchable(title)
+    - type
 defaults:
 - scope:
     path: ''
@@ -85,12 +85,14 @@ release_info:
     version: v1.1.9
   v19.1:
     build_time: 2020/07/07 14:48:26 (go1.11.6)
+    crdb_branch_name: release-19.1
     docker_image: cockroachdb/cockroach
     name: v19.1.11
     start_time: 2020-07-07 15:10:52.34274101 +0000 UTC
     version: v19.1.11
   v19.2:
     build_time: 2021/01/19 11:00:26 (go1.12.12)
+    crdb_branch_name: release-19.2
     docker_image: cockroachdb/cockroach
     name: v19.2.12
     start_time: 2021-01-19 11:01:26.34274101 +0000 UTC
@@ -109,12 +111,14 @@ release_info:
     version: v2.1.11
   v20.1:
     build_time: 2021/05/17 11:00:26 (go1.13.4)
+    crdb_branch_name: release-20.1
     docker_image: cockroachdb/cockroach
     name: v20.1.17
     start_time: 2021-05-17 11:01:26.34274101 +0000 UTC
     version: v20.1.17
   v20.2:
     build_time: 2022/02/09 11:00:26 (go1.13.4)
+    crdb_branch_name: release-20.2
     docker_image: cockroachdb/cockroach
     name: v20.2.19
     start_time: 2022-02-09 11:01:26.34274101 +0000 UTC
@@ -134,26 +138,26 @@ release_info:
     start_time: 2022-10-13 17:45:03.909127 +0000 UTC
     version: v21.2.17
   v22.1:
-    build_time: 2023-03-27 00:00:00 (go1.19)
+    build_time: 2023-05-12 00:00:00 (go1.19)
     crdb_branch_name: release-22.1
     docker_image: cockroachdb/cockroach
-    name: v22.1.18
-    start_time: 2023-03-24 10:33:31.241199 +0000 UTC
-    version: v22.1.18
+    name: v22.1.20
+    start_time: 2023-05-10 12:58:20.269520 +0000 UTC
+    version: v22.1.20
   v22.2:
-    build_time: 2023-04-17 00:00:00 (go1.19)
+    build_time: 2023-05-08 00:00:00 (go1.19)
     crdb_branch_name: release-22.2
     docker_image: cockroachdb/cockroach
-    name: v22.2.8
-    start_time: 2023-04-17 12:53:26.338251 +0000 UTC
-    version: v22.2.8
+    name: v22.2.9
+    start_time: 2023-05-03 12:20:58.860667 +0000 UTC
+    version: v22.2.9
   v23.1:
-    build_time: 2023-04-17 00:00:00 (go1.19)
+    build_time: 2023-05-16 00:00:00 (go1.19)
     crdb_branch_name: release-23.1
-    docker_image: cockroachdb/cockroach-unstable
-    name: v23.1.0-beta.2
-    start_time: 2023-04-14 12:18:53.306028 +0000 UTC
-    version: v23.1.0-beta.2
+    docker_image: cockroachdb/cockroach
+    name: v23.1.1
+    start_time: 2023-05-16 00:21:50.394565 +0000 UTC
+    version: v23.1.1
 sass:
   quiet_deps: 'true'
   sass_dir: css

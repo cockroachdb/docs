@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#system-level-privileges) that provides finer control over a user's privilege to work with the database, including creating and managing changefeeds. 
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](security-reference/authorization.html#supported-privileges) that provides finer control over a user's privilege to work with the database, including creating and managing changefeeds. 
 
 There is continued support for the [legacy privilege model](#legacy-privilege-model) for changefeeds in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all changefeeds.
 {{site.data.alerts.end}}

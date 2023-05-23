@@ -18,6 +18,8 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 
 See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
+{% include {{ page.version.version }}/cdc/pts-gc-monitoring.md %}
+
 Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
 
 <div class="filters clearfix">
@@ -329,6 +331,8 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/cdc/pubsub-performance-setting.md %}
+
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/docs/overview) sink. The changefeed will watch a table and send messages to the sink.
 
 You'll need access to a [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) to set up a Pub/Sub sink. In this example, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) (`gcloud`) is used, but you can also complete each of these steps within your [Google Cloud Console](https://cloud.google.com/storage/docs/cloud-console).
@@ -417,12 +421,14 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     
     Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
 
-1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account and add your topic's region:
+1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
     ~~~
+
+    You can include the `region` parameter for your topic, or use the [WITH `unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail.
 
     The output will confirm the topic where the changefeed will emit messages to.
 
@@ -537,11 +543,9 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the Core version, see [the `CHANGEFEED FOR` example](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/cdc/webhook-performance-setting.md %}
 
- In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
+In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 
 1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 

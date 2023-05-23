@@ -18,6 +18,10 @@ Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across
 
 This page shows how to create a private cluster.
 
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), private {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
+
 ## Create a private cluster
 
 To create a private cluster, you must use [{{ site.data.products.db }} API](cloud-api.html) or [CockroachDB's Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster). When you [create](https://cockroachlabs.com/docs/api/cloud/v1/clusters) a private cluster using Terraform Provider, you set its `private_network_visibility` field to `true`. This in turn automatically sets uses the Cloud API to set the cluster's `network_visibility` field to `NETWORK_VISIBILITY_PRIVATE`.

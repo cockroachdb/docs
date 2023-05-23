@@ -287,7 +287,6 @@ To remove a user:
 
 1. From the dropdown, select **Delete SQL User**.
 1. Click **Delete**.
-</section>
 
 </section>
 

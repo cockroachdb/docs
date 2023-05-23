@@ -47,6 +47,10 @@ The following privileges can be revoked:
 
 - The `root` user cannot be revoked from the `admin` role.
 
+## Limitations
+
+{% include {{page.version.version}}/sql/grant-revoke-schema-changes.md %}
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
@@ -222,7 +226,7 @@ REVOKE DELETE ON movr.public.* FROM max;
 
 ### Revoke system-level privileges on the entire cluster
 
-[System-level privileges](security-reference/authorization.html#system-level-privileges) live above the database level and apply to the entire cluster.
+[System-level privileges](security-reference/authorization.html#supported-privileges) live above the database level and apply to the entire cluster.
 
 `root` and [`admin`](security-reference/authorization.html#admin-role) users have system-level privileges by default, and are capable of revoking it from other users and roles using the `REVOKE` statement.
 

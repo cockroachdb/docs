@@ -7,7 +7,9 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/create-cluster-cloud.md %}
 
-This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Org Administrators](authorization.html#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
+This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster using the [Cloud Console](httrps://cockroachlabs.cloud). To use the Cloud API instead, refer to [Create a New Cluster](cloud-api.html#create-a-new-cluster).
+
+Only [{{ site.data.products.db }} Org Administrators](authorization.html#org-administrator-legacy) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart](quickstart-trial-cluster.html).
@@ -22,43 +24,37 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. On the **Overview** page, click **Create Cluster**.
 1. Select the **Dedicated standard** or **Dedicated advanced** plan.
 
-{{site.data.alerts.callout_info}}
 {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
-{{site.data.alerts.end}}
 
 ## Step 2. Select the cloud provider
 
-In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
+In the **Cloud provider** section, select your deployment environment: **Google Cloud**, **AWS**, or **Microsoft Azure** (Limited Access).
+
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. If you intend to use your {{ site.data.products.dedicated }} cluster with data or services in a cloud tenant, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
 
 {{site.data.alerts.callout_info}}
-You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.dedicated }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
+{% include feature-phases/azure-limited-access.md %}
 {{site.data.alerts.end}}
 
-{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
+{{ site.data.products.db }} clusters use the following machine and storage types:
 
-For GCP clusters, each GiB of storage costs  $0.0011986 per hour, and 30 IOPS per GiB are provisioned. For AWS clusters, each GiB of storage costs $0.0005088 per hour, and 15 IOPS per GiB are provisioned at an additional cost of $0.0000196 per IOPS per hour.
+Cloud | Compute type                                                                          | Storage type
+------|---------------------------------------------------------------------------------------|-------------
+GCP   | [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types)   | [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs)
+AWS   | [M6](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details)                   | [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/)
+Azure | [Dasv5](https://learn.microsoft.com/en-us/azure/virtual-machines/dasv5-dadsv5-series) | [Premium SSDs](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds)
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region(s)
 
-In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
+In the **Regions & nodes** section, select at minimum one region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
 
-To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
+A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the configuration requirements and recommendations for {{ site.data.products.dedicated }} clusters.
 
 {{site.data.alerts.callout_info}}
-Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the requirements and recommendations for {{ site.data.products.dedicated }} cluster configuration.
+Creating a multi-region cluster on Azure is not supported. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
-
-**Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
-
-- Mumbai (`asia-south1`)
-- Osaka (`asia-northeast2`)
-- Hamina (`europe-north1`)
-- Frankfurt (`europe-west3`)
-- Zurich (`europe-west6`)
-
-If you want to create a cluster in a disabled or unavailable region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
@@ -72,6 +68,10 @@ In the **Regions & nodes** section, select the number of nodes.
 {% include cockroachcloud/nodes-limitation.md %}
 
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+
+{{site.data.alerts.callout_danger}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), a {{ site.data.products.dedicated }} cluster deployed on Azure cannot be edited or scaled after it is created. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ## Step 5. Select the hardware per node
 
@@ -94,7 +94,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Storage space cannot be removed from a node once added.
     {{site.data.alerts.end}}
 
-    We recommending choosing up to <b>{{ cap_per_vcpu }}</b>. See [Step 2](#step-2-select-the-cloud-provider) for pricing information. When selecting your storage capacity, consider the following factors:
+    For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. When selecting your storage capacity, consider the following factors:
 
     Factor | Description
     ----------|------------
@@ -103,27 +103,31 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
     Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
-    For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
+    For more details about disk performance on a given cloud provider, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/en-us/azure/security/fundamentals/encryption-atrest">Azure Data Encryption at Rest</a></li></ul>
 
 To change the hardware configuration after the cluster is created, see [Manage a {{ site.data.products.dedicated }} Cluster](cluster-management.html).
+
+{{site.data.alerts.callout_danger}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), a {{ site.data.products.dedicated }} cluster deployed on Azure cannot be edited or scaled after it is created. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 See the [Example](plan-your-cluster.html?filters=dedicated#dedicated-example) for further guidance.
 
 ## Step 6. Name the cluster
 
-The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 
-Click **Next**. Optionally, you can enable VPC peering for your cluster.
+Click **Next**. Optionally, you can enable VPC peering for a cluster deployed on GCP. For clusters deployed on AWS, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster.
 
 ## Step 7. Enable VPC Peering (optional)
 
-VPC peering is only available for GCP clusters. For AWS clusters, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster.
+You can use [VPC peering](network-authorization.html#vpc-peering) to connect a GCP application to a {{ site.data.products.db }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
 
-{{site.data.alerts.callout_info}}
-If you have multiple clusters, you will have to create a new VPC Peering or AWS PrivateLink connection for each cluster.
-{{site.data.alerts.end}}
+VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster. For clusters deployed on Azure during [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), [Azure Virtual Network Peering](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
-You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the {{ site.data.products.db }} cluster. To enable VPC peering:
+To continue without enabling VPC peering, click **Next** to [enter billing details](#step-8-enter-billing-details).
+{{ site.data.products.db }}
+Otherwise, to enable VPC peering:
 
 1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
 1. Configure the IP address range and size (in CIDR format) for the {{ site.data.products.db }} network based on the following considerations:
@@ -145,11 +149,10 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
 ## Step 8. Enter billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region(s), number of nodes, and the hardware configuration per node.
-1. Verify the hourly estimated cost for the cluster.
-    {{site.data.alerts.callout_info}}
-    The cost displayed does not include taxes.
-    {{site.data.alerts.end}}
+1. Verify the hourly estimated cost for the cluster. The cost displayed does not include taxes.
+
     You will be billed monthly.
+
 1. Add your preferred [payment method](billing-management.html).
 1. [If applicable](frequently-asked-questions.html#how-do-cockroachdb-dedicated-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}

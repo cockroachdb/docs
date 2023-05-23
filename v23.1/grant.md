@@ -65,6 +65,10 @@ For privileges required by specific statements, see the documentation for the re
 - All privileges of a role are inherited by all its members.
 - Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
+## Limitations
+
+{% include {{page.version.version}}/sql/grant-revoke-schema-changes.md %}
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}
@@ -195,7 +199,7 @@ SHOW GRANTS ON TABLE usertable;
 
 ### Grant system-level privileges on the entire cluster
 
-[System-level privileges](security-reference/authorization.html#system-level-privileges) live above the database level and apply to the entire cluster.
+[System-level privileges](security-reference/authorization.html#supported-privileges) live above the database level and apply to the entire cluster.
 
 `root` and [`admin`](security-reference/authorization.html#admin-role) users have system-level privileges by default, and are capable of granting it to other users and roles using the `GRANT` statement.
 

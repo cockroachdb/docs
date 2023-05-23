@@ -270,38 +270,62 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
 
 Before running the [`CREATE CHANGEFEED`](create-changefeed.html) statement, you must [**URL-encode**](https://meyerweb.com/eric/tools/dencoder/) both the cluster's and the Schema Registry's API secret key.
 
-Create the changefeed with the following statement:
+You can also [create external connections](create-external-connection.html) to define a name for the Kafka and Confluent Schema Registry URIs. This allows you to interact with your defined name instead of the provider-specific URI.
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE CHANGEFEED FOR TABLE users INTO "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN" WITH updated, format = avro, confluent_schema_registry = "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443";
-~~~
+1. Construct the Kafka URI:
 
-To connect to the Kafka cluster, use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`. 
+    Use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`. 
 
-Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
+    Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
+    - `tls_enabled=true`
+    - `sasl_enabled=true`
+    - `sasl_user={CLUSTER API KEY}`
+    - `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
+    - `sasl_mechanism=PLAIN`
 
-- `tls_enabled=true`
-- `sasl_enabled=true`
-- `sasl_user={CLUSTER API KEY}`
-- `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
-- `sasl_mechanism=PLAIN`
+    ~~~
+    "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
+    ~~~
 
-Use the following options to define the format and schema registry:
+1. Create an external connection for the Kafka URI:
 
-- `format = avro`
-- `confluent_schema_registry = "https://{API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY URL}:443"`. Note that the schema registry uses basic authentication, which means that the URL's format is different from the Kafka URL. 
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
+    ~~~
 
-    To form the URL, you need the following:
-
+1. To construct the Confluent Schema Registry URI, you need:
     - Schema Registry API Key created in [Step 5](#step-5-create-a-schema-registry-api-key-and-secret).
     - URL-encoded Schema Registry secret key created in [Step 5](#step-5-create-a-schema-registry-api-key-and-secret).
     - The `Endpoint URL` from the Schema Registry's details created in [Step 4](#step-4-create-a-confluent-schema-registry). Make sure to add the `:443` port to the end of this URL. For example, `psrc-x77pq.us-central1.gcp.confluent.cloud:443`.
-- Any other options you need to configure your changefeed. See [Options](create-changefeed.html#options) for a list of all available {{ site.data.products.enterprise }} changefeed options.
 
-{{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
-{{site.data.alerts.end}}
+    ~~~
+    "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443"
+    ~~~
+
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}
+    {{site.data.alerts.end}}
+
+1. Create an external connection for the Confluent Schema Registry URI:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION confluent_registry AS "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443"
+    ~~~
+
+1. Create the changefeed with any other options you need to configure your changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE users INTO "external://kafka" WITH updated, format = avro, confluent_schema_registry = "external://confluent_registry";
+    ~~~
+
+    See [Options](create-changefeed.html#options) for a list of all available Enterprise changefeed options.
+
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
+    {{site.data.alerts.end}}
 
 ## Step 9. Verify the output
 

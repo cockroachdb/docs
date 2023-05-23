@@ -1,0 +1,1 @@
+A changefeed emitting [CSV](changefeed-messages.html#csv) will include `AS` labels in the message format when the changefeed serializes a [user-defined composite type](create-type.html). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/102905)

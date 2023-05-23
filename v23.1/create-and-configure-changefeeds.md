@@ -13,7 +13,7 @@ Both Core and {{ site.data.products.enterprise }} changefeeds require that you e
 
 - It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
 - If you require [`resolved`](create-changefeed.html#resolved-option) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
-- Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
+- Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. See change data capture [Known Limitations](change-data-capture-overview.html) for more detail.
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](changefeed-messages.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](monitor-and-debug-changefeeds.html#monitor-a-changefeed).
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
 - {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
@@ -77,6 +77,16 @@ When you create a changefeed **without** specifying a sink, CockroachDB sends th
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
+### Show
+
+To show a list of {{ site.data.products.enterprise }} changefeed jobs:
+
+{% include {{ page.version.version }}/cdc/show-changefeed-job.md %}
+
+{% include {{ page.version.version }}/cdc/show-changefeed-job-retention.md %}
+
+For more information, refer to [`SHOW CHANGEFEED JOB`](show-jobs.html#show-changefeed-jobs).
+
 ### Pause
 
 To pause an {{ site.data.products.enterprise }} changefeed:
@@ -86,7 +96,7 @@ To pause an {{ site.data.products.enterprise }} changefeed:
 PAUSE JOB job_id;
 ~~~
 
-For more information, see [`PAUSE JOB`](pause-job.html).
+For more information, refer to [`PAUSE JOB`](pause-job.html).
 
 ### Resume
 
@@ -97,7 +107,7 @@ To resume a paused {{ site.data.products.enterprise }} changefeed:
 RESUME JOB job_id;
 ~~~
 
-For more information, see [`RESUME JOB`](resume-job.html).
+For more information, refer to [`RESUME JOB`](resume-job.html).
 
 ### Cancel
 
@@ -108,7 +118,7 @@ To cancel an {{ site.data.products.enterprise }} changefeed:
 CANCEL JOB job_id;
 ~~~
 
-For more information, see [`CANCEL JOB`](cancel-job.html).
+For more information, refer to [`CANCEL JOB`](cancel-job.html).
 
 ### Modify a changefeed
 

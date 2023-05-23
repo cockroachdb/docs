@@ -28,7 +28,7 @@ Terraform uses a infrastructure-as-code approach to managing resources. Terrafor
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-In this tutorial, you will create a {{ site.data.products.serverless }} cluster with a spend limit of $0.
+In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
 
 1. In a terminal create a new directory and use `wget` to download the {{ site.data.products.serverless }} `main.tf` example file:
 
@@ -38,7 +38,7 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster 
     ~~~
 
 1. In a text editor create a new file `terraform.tfvars` with the following settings:
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~
     cluster_name = "{cluster name}"
@@ -103,7 +103,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{cluster name}` is the name of the cluster you want to create.
        - `{SQL user name}` is the name of the SQL user you want to create.
        - `{SQL user password}` is the password for the SQL user you want to create.
-       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP` or `AWS`.
+       - `{cloud provider}` is the cloud infrastructure provider. Possible values are `GCP`, `AWS`, `AZURE`. Support for Azure is in limited access. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
        - `{cloud provider regions}` is the region code or codes for the cloud infrastructure provider. For multi-region clusters, separate each region with a comma.
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.

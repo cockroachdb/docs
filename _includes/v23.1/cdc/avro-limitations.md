@@ -27,3 +27,4 @@
     ~~~
 
     Next, you use the first element in the array to take the number of bits from the last base-2 element, `10111110`. Finally, you append each of the base-2 numbers together — in the above array, the second, third, and truncated last element. This results in 136 bits, the original number of bits.
+- {% include {{page.version.version}}/cdc/avro-udt-composite.md %}

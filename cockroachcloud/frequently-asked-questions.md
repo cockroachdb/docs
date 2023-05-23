@@ -15,6 +15,8 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region clusters are not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html)
+
 ### What is the difference between {{ site.data.products.dedicated }} standard and advanced?
 
 {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
@@ -23,36 +25,25 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 The following regions are available for {{ site.data.products.dedicated }}:
 
- GCP                                 | AWS                             
--------------------------------------|---------------------------------
- `asia-east1` (Changhua County)      | `ap-northeast-1` (Tokyo)        
- `asia-east2` (Hong Kong)            | `ap-northeast-2` (Seoul)        
- `asia-northeast1` (Tokyo)           | `ap-northeast-3` (Osaka)        
- `asia-southeast1` (Jurong West)     | `ap-south-1` (Mumbai)           
- `australia-southeast1` (Australia)  | `ap-southeast-1` (Singapore)    
- `europe-west1` (St. Ghislain)       | `ap-southeast-2` (Sydney)       
- `europe-west2` (London)             | `ca-central-1` (Central Canada) 
- `europe-west3` (Frankfurt)          | `eu-central-1` (Frankfurt)      
- `europe-west4` (Eemshaven)          | `eu-north-1` (Stockholm)        
- `northamerica-northeast1` (Montréal)| `eu-west-1` (Ireland)           
- `southamerica-east1` (São Paulo)    | `eu-west-2` (London)            
- `us-central1` (Iowa)                | `eu-west-3` (Paris)             
- `us-east1` (South Carolina)         | `sa-east-1` (São Paulo)         
- `us-west1` (Oregon)                 | `us-east-2` (Ohio)              
- `us-west2` (California)             | `us-west-2` (Oregon)            
+ GCP                                 | AWS                               | Azure (Limited Access)
+-------------------------------------|-----------------------------------|-----------------------
+ `asia-east1` (Changhua County)      | `ap-northeast-1` (Tokyo)          | `eastus2` (US East Coast - Virginia)
+ `asia-east2` (Hong Kong)            | `ap-northeast-2` (Seoul)          | `westeurope` (Netherlands)
+ `asia-northeast1` (Tokyo)           | `ap-northeast-3` (Osaka)
+ `asia-southeast1` (Jurong West)     | `ap-south-1` (Mumbai)
+ `australia-southeast1` (Australia)  | `ap-southeast-1` (Singapore)
+ `europe-west1` (St. Ghislain)       | `ap-southeast-2` (Sydney)
+ `europe-west2` (London)             | `ca-central-1` (Central Canada)
+ `europe-west3` (Frankfurt)          | `eu-central-1` (Frankfurt)
+ `europe-west4` (Eemshaven)          | `eu-north-1` (Stockholm)
+ `northamerica-northeast1` (Montréal)| `eu-west-1` (Ireland)
+ `southamerica-east1` (São Paulo)    | `eu-west-2` (London)
+ `us-central1` (Iowa)                | `eu-west-3` (Paris)
+ `us-east1` (South Carolina)         | `sa-east-1` (São Paulo)
+ `us-west1` (Oregon)                 | `us-east-2` (Ohio)
+ `us-west2` (California)             | `us-west-2` (Oregon)
 
-We run {{ site.data.products.dedicated }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions in which their offerings are available. If a particular region is not available on the {{ site.data.products.db }} Console, it is usually due to the cloud provider not supporting EKS or GKE in that region. See
-[list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
-
-**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
-
-- Mumbai (`asia-south1`)
-- Osaka (`asia-northeast2`)
-- Hamina (`europe-north1`)
-- Frankfurt (`europe-west3`)
-- Zurich (`europe-west6`)
-
-If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
+To express interest in additional regions, contact your Cockroach Labs account team.
 
 ### How do {{ site.data.products.dedicated }} free trials work?
 
@@ -84,22 +75,21 @@ See the [Security Overview page](../{{site.current_cloud_version}}/security-refe
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted-at-rest by your chosen infrastructre-as-a-service provider, Google Cloud Platform (GCP) or Amazon Web Services (AWS), at the infrastructure level.
+All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption)</a> for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, <a href="cmek.html">Customer Managed Encryption Keys (CMEK)</a> optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
+
+All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted at rest by the cloud provider where your cluster is deployed.
 
 {{site.data.alerts.callout_info}}
-{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. Hence, CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available with an Enterprise license and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} users delegate responsibility for encryption-at-rest to the cloud provider. CockroachDB's proprietary storage-layer encryption-at-rest functionality is currently only available with an Enterprise license and is not currently available to users of {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}.
 
 As a result, encryption will appear to be disabled in the [DB Console](../{{site.current_cloud_version}}/ui-overview.html), since the console is unaware of cloud provider encryption.
 {{site.data.alerts.end}}
 
-
 See the [Security Overview page](../{{site.current_cloud_version}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
-
-
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-{{ site.data.products.dedicated }} is a single-tenant offering and resources are not shared between clusters.
+{{ site.data.products.dedicated }} is a single-tenant offering and resources are not shared among clusters.
 
 ### Who has access to my cluster data?
 
@@ -113,17 +103,23 @@ Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your clu
 
 ### How do I add nodes?
 
-You can add nodes by accessing the **Clusters** page on the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
+You can add nodes by accessing the **Clusters** page on the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Management](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
+
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), {{ site.data.products.dedicated }} clusters on Azure cannot be modified or scaled after creation. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
 {% include cockroachcloud/nodes-limitation.md %}
 
 ### Do you auto-scale?
 
-Today, we do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster). There are plans to allow auto-scaling in the future.
+We do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Management](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
 ### Who is responsible for backup?
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. Only {{ site.data.products.dedicated }} cluster backups are available to users at this time. See the [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) page for ways to restore data from your cluster's automatic backups in the Console.
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed backups are not available for {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
 
@@ -151,6 +147,8 @@ AWS clusters can set up a [PrivateLink connection](network-authorization.html#aw
 
 GCP clusters can also set up VPC peering after the cluster is created, but you will be locked into our default IP range (`172.28.0.0/14`) unless you configure a different IP range during cluster creation. You can use the default IP range for VPC peering as long as it doesn't overlap with the IP ranges in your network. For more information, see [VPC peering](network-authorization.html#vpc-peering).
 
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+
 ## Product features
 
 ### Are enterprise features available to me?
@@ -177,6 +175,8 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 - [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy/)
 - [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/)
+
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), the [{{ site.data.products.db }} SLA](https://cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement/) does not apply to clusters on Microsoft Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 

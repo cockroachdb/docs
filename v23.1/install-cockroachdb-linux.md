@@ -19,6 +19,10 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
+{{site.data.alerts.callout_success}}
+To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB](fips.html).
+{{site.data.alerts.end}}
+
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
@@ -40,7 +44,7 @@ Use one of the options below to install CockroachDB.
           </div>
           <div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> /usr/local/lib/cockroach</code></pre></div>
         </li>
-        <li>Copy the library files to the directory. In the following commands, replace `{ARCHITECTURE}` with `linux-amd64` for Intel, or with `linux-arm64` for ARM.</p>
+        <li>Copy the library files to the directory. In the following commands, replace <code>{ARCHITECTURE}</code> with <code>linux-amd64</code> for Intel, or with <code>linux-arm64</code> for ARM.</p>
           <div class="copy-clipboard">
             <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
             <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>

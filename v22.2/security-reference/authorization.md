@@ -12,15 +12,15 @@ CockroachDB has a unified authorization model, meaning that a given user's permi
 ## Authorization models
 
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new granular [system-level privilege model](#system-level-privileges) that provides finer control over a user's ability to work with the database. This new system-level privilege model is intended to replace the existing [role options model](#role-options) in a future release of CockroachDB. As such, any legacy role options that now have corresponding system-level privilege versions are **deprecated in CockroachDB v22.2**, though both are supported alongside each other in v22.2. We recommend familiarizing yourself with the new system-level privilege model, and implementing it where possible.
+Starting in v22.2, CockroachDB introduces a new granular [system-level privilege model](#supported-privileges) that provides finer control over a user's ability to work with the database. This new system-level privilege model is intended to replace the existing [role options model](#role-options) in a future release of CockroachDB. As such, any legacy role options that now have corresponding system-level privilege versions are **deprecated in CockroachDB v22.2**, though both are supported alongside each other in v22.2. We recommend familiarizing yourself with the new system-level privilege model, and implementing it where possible.
 {{site.data.alerts.end}}
 
 <span class="version-tag">New in v22.2:</span> CockroachDB offers two authorization models:
 
 Authorization Model         | Features
 ----------------------------|---------------------------------------
-[System-level Privileges](#system-level-privileges)  | <ul><li> Introduced in CockroachDB v22.2.</li><li> Supported in CockroachDB v22.2, alongside the existing role options.</li><li>Apply cluster-wide. A system-level privilege is granted at the cluster level, and is inherited via role membership, similar to how [object-level privileges](#privileges) are inherited.</li><li>Are granted with the [`GRANT`](../grant.html) statement using the `SYSTEM` parameter, and viewed with the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same system-level privilege to other users or roles.</li></ul>
-[Role Options](#role-options) |  <ul><li> [Specific role options](#system-level-privileges) which have had corresponding system-level privileges introduced in CockroachDB v22.2 are now **deprecated**.</li><li>Supported in CockroachDB v22.2, alongside the new system-level privileges.</li><li>Apply only to specific users, and are not inheritable via role membership.</li><li>Are granted with the [`GRANT`](../grant.html) statement, and viewed with the [`SHOW GRANTS`](../show-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same role option to other users or roles.</li></ul>
+[System-level Privileges](#supported-privileges)  | <ul><li> Introduced in CockroachDB v22.2.</li><li> Supported in CockroachDB v22.2, alongside the existing role options.</li><li>Apply cluster-wide. A system-level privilege is granted at the cluster level, and is inherited via role membership, similar to how [object-level privileges](#privileges) are inherited.</li><li>Are granted with the [`GRANT`](../grant.html) statement using the `SYSTEM` parameter, and viewed with the [`SHOW SYSTEM GRANTS`](../show-system-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same system-level privilege to other users or roles.</li></ul>
+[Role Options](#role-options) |  <ul><li> [Specific role options](#supported-privileges) which have had corresponding system-level privileges introduced in CockroachDB v22.2 are now **deprecated**.</li><li>Supported in CockroachDB v22.2, alongside the new system-level privileges.</li><li>Apply only to specific users, and are not inheritable via role membership.</li><li>Are granted with the [`GRANT`](../grant.html) statement, and viewed with the [`SHOW GRANTS`](../show-grants.html) statement.</li><li>May be assigned with the [`GRANT OPTION`](../grant.html), which allows the assigned user or role to further grant that same role option to other users or roles.</li></ul>
 
 If a system-level privilege exists with the same name as a role option, the system-level privilege should be used.
 
@@ -138,7 +138,7 @@ Roles and users can be granted the following privileges:
 
 ### System-level privileges 
 
-<span class="version-tag">New in v22.2:</span> System-level privileges offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
+<span class="version-tag">New in v22.2:</span> System-level privileges (also known as global privileges) offer more granular control over a user's actions when working with CockroachDB, compared to the [role options authorization model](#role-options).
 
 System-level privileges are a special kind of privilege that apply cluster-wide, meaning that the privilege is not tied to any specific object in the database.
 
@@ -160,7 +160,6 @@ New System-level Privilege  | Replaces Legacy Role Option
 `BACKUP`                    | No, new in v22.2
 `RESTORE`                   | No, new in v22.2
 `EXTERNALIOIMPLICITACCESS`  | No, new in v22.2
-`CHANGEFEED`                | No, new in v22.2
 
 If a system-level privilege exists with the same name as a role option, the system-level privilege should be used. Some role options do not have a corresponding system-level privilege, since they configure per-user attributes. For those system-level privileges that replace legacy role options (such as `VIEWACTIVITY`), if both the system-level privilege and its legacy role option are specified for a user/role, the system-level privilege will take precedence and the legacy role option will be ignored.
 
@@ -210,4 +209,4 @@ We recommend the following best practices to set up access control for your clus
 
 - Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
-- Generally, if a [system-level privilege](#system-level-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used. 
+- Generally, if a [system-level privilege](#supported-privileges) exists with the same name as a [role option](#role-options), the system-level privilege should be used. 
