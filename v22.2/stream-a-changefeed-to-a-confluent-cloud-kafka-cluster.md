@@ -290,7 +290,11 @@ Since the Kafka cluster uses `SASL` authentication, you need to pass the followi
 Use the following options to define the format and schema registry:
 
 - `format = avro`
-- `confluent_schema_registry = "https://{API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY URL}:443"`. Note that the schema registry uses basic authentication, which means that the URL's format is different from the Kafka URL. 
+- `confluent_schema_registry = "https://{API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY URL}:443"`. Note that the schema registry uses basic authentication, which means that the URL's format is different from the Kafka URL.
+
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}
+    {{site.data.alerts.end}}
 
     To form the URL, you need the following:
 
@@ -298,6 +302,10 @@ Use the following options to define the format and schema registry:
     - URL-encoded Schema Registry secret key created in [Step 5](#step-5-create-a-schema-registry-api-key-and-secret).
     - The `Endpoint URL` from the Schema Registry's details created in [Step 4](#step-4-create-a-confluent-schema-registry). Make sure to add the `:443` port to the end of this URL. For example, `psrc-x77pq.us-central1.gcp.confluent.cloud:443`.
 - Any other options you need to configure your changefeed. See [Options](create-changefeed.html#options) for a list of all available {{ site.data.products.enterprise }} changefeed options.
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
+{{site.data.alerts.end}}
 
 ## Step 9. Verify the output
 

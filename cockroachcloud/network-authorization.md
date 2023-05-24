@@ -7,8 +7,10 @@ docs_area: manage
 
 To prevent denial-of-service and brute force password attacks, {{ site.data.products.dedicated }} requires you to authorize networks that can access your cluster by [allowlisting the public IP addresses](#ip-allowlisting) for your application. Optionally, you can [set up Virtual Private Cloud (VPC) peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) for your cluster for enhanced network security and lower network latency.
 
-{{site.data.alerts.callout_success}}
 For additional cluster security, you can learn more about [Private Clusters (Preview)](private-clusters.html). A private cluster's nodes have no public IP addresses.
+
+{{site.data.alerts.callout_success}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
 ## IP allowlisting
@@ -23,6 +25,10 @@ While developing and testing your application, you may add `0.0.0.0/0` to the al
 {{site.data.alerts.end}}
 
 You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
+
+{{site.data.alerts.callout_success}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ## VPC peering
 
@@ -105,9 +111,9 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
 
-  </section>
+</section>
 
-  <section class="filter-content" markdown="1" data-scope="aws-cli">
+<section class="filter-content" markdown="1" data-scope="aws-cli">
 
 1.  Substitute the values from the previous steps and run the following AWS CLI command:
 

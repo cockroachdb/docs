@@ -339,6 +339,12 @@ module Jekyll
           synonyms: ['schema conversion tool', 'sct']
         }, false)
         
+        index.save_synonym('full text search', {
+          objectID: 'full text search',
+          type: 'synonym',
+          synonyms: ['full text search', 'fts']
+        }, false)
+
         return
       end
 

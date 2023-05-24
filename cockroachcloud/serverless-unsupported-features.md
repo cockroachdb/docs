@@ -23,7 +23,7 @@ Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} 
 
 ## Adding and removing regions
 
-You cannot currently add or remove regions from a {{ site.data.products.serverless }} cluster once it has been created. If you want to edit a custer's regions, you can [backup and restore](take-and-restore-customer-owned-backups.html) your data into a new cluster with the desired region configuration.
+You cannot currently edit an existing {{ site.data.products.serverless }} to add or remove regions after it has been created. Instead you can [back up and restore](take-and-restore-customer-owned-backups.html) your data into a new {{ site.data.products.serverless }} cluster with the desired region configuration.
 
 ## Follower reads
 

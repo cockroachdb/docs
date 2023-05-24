@@ -19,6 +19,10 @@ docs_area: deploy
 
 Use one of the options below to install CockroachDB.
 
+{{site.data.alerts.callout_success}}
+To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB](fips.html).
+{{site.data.alerts.end}}
+
 <div id="download-the-binary-linux" class="install-option">
   <h2 id="install-binary">Download the binary</h2>
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}

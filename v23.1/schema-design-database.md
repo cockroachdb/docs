@@ -24,12 +24,16 @@ Database objects make up the first level of the [CockroachDB naming hierarchy](s
 
 To create a database, use a [`CREATE DATABASE` statement](create-database.html), following [the database best practices](#database-best-practices). After reviewing the best practices, see the examples we provide [below](#example).
 
+{{site.data.alerts.callout_info}}
+Cockroach Labs recommends against starting a database name with the string `cluster:`. Refer to [Database Best Practices](#database-best-practices) for more information.
+{{site.data.alerts.end}}
+
 ### Database best practices
 
 Here are some best practices to follow when creating and using databases:
 
 - Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](sql-name-resolution.html#current-database) by executing a `USE {databasename};` statement, by passing the `--database={databasename}` flag to the [`cockroach sql` command](cockroach-sql.html#general), or by specifying the `database` parameter in the [connection string](connection-parameters.html#connect-using-a-url) passed to your database schema migration tool.
-
+- Do not begin your database name with the string `cluster:`. If your database name begins with this string, you must append the following to the URI connection string to [connect to the cluster](connect-to-the-database.html): `&options=-ccluster=system`
 - Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](security-reference/authorization.html#admin-role) (e.g., as the [`root` user](security-reference/authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices).
 
 - Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](schema-design-schema.html), in the same database.

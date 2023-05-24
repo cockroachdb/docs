@@ -31,7 +31,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The **Overview** page displays details about the selected {{ site.data.products.serverless }} cluster:
 
-- The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Region**
+- The **Cluster settings** section, including **Cloud provider**, **Plan type**, and **Regions**
 - The **Usage this month** section, including the **Resource limits**, **Storage**, and **Request Units**
 - The cluster's **Current activity**
 - Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
@@ -73,7 +73,7 @@ You can add or remove up to six regions at a time through the Console.
 You can only add regions to clusters created after May 16, 2023.
 {{site.data.alerts.end}}
 
-## Add a region to your cluster
+## Add a region
 
 To add regions to your cluster:
 
@@ -89,7 +89,7 @@ To add regions to your cluster:
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
-### Remove a region from your cluster
+### Remove a region
 
 To remove regions from your cluster:
 

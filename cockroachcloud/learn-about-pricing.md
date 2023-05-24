@@ -24,7 +24,7 @@ Your cluster's [resource limits](../{{site.versions["stable"]}}/architecture/glo
 
   {% include cockroachcloud/serverless-usage.md %}
   
-For multi-region clusters, storage is billed at the same rate, but because data is replicated three times in the primary region and once in each additional region by default, storage costs will be multiplied based on the number of replicas. During the [public preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html#feature-availability-phases), RU usage for queries that cross regions will not account for inter-region bandwidth.
+For multi-region Serverless clusters, storage is billed at the same rate, but because data is replicated three times in the primary region and once in each additional region by default, storage costs will be multiplied based on the number of replicas. During the [public preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html#feature-availability-phases), RU usage for queries that cross regions will not account for inter-region bandwidth.
 
 We recommend setting your resource limits to about 30% higher than your expected usage to prevent unexpected throttling. To learn about tuning your workload to reduce costs, see [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html).
 

@@ -670,4 +670,6 @@ When running CockroachDB on Kubernetes, making the following minimal customizati
 
 For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
-{% include common/transaction-retries.md %}
+## Transaction retries
+
+When several transactions try to modify the same underlying data concurrently, they may experience [contention](performance-best-practices-overview.html#transaction-contention) that leads to [transaction retries](transactions.html#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
