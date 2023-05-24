@@ -44,16 +44,16 @@ To set a different sink URI to an existing changefeed, use the [`sink` option](a
 Example of a Kafka sink URI using `SASL-SCRAM-SHA-256` authentication:
 
 ~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256'
+'kafka://broker.address.com:9092?TOPIC_PREFIX=bar_&TLS_ENABLED=true&CA_CERT=LS0tLS1CRUdJTiBDRVJUSUZ&SASL_ENABLED=true&SASL_USER={sasl user}&SASL_PASSWORD={url-encoded password}&SASL_MECHANISM=SASL-SCRAM-SHA-256'
 ~~~
 
 {% include_cached new-in.html version="v23.1" %} Example of a Kafka sink URI using `OAUTHBEARER` authentication:
 
 ~~~
-'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
+'kafka://{kafka cluster address}:9093?TOPIC_NAME={vehicles}&SASL_CLIENT_ID={your client ID}&SASL_CLIENT_SECRET={your base64-encoded client secret}&SASL_ENABLED=true&SASL_MECHANISM=OAUTHBEARER&SASL_TOKEN_URL={your token URL}'
 ~~~
 
-{% include {{ page.version.version }}/cdc/oauth-description.md %} 
+{% include {{ page.version.version }}/cdc/oauth-description.md %}
 
 To authenticate to Kafka with OAuth using Okta, see the [Connect to a Changefeed Kafka sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) tutorial.
 
@@ -61,22 +61,22 @@ To authenticate to Kafka with OAuth using Okta, see the [Connect to a Changefeed
 
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
-`topic_name`       | The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`topic_prefix`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
-`tls_enabled`      | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
-`ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a Kafka sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
-`client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
-`client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
-<span class="version-tag">New in v23.1:</span> `sasl_client_id`   | Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-<span class="version-tag">New in v23.1:</span> `sasl_client_secret` | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
-`sasl_enabled`     | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
-<span class="version-tag">New in v23.1:</span> `sasl_grant_type` | Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-`sasl_mechanism`   | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html), [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
-<span class="version-tag">New in v23.1:</span> `sasl_scopes` | A list of scopes that the OAuth token should have access for. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-<span class="version-tag">New in v23.1:</span> `sasl_token_url` | Client token URL for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [URL encode](https://www.urlencoder.org/) this value before passing in a URI.
-`sasl_user`        | Your SASL username.
-`sasl_password`    | Your SASL password
-`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+`TOPIC_NAME`       | The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
+`TOPIC_PREFIX`     | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?TOPIC_PREFIX=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`TLS_ENABLED`      | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `CA_CERT` (see below). <br><br>**Default:** `false`
+`CA_CERT`          | The base64-encoded `CA_CERT` file. Specify `CA_CERT` for a Kafka sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`CLIENT_CERT`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `CLIENT_KEY`.
+`CLIENT_KEY`       | The base64-encoded private key for the PEM certificate. This is used with `CLIENT_CERT`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
+<span class="version-tag">New in v23.1:</span> `SASL_CLIENT_ID`   | Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with `SASL_MECHANISM=OAUTHBEARER`.
+<span class="version-tag">New in v23.1:</span> `SASL_CLIENT_SECRET` | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `SASL_MECHANISM=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
+`SASL_ENABLED`     | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `SASL_MECHANISM` parameter. You must have `TLS_ENABLED` set to `true` to use SASL. <br><br> **Default:** `false`
+<span class="version-tag">New in v23.1:</span> `SASL_GRANT_TYPE` | Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with `SASL_MECHANISM=OAUTHBEARER`.
+`SASL_MECHANISM`   | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html), [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `SASL_USER` and `SASL_PASSWORD` are required. <br><br> **Default:** `SASL-PLAIN`
+<span class="version-tag">New in v23.1:</span> `SASL_SCOPES` | A list of scopes that the OAuth token should have access for. This parameter is only applicable with `SASL_MECHANISM=OAUTHBEARER`.
+<span class="version-tag">New in v23.1:</span> `SASL_TOKEN_URL` | Client token URL for OAuth authentication from a third-party provider. This parameter is only applicable with `SASL_MECHANISM=OAUTHBEARER`. **Note:** You must [URL encode](https://www.urlencoder.org/) this value before passing in a URI.
+`SASL_USER`        | Your SASL username.
+`SASL_PASSWORD`    | Your SASL password
+`INSECURE_TLS_SKIP_VERIFY` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
@@ -84,7 +84,7 @@ URI Parameter      | Description
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If you create a changefeed on multiple tables, the changefeed will write to multiple topics corresponding to those table names. When you run `CREATE CHANGEFEED` to a Kafka sink, the output will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
-To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic-prefix-param), [an arbitrary topic name](create-changefeed.html#topic-name-param), or use the [`full_table_name` option](create-changefeed.html#full-table-option). Using the [`topic_name`](create-changefeed.html#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic-prefix-param), [an arbitrary topic name](create-changefeed.html#topic-name-param), or use the [`full_table_name` option](create-changefeed.html#full-table-option). Using the [`TOPIC_NAME`](create-changefeed.html#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
@@ -182,7 +182,7 @@ The following shows the [Avro](changefeed-messages.html#avro) messages for a cha
  }
 ~~~
 
-See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial for examples to set up a Kafka sink. 
+See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial for examples to set up a Kafka sink.
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
@@ -199,16 +199,16 @@ Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integr
 A Pub/Sub sink URI follows this example:
 
 ~~~
-'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+'gcpubsub://{project name}?REGION={region}&TOPIC_NAME={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
 <a name ="pub-sub-parameters"></a>
 
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
-`project name`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`region`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`](create-changefeed.html#unordered) option.
-`topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
+`PROJECT NAME`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
+`REGION`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`](create-changefeed.html#unordered) option.
+`TOPIC_NAME`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
 `AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
@@ -219,7 +219,7 @@ When using Pub/Sub as your downstream sink, consider the following:
 
 - Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
 - Use the [`unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. Google Cloud's multi-region Pub/Sub will have lower latency when emitting from multiple regions, but Google Cloud Pub/Sub does not support message ordering for multi-region topics.
-- Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+- Changefeeds connecting to a Pub/Sub sink do not support the `TOPIC_PREFIX` option.
 
 Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
 
@@ -230,7 +230,7 @@ For more information, read about compatible changefeed [options](create-changefe
 
 ### Pub/Sub topic naming
 
-When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name. 
+When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`TOPIC_NAME`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name.
 
 The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
@@ -240,7 +240,7 @@ For a list of compatible parameters and options, see [Parameters](create-changef
 
 ### Pub/Sub sink messages
 
-The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example: 
+The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
@@ -273,7 +273,7 @@ Some considerations when using cloud storage sinks:
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 - {% include {{ page.version.version }}/cdc/cloud-storage-external-connection.md %}
 
-You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](cloud-storage-authentication.html). 
+You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](cloud-storage-authentication.html).
 
 Examples of supported cloud storage sink URIs:
 
@@ -310,7 +310,7 @@ URI Parameter      | Storage | Description
 `AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
 `ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
-`AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication](cloud-storage-authentication.html) for examples of each of these. 
+`AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication](cloud-storage-authentication.html) for examples of each of these.
 `AZURE_ACCOUNT_NAME` | Azure Blob Storage | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure Blob Storage | The URL-encoded account key for your Azure account.
 `AZURE_CLIENT_ID` | Azure Blob Storage | Application (client) ID for your [App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application).
@@ -318,19 +318,19 @@ URI Parameter      | Storage | Description
 `AZURE_ENVIRONMENT` | Azure Blob Storage | {% include {{ page.version.version }}/misc/azure-env-param.md %}
 `AZURE_TENANT_ID`| Azure Blob Storage | Directory (tenant) ID for your App Registration.
 `CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
-`file_size`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
-<a name ="partition-format"></a>`partition_format` | All | Specify how changefeed [file paths](create-changefeed.html#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
-`S3_storage_class` | AWS S3 | Specify the S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
-`topic_prefix`     | All | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
+`FILE_SIZE`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
+<a name ="partition-format"></a>`PARTITION_FORMAT` | All | Specify how changefeed [file paths](create-changefeed.html#general-file-format) are partitioned in cloud storage sinks. Use `PARTITION_FORMAT` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&PARTITION_FORMAT=hourly'` <br><br> **Default:** `daily`
+`S3_STORAGE_CLASS` | AWS S3 | Specify the S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
+`TOPIC_PREFIX`     | All | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?TOPIC_PREFIX=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
 [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) provides more detail on authentication to cloud storage sinks.
 
-### Cloud storage sink messages 
+### Cloud storage sink messages
 
 The following shows the default JSON messages for a changefeed emitting to a cloud storage sink:
- 
+
 ~~~
 {
     "after":{
@@ -385,23 +385,23 @@ Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 Example of a webhook sink URL:
 
 ~~~
-'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
+'webhook-https://{your-webhook-endpoint}?INSECURE_TLS_SKIP_VERIFY=true'
 ~~~
 
 <a name ="webhook-parameters"></a>The following table lists the parameters you can use in your webhook URI:
 
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
-`ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a webhook sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
-`client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
-`client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
-`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+`CA_CERT`          | The base64-encoded `CA_CERT` file. Specify `CA_CERT` for a webhook sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`CLIENT_CERT`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `CLIENT_KEY`.
+`CLIENT_KEY`       | The base64-encoded private key for the PEM certificate. This is used with `CLIENT_CERT`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
+`INSECURE_TLS_SKIP_VERIFY` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
 The following are considerations when using the webhook sink:
 
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Only supports HTTPS. Use the [`INSECURE_TLS_SKIP_VERIFY`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 * Supports JSON output format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
 * There is no concurrency configurability.
 

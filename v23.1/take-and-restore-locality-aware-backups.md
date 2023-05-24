@@ -36,9 +36,10 @@ BACKUP INTO
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
-{{site.data.alerts.callout_info}}
-The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
-{{site.data.alerts.end}}
+When you run the `BACKUP` statement for a locality-aware backup, check the following:
+
+- The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
+- {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
 
 You can restore the backup by running:
 
@@ -125,7 +126,7 @@ To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](re
 
 ## Create an incremental locality-aware backup
 
-If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup in a subdirectory. When you're taking an incremental backup, you must ensure that the incremental backup localities match the full backup localities otherwise you will receive an error. Alternatively, take another full backup with the matching localities before running the incremental backup. 
+If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup in a subdirectory. When you're taking an incremental backup, you must ensure that the incremental backup localities match the full backup localities otherwise you will receive an error. Alternatively, take another full backup with the matching localities before running the incremental backup.
 
 There is different syntax for taking an incremental backup depending on where you need to store the backups:
 
