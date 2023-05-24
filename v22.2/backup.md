@@ -95,7 +95,7 @@ N/A                                | Backup the cluster. For an example of a ful
 ### Query parameters
 
 Query parameter | Value | Description
--------------------------------------
+----------------+-------+------------
 `COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html) for more detail and examples.
 `S3_STORAGE_CLASS` | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
 
