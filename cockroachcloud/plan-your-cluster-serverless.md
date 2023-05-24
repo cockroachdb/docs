@@ -2,7 +2,7 @@
 title: Plan a CockroachDB Serverless Cluster
 summary: Plan your cluster's configuration.
 toc: true
-docs_area: manage
+docs_area: deploy
 cloud: true
 ---
 

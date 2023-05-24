@@ -3,6 +3,7 @@ title: Plan a CockroachDB Dedicated Cluster
 summary: Plan your cluster's configuration.
 toc: true
 docs_area: deploy
+cloud: true
 ---
 
 {% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
