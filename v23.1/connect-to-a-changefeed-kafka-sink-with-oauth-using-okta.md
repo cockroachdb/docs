@@ -17,14 +17,14 @@ An overview of the workflow involves:
 1. Configuring the Kafka cluster.
 1. Streaming the changefeed to the Kafka cluster.
 
-## Before you begin 
+## Before you begin
 
 Before starting this tutorial, you will need:
 
-- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. 
-    - If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page. 
+- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster.
+    - If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page.
 - An [Okta Developer account](https://developer.okta.com/signup/).
-- (Optional) A Kafka cluster. This tutorial includes [Kafka cluster setup](#step-3-create-a-kafka-sink). Note that this tutorial was tested with Kafka [version 2.8.2](https://kafka.apache.org/downloads). The Kafka cluster configuration may vary with different versions, but the Okta setup and changefeed creation will be the same. 
+- (Optional) A Kafka cluster. This tutorial includes [Kafka cluster setup](#step-3-create-a-kafka-sink). Note that this tutorial was tested with Kafka [version 2.8.2](https://kafka.apache.org/downloads). The Kafka cluster configuration may vary with different versions, but the Okta setup and changefeed creation will be the same.
 
 This tutorial uses the Cockroach Labs [`movr`](movr.html) workload as an example database.
 
@@ -46,12 +46,12 @@ Once you have created the application integration, you'll configure an [authoriz
 
 1. Navigate to **Security** in the sidebar and then **API**. From here, you can add a new authorization server, or use the default authorization server. This tutorial will use the default server.
 
-1. Click on the name of your authorization server and then select the **Scopes** tab. 
+1. Click on the name of your authorization server and then select the **Scopes** tab.
 
 1. Select **Add Scope**:
-    - Add `kafka` as the name for your scope and include an optional description. 
-    - For **User Consent**, leave the default **Implicit** selected. 
-    - Check the box to set this as the **Default Scope**. 
+    - Add `kafka` as the name for your scope and include an optional description.
+    - For **User Consent**, leave the default **Implicit** selected.
+    - Check the box to set this as the **Default Scope**.
     - Optionally check **Include in public metadata** if you wish to include this scope in public metadata.
 
 1. Click **Create**.
@@ -90,7 +90,7 @@ If you do not already have a Kafka cluster, create one with the instructions in 
 
 ## Step 4. Update Kafka configuration
 
-In this step, you will update configuration files in your Kafka cluster to set up the SASL mechanism for handling OAuth tokens. 
+In this step, you will update configuration files in your Kafka cluster to set up the SASL mechanism for handling OAuth tokens.
 
 1. Move to the following directory:
 
@@ -163,7 +163,7 @@ The SASL callback handlers added in [Step 4](#step-4-update-kafka-configuration)
     sudo apt install maven
     ~~~
 
-1. Move to the `kafka-oauth` directory: 
+1. Move to the `kafka-oauth` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -182,7 +182,7 @@ The SASL callback handlers added in [Step 4](#step-4-update-kafka-configuration)
 In this step, you'll export the environment variables that contain your OAuth client credentials. You will need the following information from your Okta developer account:
 
 - Your [Okta domain](https://developer.okta.com/docs/guides/find-your-domain/main/), for example `dev-12345678.okta.com`
-- The absolute paths to your: 
+- The absolute paths to your:
     - `kafka-oauth` directory
     - `kafka_2.13-2.8.2` directory (or your Kafka version)
 - Your client ID and client secret from your Okta application (created in [Step 1](#step-1-create-an-okta-application-and-scope)). You will need to build the value for the variable as `{client ID}:{client secret}` and [base64 encode](https://www.base64encode.org/) the whole value.
@@ -244,7 +244,7 @@ The Kafka URI must follow this format:
 
 {% include_cached copy-clipboard.html %}
 ~~~
-'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your url-encoded Okta domain}'
+'kafka://{kafka cluster address}:9093?TOPIC_NAME={vehicles}&SASL_CLIENT_ID={your client ID}&SASL_CLIENT_secret={your base64-encoded client secret}&SASL_ENABLED=true&SASL_MECHANISM=OAUTHBEARER&SASL_TOKEN_URL={your url-encoded Okta domain}'
 ~~~
 
 Note the following:
@@ -257,7 +257,7 @@ Since this is a long URI to run, you can create an [external connection](create-
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE EXTERNAL CONNECTION kafka_oauth AS 'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your url-encoded Okta domain}';
+CREATE EXTERNAL CONNECTION kafka_oauth AS 'kafka://{kafka cluster address}:9093?TOPIC_NAME={vehicles}&SASL_CLIENT_ID={your client ID}&SASL_CLIENT_secret={your base64-encoded client secret}&SASL_ENABLED=true&SASL_MECHANISM=OAUTHBEARER&SASL_TOKEN_URL={your url-encoded Okta domain}';
 ~~~
 
 Create a changefeed that will emit messages to the topic consumer:
