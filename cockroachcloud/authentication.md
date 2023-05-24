@@ -92,7 +92,7 @@ SQL clients may authenticate to {{ site.data.products.dedicated }} clusters usin
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Managing Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters](client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](client-certs-dedicated.html) for procedural information on administering and using client certificate authentication.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/limited-access.md %}

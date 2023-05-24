@@ -24,7 +24,7 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 
 - The `SHOW JOBS` statement shows only long-running tasks.
 - For jobs older than 12 hours, query the `crdb_internal.jobs` table.
-- Jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
+- For the `SHOW JOBS` statement, jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html). See [Show changefeed jobs](#show-changefeed-jobs) for changefeed job retention time.
 - While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.
 - Garbage collection jobs are created for [dropped tables](drop-table.html) and [dropped indexes](drop-index.html), and will execute after the [GC TTL](configure-replication-zones.html#gc-ttlseconds) has elapsed. These jobs cannot be canceled.
 -  CockroachDB automatically retries jobs that fail due to [retry errors](transaction-retry-error-reference.html) or job coordination failures, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff). The `jobs.registry.retry.initial_delay` [cluster setting](cluster-settings.html) sets the initial delay between retries and `jobs.registry.retry.max_delay` sets the maximum delay.
@@ -178,7 +178,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 ### Show changefeed jobs
 
-You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
+You can display specific fields relating to [changefeed](create-changefeed.html) jobs by running `SHOW CHANGEFEED JOBS`. These fields include:
 
 * [`high_water_timestamp`](monitor-and-debug-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
@@ -186,18 +186,9 @@ You can display specific fields relating to changefeed jobs by running `SHOW CHA
 - `topics`: The topic name to which [Kafka](changefeed-sinks.html#kafka) and [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) changefeed messages will emit. If you start a changefeed with the [`split_column_families`](create-changefeed.html#split-column-families) option targeting a table with [multiple column families](changefeeds-on-tables-with-column-families.html), the `SHOW CHANGEFEED JOBS` output will show the topic name with a family placeholder. For example, `topic.{family}`.
 - [`format`](create-changefeed.html#format): The format of the changefeed messages, e.g., `json`, `avro`.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW CHANGEFEED JOBS;
-~~~
+{% include {{ page.version.version }}/cdc/show-changefeed-job-retention.md %}
 
-~~~
-    job_id             |                                                                                   description                                                                  | ...
-+----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+ ...
-  685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
-  685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
-(2 rows)
-~~~
+{% include {{ page.version.version }}/cdc/show-changefeed-job.md %}
 
 Changefeed jobs can be [paused](create-and-configure-changefeeds.html#pause), [resumed](create-and-configure-changefeeds.html#resume), [altered](alter-changefeed.html), or [canceled](create-and-configure-changefeeds.html#cancel).
 

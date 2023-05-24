@@ -303,6 +303,10 @@ You can also [create external connections](create-external-connection.html) to d
     "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443"
     ~~~
 
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}
+    {{site.data.alerts.end}}
+
 1. Create an external connection for the Confluent Schema Registry URI:
 
     {% include_cached copy-clipboard.html %}
@@ -318,6 +322,10 @@ You can also [create external connections](create-external-connection.html) to d
     ~~~
 
     See [Options](create-changefeed.html#options) for a list of all available Enterprise changefeed options.
+
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
+    {{site.data.alerts.end}}
 
 ## Step 9. Verify the output
 
