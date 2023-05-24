@@ -21,6 +21,8 @@ Such long-running queries can hold intents open for (practically) unlimited dura
 
 Refer to the performance tuning recipe for [identifying and unblocking a waiting transaction](performance-recipes.html#waiting-transaction).
 
+If you experience this issue on a {{ site.data.products.serverless }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits](../cockroachcloud/troubleshooting-page.html#hanging-or-stuck-queries).
+
 ### Identify slow queries
 
 You can identify high-latency SQL statements on the [**Insights**](ui-insights-page.html) or [**Statements**](ui-statements-page.html) pages in the DB Console. If these graphs reveal latency spikes, CPU usage spikes, or slow requests, these might indicate slow queries in your cluster.
