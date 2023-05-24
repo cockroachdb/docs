@@ -8,7 +8,7 @@ key: cdc-transformations.html
 
 {% include enterprise-feature.md %}
 
-Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).  
+Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. The expression [syntax](#syntax) provides a way to select columns and apply filters to further restrict or transform the data in your [changefeed messages](changefeed-messages.html).
 
 You can use CDC queries to do the following:
 
@@ -24,7 +24,7 @@ See the [Examples](#examples) section for further use cases.
 
 There are two possible components to CDC queries:
 
-- _Projections_ select the columns that you want to emit data from. 
+- _Projections_ select the columns that you want to emit data from.
 - _Predicates_ restrict the resulting column change data based on the filters you apply.
 
 ~~~ sql
@@ -67,7 +67,7 @@ You can also use the following functions in CDC queries:
 
 - Functions marked as "Immutable" on the [Functions and Operators page](functions-and-operators.html).
 - {% include_cached new-in.html version="v23.1" %} Non-volatile [user-defined functions](user-defined-functions.html). See the [Queries and user-defined functions](#queries-and-user-defined-functions) example.
-- Functions that rely on [session data](show-sessions.html). At the time of changefeed creation, information about the current session is saved. When a CDC query includes one of the functions that use session data, the query will evaluate the saved session data. 
+- Functions that rely on [session data](show-sessions.html). At the time of changefeed creation, information about the current session is saved. When a CDC query includes one of the functions that use session data, the query will evaluate the saved session data.
 - The following "Stable" functions:
   - `age()`
   - `array_to_json()`
@@ -98,12 +98,12 @@ You can **not** use the following functions with CDC queries:
 
 ## Examples
 
-CDC queries allow you to customize your changefeed for particular scenarios. This section outlines several possible use cases for CDC queries. 
+CDC queries allow you to customize your changefeed for particular scenarios. This section outlines several possible use cases for CDC queries.
 
 See [`CREATE CHANGEFEED`](create-changefeed.html) for examples on using the foundational syntax to create a changefeed. For information on sinks, see the [Changefeed Sinks](changefeed-sinks.html) page.
 
 {{site.data.alerts.callout_success}}
-To optimize the `SELECT` query you run in your changefeed statement, use the [`EXPLAIN`](explain.html) statement to view a statement plan. 
+To optimize the `SELECT` query you run in your changefeed statement, use the [`EXPLAIN`](explain.html) statement to view a statement plan.
 
 Note that `EXPLAIN` does not have access to [`cdc_prev`](#emit-the-previous-state-of-a-row), therefore you will receive an error if your `SELECT` query contains `cdc_prev`.
 {{site.data.alerts.end}}
@@ -159,7 +159,7 @@ The `before` value in the delete message, produced by the `diff` option, will in
 
 ### Emit the previous state of a row
 
-{% include_cached new-in.html version="v23.1" %} Changefeeds can access the `cdc_prev` hidden column on a table to emit the previous state of a row or column. `cdc_prev` is a tuple-typed column that contains the table's columns. 
+{% include_cached new-in.html version="v23.1" %} Changefeeds can access the `cdc_prev` hidden column on a table to emit the previous state of a row or column. `cdc_prev` is a tuple-typed column that contains the table's columns.
 
 To emit the previous state of a row, it is necessary to explicitly call `cdc_prev`:
 
@@ -194,7 +194,7 @@ If you are running changefeeds from a [multi-region](multiregion-overview.html) 
 
 ### Stabilize the changefeed message schema
 
-As changefeed messages emit from the database, message formats can vary as tables experience [schema changes](changefeed-messages.html#schema-changes). You can select columns with [typecasting](data-types.html#data-type-conversions-and-casts) to prevent message fields from changing during a changefeed's lifecycle: 
+As changefeed messages emit from the database, message formats can vary as tables experience [schema changes](changefeed-messages.html#schema-changes). You can select columns with [typecasting](data-types.html#data-type-conversions-and-casts) to prevent message fields from changing during a changefeed's lifecycle:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -205,31 +205,31 @@ CREATE CHANGEFEED INTO sink AS SELECT id::int, name::varchar, admin::bool FROM u
 
 CDC queries allow you to emit changefeed messages from the same table to different endpoints. As a result, you can use queries to load balance messages across changefeed sinks without the need for an intermediate system.
 
-In this example, the query uses the `ride_id` column's [`UUID`](uuid.html) to shard the messages. The [`left()`](functions-and-operators.html#string-and-byte-functions) function filters the first character from the `ride_id` column and finds the specified initial characters. The example shards successfully by running a changefeed on the same table and dividing the 16 possible beginning `UUID` characters through to `f`. 
+In this example, the query uses the `ride_id` column's [`UUID`](uuid.html) to shard the messages. The [`left()`](functions-and-operators.html#string-and-byte-functions) function filters the first character from the `ride_id` column and finds the specified initial characters. The example shards successfully by running a changefeed on the same table and dividing the 16 possible beginning `UUID` characters through to `f`.
 
 Therefore, the first changefeed created:
 
 {% include_cached copy-clipboard.html %}
-~~~sql 
-CREATE CHANGEFEED INTO 'scheme://sink-URI-1' 
-AS SELECT * FROM movr.vehicle_location_histories 
+~~~sql
+CREATE CHANGEFEED INTO 'scheme://sink-URI-1'
+AS SELECT * FROM movr.vehicle_location_histories
 WHERE left(ride_id::string, 1) IN ('0','1','2','3');
 ~~~
 
 The final changefeed created:
 
 {% include_cached copy-clipboard.html %}
-~~~sql 
-CREATE CHANGEFEED INTO 'scheme://sink-URI-4' 
-AS SELECT * FROM movr.vehicle_location_histories 
+~~~sql
+CREATE CHANGEFEED INTO 'scheme://sink-URI-4'
+AS SELECT * FROM movr.vehicle_location_histories
 WHERE left(ride_id::string, 1) IN ('c','d','e','f');
 ~~~
 
 ### View recent changes to a row
 
-You can use CDC queries as a tool for debugging or investigating issues from the SQL shell. 
+You can use CDC queries as a tool for debugging or investigating issues from the SQL shell.
 
-For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`](create-changefeed.html#cursor-option) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell. 
+For example, you may need to identify what recently changed in a specific row. You can use the [`cursor`](create-changefeed.html#cursor-option) option with the desired start time and a `WHERE` clause describing the row in question. Instead of sending to a sink, a "sinkless" changefeed will allow you to view the results in the SQL shell.
 
 1. Find the start time. Use the [`cluster_logical_timestamp()`](functions-and-operators.html#system-info-functions) function to calculate the logical time. This will return the logical timestamp for an hour earlier than the statement run time:
 
@@ -249,8 +249,8 @@ For example, you may need to identify what recently changed in a specific row. Y
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000' 
-    AS SELECT * FROM vehicle_location_histories 
+    CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000'
+    AS SELECT * FROM vehicle_location_histories
     WHERE ride_id::string LIKE 'f2616bb3%';
     ~~~
 
@@ -258,8 +258,8 @@ For example, you may need to identify what recently changed in a specific row. Y
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000' 
-    AS SELECT * FROM vehicle_location_histories 
+    CREATE CHANGEFEED WITH cursor='1663938662092036106.0000000000', end_time='1663942405825479261.0000000000'
+    AS SELECT * FROM vehicle_location_histories
     WHERE ride_id::string LIKE 'f2616bb3%';
     ~~~
 
@@ -269,9 +269,9 @@ For example, you may need to identify what recently changed in a specific row. Y
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-CREATE CHANGEFEED INTO 'external://sink' 
-AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp 
-AS age 
+CREATE CHANGEFEED INTO 'external://sink'
+AS SELECT crdb_internal_mvcc_timestamp - (cdc_prev).crdb_internal_mvcc_timestamp
+AS age
 FROM movr.rides;
 ~~~
 ~~~
@@ -293,8 +293,8 @@ In the event that an incident downstream has affected some rows, you may need a 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'scheme://sink-URI' 
-AS SELECT * FROM movr.vehicle_location_histories 
+CREATE CHANGEFEED INTO 'scheme://sink-URI'
+AS SELECT * FROM movr.vehicle_location_histories
 WHERE ride_id = 'ff9df988-ebda-4066-b0fc-ecbc45f8d12b';
 ~~~
 
@@ -312,7 +312,7 @@ The output will only include the row's history that has been changed within the 
 
 ### Customize changefeed messages
 
-You can adapt your [changefeed messages](changefeed-messages.html) by filtering the columns, but it is also possible to build message fields with SQL expressions. 
+You can adapt your [changefeed messages](changefeed-messages.html) by filtering the columns, but it is also possible to build message fields with SQL expressions.
 
 In this example, the query adds a `summary` field to the changefeed message:
 
@@ -331,7 +331,7 @@ CREATE CHANGEFEED AS SELECT *, owner_id::string || ' takes passengers by ' || ty
 
 ### Queries and the outbox pattern
 
-The transactional outbox pattern provides a way to publish events reliably through an outbox table before sending to the messaging system. CDC queries can help to streamline this process by eliminating the need for an outbox table in the database. If you also have a requirement to transform the data or remove delete messages from the changefeed payload, queries can achieve this. 
+The transactional outbox pattern provides a way to publish events reliably through an outbox table before sending to the messaging system. CDC queries can help to streamline this process by eliminating the need for an outbox table in the database. If you also have a requirement to transform the data or remove delete messages from the changefeed payload, queries can achieve this.
 
 For example, you have three tables: `users`, `accounts`, and `dogs`. You need to send all changes to any of those tables to a single Kafka endpoint using a specific structure. Namely, a JSON object like the following:
 
@@ -344,13 +344,13 @@ For example, you have three tables: `users`, `accounts`, and `dogs`. You need to
 }
 ~~~
 
-To achieve this, you create changefeeds directly on the tables and transform the result into the required format. 
+To achieve this, you create changefeeds directly on the tables and transform the result into the required format.
 
 For the previous JSON example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
+CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
 'dogs' AS table,
 event_op() AS type,
@@ -361,14 +361,14 @@ FROM dogs;
 This statement does the following:
 
 - Selects the `event_timestamp` of the event and casts to an `INT`.
-- Sets the `type` of change using the [`event_op()` function](#cdc-query-function-support). 
+- Sets the `type` of change using the [`event_op()` function](#cdc-query-function-support).
 - Uses [`jsonb_build_object()`](functions-and-operators.html) to construct the desired data field.
 
-For the remaining tables, you use the same statement structure to create changefeeds that will send messages to the Kafka endpoint: 
+For the remaining tables, you use the same statement structure to create changefeeds that will send messages to the Kafka endpoint:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
+CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
 'users' AS table,
 event_op() AS type,
@@ -378,7 +378,7 @@ FROM users;
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
+CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
 'accounts' AS table,
 event_op() AS type,
@@ -386,13 +386,13 @@ jsonb_build_object('owner', owner) AS data
 FROM accounts;
 ~~~
 
-For a different usage of the outbox pattern, you may still want an events table to track and manage the lifecycle of an event. You can also use CDC queries in this case to filter the event management metadata out of a message. 
+For a different usage of the outbox pattern, you may still want an events table to track and manage the lifecycle of an event. You can also use CDC queries in this case to filter the event management metadata out of a message.
 
 For example, when you delete a message in your outbox table after processing it (or with [row-level TTL](row-level-ttl.html)). You can filter the [delete messages](#filter-delete-messages) from your changefeed:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT * FROM outbox WHERE event_op() != 'delete';
+CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT * FROM outbox WHERE event_op() != 'delete';
 ~~~
 
 Similarly, if you have a status column in your outbox table tracking its lifecycle, you can filter out updates as well so that only the initial insert sends a message:
@@ -408,12 +408,12 @@ Since all non-primary key columns will be `NULL` in the `cdc_prev` output for an
 
 {% include_cached new-in.html version="v23.1" %} You can create CDC queries that include [user-defined functions](user-defined-functions.html).
 
-The following [`CREATE FUNCTION`](create-function.html) statement builds the `doubleRevenue()` function at the database level: 
+The following [`CREATE FUNCTION`](create-function.html) statement builds the `doubleRevenue()` function at the database level:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE FUNCTION doubleRevenue(r int)
-RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS 
+RETURNS INT IMMUTABLE LEAKPROOF LANGUAGE SQL AS
 $$ SELECT 2 * r $$;
 ~~~
 
