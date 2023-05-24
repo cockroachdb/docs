@@ -10,7 +10,7 @@ The `COPY FROM` statement copies data from [`cockroach sql`](cockroach-sql.html)
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/copy_from.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/{{ page.release_info.crdb_branch_name }}/grammar_svg/copy.html %}
 </div>
 
 ### Parameters

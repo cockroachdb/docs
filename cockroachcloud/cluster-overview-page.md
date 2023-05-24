@@ -22,7 +22,7 @@ The **Cluster settings** panel displays the settings you chose during [cluster c
 |-----------|---------------------------------------------------------------------------------------------------------|
 | Cloud     | The cluster's [cloud provider](create-a-serverless-cluster.html#step-2-select-the-cloud-provider). |
 | Plan type | The plan type used to create the cluster.                                                               |
-| Region(s)    | The cluster's [region(s)](create-a-serverless-cluster.html#step-3-select-the-region-s).         |
+| Regions    | The cluster's [regions](create-a-serverless-cluster.html#step-3-select-the-regions).         |
 
 ## Usage this month
 
@@ -30,7 +30,7 @@ The **Usage this month** panel displays your cluster usage statistics for the cu
 
 | Field         | Description                                                                                                                                                                                                                                                                      |
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Resource limits   | The resource limits you entered when [creating the cluster](create-a-serverless-cluster.html#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
+| Resource limits   | The {{ site.data.products.serverless }} cluster's [configured resource limits](create-a-serverless-cluster.html#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your resource limits. For details, see [{{ site.data.products.db }} Architecture](architecture.html#performance). |
 | [Request Units](learn-about-request-units.html) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [{{ site.data.products.db }} Architecture](architecture.html#cockroachdb-cloud-terms).              |
 

@@ -7,11 +7,11 @@ docs_area: security
 cloud: true
 ---
 
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 This page describes how Egress Perimeter Controls can enhance the security of {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Egress Perimeter Controls are not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ## Why use Egress Perimeter Controls
 

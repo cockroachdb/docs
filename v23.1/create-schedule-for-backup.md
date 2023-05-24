@@ -60,7 +60,7 @@ Targets:
 `backup_options`                        | Control the backup behavior with a comma-separated list of [options](#backup-options).
 `RECURRING crontab`                     | Specifies when the backup should be taken. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with [`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html). The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. <br><br>Example: `'@daily'` (run daily at midnight)
 <a name="full-backup-clause"></a>`FULL BACKUP crontab` | Specifies when to take a new full backup. The schedule is specified as a [`STRING`](string.html) in [crontab format](https://en.wikipedia.org/wiki/Cron) or as `ALWAYS`. <br><br>If `FULL BACKUP ALWAYS` is specified, then the backups triggered by the `RECURRING` clause will always be full backups. <br>**Note:** If you do not have an Enterprise license then you can only take full backups. `ALWAYS` is the only accepted value of `FULL BACKUP`.<br><br>If the `FULL BACKUP` clause is omitted, CockroachDB will default to the following full backup schedule: <ul><li>`RECURRING` <= 1 hour: Default to `FULL BACKUP '@daily'`</li><li>`RECURRING` <= 1 day: Default to `FULL BACKUP '@weekly'`</li><li>Otherwise: Default to `FULL BACKUP ALWAYS`</li></ul>
-`WITH SCHEDULE OPTIONS schedule_option` | _Experimental feature._ Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
+`WITH SCHEDULE OPTIONS schedule_option` | Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
 {{site.data.alerts.callout_info}}
 For schedules that include both [full and incremental backups](take-full-and-incremental-backups.html), CockroachDB will create two schedules (one for each type).
@@ -71,10 +71,6 @@ For schedules that include both [full and incremental backups](take-full-and-inc
 {% include {{ page.version.version }}/backups/backup-options-for-schedules.md %}
 
 ### Schedule options
-
-{{site.data.alerts.callout_info}}
-{% include feature-phases/preview.md %}
-{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/backups/schedule-options.md %}
 
@@ -94,7 +90,10 @@ The data being backed up will not be eligible for garbage collection until a suc
 
 You can also use the `exclude_data_from_backup` option with a scheduled backup as a way to prevent protected timestamps from prolonging garbage collection on a table. See the example [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) for usage information.
 
-We recommend monitoring for your backup schedule to alert for failed backups. See [Set up monitoring for the backup schedule](manage-a-backup-schedule.html#set-up-monitoring-for-the-backup-schedule) for more detail.
+We recommend monitoring for your backup schedule to alert for failed backups: 
+
+- See the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page for a general overview and list of metrics available for backup, scheduled backup, and restore jobs.
+- See [Set up monitoring for the backup schedule](manage-a-backup-schedule.html#set-up-monitoring-for-the-backup-schedule) for metrics and monitoring backup schedules specifically.
 
 ## View and control backup schedules
 

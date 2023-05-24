@@ -141,6 +141,12 @@
               ]
             },
             {
+              "title": "Locality-restricted Backup Execution",
+              "urls": [
+                "/${VERSION}/take-locality-restricted-backups.html"
+              ]
+            },
+            {
               "title": "Locality-aware Backup and Restore",
               "urls": [
                 "/${VERSION}/take-and-restore-locality-aware-backups.html"
@@ -157,13 +163,13 @@
               "urls": [
                 "/${VERSION}/backup-validation.html"
               ]
-            },
-            {
-              "title": "Backup and Restore Monitoring",
-              "urls": [
-                "/${VERSION}/backup-and-restore-monitoring.html"
-              ]
             }
+          ]
+        },
+        {
+          "title": "Backup and Restore Monitoring",
+          "urls": [
+            "/${VERSION}/backup-and-restore-monitoring.html"
           ]
         },
         {
@@ -478,7 +484,7 @@
               "urls": [
                 "/cockroachcloud/insights-page.html"
               ]
-            },            
+            },
             {
               "title": "Databases Page",
               "urls": [
@@ -608,6 +614,12 @@
                   "title": "Upgrade Policy",
                   "urls": [
                      "/cockroachcloud/upgrade-policy.html"
+                  ]
+                },
+                {
+                  "title": "Upgrade to v23.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v23.1.html"
                   ]
                 },
                 {

@@ -17,6 +17,10 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
+{{site.data.alerts.end}}
+
 ## Responses
 
 By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
@@ -114,6 +118,8 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
+{% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
+
 ## Delete messages
 
 Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. For example, with default options, deleting the row with primary key `5` will output:
@@ -180,7 +186,17 @@ Protected timestamps will protect changefeed data from garbage collection in the
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
 - You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
-However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
+However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
+
+- [Cancel](cancel-job.html) the changefeed job.
+- [Resume](resume-job.html) a paused changefeed job.
+- {% include_cached new-in.html version="v23.1" %} Set the [`gc_protect_expires_after`](create-changefeed.html#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
+
+    For example, if the following changefeed is paused or runs into an error and then pauses, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed does not resume, the protected timestamp records will expire and the changefeed job will be cancelled. This releases the protected timestamp records and allows garbage collection to resume:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', protect_data_from_gc_on_pause, gc_protect_expires_after='24h';
+    ~~~
 
 We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is [retrying](monitor-and-debug-changefeeds.html#changefeed-retry-errors), it will (without limit) accumulate garbage while it retries to run.
 
@@ -240,6 +256,7 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 
 - It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
 - It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+- {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 

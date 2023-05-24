@@ -108,6 +108,17 @@ Each replica can be "snapshotted", which copies all of its data as of a specific
 
 After loading the snapshot, the node gets up to date by replaying all actions from the Raft group's log that have occurred since the snapshot was taken.
 
+CockroachDB clusters running v23.1 and later can send _delegated snapshots_. Delegated snapshots can be sent by a Raft follower on behalf of the leader of a range. Which follower is chosen depends on the locality of the follower being nearest the replica that is the final recipient of the snapshot. If the follower is not able to send the snapshot quickly, the attempt is cancelled and the Raft leader sends the snapshot instead. If the follower is not able to send a snapshot that will be valid for the recipient, the request is rerouted to the leader.
+
+Sending data locally using delegated snapshots has the following benefits:
+
+- Snapshot transfers are faster
+- Snapshot transfers use less WAN bandwidth
+- Network costs are lower for operators of multi-region deployments
+- User traffic is less likely to be negatively impacted by snapshots
+
+Delegated snapshots are managed automatically by the cluster with no need for user involvement.
+
 ### Leases
 
 A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`](distribution-layer.html#distsender)).

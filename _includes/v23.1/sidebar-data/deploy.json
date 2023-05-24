@@ -21,6 +21,12 @@
               ]
             },
             {
+              "title": "CockroachDB Cloud Regions",
+              "urls": [
+                  "/cockroachcloud/regions.html"
+              ]
+            },
+            {
               "title": "CockroachDB Serverless",
               "items": [
                 {
@@ -53,6 +59,12 @@
                   ]
                 },
                 {
+                  "title": "CockroachDB Dedicated on Azure",
+                  "urls": [
+                    "/cockroachcloud/cockroachdb-dedicated-on-azure.html"
+                  ]
+                },
+                {
                   "title": "Connect to Your Cluster",
                   "urls": [
                     "/cockroachcloud/connect-to-your-cluster.html"
@@ -80,6 +92,7 @@
                     "/${VERSION}/install-cockroachdb.html",
                     "/${VERSION}/install-cockroachdb-mac.html",
                     "/${VERSION}/install-cockroachdb-linux.html",
+                    "/${VERSION}/fips.html",
                     "/${VERSION}/install-cockroachdb-windows.html"
                   ]
                 },
