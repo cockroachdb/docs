@@ -7,11 +7,6 @@ on:
       - ready_for_review
       - synchronize
       - auto_merge_enabled
-  pull_request_review:
-    types:
-      - submitted
-      - edited
-      - dismissed
     
 jobs:
   pr-review:
