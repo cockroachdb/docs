@@ -1434,6 +1434,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach debug encryption-decrypt</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-encryption-decrypt.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach debug job-trace</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-job-trace.html"

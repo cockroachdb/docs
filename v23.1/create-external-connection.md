@@ -1,6 +1,6 @@
 ---
 title: CREATE EXTERNAL CONNECTION
-summary: The CREATE EXTERNAL CONNECTION statement creates a new external connection for external storage. 
+summary: The CREATE EXTERNAL CONNECTION statement creates a new external connection for external storage.
 toc: true
 docs_area: reference.sql
 ---
@@ -18,16 +18,16 @@ You can also use the following SQL statements to work with external connections:
 
 ## Required privileges
 
-To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#supported-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html). 
+To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](security-reference/authorization.html#supported-privileges). `root` and [`admin`](security-reference/authorization.html#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](grant.html).
 
-For example: 
+For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 GRANT SYSTEM EXTERNALCONNECTION TO user;
 ~~~
 
-To use a specific external connection during an operation, the user must also have the `USAGE` privilege on that connection: 
+To use a specific external connection during an operation, the user must also have the `USAGE` privilege on that connection:
 
 For example:
 
@@ -51,7 +51,7 @@ Parameter | Description
 
 ## Supported external storage and sinks
 
-Storage or sink      | Operation support               
+Storage or sink      | Operation support
 ---------------------+---------------------------------
 [Amazon S3](use-cloud-storage.html) | Backups, restores, imports, exports, changefeeds
 [Amazon S3 KMS](take-and-restore-encrypted-backups.html#aws-kms-uri-format) | Encrypted backups
@@ -79,7 +79,7 @@ Consider the following when you create an external connection for:
 
 ## External connection URI format
 
-To form the external connection URI in operation statements, use the `external://` scheme followed by the name of the external connection. 
+To form the external connection URI in operation statements, use the `external://` scheme followed by the name of the external connection.
 
 For an external connection named `backup_storage`:
 
@@ -93,7 +93,7 @@ See the [examples](#create-an-external-connection-for-cloud-storage) in the next
 
 The examples in this section demonstrate some of the storage and operation options that external connections support.
 
-## Create an external connection for cloud storage
+### Create an external connection for cloud storage
 
 In this example, you create an external connection for an Amazon S3 bucket that will store your backups. Then, you use the external connection to restore the backup to your cluster.
 
@@ -124,6 +124,10 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     BACKUP DATABASE movr INTO 'external://backup_bucket' AS OF SYSTEM TIME '-10s' WITH revision_history;
     ~~~
 
+    {{site.data.alerts.callout_info}}
+    {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
+    {{site.data.alerts.end}}
+
 1. Use [`SHOW BACKUP`](show-backup.html) to view your backups in the storage defined by the external connection:
 
     {% include_cached copy-clipboard.html %}
@@ -138,7 +142,7 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     (2 rows)
     ~~~
 
-1. In the event that a restore is necessary, use `RESTORE` with the external connection: 
+1. In the event that a restore is necessary, use `RESTORE` with the external connection:
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
@@ -152,16 +156,18 @@ In this example, you create an external connection for an Amazon S3 bucket that 
     DROP EXTERNAL CONNECTION backup_bucket;
     ~~~
 
-## Create an external connection for a changefeed sink
+### Create an external connection for a changefeed sink
 
 In this example, you create an external connection to a Kafka sink to which a changefeed will emit messages. When you create the external connection, you will include the necessary query parameters for your changefeed. As a result, you will only need to specify the external connection's name when creating a changefeed rather than the Kafka URI and parameters.
 
-1. Define your external connection that references the Kafka sink URI and any [query parameters](changefeed-sinks.html#kafka):
+1. Define your external connection that references the Kafka sink URI and any [connection parameters](changefeed-sinks.html#kafka):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE EXTERNAL CONNECTION kafka_sink AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SASL-SCRAM-SHA-256';
+    CREATE EXTERNAL CONNECTION kafka_sink AS 'kafka://broker.address.com:9092?TOPIC_PREFIX=bar_&TLS_ENABLED=true&CA_CERT={certificate}&SASL_ENABLED=true&SASL_USER={sasl user}&SASL_PASSWORD={url-encoded password}&SASL_MECHANISM=SASL-SCRAM-SHA-256';
     ~~~
+
+    {% include {{ page.version.version }}/cdc/cap-parameter-ext-connection.md %}
 
 1. Create your changefeed using the external connection's name:
 

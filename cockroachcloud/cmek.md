@@ -15,10 +15,10 @@ You can manage your CMEK keys using one or more of the following services:
 
 To learn more, visit [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html).
 
-{{ site.data.products.dedicated }} includes support for referring to CMEK keys in [Hashicorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS or GCP KMS.
+{{ site.data.products.dedicated }} includes support for referring to CMEK keys in [HashiCorp Vault Secrets Manager](https://www.vaultproject.io/docs/secrets/key-management), which can distribute keys stored in multiple KMS systems, as long as the actual keys are stored in AWS KMS or GCP KMS.
 
 {{site.data.alerts.callout_success}}
-You can learn more about the [supported integrations between CockroachDB and Hashicorp Vault](/docs/{{site.current_cloud_version}}/hashicorp-integration.html).
+You can learn more about the [supported integrations between CockroachDB and HashiCorp Vault](/docs/{{site.current_cloud_version}}/hashicorp-integration.html).
 {{site.data.alerts.end}}
 
 {{ site.data.products.db }} communicates with the KMS platform using the KMS platform's API, and you manage {{ site.data.products.db }}'s access to the CMEK key using the KMS platform's identity and access management (IAM) system. The CMEK key is never present in a cluster and {{ site.data.products.db }} never has direct access to the CMEK key material. When CMEK is enabled, the CMEK key must be available before the cluster can start and the cluster's newly-written data at rest can be accessed.
@@ -39,7 +39,7 @@ This section describes some of the ways that CMEK can help you protect your data
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
     You can use your KMS platform's controls to configure the regions where the CMEK key is available, enable automatic rotation schedules for CMEK keys, and view audit logs that show each time the CMEK key is used by {{ site.data.products.db }}. {{ site.data.products.db }} does not need any visibility into these details.
-- **Infrastructure flexibility**: If your CMEK keys are stored in multiple KMS systems or tenants, you can use Hashicorp Vault Key Management Secrets Engine to give your cluster access to your CMEK keys, as long as the cluster and keys are stored in the same deployment environment (GCP or AWS).
+- **Infrastructure flexibility**: If your CMEK keys are stored in multiple KMS systems or tenants, you can use HashiCorp Vault Key Management Secrets Engine to give your cluster access to your CMEK keys, as long as the cluster and keys are stored in the same deployment environment (GCP or AWS).
 
 The following example shows some of the ways that CMEK can help you meet business and regulatory requirements.
 

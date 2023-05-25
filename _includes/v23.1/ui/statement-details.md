@@ -106,17 +106,21 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 
 <img src="{{ 'images/v23.1/ui_activate_diagnostics.png' | relative_url }}" alt="Activate statement diagnostics" style="border:1px solid #eee;max-width:100%" />
 
+{{site.data.alerts.callout_danger}}
+Collecting diagnostics has an impact on performance. All executions of the statement fingerprint will run slower until diagnostics are collected.
+{{site.data.alerts.end}}
+
 To activate diagnostics collection:
 
 1. Click the **Activate diagnostics** button. The **Activate statement diagnostics** dialog displays.
 
-    <img src="{{ 'images/v23.1/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics dialog" style="border:1px solid #eee;max-width:100%" />
-
-1. Choose whether to activate collection on the next statement execution (default) or if execution latency exceeds a certain time. If you choose the latter, accept the default latency of 100 milliseconds, or specify a different time. All executions of the statement fingerprint will run slower until diagnostics are collected.
-1. Choose whether the request should expire after 15 minutes, or after a different the time, or disable automatic expiration by deselecting the checkbox.
+1. Choose whether to:
+   1. trace and collect diagnostics at the default sampled rate of 1% (or specify a different rate) when the statement execution latency exceeds the default time of 100 milliseconds (or specify a different time), or
+   1. trace and collect diagnostics on the next statement execution.
+1. Choose whether the request should expire after 15 minutes, or after a different time, or disable automatic expiration by deselecting the checkbox. Executions of the same statement fingerprint will run slower while diagnostics are activated, so it is recommended to set an expiration time if collecting according to a latency threshold.
 1. Click **Activate**.
 
-A row  with the activation time and collection status is added to the **Statement diagnostics** table.
+When the statement fingerprint is executed according to the statement diagnostic options selected, a row with the activation time and collection status is added to the **Statement diagnostics** table.
 
 <img src="{{ 'images/v23.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics table" style="border:1px solid #eee;max-width:100%" />
 

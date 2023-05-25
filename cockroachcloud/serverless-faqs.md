@@ -41,20 +41,7 @@ No, you can create one {{ site.data.products.serverless }} cluster for free. The
 
 ### What regions are available for {{ site.data.products.serverless }} clusters?
 
-The following regions are available for {{ site.data.products.serverless }}:
-
-GCP                                         | AWS
---------------------------------------------|------
-`asia-southeast1` (Jurong West)             | `ap-south-1` (Mumbai) 
-`europe-west1` (St. Ghislain)               | `ap-southeast-1` (Singapore)
-`southamerica-east1` (São Paulo)            | `eu-central-1` (Frankfurt)
-`us-central1` (Iowa)                        | `eu-west-1` (Ireland)
-`us-east1` (South Carolina )                | `us-east-1` (N. Virginia)              
-`us-west2` (California)                     | `us-west-2` (Oregon)
-
-
-
-If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. A multi-region Serverless cluster can have a maximum of six regions. To express interest in additional regions, contact your Cockroach Labs account team.
 
 ### How can I estimate how many RUs my workload will consume?
 
@@ -101,6 +88,18 @@ When a {{ site.data.products.serverless }} cluster is idle, it will scale down t
 ### Why is disk usage increasing despite lack of writes?
 
 {{ site.data.products.serverless }} clusters regularly store information about their own health and status in system tables. Once these tables hit their retention limit, storage will level off. However, the amount of stored data should be very small in relation to the overall storage limits.
+
+### How do I get the SQL endpoint for a specific region of my multi-region cluster?
+
+This information is not currently available in the {{ site.data.products.db }} Console. The connection string provided in the Console uses a geolocation routing policy to automatically route clients to the nearest region. However, if you need to determine region-specific DNS names, you can do either of the following:
+
+Make an [API request](cloud-api.html) to `GET /api/v1/clusters/{cluster_id}`. The SQL endpoint for each region will be visible in `regions` -> `sql_dns`.
+
+Or, manually create the region-specific DNS names using your cloud provider and the single region names. For example, a GCP Serverless cluster with the DNS name `<routing-id>.h4f.cockroachlabs.cloud` might have the following regional DNS names:
+
+- `<routing-id>.h4f.gcp-us-east1.cockroachlabs.cloud`
+- `<routing-id>.h4f.gcp-us-west2.cockroachlabs.cloud`
+- `<routing-id>.h4f.gcp-europe-west2.cockroachlabs.cloud`.
 
 ## Security
 
