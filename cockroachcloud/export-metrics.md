@@ -8,24 +8,30 @@ cloud: true
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
+{{site.data.alerts.callout_success}}
+{{ site.data.products.dedicated }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](/docs/{{site.versions["dev"]}}/monitoring-and-alerting.html) instead of this page.
+{{site.data.alerts.end}}
+
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-## The `metricexport` endpoint
+<a id="the-metricexport-endpoint"></a>
 
-To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster, use the `metricexport` endpoint:
+## `metricexport` endpoint
 
-{% include_cached copy-clipboard.html %}
-~~~
-https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport
-~~~
+To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster, use the `metricexport` endpoint appropriate for your desired cloud metrics sink:
 
-Access to the `metricexport` endpoint requires a valid {{ site.data.products.db }} [service account](console-access-management.html#service-accounts) with the appropriate permissions.
+Cloud metrics sink | Metrics export endpoint
+------------------ | ----------------------------------------------------
+AWS Cloudwatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
+Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/datadog`
 
-The following methods are available for use with the `metricexport` endpoint, and require the listed service account permissions:
+Access to the `metricexport` endpoints requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
+
+The following methods are available for use with the `metricexport` endpoints, and require the listed service account permissions:
 
 Method | Required permissions | Description
 --- | --- | ---
@@ -33,7 +39,7 @@ Method | Required permissions | Description
 `POST` | `ADMIN` or `EDIT` | Enables metrics export, or updates an existing metrics export configuration.
 `DELETE` | `ADMIN` | Disables metrics export, halting all metrics export to AWS CloudWatch or Datadog.
 
-See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a service account with these required permissions.
+See [Service accounts](managing-access.html#manage-service-accounts) for instructions on configuring a service account with these required permissions.
 
 ## Enable metrics export
 
@@ -69,7 +75,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
 
     Where:
     - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 2.
-    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for more details.
+    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for more details.
 
 1.  Create a cross-account IAM role in your AWS account:
 
@@ -125,14 +131,14 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request POST \
-      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
       --header "Authorization: Bearer {secret_key}" \
-      --data '{"cloudwatch":{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}}'
+      --data '{"target_region": "{aws_region}", "role_arn": "arn:aws:iam::{role_arn}:role/CockroachCloudMetricsExportRole", "log_group_name": "{log_group_name}"}'
     ~~~
 
     Where:
     - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 2.
-    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
     - `{aws_region}` is your AWS region, like `us-east-1`.
     - `{role_arn}` is the ARN for the `CockroachCloudMetricsExportRole` role you copied in step 7. If you used a different role name there, be sure to use your role name in place of `CockroachCloudMetricsExportRole` in the above command.
     - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1. This **must** be the same group name you provided in step 6.
@@ -144,7 +150,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request GET \
-      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
       --header "Authorization: Bearer {secret_key}"
     ~~~
 
@@ -178,7 +184,7 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
 
     Where:
     - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 1.
-    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for more details.
+    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for more details.
 
 1. Determine the [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/) you'd like to use. If you don't already have one, follow the steps to [add a new Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
 
@@ -187,14 +193,14 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request POST \
-      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
       --header "Authorization: Bearer {secret_key}" \
-      --data '{"datadog":{"site": "{datadog_site}", "api_key": "{datadog_api_key}}"}}'
+      --data '{"site": "{datadog_site}", "api_key": "{datadog_api_key}"}'
     ~~~
 
     Where:
     - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 1, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
     - `{datadog_site}` is your Datadog site. Valid sites are: `US1`, `US3`, `US5`, `US1_GOV`, and `EU1`.
     - `{datadog_api_key}` is the Datadog API key determined in step 3.
 
@@ -203,7 +209,7 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request GET \
-      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport \
+      --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
       --header "Authorization: Bearer {secret_key}"
     ~~~
 
@@ -215,19 +221,46 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
 
 ## Monitor the status of a metrics export configuration
 
-To check the status of an existing {{ site.data.products.dedicated }} metrics export configuration, use the following Cloud API command:
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="aws-metrics-export">
+
+To check the status of an existing AWS Cloudwatch metrics export configuration, use the following Cloud API command:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request GET \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
   --header "Authorization: Bearer {secret_key}"
 ~~~
 
 Where:
 
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
+
+To check the status of an existing Datadog metrics export configuration, use the following Cloud API command:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
+  --header "Authorization: Bearer {secret_key}"
+~~~
+
+Where:
+
+- `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
+
+</section>
 
 ## Update an existing metrics export configuration
 
@@ -235,20 +268,46 @@ To update an existing {{ site.data.products.dedicated }} metrics export configur
 
 ## Disable metrics export
 
-To disable an existing {{ site.data.products.dedicated }} metrics export configuration, and stop sending metrics to a cloud metrics sink, use the following Cloud API command:
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
+  <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="aws-metrics-export">
+
+To disable an existing AWS Cloudwatch metrics export configuration, and stop sending metrics to Cloudwatch, use the following Cloud API command:
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
 curl --request DELETE \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport?type={metrics_export_type} \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
   --header "Authorization: Bearer {secret_key}"
 ~~~
 
 Where:
 
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{metrics_export_type}` is the metrics export cloud sink target you are using, either: `CLOUDWATCH` or `DATADOG`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
+
+To disable an existing Datadog metrics export configuration, and stop sending metrics to Datadog, use the following Cloud API command:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+curl --request DELETE \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
+  --header "Authorization: Bearer {secret_key}"
+~~~
+
+Where:
+
+- `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
+
+</section>
 
 ## Limitations
 

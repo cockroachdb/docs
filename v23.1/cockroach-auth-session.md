@@ -95,7 +95,8 @@ To run any of the `auth-session` subcommands, you must be a member of the [`admi
 
 - The `login` subcommand allows users with the [`admin` role](security-reference/authorization.html#admin-role) to create HTTP authentication tokens with an arbitrary duration. If operational policy requires stricter control of authentication sessions, you can:
 
-  - Monitor the `system.web_sessions` table for all current and recent HTTP sessions.
+  - Monitor the `system.web_sessions` table for all current and recent HTTP sessions. If you monitor this table regularly, consider adjusting the `server.log_gc.period` and
+`server.log_gc.max_deletions_per_cycle` [cluster settings](cluster-settings.html) to fine tune garbage collection for this table.
   - Revoke HTTP authentication tokens as needed with the `logout` subcommand. See the [example](#terminate-all-active-sessions-for-a-user).
   - Set the `--expire-after` flag with a shorter duration. See the [example](#log-in-to-the-http-interface-with-a-custom-expiry).
 

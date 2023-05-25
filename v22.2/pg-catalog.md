@@ -29,7 +29,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_config` | `pg_config` (empty)
 `pg_constraint` | `pg_constraint`
 `pg_conversion` | `pg_conversion`
-`pg_cursors` | `pg_cursors` (empty)
+[`pg_cursors`](cursors.html#view-all-open-cursors) | `pg_cursors`
 `pg_database` | `pg_database`
 `pg_db_role_setting` | `pg_db_role_setting`
 `pg_default_acl` | `pg_default_acl`

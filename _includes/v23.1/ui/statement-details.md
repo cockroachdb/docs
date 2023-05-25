@@ -17,6 +17,7 @@ The **Overview** section displays the SQL statement fingerprint and execution at
 - **Vectorized execution?**: Whether the execution used the [vectorized execution engine]({{ link_prefix }}vectorized-execution.html).
 - **Transaction type**: The type of transaction ([implicit]({{ link_prefix }}transactions.html#individual-statements) or [explicit]({{ link_prefix }}transactions.html#sql-statements)).
 - **Last execution time**: The timestamp when the statement was last executed.
+- **Fingerprint ID**: The ID of the statement fingerprint in hexadecimal format. It may be used to query the [`crdb_internal.statement_statistics`]({{ link_prefix }}crdb-internal.html#fingerprint_id-column) table.
 
 The following screenshot shows the statement fingerprint of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
 
@@ -105,17 +106,21 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 
 <img src="{{ 'images/v23.1/ui_activate_diagnostics.png' | relative_url }}" alt="Activate statement diagnostics" style="border:1px solid #eee;max-width:100%" />
 
+{{site.data.alerts.callout_danger}}
+Collecting diagnostics has an impact on performance. All executions of the statement fingerprint will run slower until diagnostics are collected.
+{{site.data.alerts.end}}
+
 To activate diagnostics collection:
 
 1. Click the **Activate diagnostics** button. The **Activate statement diagnostics** dialog displays.
 
-    <img src="{{ 'images/v23.1/ui_activate_diagnostics_dialog.png' | relative_url }}" alt="Statements diagnostics dialog" style="border:1px solid #eee;max-width:100%" />
-
-1. Choose whether to activate collection on the next statement execution (default) or if execution latency exceeds a certain time. If you choose the latter, accept the default latency of 100 milliseconds, or specify a different time. All executions of the statement fingerprint will run slower until diagnostics are collected.
-1. Choose whether the request should expire after 15 minutes, or after a different the time, or disable automatic expiration by deselecting the checkbox.
+1. Choose whether to:
+   1. trace and collect diagnostics at the default sampled rate of 1% (or specify a different rate) when the statement execution latency exceeds the default time of 100 milliseconds (or specify a different time), or
+   1. trace and collect diagnostics on the next statement execution.
+1. Choose whether the request should expire after 15 minutes, or after a different time, or disable automatic expiration by deselecting the checkbox. Executions of the same statement fingerprint will run slower while diagnostics are activated, so it is recommended to set an expiration time if collecting according to a latency threshold.
 1. Click **Activate**.
 
-A row  with the activation time and collection status is added to the **Statement diagnostics** table.
+When the statement fingerprint is executed according to the statement diagnostic options selected, a row with the activation time and collection status is added to the **Statement diagnostics** table.
 
 <img src="{{ 'images/v23.1/ui_statement_diagnostics.png' | relative_url }}" alt="Statement diagnostics table" style="border:1px solid #eee;max-width:100%" />
 
@@ -135,12 +140,3 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 {% endif %}
 
 Click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.
-
-## See also
-
-- [Troubleshoot Query Behavior]({{ link_prefix }}query-behavior-troubleshooting.html)
-- [Transaction retries]({{ link_prefix }}transactions.html#transaction-retries)
-- [Optimize Statement Performance]({{ link_prefix }}make-queries-fast.html)
-- [Support Resources]({{ link_prefix }}support-resources.html)
-- [Raw Status Endpoints]({{ link_prefix }}monitoring-and-alerting.html#raw-status-endpoints)
-- [Transactions Page]({{ page_prefix }}transactions-page.html)

@@ -32,9 +32,9 @@ Parameter | Description
 `changefeed_targets` | The tables to target with the changefeed. For example, `movr.users, movr.rides`.
 `changefeed_sink` | The [changefeed sink URI](changefeed-sinks.html).
 `changefeed_option` | The [options](create-changefeed.html#options) to control the behavior of your changefeed. For example, `WITH format = csv, full_table_name`. See [Changefeed options](#changefeed-options) for a list of available options.
-`target_list` | The columns to emit data from if you're using a [CDC transformation](cdc-transformations.html) expression.
-`insert_target` | The target tables for the changefeed if you're using a [CDC transformation](cdc-transformations.html) expression.
-`where_clause` | An optional `WHERE` clause to apply filters to the table if you're using a [CDC transformation](cdc-transformations.html) expression.
+`target_list` | The columns to emit data from if you're using a [CDC query](cdc-queries.html) expression.
+`insert_target` | The target tables for the changefeed if you're using a [CDC query](cdc-queries.html) expression.
+`where_clause` | An optional `WHERE` clause to apply filters to the table if you're using a [CDC query](cdc-queries.html) expression.
 `crontab` | The frequency of the changefeed. The schedule is specified as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. For example, `'@daily'`, `'@hourly'`, `'1 0 * * *'`.
 `schedule_option` | The schedule options to control the schedule's behavior. For example, `first_run = now`. See [Schedule options](#schedule-options).
 
@@ -78,11 +78,11 @@ The [schedule options](create-schedule-for-changefeed.html#schedule-options) con
 - If it runs into an error, `on_execution_failure=retry` will ensure that the schedule retries the changefeed immediately. 
 - If the previous scheduled changefeed is still running, `on_previous_running=skip` will skip a new changefeed at the next scheduled time.
 
-### Create a scheduled changefeed with CDC transformations
+### Create a scheduled changefeed with CDC queries
 
-You can use CDC transformations with scheduled changefeeds to define expression syntax that selects columns and applies filters to further restrict or transform the data in your changefeed messages. When you add this expression syntax to your changefeed statement, you can only target one table. 
+You can use CDC queries with scheduled changefeeds to define expression syntax that selects columns and applies filters to further restrict or transform the data in your changefeed messages. When you add this expression syntax to your changefeed statement, you can only target one table. 
 
-For guidance on syntax and more example use cases, see [Change Data Capture Transformations](cdc-transformations.html).
+For guidance on syntax and more example use cases, see [Change Data Capture Queries](cdc-queries.html).
 
 This scheduled changefeed filters for the usage of promotion codes in the [`movr`](movr.html) database and sends the changefeed messages on a daily basis:
 
@@ -152,6 +152,6 @@ SHOW CREATE SCHEDULE {schedule ID};
 ## See also
 
 - [`CREATE CHANGEFEED`](create-changefeed.html)
-- [Change Data Capture Transformations](cdc-transformations.html)
+- [Change Data Capture Queries](cdc-queries.html)
 - [Export Data with Changefeeds](export-data-with-changefeeds.html)
 - [Changefeed Sinks](changefeed-sinks.html)

@@ -54,6 +54,12 @@ The following are not currently allowed within the body of a [UDF](user-defined-
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
+### Incorrect query plans for partitions with `NULL` values
+
+In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so is not likely to occur in production environments.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/82774)
+
 ### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
 
 The [cluster setting](cluster-settings.html) `kv.rangefeed.range_stuck_threshold` will automatically restart a rangefeed that appears to be stuck if it does not emit events for some time. Rangefeeds are used to stream per-range changefeed events. This setting was introduced in CockroachDB v22.1.7, disabled by default, but is enabled by default in v22.2.0, set to 1 minute.
@@ -83,6 +89,14 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
 
 ## Unresolved limitations
+
+### Limited SQL cursor support
+
+{% include {{page.version.version}}/known-limitations/sql-cursors.md %}
+
+### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
+
+{% include {{page.version.version}}/sql/select-for-update-limitations.md %}
 
 ### Unsupported trigram syntax
 
@@ -120,6 +134,12 @@ The `transaction_rows_read_err` and `transaction_rows_written_err` [session sett
 The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
+
+### CockroachDB does not allow inverted indexes with `STORING`
+
+CockroachDB does not allow inverted indexes with a [`STORING` column](create-index.html#store-columns).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88278)
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 

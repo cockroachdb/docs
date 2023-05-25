@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
-You can [backup a full cluster](#backup-a-cluster), which includes:
+You can [back up a full cluster](#back-up-a-cluster), which includes:
 
 - Relevant system tables
 - All [databases](create-database.html)
@@ -17,8 +17,8 @@ You can [backup a full cluster](#backup-a-cluster), which includes:
 
 You can also backup:
 
-- [An individual database](#backup-a-database), which includes all of its tables and views.
-- [An individual table](#backup-a-table-or-view), which includes its indexes and views.
+- [An individual database](#back-up-a-database), which includes all of its tables and views.
+- [An individual table](#back-up-a-table-or-view), which includes its indexes and views.
 
     `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
 
@@ -33,8 +33,8 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 ## Considerations
 
 - Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/use-managed-service-backups.html).
-- Backups will export [Enterprise license keys](enterprise-licensing.html) during a [full cluster backup](#backup-a-cluster). When you [restore](restore.html) a full cluster with an Enterprise license, it will restore the Enterprise license of the cluster you are restoring from.
-- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- [Full cluster backups](#back-up-a-cluster) include [Enterprise license keys](enterprise-licensing.html). When you [restore](restore.html) a full cluster backup that includes an Enterprise license, the Enterprise license is also restored.
+- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - Exclude a table's row data from a backup using the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter.
 - `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
@@ -81,16 +81,25 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 <a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
-`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your data's garbage collection TTL (which is controlled by the [`gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 ### Targets
 
 Target                             | Description
 -----------------------------------+-------------------------------------------------------------------------
-N/A                                | Backup the cluster. For an example of a full cluster backup, [see Backup a cluster](#backup-a-cluster).
-`DATABASE {database_name} [, ...]` | The name of the database(s) you want to backup (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#backup-a-database).
-`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to backup. For an example of backing up a table or view, see [Backup a table or view](#backup-a-table-or-view).
+N/A                                | Back up the cluster. For an example of a full cluster backup, refer to [Back up a cluster](#back-up-a-cluster).
+`DATABASE {database_name} [, ...]` | The names of the databases to back up. A database backup includes all tables and views in the database. Refer to [Back Up a Database](#back-up-a-database).
+`TABLE {table_name} [, ...]`       | The names of the tables and [views](views.html) to back up. Refer to [Back Up a Table or View](#back-up-a-table-or-view).
+
+### Query parameters
+
+Query parameter | Value | Description
+----------------+-------+------------
+`COCKROACH_LOCALITY` | Key-value pairs | Define a locality-aware backup with a list of URIs using `COCKROACH_LOCALITY`. The value is either `default` or a single locality key-value pair, such as `region=us-east`. At least one `COCKROACH_LOCALITY` must the `default` per locality-aware backup. Refer to [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html) for more detail and examples.
+`S3_STORAGE_CLASS` | [`STRING`](string.html) | Specify the Amazon S3 storage class for files created by the backup job. Refer to [Back up with an S3 storage class](#back-up-with-an-s3-storage-class) for the available classes and an example.
+
+{% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
 
 ### Options
 
@@ -154,15 +163,15 @@ A backup job will [pause](pause-job.html) instead of entering a `failed` state i
 
 Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:
 
-#### `bulkio.backup.file_size` 
+#### `bulkio.backup.file_size`
 
-Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job. 
+Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
 
 Note that if you lower `bulkio.backup.file_size` below the default, it will cause the backup job to create many small SST files, which could impact a restore job’s performance because it will need to keep track of so many small files.
 
 **Default:** `128 MiB`
 
-#### `cloudstorage.azure.concurrent_upload_buffers` 
+#### `cloudstorage.azure.concurrent_upload_buffers`
 
 Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. Note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.
 
@@ -192,16 +201,16 @@ The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indi
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html).
 
 {% include {{ page.version.version }}/backups/bulk-auth-options.md %}
- 
+
 If you need to limit the control specific users have over your storage buckets, see [Assume role authentication](cloud-storage-authentication.html) for setup instructions.
 
 {{site.data.alerts.callout_info}}
 The `BACKUP ... TO` syntax is **deprecated** as of v22.1 and will be removed in a future release.
 
-We recommend using the `BACKUP ... INTO {collectionURI}` syntax as per the following examples.
+Cockroach Labs recommends using the `BACKUP ... INTO {collectionURI}` syntax shown in the following examples.
 {{site.data.alerts.end}}
 
-### Backup a cluster
+### Back up a cluster
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
@@ -210,7 +219,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup a database
+### Back up a database
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
@@ -226,7 +235,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 BACKUP DATABASE bank, employees INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup a table or view
+### Back up a table or view
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
@@ -242,9 +251,9 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
 ~~~
 
-### Backup all tables in a schema
+### Back up all tables in a schema
 
- To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+ To back up all tables in a [schema](create-schema.html), use a wildcard (`*`) with the schema name:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

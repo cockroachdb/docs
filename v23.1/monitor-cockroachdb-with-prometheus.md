@@ -198,6 +198,12 @@ Although Prometheus lets you graph metrics, [Grafana](https://grafana.com/) is a
 
 1. [Add the dashboards to Grafana](http://docs.grafana.org/reference/export_import/#importing-a-dashboard).
 
+## Step 6. Disable DB Console's local storage of metrics (optional)
+
++If you rely on external tools such as Prometheus for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
++
++When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Prometheus and AlertManager based on the data Prometheus is collecting from your cluster's Prometheus endpoint.
+
 ## See also
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)

@@ -22,7 +22,7 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 
 ## Required privileges
 
-To cancel a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set. Non-admin users cannot cancel admin users' jobs.
+To cancel a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](security-reference/authorization.html#role-options) set. Non-admin users cannot cancel admin users' jobs.
 
 For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can cancel changefeed jobs running on those tables.
 

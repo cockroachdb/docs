@@ -5,6 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
+{{site.data.alerts.callout_info}}
+**Cockroach Labs recommends using [changefeeds to export data](export-data-with-changefeeds.html)** because they provide better performance for growing workloads. Additionally, changefeeds operate as jobs, which offer [observability](monitor-and-debug-changefeeds.html) and [job management](create-and-configure-changefeeds.html).
+{{site.data.alerts.end}}
+
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to the following:
 
 - CSV files
@@ -38,7 +42,7 @@ The `EXPORT` statement cannot be used within a [transaction](transactions.html).
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
 - Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
@@ -132,6 +136,10 @@ CockroachDB types map to [Parquet types](https://github.com/apache/parquet-forma
 | [`TIMESTAMP`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
 | [`TIMESTAMPTZ`](timestamp.html) | byte array | `STRING` <br>Note: exporting to microsecond precision. |
 | [`ARRAY`](array.html) | Encoded as a repeated field; <br>each array value is encoded as per the preceding types. | `nil` |
+
+## Exports and `AS OF SYSTEM TIME`
+
+The [`AS OF SYSTEM TIME`](as-of-system-time.html) clause is not required in `EXPORT` statements, even though they are long-running queries. If it is omitted, `AS OF SYSTEM TIME` is implicitly set to the start of the statement's execution. The risk of [contention](performance-best-practices-overview.html#transaction-contention) is low because other transactions would need to have exactly the same transaction start time as the `EXPORT` statement's start time.
 
 ## Examples
 

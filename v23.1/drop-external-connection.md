@@ -20,6 +20,13 @@ You can also use the following SQL statements to work with external connections:
 
 Users must have the [`DROP` privilege](security-reference/authorization.html#supported-privileges) or be a member of the [`admin` role](security-reference/authorization.html#admin-role) to drop an external connection.
 
+For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+GRANT DROP ON EXTERNAL CONNECTION backup_bucket TO user;
+~~~
+
 ## Synopsis
 
 <div>

@@ -31,7 +31,7 @@ In a terminal, enter the following command to download and extract the `ccloud` 
 curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_{{ ccloud_version }}.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
 ~~~
 
-Use the ARM 64 binary if you have an M1 Mac:
+Use the ARM 64 binary if you have an M-series Mac:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

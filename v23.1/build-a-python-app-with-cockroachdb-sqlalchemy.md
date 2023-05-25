@@ -169,7 +169,7 @@ We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](htt
 In addition to the above, using `run_transaction` has the following benefits:
 
 - Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
-- It abstracts away the [client-side transaction retry logic](transactions.html#client-side-intervention) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
+- It abstracts away the [client-side transaction retry logic](transaction-retry-error-reference.html#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
 
 For more information about how transactions (and retries) work, see [Transactions](transactions.html).
 

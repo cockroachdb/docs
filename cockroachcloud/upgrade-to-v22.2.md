@@ -6,7 +6,7 @@ docs_area: manage
 page_version: v22.2
 ---
 
-Now that [CockroachDB v22.2](../releases/v22.2.html) is available, a [Console Admin](console-access-management.html#console-admin) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB v22.2](../releases/v22.2.html) is available, an [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
 Upgrading a {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the {{ site.data.products.db }} [upgrade policy](upgrade-policy.html).
@@ -49,7 +49,7 @@ Before starting the upgrade, complete the following steps.
 
 Your cluster will be unavailable while its single node is stopped and restarted with v22.2. Prepare your application for this brief downtime, typically a few minutes.
 
-The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will also be disabled during this time.
+The [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will also be disabled during this time.
 
 </section>
 

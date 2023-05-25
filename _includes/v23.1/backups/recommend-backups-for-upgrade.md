@@ -1,0 +1,1 @@
+Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html). However, taking regular backups of your data is an operational best practice. When upgrading to a major release, **we recommend [taking a backup](backup-and-restore-overview.html) of your cluster**.

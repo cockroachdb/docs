@@ -40,17 +40,19 @@ Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage
 
 ## Set up monitoring for the backup schedule
 
-We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time&mdash; at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
+We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time—at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
 
 Metrics for scheduled backups fall into two categories:
 
 - Backup schedule-specific metrics, aggregated across all schedules:
 
-    - `schedules_BACKUP_started`: A counter for the total number of backups started by a schedule
-    - `schedules_BACKUP_succeeded`: A counter for the number of backups started by a schedule that succeeded
-    - `schedules_BACKUP_failed`: A counter for the number of backups started by a schedule that failed
+    - `schedules.BACKUP.started`: The total number of backups started by a schedule.
+    - `schedules.BACKUP.succeeded`: The number of backups started by a schedule that succeeded.
+    - `schedules.BACKUP.failed`: The number of backups started by a schedule that failed.
 
-        When `schedules_BACKUP_failed` increments, run [`SHOW SCHEDULES`](show-schedules.html) to check which schedule is affected and to inspect the error in the `status` column.
+        When `schedules.BACKUP.failed` increments, run [`SHOW SCHEDULES`](show-schedules.html) to check which schedule is affected and to inspect the error in the `status` column.
+    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_age_sec`: The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by backup schedules.
+    - {% include_cached new-in.html version="v23.1" %} `schedules.BACKUP.protected_record_count`: The number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by backup schedules.
 
 - Scheduler-specific metrics:
 

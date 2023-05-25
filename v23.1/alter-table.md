@@ -437,7 +437,7 @@ For usage, see [Synopsis](#synopsis).
 {{site.data.alerts.callout_info}}
 `ALTER TABLE ... RENAME TO` cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](#set-schema).
 
-`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`](backup.html#backup-a-table-or-view) and [`RESTORE`](restore.html#restore-a-table).
+`ALTER TABLE ... RENAME TO` cannot be used to move a table from one database to another. To change a table's database, use [`BACKUP`](backup.html#back-up-a-table-or-view) and [`RESTORE`](restore.html#restore-a-table).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -1756,7 +1756,7 @@ To unhide the column, run:
 
 #### Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/MPx-LXY2D-c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="MPx-LXY2D-c" %}
 
 #### Alter a single-column primary key
 

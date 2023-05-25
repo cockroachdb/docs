@@ -22,9 +22,10 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 ## Considerations
 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
+- `RESTORE` only supports backups taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. 
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
-- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#backup-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
+- [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
 - You cannot restore a backup of a multi-region database into a single-region database.
 - When the [`exclude_data_from_backup`](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
 
@@ -48,6 +49,19 @@ The listed privileges do not cascade to objects lower in the schema tree. For ex
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all three types of restore (cluster, database, and table) without the need to grant a specific `RESTORE` privilege.  However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
 
+### Privileges for managing a restore job
+
+To manage a restore job with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), or [`CANCEL JOB`](cancel-job.html), users must have at least one of the following:
+
+- Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+
+To view a restore job with [`SHOW JOB`](show-jobs.html), users must have at least one of the following:
+
+- {% include_cached new-in.html version="v23.1" %} The [`VIEWJOB` privilege](security-reference/authorization.html#supported-privileges), which allows you to view all jobs (including `admin`-owned jobs).
+- Be a member of the [`admin` role](security-reference/authorization.html#admin-role).
+- The [`CONTROLJOB` role option](security-reference/authorization.html#role-options).
+
 See [`GRANT`](grant.html) for detail on granting privileges to a role or user.
 
 ## Required privileges using the legacy privilege model
@@ -63,7 +77,7 @@ See the [Required privileges](#required-privileges) section for the updated priv
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
 - To interact with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
@@ -110,6 +124,7 @@ You can control `RESTORE` behavior using any of the following in the `restore_op
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 <a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         |  Use to skip checking localities of a cluster before a restore when there are mismatched [cluster regions](multiregion-overview.html#cluster-regions) between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
+<span class="version-tag">New in v23.1:</span><a name="skip_missing_udfs"></a>`skip_missing_udfs` | N/A | Must be used when restoring a table with referenced [UDF](user-defined-functions.html) dependencies. Any column's `DEFAULT` expression using UDFs is dropped. <br><br>Example: `WITH skip_missing_udfs`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
 <a name="detached"></a>`DETACHED`                                   | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 `debug_pause_on`                                                    | `"error" `                                    |  Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
@@ -208,13 +223,15 @@ In general, two types are compatible if they are the same kind (e.g., an enum is
 
 ### Object dependencies
 
-Dependent objects must be restored at the same time as the objects they depend on.
+Dependent objects must be restored at the same time as the objects they depend on. 
 
 Object | Depends On
 -------|-----------
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
 Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
+
+Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option. 
 
 ### Users and privileges
 

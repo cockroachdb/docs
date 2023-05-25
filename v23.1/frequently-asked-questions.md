@@ -54,7 +54,7 @@ For more details, see [Choose a Deployment Option](choose-a-deployment-option.ht
 
 CockroachDB scales horizontally with minimal operator overhead.
 
-At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches a threshold size (512 MiB by default). When that happens, the data splits into two ranges, each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
+At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches [a threshold size](configure-replication-zones.html#range-max-bytes). When that happens, the data [splits into two ranges](architecture/distribution-layer.html#range-splits), each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
 
 When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
 
@@ -107,7 +107,7 @@ that, in the presence of partitions, the system will become unavailable rather t
 
 Separately, CockroachDB is also Highly Available, although "available" here means something different than the way it is used in the CAP theorem. In the CAP theorem, availability is a binary property, but for High Availability, we talk about availability as a spectrum (using terms like "five nines" for a system that is available 99.999% of the time).
 
-Being both CP and HA means that whenever a majority of replicas can talk to each other, they should be able to make progress. For example, if you deploy CockroachDB to three datacenters and the network link to one of them fails, the other two datacenters should be able to operate normally with only a few seconds' disruption. We do this by attempting to detect partitions and failures quickly and efficiently, transferring leadership to nodes that are able to communicate with the majority, and routing internal traffic away from nodes that are partitioned away.
+Being both CP and HA means that whenever a majority of replicas can talk to each other, they should be able to make progress. For example, if you deploy CockroachDB to three datacenters and the network link to one of them fails, the other two datacenters should be able to operate normally with only a few seconds' disruption. We do this by attempting to detect partitions and failures quickly and efficiently, [transferring leadership to nodes that are able to communicate with the majority](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node), and routing internal traffic away from nodes that are partitioned away.
 
 ### Why is CockroachDB SQL?
 

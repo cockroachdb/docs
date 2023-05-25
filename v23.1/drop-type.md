@@ -1,6 +1,6 @@
 ---
 title: DROP TYPE
-summary: The DROP TYPE statement drops an enumerated data type from the database.
+summary: The DROP TYPE statement drops a user-defined data type from the database.
 toc: true
 docs_area: reference.sql
 ---
@@ -33,13 +33,13 @@ The user must be the owner of the type.
 - You cannot drop a type or view that is in use by a table.
 - You can only drop a user-defined type from the database that contains the type.
 
-## Example
+## Examples
 
 ### Drop a single type
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
+> CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
 ~~~
 
 {% include_cached copy-clipboard.html %}
@@ -56,7 +56,7 @@ The user must be the owner of the type.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE accounts (
+> CREATE TABLE IF NOT EXISTS accounts (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         balance DECIMAL,
         status status
@@ -65,6 +65,7 @@ The user must be the owner of the type.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
+-- sqlchecker: ignore
 > DROP TYPE status;
 ~~~
 

@@ -14,7 +14,7 @@ docs_area: manage
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.version }}**.
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**.
 
 ## Terminology
 
@@ -22,7 +22,7 @@ Before upgrading, review the CockroachDB [release](../releases/) terminology:
 
 - A new *major release* is performed every 6 months. The major version number indicates the year of release followed by the release number, which will be either 1 or 2. For example, the latest major release is {{ actual_latest_prod.major_version }} (also written as {{ actual_latest_prod.major_version }}.0).
 - Each [supported](../releases/release-support-policy.html) major release is maintained across *patch releases* that fix crashes, security issues, and data correctness issues. Each patch release increments the major version number with its corresponding patch number. For example, patch releases of {{ actual_latest_prod.major_version }} use the format {{ actual_latest_prod.major_version }}.x.
-- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.version }}.
+- All major and patch releases are suitable for production usage, and are therefore considered "production releases". For example, the latest production release is {{ actual_latest_prod.release_name }}.
 - Prior to an upcoming major release, alpha and beta releases and release candidates are made available. These "testing releases" are not suitable for production usage. They are intended for users who need early access to a feature before it is available in a production release. These releases append the terms `alpha`, `beta`, or `rc` to the version number.
 
 {{site.data.alerts.callout_info}}
@@ -42,12 +42,12 @@ Run [`cockroach sql`](cockroach-sql.html) against any node in the cluster to ope
 > SHOW CLUSTER SETTING version;
 ~~~
 
-To upgrade to {{ latest.version }}, you must be running{% if prior.version %} either{% endif %}:
+To upgrade to {{ latest.release_name }}, you must be running{% if prior.release_name %} either{% endif %}:
 
-{% if prior.version %}
-- **Any earlier {{ page.version.version }} release:** {{ earliest.version }} to {{ prior.version }}.
+{% if prior.release_name %}
+- **Any earlier {{ page.version.version }} release:** {{ earliest.release_name }} to {{ prior.release_name }}.
 {% endif %}
-- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.version }}.
+- **A {{ previous_version }} production release:** {{ previous_version }}.0 to {{ previous_latest_prod.release_name }}.
 
 If you are running any other version, take the following steps **before** continuing on this page:
 
@@ -57,11 +57,17 @@ If you are running any other version, take the following steps **before** contin
 | Pre-{{ previous_version }} production release  | Upgrade through each subsequent major release, [ending with a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                     |
 | {{ previous_version}} testing release          | [Upgrade to a {{ previous_version }} production release](../{{ previous_version }}/upgrade-cockroach-version.html).                                                                                                     |
 
-When you are ready to upgrade to {{ latest.version }}, continue to [step 2](#step-2-prepare-to-upgrade).
+When you are ready to upgrade to {{ latest.release_name }}, continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
 Before starting the upgrade, complete the following steps.
+
+### Review breaking changes
+
+{% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
+
+Review the [backward-incompatible changes](../releases/{{ page.version.version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.version.version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}), [deprecated features](../releases/{{ page.version.version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-deprecations{% endunless %}), and [key cluster setting changes](../releases/{{ page.version.version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.version.version | replace: ".", "-" }}-0-cluster-settings{% endunless %}) in {{ page.version.version }}. If any affect your deployment, make the necessary changes before starting the rolling upgrade to {{ page.version.version }}.
 
 ### Check load balancing
 
@@ -99,6 +105,11 @@ If your cluster contains partially-decommissioned nodes, they will block an upgr
     1. First, reissue the [decommission command](node-shutdown.html?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
     1. If the second decommission command does not succeed, [recommission](node-shutdown.html?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
 
+### Back up cluster
+
+{% include {{page.version.version}}/backups/recommend-backups-for-upgrade.md%}
+See our [support policy for restoring backups across versions](restoring-backups-across-versions.html#support-for-restoring-backups-into-a-newer-version). 
+
 ### Review breaking changes
 
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.version.version" | first %}
@@ -130,10 +141,8 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from {{ previous_version }} to {{ page.version.version }}, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- The [`CREATE FUNCTION`](create-function.html) statement creates [user-defined functions](user-defined-functions.html).
-- [Trigram indexes](trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
-- [Predicates and projections in `CREATE CHANGEFEED` statements](create-changefeed.html). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
-
+- The [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html) statement allows you to create scheduled changefeeds.
+- The [`MODIFYSQLCLUSTERSETTING` and `VIEWJOB` system privileges](security-reference/authorization.html#supported-privileges).
 
 For an expanded list of features included in the {{ page.version.version }} release, see the [{{ page.version.version }} release notes](../releases/{{ page.version.version }}.html).
 
@@ -146,7 +155,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.version }}**.
+These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.release_name }}**.
 {{site.data.alerts.end}}
 
     <div class="filters clearfix">
@@ -156,7 +165,7 @@ These steps perform an upgrade to the latest {{ page.version.version }} release,
 
 1. [Drain and shut down the node](node-shutdown.html#perform-node-shutdown).
 
-1. Visit [What's New in {{ page.version.version }}?](/docs/releases/{{ page.version.version }}.html) and download the **CockroachDB {{ latest.version }} full binary** for your architecture.
+1. Visit [What's New in {{ page.version.version }}?](/docs/releases/{{ page.version.version }}.html) and download the **CockroachDB {{ latest.release_name }} full binary** for your architecture.
 
 1. Extract the archive. In the following instructions, replace `{COCKROACHDB_DIR}` with the path to the extracted archive directory.
 

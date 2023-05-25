@@ -18,12 +18,16 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 --------------------------------------------------|-----------------------------------------------------------------|
 | Useful for prototyping or quick testing. | Recommended for production use. |
 | Available in all products. | Available in {{ site.data.products.dedicated }} or with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) in {{ site.data.products.core }} or {{ site.data.products.serverless }}. |
-| Streams indefinitely until underlying SQL connection is closed. | Maintains connection to configured sink. |
-| Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html). | Create with [`CREATE CHANGEFEED`](create-changefeed.html).<br>Use `CREATE CHANGEFEED` with [CDC transformations](cdc-transformations.html) to define the emitted change data.<br>Create a scheduled changefeed with [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html). |
+| Streams indefinitely until underlying SQL connection is closed. | Maintains connection to configured sink ([Kafka](changefeed-sinks.html#kafka), [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub), [Amazon S3](changefeed-sinks.html#amazon-s3), [Google Cloud Storage](changefeed-sinks.html#google-cloud-storage), [Azure Storage](changefeed-sinks.html#azure-blob-storage), [HTTP](changefeed-sinks.html#http), [Webhook](changefeed-sinks.html#webhook-sink)). |
+| Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html). | Create with [`CREATE CHANGEFEED`](create-changefeed.html).<br>Use `CREATE CHANGEFEED` with [CDC queries](cdc-queries.html) to define the emitted change data.<br><span class="version-tag">New in v23.1:</span> Create a scheduled changefeed with [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html).<br><span class="version-tag">New in v23.1:</span> Use [`execution_locality`](changefeeds-in-multi-region-deployments.html#run-a-changefeed-job-by-locality) to determine node locality for changefeed job execution.  |
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a configurable format (JSON, CSV, Avro) to a [configurable sink](changefeed-sinks.html) (e.g., [Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](create-and-configure-changefeeds.html?filters=core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](create-and-configure-changefeeds.html#create), [`PAUSE`](create-and-configure-changefeeds.html#pause), [`RESUME`](create-and-configure-changefeeds.html#resume), [`ALTER`](alter-changefeed.html), and [`CANCEL`](create-and-configure-changefeeds.html#cancel), as well as [monitor](monitor-and-debug-changefeeds.html#monitor-a-changefeed) and [debug](monitor-and-debug-changefeeds.html#debug-a-changefeed). |
 
-See [Ordering Guarantees](changefeed-messages.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
+Refer to [Ordering Guarantees](changefeed-messages.html#ordering-guarantees) for detail on CockroachDB's at-least-once-delivery-guarantee as well as explanation on how rows are emitted.
+
+{{site.data.alerts.callout_success}}
+The [Advanced Changefeed Configuration](advanced-changefeed-configuration.html) page provides detail and recommendations for improving changefeed performance.
+{{site.data.alerts.end}}
 
 ## How does an Enterprise changefeed work?
 
@@ -36,6 +40,8 @@ Each node uses its aggregator processors to send back checkpoint progress to the
 With [`resolved`](create-changefeed.html#resolved-option) specified when a changefeed is started, the coordinator will send the resolved timestamp (i.e., the high-water mark) to each endpoint in the sink. For example, when using [Kafka](changefeed-sinks.html#kafka) this will be sent as a message to each partition; for [cloud storage](changefeed-sinks.html#cloud-storage-sink), this will be emitted as a resolved timestamp file.
 
 As rows are updated, added, and deleted in the targeted table(s), the node sends the row changes through the [rangefeed mechanism](create-and-configure-changefeeds.html#enable-rangefeeds) to the changefeed encoder, which encodes these changes into the [final message format](changefeed-messages.html#responses). The message is emitted from the encoder to the sink—it can emit to any endpoint in the sink. In the diagram example, this means that the messages can emit to any Kafka Broker.
+
+If you are running changefeeds from a [multi-region](multiregion-overview.html) cluster, you may want to define which nodes take part in running the changefeed job. You can use the [`execution_locality` option](changefeeds-in-multi-region-deployments.html#run-a-changefeed-job-by-locality) with key-value pairs to specify the locality requirements nodes must meet. See [Job coordination using the execution locality option](changefeeds-in-multi-region-deployments.html#job-coordination-using-the-execution-locality-option) for detail on how a changefeed job works with this option.
 
 See the following for more detail on changefeed setup and use:
 

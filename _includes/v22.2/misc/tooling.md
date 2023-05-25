@@ -4,6 +4,7 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the latest version documented in the table below.
 - **Beta support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
+- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool. 
 
 {{site.data.alerts.callout_info}}
 Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling](transactions.html#client-side-intervention). For client-side transaction retry handling samples, see [Example Apps](example-apps.html).
@@ -18,7 +19,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 | Language | Driver | Latest tested version | Support level | CockroachDB adapter | Tutorial |
 |----------+--------+-----------------------+---------------------+---------------------+----------|
 | C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html)| PostgreSQL 13 | Beta | N/A | N/A |
-| C# (.NET) | [Npgsql](https://www.nuget.org/packages/Npgsql/) | 4.1.3.1 | Beta | N/A | [Build a C# App with CockroachDB (Npgsql)](build-a-csharp-app-with-cockroachdb.html) |
+| C# (.NET) | [Npgsql](https://www.nuget.org/packages/Npgsql/) | 7.0.2 | Full | N/A | [Build a C# App with CockroachDB (Npgsql)](build-a-csharp-app-with-cockroachdb.html) |
 | Go | [pgx](https://github.com/jackc/pgx/releases)<br><br><hr>[pq](https://github.com/lib/pq) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.2/pkg/cmd/roachtest/tests/pgx.go ||var supportedPGXTag = "||"\n\n  %}<br>(use latest version of CockroachDB adapter)<hr>{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.2/pkg/cmd/roachtest/tests/libpq.go ||var libPQSupportedTag = "||"\n\n %} | Full<br><br><hr>Full | [`crdbpgx`](https://pkg.go.dev/github.com/cockroachdb/cockroach-go/crdb/crdbpgx)<br>(includes client-side transaction retry handling)<hr>N/A | [Build a Go App with CockroachDB (pgx)](build-a-go-app-with-cockroachdb.html)<br><br><hr>[Build a Go App with CockroachDB (pq)](build-a-go-app-with-cockroachdb-pq.html) |
 | Java | [JDBC](https://jdbc.postgresql.org/download/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-22.2/pkg/cmd/roachtest/tests/pgjdbc.go ||var supportedPGJDBCTag = "||"\n\n %} | Full | N/A | [Build a Java App with CockroachDB (JDBC)](build-a-java-app-with-cockroachdb.html) |
 | JavaScript | [pg](https://www.npmjs.com/package/pg) | 8.2.1 | Full | N/A | [Build a Node.js App with CockroachDB (pg)](build-a-nodejs-app-with-cockroachdb.html) |
@@ -77,6 +78,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 |-----+------------------------+----------------+----------|
 | [AWS DMS](https://aws.amazon.com/dms/) | 3.4.6 | Full | [Migrate with AWS Database Migration Service (DMS)](aws-dms.html)
 | [Qlik Replicate](https://www.qlik.com/us/products/qlik-replicate) | November 2022 | Full | [Migrate and Replicate Data with Qlik Replicate](qlik.html)
+| [Striim](https://www.striim.com) | 4.1.2 | Full | [Migrate and Replicate Data with Striim](striim.html)
 
 ## Provisioning tools
 | Tool | Latest tested version | Support level | Documentation |

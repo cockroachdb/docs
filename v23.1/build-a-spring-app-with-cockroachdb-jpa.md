@@ -671,7 +671,7 @@ For more details about advice ordering, see [Advice Ordering](https://docs.sprin
 
 #### Transaction retries
 
-Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transactions.html#client-side-intervention) into applications written on CockroachDB.
+Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transaction-retry-error-reference.html#client-side-retry-handling) into applications written on CockroachDB.
 
 In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, declared an aspect with the `@Aspect` annotation. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/jpa/RetryableTransactionAspect.java):
 

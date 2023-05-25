@@ -84,7 +84,7 @@ The code below uses jOOQ to map Java methods to SQL operations. It performs the 
 1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
 1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
-In addition, the code shows a pattern for automatically handling [transaction retries](transactions.html#client-side-intervention-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries](transaction-retry-error-example.html) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 
@@ -182,7 +182,7 @@ The code below uses jOOQ to map Java methods to SQL operations. It performs the 
 1. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
 1. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
 
-In addition, the code shows a pattern for automatically handling [transaction retries](transactions.html#client-side-intervention-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries](transaction-retry-error-example.html) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 To run it:
 

@@ -4,7 +4,7 @@
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% comment %}
-{%- capture stable_pages_names -%}{%- include_cached stable_page_names.md -%}{%- endcapture -%}
+{%- capture stable_pages_names -%}{%- include_cached stable_page_filenames.md -%}{%- endcapture -%}
 {%- comment -%} Fetch all the names of all the stable pages to compare against the dev pages {%- endcomment -%}
 {%- assign dev_page_has_matching_stable_page = false -%}
 {%- if page.url contains site.versions["dev"] and site.versions["dev"] != site.versions["stable"] and stable_pages_names contains page.name -%}
@@ -40,7 +40,8 @@
 <meta property="og:title" content="{{ page.title }}" />
 <meta property="og:type" content="article" />
 {%- assign dev_path = "/" | append: site.versions["dev"] | append: "/" -%}
-<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}" />
+{%- assign stable_path = "/" | append: site.versions["stable"] | append: "/" -%}
+<meta property="og:url" content="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" }}" />
 <meta property="og:image" content="{% if page.image_url %}{{ page.image_url }}{% else %}https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress{% endif %}" />
 <meta property="og:site_name" content="{{ site.site_title }}" />
 {% if page.summary %}<meta property="og:description" content="{{ page.summary | strip_html | strip_newlines | truncate: 160 }}">{% endif %}
@@ -66,7 +67,7 @@
 
 <title>{{ page.title }}</title>
 
-<link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: dev_path, "/dev/" }}">
+<link rel="canonical" href="{{ site.main_url | append: site.baseurl | append: page.canonical | replace: stable_path, "/stable/" | replace: dev_path, "/dev/" }}">
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
 {% include_cached corestyles.css.html %}
 <link rel="preload" href="{{ 'css/customstyles.css' | relative_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">

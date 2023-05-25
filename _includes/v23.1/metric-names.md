@@ -8,8 +8,8 @@ Name | Description
 `capacity.reserved` | Capacity reserved for snapshots
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
-`changefeed.failures` | Total number of changefeed jobs which have failed
-`changefeed.running` | Number of currently running changefeeds, including sinkless
+`changefeed.failures` | Total number of [changefeed jobs](show-jobs.html#show-changefeed-jobs) which have failed.
+`changefeed.running` | Number of currently running changefeeds, including sinkless.
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
 `cluster.preserve-downgrade-option.last-updated` | Unix timestamp of last updated time for cluster.preserve_downgrade_option
@@ -39,6 +39,10 @@ Name | Description
 `intentage` | Cumulative age of intents in seconds
 `intentbytes` | Number of bytes in intent KV pairs
 `intentcount` | Count of intent keys
+`jobs.changefeed.expired_pts_records` | Number of expired [protected timestamp](architecture/storage-layer.html#protected-timestamps) records owned by [changefeed jobs](show-jobs.html#show-changefeed-jobs).
+`jobs.{job_type}.currently_paused` | Number of `{job_type}` [jobs](show-jobs.html) currently considered paused. See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
+`jobs.{job_type}.protected_age_sec` | The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protecting `{job_type}` [jobs](show-jobs.html). See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
+`jobs.{job_type}.protected_record_count` | Number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by `{job_type}` [jobs](show-jobs.html). See the [`/_status/vars`](monitoring-and-alerting.html#prometheus-endpoint) endpoint for all job types.
 `jobs.row_level_ttl.num_active_spans` | Number of active spans the TTL job is deleting from
 `jobs.row_level_ttl.span_total_duration` | Duration for processing a span during row level TTL
 `keybytes` | Number of bytes taken up by keys
@@ -65,6 +69,8 @@ Name | Description
 `queue.gc.info.abortspanconsidered` | Number of AbortSpan entries eligible for removal based on their ages
 `queue.gc.info.abortspangcnum` | Number of AbortSpan entries fit for removal
 `queue.gc.info.abortspanscanned` | Number of transactions present in the AbortSpan scanned from the engine
+`queue.gc.info.clearrangefailed` | Number of failed ClearRange operations during GC
+`queue.gc.info.clearrangesuccess` | Number of successful ClearRange operations during GC
 `queue.gc.info.intentsconsidered` | Number of intents eligible to be considered because they are at least two hours old
 `queue.gc.info.intenttxns` | Number of associated distinct transactions
 `queue.gc.info.numkeysaffected` | Number of keys with GC'able data
@@ -179,11 +185,12 @@ Name | Description
 `ranges` | Number of ranges
 `rangevalbytes` | Number of bytes taken up by range key values (e.g., MVCC range tombstones)
 `rangevalcount` | Count of all range key values (e.g., MVCC range tombstones)
-`rebalancing.readbytespersecond` | Average number of bytes written recently per second
-`rebalancing.readspersecond` | Average number of keys read recently per second
-`rebalancing.requestspersecond` | Average number of requests received recently per second
-`rebalancing.writebytespersecond` | Average number of bytes read recently per second
-`rebalancing.writespersecond` | Number of keys written (i.e., applied by Raft) per second to the store, averaged over a large time period as used in rebalancing decisions
+`rebalancing.queriespersecond` | Number of kv-level requests received per second by the store, considering the last 30 minutes, as used in rebalancing decisions.
+`rebalancing.readbytespersecond` | Number of bytes written per second, considering the last 30 minutes.
+`rebalancing.readspersecond` | Number of keys read recently per second, considering the last 30 minutes.
+`rebalancing.requestspersecond` | Number of requests received recently per second, considering the last 30 minutes.
+`rebalancing.writebytespersecond` | Number of bytes read recently per second, considering the last 30 minutes.
+`rebalancing.writespersecond` | Number of keys written (i.e. applied by Raft) per second to the store, considering the last 30 minutes.
 `replicas.commandqueue.combinedqueuesize` | Number of commands in all CommandQueues combined
 `replicas.commandqueue.combinedreadcount` | Number of read-only commands in all CommandQueues combined
 `replicas.commandqueue.combinedwritecount` | Number of read-write commands in all CommandQueues combined
@@ -219,9 +226,11 @@ Name | Description
 `round-trip-latency` | Distribution of round-trip latencies with other nodes in nanoseconds
 `security.certificate.expiration.ca` | Expiration timestamp in seconds since Unix epoch for the CA certificate. 0 means no certificate or error.
 `security.certificate.expiration.node` | Expiration timestamp in seconds since Unix epoch for the node certificate. 0 means no certificate or error.
-`sql.bytesin` | Number of sql bytes received
-`sql.bytesout` | Number of sql bytes sent
-`sql.conns` | Number of active sql connections
+`schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by `BACKUP` schedules.
+`schedules.BACKUP.protected_record_count` | Number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by `BACKUP` schedules.
+`sql.bytesin` | Number of SQL bytes received
+`sql.bytesout` | Number of SQL bytes sent
+`sql.conns` | Number of active SQL connections. For new recent connections, refer to `sql.new_conns`.
 `sql.ddl.count` | Number of SQL DDL statements
 `sql.delete.count` | Number of SQL DELETE statements
 `sql.distsql.exec.latency` | Latency in nanoseconds of SQL statement executions running on the distributed execution engine. This metric does not include the time to parse and plan the statement.
@@ -244,6 +253,7 @@ Name | Description
 `sql.mem.txn.current` | Current sql transaction memory usage
 `sql.mem.txn.max` | Memory usage per sql transaction
 `sql.misc.count` | Number of other SQL statements
+`sql.new_conns` | Number of new SQL connections in the previous second. For all connections, refer to `sql.conns`.
 `sql.pgwire_cancel.total` | Counter of the number of pgwire query cancel requests
 `sql.pgwire_cancel.ignored` | Counter of the number of pgwire query cancel requests that were ignored due to rate limiting
 `sql.pgwire_cancel.successful` | Counter of the number of pgwire query cancel requests that were successful
@@ -256,6 +266,20 @@ Name | Description
 `sql.txn.contended.count` | Number of SQL transactions that experienced contention
 `sql.txn.rollback.count` | Number of SQL transaction ROLLBACK statements
 `sql.update.count` | Number of SQL UPDATE statements
+`storage.l0-level-score` | Compaction score of level 0
+`storage.l1-level-score` | Compaction score of level 1
+`storage.l2-level-score` | Compaction score of level 2
+`storage.l3-level-score` | Compaction score of level 3
+`storage.l4-level-score` | Compaction score of level 4
+`storage.l5-level-score` | Compaction score of level 5
+`storage.l6-level-score` | Compaction score of level 6
+`storage.l0-level-size` | Size of the SSTables in level 0
+`storage.l1-level-size` | Size of the SSTables in level 1
+`storage.l2-level-size` | Size of the SSTables in level 2
+`storage.l3-level-size` | Size of the SSTables in level 3
+`storage.l4-level-size` | Size of the SSTables in level 4
+`storage.l5-level-size` | Size of the SSTables in level 5
+`storage.l6-level-size` | Size of the SSTables in level 6
 `storage.keys.range-key-set.count` | Approximate count of RangeKeySet internal keys across the storage engine.
 `storage.marked-for-compaction-files` | Count of SSTables marked for compaction
 `sys.cgo.allocbytes` | Current bytes of memory allocated by cgo

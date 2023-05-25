@@ -235,7 +235,7 @@ When moving from Oracle to CockroachDB data types, consider the following:
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
 - [Schema changes between executions of prepared statements](online-schema-changes.html#no-online-schema-changes-between-executions-of-prepared-statements)
 - If [`JSON`](jsonb.html) columns are used only for payload, consider switching to [`BYTES`](bytes.html).
-- Max size of a single column family (512 MiB by default).
+- Max size of a single [column family](column-families.html) (by default, the [maximum size of a range](configure-replication-zones.html#range-max-bytes)).
 
 For more information, see [Known Limitations](known-limitations.html), [Online Schema Changes](online-schema-changes.html), and [Transactions](transactions.html).
 
@@ -329,7 +329,7 @@ Both Oracle and CockroachDB support [multi-statement transactions](transactions.
 
 Regarding locks, Cockroach utilizes a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](transactions.html#sql-statements).
 
-As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
+As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side transaction retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 
 ### SQL dialect
 

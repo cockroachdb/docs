@@ -6,11 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@main
+      uses: actions/checkout@v3
 
     - name: Get changed files
       id: changed_files
-      uses: tj-actions/changed-files@main
+      uses: tj-actions/changed-files@v35.9.2
 
     - name: Calculate changed files to pass to Vale
       id: calc_changed_files

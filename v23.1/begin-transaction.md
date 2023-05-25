@@ -78,7 +78,7 @@ Without modifying the `BEGIN` statement, the transaction uses `SERIALIZABLE` iso
 > COMMIT;
 ~~~
 
-{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transactions.html#client-side-intervention">client-side intervention to handle transaction retries</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}This example assumes you're using <a href="transaction-retry-error-reference.html#client-side-retry-handling">client-side retry handling</a>.{{site.data.alerts.end}}
 
 #### Change priority
 
@@ -117,7 +117,7 @@ You can set a transaction's priority to `LOW` or `HIGH`.
 You can also set a transaction's priority with [`SET TRANSACTION`](set-transaction.html).
 
 {{site.data.alerts.callout_danger}}
-This example assumes you're using [client-side intervention to handle transaction retries](transactions.html#client-side-intervention).
+This example assumes you're using [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).
 {{site.data.alerts.end}}
 
 ### Use the `AS OF SYSTEM TIME` option

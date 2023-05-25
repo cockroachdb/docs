@@ -172,7 +172,7 @@ Disk I/O especially affects [performance on write-heavy workloads](architecture/
 
 In a narrowly-scoped test, we were able to successfully store 4.32 TiB of logical data per node. The results of this test may not be applicable to your specific situation; testing with your workload is _strongly_ recommended before using it in a production environment.
 
-These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x c5d.4xlarge nodes, each with 5 TiB of gp2 EBS storage.
+These results were achieved using the ["bank" workload](cockroach-workload.html#bank-workload) running on AWS using 6x `c5d.4xlarge` nodes, each with 5 TiB of gp2 EBS storage.
 
 Results:
 
@@ -201,7 +201,27 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 - [General Purpose SSD `gp3` volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#gp3-ebs-volume-type) are the most cost-effective storage option. `gp3` volumes provide 3,000 IOPS and 125 MiB/s throughput by default. If your deployment requires more IOPS or throughput, per our [hardware recommendations](#disk-i-o), you must provision these separately. [Provisioned IOPS SSD-backed (`io2`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#EBSVolumeTypes_piops) also need to have IOPS provisioned, which can be very expensive.
 
-- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), a [Network Load Balancer (NLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html), and [Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
+
+- [AWS Network Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) are recommended with client applications configuring their application's database connection pool's maximum connection age (or health check interval) to 5 minutes to stay under [NLB idle connection timeouts](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html#connection-idle-timeout).
+
+- EC2 instances SHOULD be provisioned using an [AWS Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#placement-groups-strategies) *and* the `partition` strategy.  Not specifying an AWS Placement Group or specifying the `cluster` strategy puts your cluster at increased risk of unavailability and is not a supported configuration by Cockroach Labs (the `spread` Placement Group strategy limits the maximum size of a cluster and is not recommended for this reason).
+
+- Incorporate the AWS Placement Group ID into every node's `--locality` flag.  For instance, `--locality=country=us,region=us-west-2,az=us-west-2b,pg=us-west-2b2`.  The trailing partition number can be determined at instance create time or process startup time using a command similar to:
+
+```
+country="us"
+region=${AWS_DEFAULT_REGION}
+az="us-west-2"
+partition_locality=""
+partition_number=$(aws ec2 describe-instances --instance-ids "${instance_id}" | jq -r '.Reservations[].Instances[].Placement.PartitionNumber')
+if [[ "${partition_number}" != "null" ]]; then
+	partition_locality="${partition_number}"
+fi
+exec /usr/local/bin/cockroach start \
+	--locality="country=${country},region=${region},az=${az},pg=${az}${partition_locality}" \
+	# other installation-specific cockroach start flags
+```
 
 #### Azure
 
@@ -343,6 +363,8 @@ Each node has a default SQL memory size of `25%`. This memory is used as-needed 
     SQL memory size applies a limit globally to all sessions at any point in time. Certain disk-spilling operations also respect a memory limit that applies locally to a single operation within a single query. This limit is configured via a separate cluster setting. For details, see [Disk-spilling operations](vectorized-execution.html#disk-spilling-operations).
     {{site.data.alerts.end}}
 
+    If a node runs out of its allocated SQL memory, a `memory budget exceeded` error occurs and the `cockroach` process may be at risk of crashing due to an out-of-memory (OOM) error. To mitigate this issue, refer to [`memory budget exceeded](common-errors.html#memory-budget-exceeded).
+
 To manually increase a node's cache size and SQL memory size, start the node using the [`--cache`](cockroach-start.html#flags) and [`--max-sql-memory`](cockroach-start.html#flags) flags. As long as all machines are [provisioned with sufficient RAM](#memory), you can experiment with increasing each value up to `35%`.
 
 {% include_cached copy-clipboard.html %}
@@ -353,7 +375,7 @@ $ cockroach start --cache=.35 --max-sql-memory=.35 {other start flags}
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %}
 
-Because CockroachDB manages its own memory caches, disable Linux memory swapping to avoid over-allocating memory.
+Because CockroachDB manages its own memory caches, disable Linux memory swapping or allocate sufficient RAM to each node to prevent the node from running low on memory.
 {{site.data.alerts.end}}
 
 ## Dependencies
@@ -648,4 +670,6 @@ When running CockroachDB on Kubernetes, making the following minimal customizati
 
 For more information and additional customization suggestions, see our full detailed guide to [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
-{% include common/transaction-retries.md %}
+## Transaction retries
+
+When several transactions try to modify the same underlying data concurrently, they may experience [contention](performance-best-practices-overview.html#transaction-contention) that leads to [transaction retries](transactions.html#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](transaction-retry-error-reference.html#client-side-retry-handling).

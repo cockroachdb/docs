@@ -20,17 +20,39 @@ If you need a single tenant cluster with no shared resources, we recommend {{ si
 
 ### Hardware
 
-We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run {{ site.data.products.db }} offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
+We use the Kubernetes offerings in AWS, GCP, and Azure (limited access) (EKS, GKE, and AKS respectively) to run {{ site.data.products.db }} offerings.
+
+- GCP clusters use [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs).
+- AWS clusters use [M6 instance types](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/).
+- Azure clusters use [Dasv5-series VMs](https://learn.microsoft.com/en-us/azure/virtual-machines/dasv5-dadsv5-series) and [Premium SSDs](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds).
+
+Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ### Security and Connection
 
-{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network (VPC in AWS and GCP), compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
+{{ site.data.products.dedicated }} clusters are single tenant. This means that each new cluster gets its own virtual network, compute (cluster nodes), data storage (cluster disks) and IAM resources. Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Clusters use TLS 1.3 for encrypting inter-node and client-node communication. [VPC peering](network-authorization.html#vpc-peering) and [AWS PrivateLink](network-authorization.html#aws-privatelink) optionally ensure that cluster traffic does not flow to cloud infrastructure over public networks.
 
-{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
+
+{{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication or [digital certificates](client-certs-dedicated.html) can be used for client identity verification. Refer to [Authentication](authentication.html) for more details.
 
 [Backups](use-managed-service-backups.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
 
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed-service backups are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html). Customers can take and restore from their own backups on Azure storage (Blob Storage or ADLS Gen 2). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
+
 ### Multi-region architecture
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), multi-region {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 The diagram below shows a high-level representation of a {{ site.data.products.dedicated }} multi-region cluster:
 
@@ -60,21 +82,15 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 ### Performance
 
-#### Baseline
+Your cluster's [resource limits](#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 
-Baseline performance for a Serverless cluster is 100 [Request Units](learn-about-request-units.html), or RUs, per second, and any usage above that is called [burst performance](#cockroachdb-cloud-terms). Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
+#### Free
 
-The following diagram shows how RUs are accumulated and consumed:
-
-<img src="{{ 'images/cockroachcloud/ru-diagram.png' | relative_url }}" alt="RU diagram" style="width:100%; max-width:800px" />
+All {{ site.data.products.db }} organizations are given 50 million [Request Units](learn-about-request-units.html) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 #### Paid
 
-You can set your spend limit higher to maintain a high level of performance with larger workloads. If you have a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
-
-Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for burst performance, and vice versa. If you hit your spend limit, your cluster will be throttled down to baseline performance levels. If this occurs, you can opt to increase your spend limit, adjust your workload to stay within the current spend limit, or stay at the baseline performance level until the next month.
-
-Storage always gets first priority in the budget since you need to be able to store your data first and foremost. The remainder of the budget is allocated to burst performance. You can theoretically reach your spend limit on burst performance in the first few minutes of a cluster being created. If this happens, the cluster will be throttled back to the baseline performance and can reaccumulate burst capacity by using fewer RUs.
+You must enter billing information and set [resource limits](#resource-limits) if you've already created one free {{ site.data.products.serverless }} cluster. Higher resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You can set your storage and RU limits separately to reflect your usage, or choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
 
 ### Autoscaling
 

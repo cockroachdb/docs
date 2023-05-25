@@ -14,7 +14,7 @@ To filter the sessions, click the **Filters** field.
 - To filter by username or session status, select **User Name** or **Session Status** and check one or more checkboxes.
 - To filter by session duration, specify the session time and unit.
 
-Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
+Click **Columns** to select the columns to display in the table.
 
 The following properties are displayed for each session:
 
@@ -35,7 +35,7 @@ Actions | Options to cancel the active statement and cancel the session. These r
 
 To view details of a session, click a **Session Start Time (UTC)** to display session details.
 
-## Session details
+## Session Details
 
 If a session is idle, the **Transaction** and **Most Recent Statement** panels will display **No Active [Transaction | Statement]**.
 
