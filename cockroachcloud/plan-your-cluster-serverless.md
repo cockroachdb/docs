@@ -12,13 +12,13 @@ This page describes how resource usage, pricing, and cluster configurations work
 
 ## Request Units
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. [Pricing](https://cockroachlabs.com/pricing) shows cost estimates of some common queries and how they increase with the size and complexity of the query. In addition to queries that you run, Request Units can be consumed by background activity, such as automatic statistics gathering used to optimize your queries or changefeeds connected to an external sink.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](plan-your-cluster-serverless.html#request-units), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. [Pricing](https://cockroachlabs.com/pricing) shows cost estimates of some common queries and how they increase with the size and complexity of the query. In addition to queries that you run, Request Units can be consumed by background activity, such as automatic statistics gathering used to optimize your queries or changefeeds connected to an external sink.
 
 You can see your cluster's RU and storage usage on the [**Cluster Overview** page](cluster-overview-page.html).
 
 ## Pricing
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. Cluster storage is measured in GiB and based on the total volume of storage used over the billing period. Cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. A Request Unit is an abstracted metric that represents the size and complexity of requests made to your cluster. Note that a single activity or request could cost more than 1 Request Unit. Request Unit consumption scales to zero when your cluster has no activity, so you will only be charged for what you use.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. Cluster storage is measured in GiB and based on the total volume of storage used over the billing period. Cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](plan-your-cluster-serverless.html#request-units), or RUs. A Request Unit is an abstracted metric that represents the size and complexity of requests made to your cluster. Note that a single activity or request could cost more than 1 Request Unit. Request Unit consumption scales to zero when your cluster has no activity, so you will only be charged for what you use.
 
 RU and storage consumption is prorated at the following prices:
 
@@ -49,7 +49,7 @@ All [Org Administrators](authorization.html#org-administrator-legacy) will recei
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-You can create a {{ site.data.products.serverless }} cluster with up to [six regions](serverless-faqs.html#what-regions-are-available-for-cockroachdb-serverless-clusters). When you create a multi-region Serverless cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. At this time, you cannot add or remove regions from a {{ site.data.products.serverless }} cluster once it has been created. If you want to change your region configuration, you can backup and restore your data into a new cluster with the desired configuration.
+You can [create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html) with up to [six regions](serverless-faqs.html#what-regions-are-available-for-cockroachdb-serverless-clusters). When you create a multi-region {{ site.data.products.serverless-plan }} cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. At this time, you cannot add or remove regions from a {{ site.data.products.serverless }} cluster once it has been created. If you want to change your region configuration, you can backup and restore your data into a new cluster with the desired configuration.
 
 Unlike {{ site.data.products.dedicated }} clusters, {{ site.data.products.serverless }} clusters can have two regions if your goal is only to survive zone failure. Clusters must have at least three regions to ensure that data replicated across regions can survive the region failure.
 

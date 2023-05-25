@@ -9,7 +9,7 @@ This page describes how charges accumulate in {{ site.data.products.serverless }
 
 ## Pricing overview
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. Cluster storage is measured in GiB and based on the total volume of storage used over the billing period. Cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. A Request Unit is an abstracted metric that represents the size and complexity of requests made to your cluster. Note that a single activity or request could cost more than 1 Request Unit. Request Unit consumption scales to zero when your cluster has no activity, so you will only be charged for what you use.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. Cluster storage is measured in GiB and based on the total volume of storage used over the billing period. Cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](plan-your-cluster-serverless.html#request-units), or RUs. A Request Unit is an abstracted metric that represents the size and complexity of requests made to your cluster. Note that a single activity or request could cost more than 1 Request Unit. Request Unit consumption scales to zero when your cluster has no activity, so you will only be charged for what you use.
 
 RU and storage consumption is prorated at the following prices:
 
@@ -38,6 +38,6 @@ You must [set resource limits](serverless-cluster-management.html#edit-your-reso
 
 ## Learn more
 
-- [Learn About Request Units](learn-about-request-units.html)
+- [Learn About Request Units](plan-your-cluster-serverless.html#request-units)
 - [Optimize Your {{ site.data.products.serverless }} Workload](optimize-serverless-workload.html)
 - [Manage Your {{ site.data.products.serverless }} Cluster](serverless-cluster-management.html)

@@ -32,7 +32,7 @@ The **Usage this month** panel displays your cluster usage statistics for the cu
 |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Resource limits   | The {{ site.data.products.serverless }} cluster's [configured resource limits](create-a-serverless-cluster.html#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your resource limits. For details, see [{{ site.data.products.db }} Architecture](architecture.html#performance). |
-| [Request Units](learn-about-request-units.html) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [{{ site.data.products.db }} Architecture](architecture.html#cockroachdb-cloud-terms).              |
+| [Request Units](plan-your-cluster-serverless.html#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [{{ site.data.products.db }} Architecture](architecture.html#cockroachdb-cloud-terms).              |
 
 ## Cluster statistics panel
 
