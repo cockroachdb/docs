@@ -126,7 +126,7 @@ When [contention](../performance-best-practices-overview.html#understanding-and-
 While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. For example, a long-running transaction (txn 1) holds [write locks](#writing) on keys at time t=1, and txn 2 is waiting to [read](#reading) those same keys at t=1. The following scenarios may occur depending on whether the closed timestamp has been increased or not:
 
 - If txn 1 has its timestamp pushed forward by the closed timestamp, moving its writes to time t=2, txn 2 may be able to proceed and read the keys at t=1. The chances of retryable errors have increased.
-- If the closed timestamp interval is raised, long-running txn 1 is making txn 2 [wait](performance-recipes.html#waiting-transaction), because txn 2 cannot read the keys at t=1 until txn 1 is done or pushed into the future. The chances of lock contention have increased.
+- If the closed timestamp interval is raised, long-running txn 1 is making txn 2 [wait](../performance-recipes.html#waiting-transaction), because txn 2 cannot read the keys at t=1 until txn 1 is done or pushed into the future. The chances of lock contention have increased.
 
 Before increasing the closed timestamp intervals, consider other solutions for [minimizing transaction retries](../transaction-retry-error-reference.html#minimize-transaction-retry-errors).
 
