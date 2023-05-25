@@ -82,11 +82,12 @@ deallocated
 decorrelat(ed?|ion)
 decrypter
 denormalization
-deprovision
+deprovision(s|ed)?
 dereference
 deserializ(ation|ed?)
 dev
 distsql
+Dockerfiles?
 docstrings?
 downsamples?
 duplicative
@@ -148,6 +149,8 @@ href
 (?i)html
 https?
 hyperthreads?
+IdP
+IdP's
 img
 Inconsolata
 incrementals
@@ -233,9 +236,13 @@ npgsql
 nuget
 nullab(ility|le)
 numerics
+OAuth
 offboard
 OIDs?
+Okta
+Okta's
 OOMs
+onboard(s|ed)
 ons
 onwards
 OpenID
@@ -277,6 +284,7 @@ preloaded
 preparable
 prepend(ed|ing|s)
 Prisma
+procedurals?
 profiler
 proofer
 proto(bufs?|s)?
@@ -326,7 +334,7 @@ seeked
 [sS][eE][lL]inux
 Sequelize
 serializab(ility|le)
-serverless
+[sS]erverless
 servlet
 severities
 shapefiles?
@@ -388,6 +396,7 @@ Sysbench
 Sysdig
 Syslog
 tablespaces?
+tabsets?
 tcp
 Teradata
 timeframe
@@ -416,6 +425,7 @@ ukwest
 unanonymized
 unarchived
 unary
+unassign(s|ed)?
 uncategorized
 uncollated
 uncomment(ed)

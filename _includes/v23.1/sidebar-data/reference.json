@@ -104,6 +104,12 @@
                 ]
               },
               {
+                "title": "Cursors",
+                "urls": [
+                  "/${VERSION}/cursors.html"
+                ]
+              },
+              {
                 "title": "Table Expressions",
                 "urls": [
                   "/${VERSION}/table-expressions.html"
@@ -1002,6 +1008,18 @@
                 ]
               },
               {
+                "title": "<code>TSQUERY</code>",
+                "urls": [
+                  "/${VERSION}/tsquery.html"
+                ]
+              },
+              {
+                "title": "<code>TSVECTOR</code>",
+                "urls": [
+                  "/${VERSION}/tsvector.html"
+                ]
+              },
+              {
                 "title": "<code>UUID</code>",
                 "urls": [
                   "/${VERSION}/uuid.html"
@@ -1316,6 +1334,12 @@
             "urls": [
               "/cockroachcloud/cmek.html"
             ]
+          },
+          {
+            "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+            "urls": [
+              "/cockroachcloud/pci-dss.html"
+            ]
           }
         ]
       },
@@ -1407,6 +1431,12 @@
                 "title": "<code>cockroach debug encryption-active-key</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-encryption-active-key.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug encryption-decrypt</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-encryption-decrypt.html"
                 ]
               },
               {

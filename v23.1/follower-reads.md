@@ -61,7 +61,7 @@ SELECT ... FROM ... AS OF SYSTEM TIME follower_read_timestamp();
 
 The following video describes and demonstrates [exact staleness](#exact-staleness-reads) follower reads.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/V--skgN_JMo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="V--skgN_JMo" %}
 
 #### Exact staleness follower reads in read-only transactions
 
@@ -98,7 +98,7 @@ A _bounded staleness read_ is a historical read that uses a dynamic, system-dete
 
 Use bounded staleness follower reads when you:
 
-- Need minimally stale reads from the nearest replica without blocking on [conflicting transactions](transactions.html#transaction-contention). This is possible because the historical timestamp is chosen dynamically and the least stale timestamp that can be served locally without blocking is used.
+- Need minimally stale reads from the nearest replica without blocking on [conflicting transactions](performance-best-practices-overview.html#transaction-contention). This is possible because the historical timestamp is chosen dynamically and the least stale timestamp that can be served locally without blocking is used.
 - Can confine the read to a single statement that meets the [bounded staleness limitations](#bounded-staleness-read-limitations).
 - Need higher availability than is provided by [exact staleness reads](#exact-staleness-reads). Specifically, what we mean by availability in this context is:
   - The ability to serve a read with low latency from a local replica rather than a leaseholder.

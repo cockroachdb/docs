@@ -32,29 +32,37 @@ See the [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheu
 
 We recommend the following guidelines:
 
-- Use the `schedules_backup_last_completed_time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
-- Configure alerting on the `schedules_backup_last_completed_time` metric to watch for cases where the timestamp has not moved forward as expected.
+- Use the `schedules.BACKUP.last_completed_time` metric to monitor the specific backup job or jobs you would use to recover from a disaster.
+- Configure alerting on the `schedules.BACKUP.last_completed_time` metric to watch for cases where the timestamp has not moved forward as expected.
 
 Metric | Description 
 -------+-------------
-`schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
-`schedules_backup_started` | The number of scheduled backup jobs that have started.
-`schedules_backup_last_completed_time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option](create-schedule-for-backup.html#schedule-options).
-`schedules_backup_failed` | The number of scheduled backup jobs that have failed. **Note:** A stuck scheduled job will not increment this metric.
-`schedules_round_reschedule_wait` | The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
-`schedules_round_reschedule_skip` | The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
-`jobs_backup_currently_running` | The number of backup jobs currently running in `Resume` or `OnFailOrCancel` state.
-`jobs_backup_fail_or_cancel_retry_error` | The number of backup jobs that failed with a retryable error on their failure or cancelation process.
-`jobs_backup_fail_or_cancel_completed` | The number of backup jobs that successfully completed their failure or cancelation process.
-`jobs_backup_fail_or_cancel_failed` | The number of backup jobs that failed with a non-retryable error on their failure or cancelation process.
-`jobs_backup_resume_failed` | The number of backup jobs that failed with a non-retryable error.
-`jobs_backup_resume_retry_error` | The number of backup jobs that failed with a retryable error.
-`jobs_restore_resume_retry_error` | The number of restore jobs that failed with a retryable error.
-`jobs_restore_resume_completed` | The number of restore jobs that successfully resumed to completion.
-`jobs_restore_resume_failed` | The number of restore jobs that failed with a non-retryable error.
-`jobs_restore_fail_or_cancel_failed` | The number of restore jobs that failed with a non-retriable error on their failure or cancelation process.
-`jobs_restore_fail_or_cancel_retry_error` | The number of restore jobs that failed with a retryable error on their failure or cancelation process.
-`jobs_restore_currently_running` | The number of restore jobs currently running in `Resume` or `OnFailOrCancel` state.
+`schedules.BACKUP.failed` | The number of scheduled backup jobs that have failed. **Note:** A stuck scheduled job will not increment this metric.
+`schedules.BACKUP.last_completed_time` | The Unix timestamp of the most recently completed scheduled backup specified as maintaining this metric. **Note:** This metric only updates if the schedule was created with the [`updates_cluster_last_backup_time_metric` option](create-schedule-for-backup.html#schedule-options).
+<span class="version-tag">New in v23.1:</span> `schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp record](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) protected by backup schedules.
+<span class="version-tag">New in v23.1:</span>  `schedules.BACKUP.protected_record_count` | The number of [protected timestamp records](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) held by backup schedules.
+`schedules.BACKUP.started` | The number of scheduled backup jobs that have started.
+`schedules.BACKUP.succeeded` | The number of scheduled backup jobs that have succeeded.
+`schedules.round.reschedule_skip` | The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
+`schedules.round.reschedule_wait` | The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
+<span class="version-tag">New in v23.1:</span> `jobs.backup.currently_paused` | The number of backup jobs currently considered [paused](pause-job.html).
+`jobs.backup.currently_running` | The number of backup jobs currently running in `Resume` or `OnFailOrCancel` state.
+`jobs.backup.fail_or_cancel_retry_error` | The number of backup jobs that failed with a retryable error on their failure or cancelation process.
+`jobs.backup.fail_or_cancel_completed` | The number of backup jobs that successfully completed their failure or cancelation process.
+`jobs.backup.fail_or_cancel_failed` | The number of backup jobs that failed with a non-retryable error on their failure or cancelation process.
+<span class="version-tag">New in v23.1:</span> `jobs.backup.protected_age_sec` | The age of the oldest [protected timestamp record](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) protected by backup jobs.
+<span class="version-tag">New in v23.1:</span> `jobs.backup.protected_record_count` | The number of [protected timestamp records](create-schedule-for-backup.html#protected-timestamps-and-scheduled-backups) held by backup jobs.
+`jobs.backup.resume_failed` | The number of backup jobs that failed with a non-retryable error.
+`jobs.backup.resume_retry_error` | The number of backup jobs that failed with a retryable error.
+<span class="version-tag">New in v23.1:</span> `jobs.restore.currently_paused` | The number of restore jobs currently considered [paused](pause-job.html).
+`jobs.restore.currently_running` | The number of restore jobs currently running in `Resume` or `OnFailOrCancel` state.
+`jobs.restore.fail_or_cancel_failed` | The number of restore jobs that failed with a non-retriable error on their failure or cancelation process.
+`jobs.restore.fail_or_cancel_retry_error` | The number of restore jobs that failed with a retryable error on their failure or cancelation process.
+<span class="version-tag">New in v23.1:</span> `jobs.restore.protected_age_sec` | The age of the oldest [protected timestamp record](architecture/storage-layer.html#protected-timestamps) protected by restore jobs.
+<span class="version-tag">New in v23.1:</span> `jobs.restore.protected_record_count` | The number of [protected timestamp records](architecture/storage-layer.html#protected-timestamps) held by restore jobs.
+`jobs.restore.resume_completed` | The number of restore jobs that successfully resumed to completion.
+`jobs.restore.resume_failed` | The number of restore jobs that failed with a non-retryable error.
+`jobs.restore.resume_retry_error` | The number of restore jobs that failed with a retryable error.
 
 ## Datadog integration
 
@@ -67,10 +75,10 @@ To use the Datadog integration with your **{{ site.data.products.dedicated }}** 
 
 Metric | Description 
 -------+-------------
-`schedules_backup_succeeded` | The number of scheduled backup jobs that have succeeded.
-`schedules_backup_started` | The number of scheduled backup jobs that have started.
-`schedules_backup_last_completed_time` | The Unix timestamp of the most recently completed backup by a schedule specified as maintaining this metric.
-`schedules_backup_failed` | The number of scheduled backup jobs that have failed.
+`schedules.BACKUP.succeeded` | The number of scheduled backup jobs that have succeeded.
+`schedules.BACKUP.started` | The number of scheduled backup jobs that have started.
+`schedules.BACKUP.last_completed_time` | The Unix timestamp of the most recently completed backup by a schedule specified as maintaining this metric.
+`schedules.BACKUP.failed` | The number of scheduled backup jobs that have failed.
 
 ## See also
 

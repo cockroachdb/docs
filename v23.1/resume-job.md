@@ -17,7 +17,7 @@ docs_area: reference.sql
 
 ## Required privileges
 
-To resume a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set.
+To resume a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](security-reference/authorization.html#role-options) set. Non-admin users cannot resume admin users' jobs.
 
 For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can resume changefeed jobs running on those tables.
 

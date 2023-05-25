@@ -21,9 +21,9 @@ Automated database and table level backups are not supported in {{ site.data.pro
 
 Both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters do not support automated [locality-aware backups](../{{site.current_cloud_version}}/take-and-restore-locality-aware-backups.html). However, user managed locality-aware backups using user provided storage locations are supported in {{ site.data.products.serverless }}, {{ site.data.products.dedicated }}, and {{ site.data.products.core }} clusters. That is, you need to configure and manage your own locality-aware backups.
 
-## Multi-region clusters
+## Adding and removing regions
 
-{{ site.data.products.serverless }} is only supported in a single region, and does not support [multi-region](../{{site.current_cloud_version}}/multiregion-overview.html) features.
+You cannot currently edit an existing {{ site.data.products.serverless }} to add or remove regions after it has been created. Instead you can [back up and restore](take-and-restore-customer-owned-backups.html) your data into a new {{ site.data.products.serverless }} cluster with the desired region configuration.
 
 ## Follower reads
 
@@ -41,13 +41,18 @@ The [`ALTER TABLE ... SPLIT AT`](../{{site.current_cloud_version}}/alter-table.h
 
 The [DB Console](../{{site.current_cloud_version}}/ui-overview.html) is not supported in {{ site.data.products.serverless }}. The CockroachDB [Cloud Console](cluster-overview-page.html) provides metrics and graphs to monitor the health, performance, and state of your cluster.
 
-The Cloud Console provides a subset of observability information from the DB Console including **SQL Metrics**, **SQL Activity**, and **Databases** information. The Cloud Console does not include information from the following DB Console pages:
+The Cloud Console provides a subset of observability information from the DB Console including [**SQL Metrics**](metrics-page.html), [**SQL Activity**](statements-page.html), [**Jobs**](jobs-page.html), and [**Databases**](databases-page.html) information. The Cloud Console does not include information from the following DB Console pages:
 
 - Non-SQL metrics
 - Network Latency
 - Hot ranges
-- Jobs
 - Advanced Debug
+
+The Cloud Console also does not currently provide the following features available in the DB Console:
+
+- [Statement diagnostic bundles](../{{site.versions["stable"]}}/ui-statements-page.html#diagnostics) on the **Statements** Page
+- [Direct actions to drop unused indexes](../{{site.versions["stable"]}}/ui-databases-page.html#index-recommendations) on the **Insights** and **Databases** pages
+- [Direct actions to create missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-tab) and [replace existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-tab) on the **Insights** page
 
 {{ site.data.products.serverless }} clusters do not expose [Prometheus endpoints](../{{site.current_cloud_version}}/monitor-cockroachdb-with-prometheus.html).
 

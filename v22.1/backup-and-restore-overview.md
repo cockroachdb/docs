@@ -7,7 +7,7 @@ docs_area: manage
 
 This page provides an overview of the backup and restore features available in CockroachDB:
 
-- [Types of backups supported](#cockroachdb-cloud-backup-types) in {{ site.data.products.db }} 
+- [Types of backup available in CockroachDB](#cockroachdb-backup-types)
 - [Backup and restore product support](#backup-and-restore-product-support)
 - [SQL statements](#backup-and-restore-sql-statements) for working with backups and restores
 - [Storage](#backup-storage) for backups
@@ -16,9 +16,9 @@ You can create full or incremental backups of a [cluster](backup.html#backup-a-c
 
 For an explanation of how a backup works, see [Backup Architecture](backup-architecture.html).
 
-## {{ site.data.products.db }} backup types
+## CockroachDB backup types
 
-{% include cockroachcloud/ccloud/backup-types.md %} 
+{% include cockroachcloud/backup-types.md %} 
 
 ## Backup and restore product support
 

@@ -1,6 +1,6 @@
 ## Active Executions table
 
-Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display in the table.
+Click **Columns** to select the columns to display in the table.
 
 The Active Executions table gives details for each transaction fingerprint in the transaction:
 
@@ -33,7 +33,7 @@ The transaction execution details page provides the following details on the tra
 - **Most Recent Statement Execution ID**: Link to the ID of the most recently [executed statement](ui-statements-page.html#active-executions-table) in the transaction.
 - **Session ID**: Link to the ID of the [session](ui-sessions-page.html) in which the transaction is running.
 
-If a transaction execution is waiting, the transaction execution details are followed by Contention Insights and details of the transaction execution on which the blocked transaction execution is waiting. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+If a transaction execution is waiting, the transaction execution details are followed by Contention Insights and details of the transaction execution on which the blocked transaction execution is waiting. For more information about contention, see [Transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
 
 <img src="{{ 'images/v23.1/waiting-transaction.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />
 

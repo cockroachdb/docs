@@ -5,7 +5,7 @@ toc: true
 docs_area: stream_data
 ---
 
-CockroachDB {{ site.data.products.enterprise }} changefeeds can stream change data out to [Apache Kafka](https://kafka.apache.org/) with different [configuration settings](changefeed-sinks.html#kafka-sink-configuration) and [options](create-changefeed.html). [Confluent Cloud](https://www.confluent.io/confluent-cloud/) provides a fully managed service for running Apache Kafka as well as the [Confluent Cloud Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html). 
+CockroachDB {{ site.data.products.enterprise }} changefeeds can stream change data out to [Apache Kafka](https://kafka.apache.org/) with different [configuration settings](changefeed-sinks.html#kafka-sink-configuration) and [options](create-changefeed.html). [Confluent Cloud](https://www.confluent.io/confluent-cloud/) provides a fully managed service for running Apache Kafka as well as the [Confluent Cloud Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html).
 
 A schema registry is a repository for schemas, which allows you to share and manage schemas between different services. Confluent Cloud Schema Registries map to Kafka topics in your Confluent Cloud environment.
 
@@ -15,21 +15,21 @@ An overview of the workflow involves creating and connecting the following:
 
 1. Confluent Cloud Kafka cluster
 1. Confluent Schema Registry
-1. Changefeed streaming to your Confluent Cloud Kafka cluster 
+1. Changefeed streaming to your Confluent Cloud Kafka cluster
 
-## Before you begin 
+## Before you begin
 
 You will need the following set up before starting this tutorial:
 
-- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page. 
+- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](../cockroachcloud/quickstart.html) guide. For {{ site.data.products.core }} clusters, see the [install](install-cockroachdb-mac.html) page.
 - A Confluent Cloud account. See Confluent's [Get started](https://www.confluent.io/get-started/) page for details.
 - The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. This tutorial uses v3.3.0 of the Confluent CLI. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
 
 This tutorial uses the Cockroach Labs [`movr`](movr.html) workload as an example database.
 
-## Step 1. Create a Confluent Cloud Kafka cluster 
+## Step 1. Create a Confluent Cloud Kafka cluster
 
-In this step, you'll use the Confluent CLI to create and configure a Kafka cluster. 
+In this step, you'll use the Confluent CLI to create and configure a Kafka cluster.
 
 1. Ensure you are logged in to Confluent Cloud:
 
@@ -47,7 +47,7 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
     confluent environment list
     ~~~
 
-    If you haven't created an environment explicitly, this command will list a default environment. You can use the default environment for this tutorial. 
+    If you haven't created an environment explicitly, this command will list a default environment. You can use the default environment for this tutorial.
 
 1. If you would prefer to create an environment, run the following command with a name for your environment:
 
@@ -63,7 +63,7 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
     confluent environment use {ENVIRONMENT ID}
     ~~~
 
-1. Create a Kafka cluster: 
+1. Create a Kafka cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -97,7 +97,7 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
     You'll need this information later in the tutorial, but you can also access this status at any time with the following command:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell 
+    ~~~ shell
     confluent kafka cluster describe {CLUSTER ID}
     ~~~
 
@@ -105,9 +105,9 @@ In this step, you'll use the Confluent CLI to create and configure a Kafka clust
     It can take up to 5 minutes for your Kafka cluster to provision. The `Status` field in the cluster's details will change from `PROVISIONING` to `UP` once your Kafka cluster is ready.
     {{site.data.alerts.end}}
 
-## Step 2. Create a cluster API key and secret 
+## Step 2. Create a cluster API key and secret
 
-In this step, you'll create an API key and secret for your Kafka cluster, which you'll need for connecting to your changefeed. 
+In this step, you'll create an API key and secret for your Kafka cluster, which you'll need for connecting to your changefeed.
 
 1. Create the API key for your Kafka cluster:
 
@@ -130,9 +130,9 @@ In this step, you'll create an API key and secret for your Kafka cluster, which 
     confluent api-key use {API KEY} --resource {CLUSTER ID}
     ~~~
 
-    This will prompt you to enter your API and secret key. Use the `--force` flag if you already have a key stored in your local environment. 
+    This will prompt you to enter your API and secret key. Use the `--force` flag if you already have a key stored in your local environment.
 
-## Step 3. Create Kafka topics 
+## Step 3. Create Kafka topics
 
 Next, you'll create the Kafka topics for your changefeed messages.
 
@@ -157,14 +157,14 @@ Next, you'll create the Kafka topics for your changefeed messages.
     `users` will be the topic name for this tutorial. If needed, you can change the topic name for your purposes and run the previous command for each topic you would like to create.
 
     {{site.data.alerts.callout_success}}
-    If you are using a Dedicated Confluent Cloud cluster, you can enable auto topic creation. For further detail, see [Enable automatic topic creation](https://docs.confluent.io/cloud/current/clusters/broker-config.html#enable-automatic-topic-creation). 
+    If you are using a Dedicated Confluent Cloud cluster, you can enable auto topic creation. For further detail, see [Enable automatic topic creation](https://docs.confluent.io/cloud/current/clusters/broker-config.html#enable-automatic-topic-creation).
     {{site.data.alerts.end}}
 
-## Step 4. Create a Confluent Schema Registry 
+## Step 4. Create a Confluent Schema Registry
 
-In this step, you'll create the Schema Registry in your environment. 
+In this step, you'll create the Schema Registry in your environment.
 
-Enable the Schema Registry for the active environment: 
+Enable the Schema Registry for the active environment:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -182,18 +182,18 @@ You will receive output showing the Schema Registry's ID and its endpoint URL:
 +--------------+----------------------------------------------------+
 ~~~
 
-## Step 5. Create a Schema Registry API key and secret 
+## Step 5. Create a Schema Registry API key and secret
 
 Generate an API and secret key for the Schema Registry using the ID from your output:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell 
+~~~ shell
 confluent api-key create --resource {SCHEMA REGISTRY ID}
 ~~~
 
 The output will display your API key and secret. You'll need these to create your Kafka consumer and start your changefeed.
 
-## Step 6. Create a Kafka consumer 
+## Step 6. Create a Kafka consumer
 
 In this step, you'll start a Kafka consumer for the changefeed messages.
 
@@ -262,7 +262,7 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
 1. Before you can create an {{ site.data.products.enterprise }} changefeed, it is necessary to enable rangefeeds on your cluster:
 
     {% include_cached copy-clipboard.html %}
-    ~~~sql 
+    ~~~sql
     SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
 
@@ -270,38 +270,62 @@ To create your changefeed, you'll prepare your CockroachDB cluster with the `mov
 
 Before running the [`CREATE CHANGEFEED`](create-changefeed.html) statement, you must [**URL-encode**](https://meyerweb.com/eric/tools/dencoder/) both the cluster's and the Schema Registry's API secret key.
 
-Create the changefeed with the following statement:
+You can also [create external connections](create-external-connection.html) to define a name for the Kafka and Confluent Schema Registry URIs. This allows you to interact with your defined name instead of the provider-specific URI.
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE CHANGEFEED FOR TABLE users INTO "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN" WITH updated, format = avro, confluent_schema_registry = "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443";
-~~~
+1. Construct the Kafka URI:
 
-To connect to the Kafka cluster, use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`. 
+    Use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`.
 
-Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
+    Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
+    - `TLS_ENABLED=true`
+    - `SASL_ENABLED=true`
+    - `SASL_USER={CLUSTER API KEY}`
+    - `SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}`
+    - `SASL_MECHANISM=PLAIN`
 
-- `tls_enabled=true`
-- `sasl_enabled=true`
-- `sasl_user={CLUSTER API KEY}`
-- `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
-- `sasl_mechanism=PLAIN`
+    ~~~
+    "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN"
+    ~~~
 
-Use the following options to define the format and schema registry:
+1. Create an external connection for the Kafka URI:
 
-- `format = avro`
-- `confluent_schema_registry = "https://{API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY URL}:443"`. Note that the schema registry uses basic authentication, which means that the URL's format is different from the Kafka URL. 
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN"
+    ~~~
 
-    To form the URL, you need the following:
-
+1. To construct the Confluent Schema Registry URI, you need:
     - Schema Registry API Key created in [Step 5](#step-5-create-a-schema-registry-api-key-and-secret).
     - URL-encoded Schema Registry secret key created in [Step 5](#step-5-create-a-schema-registry-api-key-and-secret).
     - The `Endpoint URL` from the Schema Registry's details created in [Step 4](#step-4-create-a-confluent-schema-registry). Make sure to add the `:443` port to the end of this URL. For example, `psrc-x77pq.us-central1.gcp.confluent.cloud:443`.
-- Any other options you need to configure your changefeed. See [Options](create-changefeed.html#options) for a list of all available {{ site.data.products.enterprise }} changefeed options.
 
-{{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
-{{site.data.alerts.end}}
+    ~~~
+    "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443"
+    ~~~
+
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-timeout.md %}
+    {{site.data.alerts.end}}
+
+1. Create an external connection for the Confluent Schema Registry URI:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    CREATE EXTERNAL CONNECTION confluent_registry AS "https://{SCHEMA REGISTRY API KEY}:{URL-ENCODED SCHEMA REGISTRY SECRET KEY}@{SCHEMA REGISTRY ENDPOINT URL}:443"
+    ~~~
+
+1. Create the changefeed with any other options you need to configure your changefeed:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE users INTO "external://kafka" WITH updated, format = avro, confluent_schema_registry = "external://confluent_registry";
+    ~~~
+
+    See [Options](create-changefeed.html#options) for a list of all available Enterprise changefeed options.
+
+    {{site.data.alerts.callout_success}}
+    {% include {{ page.version.version }}/cdc/schema-registry-metric.md %}
+    {{site.data.alerts.end}}
 
 ## Step 9. Verify the output
 
@@ -316,7 +340,7 @@ Move to the terminal window in which you started the Kafka consumer. As the chan
 . . .
 ~~~
 
-You can also view the messages for your cluster in the Confluent Cloud console in the **Topics** sidebar under the **Messages** tab. 
+You can also view the messages for your cluster in the Confluent Cloud console in the **Topics** sidebar under the **Messages** tab.
 
 <img src="{{ 'images/v23.1/confluent-messages-screenshot.png' | relative_url }}" alt="Users topic messages in the Confluent Cloud console." style="border:1px solid #eee;max-width:100%" />
 

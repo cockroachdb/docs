@@ -220,7 +220,7 @@ with conn.cursor() as cur:
 
 ## Performance considerations
 
-Because of the way CockroachDB works under the hood, deleting data from the database does not immediately reduce disk usage.  Instead, records are marked as "deleted" and processed asynchronously by a background garbage collection process.  This process runs every 25 hours by default to allow sufficient time for running [backups](take-full-and-incremental-backups.html) and running [time travel queries using `AS OF SYSTEM TIME`](as-of-system-time.html).  The garbage collection interval is controlled by the [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables) setting.
+Because of the way CockroachDB works under the hood, deleting data from the database does not immediately reduce disk usage.  Instead, records are marked as "deleted" and processed asynchronously by a background garbage collection process. Once the marked records are older than [the specified TTL interval](configure-replication-zones.html#gc-ttlseconds), they are eligible to be removed.  The garbage collection interval is designed to allow sufficient time for running [backups](take-full-and-incremental-backups.html) and [time travel queries using `AS OF SYSTEM TIME`](as-of-system-time.html). The garbage collection interval is controlled by the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) setting.
 
 The practical implications of the above are:
 

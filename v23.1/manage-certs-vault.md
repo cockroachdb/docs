@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-This tutorial guides the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) using [Vault PKI Secrets Engine](https://www.vaultproject.io/docs/secrets/pki) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial guides the user through implementing [public key infrastructure (PKI)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP), using [Vault PKI Secrets Engine](hashicorp-integration.html) .
 
 PKI involves careful management of the certificates used for authentication and encryption in network traffic between servers and clients.
 
@@ -419,7 +419,7 @@ In Vault, a PKI role is a template for a certificate.
 1. Issue a certificate pair for each node.
 
     Each certificate is tailored to the node:
-    - The extended key usages attribute `ext_key_usage` must include both server and client auth usages; this is because nodes must frequently initiate requests to other nodes in order to maintain cluster synchrony and load-balance work. (Not true???!!!)
+    - The extended key usages attribute `ext_key_usage` must include both server and client auth usages; this is because nodes must frequently initiate requests to other nodes in order to maintain cluster synchrony and load-balance work.
     - The Subject Alternative Name (SAN) - IP addresses field contains:
       - the IP address of the node on the internal network of your GCP project (so the node can serve at that address  locally, to other nodes).
       - the IP address of your cluster on the external, public internet (so the node can serve at that address publicly, to application servers).

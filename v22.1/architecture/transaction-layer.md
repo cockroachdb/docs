@@ -46,7 +46,7 @@ If the transaction has not been aborted, the transaction layer begins executing 
 CockroachDB provides the following types of reads:
 
 - Strongly-consistent (aka "non-stale") reads: These are the default and most common type of read. These reads go through the [leaseholder](replication-layer.html#leases) and see all writes performed by writers that committed before the reading transaction started. They always return data that is correct and up-to-date.
-- Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions that use the [`AS OF SYSTEM TIME`](../as-of-system-time.html) clause. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads](../follower-reads.html).
+- <a name="stale-reads"></a> Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions that use the [`AS OF SYSTEM TIME`](../as-of-system-time.html) clause. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads](../follower-reads.html).
 
 ### Commits (phase 2)
 

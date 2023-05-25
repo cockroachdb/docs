@@ -10,6 +10,8 @@ cloud: true
 
 {{site.data.alerts.callout_danger}}
 The {{ site.data.products.dedicated }} log export feature is only available on clusters created after August 11, 2022 (AWS) or September 9, 2022 (GCP).
+
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), log export is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -25,7 +27,7 @@ To configure and manage log export for your {{ site.data.products.dedicated }} c
 https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/logexport
 ~~~
 
-Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](console-access-management.html#service-accounts) with the appropriate permissions.
+Access to the `logexport` endpoint requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
 
 The following methods are available for use with the `logexport` endpoint, and require the listed service account permissions:
 
@@ -35,7 +37,7 @@ Method | Required permissions | Description
 `POST` | `ADMIN` or `EDIT` | Enables log export, or updates an existing log export configuration.
 `DELETE` | `ADMIN` | Disables log export, halting all log export to AWS CloudWatch or GCP Cloud Logging.
 
-See [Service accounts](console-access-management.html#service-accounts) for instructions on configuring a {{ site.data.products.db }} service account with these required permissions.
+See [Service accounts](managing-access.html#manage-service-accounts) for instructions on configuring a {{ site.data.products.db }} service account with these required permissions.
 
 ## Log name format
 
@@ -83,7 +85,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 	  --header 'Authorization: Bearer {secret_key}' | jq .account_id
 	~~~
 
-    See [API Access](console-access-management.html) for instructions on generating the `{secret_key}`.
+    See [API Access](managing-access.html) for instructions on generating the `{secret_key}`.
 
 1.  Create a cross-account IAM role in your AWS account:
 
@@ -159,11 +161,11 @@ Perform the following steps to enable log export from your {{ site.data.products
         - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 2.
         - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
         - `{log_group_name}` is the target AWS CloudWatch log group you would like the logs to be sent to in your AWS account.
-        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 7.
+        - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied previously.
 
     1. To enable log export for your {{ site.data.products.dedicated }} cluster with custom logging configuration:
 
-        1. Consult the log export entry on the [Cockroach Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
+        1. Consult the log export entry on the [{{ site.data.products.db }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
 
             For example, consider the following configuration:
 
@@ -215,7 +217,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
             Where:
             - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 3.
-            - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+            - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
             - `{role_arn}` is the ARN for the `CockroachCloudLogExportRole` role you copied in step 8.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
@@ -260,7 +262,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     Where:
     - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 2.
-    - `{secret_key}` is your API access key. See [API Access](console-access-management.html) for more details.
+    - `{secret_key}` is your API access key. See [API Access](managing-access.html) for more details.
 
     The resulting GCP principal should resemble the following example:
 
@@ -301,14 +303,14 @@ Perform the following steps to enable log export from your {{ site.data.products
 
         Where:
         - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 3.
-        - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+        - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
         - `{log_name}` is a string of your choosing to represent logs written from your {{ site.data.products.dedicated }} cluster. This name will appear in the name of each log written to GCP Cloud Logging.
         - `{gcp_project_id}` is your GCP project ID, as shown in your GCP Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
 
     1. To enable log export for your {{ site.data.products.dedicated }} cluster with custom logging configuration:
 
-        1. Consult the log export entry on the [Cockroach Cloud API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
-        
+        1. Consult the log export entry on the [{{ site.data.products.db }} API Reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) and select the **Schema** tab to view the supported log configuration options, and determine the customized logging configuration you would like to use.
+
             For example, consider the following configuration:
 
             {% include_cached copy-clipboard.html %}
@@ -359,7 +361,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
             Where:
             - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 3.
-            - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+            - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
             - `{gcp_project_id}` is your GCP project ID, as shown in your GCP Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
@@ -391,7 +393,7 @@ curl --request GET \
 Where:
 
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
 
 ## Update an existing log export configuration
 
@@ -411,7 +413,7 @@ curl --request DELETE \
 Where:
 
 - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
 
 ## Limitations
 
@@ -450,7 +452,7 @@ No, the {{ site.data.products.dedicated }} log export feature does not support u
 
 ### Does log export configuration use the same syntax as CockroachDB log configuration?
 
-No, log export configuration uses the [Cockroach Cloud API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities), while CockroachDB uses `filter`.
+No, log export configuration uses the [{{ site.data.products.db }} API](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters/-cluster_id-/logexport) syntax. For example, log export uses `min_level` to define log [severity levels](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities), while CockroachDB uses `filter`.
 
 ### Why are some logs appearing without a node number in the name?
 

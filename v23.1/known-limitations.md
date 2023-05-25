@@ -10,6 +10,103 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Limitations for `EXPLAIN ANALYZE`
+
+- [`EXPLAIN ANALYZE`](explain-analyze.html) does not collect inverted statistics on columns that are indexed with both forward and inverted indexes; only forward statistics are collected for those columns.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92036)
+
+- [`EXPLAIN ANALYZE`](explain-analyze.html) does not support the `AS OF SYSTEM TIME` syntax. Use [`CREATE STATISTICS ... AS OF SYSTEM TIME`](create-statistics.html#create-statistics-as-of-a-given-time) instead.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/96430)
+
+### Limitations for index recommendations
+
+- [Index](indexes.html) recommendations are not aware of [hash sharding](hash-sharded-indexes.html).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
+
+- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables).
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
+
+### Limitations for `SELECT FOR UPDATE`
+
+- [`SELECT FOR UPDATE`](select-for-update.html) places locks on each key scanned by the base index scan. This means that even if some of those keys are later filtered out by a predicate which could not be pushed into the scan, they will still be locked.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/75457)
+
+- [`SELECT FOR UPDATE`](select-for-update.html) only places an unreplicated lock on the index being scanned by the query. This diverges from PostgreSQL, which aquires a lock on all indexes.
+
+    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/57031)
+
+### Limitations for composite types
+
+- {% include {{page.version.version}}/cdc/types-udt-composite-general.md %} The following limitations apply:
+    - {% include {{page.version.version}}/cdc/avro-udt-composite.md %}
+    - {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
+
+### Common table expressions are not supported in user-defined functions
+
+[Common table expressions](common-table-expressions.html) (CTE), recursive or non-recursive, are not supported in [user-defined functions](user-defined-functions.html) (UDF). That is, you cannot use a `WITH` clause in the body of a UDF.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92961)
+
+### Low estimated Request Units are rounded to zero
+
+The [Request Units](../cockroachcloud/learn-about-request-units.html) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
+
+### Statistics for deleted tables in `system.table_statistics` do not get removed
+
+When a table is dropped, the related rows in `system.table_statistics` are not deleted. CockroachDB does not delete historical statistics.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94195)
+
+### Collection of statistics for virtual computed columns
+
+CockroachDB does not collect statistics for [virtual computed columns](computed-columns.html). This can prevent the [optimizer](cost-based-optimizer.html) from accurately calculating the cost of scanning an index on a virtual column, and, transitively, the cost of scanning an [expression index](expression-indexes.html).
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/68254)
+
+### `AS OF SYSTEM TIME` does not support placeholders
+
+CockroachDB does not support placeholders in [`AS OF SYSTEM TIME`](as-of-system-time.html). The time value must be embedded in the SQL string.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/30955)
+
+### Declarative schema changer does not track rows in `system.privileges`
+
+The [declarative schema changer](online-schema-changes.html#declarative-schema-changer) does not track rows in the `system.privileges` table, which prevents the declarative schema changer from successfully running the [`DROP OWNED BY`](drop-owned-by.html) statement.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/88149)
+
+### `null_ordered_last` does not produce correct results with tuples
+
+By default, CockroachDB orders `NULL`s before all other values. For compatibility with PostgreSQL, the `null_ordered_last` [session variable](set-vars.html) was added, which changes the default to order `NULL`s after all other values. This works in most cases, due to some transformations CockroachDB makes in the optimizer to add extra ordering columns. However, it is broken when the ordering column is a tuple.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93558)
+
+### Inverted join for `tsvector` and `tsquery` types is not supported
+
+CockroachDB cannot index-accelerate queries with `@@` predicates when both sides of the operator are variables.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/102731)
+
+### No guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if `node decommission` is interrupted
+
+There is no guaranteed state switch from `DECOMMISSIONING` to `DECOMMISSIONED` if [`node decommission`](cockroach-node.html) is interrupted in one of the following ways:
+
+- The `cockroach node decommission --wait-all` command was run and then interrupted
+- The `cockroach node decommission --wait=none` command was run
+
+This is because the state flip is effected by the CLI program at the end. Only the CLI (or its underlying API call) is able to finalize the "decommissioned" state. If the command is interrupted, or `--wait=none` is used, the state will only flip to "decommissioned" when the CLI program is run again after decommissioning has done all its work.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/94430)
+
+## Unresolved limitations
+
 ### Limitations for user-defined functions (UDFs)
 
 #### Limitations on use of UDFs
@@ -28,23 +125,13 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-- [CDC transformations](cdc-transformations.html).
-
 #### Limitations on expressions allowed within UDFs
 
 The following are not currently allowed within the body of a [UDF](user-defined-functions.html):
 
-- Subqueries in statements.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87291)
-
 - Mutation statements such as `INSERT`, `UPDATE`, `DELETE`, and `UPSERT`.
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/87289)
-
-- Expressions with `*` such as `SELECT *`.
-
-    [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/90080)
 
 - Common table expressions (CTEs).
 
@@ -54,23 +141,15 @@ The following are not currently allowed within the body of a [UDF](user-defined-
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/93049)
 
-### Default `range_stuck_threshold` value may cause unwanted changefeed restarts
+### Incorrect query plans for partitions with `NULL` values
 
-The [cluster setting](cluster-settings.html) `kv.rangefeed.range_stuck_threshold` will automatically restart a rangefeed that appears to be stuck if it does not emit events for some time. Rangefeeds are used to stream per-range changefeed events. This setting was introduced in CockroachDB v22.1.7, disabled by default, but is enabled by default in v22.2.0, set to 1 minute.
+In cases where the partition definition includes a comparison with `NULL` and a query constraint, incorrect query plans are returned. However, this case uses non-standard partitioning which defines partitions which could never hold values, so it is not likely to occur in production environments.
 
-This setting can erroneously trigger if the client fails to consume events for the configured duration, for example, in the case of an overloaded changefeed sink. Furthermore, this can cause the entire changefeed to fail and restart with error "context canceled", instead of only restarting the internal per-range rangefeed.
-
-If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed.range_stuck_threshold = '0s'`. A fix is under development, and will be included in an upcoming 22.2 patch release.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/92570)
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/82774)
 
 ### Limitations for `DROP OWNED BY`
 
 [`DROP OWNED BY`](drop-owned-by.html) drops all owned objects as well as any [grants](grant.html) on objects not owned by the [role](security-reference/authorization.html#roles).
-
-#### `DROP OWNED BY` does not support drop functions
-
-{% include {{page.version.version}}/known-limitations/drop-owned-by-function-limitations.md %}
 
 #### `DROP OWNED BY` is not supported where role has system-level privileges
 
@@ -82,7 +161,9 @@ If this is seen to happen, the behavior can be disabled by setting `kv.rangefeed
 
 [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
 
-## Unresolved limitations
+### Limited SQL cursor support
+
+{% include {{page.version.version}}/known-limitations/sql-cursors.md %}
 
 ### `SELECT FOR UPDATE` locks are dropped on lease transfers  and range splits/merges
 
@@ -124,6 +205,12 @@ The `transaction_rows_read_err` and `transaction_rows_written_err` [session sett
 The `sql.guardrails.max_row_size_err` [cluster setting](cluster-settings.html) misses large rows caused by indexed virtual computed columns. This is because the guardrail only checks the size of primary key rows, not secondary index rows.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69540)
+
+### CockroachDB does not allow inverted indexes with `STORING`
+
+CockroachDB does not allow inverted indexes with a [`STORING` column](create-index.html#store-columns).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/88278)
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
@@ -330,25 +417,6 @@ CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53170)
 
-### `IMPORT` into a table with partial indexes
-
-CockroachDB does not currently support [`IMPORT`s](import.html) into tables with partial indexes.
-
-To work around this limitation:
-
-1. Drop any partial indexes defined on the table.
-1. Perform the `IMPORT`.
-1. Recreate the partial indexes.
-
-If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) with partial indexes:
-
-1. Drop the partial indexes on the PostgreSQL server.
-1. Recreate the `PGDUMP`.
-1. `IMPORT` the `PGDUMP`.
-1. Add partial indexes on the CockroachDB server.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
-
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
@@ -391,23 +459,6 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 
-### Subqueries in `SET` statements
-
-It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SET application_name = (SELECT 'a' || 'b');
-~~~
-
-~~~
-ERROR: invalid value for parameter "application_name": "(SELECT 'a' || 'b')"
-SQLSTATE: 22023
-DETAIL: subqueries are not allowed in SET
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
-
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
@@ -419,12 +470,6 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 ### DB Console may become inaccessible for secure clusters
 
 Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
-
-### `AS OF SYSTEM TIME` in `SELECT` statements
-
-`AS OF SYSTEM TIME` can only be used in a top-level `SELECT` statement. That is, we do not support statements like `INSERT INTO t SELECT * FROM t2 AS OF SYSTEM TIME <time>` or two subselects in the same statement with differing `AS OF SYSTEM TIME` arguments.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30534)
 
 ### Large index keys can impair performance
 
@@ -439,10 +484,6 @@ To work around this issue, we recommend limiting the size of primary and seconda
 CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
-
-### Ordering tables by `JSONB`/`JSON`-typed columns
-
-CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) [`JSONB`/`JSON`](jsonb.html)-typed columns.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
@@ -587,7 +628,7 @@ pq: unsupported binary operator: <collatedstring{en}> || <collatedstring{en}>
 
 ### Max size of a single column family
 
-When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the max range size (512 MiB by default) for the table, the operation may fail, or cluster performance may suffer.
+When creating or updating a row, if the combined size of all values in a single [column family](column-families.html) exceeds the [max range size](configure-replication-zones.html#range-max-bytes) for the table, the operation may fail, or cluster performance may suffer.
 
 As a workaround, you can either [manually split a table's columns into multiple column families](column-families.html#manual-override), or you can [create a table-specific zone configuration](configure-replication-zones.html#create-a-replication-zone-for-a-table) with an increased max range size.
 
@@ -654,12 +695,6 @@ To reduce the chance that a column drop will roll back incorrectly:
 
 If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](show-jobs.html). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
 
-### Disk-spilling on joins with `JSON` columns
-
-If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
-
 ### Remove a `UNIQUE` index created as part of `CREATE TABLE`
 
 {% include {{ page.version.version }}/known-limitations/drop-unique-index-from-create-table.md %}
@@ -673,4 +708,4 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 Change data capture (CDC) provides efficient, distributed, row-level changefeeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
-{% include {{ page.version.version }}/known-limitations/cdc-transformations.md %}
+{% include {{ page.version.version }}/known-limitations/cdc-queries.md %}

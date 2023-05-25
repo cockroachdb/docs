@@ -74,7 +74,7 @@ You should **not** use follower reads when your application cannot tolerate read
 This video uses [exact staleness](#exact-staleness-reads) follower reads; it was recorded before [bounded staleness reads](#bounded-staleness-reads) were possible with CockroachDB.
 {{site.data.alerts.end}}
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/V--skgN_JMo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="V--skgN_JMo" %}
 
 ## Use follower reads
 

@@ -235,7 +235,7 @@ When moving from Oracle to CockroachDB data types, consider the following:
 - [Schema changes within transactions](known-limitations.html#schema-changes-within-transactions)
 - [Schema changes between executions of prepared statements](online-schema-changes.html#no-online-schema-changes-between-executions-of-prepared-statements)
 - If [`JSON`](jsonb.html) columns are used only for payload, consider switching to [`BYTES`](bytes.html).
-- Max size of a single column family (512 MiB by default).
+- Max size of a single [column family](column-families.html) (by default, the [maximum size of a range](configure-replication-zones.html#range-max-bytes)).
 
 For more information, see [Known Limitations](known-limitations.html), [Online Schema Changes](online-schema-changes.html), and [Transactions](transactions.html).
 

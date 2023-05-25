@@ -17,6 +17,10 @@ This page describes the format and behavior of changefeed messages. You will fin
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
 
+{{site.data.alerts.callout_info}}
+{% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
+{{site.data.alerts.end}}
+
 ## Responses
 
 By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
@@ -66,14 +70,14 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     You'd expect the changefeed to emit:
 
-    ~~~ shell
+    ~~~json
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     ~~~
 
     It is also possible that the changefeed emits an out of order duplicate of an earlier value that you already saw:
 
-    ~~~ shell
+    ~~~json
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
@@ -81,20 +85,20 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     However, you will **never** see an output like the following (i.e., an out of order row that you've never seen before):
 
-    ~~~ shell
+    ~~~json
     [1]	{"__crdb__": {"updated": <timestamp 2>}, "id": 1, "name": "Petee"}
     [1]	{"__crdb__": {"updated": <timestamp 1>}, "id": 1, "name": "Carl"}
     ~~~
 
 - If a row is modified more than once in the same transaction, only the last change will be emitted.
 
-- Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html).
+- Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html). To define another key to determine the partition for your messages, use the [`key_column`](create-changefeed.html#key-column) option.
 
 - <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
-    ~~~ shell
+    ~~~json
     {"__crdb__": {"updated": "1532377312562986715.0000000000"}, "id": 1, "name": "Petee H"}
     {"__crdb__": {"updated": "1532377306108205142.0000000000"}, "id": 2, "name": "Carl"}
     {"__crdb__": {"updated": "1532377358501715562.0000000000"}, "id": 3, "name": "Ernie"}
@@ -114,11 +118,13 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
 
+{% include {{ page.version.version }}/cdc/composite-key-delete-insert.md %}
+
 ## Delete messages
 
 Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. For example, with default options, deleting the row with primary key `5` will output:
 
-~~~ shell
+~~~json
 [5] {"after": null}
 ~~~
 
@@ -138,7 +144,7 @@ When schema changes with column backfill (e.g., adding a column with a default, 
 
 For an example of a schema change with column backfill, start with the changefeed created in this [Kafka example](changefeed-examples.html#create-a-changefeed-connected-to-kafka):
 
-~~~
+~~~json
 [1]	{"id": 1, "name": "Petee H"}
 [2]	{"id": 2, "name": "Carl"}
 [3]	{"id": 3, "name": "Ernie"}
@@ -153,7 +159,7 @@ Add a column to the watched table:
 
 The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
 
-~~~
+~~~json
 [1]	{"id": 1, "name": "Petee H"}
 [2]	{"id": 2, "name": "Carl"}
 [3]	{"id": 3, "name": "Ernie"}
@@ -180,7 +186,17 @@ Protected timestamps will protect changefeed data from garbage collection in the
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
 - You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
-However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed. 
+However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
+
+- [Cancel](cancel-job.html) the changefeed job.
+- [Resume](resume-job.html) a paused changefeed job.
+- {% include_cached new-in.html version="v23.1" %} Set the [`gc_protect_expires_after`](create-changefeed.html#gc-protect-expire) option, which will automatically expire the protected timestamp records that are older than your defined duration and cancel the changefeed job.
+
+    For example, if the following changefeed is paused or runs into an error and then pauses, protected timestamps will protect changes for up to 24 hours. After this point, if the changefeed does not resume, the protected timestamp records will expire and the changefeed job will be cancelled. This releases the protected timestamp records and allows garbage collection to resume:
+
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE db.table INTO 'external://sink' WITH on_error='pause', protect_data_from_gc_on_pause, gc_protect_expires_after='24h';
+    ~~~
 
 We recommend [monitoring](monitor-and-debug-changefeeds.html) storage and the number of running changefeeds. If a changefeed is not advancing and is [retrying](monitor-and-debug-changefeeds.html#changefeed-retry-errors), it will (without limit) accumulate garbage while it retries to run.
 
@@ -240,6 +256,7 @@ You can use the [`format=csv`](create-changefeed.html#format) option to emit CSV
 
 - It **only** works in combination with the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option.
 - It does **not** work when used with the [`diff`](create-changefeed.html#diff-opt) or [`resolved`](create-changefeed.html#resolved-option) options.
+- {% include {{page.version.version}}/cdc/csv-udt-composite.md %}
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 

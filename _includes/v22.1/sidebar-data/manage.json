@@ -187,6 +187,7 @@
       "items": [
         {
           "title": "Secure CockroachDB Cloud Clusters",
+          "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
@@ -238,15 +239,15 @@
 										"urls": [
 											"/cockroachcloud/configure-cloud-org-sso.html"
 										]
-									}
+									},
+                  {
+                    "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                    "urls": [
+                      "/cockroachcloud/client-certs-dedicated.html"
+                    ]
+                  }
 								]
       	    },
-            {
-              "title": "User Authorization",
-              "urls": [
-                "/cockroachcloud/user-authorization.html"
-              ]
-            },
             {
               "title": "Network Authorization",
               "urls": [
@@ -266,9 +267,15 @@
               ]
             },
             {
-              "title": "Manage Console Access",
+              "title": "CockroachDB Cloud Access Management Overview and FAQ",
               "urls": [
-                 "/cockroachcloud/console-access-management.html"
+                "/cockroachcloud/authorization.html"
+              ]
+            },
+            {
+              "title": "Managing Access in CockroachDB Cloud",
+              "urls": [
+                 "/cockroachcloud/managing-access.html"
               ]
             }
           ]

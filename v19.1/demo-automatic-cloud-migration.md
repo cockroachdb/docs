@@ -8,7 +8,7 @@ CockroachDB's flexible [replication controls](configure-replication-zones.html) 
 
 ## Watch the demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cCJkgZy6s2Q" frameborder="0" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="cCJkgZy6s2Q" %}
 
 ## Step 1. Install prerequisites
 

@@ -21,7 +21,7 @@ For guidance on the syntax for `SHOW BACKUP FROM`, see the [examples](#examples)
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
-Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#system-level-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-reference/authorization.html#supported-privileges) or the [`admin`](security-reference/authorization.html#admin-role) role is required for the following scenarios:
 
 - Interacting with a cloud storage resource using [`IMPLICIT` authentication](cloud-storage-authentication.html).
 - Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
@@ -190,32 +190,9 @@ movr          | public             | vehicles                   | table       | 
 . . .
 ~~~
 
-### Show a locality-aware backup
+### Show locality-aware backups
 
-{{site.data.alerts.callout_info}}
-`SHOW BACKUP` cannot display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
-{{site.data.alerts.end}}
-
-To view a [locality-aware backup](take-and-restore-locality-aware-backups.html), pass locality-aware backup URIs to `SHOW BACKUP`:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUP FROM LATEST IN ('s3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=default', 's3://{bucket name}/locality?AWS_ACCESS_KEY_ID={placeholder}&AWS_SECRET_ACCESS_KEY={placeholder}&COCKROACH_LOCALITY=region%3Dus-west');
-~~~
-
-~~~
-  database_name | parent_schema_name |        object_name         | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster
-----------------+--------------------+----------------------------+-------------+-------------+------------+----------------------------+------------+------+------------------
-  NULL          | NULL               | movr                       | database    | full        | NULL       | 2023-02-23 15:09:25.625777 |       NULL | NULL |        f
-  movr          | NULL               | public                     | schema      | full        | NULL       | 2023-02-23 15:09:25.625777 |       NULL | NULL |        f
-  movr          | public             | users                      | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |       5633 |   58 |        f
-  movr          | public             | vehicles                   | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |       3617 |   17 |        f
-  movr          | public             | rides                      | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |     159269 |  511 |        f
-  movr          | public             | vehicle_location_histories | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |      79963 | 1092 |        f
-  movr          | public             | promo_codes                | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |     221763 | 1003 |        f
-  movr          | public             | user_promo_codes           | table       | full        | NULL       | 2023-02-23 15:09:25.625777 |        927 |   11 |        f
-(8 rows)
-~~~
+{% include {{ page.version.version }}/backups/locality-aware-backups.md %}
 
 ### Show a backup with schemas
 

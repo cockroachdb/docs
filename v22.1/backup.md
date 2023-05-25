@@ -73,7 +73,7 @@ CockroachDB stores full backups in a backup collection. Each full backup in a co
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 <a name="collectionURI-param"></a> `collectionURI` | The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.)<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `localityURI`   | The URI containing the `COCKROACH_LOCALITY` parameter for a non-default locality that is part of a single locality-aware backup.
-`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
+`timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your data's garbage collection TTL (which is controlled by the [`gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds)).
 `backup_options` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 ### Targets
@@ -144,7 +144,7 @@ This improves performance by decreasing the likelihood that the `BACKUP` will be
 
 Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:
 
-#### `bulkio.backup.file_size` 
+#### `bulkio.backup.file_size`
 
 Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
 
@@ -152,7 +152,7 @@ Note that if you lower `bulkio.backup.file_size` below the default, it will caus
 
 **Default:** `128 MiB`
 
-#### `cloudstorage.azure.concurrent_upload_buffers` 
+#### `cloudstorage.azure.concurrent_upload_buffers`
 
 Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. Note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.
 

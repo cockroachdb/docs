@@ -28,15 +28,17 @@ In relationship to other layers in CockroachDB, the replication layer:
 - Receives requests from and sends responses to the distribution layer.
 - Writes accepted requests to the storage layer.
 
-## Components
+## Technical details and components
 
 ### Raft
 
 Raft is a consensus protocol––an algorithm which makes sure that your data is safely stored on multiple machines, and that those machines agree on the current state even if some of them are temporarily disconnected.
 
-Raft organizes all nodes that contain a [replica](overview.html#architecture-replica) of a [range](overview.html#architecture-range) into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
+Raft organizes all nodes that contain a [replica](overview.html#architecture-replica) of a [range](overview.html#architecture-range) into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after [randomized election timeouts](#important-values-and-timeouts) and proceed to hold new leader elections.
 
 A third replica type, the "non-voting" replica, does not participate in Raft elections, but is useful for unlocking use cases that require low-latency multi-region reads. For more information, see [Non-voting replicas](#non-voting-replicas).
+
+For the current values of the Raft election timeout, the Raft proposal timeout, and other important intervals, see [Important values and timeouts](#important-values-and-timeouts).
 
 Once a node receives a `BatchRequest` for a range it contains, it converts those KV operations into Raft commands. Those commands are proposed to the Raft group leader––which is what makes it ideal for the [leaseholder](#leases) and the Raft leader to be one in the same––and written to the Raft log.
 
@@ -106,6 +108,17 @@ Each replica can be "snapshotted", which copies all of its data as of a specific
 
 After loading the snapshot, the node gets up to date by replaying all actions from the Raft group's log that have occurred since the snapshot was taken.
 
+CockroachDB clusters running v23.1 and later can send _delegated snapshots_. Delegated snapshots can be sent by a Raft follower on behalf of the leader of a range. Which follower is chosen depends on the locality of the follower being nearest the replica that is the final recipient of the snapshot. If the follower is not able to send the snapshot quickly, the attempt is cancelled and the Raft leader sends the snapshot instead. If the follower is not able to send a snapshot that will be valid for the recipient, the request is rerouted to the leader.
+
+Sending data locally using delegated snapshots has the following benefits:
+
+- Snapshot transfers are faster
+- Snapshot transfers use less WAN bandwidth
+- Network costs are lower for operators of multi-region deployments
+- User traffic is less likely to be negatively impacted by snapshots
+
+Delegated snapshots are managed automatically by the cluster with no need for user involvement.
+
 ### Leases
 
 A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`](distribution-layer.html#distsender)).
@@ -138,7 +151,7 @@ However, unlike table data, system ranges cannot use epoch-based leases because 
 
 When the cluster needs to access a range on a leaseholder node that is dead, that range's lease must be transferred to a healthy node. This process is as follows:
 
-1. The dead node's liveness record, which is stored in a system range, has an expiration time of 9 seconds, and is heartbeated every 4.5 seconds. When the node dies, the amount of time the cluster has to wait for the record to expire varies, but on average is 6.75 seconds.
+1. The dead node's liveness record, which is stored in a system range, has an expiration time of `{{site.data.constants.cockroach_range_lease_duration}}`, and is heartbeated half as often (`{{site.data.constants.cockroach_range_lease_duration}} / 2`). When the node dies, the amount of time the cluster has to wait for the record to expire varies, but should be no more than a few seconds.
 1. A healthy node attempts to acquire the lease. This is rejected because lease acquisition can only happen on the Raft leader, which the healthy node is not (yet). Therefore, a Raft election must be held.
 1. The rejected attempt at lease acquisition [unquiesces](../ui-replication-dashboard.html#replica-quiescence) ("wakes up") the range associated with the lease.
 1. What happens next depends on whether the lease is on [table data](#epoch-based-leases-table-data) or [meta ranges or system ranges](#expiration-based-leases-meta-and-system-ranges):
@@ -147,7 +160,7 @@ When the cluster needs to access a range on a leaseholder node that is dead, tha
 1. The Raft election is held and a new leader is chosen from among the healthy nodes.
 1. The lease acquisition can now be processed by the newly elected Raft leader.
 
-This process should take no more than 9 seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
+This process should take no more than a few seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
 
 Finally, note that the process described above is lazily initiated: it only occurs when a new request comes in for the range associated with the lease.
 
@@ -206,6 +219,19 @@ Rebalancing is achieved by using a snapshot of a replica from the leaseholder, a
 #### Load-based replica rebalancing
 
 In addition to the rebalancing that occurs when nodes join or leave a cluster, replicas are also rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` and `kv.allocator.qps_rebalance_threshold` [cluster settings](../cluster-settings.html). Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones](../configure-replication-zones.html).
+
+### Important values and timeouts
+
+The following table lists some important values used by CockroachDB's replication layer:
+
+Constant | Default value | Notes
+---------|---------------|------
+[Raft](#raft) election timeout | {{site.data.constants.cockroach_raft_election_timeout_ticks}} * {{site.data.constants.cockroach_tick_interval}} | Controlled by `COCKROACH_RAFT_ELECTION_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the timeout value. This value is then multiplied by a random factor of 1-2 to avoid election ties.
+[Raft](#raft) proposal timeout | {{site.data.constants.cockroach_raft_reproposal_timeout_ticks}} * {{site.data.constants.cockroach_tick_interval}} | Controlled by `COCKROACH_RAFT_REPROPOSAL_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the value.
+[Lease interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} | Controlled by `COCKROACH_RANGE_LEASE_DURATION`.
+[Lease acquisition timeout](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_acquisition_timeout}} |
+[Node heartbeat interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} / 2 | Used to determine if you're having [node liveness issues](../cluster-setup-troubleshooting.html#node-liveness-issues).  This is calculated as one half of the lease interval.
+Raft tick interval | {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_TICK_INTERVAL`. Used to calculate various replication-related timeouts.
 
 ## Interactions with other layers
 

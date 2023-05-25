@@ -72,6 +72,8 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example prof
 
 {% include {{ page.version.version }}/misc/external-io-privilege.md %}
 
+{% include {{ page.version.version }}/backups/external-io-implicit-flag.md %}
+
 ## Amazon S3 assume role
 
 {{site.data.alerts.callout_info}}
@@ -384,9 +386,7 @@ For CockroachDB clusters running in other environments, `implicit` authenticatio
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit';
     ~~~
 
-{{site.data.alerts.callout_info}}
-If the use of implicit credentials is disabled with the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security), an error will be returned when accessing external cloud storage services for various bulk operations when using `AUTH=implicit`.
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/external-io-implicit-flag.md %}
 
 ## Google Cloud Storage assume role
 

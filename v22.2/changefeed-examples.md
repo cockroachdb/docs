@@ -93,7 +93,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
     ~~~
 
-            job_id       
+            job_id
     +--------------------+
       360645287206223873
     (1 row)
@@ -240,7 +240,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {% include {{ page.version.version }}/cdc/confluent-cloud-sr-url.md %}
 
     ~~~
-            job_id       
+            job_id
     +--------------------+
       360645287206223873
     (1 row)
@@ -410,14 +410,14 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
     ~~~ shell
     cat key.json | base64 -w 0
     ~~~
-    
+
     Copy the output so that you can add it to your [`CREATE CHANGEFEED`](create-changefeed.html) statement in the next step. When you create your changefeed, it is necessary that the key is base64 encoded before passing it in the URI.
 
 1. Back in the SQL shell, create a changefeed that will emit messages to your Pub/Sub topic. Ensure that you pass the base64-encoded credentials for your Service Account and add your topic's region:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
+    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?region=us-east1&TOPIC_NAME=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
     ~~~
 
     The output will confirm the topic where the changefeed will emit messages to.
@@ -490,7 +490,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
     ~~~
-            job_id       
+            job_id
     +--------------------+
       360645287206223873
     (1 row)
@@ -594,7 +594,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' WITH updated;
+    CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true' WITH updated;
     ~~~
 
     You set up a changefeed on the `vehicles` table, which emits changefeed messages to the local HTTP server.

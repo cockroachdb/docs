@@ -9,6 +9,12 @@
       ]
     },
     {
+      "title": "Developer Basics",
+      "urls": [
+        "/${VERSION}/developer-basics.html"
+      ]
+    },
+    {
       "title": "Connect to CockroachDB",
       "items": [
         {
@@ -112,6 +118,12 @@
               "title": "Index JSON and Array Data",
               "urls": [
                 "/${VERSION}/inverted-indexes.html"
+              ]
+            },
+            {
+              "title": "Index Full Text",
+              "urls": [
+                "/${VERSION}/full-text-search.html"
               ]
             },
             {
@@ -443,6 +455,12 @@
     {
       "title": "Tutorials",
       "items": [
+        {
+          "title": "Tutorials Overview",
+          "urls": [
+            "/${VERSION}/tutorials-overview.html"
+          ]
+        },
         {
           "title": "Schema Migration Tools",
           "items": [

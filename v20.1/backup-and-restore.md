@@ -10,7 +10,7 @@ Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachD
 
 ## Watch the demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RGuya_SYfY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% include_cached youtube.html video_id="RGuya_SYfY8" %}
 
 ## Perform Enterprise backup and restore
 

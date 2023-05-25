@@ -104,6 +104,12 @@
                 ]
               },
               {
+                "title": "Cursors",
+                "urls": [
+                  "/${VERSION}/cursors.html"
+                ]
+              },
+              {
                 "title": "Table Expressions",
                 "urls": [
                   "/${VERSION}/table-expressions.html"
@@ -1435,6 +1441,12 @@
             "title": "Customer-Managed Encryption Keys (CMEK)",
             "urls": [
               "/cockroachcloud/cmek.html"
+            ]
+          },
+          {
+            "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+            "urls": [
+              "/cockroachcloud/pci-dss.html"
             ]
           }
         ]
