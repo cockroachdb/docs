@@ -25,11 +25,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 2. Select the cloud provider
 
-1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Serverless cluster on Azure is not supported.
-
-1. _(Optional)_ Select a region in the **Regions** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
-
-If you want to create a cluster in an unavailable region, please [contact Support](https://support.cockroachlabs.com).
+Select a cloud provider (GCP or AWS) in the **Cloud provider** section. Creating a Serverless cluster on Azure is not supported.
 
 {{site.data.alerts.callout_info}}
 You do not need an account with the cloud provider you choose in order to create a cluster on that cloud provider. The cluster is created on infrastructure managed by Cockroach Labs. If you have existing cloud services on either GCP or AWS that you intend to use with your {{ site.data.products.serverless }} cluster, you should select that cloud provider and the region closest to your existing cloud services to maximize performance.
@@ -37,7 +33,9 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Select the regions
 
-In the **Regions** section, select up to six regions. To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
+In the **Regions** section, select a region for the cluster. Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.serverless-plan }} clusters can be deployed.
+
+To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
 
 For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For example, if your client application is deployed in GCP's `us-east1` region, select GCP as your deployment environment and select `us-east1` as your cluster's region. For multi-region clusters, CockroachDB will optimize access to data from the **Primary region**. See [Multi-Region Capabilities Overview](../{{site.versions["stable"]}}/multiregion-overview.html) to learn more. If you want to create a cluster in an unavailable region, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 

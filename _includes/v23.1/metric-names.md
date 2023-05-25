@@ -228,9 +228,9 @@ Name | Description
 `security.certificate.expiration.node` | Expiration timestamp in seconds since Unix epoch for the node certificate. 0 means no certificate or error.
 `schedules.BACKUP.protected_age_sec` | The age of the oldest [protected timestamp](architecture/storage-layer.html#protected-timestamps) record protected by `BACKUP` schedules.
 `schedules.BACKUP.protected_record_count` | Number of [protected timestamp](architecture/storage-layer.html#protected-timestamps) records held by `BACKUP` schedules.
-`sql.bytesin` | Number of sql bytes received
-`sql.bytesout` | Number of sql bytes sent
-`sql.conns` | Number of active sql connections
+`sql.bytesin` | Number of SQL bytes received
+`sql.bytesout` | Number of SQL bytes sent
+`sql.conns` | Number of active SQL connections. For new recent connections, refer to `sql.new_conns`.
 `sql.ddl.count` | Number of SQL DDL statements
 `sql.delete.count` | Number of SQL DELETE statements
 `sql.distsql.exec.latency` | Latency in nanoseconds of SQL statement executions running on the distributed execution engine. This metric does not include the time to parse and plan the statement.
@@ -253,6 +253,7 @@ Name | Description
 `sql.mem.txn.current` | Current sql transaction memory usage
 `sql.mem.txn.max` | Memory usage per sql transaction
 `sql.misc.count` | Number of other SQL statements
+`sql.new_conns` | Number of new SQL connections in the previous second. For all connections, refer to `sql.conns`.
 `sql.pgwire_cancel.total` | Counter of the number of pgwire query cancel requests
 `sql.pgwire_cancel.ignored` | Counter of the number of pgwire query cancel requests that were ignored due to rate limiting
 `sql.pgwire_cancel.successful` | Counter of the number of pgwire query cancel requests that were successful

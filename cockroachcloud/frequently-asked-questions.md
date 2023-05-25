@@ -11,6 +11,10 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ## General
 
+### In what clouds and regions is {{ site.data.products.db }} available?
+
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, contact your Cockroach Labs account team.
+
 ### What is {{ site.data.products.dedicated }}?
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
@@ -20,30 +24,6 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 ### What is the difference between {{ site.data.products.dedicated }} standard and advanced?
 
 {{ site.data.products.dedicated }} advanced clusters have access to features required for [PCI readiness](pci-dss.html) in addition to all {{ site.data.products.dedicated }} standard features. You must be a contract customer to create a {{ site.data.products.dedicated }} advanced cluster. For more information, [contact us](https://www.cockroachlabs.com/contact-sales/).
-
-### In what clouds and regions is {{ site.data.products.dedicated }} available?
-
-The following regions are available for {{ site.data.products.dedicated }}:
-
- GCP                                 | AWS                               | Azure (Limited Access)
--------------------------------------|-----------------------------------|-----------------------
- `asia-east1` (Changhua County)      | `ap-northeast-1` (Tokyo)          | `eastus2` (US East Coast - Virginia)
- `asia-east2` (Hong Kong)            | `ap-northeast-2` (Seoul)          | `westeurope` (Netherlands)
- `asia-northeast1` (Tokyo)           | `ap-northeast-3` (Osaka)
- `asia-southeast1` (Jurong West)     | `ap-south-1` (Mumbai)
- `australia-southeast1` (Australia)  | `ap-southeast-1` (Singapore)
- `europe-west1` (St. Ghislain)       | `ap-southeast-2` (Sydney)
- `europe-west2` (London)             | `ca-central-1` (Central Canada)
- `europe-west3` (Frankfurt)          | `eu-central-1` (Frankfurt)
- `europe-west4` (Eemshaven)          | `eu-north-1` (Stockholm)
- `northamerica-northeast1` (Montréal)| `eu-west-1` (Ireland)
- `southamerica-east1` (São Paulo)    | `eu-west-2` (London)
- `us-central1` (Iowa)                | `eu-west-3` (Paris)
- `us-east1` (South Carolina)         | `sa-east-1` (São Paulo)
- `us-west1` (Oregon)                 | `us-east-2` (Ohio)
- `us-west2` (California)             | `us-west-2` (Oregon)
-
-To express interest in additional regions, contact your Cockroach Labs account team.
 
 ### How do {{ site.data.products.dedicated }} free trials work?
 
