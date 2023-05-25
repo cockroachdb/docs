@@ -26,7 +26,11 @@ module JekyllVersions
     end
 
     def tag
-      @config.versions.key(version)
+      if version = @config.versions['stable']
+        'stable'
+      else
+        @config.versions.key(version)
+      end
     end
 
     def slug
