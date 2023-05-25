@@ -35,36 +35,11 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they are granted the default role, **Org Member**, which grants no permissions and just indicates the membership in the organization. Org. or Cluster Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
+When a user is first added to an organization, they are granted the default role, **Org Member**, which grants no permissions and only indicates membership in the organization. Org or Cluster Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's **Access Management** page, or using the {{ site.data.products.db }} API / Terraform Provider.
 
 To learn more, refer to [Manage organization users](managing-access.html#manage-an-organizations-users)
 
 The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
-
-- Org Member
-- Org Administrator (legacy)
-- Org Developer (legacy)
-- Cluster Developer
-- Cluster Admin
-- Cluster Creator
-
-### Organization member
-
-This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
-
-### Org Administrator
-
-Users with this role on an organization can [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization), and [manage the organization's users and their roles](managing-access.html#manage-an-organizations-users).
-
-### Billing Coordinator
-
-Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
-
-Note that billing can also be managed by the [Org Administrator (legacy) role].
-
-### Usage Reader
-
-This is a read-only role that allows a user to access usage metrics for an organization.
 
 ### Org Administrator (legacy)
 
@@ -77,26 +52,49 @@ Org Administrators can manage the organization and its members, clusters, and co
 - [Manage billing for the organization](billing-management.html)
 - [Restore databases and tables from a {{ site.data.products.db }} backup](use-managed-service-backups.html#ways-to-restore-data)
 - [Delete an organization](managing-access.html#delete-an-organization)
+
 {{site.data.alerts.callout_info}}
-In a future release, this role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
+This role is deprecated in favor of the more fine-grained roles that cover the same permissions:
+
+- [Org Administrator](#org-administrator)
+- [Cluster Administrator](#cluster-administrator)
+- [Billing Coordinator](#billing-coordinator)
 {{site.data.alerts.end}}
   
 ### Org Developer (legacy)
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
-In a future release, this role will be deprecated in favor of more fine-grained roles introduced below.
+This role will is deprecated in favor of more fine-grained roles introduced below.
 {{site.data.alerts.end}}
 
-### Cluster Developer
+### Organization member
 
-Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
+This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
 
-This role can be granted for specific clusters or for all clusters in the organization.
+### Org Administrator
+
+Users with this role on an organization can:
+
+- [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization)
+- [create service accounts](managing-access.html#create-a-service-account)
+- grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
+
+This role replaces the now deprecated [Org Administrator (legacy)](#org-administrator-legacy).
+
+### Billing Coordinator
+
+Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
+
+Note that billing can also be managed by the [Org Administrator (legacy) role](#org-administrator-legacy).
+
+### Usage Reader
+
+This is a read-only role that allows a user to access usage metrics for an organization.
 
 ### Cluster Operator
 
-This role grants different permissions to users and [service accounts](#service-accounts).
+This role grants different permissions to users and service accounts.
 
 Users with this role can perform the following console actions:
 
@@ -114,7 +112,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 
 ### Cluster Administrator
 
-Cluster Administrators can manage SQL users and roles for a cluster, as well as perform all of the [Cluster Operator actions](#cluster-operator).
+Cluster Administrators can [provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user), as well as perform all of the [Cluster Operator actions](#cluster-operator).
 
 This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
@@ -122,13 +120,18 @@ This role can be granted for one or more specific clusters, or for all clusters 
 
 Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the Cluster Administrator role for that cluster once created.
 
+### Cluster Developer
+
+Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
+
+This role can be granted for specific clusters or for all clusters in the organization.
 ## Service accounts
 
 Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator))
 
-However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (like ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
+However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
 
 To learn more, refer to [Manage Service Accounts](managing-access.html#manage-service-accounts)
 
@@ -144,7 +147,7 @@ This correspondence lies in the SQL user name, which must be in the format `sso_
 
 ### What role is assigned to new  {{ site.data.products.db }} members? What entitlements are included?
 
-Org Member is the default and only role assignable to new users as they are added to a {{ site.data.products.db }} organization. This role has most minimum entitlements across all the available roles, including just the ability to view the list of available clusters and high-level organization information like ID, Name, Label etc. 
+Org Member is the default and only role assignable to new users as they are added to a {{ site.data.products.db }} organization. This role has most minimum entitlements across all the available roles, including the ability to view the list of available clusters and high-level organization information like ID, Name, Label etc.
 
 ### What is the minimum access role that can be granted on a cluster?
 
