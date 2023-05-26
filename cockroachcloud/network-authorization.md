@@ -26,7 +26,7 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 ## IP allowlisting
 
-Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the {{ site.data.products.dedicated }} cluster's allowlist](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the {{ site.data.products.dedicated }} cluster's allowlist](connect-to-your-cluster.html#authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
