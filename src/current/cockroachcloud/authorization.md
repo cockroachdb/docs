@@ -121,6 +121,7 @@ Users with this role in an organization can [manage billing for that organizatio
 
 Note that billing can also be managed by the [Org Administrator (legacy) role](#org-administrator-legacy).
 
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 ### Cluster Operator
 
 This role grants different permissions to users and service accounts.
@@ -154,6 +155,8 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 
 This is a read-only role that allows a user to access usage metrics for an organization.
 
+=======
+>>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 ### Cluster Operator
 
 This role grants different permissions to users and service accounts.
@@ -177,6 +180,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 Cluster Administrators can perform all of the [Cluster Operator actions](#cluster-operator), as well as:
 
 - [Provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user).
@@ -192,10 +196,28 @@ Cluster Administrators can [provision SQL users for a cluster using the console]
 
 This role can be granted for one or more specific clusters, or for all clusters in the organization.
 >>>>>>> 8ad95b928 (add roles for fgac phase2 pre-ga release):cockroachcloud/authorization.md
+=======
+Cluster Administrators can perform all of the [Cluster Operator actions](#cluster-operator), as well as:
+
+- [Provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user).
+- [Create Service Accounts](managing-access.html#change-a-team-members-role).
+- Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role) , and [service accounts](managing-access.html#edit-roles-on-a-service-account).
+
+Cluster Administrator can be granted for one or more specific clusters, or for all clusters in the organization.
+>>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 
 ### Cluster Creator
 
 Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the [Cluster Administrator](#cluster-administrator) role for that cluster upon creation.
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+
+### Cluster Developer
+
+Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
+
+This role can be granted for specific clusters or for all clusters in the organization.
+=======
+>>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 
 ### Cluster Developer
 
@@ -203,11 +225,6 @@ Users with this role can view cluster details, allowing them to [export a connec
 
 This role can be granted for specific clusters or for all clusters in the organization.
 
-### Cluster Developer
-
-Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
-
-This role can be granted for specific clusters or for all clusters in the organization.
 ## Service accounts
 
 Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
@@ -215,10 +232,14 @@ Service accounts authenticate with API keys to the {{ site.data.products.db }} A
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator))
 
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 *Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts should be considered deprecated. You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 =======
 However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
 >>>>>>> 14b2d4cee (wip on FGAC role updates):cockroachcloud/authorization.md
+=======
+*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts should be considered deprecated. You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+>>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 
 Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts)
 
