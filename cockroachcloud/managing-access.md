@@ -38,7 +38,7 @@ As an [Org Administrator](authorization.html#org-administrator-legacy), you can 
 
 It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisioning) for your organization, which removes the need to invite Team Members.
 
-#### Change a Team Member's role
+### Change a Team Member's role
 
 1. On the **Access Management** page, locate the Team Member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
 1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
@@ -48,19 +48,19 @@ It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisio
 As an [Org Administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
 {{site.data.alerts.end}}
 
-#### Remove a Team Member
+### Remove a Team Member
 
 1. On the **Access Management** page, locate the Team Member you want to remove.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Remove Member** and confirm.
 
-#### Revoke a pending invite
+### Revoke a pending invite
 
 1. On the **Access Management** page, locate the Team Member's details whose pending invite you want to revoke.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Revoke Invite**.
 
-#### Delete an email address
+### Delete an email address
 
 This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
 
