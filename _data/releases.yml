@@ -4378,7 +4378,6 @@
     docker_arm: true
   source: true
   previous_release: v23.1.0
-  withdrawn: true
 
 - release_name: v23.1.2
   major_version: v23.1
