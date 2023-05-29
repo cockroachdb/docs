@@ -4335,7 +4335,7 @@
     docker_arm: false
   source: true
   previous_release: v22.1.19
-  
+
 - release_name: v23.1.0
   major_version: v23.1
   release_date: '2023-05-15'
@@ -4399,3 +4399,4 @@
     docker_arm: true
   source: true
   previous_release: v23.1.1
+ 

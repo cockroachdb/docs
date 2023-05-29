@@ -6,5 +6,5 @@ current_serverless_hotfix: v22.2.7
 destination: _site/docs
 homepage_title: CockroachDB Docs
 versions:
-  dev: v23.1
   stable: v23.1
+  dev: v23.1
