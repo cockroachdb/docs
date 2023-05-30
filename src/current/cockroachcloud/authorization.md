@@ -92,6 +92,7 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 
 This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 - *Users* with this role can perform the following *console operations*:
 
 	- View a cluster's [Overview page](cluster-overview-page.html), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
@@ -123,6 +124,25 @@ This role can be considered a more restricted alternative to [Cluster Administra
 - Managing cluster-scoped roles on organization users.
 - Managing SQL users from the cloud console.
 - Creating or deleting a cluster.
+=======
+- *Users* with this role can perform the following console actions:
+	- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
+	- Configure [egress perimeter controls](egress-perimeter-controls.html)
+
+- *Service accounts* with this role can perform the following API functions:
+	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
+	- [Export Logs From a CockroachDB Dedicated Cluster
+	](export-logs.html)
+	- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
+
+
+This role can be considered a more restricted alternative to Cluster Administrator, as it grants all of the permissions of that role, except that it does **not** allow users to:
+
+- Managing cluster-scoped roles on organization users.
+- Managing SQL users from the cloud console.
+- Deleting the cluster.
+
+>>>>>>> c3b686e55 (minor edits  on cockroachcloud/authorization):cockroachcloud/authorization.md
 
 ### Cluster Administrator
 
