@@ -90,21 +90,25 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 
 ### Cluster Operator
 
-This role grants different permissions to users and service accounts.
+This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
-Users with this role can perform the following console actions:
+- *Users* with this role can perform the following console actions:
+	- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
+	- Configure [egress perimeter controls](egress-perimeter-controls.html)
 
-- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-- Configure [egress perimeter controls](egress-perimeter-controls.html)
+- *Service accounts* with this role can perform the following API functions:
+	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
+	- [Export Logs From a CockroachDB Dedicated Cluster
+	](export-logs.html)
+	- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
 
-Service accounts with this role can perform the following API functions:
 
-- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
-- [Export Logs From a CockroachDB Dedicated Cluster
-](export-logs.html)
-- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
+This role can be considered a more restricted alternative to Cluster Administrator, as it grants all of the permissions of that role, except that it does **not** allow users to:
 
-This role can be granted for one or more specific clusters, or for all clusters in the organization.
+- Managing cluster-scoped roles on organization users.
+- Managing SQL users from the cloud console.
+- Deleting the cluster.
+
 
 ### Cluster Administrator
 
