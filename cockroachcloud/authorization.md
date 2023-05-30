@@ -54,7 +54,7 @@ Org Administrators can manage the organization and its members, clusters, and co
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
-This role is deprecated in favor of the more fine-grained roles that cover the same permissions:
+This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -65,7 +65,7 @@ This role is deprecated in favor of the more fine-grained roles that cover the s
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
-This role will is deprecated in favor of more fine-grained roles introduced below.
+This role is deprecated in favor of more fine-grained roles introduced below.
 {{site.data.alerts.end}}
 
 ### Organization member
