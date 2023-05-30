@@ -163,8 +163,12 @@ This role grants different permissions to users and service accounts.
 
 Users with this role can perform the following console actions:
 
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 - Configure authorize network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
 >>>>>>> 8ad95b928 (add roles for fgac phase2 pre-ga release):cockroachcloud/authorization.md
+=======
+- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
+>>>>>>> b00a3c762 (nit fixes on cockroachcloud/authorization):cockroachcloud/authorization.md
 - Configure [egress perimeter controls](egress-perimeter-controls.html)
 
 Service accounts with this role can perform the following API functions:
