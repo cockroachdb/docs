@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.dedicated }} requires  explicit authorization of the networks that can access your cluster. This deny-by-default policy protects the cluster from network attacks including  denial-of-service and password brute-forcing.
+{{ site.data.products.dedicated }} requires  explicit authorization of the networks that can access your cluster. This deny-by-default policy protects the cluster from network attacks including denial-of-service and password brute-forcing.
 
 You can do this by:
 
