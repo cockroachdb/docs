@@ -54,7 +54,11 @@ Org Administrators can manage the organization and its members, clusters, and co
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
+=======
+This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
+>>>>>>> f22401489 (Apply suggestions from code review):cockroachcloud/authorization.md
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -65,7 +69,11 @@ This role will be deprecated in favor of the following more fine-grained roles o
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
+=======
+This role is deprecated in favor of more fine-grained roles introduced below.
+>>>>>>> f22401489 (Apply suggestions from code review):cockroachcloud/authorization.md
 {{site.data.alerts.end}}
 
 ### Organization Member
