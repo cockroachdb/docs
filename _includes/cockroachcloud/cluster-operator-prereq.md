@@ -1,1 +1,1 @@
-Either the [Cluster Operator](authorization.html#cluster-operator) or [Cluster Administrator](authorization.html#cluster-administrator) role on a pre-existing Dedicated cluster, or the [Cluster Creator](authorization.html#cluster-creator) role in order to create a new cluster.
+Either the [Cluster Operator](authorization.html#cluster-operator) or [Cluster Administrator](authorization.html#cluster-administrator) role on a pre-existing cluster, or the [Cluster Creator](authorization.html#cluster-creator) role in order to create a new cluster.

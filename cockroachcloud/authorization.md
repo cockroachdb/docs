@@ -45,7 +45,7 @@ The following roles may be granted to {{ site.data.products.db }} organization u
 
 Org Administrators can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
 
-- [Create a cluster](create-your-cluster.html)
+- [Create or delete a cluster](create-your-cluster.html)
 - [Invite Team Members to the organization](managing-access.html#invite-team-members-to-an-organization)
 - [Manage an organization's users and their roles](managing-access.html#manage-an-organizations-users)
 - [Create and manage SQL users](managing-access.html#create-a-sql-user)
@@ -90,21 +90,34 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 
 ### Cluster Operator
 
-This role grants different permissions to users and service accounts.
+This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
-Users with this role can perform the following console actions:
+- *Users* with this role can perform the following console actions:
+	- [View a cluster's overview page](cluster-overview-page.html).
+	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
+	- View backups in a cluster's [backups page](use-managed-service-backups#backups-page)
+	- [Restore the cluster](use-managed-service-backups#restore-a-cluster) to a backup state.
+	- Manage a cluster's databases from the [Databases Page](databases-page.html).
+	- [View and configure a cluster's authorized networks.](network-authorization.html)
+	- [View a cluster's jobs](jobs-page.html)
+	- [Upgrade a cluster's CRDB version.](upgrade-to-v23.1.html#step-5-start-the-upgrade)
+	- [View a cluster's PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
+	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
+	- Send a test alert from the [alert's page](alerts-page.html)
 
-- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-- Configure [egress perimeter controls](egress-perimeter-controls.html)
+- *Service accounts* with this role can perform the following API functions:
+	- [Read a cluster summary](cloud-api.html#get-information-about-a-specific-cluster).
+	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
+	- [Export a cluster's logs](export-logs.html).
+	- [Export a cluster's metrics](export-metrics.html).
+	- [View and configure a cluster's Egress Rules](egress-perimeter-controls.html).
 
-Service accounts with this role can perform the following API functions:
+This role can be considered a more restricted alternative to Cluster Administrator, as it grants all of the permissions of that role, except that it does **not** allow users to:
 
-- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
-- [Export Logs From a CockroachDB Dedicated Cluster
-](export-logs.html)
-- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
+- Managing cluster-scoped roles on organization users.
+- Managing SQL users from the cloud console.
+- Deleting the cluster.
 
-This role can be granted for one or more specific clusters, or for all clusters in the organization.
 
 ### Cluster Administrator
 
