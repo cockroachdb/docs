@@ -41,42 +41,11 @@ To learn more, refer to [Manage organization users](managing-access.html#manage-
 
 The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
 
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-=======
-- Org Member
-- Org Administrator (legacy)
-- Org Developer (legacy)
-- Cluster Developer
-- Cluster Admin
-- Cluster Creator
-
-### Organization member
-
-This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
-
-### Org Administrator
-
-Users with this role on an organization can [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization), and [manage the organization's users and their roles](managing-access.html#manage-an-organizations-users).
-
-### Billing Coordinator
-
-Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
-
-Note that billing can also be managed by the [Org Administrator (legacy) role].
-
-### Usage Reader
-
-This is a read-only role that allows a user to access usage metrics for an organization.
-
->>>>>>> 8ad95b928 (add roles for fgac phase2 pre-ga release):cockroachcloud/authorization.md
-=======
->>>>>>> 14b2d4cee (wip on FGAC role updates):cockroachcloud/authorization.md
 ### Org Administrator (legacy)
 
 Org Administrators can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
 
-- [Create a cluster](create-your-cluster.html)
+- [Create or delete a cluster](create-your-cluster.html)
 - [Invite Team Members to the organization](managing-access.html#invite-team-members-to-an-organization)
 - [Manage an organization's users and their roles](managing-access.html#manage-an-organizations-users)
 - [Create and manage SQL users](managing-access.html#create-a-sql-user)
@@ -85,7 +54,7 @@ Org Administrators can manage the organization and its members, clusters, and co
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
-This role is deprecated in favor of the more fine-grained roles that cover the same permissions:
+This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -96,95 +65,67 @@ This role is deprecated in favor of the more fine-grained roles that cover the s
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
-This role will is deprecated in favor of more fine-grained roles introduced below.
+This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
 {{site.data.alerts.end}}
 
-### Organization member
+### Organization Member
 
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
 
 ### Org Administrator
 
 Users with this role on an organization can:
 
-- [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization)
-- [create service accounts](managing-access.html#create-a-service-account)
-- grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
+- [Invite users to join that organization](managing-access.html#invite-team-members-to-an-organization).
+- [Create service accounts](managing-access.html#create-a-service-account).
+- Grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
 
-This role replaces the now deprecated [Org Administrator (legacy)](#org-administrator-legacy).
-
-### Billing Coordinator
-
-Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
-
-Note that billing can also be managed by the [Org Administrator (legacy) role](#org-administrator-legacy).
-
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-### Cluster Operator
-
-This role grants different permissions to users and service accounts.
-
-Users with this role can perform the following console actions:
-
-- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-=======
-Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
-=======
-This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
->>>>>>> 14b2d4cee (wip on FGAC role updates):cockroachcloud/authorization.md
-
-### Org Administrator
-
-Users with this role on an organization can:
-
-- [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization)
-- [create service accounts](managing-access.html#create-a-service-account)
-- grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
-
-This role replaces the now deprecated [Org Administrator (legacy)](#org-administrator-legacy).
+This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which will be considered deprecated when fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
 
 ### Billing Coordinator
 
-Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
+Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 Note that billing can also be managed by the [Org Administrator (legacy) role](#org-administrator-legacy).
 
-### Usage Reader
-
-This is a read-only role that allows a user to access usage metrics for an organization.
-
-=======
->>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 ### Cluster Operator
 
-This role grants different permissions to users and service accounts.
+This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
-Users with this role can perform the following console actions:
+- *Users* with this role can perform the following *console operations*:
 
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-- Configure authorize network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
->>>>>>> 8ad95b928 (add roles for fgac phase2 pre-ga release):cockroachcloud/authorization.md
-=======
-- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
->>>>>>> b00a3c762 (nit fixes on cockroachcloud/authorization):cockroachcloud/authorization.md
-- Configure [egress perimeter controls](egress-perimeter-controls.html)
+	- View a cluster's [Overview page](cluster-overview-page.html), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
+	- Manage a cluster's databases from the [Databases Page](databases-page.html).
+	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
+	- View and configure a cluster's authorized networks from the [Networking Page](network-authorization.html).
+	- View backups in a cluster's [Backups Page](use-managed-service-backups.html#backups-page)
+	- [Restore a cluster](use-managed-service-backups.html#restore-a-cluster) to a backup state.
+	- View a cluster's Jobs from the [Jobs page](jobs-page.html)
+	- View a cluster's Metrics from the [Metrics page](metrics-page.html)
+	- View a cluster's Insights from the [Insights page](insights-page.html)
+	- [Upgrade](upgrade-to-v23.1.html#step-5-start-the-upgrade) a cluster's CRDB version.
+	- View a cluster's [PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
+	- Send a test alert from the [alert's page](alerts-page.html).
+	- Configure single sign-on (SSO) enforcement.
 
-Service accounts with this role can perform the following API functions:
+- *Service accounts* with this role can perform the following *API operations*:
 
-- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
-- [Export Logs From a CockroachDB Dedicated Cluster
-](export-logs.html)
-- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
+	- [Read a cluster summary](cloud-api.html#get-information-about-a-specific-cluster).
+	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
+	- [Export a cluster's logs](export-logs.html).
+	- [Export a cluster's metrics](export-metrics.html).
+	- [View and configure a cluster's Egress Rules](egress-perimeter-controls.html).
+	- [Configure the export of metrics to DataDog or AWS CloudWatch](export-metrics.html).
+	- [Scale or edit a cluster's attributes](../api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
 
-This role can be granted for one or more specific clusters, or for all clusters in the organization.
+This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
+
+- Managing cluster-scoped roles on organization users.
+- Managing SQL users from the cloud console.
+- Creating or deleting a cluster.
 
 ### Cluster Administrator
 
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 Cluster Administrators can perform all of the [Cluster Operator actions](#cluster-operator), as well as:
 
 - [Provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user).
@@ -192,36 +133,10 @@ Cluster Administrators can perform all of the [Cluster Operator actions](#cluste
 - Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role) , and [service accounts](managing-access.html#edit-roles-on-a-service-account).
 
 Cluster Administrator can be granted for one or more specific clusters, or for all clusters in the organization.
-=======
-Cluster Administrators can manage SQL users and roles for a cluster, as well as perform all of the [Cluster Operator actions](#cluster-operator).
-=======
-Cluster Administrators can [provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user), as well as perform all of the [Cluster Operator actions](#cluster-operator).
->>>>>>> 14b2d4cee (wip on FGAC role updates):cockroachcloud/authorization.md
-
-This role can be granted for one or more specific clusters, or for all clusters in the organization.
->>>>>>> 8ad95b928 (add roles for fgac phase2 pre-ga release):cockroachcloud/authorization.md
-=======
-Cluster Administrators can perform all of the [Cluster Operator actions](#cluster-operator), as well as:
-
-- [Provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user).
-- [Create Service Accounts](managing-access.html#change-a-team-members-role).
-- Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role) , and [service accounts](managing-access.html#edit-roles-on-a-service-account).
-
-Cluster Administrator can be granted for one or more specific clusters, or for all clusters in the organization.
->>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 
 ### Cluster Creator
 
 Cluster Creators can create clusters in an organization. A cluster's creator is automatically granted the [Cluster Administrator](#cluster-administrator) role for that cluster upon creation.
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-
-### Cluster Developer
-
-Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
-
-This role can be granted for specific clusters or for all clusters in the organization.
-=======
->>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
 
 ### Cluster Developer
 
@@ -235,17 +150,9 @@ Service accounts authenticate with API keys to the {{ site.data.products.db }} A
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator))
 
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts should be considered deprecated. You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
-=======
-However, 'legacy service accounts' that were created before the updated authorization model was enabled for your cloud organization may have permissions assigned under the legacy model (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts will be deprecated in a future release. It's recommended to update such service accounts with updated organization roles.
->>>>>>> 14b2d4cee (wip on FGAC role updates):cockroachcloud/authorization.md
-=======
-*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts should be considered deprecated. You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
->>>>>>> c3db07a68 (Edits on cockraochcloud/authorization, plus links):cockroachcloud/authorization.md
+*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated one fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
-Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts)
+Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts).
 
 ## Cluster roles for organization users using Cluster SSO
 
@@ -272,7 +179,7 @@ Org Member, Org Administrator (legacy), and Cluster Admin are assigned to the fi
 Once the initial user has added more users to the {{ site.data.products.db }} organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
 
 {{site.data.alerts.callout_info}}
-In a future release, Org Administrator (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
+Org Administrator (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions, once those fine-grained roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
 {{site.data.alerts.end}}
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
