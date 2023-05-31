@@ -52,7 +52,7 @@ CockroachDB provides the following types of reads:
 
 CockroachDB checks the running transaction's record to see if it's been `ABORTED`; if it has, it [throws a retryable error](../transaction-retry-error-reference.html) to the client.
 
-In the common case, it sets the transaction record's state to `STAGING`, and checks the transaction's pending write intents to see if they have succeeded (i.e., been replicated across the cluster).
+Otherwise, CockroachDB sets the transaction record's state to `STAGING`, and checks the transaction's pending write intents to see if they have been successfully replicated across the cluster.
 
 When the transaction passes these checks, CockroachDB responds with the transaction's success to the client, and moves on to the cleanup phase. At this point, the transaction is committed, and the client is free to begin sending more SQL statements to the cluster.
 
@@ -101,7 +101,7 @@ As part of providing serializability, whenever an operation reads a value, we st
 
 The timestamp cache is a data structure used to store information about the reads performed by [leaseholders](replication-layer.html#leases). This is used to ensure that once some transaction *t1* reads a row, another transaction *t2* that comes along and tries to write to that row will be ordered after *t1*, thus ensuring a serial order of transactions, aka serializability.
 
-Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart [during the commit time](#commits-phase-2) of the transaction (see [read refreshing](#read-refreshing)).
+Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is earlier than the timestamp cache's latest value, CockroachDB will attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart [during the commit time](#commits-phase-2) of the transaction (see [read refreshing](#read-refreshing)).
 
 ### Closed timestamps
 
@@ -117,16 +117,16 @@ Note that closed timestamps are valid even if the leaseholder changes, since the
 
 Closed timestamps provide the guarantees that are used to provide support for low-latency historical (stale) reads, also known as [Follower Reads](../follower-reads.html). Follower reads can be particularly useful in [multi-region deployments](../multiregion-overview.html).
 
-For long-running transactions, and generally any transaction, it can be inevitable that their timestamp is pushed, such as when they encounter a key written at a higher timestamp. When this kind of [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp **may** provide some mitigation. Increasing the closed timestamp interval may reduce the likelihood of long-running transactions having their [timestamps pushed](#timestamp-cache), and therefore, reduces the likelihood of the transaction retrying. However, note that increasing the closed timestamp interval should be **carefully adjusted**, because it can have an impact on the following:
+The timestamp for any transaction, especially a long-running transaction, could be [pushed](#timestamp-cache). An example is when a transaction encounters a key written at a higher timestamp. When this kind of [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp **may** provide some mitigation. Increasing the closed timestamp interval may reduce the likelihood that a long-running transaction's timestamp is pushed and must be retried. Thoroughly test any adjustment to the closed timestamp interval before deploying the change in production, because such an adjustment can have an impact on:
 
-- [Follower reads](../follower-reads.html): Reads will be forced to read from the leaseholder, which may affect latency/throughput.
-- [Change data capture](../change-data-capture-overview.html): There could be a lag in changefeed messages.
-- [Statistics collection](../cost-based-optimizer.html#table-statistics): Collection can place more load on the leaseholder.
+- [Follower reads](../follower-reads.html): Latency or throughput may be increased, because reads are served only by the leaseholder.
+- [Change data capture](../change-data-capture-overview.html): Latency of changefeed messages may be increased.
+- [Statistics collection](../cost-based-optimizer.html#table-statistics): Load placed on the leaseholder may increase during collection.
 
-While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. For example, a long-running transaction (txn 1) holds [write locks](#writing) on keys at time t=1, and txn 2 is waiting to [read](#reading) those same keys at t=1. The following scenarios may occur depending on whether the closed timestamp has been increased or not:
+While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. Consider an example where the long-running transaction `txn 1` holds [write locks](#writing) on keys at time `t=1`, and the long-running transaction `txn 2` is waiting to [read](#reading) those same keys at `t=1`. The following scenarios may occur depending on whether or not the closed timestamp has been increased:
 
-- When txn 1 has its timestamp pushed forward by the closed timestamp, moving its writes to time t=2, txn 2 may be able to proceed and read the keys at t=1. The chances of retryable errors have increased.
-- If the closed timestamp interval is raised, long-running txn 1 is making txn 2 [wait](../performance-recipes.html#waiting-transaction), because txn 2 cannot read the keys at t=1 until txn 1 is done or pushed into the future. The chances of lock contention have increased.
+- When the timestamp for `txn 1` is pushed forward by the closed timestamp, moving its writes to time `t=2`, `txn 2` may then be able to proceed and read the keys at `t=1`. The likelihood of retryable errors has increased.
+- If the closed timestamp interval is increased, `txn1` may cause `txn2`  to [wait](../performance-recipes.html#waiting-transaction), because `txn 2` cannot read the keys at `t=1` until `txn 1` is complete or is pushed into the future. The likelihood of lock contention has increased.
 
 Before increasing the closed timestamp intervals, consider other solutions for [minimizing transaction retries](../transaction-retry-error-reference.html#minimize-transaction-retry-errors).
 
@@ -142,7 +142,7 @@ However, `client.Txn` is actually just a wrapper around `TxnCoordSender`, which 
 
 - Dealing with transactions' state. After a transaction is started, `TxnCoordSender` starts asynchronously sending heartbeat messages to that transaction's transaction record, which signals that it should be kept alive. If the `TxnCoordSender`'s heartbeating stops, the transaction record is moved to the `ABORTED` status.
 - Tracking each written key or key range over the course of the transaction.
-- Clearing the accumulated write intent for the transaction when it's committed or aborted. All operations being performed as part of a transaction have to go through the same `TxnCoordSender` to account for all of its write intents, which optimizes the cleanup process.
+- Clearing the accumulated write intent for the transaction when it's committed or aborted. All of a transaction's operations go through the same `TxnCoordSender` to account for all of its write intents and to optimize the cleanup process.
 
 After setting up this bookkeeping, the request is passed to the `DistSender` in the distribution layer.
 
