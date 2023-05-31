@@ -97,12 +97,11 @@ We recommend monitoring for your backup schedule to alert for failed backups:
 
 ### Incremental backup schedules
 
-Scheduled incremental backups only begin after the scheduled full backup is complete. On creation, the first incremental backup waits for the first full backup to finish, then continues at its specified cadence. 
+The incremental backup schedule is created in a paused state, and is only unpaused on completion of the first, scheduled full backup. This ensures that the first incremental backup is only executed once it has a full backup to build a chain from. Thereafter, the incremental backups are scheduled to run at its specified cadence.
 
-Incremental backups append to the latest full backup while the next full backup job is in progress. By default, incremental backups will wait for the latest incremental to finish when they are part of the same schedule. You can adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
+Incremental backups always append to the latest, complete full backup. An incremental backup can run concurrently with a full backup, but in such a situation it will continue to append to the previous full backup that has already completed.
 
-Backup schedules created or altered with the `on_previous_running` option will have the full backup
-schedule created with the user specified option, but will **always default** the incremental backup schedule option to `on_previous_running = wait`. All new incremental backup jobs will wait until the running incremental backup job for that schedule finishes.
+An incremental backup will always wait for another incremental backup started by the same schedule to complete before running. This prevents incremental backups from backing up overlapping timespans in the same backup chain. To enforce this, backup schedules created or altered using the [`on_previous_running` option](#on-previous-running-option) will have the full backup schedule created with the user specified option, but will **always default** the incremental backup schedule option to `on_previous_running = wait`.
 
 ## View and control backup schedules
 
@@ -261,7 +260,7 @@ This example creates a schedule for a cluster backup with the `on_previous_runni
 (2 rows)
 ~~~
 
-The schedule begins instantly because the user specified option for `on_previous_running = 'start'` but the [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete. 
+The schedule starts a new backup, even if the previous one is still running because the user specified option for `on_previous_running = 'start'`. The [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete. 
 
 Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
