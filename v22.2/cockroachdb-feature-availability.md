@@ -31,10 +31,6 @@ General availability (GA)                     | Feature is production-ready and 
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
-### Export Cloud Organization audit logs (Cloud API)
-
-{{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can [export these audit logs](../cockroachcloud/cloud-org-audit-logs.html) using the [`auditlogevents` endpoint](../cockroachcloud/cloud-api.html#cloud-audit-logs) of the [Cloud API](../cockroachcloud/cloud-api.html).
-
 ## Features in preview
 
 {{site.data.alerts.callout_info}}

@@ -8,10 +8,6 @@ cloud: true
 
 {{ site.data.products.db }} captures audit logs when many types of events occur, such as when a cluster is created or when a user is added to or removed from an organization. Any user in an organization with an admin-level service account can export these audit logs using the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs) of the [Cloud API](/docs/cockroachcloud/cloud-api.html).
 
-{{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
-{{site.data.alerts.end}}
-
 After your organization is enrolled in the preview, you can begin exporting audit logs for {{ site.data.products.db }} organization.
 
 This page provides some examples of exporting {{ site.data.products.db }} organization audit logs. For details about each parameter and its defaults, refer to the API specification for the [`auditlogevents` endpoint](cloud-api.html#cloud-audit-logs).
