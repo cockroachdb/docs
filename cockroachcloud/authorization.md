@@ -54,7 +54,7 @@ Org Administrators can manage the organization and its members, clusters, and co
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
-This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
+This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -65,7 +65,7 @@ This role is deprecated in favor of the following more fine-grained roles, which
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
-This role is deprecated in favor of more fine-grained roles introduced below.
+This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
 {{site.data.alerts.end}}
 
 ### Organization member
@@ -80,7 +80,7 @@ Users with this role on an organization can:
 - [create service accounts](managing-access.html#create-a-service-account)
 - grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
 
-This role replaces the now deprecated [Org Administrator (legacy)](#org-administrator-legacy).
+This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which will be considered deprecated when fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
 
 ### Billing Coordinator
 
@@ -95,7 +95,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 - *Users* with this role can perform the following console actions:
 	- [View a cluster's overview page](cluster-overview-page.html).
 	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-	- View backups in a cluster's [backups page](use-managed-service-backups#backups-page)
+	- View backups in a cluster's [backups page](use-managed-service-backups.html#backups-page)
 	- [Restore the cluster](use-managed-service-backups#restore-a-cluster) to a backup state.
 	- Manage a cluster's databases from the [Databases Page](databases-page.html).
 	- [View and configure a cluster's authorized networks.](network-authorization.html)
@@ -113,7 +113,6 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- [View and configure a cluster's Egress Rules](egress-perimeter-controls.html).
 
 This role can be considered a more restricted alternative to Cluster Administrator, as it grants all of the permissions of that role, except that it does **not** allow users to:
-d Cluster](export-metrics.html)
 
 - Managing cluster-scoped roles on organization users.
 - Managing SQL users from the cloud console.
@@ -145,7 +144,7 @@ Service accounts authenticate with API keys to the {{ site.data.products.db }} A
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator))
 
-*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE). The legacy model for service accounts should be considered deprecated. You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated one fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
 Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts)
 
@@ -174,7 +173,7 @@ Org Member, Org Administrator (legacy), and Cluster Admin are assigned to the fi
 Once the initial user has added more users to the {{ site.data.products.db }} organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
 
 {{site.data.alerts.callout_info}}
-In a future release, Org Administrator (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
+Org Administrator (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions, once those fine-grained roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
 {{site.data.alerts.end}}
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
