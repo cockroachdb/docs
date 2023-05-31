@@ -116,7 +116,7 @@ This role can be considered a more restricted alternative to Cluster Administrat
 
 - Managing cluster-scoped roles on organization users.
 - Managing SQL users from the cloud console.
-- Deleting the cluster.
+- Creating or deleting a cluster.
 
 ### Cluster Administrator
 
