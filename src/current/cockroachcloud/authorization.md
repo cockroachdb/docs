@@ -55,10 +55,14 @@ Org Administrators can manage the organization and its members, clusters, and co
 
 {{site.data.alerts.callout_info}}
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
 =======
 This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
 >>>>>>> f22401489 (Apply suggestions from code review):cockroachcloud/authorization.md
+=======
+This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
+>>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -70,10 +74,14 @@ This role is deprecated in favor of the following more fine-grained roles, which
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
 =======
 This role is deprecated in favor of more fine-grained roles introduced below.
 >>>>>>> f22401489 (Apply suggestions from code review):cockroachcloud/authorization.md
+=======
+This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
+>>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
 {{site.data.alerts.end}}
 
 ### Organization Member
@@ -101,6 +109,7 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 - *Users* with this role can perform the following *console operations*:
 
 	- View a cluster's [Overview page](cluster-overview-page.html), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
@@ -118,6 +127,20 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- Configure single sign-on (SSO) enforcement.
 
 - *Service accounts* with this role can perform the following *API operations*:
+=======
+- *Users* with this role can perform the following console actions:
+	- [View a cluster's overview page](cluster-overview-page.html).
+	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
+	- View backups in a cluster's [backups page](use-managed-service-backups.html#backups-page)
+	- [Restore the cluster](use-managed-service-backups#restore-a-cluster) to a backup state.
+	- Manage a cluster's databases from the [Databases Page](databases-page.html).
+	- [View and configure a cluster's authorized networks.](network-authorization.html)
+	- [View a cluster's jobs](jobs-page.html)
+	- [Upgrade a cluster's CRDB version.](upgrade-to-v23.1.html#step-5-start-the-upgrade)
+	- [View a cluster's PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
+	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
+	- Send a test alert from the [alert's page](alerts-page.html)
+>>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
 
 	- [Read a cluster summary](cloud-api.html#get-information-about-a-specific-cluster).
 	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
