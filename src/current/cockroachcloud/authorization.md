@@ -132,7 +132,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- [View a cluster's overview page](cluster-overview-page.html).
 	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
 	- View backups in a cluster's [backups page](use-managed-service-backups.html#backups-page)
-	- [Restore the cluster](use-managed-service-backups#restore-a-cluster) to a backup state.
+	- [Restore the cluster](use-managed-service-backups.html#restore-a-cluster) to a backup state.
 	- Manage a cluster's databases from the [Databases Page](databases-page.html).
 	- [View and configure a cluster's authorized networks.](network-authorization.html)
 	- [View a cluster's jobs](jobs-page.html)
@@ -167,7 +167,7 @@ This role can be considered a more restricted alternative to [Cluster Administra
 	- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
 
 
-This role can be considered a more restricted alternative to Cluster Administrator, as it grants all of the permissions of that role, except that it does **not** allow users to:
+This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
 - Managing cluster-scoped roles on organization users.
 - Managing SQL users from the cloud console.
