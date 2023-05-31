@@ -68,7 +68,7 @@ Org Developers can read high-level information for all clusters, and monitor all
 This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
 {{site.data.alerts.end}}
 
-### Organization member
+### Organization Member
 
 This default role is granted to all organization users once they are invited. It grants no permissions to perform cluster or org actions.
 
@@ -76,15 +76,15 @@ This default role is granted to all organization users once they are invited. It
 
 Users with this role on an organization can:
 
-- [invite users to join that organization](managing-access.html#invite-team-members-to-an-organization)
-- [create service accounts](managing-access.html#create-a-service-account)
-- grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
+- [Invite users to join that organization](managing-access.html#invite-team-members-to-an-organization).
+- [Create service accounts](managing-access.html#create-a-service-account).
+- Grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
 
 This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which will be considered deprecated when fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
 
 ### Billing Coordinator
 
-Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at `https://cockroachlabs.cloud/billing/overview`.
+Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 Note that billing can also be managed by the [Org Administrator (legacy) role](#org-administrator-legacy).
 
@@ -96,7 +96,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- [View a cluster's overview page](cluster-overview-page.html).
 	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
 	- View backups in a cluster's [backups page](use-managed-service-backups.html#backups-page)
-	- [Restore the cluster](use-managed-service-backups#restore-a-cluster) to a backup state.
+	- [Restore the cluster](use-managed-service-backups.html#restore-a-cluster) to a backup state.
 	- Manage a cluster's databases from the [Databases Page](databases-page.html).
 	- [View and configure a cluster's authorized networks.](network-authorization.html)
 	- [View a cluster's jobs](jobs-page.html)
@@ -112,7 +112,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- [Export a cluster's metrics](export-metrics.html).
 	- [View and configure a cluster's Egress Rules](egress-perimeter-controls.html).
 
-This role can be considered a more restricted alternative to Cluster Administrator, as it grants all of the permissions of that role, except that it does **not** allow users to:
+This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
 - Managing cluster-scoped roles on organization users.
 - Managing SQL users from the cloud console.
@@ -146,7 +146,7 @@ Service accounts operate under a unified authorization model with organization u
 
 *Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated one fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should replace legacy service accounts with fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 
-Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts)
+Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts).
 
 ## Cluster roles for organization users using Cluster SSO
 
