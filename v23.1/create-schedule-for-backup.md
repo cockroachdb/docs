@@ -63,7 +63,7 @@ Targets:
 `WITH SCHEDULE OPTIONS schedule_option` | Control the schedule behavior with a comma-separated list of [these options](#schedule-options).
 
 {{site.data.alerts.callout_info}}
-For schedules that include both [full and incremental backups](take-full-and-incremental-backups.html), CockroachDB will create two schedules (one for each type). The [incremental backup schedule](#incremental-backup-schedules) follows the full backup. 
+For schedules that include both [full and incremental backups](take-full-and-incremental-backups.html), CockroachDB will create two schedules (one for each type). See [Incremental backup schedules](#incremental-backup-schedules) for more information. 
 {{site.data.alerts.end}}
 
 ### Backup options
