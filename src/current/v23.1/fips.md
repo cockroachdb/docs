@@ -241,7 +241,7 @@ This indicates that CockroachDB was built using [Red Hat's Go FIPS with OpenSSL 
 ## Use the FIPS-ready CockroachDB Docker image
 
 1. If necessary, enable FIPS mode on the Docker host. The FIPS-ready CockroachDB Docker image must run on a Docker host with FIPS mode enabled. To enable FIPS mode in the Docker host kernel, refer to [Enable FIPS mode](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/assembly_installing-a-rhel-8-system-with-fips-mode-enabled_security-hardening) in Red Hat's documentation. To verify that FIPS mode is enabled, refer to [Verify that the kernel enforces FIPS mode](#verify-that-the-kernel-enforces-fips-mode).
-1. Visit [Releases](/docs/releases/index.html?filters=docker) and copy the name of a FIPS-ready Docker image tag.
+1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag.
 1. Pull the Docker image locally, create a new container that uses it, run the container, and attach to it. The following example gives the running container the name `cockroachdb-fips-container`. Replace `{image_tag}` with the name of the Docker image tag you copied.
 
     {% include_cached copy-clipboard.html %}
@@ -323,15 +323,14 @@ Refer to [Single Sign-on (SSO) for DB Console](sso-db-console.html).
   - `tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384`
   - `tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256`
   - `tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384`
-  - `tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256`
-  - `tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256`
   - If the `COCKROACH_TLS_ENABLE_OLD_CIPHER_SUITES` environment variable is set:
 
     - `tls.TLS_RSA_WITH_AES_128_GCM_SHA256`
     - `tls.TLS_RSA_WITH_AES_256_GCM_SHA384`
 
 - TLS 1.3:
-    - The [list](https://pkg.go.dev/crypto/tls) defined in the Go language. [More details](https://go.dev/blog/tls-cipher-suites).
+    - `TLS_AES_128_GCM_SHA256`
+    - `TLS_AES_256_GCM_SHA384`
 
 #### At rest
 
