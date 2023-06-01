@@ -48,21 +48,15 @@ Carefully consider the following tradeoffs:
 
 In general, distribute your total vCPUs into the **largest possible nodes and smallest possible cluster** that meets your fault tolerance goals.
 
-- Each node should have {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}. For greater stability, we recommend at least 8 vCPUs per node.
+- For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues).
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
-{{site.data.alerts.callout_info}}
-Cockroach Labs does not extensively test nodes with more than 32 vCPUs. This is not a hard limit, especially for deployments using physical hardware rather than cloud instances. However, if you need more vCPUs, we recommend adding more nodes to the cluster instead of adding more than 32 vCPUs to each node.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-Under-provisioning CPU generally results in poor performance, and in extreme cases can lead to cluster unavailability. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues).
-{{site.data.alerts.end}}
+- Cockroach Labs does not extensively test clusters with more than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='maximum' %} per node. This is the recommended _maximum_ threshold.
 
 ### Basic hardware recommendations
 
-Once you have [sized your cluster](#sizing), derive the amount of RAM, storage capacity, and disk I/O from the number of vCPUs.
+After you [size your cluster](#sizing), you can determine the amount of RAM, storage capacity, and disk I/O from the number of vCPUs.
 
 This hardware guidance is meant to be platform agnostic and can apply to bare-metal, containerized, and orchestrated deployments. Also see our [cloud-specific](#cloud-specific-recommendations) recommendations.
 
