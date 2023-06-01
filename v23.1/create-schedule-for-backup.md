@@ -97,7 +97,7 @@ We recommend monitoring for your backup schedule to alert for failed backups:
 
 ### Incremental backup schedules
 
-The incremental backup schedule is created in a paused state, and is only unpaused on completion of the first, scheduled full backup. This ensures that the first incremental backup is only executed once it has a full backup to build a chain from. Thereafter, the incremental backups are scheduled to run at its specified cadence.
+The incremental backup schedule is created in a paused state, and is only un-paused on completion of the first, scheduled full backup. This ensures that the first incremental backup is only executed once it has a full backup to build a chain from. Thereafter, the incremental backups are scheduled to run at its specified cadence.
 
 Incremental backups always append to the latest, complete full backup. An incremental backup can run concurrently with a full backup, but in such a situation it will continue to append to the previous full backup that has already completed.
 
