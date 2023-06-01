@@ -17,7 +17,11 @@ This page describes the upgrade policy for {{ site.data.products.db }}. For self
 
 Patch version [releases](../releases/), or "maintenance" releases, contain stable, backward-compatible improvements to the major versions of CockroachDB (for example, v21.2.0 → v21.2.1).
 
-All {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters are subject to automatic upgrades to the latest supported patch version. **To ensure that connections remain current during these upgrades, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.**
+For {{ site.data.products.dedicated }} clusters, [Console Admins](console-access-management.html#console-admin) can [set a weekly 6-hour maintenance window](manage-your-cluster.html#set-a-maintenance-window) during which available patch upgrades will be applied. Patch upgrades can also be deferred until the next scheduled window. If no maintenance window is configured, {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
+
+{{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported patch version. 
+
+**To ensure that connections remain current during these upgrades, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.**
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
