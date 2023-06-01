@@ -92,25 +92,31 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 
 This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
-- *Users* with this role can perform the following console actions:
-	- [View a cluster's overview page](cluster-overview-page.html).
-	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-	- View backups in a cluster's [backups page](use-managed-service-backups.html#backups-page)
-	- [Restore the cluster](use-managed-service-backups.html#restore-a-cluster) to a backup state.
-	- Manage a cluster's databases from the [Databases Page](databases-page.html).
-	- [View and configure a cluster's authorized networks.](network-authorization.html)
-	- [View a cluster's jobs](jobs-page.html)
-	- [Upgrade a cluster's CRDB version.](upgrade-to-v23.1.html#step-5-start-the-upgrade)
-	- [View a cluster's PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
-	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
-	- Send a test alert from the [alert's page](alerts-page.html)
+- *Users* with this role can perform the following *console operations*:
 
-- *Service accounts* with this role can perform the following API functions:
+	- View a cluster's [Overview page](cluster-overview-page.html), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
+	- Manage a cluster's databases from the [Databases Page](databases-page.html).
+	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
+	- View and configure a cluster's authorized networks from the [Networking Page](network-authorization.html).
+	- View backups in a cluster's [Backups Page](use-managed-service-backups.html#backups-page)
+	- [Restore a cluster](use-managed-service-backups.html#restore-a-cluster) to a backup state.
+	- View a cluster's Jobs from the [Jobs page](jobs-page.html)
+	- View a cluster's Metrics from the [Metrics page](metrics-page.html)
+	- View a cluster's Insights from the [Insights page](insights-page.html)
+	- [Upgrade](upgrade-to-v23.1.html#step-5-start-the-upgrade) a cluster's CRDB version.
+	- View a cluster's [PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
+	- Send a test alert from the [alert's page](alerts-page.html).
+	- Configure single sign-on (SSO) enforcement.
+
+- *Service accounts* with this role can perform the following *API operations*:
+
 	- [Read a cluster summary](cloud-api.html#get-information-about-a-specific-cluster).
 	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
 	- [Export a cluster's logs](export-logs.html).
 	- [Export a cluster's metrics](export-metrics.html).
 	- [View and configure a cluster's Egress Rules](egress-perimeter-controls.html).
+	- [Configure the export of metrics to DataDog or AWS CloudWatch](export-metrics.html).
+	- [Scale or edit a cluster's attributes](../api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
 
 This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
