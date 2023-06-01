@@ -12,20 +12,23 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Get changed files
-        id: changed_files
-        uses: tj-actions/changed-files@v34.3.2
-
       - name: Format list of changed files
         id: format
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           declare -a output
-
-          files=(${{ steps.changed_files.outputs.all_modified_files }})
           pr_num=${{ github.event.pull_request.number }}
 
+          files=`gh pr view ${pr_num} --json files -q '.files[].path'`
+              
+          SAVEIFS=$IFS
+          IFS=$'\n'
+          files=($files)
+          IFS=$SAVEIFS 
+
           function generateMainFiles() {
-            html_file=${1%.md}.html
+            html_file=`echo "${1%.md}.html" | sed -E 's/src\/[^\/]*\///g'`
             file="<li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$1</a></li>"
             output+="$file"
           }
@@ -36,16 +39,16 @@ jobs:
             IFS='/'
             read -ra path <<< "$1"
             IFS=$OLDIFS
-            if [[ $1 == _includes* ]]
+            if [[ $1 == src/*/_includes* ]]
             then
-              major_version=${path[1]}
-            elif $1 == v* || $1 == cockroachcloud*
+              major_version=${path[3]}
+            elif $1 == src/*/v* || $1 == src/*/cockroachcloud*
             then
-              major_version=${path[0]}
+              major_version=${path[2]}
             fi
             file_name=${path[-1]}
-            mainRefs=($(grep -irl /${file_name} ${major_version} | sed -e 's/^\.\///g'))
-            includeRefs=($(grep -irl /${file_name} _includes/${major_version} | sed -e 's/^\.\///g'))
+            mainRefs=($(grep -irl /${file_name} src/*/${major_version} | sed -e 's/^\.\///g'))
+            includeRefs=($(grep -irl /${file_name} src/*/_includes/${major_version} | sed -e 's/^\.\///g'))
             if [[ ${#mainRefs[@]} > 0 ]]
             then
               for ref in ${mainRefs[@]}; do
@@ -73,10 +76,10 @@ jobs:
 
           for file in ${files[@]}; do
             # only create links for Markdown files that are not includes
-            if [[ $file == *.md ]] && [[ $file != _* ]]
+            if [[ $file == src/**/*.md ]] && [[ $file != src/*/_* ]]
             then
-              generateMainFiles ${file}
-            elif [[ $file == *.md ]] && [[ $file == _includes/releases/* ]]
+              generateMainFiles ${file/src\/.*?\//}
+            elif [[ $file == src/**/*.md ]] && [[ $file == src/*/_includes/releases/* ]]
             then
               OLDIFS=$IFS
               IFS='/'
@@ -85,9 +88,10 @@ jobs:
               major_version=${path[-2]}
               file="<li>${file}:<ul><li><a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/releases/${major_version}.html\" target=\"_blank\" rel=\"noopener\">releases/${major_version}.md</a></li></ul></li>"
               output+="$file"
-            elif [[ $file == _includes/v* || $file == _includes/cockroachcloud* || $file == images/* ]] && [[ $file != *.json ]] && [[ $file != *.gitignore* ]]
+            elif [[ $file == src/*/_includes/v* || $file == src/*/_includes/cockroachcloud* || $file == src/*/images/* ]] && [[ $file != src/**/*.json ]] && [[ $file != *.gitignore* ]]
             then
-              generateIncludes $file
+              # file=$(echo ${file} | sed -E 's/src\/[^\/]*\///g')
+              generateIncludes ${file}
             else
               output+="<li>$file</li>"
             fi
