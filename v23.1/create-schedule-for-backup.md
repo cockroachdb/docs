@@ -101,7 +101,7 @@ The incremental backup schedule is created in a paused state, and is only un-pau
 
 Incremental backups always append to the latest, complete full backup. An incremental backup can run concurrently with a full backup, but in such a situation it will continue to append to the previous full backup that has already completed.
 
-An incremental backup will always wait for another incremental backup started by the same schedule to complete before running. This prevents incremental backups from backing up overlapping timespans in the same backup chain. To enforce this, backup schedules created or altered using the [`on_previous_running` option](#on-previous-running-option) will have the full backup schedule created with the user specified option, but will **always default** the incremental backup schedule option to `on_previous_running = wait`.
+An incremental backup will always wait for another incremental backup started by the same schedule to complete before running. This prevents incremental backups from backing up overlapping spans of time in the same backup chain. To enforce this, backup schedules created or altered using the [`on_previous_running` option](#on-previous-running-option) will have the full backup schedule created with the user specified option, but will **always default** the incremental backup schedule option to `on_previous_running = wait`.
 
 ## View and control backup schedules
 
