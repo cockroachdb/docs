@@ -14,17 +14,15 @@ To prevent denial-of-service attacks, brute force password attacks, and other fo
 You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only).
-
-    Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public internet, and therefore offers several advantages:
+- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only). Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public internet, and therefore offers several advantages:
 
     - Enhanced network security (no public IPs, no transit over public networks).
     - Direct connection to application servers that do not have static public IPs
     - Reduced lower network latency.
-
-    This option can also be helpful if you need more than the current maximum of 20 authorized networks per cluster.
+    - This option can also be helpful if you need more than the current maximum of 20 authorized networks per cluster.
 
 {{site.data.alerts.callout_info}}
+
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
@@ -37,8 +35,6 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 {{ site.data.products.db }} clusters can only accept SQL connections from [allowed IP addresses](#ip-allowlisting).
 
-**Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
-
 ## IP allowlisting
 
 Authorized network access can be managed from the {{ site.data.products.db }} console Network Authorization page at:
@@ -50,9 +46,9 @@ You can add up to 20 IP addresses to your allowlist. If your application servers
 Refer to:
 
 - [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#step-1-authorize-your-network)
-- [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#step-1-authorize-your-network)
+- [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#authorize-your-network)
 
-## GCP VPC peering
+## VPC peering
 
 If you select GCP as your cloud provider while [creating your {{ site.data.products.dedicated }} cluster](create-your-cluster.html), you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application directly to your {{ site.data.products.dedicated }} cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
 

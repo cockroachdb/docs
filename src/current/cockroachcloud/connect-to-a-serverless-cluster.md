@@ -16,7 +16,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Step 1. Authorize your network
 {{site.data.alerts.callout_info}}
-By default, a serverless cluster is open to all traffic as we will auto-add a rule 0.0.0.0/0 when the cluster is created.
+On creation, a Serverless cluster is open to all traffic as it is created with a 0.0.0.0/0 default network.
 
 One needs to have at least one IP allowlist rule for a serverless cluster. It means if one tries to remove the default 0.0.0.0/0 rule, they have to add another one with a valid IP / CIDR which could access the cluster.
 
