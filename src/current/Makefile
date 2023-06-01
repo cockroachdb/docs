@@ -96,7 +96,7 @@ clean:
 	rm -rf vendor
 	rm -rf _site
 	rm -rf .jekyll-cache
-	rm Gemfile.lock
+	rm -f Gemfile.lock
 
 clean-site:
 	rm -rf _site
