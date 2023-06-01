@@ -110,6 +110,9 @@ This role can be granted for one or more specific clusters, or for all clusters 
 
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 <<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
+=======
+>>>>>>> 85986b121 (add additional cluster operator actions):cockroachcloud/authorization.md
 - *Users* with this role can perform the following *console operations*:
 
 	- View a cluster's [Overview page](cluster-overview-page.html), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
@@ -127,6 +130,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- Configure single sign-on (SSO) enforcement.
 
 - *Service accounts* with this role can perform the following *API operations*:
+<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 =======
 - *Users* with this role can perform the following console actions:
 	- [View a cluster's overview page](cluster-overview-page.html).
@@ -141,6 +145,8 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
 	- Send a test alert from the [alert's page](alerts-page.html)
 >>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
+=======
+>>>>>>> 85986b121 (add additional cluster operator actions):cockroachcloud/authorization.md
 
 	- [Read a cluster summary](cloud-api.html#get-information-about-a-specific-cluster).
 	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
