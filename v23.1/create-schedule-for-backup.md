@@ -171,7 +171,7 @@ This example creates a schedule for a cluster backup with revision history that'
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
 
 ### Create a scheduled backup for a database
 
@@ -193,7 +193,7 @@ This example creates a schedule for a backup of the database `movr` with revisio
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@weekly`. This is the default cadence for incremental backups `RECURRING` > 1 hour but <= 1 day.
 
 ### Create a scheduled backup for a table
 
@@ -215,7 +215,7 @@ This example creates a schedule for a backup of the table `movr.vehicles` with r
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
 ### Create a scheduled backup with a scheduled first run
 
@@ -238,7 +238,7 @@ This example creates a schedule for a backup of the table `movr.vehicles` with r
 (2 rows)
 ~~~
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
 ### Create a scheduled backup with schedule options
 
