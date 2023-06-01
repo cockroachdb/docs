@@ -52,7 +52,7 @@ CockroachDB provides the following types of reads:
 
 CockroachDB checks the running transaction's record to see if it's been `ABORTED`; if it has, it [throws a retryable error](../transaction-retry-error-reference.html) to the client.
 
-Otherwise, CockroachDB sets the transaction record's state to `STAGING`, and checks the transaction's pending write intents to see if they have been successfully replicated across the cluster.
+Otherwise, CockroachDB sets the transaction record's state to `STAGING` and checks the transaction's pending write intents to see if they have been successfully replicated across the cluster.
 
 When the transaction passes these checks, CockroachDB responds with the transaction's success to the client, and moves on to the cleanup phase. At this point, the transaction is committed, and the client is free to begin sending more SQL statements to the cluster.
 
@@ -123,10 +123,15 @@ The timestamp for any transaction, especially a long-running transaction, could 
 - [Change data capture](../change-data-capture-overview.html): Latency of changefeed messages may be increased.
 - [Statistics collection](../cost-based-optimizer.html#table-statistics): Load placed on the leaseholder may increase during collection.
 
-While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. Consider an example where the long-running transaction `txn 1` holds [write locks](#writing) on keys at time `t=1`, and the long-running transaction `txn 2` is waiting to [read](#reading) those same keys at `t=1`. The following scenarios may occur depending on whether or not the closed timestamp has been increased:
+While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. Consider an example where:
 
-- When the timestamp for `txn 1` is pushed forward by the closed timestamp, moving its writes to time `t=2`, `txn 2` may then be able to proceed and read the keys at `t=1`. The likelihood of retryable errors has increased.
-- If the closed timestamp interval is increased, `txn1` may cause `txn2`  to [wait](../performance-recipes.html#waiting-transaction), because `txn 2` cannot read the keys at `t=1` until `txn 1` is complete or is pushed into the future. The likelihood of lock contention has increased.
+1. The long-running transaction `txn 1` holds [write locks](#writing) on keys at time `t=1`.
+1. The long-running transaction `txn 2` is waiting to [read](#reading) those same keys at `t=1`.
+
+The following scenarios may occur depending on whether or not the closed timestamp has been increased:
+
+- When the timestamp for `txn 1` is pushed forward by the closed timestamp, its writes are moved to  time `t=2`, and it can try again to read the keys at `t=1` before writing its changes at `t=2`. The likelihood of retryable errors has increased.
+- If the closed timestamp interval is increased, `txn 2` may need to [wait](../performance-recipes.html#waiting-transaction) for `txn 1` to complete or to be pushed into the future before `txn 2` can proceed. The likelihood of lock contention has increased.
 
 Before increasing the closed timestamp intervals, consider other solutions for [minimizing transaction retries](../transaction-retry-error-reference.html#minimize-transaction-retry-errors).
 
