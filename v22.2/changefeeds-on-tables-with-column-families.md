@@ -216,7 +216,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
+    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true';
     ~~~
 
     You'll receive one message for each of the inserts that affects the specified column family:
@@ -236,7 +236,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
+    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true';
     ~~~
 
     You'll receive one message for each insert that affects the specified column families:
@@ -264,7 +264,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE office_dogs INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' with split_column_families;
+    CREATE CHANGEFEED FOR TABLE office_dogs INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true' with split_column_families;
     ~~~
 
     You'll receive output for both of the column families in the `office_dogs` table:
@@ -281,8 +281,8 @@ In this example, you'll set up changefeeds on two tables that have [column famil
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs). Changefeeds streaming to [Kafka](changefeed-sinks.html#kafka) or [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output. 
-    
+    You can find details of your changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs). Changefeeds streaming to [Kafka](changefeed-sinks.html#kafka) or [Google Cloud Pub/Sub](changefeed-sinks.html#google-cloud-pub-sub) will populate the `topics` field in the `SHOW CHANGEFEED JOBS` output.
+
     When using the `FAMILY` keyword, the `topics` field will display in the format `topic.family`, e.g., `office_dogs.employee,office_dogs.dogs`. With the `split_column_families` option set, `topics` will show the topic name and a family placeholder `topic.{family}`, e.g., `office_dogs.{family}`.
     {{site.data.alerts.end}}
 

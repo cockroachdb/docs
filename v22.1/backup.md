@@ -138,13 +138,13 @@ This improves performance by decreasing the likelihood that the `BACKUP` will be
 
 `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
 
-{% include_cached new-in.html version="v22.1" %} A backup job will [pause](pause-job.html) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the backup has paused, you can either [resume](resume-job.html) or [cancel](cancel-job.html) it.
+{% include {{ page.version.version }}/backups/retry-failure.md %}
 
 ### Backup performance configuration
 
 Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:
 
-#### `bulkio.backup.file_size` 
+#### `bulkio.backup.file_size`
 
 Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
 
@@ -152,7 +152,7 @@ Note that if you lower `bulkio.backup.file_size` below the default, it will caus
 
 **Default:** `128 MiB`
 
-#### `cloudstorage.azure.concurrent_upload_buffers` 
+#### `cloudstorage.azure.concurrent_upload_buffers`
 
 Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. Note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.
 

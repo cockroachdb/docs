@@ -53,7 +53,7 @@ From the **Overview** page, you can connect to your cluster. For more informatio
 ## Scale your cluster
 
 {{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), {{ site.data.products.dedicated }} clusters on Azure cannot be scaled. Refer to [{{ site.data.products.dedicated }} on Azure (cockroachdb-dedicated-on-azure.html).
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), {{ site.data.products.dedicated }} clusters on Azure cannot be scaled. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
 ### Add or remove nodes from a cluster
@@ -191,7 +191,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 {{ site.data.products.dedicated }} advanced clusters have a **PCI ready** panel to monitor the status of security features required for [PCI readiness](pci-dss.html). Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
 
-- [Audit logs](cloud-org-audit-logs.html)
+- [{{ site.data.products.db }} Organization Audit logs](cloud-org-audit-logs.html)
 - [Customer-Managed Encryption Keys (CMEK)](managing-cmek.html)
 - [Egress Perimeter Controls](egress-perimeter-controls.html)
 - Single Sign-On (SSO) for your [{{ site.data.products.db }} organization](configure-cloud-org-sso.html) and your [clusters](cloud-sso-sql.html)

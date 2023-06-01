@@ -48,7 +48,7 @@ Azure | [Dasv5](https://learn.microsoft.com/en-us/azure/virtual-machines/dasv5-d
 
 ## Step 3. Select the region(s)
 
-In the **Regions & nodes** section, select at minimum one region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
+In the **Regions & nodes** section, select at minimum one region. Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} clusters can be deployed. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
 
 A multi-region cluster contains at minimum three regions and can survive the loss of a single region. Refer to [Planning your cluster](plan-your-cluster.html?filters=dedicated) for the configuration requirements and recommendations for {{ site.data.products.dedicated }} clusters.
 
