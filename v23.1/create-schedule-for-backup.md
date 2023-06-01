@@ -262,7 +262,7 @@ This example creates a schedule for a cluster backup with the `on_previous_runni
 
 The schedule starts a new backup, even if the previous one is still running because the user specified option for `on_previous_running = 'start'`. The [incremental backup remains `PAUSED`](#incremental-backup-schedules) until the initial full backup is complete. 
 
-Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, CockroachDB also scheduled a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
+Because the [`FULL BACKUP` clause](#full-backup-clause) is not included, CockroachDB also schedules a full backup to run `@daily`. This is the default cadence for incremental backups `RECURRING` <= 1 hour.
 
 ### View scheduled backup details
 
