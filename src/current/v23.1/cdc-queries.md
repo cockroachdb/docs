@@ -100,7 +100,9 @@ You can **not** use the following functions with CDC queries:
 
 CDC queries allow you to customize your changefeed for particular scenarios. This section outlines several possible use cases for CDC queries.
 
-See [`CREATE CHANGEFEED`](create-changefeed.html) for examples on using the foundational syntax to create a changefeed. For information on sinks, see the [Changefeed Sinks](changefeed-sinks.html) page.
+CDC queries use `envelope=bare` message format by default. This omits the `after` key and stores any [metadata in the `crdb` field](#filter-columns). Depending on how you are filtering or adapting the message format with a CDC query and which sink you're emitting to, message format can vary from some of the example cases in this section.
+
+Refer to [`CREATE CHANGEFEED`](create-changefeed.html) for examples on using the foundational syntax to create a changefeed. For information on sinks, refer to the [Changefeed Sinks](changefeed-sinks.html) page.
 
 {{site.data.alerts.callout_success}}
 To optimize the `SELECT` query you run in your changefeed statement, use the [`EXPLAIN`](explain.html) statement to view a statement plan.
@@ -119,14 +121,17 @@ As an example, using the `users` table from the [`movr` database](movr.html#the-
 CREATE CHANGEFEED INTO "scheme://sink-URI" WITH updated AS SELECT name, city FROM users;
 ~~~
 ~~~
-{"record":{"users":{"name":{"string":"Steven Lara"},"city":{"string":"los angeles"}}}}
-{"record":{"users":{"city":{"string":"los angeles"},"name":{"string":"Carl Russell"}}}}
-{"record":{"users":{"name":{"string":"Brett Porter"},"city":{"string":"boston"}}}}
-{"record":{"users":{"name":{"string":"Vanessa Rivera"},"city":{"string":"los angeles"}}}}
-{"record":{"users":{"name":{"string":"Tony Henderson"},"city":{"string":"los angeles"}}}}
-{"record":{"users":{"city":{"string":"boston"},"name":{"string":"Emily Hill"}}}}
-{"record":{"users":{"name":{"string":"Dustin Kramer"},"city":{"string":"boston"}}}}
-{"record":{"users":{"name":{"string":"Dawn Roman"},"city":{"string":"boston"}}}}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Thomas Harris"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Guy Williams"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Guy Williams"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Tyler Hunter"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Tyler Hunter"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Tyler Dalton"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Dillon Martin"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Lisa Sandoval"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Deborah Carson"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "David Stanton"}
+{"__crdb__": {"updated": "1685718676799158675.0000000000"}, "city": "amsterdam", "name": "Maria Weber"}
 ~~~
 
 ### Filter delete messages
@@ -293,19 +298,19 @@ In the event that an incident downstream has affected some rows, you may need a 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'scheme://sink-URI'
+CREATE CHANGEFEED INTO 'scheme://cloud'
 AS SELECT * FROM movr.vehicle_location_histories
-WHERE ride_id = 'ff9df988-ebda-4066-b0fc-ecbc45f8d12b';
+WHERE ride_id = 'efe6468e-f443-463f-a21c-4cb0f6ecf235';
 ~~~
 
 The changefeed will return messages for the specified rows:
 
 ~~~
-{"key":"[\"washington dc\", \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"2022-09-22T20:10:05.405737\"]","table":"vehicle_location_histories","value":"{\"city\": \"washington dc\", \"lat\": 128, \"long\": 11, \"ride_id\": \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"timestamp\": \"2022-09-22T20:10:05.405737\"}"}
-{"key":"[\"washington dc\", \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"2022-09-22T20:10:05.478217\"]","table":"vehicle_location_histories","value":"{\"city\": \"washington dc\", \"lat\": 45, \"long\": -66, \"ride_id\": \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"timestamp\": \"2022-09-22T20:10:05.478217\"}"}
-{"key":"[\"washington dc\", \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"2022-09-22T20:10:05.487198\"]","table":"vehicle_location_histories","value":"{\"city\": \"washington dc\", \"lat\": -34, \"long\": -49, \"ride_id\": \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"timestamp\": \"2022-09-22T20:10:05.487198\"}"}
-{"key":"[\"washington dc\", \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"2022-09-22T20:10:05.535764\"]","table":"vehicle_location_histories","value":"{\"city\": \"washington dc\", \"lat\": 1E+1, \"long\": -27, \"ride_id\": \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"timestamp\": \"2022-09-22T20:10:05.535764\"}"}
-{"key":"[\"washington dc\", \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"2022-09-22T20:10:05.575483\"]","table":"vehicle_location_histories","value":"{\"city\": \"washington dc\", \"lat\": 83, \"long\": 84, \"ride_id\": \"ff9df988-ebda-4066-b0fc-ecbc45f8d12b\", \"timestamp\": \"2022-09-22T20:10:05.575483\"}"}
+{"city": "washington dc", "lat": 128, "long": 11, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:30.316547"}
+{"city": "washington dc", "lat": 45, "long": -66, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:33.700297"}
+{"city": "washington dc", "lat": -34, "long": -49, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:34.050312"}
+{"city": "washington dc", "lat": 1E+1, "long": -27, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:36.408561"}
+{"city": "washington dc", "lat": 83, "long": 84, "ride_id": "efe6468e-f443-463f-a21c-4cb0f6ecf235", "timestamp": "2023-06-02T15:11:38.026542"}
 ~~~
 
 The output will only include the row's history that has been changed within the [garbage collection window](architecture/storage-layer.html#garbage-collection). If the change occurred outside of the garbage collection window, it will not be returned as part of this output. See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on how the garbage collection window interacts with changefeeds.
@@ -318,11 +323,15 @@ In this example, the query adds a `summary` field to the changefeed message:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED AS SELECT *, owner_id::string || ' takes passengers by ' || type || '. They are currently ' || status AS summary FROM vehicles;
+CREATE CHANGEFEED INTO 'external://cloud' AS SELECT *, owner_id::string || ' takes passengers by ' || type || '. They are currently ' || status AS summary FROM vehicles;
 ~~~
 ~~~
-{"key":"[\"seattle\", \"e88af90e-1212-4d10-ad13-5b30cfe3bd16\"]","table":"vehicles","value":"{\"city\": \"seattle\", \"creation_time\": \"2019-01-02T03:04:05\", \"current_location\": \"49128 Gerald Mall\", \"ext\": {\"color\": \"yellow\"}, \"id\": \"e88af90e-1212-4d10-ad13-5b30cfe3bd16\", \"owner_id\": \"28df0fab-cde9-4bc1-a11e-769f4b915171\", \"status\": \"in_use\", \"summary\": \"28df0fab-cde9-4bc1-a11e-769f4b915171 takes passengers by skateboard. They are currently in_use\", \"type\": \"skateboard\"}"}
-{"key":"[\"seattle\", \"f00edb5f-d951-4dfd-8c1c-d0b34ebc38be\"]","table":"vehicles","value":"{\"city\": \"seattle\", \"creation_time\": \"2019-01-02T03:04:05\", \"current_location\": \"2521 Jaclyn Place Apt. 68\", \"ext\": {\"color\": \"yellow\"}, \"id\": \"f00edb5f-d951-4dfd-8c1c-d0b34ebc38be\", \"owner_id\": \"d4b05249-afed-4f89-b7a9-d5533f687a13\", \"status\": \"available\", \"summary\": \"d4b05249-afed-4f89-b7a9-d5533f687a13 takes passengers by scooter. They are currently available\", \"type\": \"scooter\"}"}
+{"city": "los angeles", "creation_time": "2019-01-02T03:04:05", "current_location": "43051 Jonathan Fords Suite 36", "ext": {"color": "red"}, "id": "99999999-9999-4800-8000-000000000009", "owner_id": "9eb851eb-851e-4800-8000-00000000001f", "status": "in_use", "summary": "9eb851eb-851e-4800-8000-00000000001f takes passengers by scooter. They are currently in_use", "type": "scooter"}
+{"city": "new york", "creation_time": "2019-01-02T03:04:05", "current_location": "64110 Richard Crescent", "ext": {"color": "black"}, "id": "00000000-0000-4000-8000-000000000000", "owner_id": "051eb851-eb85-4ec0-8000-000000000001", "status": "in_use", "summary": "051eb851-eb85-4ec0-8000-000000000001 takes passengers by skateboard. They are currently in_use", "type": "skateboard"}
+{"city": "new york", "creation_time": "2019-01-02T03:04:05", "current_location": "64297 Ballard Hollow Suite 30", "ext": {"brand": "Pinarello", "color": "blue"}, "id": "0d393d59-82c0-4762-84d0-71a445283c53", "owner_id": "521a31b0-c8ff-40c4-baac-23f7daa66562", "status": "available", "summary": "521a31b0-c8ff-40c4-baac-23f7daa66562 takes passengers by bike. They are currently available", "type": "bike"}
+{"city": "new york", "creation_time": "2019-01-02T03:04:05", "current_location": "86667 Edwards Valley", "ext": {"color": "black"}, "id": "11111111-1111-4100-8000-000000000001", "owner_id": "147ae147-ae14-4b00-8000-000000000004", "status": "in_use", "summary": "147ae147-ae14-4b00-8000-000000000004 takes passengers by scooter. They are currently in_use", "type": "scooter"}
+{"city": "new york", "creation_time": "2019-01-02T03:04:05", "current_location": "64297 Ballard Hollow Suite 30", "ext": {"brand": "Pinarello", "color": "blue"}, "id": "64b6fc6a-8019-4b1f-bc30-0a186197ec68", "owner_id": "30583448-8eeb-48e6-8b0d-9842bb26e991", "status": "available", "summary": "30583448-8eeb-48e6-8b0d-9842bb26e991 takes passengers by bike. They are currently available", "type": "bike"}
+{"city": "new york", "creation_time": "2019-01-02T03:04:05", "current_location": "64297 Ballard Hollow Suite 30", "ext": {"brand": "Pinarello", "color": "blue"}, "id": "7bd82867-8e7b-4811-a4f9-3e938792fe6c", "owner_id": "e1f215d8-1c47-47a2-b6f8-e8128db2eefb", "status": "available", "summary": "e1f215d8-1c47-47a2-b6f8-e8128db2eefb takes passengers by bike. They are currently available", "type": "bike"}
 ~~~
 
 ### Create a scheduled changefeed to export filtered data
