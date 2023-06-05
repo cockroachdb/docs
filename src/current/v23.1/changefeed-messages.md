@@ -226,18 +226,13 @@ The only ways for changefeeds to **not** protect data are:
 
 ## Message formats
 
-By default, changefeeds emit messages in JSON format. You can use a different format by [creating a changefeed](create-changefeed.html) with the [`format`](create-changefeed.html#format) option. This section outlines the limitations and type mapping for relevant formats.
-
-You can use the following message formats:
-
-- JSON
-- CSV
-- Avro
-- Parquet
+{% include {{ page.version.version }}/cdc/message-format-list.md %}
 
 {{site.data.alerts.callout_info}}
 {% include {{page.version.version}}/cdc/types-udt-composite-general.md %}
 {{site.data.alerts.end}}
+
+The following sections outline the limitations and type mapping for relevant formats.
 
 ### Avro
 
