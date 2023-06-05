@@ -19,7 +19,7 @@ The [examples](#examples) on this page provide the foundational syntax of the `C
 - [Changefeeds on Tables with Column Families](changefeeds-on-tables-with-column-families.html)
 - [Export Data with Changefeeds](export-data-with-changefeeds.html)
 
-Cockroach Labs recommends monitoring your changefeeds to track [retryable errors](monitor-and-debug-changefeeds.html#changefeed-retry-errors) and [protected timestamp](architecture/storage-layer.html#protected-timestamps) usage. Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page for more information.
+{% include {{ page.version.version }}/cdc/recommendation-monitoring-pts.md %}
 
 ## Required privileges
 
