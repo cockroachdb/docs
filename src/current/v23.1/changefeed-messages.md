@@ -140,7 +140,7 @@ There are three different ways to configure resolved timestamp messages:
 
 - If you do not specify the `resolved` option at all, then the changefeed coordinator node will not send resolved timestamp messages.
 - If you include `WITH resolved` in your changefeed creation statement **without** specifying a value, the coordinator node will emit resolved timestamps as the high-water mark advances. Note that new Kafka partitions may not receive resolved messages right away.
-- If you specify a duration like `WITH resolved={duration}`, the changefeed will use that as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed.
+- If you specify a duration like `WITH resolved={duration}`, the changefeed will use it as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed.
 
 {{site.data.alerts.callout_info}}
 If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
