@@ -396,7 +396,7 @@ Field              | Type                | Description      | Default
 `Flush.Messages`   | [`INT`](int.html) | When the batch reaches this configured size, it should be flushed (batch sent). | `0`
 `Flush.Bytes`      | [`INT`](int.html) | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
 `Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
-`Retry.Max`        | [`INT`](int.html) | The maximum number of retries that will be attempted when sending a message batch in an HTTP request fails. This value must be positive (> 0). If infinite retries are desired, use `inf`. | `3`
+`Retry.Max`        | [`INT`](int.html) | The maximum number of attempted retries after sending a message batch in an HTTP request fails. This value must be positive (> 0). If infinite retries are desired, use `inf`. | `3`
 `Retry.Backoff`    | [`INTERVAL`](interval.html) | The initial backoff the sink will wait after the first failure. The backoff will exponentially increase until the maximum retry time of 30 seconds is reached.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then at most `4` retries will be performed with the backoff times of `10s`, `20s`, `30s`, `30s`.  | `"500ms"`
 
 For example:
