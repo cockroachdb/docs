@@ -49,19 +49,22 @@ This section shows how to start a single-node cluster that:
 
 The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and this cannot be changed for single-node cluster running in a container. The `--listen-address` option is ignored.
 
-1. Start the cluster node.
+1. Start the cluster node and configure it to listen on port 26257 for SQL clients and run DB Console on port 8080.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run -d \
-              --env COCKROACH_DATABASE={DATABASE_NAME} \
-              --env COCKROACH_USER={USER_NAME} \
-              --env COCKROACH_PASSWORD={PASSWORD} \
-              --name=roach-single \
-              -p 26257:26257 -p 8080:8080 \
-              -v "roach-single:/cockroach/cockroach-data" \
-              -v "~/init-scripts:/docker-entrypoint-initdb.d" \
-              cockroachdb/cockroach:latest start-single-node
+      --env COCKROACH_DATABASE={DATABASE_NAME} \
+      --env COCKROACH_USER={USER_NAME} \
+      --env COCKROACH_PASSWORD={PASSWORD} \
+      --name=roach-single \
+      --hostname=roach-single \
+      --net=roachnet \
+      -p 26257:26257 \
+      -p 8080:8080 \
+      -v "roach-single:/cockroach/cockroach-data"  \
+      {{page.release_info.docker_image}}:{{page.release_info.version}} start-single-node \
+      --http-addr=localhost:8080 \
     ~~~
 
     By default, a `certs` directory is created and CockroachDB starts in secure mode.
@@ -76,7 +79,7 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    docker exec -it roach-single grep 'node starting' cockroach-data/logs/cockroach.log -A 11
+    docker exec -it roach-single grep 'node starting' /cockroach/cockroach-data/logs/cockroach.log -A 11
     ~~~
 
     ~~~ shell
@@ -118,11 +121,11 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 ### Step 4. Stop the cluster
 
-1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster):
+1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes](node-shutdown.html#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    docker stop roach-single
+    docker stop -t 300 roach-single
     ~~~
 
     {% include_cached copy-clipboard.html %}
