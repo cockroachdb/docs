@@ -16,9 +16,9 @@ For a summary of Core and {{ site.data.products.enterprise }} changefeed feature
 - [Cloud Storage](#create-a-changefeed-connected-to-a-cloud-storage-sink) (Amazon S3, Google Cloud Storage, Azure Storage)
 - [Webhook](#create-a-changefeed-connected-to-a-webhook-sink)
 
-See the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
+Refer to the [Changefeed Sinks](changefeed-sinks.html) page for more detail on forming sink URIs, available sink query parameters, and specifics on configuration.
 
-{% include {{ page.version.version }}/cdc/pts-gc-monitoring.md %}
+{% include {{ page.version.version }}/cdc/recommendation-monitoring-pts.md %}
 
 Use the following filters to show usage examples for either **Enterprise** or **Core** changefeeds:
 
