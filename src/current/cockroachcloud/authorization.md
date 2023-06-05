@@ -54,15 +54,7 @@ Org Administrators can manage the organization and its members, clusters, and co
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
-=======
-This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
->>>>>>> f22401489 (Apply suggestions from code review):cockroachcloud/authorization.md
-=======
-This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
->>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -73,15 +65,7 @@ This role will be deprecated in favor of the following more fine-grained roles o
 
 Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
 This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
-=======
-This role is deprecated in favor of more fine-grained roles introduced below.
->>>>>>> f22401489 (Apply suggestions from code review):cockroachcloud/authorization.md
-=======
-This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
->>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
 {{site.data.alerts.end}}
 
 ### Organization Member
@@ -108,11 +92,6 @@ Note that billing can also be managed by the [Org Administrator (legacy) role](#
 
 This role can be granted for one or more specific clusters, or for all clusters in the organization. It allows users and service accounts to perform a variety of cluster functions:
 
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-=======
->>>>>>> 85986b121 (add additional cluster operator actions):cockroachcloud/authorization.md
 - *Users* with this role can perform the following *console operations*:
 
 	- View a cluster's [Overview page](cluster-overview-page.html), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
@@ -130,23 +109,6 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- Configure single sign-on (SSO) enforcement.
 
 - *Service accounts* with this role can perform the following *API operations*:
-<<<<<<< HEAD:src/current/cockroachcloud/authorization.md
-=======
-- *Users* with this role can perform the following console actions:
-	- [View a cluster's overview page](cluster-overview-page.html).
-	- View and configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-	- View backups in a cluster's [backups page](use-managed-service-backups.html#backups-page)
-	- [Restore the cluster](use-managed-service-backups.html#restore-a-cluster) to a backup state.
-	- Manage a cluster's databases from the [Databases Page](databases-page.html).
-	- [View and configure a cluster's authorized networks.](network-authorization.html)
-	- [View a cluster's jobs](jobs-page.html)
-	- [Upgrade a cluster's CRDB version.](upgrade-to-v23.1.html#step-5-start-the-upgrade)
-	- [View a cluster's PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
-	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster)
-	- Send a test alert from the [alert's page](alerts-page.html)
->>>>>>> d291fd0ef (edits from review):cockroachcloud/authorization.md
-=======
->>>>>>> 85986b121 (add additional cluster operator actions):cockroachcloud/authorization.md
 
 	- [Read a cluster summary](cloud-api.html#get-information-about-a-specific-cluster).
 	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
@@ -154,32 +116,12 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- [Export a cluster's metrics](export-metrics.html).
 	- [View and configure a cluster's Egress Rules](egress-perimeter-controls.html).
 	- [Configure the export of metrics to DataDog or AWS CloudWatch](export-metrics.html).
-	- [Scale or edit a cluster's attributes](../api/cloud/v1#patch-/api/v1/clusters/-cluster_id-).
 
 This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
 
 - Managing cluster-scoped roles on organization users.
 - Managing SQL users from the cloud console.
 - Creating or deleting a cluster.
-=======
-- *Users* with this role can perform the following console actions:
-	- Configure authorized network connections for dedicated private clusters ([allowed IP ranges](network-authorization.html#ip-allowlisting), [GCP VPC Peering](network-authorization.html#vpc-peering), or [AWS PrivateLink](network-authorization.html#aws-privatelink))
-	- Configure [egress perimeter controls](egress-perimeter-controls.html)
-
-- *Service accounts* with this role can perform the following API functions:
-	- [Manage Customer-Managed Encryption Keys (CMEK) for Dedicated Clusters](managing-cmek.html)
-	- [Export Logs From a CockroachDB Dedicated Cluster
-	](export-logs.html)
-	- [Export Metrics From a CockroachDB Dedicated Cluster](export-metrics.html)
-
-
-This role can be considered a more restricted alternative to [Cluster Administrator](#cluster-administrator), as it grants all of the permissions of that role, except that it does **not** allow users to:
-
-- Managing cluster-scoped roles on organization users.
-- Managing SQL users from the cloud console.
-- Creating or deleting a cluster.
-
->>>>>>> c3b686e55 (minor edits  on cockroachcloud/authorization):cockroachcloud/authorization.md
 
 ### Cluster Administrator
 
@@ -188,6 +130,7 @@ Cluster Administrators can perform all of the [Cluster Operator actions](#cluste
 - [Provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user).
 - [Create Service Accounts](managing-access.html#change-a-team-members-role).
 - Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role) , and [service accounts](managing-access.html#edit-roles-on-a-service-account).
+- [Edit or delete a cluster](cluster-management.html).
 
 Cluster Administrator can be granted for one or more specific clusters, or for all clusters in the organization.
 
