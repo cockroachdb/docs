@@ -9,9 +9,9 @@ CockroachDB provides backup validation tools to check that backups you have in s
 
 You can validate a backup of a [cluster](backup.html#back-up-a-cluster), [database](backup.html#back-up-a-database), or [table](backup.html#back-up-a-table-or-view) backup with one of the following [`SHOW BACKUP`](show-backup.html) or [`RESTORE`](restore.html) statements. The three options result in increasing levels of backup validation:
 
-1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. See [Validate backup files](#validate-backup-files) for an example.
-1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any rows. See [Validate a backup is restorable](#validate-a-backup-is-restorable) for an example.
-1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all rows from external storage, verify checksums, and discard the rows before writing them to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. See [Validate backup table data is restorable](#validate-backup-table-data-is-restorable) for an example.
+1. `SHOW BACKUP ... WITH check_files`: Check that all files belonging to a backup are in the expected location in storage. Refer to [Validate backup files](#validate-backup-files) for an example.
+1. `RESTORE ... WITH schema_only`: Restore the schema from the backup to verify that it is valid without restoring any rows. Refer to [Validate a backup is restorable](#validate-a-backup-is-restorable) for an example.
+1. `RESTORE ... WITH schema_only, verify_backup_table_data`: Run a `schema_only` restore **and** have the restore read all rows from external storage, verify checksums, and discard the rows before writing them to disk. To use `verify_backup_table_data`, you must include `schema_only` in the statement. Refer to [Validate backup table data is restorable](#validate-backup-table-data-is-restorable) for an example.
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
@@ -49,7 +49,7 @@ Using `SHOW BACKUP` with the `check_files` option, you can check that all [SST a
 
 To validate that a backup is restorable, you can run `RESTORE` with the `schema_only` option, which will complete a restore **without** restoring any rows. This process is significantly faster than running a [regular restore](restore.html#examples) for the purposes of validation.
 
-A `schema_only` restore produces close to complete validation coverage on backups. However, this restore type does not read or write from any of the SST files, which store the backed-up rows. You can use `SHOW BACKUP ... WITH check_files` in addition to a `schema_only` restore to check that these SST files are present for a restore operation. Or, you can use `schema_only` in combination with `verify_backup_table_data`. See [Validate backup table data is restorable](#validate-backup-table-data-is-restorable).
+A `schema_only` restore produces close to complete validation coverage on backups. However, this restore type does not read or write from any of the SST files, which store the backed-up rows. You can use `SHOW BACKUP ... WITH check_files` in addition to a `schema_only` restore to check that these SST files are present for a restore operation. Or, you can use `schema_only` in combination with `verify_backup_table_data`. Refer to [Validate backup table data is restorable](#validate-backup-table-data-is-restorable).
 
 Run `RESTORE` with the `schema_only` option, specifying either `LATEST` or the specific backup you would like to restore:
 
@@ -66,7 +66,7 @@ RESTORE DATABASE movr FROM "2022/09/19-134123.64" IN "s3://bucket?AWS_ACCESS_KEY
 
 You can also use the [`new_db_name` option](restore.html#rename-a-database-on-restore) to restore a database to a different name. For example, `new_db_name = test_movr`.
 
-To verify that the table schemas are in place, check the tables:
+Verify that the table schemas have been restored, but that the tables contain no rows:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -107,17 +107,19 @@ DROP DATABASE movr CASCADE;
 
 It is important to note that [full cluster restores](restore.html#full-cluster) with `schema_only` will write the system tables to disk. This provides important coverage for validation at the cluster level. Writing the system tables should not have a notable impact on the runtime of this process.
 
-Once you have successfully validated a cluster-level restore, the restored system tables cannot be reverted. However, you can drop the databases and tables as per the previous command.
+Once you have successfully validated a cluster-level restore, the restored system tables cannot be reverted. However, you can drop the databases and tables, as shown in the previous command.
 
 ## Validate backup table data is restorable
 
-A restore with the `verify_backup_table_data` option will perform a [`schema_only` restore](#validate-a-backup-is-restorable) and the following:
+A restore with the `verify_backup_table_data` option will perform a [`schema_only` restore](#validate-a-backup-is-restorable), and:
 
 1. Read all rows from the storage location.
 1. Checksum the rows to ensure they are not corrupt.
 1. Discard the rows before they are written to disk.
 
-In comparison to `schema_only` restores, `verify_backup_table_data` also validates the backup by reading and checksumming the rows.
+Similarly, to just `schema_only` restores, you'll find the table schemas restored. If a file is not present or unreadable in the backup, you'll receive an error.
+
+Unlike a `schema_only` restore, a `verify_backup_table_data` restore also reads and checksums the rows to validate the backup.
 
 It is necessary to include `schema_only` when you run a restore with `verify_backup_table_data`:
 
@@ -125,8 +127,6 @@ It is necessary to include `schema_only` when you run a restore with `verify_bac
 ~~~sql
 RESTORE DATABASE movr FROM LATEST IN "s3://bucket?AWS_ACCESS_KEY_ID={Access Key ID}&AWS_SECRET_ACCESS_KEY={Secret Access Key}" WITH schema_only, verify_backup_table_data;
 ~~~
-
-Similarly, to just `schema_only` restores, you'll find the table schemas restored. If a file is not present or unreadable in the backup, you'll receive an error.
 
 ## See also
 
