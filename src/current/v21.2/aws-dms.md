@@ -176,7 +176,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     
     This is resolved in v22.2.1. On earlier versions, do not select the **Enable validation** option if your database has a `TIMESTAMP`/`TIMESTAMPTZ` column.
 
-- If you are migrating from PostgreSQL, select **Enable validation** in your [task settings](#step-2-2-task-settings), and are using a [`STRING`](string.html) as a [`PRIMARY KEY`](primary-key.html), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
+- If you are migrating from PostgreSQL, are using a [`STRING`](string.html) as a [`PRIMARY KEY`](primary-key.html), and have selected **Enable validation** in your [task settings](#step-2-2-task-settings), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation](collate.html) such as `COLLATE "en_US"` in CockroachDB.
 
