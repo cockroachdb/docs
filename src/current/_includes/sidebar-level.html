@@ -1,0 +1,37 @@
+<div class="list-group-item border-0">
+    <a class="sidenav-branch" href="#{{ include.data.title | slugify }}" data-toggle="collapse">
+      <i class="sidenav-arrow bi bi-chevron-right"></i>{%- unless include.data.urls[0] -%}{{ include.data.title }}{%- endunless -%}</a>
+    {%- if include.data.urls[0] -%}<a class="sidenav-branch" href="{{ include.data.urls[0] | replace: "PREFIX", include.version | relative_url }}">{{ include.data.title }}</a>{%- endif -%}
+    <div class="list-group collapse ml-2 my-0 border-0" id="{{ include.data.title | slugify }}">
+      {%- for item in include.data.items -%}
+        {%- if item.items.size > 0 -%}
+          {%- include_cached sidebar-level.html data=item version=include.version -%}
+        {%- elsif item.urls.size > 0 and item.title != nil -%}
+        {% comment %} This is the catch-all scenario excluding supported_prod_releases, latest_testing_release, and advisories {% endcomment %}
+          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="{{ item.urls[0] | replace: "PREFIX", include.version | relative_url }}">{{ item.title }}</a>
+        </div>
+        {%- elsif item.supported_prod_releases == true -%}
+          {% assign today = "today" | date: "%Y-%m-%d" %}
+          {% comment %} set today's date {% endcomment %}
+          
+          {% assign v_prod = site.data.versions | where_exp: "v_prod", "v_prod.asst_supp_exp_date > today" | where_exp: "v_prod", "v_prod.release_date != 'N/A'" | sort: "release_date" | reverse | map: "major_version" %}
+          {% comment %} v_prod iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases within the assistance support period, sorted in reverse chronological order. We then pull only the major version name instead of the whole dictionary with map: "major_version" {% endcomment %}
+          {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
+            {% capture url %}/releases/{{ x }}.html{% endcapture %}
+          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="{{ url | absolute_url }}">{{ x }}</a>
+          </div>
+          {% endfor %}
+
+        {%- elsif item.latest_testing_release == true -%}
+          {% assign v_test = site.data.versions | where_exp: "v_test", "v_test.release_date == 'N/A'" | sort: "release_date" | last | map: "major_version" %}
+          {% comment %} v_test iterates through the list of major versions in _data/versions.csv and returns the single latest testing version (if the release date is in the future or not otherwise specified). It's possible there is no testing release (in between GA of a version and the first alpha of the following version). {% endcomment %}
+
+          {% if v_test.size > 0 %} {% comment %} check if a testing version is available {% endcomment %}
+            {% capture url %}/releases/{{ v_test[0] }}.html{% endcapture %}
+          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="{{ url | absolute_url }}">Latest Testing Release</a>
+          </div>
+          {% endif %}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>

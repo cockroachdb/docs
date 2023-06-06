@@ -1,0 +1,50 @@
+title: Stream Data
+items:
+- title: Change Data Capture Overview
+  urls:
+  - "/PREFIX/change-data-capture-overview.html"
+- title: Get Started with Changefeeds
+  items:
+  - title: Create and Configure Changefeeds
+    urls:
+    - "/PREFIX/create-and-configure-changefeeds.html"
+  - title: Changefeed Messages
+    urls:
+    - "/PREFIX/changefeed-messages.html"
+  - title: Changefeed Sinks
+    urls:
+    - "/PREFIX/changefeed-sinks.html"
+  - title: Changefeed Examples
+    urls:
+    - "/PREFIX/changefeed-examples.html"
+- title: Work with Changefeeds
+  items:
+  - title: Change Data Capture Queries
+    urls:
+    - "/PREFIX/cdc-queries.html"
+  - title: Changefeeds on Tables with Column Families
+    urls:
+    - "/PREFIX/changefeeds-on-tables-with-column-families.html"
+  - title: Export Data with Changefeeds
+    urls:
+    - "/PREFIX/export-data-with-changefeeds.html"
+  - title: Changefeeds in Multi-Region Deployments
+    urls:
+    - "/PREFIX/changefeeds-in-multi-region-deployments.html"
+- title: Monitor and Debug Changefeeds
+  urls:
+  - "/PREFIX/monitor-and-debug-changefeeds.html"
+- title: Tutorials
+  items:
+  - title: Connect to a Changefeed Kafka Sink with OAuth Using Okta
+    urls:
+    - "/PREFIX/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html"
+  - title: Stream a Changefeed from CockroachDB Cloud to Snowflake
+    urls:
+    - "/cockroachcloud/stream-changefeed-to-snowflake-aws.html"
+  - title: Stream a Changefeed to a Confluent Cloud Kafka Cluster
+    urls:
+    - "/PREFIX/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html"
+- title: Advanced Changefeed Configuration
+  urls:
+  - "/PREFIX/advanced-changefeed-configuration.html"

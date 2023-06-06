@@ -1,0 +1,100 @@
+---
+title: Get Started
+is_top_level: true
+items:
+- title: Quickstart
+  urls:
+  - "/cockroachcloud/quickstart.html"
+- title: Learn CockroachDB SQL
+  urls:
+  - "/cockroachcloud/learn-cockroachdb-sql.html"
+  - "/PREFIX/learn-cockroachdb-sql.html"
+- title: Build a Sample Application
+  items:
+  - title: JavaScript/TypeScript
+    urls:
+    - "/PREFIX/build-a-nodejs-app-with-cockroachdb.html"
+    - "/PREFIX/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+    - "/PREFIX/build-a-nodejs-app-with-cockroachdb-knexjs.html"
+    - "/PREFIX/build-a-nodejs-app-with-cockroachdb-prisma.html"
+    - "/PREFIX/build-a-typescript-app-with-cockroachdb.html"
+  - title: Python
+    urls:
+    - "/PREFIX/build-a-python-app-with-cockroachdb-psycopg3.html"
+    - "/PREFIX/build-a-python-app-with-cockroachdb.html"
+    - "/PREFIX/build-a-python-app-with-cockroachdb-sqlalchemy.html"
+    - "/PREFIX/build-a-python-app-with-cockroachdb-django.html"
+    - "/PREFIX/build-a-python-app-with-cockroachdb-pony.html"
+    - "/PREFIX/build-a-python-app-with-cockroachdb-asyncpg.html"
+  - title: Golang
+    urls:
+    - "/PREFIX/build-a-go-app-with-cockroachdb.html"
+    - "/PREFIX/build-a-go-app-with-cockroachdb-gorm.html"
+    - "/PREFIX/build-a-go-app-with-cockroachdb-pq.html"
+    - "/PREFIX/build-a-go-app-with-cockroachdb-upperdb.html"
+  - title: Java
+    urls:
+    - "/PREFIX/build-a-java-app-with-cockroachdb.html"
+    - "/PREFIX/build-a-java-app-with-cockroachdb-hibernate.html"
+    - "/PREFIX/build-a-java-app-with-cockroachdb-jooq.html"
+    - "/PREFIX/build-a-spring-app-with-cockroachdb-mybatis.html"
+  - title: Ruby
+    urls:
+    - "/PREFIX/build-a-ruby-app-with-cockroachdb.html"
+    - "/PREFIX/build-a-ruby-app-with-cockroachdb-activerecord.html"
+  - title: C# (.NET)
+    urls:
+    - "/PREFIX/build-a-csharp-app-with-cockroachdb.html"
+  - title: Rust
+    urls:
+    - "/PREFIX/build-a-rust-app-with-cockroachdb.html"
+  - title: Hasura (GraphQL)
+    urls:
+    - "/PREFIX/hasura-getting-started.html"
+- title: Build a Serverless Application
+  items:
+  - title: AWS Lambda
+    urls:
+    - "/PREFIX/deploy-lambda-function.html"
+  - title: Google Cloud Run
+    urls:
+    - "/PREFIX/deploy-app-gcr.html"
+  - title: Netlify
+    urls:
+    - "/PREFIX/deploy-app-netlify.html"
+  - title: Vercel
+    urls:
+    - "/PREFIX/deploy-app-vercel.html"
+  - title: Serverless Function Best Practices
+    urls:
+    - "/PREFIX/serverless-function-best-practices.html"
+- title: Glossary
+  urls:
+  - "/PREFIX/architecture/glossary.html"
+- title: FAQs
+  items:
+  - title: CockroachDB FAQs
+    urls:
+    - "/PREFIX/frequently-asked-questions.html"
+  - title: CockroachDB Cloud FAQs
+    urls:
+    - "/cockroachcloud/serverless-faqs.html"
+    - "/cockroachcloud/frequently-asked-questions.html"
+  - title: SQL FAQs
+    urls:
+    - "/PREFIX/sql-faqs.html"
+  - title: Operational FAQs
+    urls:
+    - "/PREFIX/operational-faqs.html"
+  - title: Availability FAQs
+    urls:
+    - "/PREFIX/multi-active-availability.html"
+  - title: Licensing FAQs
+    urls:
+    - "/PREFIX/licensing-faqs.html"
+  - title: Enterprise Features
+    urls:
+    - "/PREFIX/enterprise-licensing.html"
+  - title: CockroachDB in Comparison
+    urls:
+    - "/PREFIX/cockroachdb-in-comparison.html"

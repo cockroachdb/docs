@@ -1,0 +1,255 @@
+title: Develop
+items:
+- title: Developer Guide Overview
+  urls:
+  - "/PREFIX/developer-guide-overview.html"
+- title: Developer Basics
+  urls:
+  - "/PREFIX/developer-basics.html"
+- title: Connect to CockroachDB
+  items:
+  - title: Install a Driver or ORM Framework
+    urls:
+    - "/PREFIX/install-client-drivers.html"
+  - title: Connect to a Cluster
+    urls:
+    - "/PREFIX/connect-to-the-database.html"
+  - title: Use Connection Pools
+    urls:
+    - "/PREFIX/connection-pooling.html"
+- title: Design a Database Schema
+  items:
+  - title: Overview
+    urls:
+    - "/PREFIX/schema-design-overview.html"
+  - title: Create a Database
+    urls:
+    - "/PREFIX/schema-design-database.html"
+  - title: Create a User-defined Schema
+    urls:
+    - "/PREFIX/schema-design-schema.html"
+  - title: Create a Table
+    urls:
+    - "/PREFIX/schema-design-table.html"
+  - title: Secondary Indexes
+    urls:
+    - "/PREFIX/schema-design-indexes.html"
+  - title: Update a Database Schema
+    items:
+    - title: Change and Remove Objects
+      urls:
+      - "/PREFIX/schema-design-update.html"
+    - title: Online Schema Changes
+      urls:
+      - "/PREFIX/online-schema-changes.html"
+  - title: Advanced Schema Design
+    items:
+    - title: Computed Columns
+      urls:
+      - "/PREFIX/computed-columns.html"
+    - title: Group Columns into Families
+      urls:
+      - "/PREFIX/column-families.html"
+    - title: Index a Subset of Rows
+      urls:
+      - "/PREFIX/partial-indexes.html"
+    - title: Index Sequential Keys
+      urls:
+      - "/PREFIX/hash-sharded-indexes.html"
+    - title: Index JSON and Array Data
+      urls:
+      - "/PREFIX/inverted-indexes.html"
+    - title: Index Full Text
+      urls:
+      - "/PREFIX/full-text-search.html"
+    - title: Index Trigrams
+      urls:
+      - "/PREFIX/trigram-indexes.html"
+    - title: Index Expressions
+      urls:
+      - "/PREFIX/expression-indexes.html"
+    - title: Index Spatial Data
+      urls:
+      - "/PREFIX/spatial-indexes.html"
+    - title: Scale to Multiple Regions
+      urls:
+      - "/PREFIX/multiregion-scale-application.html"
+- title: Write Data
+  items:
+  - title: Insert Data
+    urls:
+    - "/PREFIX/insert-data.html"
+  - title: Update Data
+    urls:
+    - "/PREFIX/update-data.html"
+  - title: Bulk-update Data
+    urls:
+    - "/PREFIX/bulk-update-data.html"
+  - title: Delete Data
+    urls:
+    - "/PREFIX/delete-data.html"
+  - title: Bulk-delete Data
+    urls:
+    - "/PREFIX/bulk-delete-data.html"
+  - title: Batch Delete Expired Data with Row-Level TTL
+    urls:
+    - "/PREFIX/row-level-ttl.html"
+- title: Read Data
+  items:
+  - title: Select Rows of Data
+    urls:
+    - "/PREFIX/query-data.html"
+  - title: Reuse Query Results
+    items:
+    - title: Reusable Views
+      urls:
+      - "/PREFIX/views.html"
+    - title: Subqueries
+      urls:
+      - "/PREFIX/subqueries.html"
+  - title: Temporary Tables
+    urls:
+    - "/PREFIX/temporary-tables.html"
+  - title: Paginate Results
+    urls:
+    - "/PREFIX/pagination.html"
+  - title: Follower Reads
+    urls:
+    - "/PREFIX/follower-reads.html"
+  - title: "<code>AS OF SYSTEM TIME</code>"
+    urls:
+    - "/PREFIX/as-of-system-time.html"
+  - title: Query Spatial Data
+    urls:
+    - "/PREFIX/query-spatial-data.html"
+- title: Transactions
+  items:
+  - title: Transactions Overview
+    urls:
+    - "/PREFIX/transactions.html"
+  - title: Advanced Client-side Transaction Retries
+    urls:
+    - "/PREFIX/advanced-client-side-transaction-retries.html"
+- title: Test Your Application Locally
+  urls:
+  - "/PREFIX/local-testing.html"
+- title: Troubleshoot Common Problems
+  urls:
+  - "/PREFIX/error-handling-and-troubleshooting.html"
+- title: Optimize Statement Performance
+  items:
+  - title: Overview
+    urls:
+    - "/PREFIX/make-queries-fast.html"
+  - title: Statement Tuning with <code>EXPLAIN</code>
+    urls:
+    - "/PREFIX/sql-tuning-with-explain.html"
+  - title: Apply SQL Statement Performance Rules
+    urls:
+    - "/PREFIX/apply-statement-performance-rules.html"
+  - title: Map SQL Activity using an Application Name
+    urls:
+    - "/PREFIX/map-sql-activity-to-app.html"
+  - title: SQL Performance Best Practices
+    urls:
+    - "/PREFIX/performance-best-practices-overview.html"
+  - title: Performance Tuning Recipes
+    urls:
+    - "/PREFIX/performance-recipes.html"
+  - title: Performance Features
+    items:
+    - title: Overview
+      urls:
+      - "/PREFIX/performance-features-overview.html"
+    - title: Indexes
+      urls:
+      - "/PREFIX/indexes.html"
+    - title: Cost-Based Optimizer
+      urls:
+      - "/PREFIX/cost-based-optimizer.html"
+    - title: Vectorized Execution Engine
+      urls:
+      - "/PREFIX/vectorized-execution.html"
+    - title: Load-Based Splitting
+      urls:
+      - "/PREFIX/load-based-splitting.html"
+    - title: Admission Control
+      urls:
+      - "/PREFIX/admission-control.html"
+- title: Example Applications
+  items:
+  - title: Overview of Example Applications
+    urls:
+    - "/PREFIX/example-apps.html"
+  - title: Build the Roach Data Application using Spring Boot
+    items:
+    - title: Spring Boot with JDBC
+      urls:
+      - "/PREFIX/build-a-spring-app-with-cockroachdb-jdbc.html"
+    - title: Spring Boot with JPA
+      urls:
+      - "/PREFIX/build-a-spring-app-with-cockroachdb-jpa.html"
+  - title: The MovR Example Application
+    items:
+    - title: Overview
+      urls:
+      - "/PREFIX/movr.html"
+    - title: Global Application
+      items:
+      - title: Overview
+        urls:
+        - "/PREFIX/movr-flask-overview.html"
+      - title: Global Application Use Case
+        urls:
+        - "/PREFIX/movr-flask-use-case.html"
+      - title: Multi-region Database Schema
+        urls:
+        - "/PREFIX/movr-flask-database.html"
+      - title: Set up a Development Environment
+        urls:
+        - "/PREFIX/movr-flask-setup.html"
+      - title: Develop a Global Application
+        urls:
+        - "/PREFIX/movr-flask-application.html"
+      - title: Deploy a Global Application
+        urls:
+        - "/PREFIX/movr-flask-deployment.html"
+  - title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
+    urls:
+    - "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+- title: Tutorials
+  items:
+  - title: Tutorials Overview
+    urls:
+    - "/PREFIX/tutorials-overview.html"
+  - title: Schema Migration Tools
+    items:
+    - title: Alembic
+      urls:
+      - "/PREFIX/alembic.html"
+    - title: Flyway
+      urls:
+      - "/PREFIX/flyway.html"
+    - title: Liquibase
+      urls:
+      - "/PREFIX/liquibase.html"
+  - title: GUIs & IDEs
+    items:
+    - title: DBeaver GUI
+      urls:
+      - "/PREFIX/dbeaver.html"
+    - title: IntelliJ IDEA
+      urls:
+      - "/PREFIX/intellij-idea.html"
+  - title: Data Security Tools
+    items:
+    - title: Satori
+      urls:
+      - "/PREFIX/satori-integration.html"
+    - title: HashiCorp Vault
+      urls:
+      - "/PREFIX/hashicorp-integration.html"
+- title: SQL Playground
+  is_top_level: true
+  urls:
+  - "/tutorials/sql-playground.html"

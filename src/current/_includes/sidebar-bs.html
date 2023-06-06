@@ -1,0 +1,31 @@
+{% assign page_version = page.version.version | replace: ".", "_" %}
+
+<div class="col-sidebar" data-nosnippet>
+  <div class="col-sidebar-content">
+    <div class="mb-3 px-3">
+      <form action="/docs/search.html">
+        <input class="form-control" name="query" type="text" placeholder="Search">
+      </form>
+    </div>
+    <div class="list-group list-group-root well">
+        {% assign get_started = site.data[page_version]['get_started'] %}
+        {% include_cached sidebar-level.html data=get_started version=page.version.version %}
+        {% assign develop = site.data[page_version]['develop'] %}
+        {% include_cached sidebar-level.html data=develop version=page.version.version %}
+        {% assign deploy = site.data[page_version]['deploy_crdb'] %}
+        {% include_cached sidebar-level.html data=deploy version=page.version.version %}
+        {% assign manage = site.data[page_version]['manage'] %}
+        {% include_cached sidebar-level.html data=manage version=page.version.version %}
+        {% assign migrate = site.data[page_version]['migrate'] %}
+        {% include_cached sidebar-level.html data=migrate version=page.version.version %}
+        {% assign stream = site.data[page_version]['stream'] %}
+        {% include_cached sidebar-level.html data=stream version=page.version.version %}
+        {% assign reference = site.data[page_version]['reference'] %}
+        {% include_cached sidebar-level.html data=reference version=page.version.version %}
+        {% assign releases = site.data[page_version]['releases'] %}
+        {% include_cached sidebar-level.html data=releases version=page.version.version %}
+        <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="https://www.cockroachlabs.com/cockroach-university/">Online Courses</a></div>
+    </div>
+  </div>
+  <div class="stiky-spacer"></div>
+</div>

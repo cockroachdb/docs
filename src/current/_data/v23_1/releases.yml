@@ -1,0 +1,23 @@
+title: Releases
+items:
+- title: CockroachDB
+  urls:
+  - "/releases/index.html"
+  items:
+  - supported_prod_releases: true
+  - latest_testing_release: true
+  - title: Release Support Policy
+    urls:
+    - "/releases/release-support-policy.html"
+  - title: Known Limitations
+    urls:
+    - "/PREFIX/known-limitations.html"
+- title: CockroachDB Cloud
+  urls:
+  - "/PREFIX/advanced-changefeed-configuration.html"
+- title: CockroachDB Kubernetes Operator
+  urls:
+  - "/PREFIX/advanced-changefeed-configuration.html"
+- title: Technical Advisories
+  urls:
+  - "/advisories/index.html"
