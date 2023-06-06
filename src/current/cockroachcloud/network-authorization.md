@@ -5,17 +5,28 @@ toc: true
 docs_area: manage
 ---
 
-To prevent denial-of-service and brute force password attacks, {{ site.data.products.dedicated }} requires you to authorize networks that can access your cluster by [allowlisting the public IP addresses](#ip-allowlisting) for your application. Optionally, you can [set up Virtual Private Cloud (VPC) peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) for your cluster for enhanced network security and lower network latency.
+{{ site.data.products.dedicated }} requires  explicit authorization of the networks that can access your cluster. This deny-by-default policy protects the cluster from network attacks including denial-of-service and password brute-forcing.
 
-For additional cluster security, you can learn more about [Private Clusters (Preview)](private-clusters.html). A private cluster's nodes have no public IP addresses.
+You can do this by:
+
+- [Adding an authorized range of public IP addresses](#ip-allowlisting).
+- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster.
+
+**Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
 
 {{site.data.alerts.callout_success}}
+For additional cluster security, you can learn more about [Private Clusters (Preview)](private-clusters.html). A private cluster's nodes have no public IP addresses.
+
+You should use PrivateLink or VPC peering if you need to allowlist more than 20 IP addresses, if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
 ## IP allowlisting
 
-Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the {{ site.data.products.dedicated }} cluster's allowlist](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the {{ site.data.products.dedicated }} cluster's allowlist](connect-to-your-cluster.html#authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.

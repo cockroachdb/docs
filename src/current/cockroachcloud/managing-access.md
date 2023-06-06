@@ -28,19 +28,19 @@ To switch between the organizations:
 The settings and information about the organization are found on the **Information** page. The organization ID and organization label used by the `ccloud` CLI are listed on that page.
 
 ## Manage an organization's users
-### Invite Team Members to an organization
+### Invite team members to an organization
 
-As an [Org Administrator](authorization.html#org-administrator-legacy), you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
+As an [Org Administrator](authorization.html#org-administrator-legacy), you can invite team members to {{ site.data.products.db }}. To invite team members:
 
-1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a Team Member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
 1. On the **Access Management** page, under the *Members* tab, click **Invite**.
 1. In the **Email Address** field, enter the email address of the team member you want to invite. Note that a user can only be assigned the [Organization member](authorization.html#organization-member) role; this default role grants no access. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
 
-It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisioning) for your organization, which removes the need to invite Team Members.
+It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisioning) for your organization, which removes the need to invite team members.
 
-#### Change a Team Member's role
+### Change a team member's role
 
-1. On the **Access Management** page, locate the Team Member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
+1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
 1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
 1. Note that a number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
 
@@ -48,19 +48,19 @@ It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisio
 As an [Org Administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
 {{site.data.alerts.end}}
 
-#### Remove a Team Member
+### Remove a team member
 
-1. On the **Access Management** page, locate the Team Member you want to remove.
+1. On the **Access Management** page, locate the team member you want to remove.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Remove Member** and confirm.
 
-#### Revoke a pending invite
+### Revoke a pending invite
 
-1. On the **Access Management** page, locate the Team Member's details whose pending invite you want to revoke.
+1. On the **Access Management** page, locate the team member's details whose pending invite you want to revoke.
 1. In the **Action** column, click the three dots to view the allowed actions.
 1. Click **Revoke Invite**.
 
-#### Delete an email address
+### Delete an email address
 
 This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
 
@@ -162,10 +162,7 @@ To change the API key name for an existing API key:
 
 ### Create a SQL user
 
-{{site.data.alerts.callout_danger}}
-By default, a new SQL user created using the UI or Cloud API is granted the SQL `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
-When possible, it is best practice to limit each user's privileges to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
-{{site.data.alerts.end}}
+{% include cockroachcloud/danger-console-sql-users.md %}
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
