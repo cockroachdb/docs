@@ -18,6 +18,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To add a subset of rows to a table, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](change-data-capture-overview.html) running on the targeted table to fail.
 - `IMPORT INTO` supports importing into [`REGIONAL BY ROW`](alter-table.html#regional-by-row) tables.
+- At the beginning of an `IMPORT INTO` job, CockroachDB calculates and stores all [user-defined types](enum.html) referenced by the table being imported into, including the [`crdb_internal_region` type descriptor](alter-table.html#crdb_region) used in multi-region clusters. At the end of the job, CockroachDB checks if any user-defined types have been modified, and if so the `IMPORT INTO` job fails. Do not make modifications to your multi-region configuration or create or alter multi-region tables while running `IMPORT INTO` jobs.
 
 {{site.data.alerts.callout_success}}
 Optimize import operations in your applications by following our [Import Performance Best Practices](import-performance-best-practices.html).
