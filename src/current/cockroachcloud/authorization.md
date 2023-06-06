@@ -43,7 +43,7 @@ The following roles may be granted to {{ site.data.products.db }} organization u
 
 ### Org Administrator (legacy)
 
-Org Administrators can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
+Org Administrator (legacy) can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
 
 - [Create or delete a cluster](create-your-cluster.html)
 - [Invite Team Members to the organization](managing-access.html#invite-team-members-to-an-organization)
@@ -63,7 +63,7 @@ This role will be deprecated in favor of the following more fine-grained roles o
   
 ### Org Developer (legacy)
 
-Org Developers can read high-level information for all clusters, and monitor all clusters using DB Console.
+Org Developer (legacy) can read high-level information for all clusters, and monitor all clusters using DB Console.
 {{site.data.alerts.callout_info}}
 This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)
 {{site.data.alerts.end}}
@@ -129,7 +129,7 @@ Cluster Administrators can perform all of the [Cluster Operator actions](#cluste
 
 - [Provision SQL users for a cluster using the console](managing-access.html#create-a-sql-user).
 - [Create Service Accounts](managing-access.html#change-a-team-members-role).
-- Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role) , and [service accounts](managing-access.html#edit-roles-on-a-service-account).
+- Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role), and [service accounts](managing-access.html#edit-roles-on-a-service-account).
 - [Edit or delete a cluster](cluster-management.html).
 
 Cluster Administrator can be granted for one or more specific clusters, or for all clusters in the organization.
