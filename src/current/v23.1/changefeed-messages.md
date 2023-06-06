@@ -94,7 +94,7 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html). To define another key to determine the partition for your messages, use the [`key_column`](create-changefeed.html#key-column) option.
 
-- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit a "resolved" timestamp message to each Kafka partition. A "resolved" timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`resolved` option](create-changefeed.html#resolved-option) to emit a "resolved" timestamp message to each Kafka partition. A "resolved" timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
