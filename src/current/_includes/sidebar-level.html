@@ -1,14 +1,15 @@
-<div class="list-group-item border-0">
-    <a class="sidenav-branch" href="#{{ include.data.title | slugify }}" data-toggle="collapse">
-      <i class="sidenav-arrow bi bi-chevron-right"></i>{%- unless include.data.urls[0] -%}{{ include.data.title }}{%- endunless -%}</a>
-    {%- if include.data.urls[0] -%}<a class="sidenav-branch" href="{{ include.data.urls[0] | replace: "PREFIX", include.version | relative_url }}">{{ include.data.title }}</a>{%- endif -%}
-    <div class="list-group collapse ml-2 my-0 border-0" id="{{ include.data.title | slugify }}">
+{%- assign slug = include.data.title | slugify -%}
+<div class="list-group-item{% if include.breadcrumbs contains slug %} show{% endif %} border-0">
+    <a class="sidenav-branch{% if include.breadcrumbs contains slug %} sidenav-link-active{% endif %}" href="#{{ slug }}" data-toggle="collapse">
+      <i class="sidenav-arrow bi{% if include.breadcrumbs contains slug %} bi-chevron-down{% else %} bi-chevron-right{% endif %}"></i>{%- unless include.data.urls[0] -%}{{ include.data.title }}{%- endunless -%}</a>
+    {%- if include.data.urls[0] -%}<a class="sidenav-branch{% if include.breadcrumbs contains slug %} sidenav-link-active{% endif %}" href="{{ include.data.urls[0] | replace: "PREFIX", include.version | relative_url }}">{{ include.data.title }}</a>{%- endif -%}
+    <div class="list-group collapse {% if include.breadcrumbs contains slug %}show {% endif %}ml-2 my-0 border-0" id="{{ slug }}">
       {%- for item in include.data.items -%}
         {%- if item.items.size > 0 -%}
-          {%- include_cached sidebar-level.html data=item version=include.version -%}
+          {%- include sidebar-level.html data=item version=include.version breadcrumbs=include.breadcrumbs -%}
         {%- elsif item.urls.size > 0 and item.title != nil -%}
         {% comment %} This is the catch-all scenario excluding supported_prod_releases, latest_testing_release, and advisories {% endcomment %}
-          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="{{ item.urls[0] | replace: "PREFIX", include.version | relative_url }}">{{ item.title }}</a>
+          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf{% if include.breadcrumbs contains slug %} sidenav-link-active{% endif %}" href="{{ item.urls[0] | replace: "PREFIX", include.version | relative_url }}">{{ item.title }}</a>
         </div>
         {%- elsif item.supported_prod_releases == true -%}
           {% assign today = "today" | date: "%Y-%m-%d" %}
@@ -18,7 +19,7 @@
           {% comment %} v_prod iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases within the assistance support period, sorted in reverse chronological order. We then pull only the major version name instead of the whole dictionary with map: "major_version" {% endcomment %}
           {% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
             {% capture url %}/releases/{{ x }}.html{% endcapture %}
-          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="{{ url | absolute_url }}">{{ x }}</a>
+          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf{% if include.breadcrumbs contains slug %} sidenav-link-active{% endif %}" href="{{ url | absolute_url }}">{{ x }}</a>
           </div>
           {% endfor %}
 
@@ -28,7 +29,7 @@
 
           {% if v_test.size > 0 %} {% comment %} check if a testing version is available {% endcomment %}
             {% capture url %}/releases/{{ v_test[0] }}.html{% endcapture %}
-          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="{{ url | absolute_url }}">Latest Testing Release</a>
+          <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf{% if include.breadcrumbs contains slug %} sidenav-link-active{% endif %} " href="{{ url | absolute_url }}">Latest Testing Release</a>
           </div>
           {% endif %}
         {%- endif -%}

@@ -3,6 +3,7 @@ title: Admission Control
 summary: Learn about admission control to maintain cluster performance and availability during high load.
 toc: true
 docs_area: develop
+breadcrumbs: ["deploy", "deployment-options", "choose-a-deployment-option"]
 ---
 
 CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health, like [node liveness heartbeats](cluster-setup-troubleshooting.html#node-liveness-issues), are high priority. The admission control system also prioritizes transactions that hold [locks](crdb-internal.html#cluster_locks), to reduce [contention](performance-best-practices-overview.html#transaction-contention) and release locks earlier.

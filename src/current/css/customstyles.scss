@@ -116,11 +116,12 @@ table {
   margin-right: 3px;
   color: #6933ff;
 }
-.sidenav-leaf:hover,
-.sidenav-branch:hover {
-  color: #6933ff;
-}
 .sidenav-leaf,
 a.sidenav-branch {
   color: #242a35;
+}
+.sidenav-leaf:hover,
+.sidenav-branch:hover,
+a.sidenav-link-active {
+  color: #6933ff;
 }

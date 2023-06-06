@@ -23,7 +23,7 @@
 {% if page.version.version == nil or page.version.version != "v23.1" %} 
   {% include sidebar.html %}
 {% else %}
-  {% include_cached sidebar-bs.html version=page.version.version %}
+  {% include sidebar-bs.html version=page.version.version breadcrumbs=page.breadcrumbs %}
 {% endif %}
         </nav>
 {% if page.toc == true %}

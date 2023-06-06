@@ -1,5 +1,4 @@
-{% assign page_version = page.version.version | replace: ".", "_" %}
-
+{%- assign page_version = include.version | replace: ".", "_" -%}
 <div class="col-sidebar" data-nosnippet>
   <div class="col-sidebar-content">
     <div class="mb-3 px-3">
@@ -9,21 +8,21 @@
     </div>
     <div class="list-group list-group-root well">
         {% assign get_started = site.data[page_version]['get_started'] %}
-        {% include_cached sidebar-level.html data=get_started version=page.version.version %}
+        {% include sidebar-level.html data=get_started version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign develop = site.data[page_version]['develop'] %}
-        {% include_cached sidebar-level.html data=develop version=page.version.version %}
+        {% include sidebar-level.html data=develop version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign deploy = site.data[page_version]['deploy_crdb'] %}
-        {% include_cached sidebar-level.html data=deploy version=page.version.version %}
+        {% include sidebar-level.html data=deploy version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign manage = site.data[page_version]['manage'] %}
-        {% include_cached sidebar-level.html data=manage version=page.version.version %}
+        {% include sidebar-level.html data=manage version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign migrate = site.data[page_version]['migrate'] %}
-        {% include_cached sidebar-level.html data=migrate version=page.version.version %}
+        {% include sidebar-level.html data=migrate version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign stream = site.data[page_version]['stream'] %}
-        {% include_cached sidebar-level.html data=stream version=page.version.version %}
+        {% include sidebar-level.html data=stream version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign reference = site.data[page_version]['reference'] %}
-        {% include_cached sidebar-level.html data=reference version=page.version.version %}
+        {% include sidebar-level.html data=reference version=include.version breadcrumbs=include.breadcrumbs %}
         {% assign releases = site.data[page_version]['releases'] %}
-        {% include_cached sidebar-level.html data=releases version=page.version.version %}
+        {% include sidebar-level.html data=releases version=include.version breadcrumbs=include.breadcrumbs %}
         <div class="list-group-item ml-4 border-0"><a class="sidenav-leaf" href="https://www.cockroachlabs.com/cockroach-university/">Online Courses</a></div>
     </div>
   </div>
