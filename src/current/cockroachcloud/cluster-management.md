@@ -41,7 +41,7 @@ The [**Overview** page](cluster-overview-page.html?filter=dedicated) displays de
 
 - The cluster's **Configuration**, which includes the cloud provider, plan type, region(s), nodes and their status, compute per node, and storage per node.
 
-- The **Cluster upgrade** settings, which include the upgrade window, any upcoming upgrades, and the upgrade exclusion period.
+- The **Cluster upgrades** section, which shows the cluster's [maintenance window](#set-a-maintenance-window) for patch upgrades, any upcoming upgrades, and whether the [**Delay patch upgrades**](#set-a-maintenance-window) setting is turned on.
 
 - The **PCI Ready** section, which shows the statuses of the features required for PCI readiness ({{ site.data.products.dedicated }} advanced clusters only).
 
