@@ -1,6 +1,6 @@
 extends: existence
 message: Avoid using non-descriptive link titles.
-link: https://github.com/cockroachdb/docs/blob/master/StyleGuide.md#lists
+link: https://github.com/cockroachdb/docs/blob/main/StyleGuide.md#lists
 level: warning
 scope: link
 nonword: true

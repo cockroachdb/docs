@@ -60,7 +60,7 @@ These instructions assume that you use macOS. If you use Linux, use your default
 
 9. Learn the essentials of our [Docs Structure](#docs-structure).
 
-10. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
+10. Review our [Style Guide](https://github.com/cockroachdb/docs/blob/main/StyleGuide.md).
 
 ## Get started
 
@@ -114,14 +114,14 @@ If you want to regularly contribute to the CockroachDB docs, there are a few thi
 1. Make it easy to bring updated docs into your fork by tracking us upstream:
 
     ``` shell
-    $ git remote add --track master upstream https://github.com/cockroachdb/docs.git
+    $ git remote add --track main upstream https://github.com/cockroachdb/docs.git
     ```
 
 2. When you're ready to make your next round of changes, get our latest docs:
 
     ``` shell
     $ git fetch upstream
-    $ git merge upstream/master
+    $ git merge upstream/main
     ```
 
 3. Repeat the write, build, push, pull flow from the [Get Started](#get-started) section above.
@@ -241,7 +241,7 @@ allowed_hashes: [os-mac, os-linux, os-windows]
 
 #### Images
 
-For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md).
+For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/blob/main/StyleGuide.md).
 
 #### Feedback widget
 
@@ -253,7 +253,7 @@ We show "Contribute" options in the top-right of every page by default. To remov
 
 ### Sidebar
 
-For each documented version of CockroachDB, a JSON file in the `_includes` directory defines the pages that appear in the docs sidebar. For example, the sidebar for CockroachDB v1.0 is defined by [`_includes/sidebar-data-v1.0.json`](https://github.com/cockroachdb/docs/blob/master/_includes/sidebar-data-v1.0.json).
+For each documented version of CockroachDB, a JSON file in the `_includes` directory defines the pages that appear in the docs sidebar. For example, the sidebar for CockroachDB v1.0 is defined by [`_includes/sidebar-data-v1.0.json`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/sidebar-data-v1.0.json).
 
 If you're adding a page that you think should appear in the sidebar, please mention this in your pull request.
 
@@ -310,4 +310,4 @@ This example shows some of the first section of the sidenav, `Get Started`:
 
 ## Style guide
 
-See [Style Guide](https://github.com/cockroachdb/docs/blob/master/StyleGuide.md) for more details.
+See [Style Guide](https://github.com/cockroachdb/docs/blob/main/StyleGuide.md) for more details.
