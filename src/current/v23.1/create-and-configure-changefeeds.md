@@ -18,14 +18,14 @@ Both Core and {{ site.data.products.enterprise }} changefeeds require that you e
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
 - {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 
-When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed: 
+When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
 
 - Changefeeds each have their own memory overhead, so every running changefeed will increase total memory usage.
 - Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling, where the performance of a watched table affects the performance of the changefeed watching it. For example, any [schema change](changefeed-messages.html#schema-changes) on any of the tables will affect the entire changefeed's performance.
 
-To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables. 
+To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables.
 
-We suggest monitoring the performance of your changefeeds. See [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) for more detail.
+{% include {{ page.version.version }}/cdc/recommendation-monitoring-pts.md %}
 
 ## Enable rangefeeds
 

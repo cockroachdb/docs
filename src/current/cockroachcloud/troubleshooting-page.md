@@ -65,7 +65,7 @@ For connection examples with your tool, see [these examples](../stable/third-par
 
 ### I/O timeout
 
-The following error is most often caused by trying to connect to a cluster without [authorizing the right network](connect-to-your-cluster.html#step-1-authorize-your-network), not having an internet connection, or an issue in your application environment:
+The following error is most often caused by trying to connect to a cluster without [authorizing the right network](connect-to-your-cluster.html#authorize-your-network), not having an internet connection, or an issue in your application environment:
 
 ~~~
 Is the server running?
@@ -79,7 +79,7 @@ Failed running "sql"
 
 Check if you have internet access.
 
-If you do have internet access, check if you have [authorized the right network](connect-to-your-cluster.html#step-1-authorize-your-network):
+If you do have internet access, check if you have [authorized the right network](connect-to-your-cluster.html#authorize-your-network):
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 
@@ -142,7 +142,7 @@ Failed running "sql"
 
 <h4>Solution</h4>
 
-Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
+Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
 
 ### Issue with CockroachDB workloads
 

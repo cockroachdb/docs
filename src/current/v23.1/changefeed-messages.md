@@ -94,7 +94,7 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 - Rows are sharded between Kafka partitions by the row’s [primary key](primary-key.html). To define another key to determine the partition for your messages, use the [`key_column`](create-changefeed.html#key-column) option.
 
-- <a name="resolved-def"></a>The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`RESOLVED` option](create-changefeed.html#resolved-option) to emit "resolved" timestamp messages to each Kafka partition. A "resolved" timestamp is a guarantee that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
+- The `UPDATED` option adds an "updated" timestamp to each emitted row. You can also use the [`resolved` option](create-changefeed.html#resolved-option) to emit a "resolved" timestamp message to each Kafka partition. A "resolved" timestamp guarantees that no (previously unseen) rows with a lower update timestamp will be emitted on that partition.
 
     For example:
 
@@ -129,6 +129,22 @@ Deleting a row will result in a changefeed outputting the primary key of the del
 ~~~
 
 In some unusual situations you may receive a delete message for a row without first seeing an insert message. For example, if an attempt is made to delete a row that does not exist, you may or may not get a delete message because the changefeed behavior is undefined to allow for optimizations at the storage layer. Similarly, if there are multiple writes to a row within a single transaction, only the last one will propagate to a changefeed. This means that creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
+
+## Resolved messages
+
+When you create a changefeed with the [`resolved` option](create-changefeed.html#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink](changefeed-sinks.html). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges](architecture/overview.html#range) in the changefeed have progressed to a specific point in time.
+
+When you specify the `resolved` option at changefeed creation, the [job's coordinating node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
+
+There are three different ways to configure resolved timestamp messages:
+
+- If you do not specify the `resolved` option at all, then the changefeed coordinator node will not send resolved timestamp messages.
+- If you include `WITH resolved` in your changefeed creation statement **without** specifying a value, the coordinator node will emit resolved timestamps as the high-water mark advances. Note that new Kafka partitions may not receive resolved messages right away.
+- If you specify a duration like `WITH resolved={duration}`, the changefeed will use it as the minimum duration between `resolved` messages that the changefeed coordinator sends. The changefeed will only emit a resolved timestamp message if the timestamp has advanced and at least the optional duration has elapsed.
+
+{{site.data.alerts.callout_info}}
+If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
+{{site.data.alerts.end}}
 
 ## Schema Changes
 
@@ -183,7 +199,7 @@ By default, [protected timestamps](architecture/storage-layer.html#protected-tim
 
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
-- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again. 
+- The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
 - You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
