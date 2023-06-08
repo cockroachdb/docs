@@ -43,7 +43,7 @@ The cluster's **Configuration** shows details about the cluster, its deployment 
 
 The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-an-upgrade-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-an-upgrade-window) setting.
 
-- The **PCI Ready** section, which shows the status of features required for PCI DSS. Requires {{ site.data.products.dedicated }} advanced.
+- The **PCI Ready** section shows the status of features required for PCI DSS. Requires {{ site.data.products.dedicated }} advanced.
 
 - The status of security features required for [PCI readiness](#configure-pci-ready-features-dedicated-advanced).
 
