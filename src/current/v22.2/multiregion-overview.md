@@ -23,7 +23,7 @@ At a high level, the simplest process for running a multi-region cluster is:
 
 1. Set region information for each node in the cluster at startup using [node startup locality options](cockroach-start.html#locality).
 1. Add one or more regions to a database, making it a "multi-region" database. One of these regions must be the _primary region_.
-1. (*Optional*) Change table localities (global, regional by table, regional by row). This step is optional because by default the tables in a database will be homed in the database's primary region (as set during Step 1).
+1. (*Optional*) Change table localities (global, regional by table, regional by row). This step is optional because by default the tables in a database will be homed in the database's primary region (as set during Step 2).
 1. (*Optional*) Change the database's survival goals (zone or region). This step is optional because by default multi-region databases will be configured to survive zone failures.
 
 These steps describe the simplest case, where you accept all of the default settings. The latter two steps are optional, but table locality and survival goals have a significant impact on performance. Therefore Cockroach Labs recommends that you give these aspects some consideration [when you choose a multi-region configuration](choosing-a-multi-region-configuration.html).
