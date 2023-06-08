@@ -12,19 +12,21 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 ## Before you start
 
 - [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
-- (Optional) [Create a new SQL user](managing-access.html#create-a-sql-user).
+- [Create a new SQL user](managing-access.html#create-a-sql-user).
 
-## Step 1. Authorize your network
+## Authorize your network
+
 {{site.data.alerts.callout_info}}
 On creation, a Serverless cluster is open to all traffic as it is created with a 0.0.0.0/0 default network.
 
-One needs to have at least one IP allowlist rule for a serverless cluster. It means if one tries to remove the default 0.0.0.0/0 rule, they have to add another one with a valid IP / CIDR which could access the cluster.
+Each Serverless cluster must have at least one IP allowlist. Therefore, you must add another valid rule before removing the default 0.0.0.0/0 rule
 
 Removing or adding an authorized network on your {{ site.data.products.serverless }} cluster may take up to several minutes to take effect.
 {{site.data.alerts.end}}
+
 {% include cockroachcloud/authorize-your-clusters-networks.md %}
 
-## Step 2. Select a connection method
+## Select a connection method
 
 1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
 
@@ -36,7 +38,7 @@ Removing or adding an authorized network on your {{ site.data.products.serverles
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
 
-## Step 3. Connect to your cluster
+## Connect to your cluster
 
 1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
 

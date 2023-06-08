@@ -1,12 +1,3 @@
-{{ site.data.products.db }} requires you to authorize the specific networks that can access your clusters. This prevent denial-of-service and brute force password attacks from elsewhere on the internet.
-
-- In both development and production environments, you will need to authorize the networks 
-- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
-- In a production environment, you need to authorize your application server’s network.
-- If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
-- If you have an AWS cluster, you can set up an [AWS PrivateLink](network-authorization.html#aws-privatelink) connection.
-- You should use PrivateLink or VPC peering if you need to allowlist more than 20 IP addresses, if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
-
 ### Add IP addresses to the allowlist
 
 {{site.data.alerts.callout_info}}
