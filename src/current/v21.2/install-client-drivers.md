@@ -174,19 +174,6 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 For a simple but complete example app, see [Build a Python App with CockroachDB and Django](build-a-python-app-with-cockroachdb-django.html).
 
-### PonyORM
-
-**Support level:** Full
-
-To install PonyORM:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ pip install pony
-~~~
-
-For a simple but complete example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
-
 ### peewee
 
 **Support level:** Full
