@@ -174,24 +174,6 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 - [AWS Network Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html) are recommended with client applications configuring their application's database connection pool's maximum connection age (or health check interval) to 5 minutes to stay under [NLB idle connection timeouts](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancers.html#connection-idle-timeout).
 
-- EC2 instances SHOULD be provisioned using an [AWS Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#placement-groups-strategies) *and* the `partition` strategy.  Not specifying an AWS Placement Group or specifying the `cluster` strategy puts your cluster at increased risk of unavailability and is not a supported configuration by Cockroach Labs (the `spread` Placement Group strategy limits the maximum size of a cluster and is not recommended for this reason).
-
-- Incorporate the AWS Placement Group ID into every node's `--locality` flag.  For instance, `--locality=country=us,region=us-west-2,az=us-west-2b,pg=us-west-2b2`.  The trailing partition number can be determined at instance create time or process startup time using a command similar to:
-
-```
-country="us"
-region=${AWS_DEFAULT_REGION}
-az="us-west-2"
-partition_locality=""
-partition_number=$(aws ec2 describe-instances --instance-ids "${instance_id}" | jq -r '.Reservations[].Instances[].Placement.PartitionNumber')
-if [[ "${partition_number}" != "null" ]]; then
-	partition_locality="${partition_number}"
-fi
-exec /usr/local/bin/cockroach start \
-	--locality="country=${country},region=${region},az=${az},pg=${az}${partition_locality}" \
-	# other installation-specific cockroach start flags
-```
-
 #### Azure
 
 {% include {{ page.version.version }}/prod-deployment/recommended-instances-azure.md %}
