@@ -21,7 +21,7 @@ For {{ site.data.products.dedicated }} clusters, [Organization Admins](authoriza
 
 {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported patch version. 
 
-**To ensure that connections remain current during these upgrades, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.**
+**To minimize disruption to clients during cluster upgrades, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.**
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.

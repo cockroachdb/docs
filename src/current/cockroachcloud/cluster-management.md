@@ -39,11 +39,11 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The [**Overview** page](cluster-overview-page.html?filter=dedicated) displays details about the selected {{ site.data.products.db }} cluster:
 
-- The cluster's **Configuration**, which includes the cloud provider, plan type, region(s), nodes and their status, compute per node, and storage per node.
+The cluster's **Configuration** shows details about the cluster, its deployment environment, and its nodes, such as the cluster's cloud provider, plan type, regions, and each node's status, compute, and storage.
 
-- The **Cluster upgrades** section, which shows the cluster's [**Upgrade window**](#set-an-upgrade-window) for patch upgrades and whether the [**Delay patch upgrades**](#set-an-upgrade-window) setting is turned on.
+The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-an-upgrade-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-an-upgrade-window) setting.
 
-- The **PCI Ready** section, which shows the statuses of the features required for PCI readiness ({{ site.data.products.dedicated }} advanced clusters only).
+- The **PCI Ready** section, which shows the status of features required for PCI DSS. Requires {{ site.data.products.dedicated }} advanced.
 
 - The status of security features required for [PCI readiness](#configure-pci-ready-features-dedicated-advanced).
 
@@ -165,17 +165,23 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
   
 ## Set an upgrade window
 
-From your cluster's [**Overview** page](cluster-overview-page.html), you can view and manage the [patch upgrade schedule](upgrade-policy.html) for your cluster. If no window is set, your cluster will be automatically upgraded as soon as new patch versions are available. To set an upgrade window:
+From your cluster's [**Overview** page](cluster-overview-page.html), you can view and manage the patch upgrade window for your cluster. To help keep your clusters updated while minimizing disruption and downtime, set a window of time when your cluster is experiencing the lowest traffic.
+
+{{site.data.alerts.callout_success}}
+If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy](upgrade-policy.html).
+{{site.data.alerts.end}}
+
+To set an upgrade window:
 
 1. Click the pencil icon next to **Cluster upgrades** to edit the upgrade window.
 1. From the **Upgrade day** dropdown, select the day of the week during which upgrades may be applied.
-1. From the **Start of window** dropdown, select a start time for your upgrade window.
+1. From the **Start of window** dropdown, select a start time for your upgrade window in UTC.
     
-    Times should be entered in UTC. The window will last for 6 hours from the start time.
+    The window will last for 6 hours from the start time.
     
 1. (Optional) If you want to delay automatic upgrades for 60 days, switch **Delay patch upgrades** to **On**.
     
-    This setting is useful to ensure that development clusters are upgraded before production clusters.
+    You can enable this setting for development and testing clusters if you want to ensure that they are upgraded before production clusters.
 
 ## Create a database
 

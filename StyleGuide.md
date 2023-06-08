@@ -894,7 +894,7 @@ Put version tags at the beginning of a paragraph, sentence, or description in a 
 
 If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2" %}`).
 
-If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2.10" %}`).
+If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (for example, `{% include_cached new-in.html version="v21.2.10" %}`).
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
