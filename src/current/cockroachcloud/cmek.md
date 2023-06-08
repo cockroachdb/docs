@@ -6,7 +6,7 @@ docs_area: manage.security
 cloud: true
 ---
 
-Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} [private cluster](private-clusters.html) using a cryptographic key that is entirely within your control, hosted in a supported cloud provider key-management system (KMS). This key is called the _CMEK key_.
+Customer-Managed Encryption Keys (CMEK) allow you to protect data at rest in a {{ site.data.products.dedicated }} advanced [private cluster](private-clusters.html) using a cryptographic key that is entirely within your control, hosted in a supported cloud provider key-management system (KMS). This key is called the _CMEK key_.
 
 You can manage your CMEK keys using one or more of the following services:
 
@@ -33,12 +33,13 @@ This section describes some of the ways that CMEK can help you protect your data
     {{site.data.alerts.callout_danger}}
     Keep these points in mind before destroying a CMEK key:
 
-    <ul><li><p>If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. Consider disabling the CMEK key initially instead, so you can restore it if disabling it leads to unexpected results. To take or restore from an encrypted backup using database commands, visit [Take and Restore Encrypted Backups](/docs/{{site.current_cloud_version}}/take-and-restore-encrypted-backups.html).</p></li><li><p>To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.</p></li></ul>
+    <ul><li><p>If a CMEK key is destroyed, the cluster's data can't be recovered by you or by {{ site.data.products.db }}, even by restoring from a {{ site.data.products.db }}-managed backup. After enabling CMEK, do not disable, schedule for destruction, or destroy a CMEK that is in use by clusters. Instead, first rotate the cluster to use a new CMEK or decommission the cluster, and then use your KMS platform's audit logs to verify that the CMEK is no longer being used.</p></li><li><p>To protect against inadvertent data loss, your KMS platform may impose a waiting period before a key is permanently deleted. This waiting period may be configurable when you create the key. Check the documentation for your KMS platform for details about how long before a key deletion is permanent and irreversible.</p></li></ul>
     {{site.data.alerts.end}}
 - **Enforcement of data domiciling and locality requirements**: In a multi-region cluster, you can confine an individual database to a single region or multiple regions. For more information and limitations, see [Data Domiciling with CockroachDB](/docs/{{site.current_cloud_version}}/data-domiciling.html). When you enable CMEK on a multi-region cluster, you can optionally assign a separate CMEK key to each region, or use the same CMEK key for multiple related regions.
 - **Enforcement of encryption requirements**: With CMEK, you have control the CMEK key's encryption strength. The CMEK key's size is determined by what your KMS provider supports.
 
     You can use your KMS platform's controls to configure the regions where the CMEK key is available, enable automatic rotation schedules for CMEK keys, and view audit logs that show each time the CMEK key is used by {{ site.data.products.db }}. {{ site.data.products.db }} does not need any visibility into these details.
+- **Separation of concerns**: With CMEK, you give {{ site.data.products.db }} permission to encrypt and decrypt using the CMEK, but Cockroach Labs has no access to the CMEK's key material. The ability to create keys and manage IAM access to them can be delegated to a limited group of trusted individuals, who may be distinct from the organization's cluster admins.
 - **Infrastructure flexibility**: If your CMEK keys are stored in multiple KMS systems or tenants, you can use HashiCorp Vault Key Management Secrets Engine to give your cluster access to your CMEK keys, as long as the cluster and keys are stored in the same deployment environment (GCP or AWS).
 
 The following example shows some of the ways that CMEK can help you meet business and regulatory requirements.
@@ -51,7 +52,7 @@ CMEK helps you to enforce such business rules on {{ site.data.products.db }} clu
 
 When you create a {{ site.data.products.dedicated }} cluster, its data at rest on cluster disks is not encrypted by default. However, the disks themselves are automatically encrypted by cryptographic keys owned and managed by the cloud providers themselves.
 
-When you enable CMEK on a {{ site.data.products.dedicated }} private cluster, {{ site.data.products.db }} creates two kinds of encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
+When you enable CMEK on a {{ site.data.products.dedicated }} advanced [private cluster](private-clusters.html), {{ site.data.products.db }} creates two kinds of encryption keys and begins to use them to protect newly-written data at rest. {{ site.data.products.db }} manages these encryption keys and propagates them to cluster nodes.
 
 1. The _data key_ is a Data Encryption Key (DEK), and is used to encrypt and decrypt cluster data before it is read from or written to disks attached to a cluster's nodes. Each time the cluster is started or restarted, and each time a node and related disks are added to a cluster, {{ site.data.products.dedicated }} uses the store key to encrypt and decrypt data keys. Each cluster node maintains its own list of data keys. The data key is automatically rotated monthly and is always encrypted at rest by the store key.
 
@@ -80,7 +81,11 @@ Going forward:
 1. Each time a node writes new data to disk, it is encrypted using the current data key. Data is read using the data key that was used to encrypt it.
 
 {{site.data.alerts.callout_danger}}
-If the CMEK key is destroyed, the cluster's data can't be recovered or restored from a managed backup in {{ site.data.products.db }} or from a manual backup to the same cluster. It may be possible to restore a manual backup to a new cluster.
+If a CMEK key is disabled, scheduled for destruction, or destroyed:
+
+- Nodes that were using the CMEK will not be able to rejoin the cluster if they are restarted. This could lead to regional cluster unavailability. Even if the CMEK is subsequently restored after being disabled or scheduled for destruction, nodes will not automatically recover. If you encounter issues, contact [support](https://support.cockroachlabs.com/).
+- A cluster's managed backups will begin to fail.
+- The cluster's data can't be recovered or restored from a managed backup in {{ site.data.products.db }} or from a manual backup to the same cluster. It may be possible to restore a manual backup to a new cluster, if the backup was not encrypted with the CMEK. However, it may not be possible to take a manual backup if some nodes are already offline due to the CMEK's unavailability.
 {{site.data.alerts.end}}
 
 ## Rotation of a CMEK key
@@ -102,20 +107,74 @@ Backups in {{ site.data.products.dedicated }} are triggered in two ways, only on
   When CMEK is enabled for a cluster, managed backups change in the following ways:
 
   - You can no longer restore from a managed backup that was taken before CMEK was enabled.
-  - The data keys used to encrypt managed backups in {{ site.data.products.db }} are encrypted using the CMEK key before being written to persistent storage.
-  - The CMEK key must be available before you can restore from an automatic backup.
+  - The data keys used to encrypt managed backups in {{ site.data.products.db }} are encrypted using the CMEK key before being written to persistent storage. If the CMEK is not available, managed backups will fail to run.
+  - The CMEK that was used to encrypt a managed backup must be available to restore that backup.
+
+## FAQs
+
+This section provides answers to frequently-asked questions (FAQs) about CMEK.
+
+#### If we don’t enable CMEK for our {{ site.data.products.dedicated }} clusters, are those encrypted in some manner by default?
+
+Yes, {{ site.data.products.dedicated }} cluster disks are encrypted by default using keys managed by each cloud provider.
+
+#### What steps should I take before enabling CMEK for a cluster?
+
+CMEK can be enabled only on a private cluster on {{ site.data.products.dedicated }} advanced. Refer to [Create Private Clusters](private-clusters.html).
+
+#### Can we enable CMEK for an existing cluster that wasn't created as a private cluster?
+
+An existing cluster cannot be migrated to a private cluster. Contact your account team for advice about how to migrate or restore your existing cluster's data to a new private cluster on {{ site.data.products.dedicated }} advanced.
+
+#### If we enable CMEK for a cluster that has been in use for some time, is the existing data encrypted at that time?
+
+{{ site.data.products.dedicated }} does not force encryption of previously-written data but instead relies on normal storage engine churn for desired encryption. That means the new key is used to encrypt newly-written data, while previously-written data remains unencrypted unless it's rewritten.
+
+#### Can we enable CMEK for a new region when it's added to a CMEK-enabled cluster?
+
+Yes, when you add a new region to a CMEK-enabled cluster, you must enable CMEK for that region. Refer to [Add a Region to a CMEK-enabled Cluster](/docs/cockroachcloud/managing-cmek.html#add-a-region-to-a-cmek-enabled-cluster).
+
+#### Is the data encryption key rotated at some set duration or periodically? If yes, is there a way to customize the duration?
+
+Yes, the data encryption key is rotated automatically once every month. It’s not possible to customize that duration. The new key is used to encrypt new writes, while the old data is still encrypted with the old data keys unless it’s rewritten.
+
+#### Can we rotate the CMEK for a cluster after a certain time or at some periodic interval?
+
+{% include cockroachcloud/cmek-rotation-types.md %}
+
+To learn more about rotating a CMEK key using the {{ site.data.products.db }} API, visit [Rotate a CMEK key](managing-cmek.html#rotate-a-cmek-key).
+
+#### Are {{ site.data.products.dedicated }} managed backups also encrypted using the CMEK?
+
+Yes, the [managed backups](use-managed-service-backups.html) stored in {{ site.data.products.db }} infrastructure are also encrypted using the CMEK, using CoackroachDB’s [encrypted backup](../{{site.current_cloud_version}}/take-and-restore-encrypted-backups.html) capability. Internally, a backup data key is wrapped by the CMEK, and then the backup data key is used for encrypting the backup.
+
+#### As part of managed backup encryption, is the same backup data key used to encrypt all backups for a cluster?
+
+A different backup data key is used for each full cluster backup, while the same backup data key is used for incremental backups on top of a full cluster backup. In all cases, the backup data key is encrypted with CMEK for a CMEK-enabled cluster.
+
+#### How are the store key (Key Encryption Key) and the data key (Data Encryption Key) stored on the cluster?
+
+The store key is only stored as encrypted by the CMEK, while it’s available as decrypted only in memory for the CockroachDB process to use. The data key is stored as encrypted by the store key, along with the data files on cluster disks.
+
+#### Can we use {{ site.data.products.db }} Console to enable or revoke CMEK for a cluster?
+
+Not yet. Currently, you must use the [{{ site.data.products.db }} API](cloud-api.html) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest).
+
+#### Is it possible to self-serve restore a CMEK-enabled cluster in case of a cluster failure or disaster scenario?
+
+Not yet. To restore a failed CMEK-enabled cluster, please create a support ticket for Cockroach Labs providing your cluster ID and organization ID.
 
 ## Limitations
+
 The CMEK feature has the following limitations:
 
-- During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), CMEK is not yet available for {{ site.data.products.dedicated }} clusters on Azure. To express interest, contact your Cockroach Labs account team. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
-- CMEK can be enabled only on [{{ site.data.products.dedicated }} advanced](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced)bclusters created after April 1, 2022 (AWS) or June 9, 2022 (GCP).
-- To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
-- If you add a new region to a cluster with CMEK enabled, the new region will not be automatically protected by the CMEK key.
+- During [{{ site.data.products.dedicated }} on Azure limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), CMEK is not yet available for {{ site.data.products.dedicated }} clusters on Azure. To express interest, contact your Cockroach Labs account team. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+- To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
+- If you add a new region to a cluster with CMEK enabled, you must configure a CMEK for the new region to protect its data.
+- If the CMEK is not available due to a misconfiguration or a KMS outage, a cluster's managed backups will begin to fail, but no customer notification is sent from {{ site.data.products.db }} via email. However, Cockroach Labs support is notified if such a failure occurs.
 
 ## See also
 
 - [Managing Customer-Managed Encryption Keys (CMEK) for {{ site.data.products.dedicated }}](managing-cmek.html)
-- [Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)](cmek-faq.html)
 - [Create Private Clusters](private-clusters.html)
 - [Encryption At Rest](/docs/{{site.current_cloud_version}}/encryption.html)
