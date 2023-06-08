@@ -239,6 +239,41 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
 
 [Admin users]({{ link_prefix }}security-reference/authorization.html#admin-role) will see an action button in the final column, which will execute the SQL statement suggested by the schema insight, for example "Create Index". Upon clicking the action button, a confirmation dialog displays a warning about the cost of [online schema changes]({{ link_prefix }}online-schema-changes.html) and the option to copy the SQL statement for later execution in a SQL client.
 
+## Search and filter
+
+By default, the Workload Insights view shows all statements or transactions that have insights. By default, the Schema Insights view shows all Schema Insights.
+
+### Search
+
+To search using the search field:
+
+1. Enter a string in the search box at the top of the tab. To search for exact terms in order, wrap the search string in quotes.
+1. Press `Enter`.
+
+    The list is filtered by the string.
+
+### Time interval
+
+In the Workload Insights view, to see transactions or statement executions within a specific time interval, select a time interval from the selector at the top of the tab. The time interval field supports preset time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
+
+Use the arrow buttons to cycle through previous and next time intervals. To select the most recent interval, click **Now**. When you select a time interval, the same interval is selected in the [Metrics]({{ link_prefix }}ui-overview.html#metrics) page.
+
+{{site.data.alerts.callout_info}}
+It's possible to select an interval for which no workload insights exist.
+{{site.data.alerts.end}}
+
+### Filter
+
+To filter the results on the **Workload Insights** or **Schema Insights** view:
+
+1. Click the **Filters** field.
+      - To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **Application Name** and select one or more applications.
+
+          - Queries from the SQL shell are displayed under the `$ cockroach` app.
+          - If you haven't set `application_name` in a client connection string, it appears as `unset`.
+      - To filter by one or more insight types, select **Workload Insight Type** or **Schema Insight Type** and select one or more types.
+1. Click **Apply**
+
 ## Configuration
 
 You can configure the behavior of insights using the following [cluster settings]({{ link_prefix }}cluster-settings.html).
