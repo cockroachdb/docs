@@ -40,7 +40,6 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
   - [VPC Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
   - [VPC Internet gateways](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
   - [VPC Route tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
-  - [EC2 Placement Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html)
   - [AWS VPN](https://aws.amazon.com/vpn/)
   - [VPC Virtual Private Gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
   - [AWS Application Load
