@@ -15,19 +15,11 @@ To display this view, click **Insights** in the left-hand navigation of the Clou
 The **Transaction Executions** view provides an overview of all [transaction executions]({{ link_prefix }}transactions.html) that have been flagged with insights.
 
 {{site.data.alerts.callout_info}}
-The rows in this page are populated from the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) and  `crdb_internal.transaction_execution_insights` tables.
+The rows in this page are populated from the [`crdb_internal.transaction_contention_events`]({{ link_prefix }}crdb-internal.html#transaction_contention_events) and  `crdb_internal.cluster_txn_execution_insights` tables.
 
-- The results displayed in the **Transaction Executions** view will be available as long as a corresponding row in the `crdb_internal.transaction_contention_events` or `crdb_internal.transaction_execution_insights` tables exists. The rows in `crdb_internal.transaction_contention_events` on each node must use less space than `sql.contention.event_store.capacity`, and the rows in `crdb_internal.transaction_contention_events` cannot exceed `sql.insights.execution_insights_capacity`.
+- The results displayed in the **Transaction Executions** view will be available as long as a corresponding row in the `crdb_internal.transaction_contention_events` or `crdb_internal.cluster_txn_execution_insights` tables exists. The rows in `crdb_internal.transaction_contention_events` on each node must use less space than `sql.contention.event_store.capacity`, and the rows in `crdb_internal.transaction_contention_events` cannot exceed `sql.insights.execution_insights_capacity`.
 - The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 {{site.data.alerts.end}}
-
-Transaction executions with the **High Contention** insight are transactions that experienced [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-
-{% if page.cloud != true -%}
-The following screenshot shows the execution of a transaction flagged with **High Contention**:
-
-<img src="{{ 'images/v23.1/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
-{% endif -%}
 
 To view [details of the execution](#transaction-execution-details), click an execution ID in the **Latest Transaction Execution ID** column.
 
@@ -35,40 +27,41 @@ To view [details of the execution](#transaction-execution-details), click an exe
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
 - **Transaction Execution**: The transaction fingerprint of the latest transaction execution.
 - **Status**: The status of the transaction: `Failed` or `Completed`.
-- **Insights**: The insight for the transaction execution.
-  - **High Contention**: The transaction execution experienced high [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention) time according to the threshold set in the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold).
-  - **Suboptimal Plan**: The plan could be improved for some statement(s) in the transaction. Possible causes include outdated statistics and missing indexes.
-  - **Slow Execution**: The transaction had one or more statements that took longer than the value of the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold) to execute.
-  - **Failed Execution**: The transaction execution failed.
+- **Insights**: The [insight type](#workload-insight-types) for the transaction execution.
 - **Start Time (UTC)**: The timestamp when the transaction execution started.
 - **Contention Time**: The amount of time the transaction execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
 - **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.
 - **Application Name**: The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
 
-### Transaction execution details
+### Transaction Execution details
 
 The transaction execution details view provides more details on a transaction execution insight.
 
-{% if page.cloud != true -%}
-The following screenshot shows the execution details of the transaction execution in the preceding section:
+- **Start Time**: The timestamp when the transaction execution started.
+- **End Time**: The timestamp when the transaction execution ended.
+- **Elapsed Time**: The time that elapsed during transaction execution.
+- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.
+- **Rows Read**: The total number of rows read by the transaction execution.
+- **Rows Written**: The total number of rows written by the transaction execution.
+- **Priority**: The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction execution.
+- **Number of Retries**: The total number of retries of the transaction.
+- **Session ID**: The ID of the [session]({{ link_prefix }}ui-sessions-page.html) the transaction was executed from.
+- **Application**: The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
+- **Transaction Fingerprint ID**: The fingerprint ID of the transaction execution.
 
-<img src="{{ 'images/v22.2/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
-{% endif -%}
-
-The **Insights** column shows the name of the insight, in this case **High Contention**; the **Details** column provides details on the insight.
-
-- **Start Time (UTC)**: The time the transaction execution started.
-- **Transaction Fingerprint ID**: The transaction fingerprint ID of the transaction execution.
+The **Insights** column shows the name of the insight. The **Details** column provides details on the insight.
 
 #### Transaction with ID {transaction ID} waited on
 
-This section provides details of the transaction executions that block the transaction ID flagged with **High Contention**:
+This section provides details of the transaction executions that block the transaction ID flagged with [**High Contention**](#high-contention):
 
 - **Transaction Execution ID**: The execution ID of the blocking transaction execution.
 - **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
+- **Statement Waiting Execution ID**: The execution ID of the waiting statement.
+- **Statement Waiting Fingerprint ID**: The statement fingerprint ID of the waiting statement.
 - **Transaction Execution**: The queries attempted in the transaction.
 - **Contention Start Time (UTC)**: The timestamp at which [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention) was detected for the transaction.
-- **Contention Time**: The time transactions with this execution ID was [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
+- **Contention Time**: The time that transactions with this execution ID were [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
 - **Schema Name**: The name of the contended schema.
 - **Database Name**: The name of the contended database.
 - **Table Name**: The name of the contended table.
@@ -96,26 +89,12 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 {% endif %}
 {{site.data.alerts.end}}
 
-{% if page.cloud != true -%}
-The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
-
-<img src="{{ 'images/v22.2/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
-{% endif -%}
-
 To view [details of the execution](#statement-execution-details), click an execution ID in the **Statement Execution ID** column.
 
 - **Statement Execution ID**: The execution ID of the latest execution with the statement fingerprint.
 - **Statement Fingerprint ID**: The statement fingerprint ID of the latest statement execution.
 - **Statement Execution**: The [statement fingerprint]({{ link_prefix }}ui-statements-page.html#sql-statement-fingerprints) of the latest statement execution.
-- **Insights**: The insight for the statement execution.
-  - **High Contention**: The statement execution experienced high [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention) time according to the threshold set in the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold).
-  - **High Retry Count**: The statement execution experienced a high number of [retries]({{ link_prefix }}transactions.html#automatic-retries) according to the threshold set in the [`sql.insights.high_retry_count.threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-high-retry-count-threshold).
-  - **Suboptimal Plan**: The statement execution has resulted in one or more [index recommendations](#schema-insights-tab) that would improve the plan.
-  - **Failed**: The statement execution failed.
-  - **Slow Execution**: The statement experienced slow execution. Depending on the settings in [Configuration](#configuration), either of the following conditions trigger this insight:
-
-      - Execution time is greater than the value of the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold).
-      - Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`), execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`, and [execution latency]({{ link_prefix }}ui-sql-dashboard.html#kv-execution-latency-99th-percentile) is greater than the p99 latency and more than double the median latency. For details, see [Detect slow executions](#detect-slow-executions).
+- **Insights**: The [insight type](#workload-insight-types) for the statement execution.
 - **Start Time (UTC)**: The timestamp when the statement execution started.
 - **Elapsed Time**: The time that elapsed to complete the statement execution.
 - **User Name**: The name of the user that invoked the statement execution.
@@ -127,29 +106,107 @@ To view [details of the execution](#statement-execution-details), click an execu
 - **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
 - **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
 
-#### Statement execution details
+### Statement Execution details
 
 The statement execution details view provides more details on a statement execution insight.
-
-{% if page.cloud != true -%}
-The following screenshot shows the execution details of the statement execution in the preceding section:
-
-<img src="{{ 'images/v22.2/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
-{% endif -%}
-
-The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button. Click the **Create Index** button to perform a query to mitigate the cause of the insight, in this case to create an index on the ride `start_time` that stores the `rider_id`.
 
 - **Start Time**: The timestamp when the statement execution started.
 - **End Time**: The timestamp when the statement execution ended.
 - **Elapsed Time**: The time that elapsed during statement execution.
-- **Rows Read**: The total number of rows read.
-- **Rows Written**: The total number of rows written.
+- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
+- **Rows Read**: The total number of rows read by the statement execution.
+- **Rows Written**: The total number of rows written by the statement execution.
 - **Transaction Priority**: The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction for the statement execution.
 - **Full Scan**: Whether the execution performed a full scan of the table.
+- **Transaction Retries**: The total number of retries of the transaction for the statement execution.
 - **Session ID**: The ID of the [session]({{ link_prefix }}ui-sessions-page.html) the statement was executed from.
 - **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
 - **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
 - **Statement Fingerprint ID**: The fingerprint ID of the statement fingerprint for the statement execution.
+
+#### Statement with ID {transaction ID} waited on
+
+This section provides details of the transaction executions that block the statement ID flagged with [**High Contention**](#high-contention):
+
+- **Transaction Execution ID**: The execution ID of the blocking transaction execution.
+- **Transaction Fingerprint ID**: The transaction fingerprint ID of the blocking transaction execution.
+- **Contention Time**: The time that transactions with this execution ID were [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the specified time interval.
+- **Database Name**: The name of the contended database.
+- **Schema Name**: The name of the contended schema.
+- **Table Name**: The name of the contended table.
+- **Index Name**: The name of the contended index.
+
+## Workload Insight types
+
+The Workload Insights tab surfaces the following type of insights:
+
+- [Failed Execution](#failed-execution)
+- [High Contention](#high-contention)
+- [High Retry Count](#high-retry-count)
+- [Slow Execution](#slow-execution)
+- [Suboptimal Plan](#suboptimal-plan)
+
+### Failed Execution
+
+The transaction or statement execution failed.
+
+{% if page.cloud != true -%}
+The following screenshot shows a failed statement execution:
+
+<img src="{{ 'images/v23.1/statement_executions_failed.png' | relative_url }}" alt="Failed statement execution" style="border:1px solid #eee;max-width:100%" />
+
+The following screenshot shows the execution details of the preceding failed statement execution.
+
+<img src="{{ 'images/v23.1/statement_execution_details_failed.png' | relative_url }}" alt="Failed statement execution details" style="border:1px solid #eee;max-width:100%" />
+
+{% endif -%}
+
+The **Insights** column shows the name of the insight, in this case **Failed Execution**. The **Details** column provides the **Error Code**, such as `40001`. CockroachDB uses [PostgreSQL Error Codes](https://www.postgresql.org/docs/current/errcodes-appendix.html). `40001` indicates a `serialization_failure`.
+
+### High Contention
+
+The transaction or statement execution experienced high [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention) time according to the threshold set in the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold).
+
+{% if page.cloud != true -%}
+The following screenshot shows the execution of a transaction flagged with **High Contention**:
+
+<img src="{{ 'images/v23.1/transaction_execution.png' | relative_url }}" alt="Transaction execution" style="border:1px solid #eee;max-width:100%" />
+
+The following screenshot shows the execution details of the preceding transaction execution:
+
+<img src="{{ 'images/v23.1/transaction_execution_details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
+
+{% endif -%}
+
+### High Retry Count
+
+The statement execution experienced a high number of [retries]({{ link_prefix }}transactions.html#automatic-retries) according to the threshold set in the [`sql.insights.high_retry_count.threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-high-retry-count-threshold).
+
+### Slow Execution
+
+The statement (or a statement in the transaction) experienced slow execution. Depending on the settings in [Configuration](#configuration), either of the following conditions trigger this insight:
+
+- Execution time is greater than the value of the [`sql.insights.latency_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-insights-latency-threshold).
+- Anomaly detection is enabled (`sql.insights.anomaly_detection.enabled`), execution time is greater than the value of `sql.insights.anomaly_detection.latency_threshold`, and [execution latency]({{ link_prefix }}ui-sql-dashboard.html#kv-execution-latency-99th-percentile) is greater than the p99 latency and more than double the median latency. For details, see [Detect slow executions](#detect-slow-executions).
+
+### Suboptimal Plan
+
+The plan could be improved for some statement(s) in the transaction execution. Possible causes include outdated statistics and missing indexes.
+
+The statement execution has resulted in one or more [index recommendations](#schema-insights-tab) that would improve the plan.
+
+{% if page.cloud != true -%}
+The following screenshot shows the statement execution of the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index):
+
+<img src="{{ 'images/v23.1/statement_executions.png' | relative_url }}" alt="Statement execution" style="border:1px solid #eee;max-width:100%" />
+
+The following screenshot shows the execution details of the preceding statement execution:
+
+<img src="{{ 'images/v23.1/statement_execution_details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
+
+{% endif -%}
+
+The **Insights** column shows the name of the insight, in this case **Suboptimal Plan**; the **Details** column provides details on the insight; and the final column contains a **Create Index** button. Click the **Create Index** button to perform a query to mitigate the cause of the insight, in this case to create an index on the ride `start_time` that stores the `rider_id`.
 
 ## Schema Insights tab
 
@@ -169,6 +226,7 @@ This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been 
 The following screenshot shows the insight that displays after you run the query described in [Use the right index]({{ link_prefix }}apply-statement-performance-rules.html#rule-2-use-the-right-index) 6 or more times:
 
 <img src="{{ 'images/v22.2/schema_insight.png' | relative_url }}" alt="Schema insight" style="border:1px solid #eee;max-width:100%" />
+
 {% endif -%}
 
 CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
