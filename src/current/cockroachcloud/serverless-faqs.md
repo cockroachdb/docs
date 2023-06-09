@@ -33,7 +33,7 @@ Organizations without billing information on file can only create one cluster. O
 
 ### What is a Request Unit?
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. See [Learn About Request Units](learn-about-request-units.html) for more information.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](plan-your-cluster-serverless.html#request-units), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. See [Plan your {{ site.data.products.serverless }} Cluster](plan-your-cluster-serverless.html#request-units) for more information.
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 

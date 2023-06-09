@@ -17,7 +17,7 @@ This page describes how to tune your {{ site.data.products.serverless }} workloa
 
 To understand these resources, you need to understand a bit about the {{ site.data.products.serverless }} [architecture](architecture.html). A {{ site.data.products.serverless }} cluster is divided into two layers that run in separate processes: the SQL layer and the storage layer. The SQL layer receives and runs your SQL queries and background jobs. When the SQL layer needs to read or write data rows, it calls the storage layer, which manages a replicated, transactional row store that is distributed across many machines.
 
-**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units](learn-about-request-units.html) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
+**SQL CPU** is the CPU consumed by SQL processes (not storage processes) and is converted to [Request Units](plan-your-cluster-serverless.html#request-units) using this equivalency: 1 RU = 3 milliseconds SQL CPU.
 
 **Network egress** measures the number of bytes that are returned from a SQL process to the calling client. It also includes any bytes sent by bulk operations like `EXPORT` or changefeeds. It is converted to Request Units using this equivalency: 1 RU = 1 KiB Network egress.
 
@@ -114,6 +114,6 @@ You can reduce the RU cost of a query by reducing the work your cluster must do 
 ## Learn more
 
 - [Learn About {{ site.data.products.serverless }} Pricing](learn-about-pricing.html)
-- [Learn About Request Units](learn-about-request-units.html)
+- [Learn About Request Units](plan-your-cluster-serverless.html#request-units)
 - [Manage Your {{ site.data.products.serverless }} Cluster](serverless-cluster-management.html)
 - [CockroachDB Cloud Architecture](architecture.html)

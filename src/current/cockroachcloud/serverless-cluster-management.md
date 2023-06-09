@@ -49,11 +49,11 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 1. In the **Usage this month** section of your cluster's [**Overview** page](cluster-overview-page.html), click **Estimate usage cost**.
 1. Select a time frame in which your workload was active.
 
-    Your used [RUs](learn-about-request-units.html), used storage, and spend from the selected time frame will be shown along with your monthly cost estimate. The spend and cost estimate do not account for the [free resources](learn-about-pricing.html#free-vs-paid-usage) granted to every organization, which you would have to use up before being charged.
+    Your used [RUs](plan-your-cluster-serverless.html#request-units), used storage, and spend from the selected time frame will be shown along with your monthly cost estimate. The spend and cost estimate do not account for the [free resources](plan-your-cluster-serverless.html#free-vs-paid-usage) granted to every organization, which you would have to use up before being charged.
 
 ## Edit your resource limits
 
-You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) from the **Overview** page. The change in your resource limits will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
+You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) from the **Overview** page. The change in your resource limits will affect current and upcoming billing cycles. See [Plan a {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html) for more information on resource usage.
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
