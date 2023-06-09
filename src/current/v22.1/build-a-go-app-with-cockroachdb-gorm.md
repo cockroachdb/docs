@@ -52,7 +52,7 @@ CockroachDB may require the [client to retry a transaction](transactions.html#tr
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cd example-app-go-pgx
+    $ cd example-app-go-gorm
     ~~~
 
 1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:

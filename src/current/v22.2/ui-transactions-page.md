@@ -65,19 +65,6 @@ If you click the execution ID in the **Transaction Execution ID** column, the [*
 
 <img src="{{ 'images/v22.2/transaction-execution-details.png' | relative_url }}" alt="Transaction execution details" style="border:1px solid #eee;max-width:100%" />
 
-## Search and filter
-
-By default, the **Transactions** page shows transactions from all applications and databases running on the cluster.
-
-### Search field
-
-To search using the search field:
-
-1. Type a string over `Search Transactions`. To search for exact terms in order, wrap the search string in quotes.
-1. Press `Enter`.
-
-    The list of transactions is filtered by the string.
-
 {% include {{ page.version.version }}/ui/transactions-filter.md %}
 
 ## Transaction statistics

@@ -24,16 +24,6 @@ To view this page, click **SQL Activity** in the left-hand navigation of the DB 
 To view this page, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), and click **SQL Activity** in the **Monitoring** section of the left side navigation. Select the **Transactions** tab.
 {% endif %}
 
-## Search and filter
-
-By default, this page shows transactions from all applications and databases running on the cluster.
-
-You can search for transactions using the search field or the date range selector.
-
-### Search field
-
-To search using the search field, type a string over `Search Transactions` and press `Enter`. The list of transactions is filtered by the string.
-
 {% include {{version_prefix}}ui/transactions-filter.md %}
 
 ## Transaction statistics
