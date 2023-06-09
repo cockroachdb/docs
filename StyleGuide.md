@@ -265,7 +265,7 @@ CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.g
 - `this-is-a-doc.md`
 - `name-of-your-image.png`
 
-Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
+Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
 
 Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
 
@@ -878,7 +878,7 @@ Examples help show the feature in action. Examples follow a basic format:
 
 ### Version tags
 
-Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or minor version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
+Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or patch version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
 
 To add a version tag, use the following Liquid tag:
 
@@ -894,7 +894,7 @@ Put version tags at the beginning of a paragraph, sentence, or description in a 
 
 If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2" %}`).
 
-If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2.10" %}`).
+If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (for example, `{% include_cached new-in.html version="v21.2.10" %}`).
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
@@ -981,7 +981,7 @@ You can use the following HTML formatting  within an HTML table:
 - Paragraph breaks (`<p>`)
 - Lists (`<ol>` / `<ul>` / `<li>`)
 
-**Example:** [Query Options](admin-ui-custom-chart-debug-page.html#query-options) table (see [GitHub](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/admin-ui-custom-chart-debug-page-00.html) for the raw HTML)
+**Example:** [Query Options](admin-ui-custom-chart-debug-page.html#query-options) table (see [GitHub](https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/v2.1/admin-ui-custom-chart-debug-page-00.html) for the raw HTML)
 
 ### Lists
 
@@ -1223,7 +1223,7 @@ For more information about the `remote_include` tag, see the README in the [jeky
   
 On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
   
-Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
+Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
 
 **Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
 

@@ -1,0 +1,1 @@
+Cockroach Labs recommends monitoring your changefeeds to track [retryable errors](monitor-and-debug-changefeeds.html#changefeed-retry-errors) and [protected timestamp](architecture/storage-layer.html#protected-timestamps) usage. Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page for more information.
