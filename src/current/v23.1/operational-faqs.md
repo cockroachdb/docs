@@ -39,7 +39,21 @@ For the first 10 days of your cluster's life, you can expect storage per node to
 
 or about 6 GiB. With on-disk compression, the actual disk usage is likely to be about 4 GiB.
 
-However, depending on your usage of time-series charts in the [DB Console](ui-overview-dashboard.html), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, see [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data)
+However, depending on your usage of time-series charts in the [DB Console](ui-overview-dashboard.html), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, see [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data).
+
+## What is the `internal internal-delete-old-sql-stats` process and why is it consuming my resources?
+
+When a query is executed, a process records query execution statistics on system tables. This is done by recording [SQL statement fingerprints](ui-statements-page.html).
+
+The CockroachDB `internal-delete-old-sql-stats` process cleans up query execution statistics collected on system tables, including `system.statement_statistics` and `system.transaction_statistics`. These system tables have a row limit of 1 million. When this limit is exceeded, there is an hourly cleanup job that delete all of the data that surpasses the 1 million row mark, starting with the oldest data first. To see more information about the cleanup job, use the following query:
+
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM crdb_internal.jobs WHERE job_type='AUTO SQL STATS COMPACTION';
+~~~
+
+In general, the `internal-delete-old-sql-stats` process is not expected to impact cluster performance. There are a few cases where there has been a spike in CPU due to an incredibly large amount of data being processed; however, those cases were resolved through [workload optimizations](make-queries-fast.html) and general improvements over time.
 
 ## Can I reduce or disable the storage of time-series data?
 
