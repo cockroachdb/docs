@@ -13,7 +13,9 @@ docs_area: reference.sql
 `ADD SUPER REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
 {{site.data.alerts.end}}
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 ## Synopsis
 
