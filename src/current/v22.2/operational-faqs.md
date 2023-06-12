@@ -39,13 +39,13 @@ Given the 10 day accumulation period, you can expect storage per node to increas
 
 or about 6 GiB. With on-disk compression, the actual disk usage is likely to be about 4 GiB.
 
-However, depending on your usage of time-series charts in the [DB Console](ui-overview-dashboard.html), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, see [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data).
+However, depending on your usage of time-series charts in the [DB Console](ui-overview-dashboard.html), you may prefer to reduce the amount of disk used by time-series data. To reduce the amount of time-series data stored, or to disable it altogether, refer to [Can I reduce or disable the storage of time-series data?](#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
-## What is the `internal internal-delete-old-sql-stats` process and why is it consuming my resources?
+## What is the `internal-delete-old-sql-stats` process and why is it consuming my resources?
 
 When a query is executed, a process records query execution statistics on system tables. This is done by recording [SQL statement fingerprints](ui-statements-page.html).
 
-The CockroachDB `internal-delete-old-sql-stats` process cleans up query execution statistics collected on system tables, including `system.statement_statistics` and `system.transaction_statistics`. These system tables have a default row limit of 1 million, set by the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). When this limit is exceeded, there is an hourly cleanup job that delete all of the data that surpasses the row limit, starting with the oldest data first. To see more information about the cleanup job, use the following query:
+The CockroachDB `internal-delete-old-sql-stats` process cleans up query execution statistics collected on system tables, including `system.statement_statistics` and `system.transaction_statistics`. These system tables have a default row limit of 1 million, set by the `sql.stats.persisted_rows.max` [cluster setting](cluster-settings.html). When this limit is exceeded, there is an hourly cleanup job that deletes all of the data that surpasses the row limit, starting with the oldest data first. For more information about the cleanup job, use the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
