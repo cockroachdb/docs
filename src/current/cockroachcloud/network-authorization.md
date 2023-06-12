@@ -45,7 +45,7 @@ You can add up to 20 IP addresses to your allowlist. If your application servers
 
 Refer to:
 
-- [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#step-1-authorize-your-network)
+- [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#authorize-your-network)
 - [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#authorize-your-network)
 
 ## VPC peering
