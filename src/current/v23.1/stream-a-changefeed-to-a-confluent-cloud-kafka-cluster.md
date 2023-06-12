@@ -278,20 +278,20 @@ You can also [create external connections](create-external-connection.html) to d
 
     Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
     - `tls_enabled=true`
-    - `SASL_ENABLED=true`
+    - `sasl_enabled=true`
     - `sasl_user={CLUSTER API KEY}`
     - `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
     - `sasl_mechanism=PLAIN`
 
     ~~~
-    "kafka://{KAFKA ENDPOINT}?tls_enabled=true&SASL_ENABLED=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
+    "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
 
 1. Create an external connection for the Kafka URI:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?tls_enabled=true&SASL_ENABLED=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
+    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
 
 1. To construct the Confluent Schema Registry URI, you need:
