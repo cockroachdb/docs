@@ -43,7 +43,7 @@ Charts following the execution attributes display statement fingerprint statisti
 - **Execution Retries**: The number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
 - **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
 - **Contention Time**: The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.
+- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
