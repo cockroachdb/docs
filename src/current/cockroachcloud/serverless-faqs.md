@@ -79,11 +79,13 @@ Yes, your free cluster has been automatically migrated to {{ site.data.products.
 
 CockroachDB [automatically collects statistics](../{{site.current_cloud_version}}/cost-based-optimizer.html#table-statistics) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
 
-When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.current_cloud_version}}/cost-based-optimizer.html#enable-and-disable-automatic-statistics-collection-for-clusters) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
+When automatic statistics collection starts, the cluster will experience a spike in RU usage. You can [disable automatic statistics collection](../{{site.current_cloud_version}}/cost-based-optimizer.html#enable-and-disable-automatic-statistics-collection-for-clusters) to avoid these RU bursts, but this may cause the cost-based optimizer to choose inefficient statement plans based on outdated statistics.
+
+Refreshing the Cloud Console will also consume RUs.
 
 ### What is the cold start latency of a {{ site.data.products.serverless }} cluster?
 
-When a {{ site.data.products.serverless }} cluster is idle, it will scale down to zero and consume no RUs. When the cluster becomes active again it will begin serving requests within a fraction of a second, typically around 600 milliseconds.
+When a {{ site.data.products.serverless }} cluster is idle, it will scale down to zero and consume no RUs. When the cluster becomes active again it will begin serving requests within a fraction of a second, typically around 600 milliseconds. Note that cold starts consume RUs, so you will see a spike in usage.
 
 ### Why is disk usage increasing despite lack of writes?
 

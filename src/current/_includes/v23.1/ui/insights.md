@@ -21,17 +21,21 @@ The rows in this page are populated from the [`crdb_internal.transaction_content
 - The default tracing behavior captures a small percent of transactions so not all contention events will be recorded. When investigating [transaction contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention), you can set the [`sql.trace.txn.enable_threshold` cluster setting]({{ link_prefix }}cluster-settings.html#setting-sql-trace-txn-enable-threshold) to always capture contention events.
 {{site.data.alerts.end}}
 
-To view [details of the execution](#transaction-execution-details), click an execution ID in the **Latest Transaction Execution ID** column.
+The transaction insights table has the following columns:
 
-- **Latest Transaction Execution ID**: The execution ID of the latest execution with the transaction fingerprint.
-- **Transaction Fingerprint ID**: The transaction fingerprint ID of the latest transaction execution.
-- **Transaction Execution**: The transaction fingerprint of the latest transaction execution.
-- **Status**: The status of the transaction: `Failed` or `Completed`.
-- **Insights**: The [insight type](#workload-insight-types) for the transaction execution.
-- **Start Time (UTC)**: The timestamp when the transaction execution started.
-- **Contention Time**: The amount of time the transaction execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.
-- **Application Name**: The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
+Column | Description
+-----|------------
+Latest Transaction Execution ID | The execution ID of the latest execution with the transaction fingerprint. To view [details of the execution](#transaction-execution-details), click the execution ID.
+Transaction Fingerprint ID | The transaction fingerprint ID of the latest transaction execution.
+Transaction Execution | The transaction fingerprint of the latest transaction execution.
+Status | The status of the transaction: `Failed` or `Completed`.
+Insights | The [insight type](#workload-insight-types) for the transaction execution.
+Start Time (UTC) | The timestamp when the transaction execution started.
+Contention Time | The amount of time the transaction execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
+CPU Time | The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+{% endif -%}
+
+Application Name | The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
 
 ### Transaction Execution details
 
@@ -40,7 +44,9 @@ The transaction execution details view provides more details on a transaction ex
 - **Start Time**: The timestamp when the transaction execution started.
 - **End Time**: The timestamp when the transaction execution ended.
 - **Elapsed Time**: The time that elapsed during transaction execution.
-- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators.
+- **CPU Time**: The amount of CPU time spent executing the transaction. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+{% endif -%}
+<br>
 - **Rows Read**: The total number of rows read by the transaction execution.
 - **Rows Written**: The total number of rows written by the transaction execution.
 - **Priority**: The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction execution.
@@ -49,7 +55,7 @@ The transaction execution details view provides more details on a transaction ex
 - **Application**: The name specified by the [`application_name` session setting]({{ link_prefix }}show-vars.html#supported-variables).
 - **Transaction Fingerprint ID**: The fingerprint ID of the transaction execution.
 
-The **Insights** column shows the name of the insight. The **Details** column provides details on the insight.
+The **Insights** column shows the [insight type](#workload-insight-types). The **Details** column provides details on the insight.
 
 #### Transaction with ID {transaction ID} waited on
 
@@ -89,22 +95,29 @@ The rows in this page are populated from the [`crdb_internal.cluster_execution_i
 {% endif %}
 {{site.data.alerts.end}}
 
-To view [details of the execution](#statement-execution-details), click an execution ID in the **Statement Execution ID** column.
+Click **Columns** to select the columns to display in the table.
 
-- **Statement Execution ID**: The execution ID of the latest execution with the statement fingerprint.
-- **Statement Fingerprint ID**: The statement fingerprint ID of the latest statement execution.
-- **Statement Execution**: The [statement fingerprint]({{ link_prefix }}ui-statements-page.html#sql-statement-fingerprints) of the latest statement execution.
-- **Insights**: The [insight type](#workload-insight-types) for the statement execution.
-- **Start Time (UTC)**: The timestamp when the statement execution started.
-- **Elapsed Time**: The time that elapsed to complete the statement execution.
-- **User Name**: The name of the user that invoked the statement execution.
-- **Application Name**: The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
-- **Rows Processed**: The total number of rows read and written.
-- **Retries**: The number of times the statement execution was [retried]({{ link_prefix }}transactions.html#automatic-retries).
-- **Contention Time**: The amount of time the statement execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-- **Full Scan**: Whether the execution performed a full scan of the table.
-- **Transaction Execution ID**: The ID of the transaction execution for the statement execution.
-- **Transaction Fingerprint ID**: The ID of the transaction fingerprint for the statement execution.
+The statement insights table has the following columns available:
+
+Column | Description
+-----|------------
+Latest Statement Execution ID | The execution ID of the latest execution with the statement fingerprint. To view [details of the execution](#statement-execution-details), click the execution ID.
+Statement Fingerprint ID | The statement fingerprint ID of the latest statement execution.
+Statement Execution | The [statement fingerprint]({{ link_prefix }}ui-statements-page.html#sql-statement-fingerprints) of the latest statement execution.
+Status |  The status of the transaction: `Failed` or `Completed`.
+Insights | The [insight type](#workload-insight-types) for the statement execution.
+Start Time (UTC) | The timestamp when the statement execution started.
+Elapsed Time | The time that elapsed to complete the statement execution.
+User Name | The name of the user that invoked the statement execution.
+Application Name | The name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
+Rows Processed | The total number of rows read and written.
+Retries | The number of times the statement execution was [retried]({{ link_prefix }}transactions.html#automatic-retries).
+Contention Time | The amount of time the statement execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
+CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+{% endif -%}
+Full Scan | Whether the execution performed a full scan of the table.
+Transaction Fingerprint ID | The ID of the transaction fingerprint for the statement execution.
+Latest Transaction Execution ID | The ID of the transaction execution for the statement execution.
 
 ### Statement Execution details
 
@@ -113,7 +126,9 @@ The statement execution details view provides more details on a statement execut
 - **Start Time**: The timestamp when the statement execution started.
 - **End Time**: The timestamp when the statement execution ended.
 - **Elapsed Time**: The time that elapsed during statement execution.
-- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
+- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. {% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+{% endif -%}
+<br>
 - **Rows Read**: The total number of rows read by the statement execution.
 - **Rows Written**: The total number of rows written by the statement execution.
 - **Transaction Priority**: The [priority]({{ link_prefix }}transactions.html#set-transaction-priority) of the transaction for the statement execution.
@@ -238,6 +253,41 @@ CockroachDB uses the threshold of 6 executions before offering an insight becaus
     - **Drop Unused Index**: An **Index** field displays the name of the index to drop; and a **Description** field displays the reason for dropping the index.
 
 [Admin users]({{ link_prefix }}security-reference/authorization.html#admin-role) will see an action button in the final column, which will execute the SQL statement suggested by the schema insight, for example "Create Index". Upon clicking the action button, a confirmation dialog displays a warning about the cost of [online schema changes]({{ link_prefix }}online-schema-changes.html) and the option to copy the SQL statement for later execution in a SQL client.
+
+## Search and filter
+
+By default, the Workload Insights view shows all statements or transactions that have insights. By default, the Schema Insights view shows all Schema Insights.
+
+### Search
+
+To search using the search field:
+
+1. Enter a string in the search box at the top of the tab. To search for exact terms in order, wrap the search string in quotes.
+1. Press `Enter`.
+
+    The list is filtered by the string.
+
+### Time interval
+
+In the Workload Insights view, to see transactions or statement executions within a specific time interval, select a time interval from the selector at the top of the tab. The time interval field supports preset time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
+
+Use the arrow buttons to cycle through previous and next time intervals. To select the most recent interval, click **Now**. When you select a time interval, the same interval is selected in the [Metrics]({{ link_prefix }}ui-overview.html#metrics) page.
+
+{{site.data.alerts.callout_info}}
+It's possible to select an interval for which no workload insights exist.
+{{site.data.alerts.end}}
+
+### Filter
+
+To filter the results on the **Workload Insights** or **Schema Insights** view:
+
+1. Click the **Filters** field.
+      - To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **Application Name** and select one or more applications.
+
+          - Queries from the SQL shell are displayed under the `$ cockroach` app.
+          - If you haven't set `application_name` in a client connection string, it appears as `unset`.
+      - To filter by one or more insight types, select **Workload Insight Type** or **Schema Insight Type** and select one or more types.
+1. Click **Apply**
 
 ## Configuration
 
