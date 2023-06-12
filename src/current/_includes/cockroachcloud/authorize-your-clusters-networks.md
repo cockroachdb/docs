@@ -1,8 +1,10 @@
-### Add IP addresses to the allowlist
-
 {{site.data.alerts.callout_info}}
 IPv6 addresses are currently not supported.
 {{site.data.alerts.end}}
+
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization, corresponding to, for example, your application servers, hardened administrator access points, and disaster recovery pipelines.
+
+### Add IP addresses to the allowlist
 
 1. Navigate to your cluster's **Networking > IP Allowlist** tab.
 

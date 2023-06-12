@@ -16,13 +16,11 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Authorize your network
 
-{{site.data.alerts.callout_info}}
-On creation, a Serverless cluster is open to all traffic as it is created with a 0.0.0.0/0 default network.
+On creation, a Serverless cluster is open to all traffic as it is created with a `0.0.0.0/0` default network.
 
-Each Serverless cluster must have at least one IP allowlist. Therefore, you must add another valid rule before removing the default 0.0.0.0/0 rule
+Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization, according to the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege). These might include specific networks for your application servers, hardened administrator access points, and backup-restore pipelines for disaster recovery. Therefore, you should replace the `0.0.0.0/0` default network with more specific CIDR ranges for legitimate access.
 
-Removing or adding an authorized network on your {{ site.data.products.serverless }} cluster may take up to several minutes to take effect.
-{{site.data.alerts.end}}
+Removing or adding an authorized network on your {{ site.data.products.serverless }} cluster may take up to 30 seconds to take effect.
 
 {% include cockroachcloud/authorize-your-clusters-networks.md %}
 

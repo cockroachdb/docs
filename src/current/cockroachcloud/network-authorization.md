@@ -7,7 +7,7 @@ docs_area: manage
 
 {{ site.data.products.dedicated }} allows explicit configurations of the networks that can access your cluster.
 
-To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization, corresponding to, for example, your application servers, hardened administrator access points, and disaster recovery pipelines.
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization, according to the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege). These might include specific networks for your application servers, hardened administrator access points, and backup-restore pipelines for disaster recovery.
 
 ## Options for controlling network access
 
