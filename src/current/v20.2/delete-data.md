@@ -4,7 +4,7 @@ summary: How to delete data from CockroachDB during application development
 toc: true
 ---
 
-This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](update.html) [SQL statement](sql-statements.html).
+This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](delete.html) [SQL statement](sql-statements.html).
 
 ## Before you begin
 

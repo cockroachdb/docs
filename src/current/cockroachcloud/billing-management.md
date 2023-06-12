@@ -7,7 +7,7 @@ docs_area:
 
 The **Billing** page contains an overview of your charges and the payment details on file for your {{ site.data.products.db }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
-[Org Administrators](authorization.html#org-administrator-legacy) can manage billing for the organization.
+Users with the [Billing Coordinator](authorization.html#billing-coordinator) or [Org Administrator (Legacy)](authorization.html#org-administrator-legacy) role can manage billing for the organization.
 
 ## Set up billing for an organization
 

@@ -36,7 +36,6 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | [psycopg2](https://www.psycopg.org/docs/install.html)           | Full           | [Quickstart](../cockroachcloud/quickstart.html?filters=python)<br>[AWS Lambda](deploy-lambda-function.html)<br>[Simple CRUD](build-a-python-app-with-cockroachdb.html)
 | [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Multi-region Flask Web App](movr-flask-overview.html)
 | [Django](https://pypi.org/project/Django/)                      | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-django.html)
-| [PonyORM](https://ponyorm.org/)                                 | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-pony.html)
 
 ## Go
 

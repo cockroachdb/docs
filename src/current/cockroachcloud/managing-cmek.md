@@ -9,7 +9,10 @@ docs_area: manage.security
 
 This page shows how to enable [Customer-Managed Encryption Keys (CMEK)](cmek.html) for a {{ site.data.products.dedicated }} cluster.
 
-To follow this procedure requires admin access to your {{ site.data.products.dedicated }} organization, and the ability to create and manage identity and access management (IAM) and key management (KMS) services in your organization's cloud, i.e., your Google Cloud Platform (GCP) project or Amazon Web Services (AWS) account.
+**Prerequisites**:
+
+- {% include cockroachcloud/cluster-operator-prereq.md %}
+- Sufficient permissions to create and manage identity and access management (IAM) and key management (KMS) services in your organization's cloud, i.e., your Google Cloud Platform (GCP) project or Amazon Web Services (AWS) account.
 
 {{site.data.alerts.callout_info}}
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), CMEK is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
@@ -22,7 +25,7 @@ See also:
 
 ## Before you begin
 
-- A new {{ site.data.products.dedicated }} private cluster] is required. CMEK is not supported on {{ site.data.products.serverless }}. An existing cluster cannot be migrated to a private cluster. Refer to [Create Private Clusters](private-clusters.html).
+- A new {{ site.data.products.dedicated }} private cluster is required. CMEK is not supported on {{ site.data.products.serverless }}. An existing cluster cannot be migrated to a private cluster. Refer to [Create Private Clusters](private-clusters.html).
 - A service account with `admin` privilege on clusters in your organization is required. Refer to [Service Accounts](managing-access.html#manage-service-accounts).
 
 ## Overview of CMEK management procedures
