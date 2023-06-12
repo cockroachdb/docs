@@ -156,7 +156,7 @@ A different backup data key is used for each full cluster backup, while the same
 
 The store key is only stored as encrypted by the CMEK, while it’s available as decrypted only in memory for the CockroachDB process to use. The data key is stored as encrypted by the store key, along with the data files on cluster disks.
 
-#### Can we use {{ site.data.products.db }} Console to enable or revoke CMEK for a cluster?
+#### Can we use the {{ site.data.products.db }} Console to enable or revoke a CMEK for a cluster?
 
 Not yet. Currently, you must use the [{{ site.data.products.db }} API](cloud-api.html) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest).
 
@@ -169,7 +169,7 @@ Not yet. To restore a failed CMEK-enabled cluster, please create a support ticke
 The CMEK feature has the following limitations:
 
 - During [{{ site.data.products.dedicated }} on Azure limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), CMEK is not yet available for {{ site.data.products.dedicated }} clusters on Azure. To express interest, contact your Cockroach Labs account team. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
-- To enable or revoke CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). It's not possible to enable CMEK using the {{ site.data.products.db }} Console.
+- To enable or revoke a CMEK on a cluster, you must use the [Cloud API](/docs/cockroachcloud/cloud-api.html) or the [CockroachDB Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest). It's not possible to enable a CMEK using the {{ site.data.products.db }} Console.
 - If you add a new region to a cluster with CMEK enabled, you must configure a CMEK for the new region to protect its data.
 - If the CMEK is not available due to a misconfiguration or a KMS outage, a cluster's managed backups will begin to fail, but no customer notification is sent from {{ site.data.products.db }} via email. However, Cockroach Labs support is notified if such a failure occurs.
 

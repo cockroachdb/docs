@@ -47,7 +47,7 @@ This section gives a high level overview of the operations involved with impleme
 
 The following sections show how to enable CMEK on a cluster.
 
-### Step 1. Prepare your {{ site.data.products.db }} Organization
+### Step 1. Prepare your {{ site.data.products.db }} organization
 
 1. [Create a {{ site.data.products.db }} service account](managing-access.html#manage-service-accounts).
 1. [Create an API key](managing-access.html#create-api-keys) for the service account to use.
@@ -58,7 +58,7 @@ The following sections show how to enable CMEK on a cluster.
 
 ### Step 3. Provision IAM and KMS resources in your cloud tenant
 
-Next, you must provision the required IAM and KMS resources in your organization's AWS account or GCP project.
+Next, you must provision the required IAM and KMS resources in your organization's AWS account or GCP project:
 
 1. The key itself.
 1. The principal that is authorized to encrypt and decrypt using the key, which is an IAM role in your AWS account or a cross-tenant service account in your GCP project.
