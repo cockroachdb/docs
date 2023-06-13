@@ -3,6 +3,7 @@ title: Export Metrics with Terraform
 summary: Learn how to use the CockroachDB Cloud Terraform provider to export metrics.
 toc: true
 docs_area: manage
+cloud: true
 ---
 
 [Terraform](https://terraform.io) is an infrastructure-as-code provisioning tool that uses configuration files to define application and network resources. You can use the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
@@ -10,7 +11,7 @@ docs_area: manage
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 ## Before you begin

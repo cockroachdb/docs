@@ -15,7 +15,7 @@ cloud: true
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
 <a id="the-metricexport-endpoint"></a>
