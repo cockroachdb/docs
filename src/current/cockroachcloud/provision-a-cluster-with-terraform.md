@@ -94,6 +94,8 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cluster_node_count = {number of nodes}
     storage_gib = {storage in GiB}
     machine_type = "{cloud provider machine type}"
+    database = "{database name}"
+    os = "{operating system}"
     allow_list_name = "{allow list name}"
     cidr_ip = "{allow list CIDR IP}"
     cidr_mask = {allow list CIDR mask}
@@ -109,6 +111,8 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{storage in GiB}` is the amount of storage specified in GiB.
        - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
        - `{allow list name}` is the name for the [IP allow list](network-authorization.html#ip-allowlisting). Use a descriptive name to identify the IP allow list.
+       - `{database name}` is the name of the database you want to create.
+       - `{os}` is the operating system your computer is using. Possible values are `mac`, `windows`, or `linux`.
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
 
@@ -124,12 +128,14 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cluster_node_count = 3
     storage_gib = 15
     machine_type = "n1-standard-2"
+    database = "defaultdb"
+    os = "mac"
     allow_list_name = "Max's home network"
     cidr_ip = "1.2.3.4"
     cidr_mask = 32
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Use the [API key](console-access-management.html#api-access) you created in the {{ site.data.products.db }} console to create an environment variable named `COCKROACH_API_KEY`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

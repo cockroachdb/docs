@@ -6,7 +6,7 @@ docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) or the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_success}}
 {{ site.data.products.dedicated }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](/docs/{{site.versions["dev"]}}/monitoring-and-alerting.html) instead of this page.
@@ -20,7 +20,13 @@ Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.d
 
 <a id="the-metricexport-endpoint"></a>
 
-## `metricexport` endpoint
+## Use Terraform
+
+To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster with Terraform, [PLACEHOLDER]. For a full tutorial, see [Export Metrics with Terraform](export-metrics-terraform.html).
+
+## Use the Cloud API
+
+### The `metricexport` endpoint
 
 To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster, use the `metricexport` endpoint appropriate for your desired cloud metrics sink:
 
@@ -41,7 +47,7 @@ Method | Required permissions | Description
 
 See [Service accounts](managing-access.html#manage-service-accounts) for instructions on configuring a service account with these required permissions.
 
-## Enable metrics export
+### Enable metrics export
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
@@ -219,7 +225,7 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
 
 </section>
 
-## Monitor the status of a metrics export configuration
+### Monitor the status of a metrics export configuration
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
@@ -262,11 +268,11 @@ Where:
 
 </section>
 
-## Update an existing metrics export configuration
+### Update an existing metrics export configuration
 
 To update an existing {{ site.data.products.dedicated }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or Datadog), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
 
-## Disable metrics export
+### Disable metrics export
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>

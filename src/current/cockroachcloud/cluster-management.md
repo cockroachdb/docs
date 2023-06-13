@@ -192,6 +192,8 @@ You can use the [**Databases** page](databases-page.html) to create a new databa
 1. Enter a name for the new database.
 1. Click **Create**.
 
+Alternatively, you can [manage databases with Terraform](manage-database-terraform.html).
+
 ## Restore data from a backup
 
 {{site.data.alerts.callout_info}}
