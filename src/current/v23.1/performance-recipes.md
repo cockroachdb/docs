@@ -104,7 +104,7 @@ These are indicators that lock contention occurred in the past:
 
   - This is also shown in the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view)). Transaction executions will display the **High Contention** insight. 
     {{site.data.alerts.callout_info}}
-    {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
+    {%- include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md -%}
     {{site.data.alerts.end}}
 
 - The **SQL Statement Contention** graph ([{{ site.data.products.db }} Console](../cockroachcloud/metrics-page.html#sql-statement-contention) and [DB Console](ui-sql-dashboard.html#sql-statement-contention)) is showing spikes over time.
@@ -212,7 +212,7 @@ Full table scans often result in poor statement performance.
     FROM crdb_internal.node_statement_statistics
     WHERE full_scan = true;
     ~~~
-* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-fingerprint-page) in the DB Console indicates that the plan contains full table scans.
+* Viewing the statement plan on the [**Statement Fingerprint** page](ui-statements-page.html#statement-fingerprint-page) in the DB Console indicates that the plan contains full table scans.
 * The statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
 * The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
 
@@ -221,6 +221,8 @@ Full table scans often result in poor statement performance.
 Not every full table scan is an indicator of poor performance. The [cost-based optimizer](cost-based-optimizer.html) may decide on a full table scan when other [index](indexes.html) or [join scans](joins.html) would result in longer execution time.
 
 [Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
+
+In the DB Console, visit the [**Schema Insights** tab](ui-insights-page.html#schema-insights-tab) on the [**Insights** page](ui-insights-page.html) and check if there are any insights to create missing indexes. These missing index recommendations are generated based on [slow statement execution](ui-insights-page.html#detect-slow-executions). A missing index may cause a statement to have a [suboptimal plan](ui-insights-page.html#suboptimal-plan). If the execution was slow, based on the insights threshold, then it's likely the create index recommendation is valid. If the plan had a full table scan, it's likely that it should be removed with an index.
 
 Also see [Table scans best practices](performance-best-practices-overview.html#table-scan-best-practices).
 
@@ -247,6 +249,7 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 [Secondary indexes](schema-design-indexes.html) can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, do one of the following:
 
+- In the DB Console, visit the [**Schema Insights** tab](ui-insights-page.html#schema-insights-tab) on the [**Insights** page](ui-insights-page.html) and check if there are any insights to drop unused indexes.
 - In the DB Console, visit the [**Databases** page](ui-databases-page.html) and check databases and tables for [**Index Recommendations**](ui-databases-page.html#index-recommendations) to drop unused indexes.
 - Run a join query against the [`crdb_internal.index_usage_statistics`](crdb-internal.html#index_usage_statistics) and `crdb_internal.table_indexes` tables:
 
