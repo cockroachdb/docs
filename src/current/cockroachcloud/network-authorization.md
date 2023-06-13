@@ -26,11 +26,11 @@ You can authorize network access to your cluster by:
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
-## Cluster default network
+## Cluster default network configuration
 
-{{ site.data.products.dedicated }} and Serverless clusters differ in their defualt network configuration:
+{{ site.data.products.dedicated }} and Serverless clusters differ in their default network configuration:
 
-- On creation, a Serverless cluster is open to all traffic as it is created with a 0.0.0.0/0 default network.
+- On creation, a Serverless cluster is open to all traffic as it is created with a 0.0.0.0/0 IP allowlist entry.
 - On creation, a Dedicated cluster is "locked down" and has no access until an authorized network is created.
 
 {{ site.data.products.db }} clusters can only accept SQL connections from [allowed IP addresses](#ip-allowlisting).
