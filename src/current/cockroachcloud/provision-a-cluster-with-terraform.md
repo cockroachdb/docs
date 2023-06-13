@@ -135,7 +135,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cidr_mask = 32
     ~~~
 
-1. Use the [API key](console-access-management.html#api-access) you created in the {{ site.data.products.db }} console to create an environment variable named `COCKROACH_API_KEY`:
+1. Use the [API key](managing-access.html#api-access) you created in the {{ site.data.products.db }} console to create an environment variable named `COCKROACH_API_KEY`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

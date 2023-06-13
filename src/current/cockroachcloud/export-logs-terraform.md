@@ -51,7 +51,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 	  --header 'Authorization: Bearer {secret_key}' | jq .account_id
 	~~~
 
-    See [API Access](console-access-management.html) for instructions on generating the `{secret_key}`.
+    See [API Access](managing-access.html#api-access) for instructions on generating the `{secret_key}`.
 
 1.  Create a cross-account IAM role in your AWS account:
 
@@ -141,7 +141,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
     Where:
     - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 2.
-    - `{secret_key}` is your API access key. See [API Access](console-access-management.html) for more details.
+    - `{secret_key}` is your API access key. See [API Access](managing-access.html#api-access) for more details.
 
     The resulting GCP principal should resemble the following example:
 
@@ -182,7 +182,7 @@ Perform the following steps to enable log export from your {{ site.data.products
 
         Where:
         - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 3.
-        - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](console-access-management.html) for instructions on generating this key.
+        - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html#api-access) for instructions on generating this key.
         - `{log_name}` is a string of your choosing to represent logs written from your {{ site.data.products.dedicated }} cluster. This name will appear in the name of each log written to GCP Cloud Logging.
         - `{gcp_project_id}` is your GCP project ID, as shown in your GCP Cloud Console [Settings page](https://console.cloud.google.com/iam-admin/settings).
 
