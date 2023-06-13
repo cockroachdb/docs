@@ -37,6 +37,23 @@ General availability (GA)                     | Feature is production-ready and 
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
+### `cockroach` commands
+
+The table below lists the [`cockroach` commands](cockroach-commands.html) available in preview in CockroachDB.
+
+Command                                     | Description
+--------------------------------------------+-------------
+[`cockroach demo`](cockroach-demo.html)     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
+[`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
+
+### `SESSIONS` channel
+
+The [`SESSIONS`](logging.html#sessions) channel logs SQL session events. This includes client connection and session authentication events, for which logging must be enabled separately. For complete logging of client connections, we recommend enabling both types of events.
+
+### Super regions
+
+[Super regions](multiregion-overview.html#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
+
 ### Export metrics from {{ site.data.products.dedicated }} clusters
 
 {{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [metrics export](../cockroachcloud/export-metrics.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.

@@ -65,3 +65,7 @@ There is no self-service way of accessing [audit logs](sql-audit-logging.html) f
 [Encryption at rest](../{{site.current_cloud_version}}/security-reference/encryption.html#encryption-at-rest) is not supported in {{ site.data.products.serverless }} clusters.
 
 [Customer-managed encryption keys](managing-cmek.html) (CMEK) are not supported in {{ site.data.products.serverless }} clusters.
+
+## Network security
+
+[Private clusters](private-clusters.html) are not supported in {{ site.data.products.serverless-plan }}.

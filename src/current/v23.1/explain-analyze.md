@@ -63,6 +63,7 @@ Property        | Description
 `cumulative time spent due to contention` | The total amount of time this statement spent waiting in [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 `maximum memory usage` | The maximum amount of memory used by this statement anytime during its execution.
 `network usage` | The amount of data transferred over the network while the statement was executed. If the value is 0 B, the statement was executed on a single node and didn't use the network.
+`sql cpu time` | The total amount of time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).
 `regions` | The [regions](show-regions.html) where the affected nodes were located.
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
 `estimated RUs consumed` | The estimated number of [Request Units (RUs)](../cockroachcloud/plan-your-cluster-serverless.html#request-units) consumed by the statement. This property is only visible on {{ site.data.products.serverless }} clusters.
@@ -85,6 +86,7 @@ Statement plan tree properties | Description
 `estimated max sql temp disk usage` | The estimated maximum temporary disk usage for a statement.
 `MVCC step count (ext/int)` | The number of times that the underlying storage iterator stepped forward during the work to serve the operator's reads, including stepping over [MVCC keys](architecture/storage-layer.html#mvcc) that could not be used in the scan.
 `MVCC seek count (ext/int)` | The number of times that the underlying storage iterator jumped (seeked) to a different data location.
+`sql cpu time` | The total time this phase of the statement was in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).
 `estimated row count` | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 `table` | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 `spans` | The interval of the key space read by the processor. `FULL SCAN` indicates that the table is scanned on all key ranges of the index (also known as a "full table scan" or "unlimited full scan"). `FULL SCAN (SOFT LIMIT)` indicates that a full table scan can be performed, but will halt early once enough rows have been scanned. `LIMITED SCAN` indicates that the table will be scanned on a subset of key ranges of the index. `[/1 - /1]` indicates that only the key with value `1` is read by the processor.

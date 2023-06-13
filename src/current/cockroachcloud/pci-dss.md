@@ -7,7 +7,7 @@ docs_area: manage.security
 
 {{ site.data.products.dedicated }} has been certified by a PCI Qualified Security Assessor (QSA) as a PCI DSS [Level 1 Service Provider](https://www.pcidssguide.com/what-are-pci-service-provider-compliance-levels/). This certification extends the existing [SOC 2 Type 2 certification](https://www.cockroachlabs.com/blog/soc-2-compliance-2/) of {{ site.data.products.dedicated }}, which provides a baseline level of security controls to safeguard customer data.
 
-This page provides information about {{ site.data.products.dedicated }}'s compliance with PCI DSS, describes some of the ways that {{ site.data.products.db }} implements and enforces compliance, and illustrates some of the types of changes you may need to implement outside of your {{ site.data.products.dedicated }} clusters.
+This page provides information about compliance with PCI DSS within {{ site.data.products.dedicated }}, describes some of the ways that {{ site.data.products.db }} implements and enforces compliance, and illustrates some of the types of changes you may need to implement outside of your {{ site.data.products.dedicated }} clusters.
 
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), PCI DSS is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
@@ -105,7 +105,7 @@ Compliance is a shared responsibility. Be sure to read [Responsibilities of the 
 
 To ensure that a {{ site.data.products.dedicated }} cluster complies with PCI DSS 3.2.1, you must enable and configure the following cluster settings and features:
 
-- The {{ site.data.products.dedicated }} cluster must be created as a [private cluster](private-clusters.html). A private cluster's nodes have no public IP addresses, and its egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster. An existing cluster cannot be migrated to be a private cluster.
+- The cluster must be created as a {{ site.data.products.dedicated }} advanced [private cluster](private-clusters.html). A private cluster's nodes have no public IP addresses, and its egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster. An existing cluster cannot be migrated to be a private cluster.
 - [Customer-Managed Encryption Keys (CMEK)](cmek.html) must be enabled on the cluster. CMEK protects data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported cloud provider key-management system (KMS). It enables file-based encryption of all new or updated data, and provides additional protection on top of the storage-level encryption of cluster disks.
 - [Egress Perimeter Controls](egress-perimeter-controls.html) must be enabled. Egress Perimeter Controls ensure that cluster egress operations, such as [customer-managed cluster backups](take-and-restore-customer-owned-backups.html) or [changefeeds](/docs/{{site.versions["stable"]}}/change-data-capture-overview.html), are restricted to a list of specified external destinations.
 - [Cluster log exports](export-logs.html) must have the redaction feature enabled to prevent the exposure of sensitive data in logs exported to your instance of AWS CloudWatch or GCP Cloud Logging.

@@ -425,7 +425,7 @@ You'll need access to a [Google Cloud Project](https://cloud.google.com/resource
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?REGION=us-east1&TOPIC_NAME=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
+    CREATE CHANGEFEED FOR TABLE users INTO 'gcpubsub://cockroach-project?REGION=us-east1&topic_name=movr-users&AUTH=specified&CREDENTIALS={base64-encoded key}';
     ~~~
 
     You can include the `region` parameter for your topic, or use the [WITH `unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail.
@@ -602,7 +602,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include_cached copy-clipboard.html %}
     ~~~sql
-    CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true' WITH updated;
+    CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' WITH updated;
     ~~~
 
     You set up a changefeed on the `vehicles` table, which emits changefeed messages to the local HTTP server.
