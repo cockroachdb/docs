@@ -113,7 +113,7 @@ You can reduce the RU cost of a query by reducing the work your cluster must do 
 
 ## Learn more
 
-- [Learn About {{ site.data.products.serverless }} Pricing](learn-about-pricing.html)
+- [Learn About {{ site.data.products.serverless }} Pricing](plan-your-cluster-serverless.html#pricing)
 - [Learn About Request Units](plan-your-cluster-serverless.html#request-units)
 - [Manage Your {{ site.data.products.serverless }} Cluster](serverless-cluster-management.html)
 - [CockroachDB Cloud Architecture](architecture.html)
