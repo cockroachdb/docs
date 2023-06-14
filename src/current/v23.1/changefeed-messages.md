@@ -23,7 +23,7 @@ This page describes the format and behavior of changefeed messages. You will fin
 
 ## Responses
 
-By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table rows that have changed. The message will contain the following fields depending on the type of emitted change and the [options](create-changefeed.html#options) you specify to create the changefeed
+By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table rows that have changed. The message will contain the following fields depending on the type of emitted change and the [options](create-changefeed.html#options) you specified to create the changefeed:
 
 - **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":{"long":1}}` for Avro).
 - **Value**:
