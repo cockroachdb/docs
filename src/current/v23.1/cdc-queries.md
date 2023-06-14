@@ -100,7 +100,7 @@ You can **not** use the following functions with CDC queries:
 
 CDC queries allow you to customize your changefeed for particular scenarios. This section outlines several possible use cases for CDC queries.
 
-CDC queries use `envelope=bare` message format by default. This omits the `after` key and stores any [metadata in the `crdb` field](#filter-columns). Depending on how you are filtering or adapting the message format with a CDC query and which sink you're emitting to, message format can vary from some of the example cases in this section.
+CDC queries use [`envelope=bare`](create-changefeed.html#envelope) message format by default. The `bare` message envelope will place the output of the `SELECT` clause at the top level of the message in the [`crdb` field](#filter-columns), instead of under an `"after"` key. Depending on how you are filtering or adapting the message envelope with a CDC query and which sink you're emitting to, message output may vary from some of the example cases in this section.
 
 Refer to [`CREATE CHANGEFEED`](create-changefeed.html) for examples on using the foundational syntax to create a changefeed. For information on sinks, refer to the [Changefeed Sinks](changefeed-sinks.html) page.
 

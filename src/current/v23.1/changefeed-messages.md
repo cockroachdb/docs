@@ -47,17 +47,19 @@ Statement                                      | Response
 
 When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. Refer to [Tables with columns families in changefeeds](changefeeds-on-tables-with-column-families.html#message-format) for guidance.
 
-For [webhook sinks](changefeed-sinks.html#webhook-sink), the response format arrives as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
+For [webhook sinks](changefeed-sinks.html#webhook-sink), the response format arrives as a batch of changefeed messages with a `payload` and `length`.
 
 ~~~
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
 ~~~
 
+[Webhook message batching](changefeed-sinks.html#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
+
 Refer to [changefeed files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
 
 ## Message envelopes
 
-The _envelope_ defines the structure of a changefeed message. You can use the [`envelope`](create-changefeed.html#envelope) option to manipulate the changefeed envelope. The values that `envelope` accepts are compatible with different [changefeed sinks](changefeed-sinks.html), and the structure of the message will vary depending on the sink.
+The _envelope_ defines the structure of a changefeed message. You can use the [`envelope`](create-changefeed.html#envelope) option to manipulate the changefeed envelope. The values that the `envelope` option accepts are compatible with different [changefeed sinks](changefeed-sinks.html), and the structure of the message will vary depending on the sink.
 
 {{site.data.alerts.callout_info}}
 Changefeeds created with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) or [`CREATE CHANGEFEED`](create-changefeed.html) with no sink specified (sinkless changefeeds) produce messages without the envelope metadata fields of changefeeds emitting to sinks.
@@ -67,7 +69,9 @@ The following sections provide examples of changefeed messages that are emitted 
 
 ### `wrapped`
 
-`wrapped` is the default envelope structure for changefeed messages. This envelope contains an array of the primary key, a top-level field for the type of message, and the current state of the row (or `null` for [deleted rows](#delete-messages)). Kafka sinks do not contain an array of the primary key because the key is part of the message metadata.
+`wrapped` is the default envelope structure for changefeed messages. This envelope contains an array of the primary key (or the key as part of the message metadata), a top-level field for the type of message, and the current state of the row (or `null` for [deleted rows](#delete-messages)).
+
+The message envelope contains a primary key array when your changefeed is emitting to a sink that does not have a message key as part of its protocol, e.g., cloud storage, webhook sinks, or Google Pub/Sub. By default, messages emitted to Kafka sinks do not have the primary key array, because the key is part of the message metadata. If you would like messages emitted to Kafka sinks to contain a primary key array, you can use the [`key_in_value`](create-changefeed.html#key-in-value) option. Refer to the following message outputs for examples of this.
 
 - Cloud storage sink:
 
@@ -77,9 +81,17 @@ The following sections provide examples of changefeed messages that are emitted 
 
 - Kafka sink:
 
-    ~~~
-    {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "24315 Elizabeth Mountains", "ext": {"color": "yellow"}, "id": "dadc1c0b-30f0-4c8b-bd16-046c8612bbea", "owner_id": "034075b6-5380-4996-a267-5a129781f4d3", "status": "in_use", "type": "scooter"}}
-    ~~~
+    - Default when `envelope=wrapped` or `envelope` is not specified:
+
+        ~~~
+        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "24315 Elizabeth Mountains", "ext": {"color": "yellow"}, "id": "dadc1c0b-30f0-4c8b-bd16-046c8612bbea", "owner_id": "034075b6-5380-4996-a267-5a129781f4d3", "status": "in_use", "type": "scooter"}}
+        ~~~
+
+    - Kafka sink message with `key_in_value` provided:
+
+        ~~~
+        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "46227 Jeremy Haven Suite 92", "ext": {"brand": "Schwinn", "color": "red"}, "id": "298cc7a0-de6b-4659-ae57-eaa2de9d99c3", "owner_id": "beda1202-63f7-41d2-aa35-ee3a835679d1", "status": "in_use", "type": "bike"}, "key": ["washington dc", "298cc7a0-de6b-4659-ae57-eaa2de9d99c3"]}
+        ~~~
 
 ### `bare`
 
