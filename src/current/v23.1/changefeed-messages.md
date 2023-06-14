@@ -95,13 +95,35 @@ The message envelope contains a primary key array when your changefeed is emitti
 
 ### `bare`
 
-`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key. Note that `bare` is the default envelope format for [CDC queries](cdc-queries.html). For an example, refer to [Filter columns](cdc-queries.html#filter-columns). While `bare` is compatible with all sinks, a message emitted to Kafka will not contain the `crdb` field; the message envelope will be identical to the [`row`](#row) envelope option.
+`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key.
+
+{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %}
 
 - Cloud storage sink:
 
     ~~~
     {"__crdb__": {"key": ["washington dc", "cd48e501-e86d-4019-9923-2fc9a964b264"]}, "city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "87247 Diane Park", "ext": {"brand": "Fuji", "color": "yellow"}, "id": "cd48e501-e86d-4019-9923-2fc9a964b264", "owner_id": "a616ce61-ade4-43d2-9aab-0e3b24a9aa9a", "status": "available", "type": "bike"}
     ~~~
+
+- In CDC queries:
+
+    - A changefeed containing a `SELECT` clause without any additional options:
+
+        ~~~sql
+        CREATE CHANGEFEED INTO 'external://kafka' AS SELECT city, type FROM movr.vehicles;
+        ~~~
+        ~~~
+        {"city": "los angeles", "type": "skateboard"}
+        ~~~
+
+    - A changefeed containing a `SELECT` clause with the [`topic_in_value`](create-changefeed.html#topic-in-value) option specified:
+
+        ~~~sql
+        CREATE CHANGEFEED INTO 'external://kafka' WITH topic_in_value AS SELECT city, type FROM movr.vehicles;
+        ~~~
+        ~~~
+        {"__crdb__": {"topic": "vehicles"}, "city": "los angeles", "type": "skateboard"}
+        ~~~
 
 ### `key_only`
 
