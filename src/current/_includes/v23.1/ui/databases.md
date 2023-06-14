@@ -30,6 +30,27 @@ Click a **database name** to open the **Tables** page.
 -  Select **View: Tables** in the pulldown menu to display the [Tables view](#tables-view).
 -  Select **View: Grants** in the pulldown menu to display the [Grants view](#grants-view).
 
+## Search and filter
+
+By default, the Databases page shows all databases running on the cluster. By default, the [**Tables** view](#tables-view) and the [**Grants** view](#grants-view) show all tables in a selected database.
+
+### Search databases or tables
+
+To search using the search field:
+
+1. Enter a string in the search box at the top of the tab. To search for exact terms in order, wrap the search string in quotes.
+1. Press `Enter`.
+
+    The list of databases or tables is filtered by the string.
+
+### Filter
+
+To filter the databases on the **Databases** page or tables on the [**Tables** view](#tables-view) or the [**Grants** view](#grants-view):
+
+1. Click the **Filters** field.
+      - To filter by one or more nodes on which the data reside for the database or table, select **Node** and select one or more nodes.
+1. Click **Apply**.
+
 ## Tables view
 
 The **Tables** view shows the tables in your database.

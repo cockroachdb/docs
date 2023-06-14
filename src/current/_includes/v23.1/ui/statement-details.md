@@ -23,15 +23,27 @@ The following screenshot shows the statement fingerprint of the query described 
 
 <img src="{{ 'images/v23.1/ui_statement_fingerprint_overview.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
 
+#### Insights
+
+The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
+- **Insights**: Provides the [Workload Insight type](ui-insights-page.html#workload-insight-types).
+- **Details**: Provides a description and possible recommendation.
+- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution](ui-insights-page.html#statement-execution-details), click the ID.
+
+The following screenshot shows the insights of the statement fingerprint illustrated in [Overview](#overview):
+
+<img src="{{ 'images/v23.1/ui_statement_fingerprint_insights.png' | relative_url }}" alt="Statement fingerprint overview" style="border:1px solid #eee;max-width:100%" />
+
 #### Charts
 
 Charts following the execution attributes display statement fingerprint statistics:
 
-- **Statement Execution and Planning Time**: The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
+- **Statement Time**: The time taken by the [planner]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan and for CockroachDB to execute statements.
 - **Rows Processed**: The total number of rows read and written.
 - **Execution Retries**: The number of [retries]({{ link_prefix }}transactions.html#transaction-retries).
 - **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
 - **Contention Time**: The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+- **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 

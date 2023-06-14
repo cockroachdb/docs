@@ -30,7 +30,7 @@ Make sure connection validation and retry logic is used by your application. Val
 
 {{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
 
-To verify that you have authorized the application server's network, navigate to the [**Networking** page](connect-to-your-cluster.html#step-1-authorize-your-network) on the {{ site.data.products.db }} Console and check if you see the application server network in the list of authorized networks. If you do not see the application server network in the list, [authorize the network](connect-to-your-cluster.html#step-1-authorize-your-network).
+To verify that you have authorized the application server's network, navigate to the [**Networking** page](connect-to-your-cluster.html#authorize-your-network) on the {{ site.data.products.db }} Console and check if you see the application server network in the list of authorized networks. If you do not see the application server network in the list, [authorize the network](connect-to-your-cluster.html#authorize-your-network).
 
 ## Configure PCI ready features (Dedicated advanced)
 

@@ -210,12 +210,6 @@
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                   ]
-                },
-                {
-                  "title": "Customer-Managed Encryption Keys (CMEK) Frequently Asked Questions (FAQ)",
-                  "urls": [
-                    "/cockroachcloud/cmek-faq.html"
-                  ]
                 }
               ]
             },

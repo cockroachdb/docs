@@ -38,7 +38,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
     <th>Feature</th>
   </tr>
  <tr>
-   <td rowspan="7"><a href="authentication.html">Authentication</a></td>
+   <td rowspan="8"><a href="authentication.html">Authentication</a></td>
    <td>✓</td>
    <td>✓</td>
    <td>✓</td>

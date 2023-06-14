@@ -80,7 +80,7 @@ Table name | Description| Use in production
 `schema_changes` | Contains information about schema changes in your cluster.| ✗
 `session_trace` | Contains session trace information for your cluster.| ✗
 `session_variables` | Contains information about [session variables](set-vars.html) in your cluster.| ✗
-[`statement_statistics`](#statement_statistics) | Aggregates in-memory and persisted [statistics](ui-statements-page.html#statement-statistics) from `system.statement_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
+[`statement_statistics`](#statement_statistics) | <a name="statement-statistics"></a>Aggregates in-memory and persisted [statistics](ui-statements-page.html#statement-statistics) from `system.statement_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. To reset the statistics call `SELECT crdb_internal.reset_sql_stats()`.| ✓
 `table_columns` | Contains information about table columns in your cluster.| ✗
 `table_indexes` | Contains information about table indexes in your cluster.| ✗
 `table_row_statistics` | Contains row count statistics for tables in the current database.| ✗
@@ -915,6 +915,7 @@ Field | Type | Description
 ------------|-----|------------
 `execution_statistics -> cnt` | `INT64` | The number of times execution statistics were recorded.
 <code>execution_statistics -> contentionTime -> [mean&#124;sqDiff]</code> | `NumericStat` | The time the statement spent contending for resources before being executed.
+<code>execution_statistics -> cpuSQLNanos -> [mean&#124;sqDiff]</code> | `NumericStat` | The amount of CPU time spent executing the statement in  nanoseconds. The CPU time represents the time spent and work done within SQL execution operators. <br><br>The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).
 <code>execution_statistics -> maxDiskUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum temporary disk usage that occurred while executing this statement. This is set in cases where a query had to spill to disk, e.g., when performing a large sort where not all of the tuples fit in memory.
 <code>execution_statistics -> maxMemUsage -> [mean&#124;sqDiff]</code> | `NumericStat` | The maximum memory usage that occurred on a node.
 <code>execution_statistics -> networkBytes -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes sent over the network.

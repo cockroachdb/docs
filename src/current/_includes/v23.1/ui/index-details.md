@@ -12,6 +12,7 @@ The following information is displayed for each index:
 | Total Reads      | The number of times the index was read since index statistics were reset.  |
 | Last Used (UTC)  | The time the index was created, last read, or index statistics were reset. |
 | Index Recommendations | A recommendation to drop the index if it is unused.                   |
+| **Drop index** button | [Admin users](security-reference/authorization.html#admin-role) can click this to drop an unused index. |
 
 {% if page.cloud != true %}
 Click an **index name** to view index details. The index details page displays the query used to create the index, the number of times the index was read since index statistics were reset, the time the index was last read, and the reason for the index recommendation. [Admin users](security-reference/authorization.html#admin-role) also see a list of executed statement fingerprints using the index.

@@ -499,7 +499,9 @@ For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-regio
 
 In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to add, shut down, restart, decommission, and recommission individual nodes.
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature**. The interface and output are subject to change.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

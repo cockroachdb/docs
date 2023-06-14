@@ -12,7 +12,7 @@ The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [
 ## Required privileges
 
 - To alter a view, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
-- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the database of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the view.
+- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the name of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the view.
 
 ## Syntax
 
