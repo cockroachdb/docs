@@ -139,7 +139,7 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
-1. Select the cluster to restore to. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster. 
+1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster. 
 
     {{site.data.alerts.callout_info}}
     Only active clusters are displayed. Incompatible versions cannot be selected and restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} does not work. 
