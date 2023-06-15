@@ -7,7 +7,9 @@ docs_area: reference.sql
 
  The `SHOW SUPER REGIONS` [statement](sql-statements.html) lists the [super regions](multiregion-overview.html#super-regions) for a multi-region cluster.
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 ## Synopsis
 

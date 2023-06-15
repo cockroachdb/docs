@@ -87,7 +87,7 @@ If you are setting the `resolved` option when you are aiming for high throughput
 
 - Batch messages to your sink:
     - For a [Kafka sink](changefeed-sinks.html#kafka), refer to the [`Flush`](changefeed-sinks.html#kafka-flush) parameter for the `kafka_sink_config` option.
-    - For a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), use the [`FILE_SIZE`](create-changefeed.html#file-size) parameter to flush a file when it exceeds the specified size.
+    - For a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink), use the [`file_size`](create-changefeed.html#file-size) parameter to flush a file when it exceeds the specified size.
 - Set the [`changefeed.memory.per_changefeed_limit`](cluster-settings.html) cluster setting to a higher limit to give more memory for buffering changefeed data. This setting influences how often the changefeed will flush buffered messages. This is useful during heavy traffic.
 
 ### Configuring file and message format
@@ -103,10 +103,10 @@ If you are setting the `resolved` option when you are aiming for high throughput
 
 To configure changefeeds emitting to [cloud storage sinks](changefeed-sinks.html#cloud-storage-sink) for high throughput, you should consider:
 
-- Increasing the [`FILE_SIZE`](create-changefeed.html#file-size) parameter to control the size of the files that the changefeed sends to the sink. The default is `16MB`. To configure for high throughput, we recommend `32MB`–`128MB`. Note that this is not a hard limit, and a changefeed will flush the file when it reaches the specified size.
+- Increasing the [`file_size`](create-changefeed.html#file-size) parameter to control the size of the files that the changefeed sends to the sink. The default is `16MB`. To configure for high throughput, we recommend `32MB`–`128MB`. Note that this is not a hard limit, and a changefeed will flush the file when it reaches the specified size.
 - When you [compress](#compression) a file, it will contain many more events.
-- File size is also dependent on what kind of data the changefeed job is writing. For example, large JSON blobs will quickly fill up the `FILE_SIZE` value compared to small rows.
-- When you change or increase `FILE_SIZE`, ensure that you adjust the `changefeed.memory.per_changefeed_limit` [cluster setting](cluster-settings.html), which has a default of `512MiB`. Buffering messages can quickly reach this limit if you have increased the file size.
+- File size is also dependent on what kind of data the changefeed job is writing. For example, large JSON blobs will quickly fill up the `file_size` value compared to small rows.
+- When you change or increase `file_size`, ensure that you adjust the `changefeed.memory.per_changefeed_limit` [cluster setting](cluster-settings.html), which has a default of `512MiB`. Buffering messages can quickly reach this limit if you have increased the file size.
 
 ### Configuring for tables with many ranges
 

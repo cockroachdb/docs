@@ -6,13 +6,13 @@ docs_area: manage.security
 cloud: true
 ---
 
-Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. {{ site.data.products.dedicated }} private clusters allow organizations to meet this objective.
+Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. Private clusters on {{ site.data.products.dedicated }} advanced help organizations to meet this objective.
 
 By default, {{ site.data.products.db }} has safeguards in place to protect cluster's data from the public internet. Ingress traffic to a cluster is routed through a load balancer, and it is possible to restrict inbound connections using a combination of [IP allowlisting](/docs/cockroachcloud/network-authorization.html#ip-allowlisting), and either of [AWS PrivateLink](/docs/cockroachcloud/network-authorization.html#aws-privatelink) or [GCP VPC peering](/docs/cockroachcloud/network-authorization.html#vpc-peering) depending on your cloud provider. However, data egress operations such as [exports](/docs/stable/export.html), [backups](/docs/stable/backup.html), and [Change Data Capture (CDC)](/docs/stable/change-data-capture-overview.html) use public subnets.
 
-On the other hand, a private cluster's nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
+On the other hand, a {{ site.data.products.dedicated }} advanced cluster is a _private cluster_: its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
-One private network exists per cluster region, and each node is connected to the private network for its region. A NAT gateway is connected to each private network and provides a static egress public IP address.
+In a private cluster, one private network exists per cluster region, and each node is connected to the private network for its region. A NAT gateway is connected to each private network and provides a static egress public IP address.
 
 Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across the private subnet and through the cloud provider's private network. Egress traffic from the cluster nodes to all other external resources flows across the private subnet and through the NAT gateway.
 
@@ -24,14 +24,12 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 ## Create a private cluster
 
-To create a private cluster, you must use [{{ site.data.products.db }} API](cloud-api.html) or [CockroachDB's Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster). When you [create](https://cockroachlabs.com/docs/api/cloud/v1/clusters) a private cluster using Terraform Provider, you set its `private_network_visibility` field to `true`. This in turn automatically sets uses the Cloud API to set the cluster's `network_visibility` field to `NETWORK_VISIBILITY_PRIVATE`.
+On GCP, new {{ site.data.products.dedicated }} clusters are private by default.
+On AWS, newly {{ site.data.products.dedicated }} advanced clusters deployed on AWS are private by default.
 
 {{site.data.alerts.callout_info}}
 An existing cluster can't be migrated in-place to a private cluster.
 {{site.data.alerts.end}}
-
-On GCP, new {{ site.data.products.dedicated }} clusters are private by default.
-On AWS, newly {{ site.data.products.dedicated }} clusters deployed on AWS are **not** private by default.
 
 ## Limit inbound connections from egress operations
 

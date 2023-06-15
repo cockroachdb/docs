@@ -350,7 +350,7 @@ For the previous JSON example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
 'dogs' AS table,
 event_op() AS type,
@@ -368,7 +368,7 @@ For the remaining tables, you use the same statement structure to create changef
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
 'users' AS table,
 event_op() AS type,
@@ -378,7 +378,7 @@ FROM users;
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT
 event_schema_timestamp()::int AS event_timestamp,
 'accounts' AS table,
 event_op() AS type,
@@ -392,7 +392,7 @@ For example, when you delete a message in your outbox table after processing it 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' AS SELECT * FROM outbox WHERE event_op() != 'delete';
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' AS SELECT * FROM outbox WHERE event_op() != 'delete';
 ~~~
 
 Similarly, if you have a status column in your outbox table tracking its lifecycle, you can filter out updates as well so that only the initial insert sends a message:

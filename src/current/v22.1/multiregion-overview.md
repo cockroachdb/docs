@@ -68,7 +68,9 @@ If the default survival goals and table localities meet your needs, there is not
 
 ## Super regions
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached new-in.html version="v22.1" %} Super regions allow you to define a set of [database regions](#database-regions) such that the following [schema objects](schema-design-overview.html#database-schema-objects) will have all of their replicas stored _only_ in regions that are members of the super region:
 
