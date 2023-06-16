@@ -6,6 +6,10 @@ toc: true
 docs_area: manage
 ---
 
+{{site.data.alerts.callout_danger}}
+The SQL API described on this page is deprecated and will be removed in a future release. **Due to architectural changes in CockroachDB, the SQL queries described here will not result in correct output.** To check the status of your cluster's data replication, data placement, and zone constraint conformance, use the [Critical nodes status endpoint](monitoring-and-alerting.html#critical-nodes-endpoint).
+{{site.data.alerts.end}}
+
 Several new and updated tables (listed below) are available to help you query the status of your cluster's data replication, data placement, and zone constraint conformance. For example, you can:
 
 - See what data is under-replicated or unavailable.
