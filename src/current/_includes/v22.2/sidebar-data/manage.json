@@ -246,12 +246,6 @@
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                   ]
-                },
-                {
-                  "title": "FAQs",
-                  "urls": [
-                    "/cockroachcloud/cmek-faq.html"
-                  ]
                 }
               ]
             },

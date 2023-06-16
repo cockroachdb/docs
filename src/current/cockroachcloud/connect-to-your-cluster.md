@@ -14,7 +14,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 - [Create a cluster](create-your-cluster.html).
 - [Create a SQL user](managing-access.html#create-a-sql-user).
 
-## Step 1. Authorize your network
+## Authorize your network
 
 {{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
@@ -98,7 +98,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 
 </section>
 
-## Step 2. Select a connection method
+## Select a connection method
 
 1. In the top right corner of the Console, click the **Connect** button.
 
@@ -130,7 +130,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
         <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
     </div>
 
-## Step 3. Connect to your cluster
+## Connect to your cluster
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 

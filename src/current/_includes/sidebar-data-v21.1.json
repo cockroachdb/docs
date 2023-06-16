@@ -475,8 +475,7 @@
                     "urls": [
                       "/${VERSION}/build-a-python-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html"
                     ]
                   },
                   {

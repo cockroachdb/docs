@@ -7,7 +7,9 @@ docs_area: develop
 
 If you are working with a table that must be indexed on sequential keys, you should use **hash-sharded indexes**. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hot spots and improving write performance on sequentially-keyed indexes at a small cost to read performance.
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature**. The interface and output are subject to change.
+{{site.data.alerts.end}}
 
 ## How hash-sharded indexes work
 
