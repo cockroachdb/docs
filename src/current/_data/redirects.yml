@@ -1,35 +1,78 @@
 ############################################################
 # How to use this file:
 # 
-# Add a new block like this:
-# - destination: new-file-name-with-html-extension.html#optional-anchor
-#   sources: ['old-file-name-with-html-extension.html', 'other-old-file-name.html']
-#   temporary: true|false (default: false)
-#   versions: ['v22.1', 'v22.2']
-#
-# Or like this:
+# Add a new block like this in alphabetical order based on its category:
+# 
+# 
+# Here’s the sample syntax of the file:
+# 
 # - destination: new-file-name-with-html-extension.html#optional-anchor
 #   sources: 
 #     - old-file-name-with-html-extension.html
 #     - other-old-file-name.html
-#   temporary: true|false (default: false)
-#   versions: ['v22.1', 'v22.2']
-# 
-# source can support an array of pages (e.g., you have several pages
-# you wish to redirect all at once to another page)
-# status_code can be any valid status code, including 301!
-# versions is an array of folders where the page exists
-# versions, source, and destination can all take advantage of
-# placeholders within Netlify:
+#   temporary: true|false # (optional, default = false
+#   force: true|false # optional, default = false
+#   versions: ['v22.1', 'v22.2'] # optional
 #
+# - destination is the final page where each source should land. 
+# Each destination must have the .html file extension.
+# - sources is an array of pages you wish to route to the 
+# destination page. Even if you only have one source, it must use 
+# YML’s array syntax (full spec here: https://yaml.org/). 
+# Each source must have the .html extension.
+# - temporary is an optional boolean field that dictates whether 
+# you return a 301 (false, default) or a 302 (true).
+# - force is an optional boolean field that dictates whether a 
+# force redirect should occur. This is equivalent to adding an 
+# exclamation point (!) to the end of the status code. docs:
+# https://docs.netlify.com/routing/redirects/redirect-options/#force-redirects
+# - versions is an optional array of strings containing the
+# versions to which a redirect should apply. If there is an item 
+# in the list of versions that matches a major version in 
+# versions.csv, Jekyll will automatically add a redirect 
+# for the dev and stable aliases for that page. versions.csv:
+# https://github.com/cockroachdb/docs/blob/main/src/current/_data/versions.csv
+# 
+# Each redirect added in redirects.yml generates a redirect 
+# for the page without the .html extension and a redirect for 
+# the page with the .html extension. This helps with making 
+# sure inlinks to our docs don’t 404, which hurts our SEO.
+#
+# If using versions, redirects will generate as follows:
+#
+# # for each version in versions:
+# <site base url>/<version>/<source with .html> <site base url>/<version>/<destination> <status_code>
+# <site base url>/<version>/<source without .html> <site base url>/<version>/<destination> <status_code>
+# # if a version exists in versions.csv:
+# <site base url>/dev/<source with .html> <site base url>/dev/<destination> <status_code>
+# <site base url>/dev/<source without .html> <site base url>/dev/<destination> <status_code>
+# <site base url>/stable/<source with .html> <site base url>/stable/<destination> <status_code>
+# <site base url>/stable/<source without .html> <site base url>/stable/<destination> <status_code>
+# 
+# Our <site base url> is /docs. 
+#
+# If not using versions, this is how redirects will generate:
+#
+#  <site base url>/<source with .html> <site base url>/<destination> <status_code>
+#  <site base url>/<source without .html> <site base url>/<destination> <status_code>
+#
+# No dev or stable redirects are added automatically if not using
+# the versions field. Note that you must manually specify the full 
+# path after <site base url>.
+#
+# Using :version as a placeholder includes any string of text between
+#  the forward slashes, including dev, stable, v21.2, and gobbledygook.
+# You can also name your placeholder anything you like, including
+# :gobbledygook. 
+#
+# versions, sources, and destination all support the use of
+# placeholders. Docs here:
 # https://docs.netlify.com/routing/redirects/redirect-options/#placeholders
+#
+# sources and destination support splats (* in the source, 
+# :splat in the destination). Docs here:
+# https://docs.netlify.com/routing/redirects/redirect-options/#splats
 ############################################################
-
-# /docs/v2.2/* /docs/v19.1/:splat 301!
-# /docs/managed/* /docs/cockroachcloud/:splat 301!
-# /docs/releases/ /docs/releases/index.html 301!
-# /docs/advisories/ /docs/advisories/index.html 301!
-# /docs/advisories/advisories.html /docs/advisories/index.html 301
 
 - destination: v19.1/:splat
   sources: ['v2.2/*']
@@ -47,7 +90,6 @@
   sources:
     - advisories/
     - advisories/advisories.html
-  force: true
 
 # Pages undergoing maintenance
 
@@ -61,95 +103,9 @@
 
 # Renamed pages
 
-- destination: common-errors.html
-  sources: ['general-troubleshooting.html']
-  versions: [':version']
-
-- destination: cost-based-optimizer.html
-  sources: ['sql-optimizer.html']
-  versions: [':version']
-
-- destination: set-vars.html
-  sources: ['set-application-name.html', 'set-database.html', 'set-time-zone.html']
-  versions: [':version']
-
-- destination: show-vars.html
-  sources: ['show-all.html', 'show-time-zone.html', 'show-transaction.html']
-  versions: [':version']
-
-- destination: cloud-org-sso.html
-  sources: ['cloud-sso.html']
-  versions: ['cockroachcloud']
-
-- destination: connect-to-a-serverless-cluster.html
-  sources: ['connect-to-a-free-cluster.html']
-  versions: ['cockroachcloud']
-
-- destination: create-a-serverless-cluster.html
-  sources: ['create-a-free-cluster.html']
-  versions: ['cockroachcloud']
-
-- destination: learn-about-pricing.html
-  sources: ['planning-your-serverless-cluster.html']
-  versions: ['cockroachcloud']
-
-- destination: managing-access.html
-  sources: ['console-access-management.html', 'user-authorization.html']
-  versions: ['cockroachcloud']
-
-- destination: migrate-from-serverless-to-dedicated.html
-  sources: ['migrate-from-free-to-dedicated.html']
-  versions: ['cockroachcloud']
-
-- destination: serverless-faqs.html
-  sources: ['free-faqs.html']
-  versions: ['cockroachcloud']
-
-- destination: take-and-restore-customer-owned-backups.html
-  sources: ['run-bulk-operations.html']
-  versions: ['cockroachcloud']
-
-- destination: tools-page.html
-  sources: ['monitoring-page.html']
-  versions: ['cockroachcloud']
-
-- destination: use-managed-service-backups.html
-  sources: ['backups-page.html']
-  versions: ['cockroachcloud']
-
-- destination: cdc-queries.html
-  sources: ['cdc-transformations.html']
-  versions: ['v23.1']
-
-- destination: cockroachdb-feature-availability.html
-  sources: ['experimental-features.html', 'features-in-preview.html']
-  versions: ['v22.1', 'v22.2', 'v23.1']
-
-- destination: fips.html
-  sources: ['fips-compliance.html']
-  versions: ['v23.1']
-
-- destination: global-tables.html
-  sources: ['topology-duplicate-indexes.html']
-  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
-
-- destination: regional-tables.html
-  sources:
-    - topology-geo-partitioned-leaseholders.html
-    - topology-geo-partitioned-replicas.html
-  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
-
-- destination: use-a-local-file-server.html
-  sources: ['use-a-local-file-server-for-bulk-operations.html']
-  versions: ['v22.2', 'v23.1']
-
-- destination: use-cloud-storage.html
-  sources: ['use-cloud-storage-for-bulk-operations.html']
-  versions: ['v22.2', 'v23.1']
-
-- destination: use-userfile-storage.html
-  sources: ['use-userfile-for-bulk-operations.html']
-  versions: ['v22.2', 'v23.1']
+- destination: admin-ui-overview.html
+  sources: ['explore-the-admin-ui.html']
+  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1']
 
 - destination: architecture/distribution-layer.html#range-merges
   sources: ['range-merges.html']
@@ -167,9 +123,23 @@
   sources: ['roles.html']
   versions: ['v20.1', 'v20.2', 'v21.1']
 
+- destination: backup-and-restore.html
+  sources: 
+    - backup-data.html
+    - restore-data.html
+  versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1']
+
+- destination: cdc-queries.html
+  sources: ['cdc-transformations.html']
+  versions: ['v23.1']
+
 - destination: change-data-capture-overview.html
   sources: ['change-data-capture.html']
   versions: ['v21.2']
+
+- destination: cloud-org-sso.html
+  sources: ['cloud-sso.html']
+  versions: ['cockroachcloud']
 
 - destination: cockroach-cert.html
   sources: ['create-security-certificates.html']
@@ -227,39 +197,79 @@
   sources: ['view-version-details.html']
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
 
+- destination: cockroachdb-feature-availability.html
+  sources: 
+    - experimental-features.html
+    - features-in-preview.html
+  versions: ['v22.1', 'v22.2', 'v23.1']
+
+- destination: common-errors.html
+  sources: ['general-troubleshooting.html']
+  versions: [':version']
+
+- destination: connect-to-a-serverless-cluster.html
+  sources: ['connect-to-a-free-cluster.html']
+  versions: ['cockroachcloud']
+
+- destination: cost-based-optimizer.html
+  sources: ['sql-optimizer.html']
+  versions: [':version']
+
+- destination: create-a-serverless-cluster.html
+  sources: ['create-a-free-cluster.html']
+  versions: ['cockroachcloud']
+
 - destination: demo-low-latency-multi-region-deployment.html
   sources: ['demo-geo-partitioning.html']
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: demo-replication-and-rebalancing.html
-  sources: ['demo-automatic-rebalancing.html', 'demo-data-replication.html']
+  sources: 
+  - demo-automatic-rebalancing.html
+  - demo-data-replication.html
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
 
 - destination: example-apps.html
   sources: ['build-an-app-with-cockroachdb.html']
   versions: ['v21.2']
 
+- destination: fips.html
+  sources: ['fips-compliance.html']
+  versions: ['v23.1']
+
+- destination: global-tables.html
+  sources: ['topology-duplicate-indexes.html']
+  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+
 - destination: grant.html
   sources: ['grant-roles.html']
   versions: ['v21.1']
-
-- destination: stable/install-client-drivers.html
-  sources: ['install-client-drivers.html']
 
 - destination: kubernetes-overview.html
   sources: ['operate-cockroachdb-kubernetes.html']
   versions: ['v21.2']
 
-- destination: stable/licensing-faqs.html
-  sources: [':version/licensing.html']
+- destination: learn-about-pricing.html
+  sources: ['planning-your-serverless-cluster.html']
+  versions: ['cockroachcloud']
 
 - destination: logging-overview.html
   sources: ['debug-and-error-logs.html']
   versions: ['v21.1']
 
+- destination: managing-access.html
+  sources: 
+    - console-access-management.html
+    - user-authorization.html
+  versions: ['cockroachcloud']
+
 - destination: manual-deployment.html
   sources: ['cloud-deployment.html']
   versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+
+- destination: migrate-from-serverless-to-dedicated.html
+  sources: ['migrate-from-free-to-dedicated.html']
+  versions: ['cockroachcloud']
 
 - destination: migration-overview.html
   sources: ['import-data.html']
@@ -277,6 +287,10 @@
   sources: ['orchetrate-cockroachdb-with-kubernetes-multi-region.html']
   versions: ['v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
+- destination: performance-benchmarking-with-tpc-c-1k-warehouses.html
+  sources: ['performance-benchmarking-with-tpc-c.html']
+  versions: ['v19.2', 'v20.1']
+
 - destination: performance-benchmarking-with-tpcc-large.html
   sources: ['performance-benchmarking-with-tpc-c-100k-warehouses.html']
   versions: ['v20.2', 'v21.1']
@@ -293,9 +307,16 @@
   sources: ['performance-benchmarking-with-tpc-c-1k-warehouses.html']
   versions: ['v20.2', 'v21.1']
 
+
 - destination: postgresql-compatibility.html
   sources: ['porting-postgres.html']
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+
+- destination: regional-tables.html
+  sources:
+    - topology-geo-partitioned-leaseholders.html
+    - topology-geo-partitioned-replicas.html
+  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
 
 - destination: revoke.html
   sources: ['revoke-roles.html']
@@ -313,12 +334,27 @@
   sources: ['selection-clauses.html']
   versions: ['v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
+- destination: serverless-faqs.html
+  sources: ['free-faqs.html']
+  versions: ['cockroachcloud']
+
+- destination: set-vars.html
+  sources: 
+    - set-application-name.html
+    - set-database.html
+    - set-time-zone.html
+  versions: [':version']
+
 - destination: show-create.html
   sources: 
     - show-create-sequence.html
     - show-create-table.html
     - show-create-view.html
   versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
+
+- destination: show-experimental-ranges.html
+  sources: ['show-testing-ranges.html']
+  versions: ['v2.0', 'v2.1', 'v19.1']
 
 - destination: show-ranges.html
   sources: ['show-experimental-ranges.html']
@@ -328,9 +364,30 @@
   sources: ['show-queries.html']
   versions: ['v21.1']
 
+- destination: show-vars.html
+  sources: 
+    - show-all.html
+    - show-time-zone.html
+    - show-transaction.html
+  versions: [':version']
+
+- destination: stable/install-client-drivers.html
+  sources: ['install-client-drivers.html']
+
+- destination: stable/licensing-faqs.html
+  sources: [':version/licensing.html']
+
 - destination: start-a-local-cluster-in-docker-mac.html
   sources: ['start-a-local-cluster-in-docker.html']
   versions: ['v19.2', 'v20.1', 'v20.2', 'v21.1']
+
+- destination: stream-data-out-of-cockroachdb-using-changefeeds.html
+  sources: ['change-data-capture.html']
+  versions: ['v20.2', 'v21.1']
+
+- destination: take-and-restore-customer-owned-backups.html
+  sources: ['run-bulk-operations.html']
+  versions: ['cockroachcloud']
 
 - destination: take-full-and-incremental-backups.html
   sources:
@@ -339,6 +396,10 @@
     - backup-and-restore.html
     - restore-data.html
   versions: ['v20.2', 'v21.1']
+
+- destination: tools-page.html
+  sources: ['monitoring-page.html']
+  versions: ['cockroachcloud']
 
 - destination: topology-patterns.html
   sources: ['cluster-topology-patterns.html']
@@ -387,10 +448,6 @@
     - explore-the-admin-ui.html
   versions: ['v20.2', 'v21.1']
 
-- destination: admin-ui-overview.html
-  sources: ['explore-the-admin-ui.html']
-  versions: ['v1.1', 'v2.0', 'v2.1', 'v19.1', 'v19.2', 'v20.1']
-
 - destination: ui-replication-dashboard.html
   sources: ['admin-ui-replication-dashboard.html']
   versions: ['v20.2', 'v21.1']
@@ -419,21 +476,21 @@
   sources: ['create-a-file-server.html']
   versions: ['v20.2', 'v21.1']
 
-- destination: backup-and-restore.html
-  sources: ['backup-data.html', 'restore-data.html']
-  versions: ['v2.1', 'v19.1', 'v19.2', 'v20.1']
+- destination: use-a-local-file-server.html
+  sources: ['use-a-local-file-server-for-bulk-operations.html']
+  versions: ['v22.2', 'v23.1']
 
-- destination: show-experimental-ranges.html
-  sources: ['show-testing-ranges.html']
-  versions: ['v2.0', 'v2.1', 'v19.1']
+- destination: use-cloud-storage.html
+  sources: ['use-cloud-storage-for-bulk-operations.html']
+  versions: ['v22.2', 'v23.1']
 
-- destination: performance-benchmarking-with-tpc-c-1k-warehouses.html
-  sources: ['performance-benchmarking-with-tpc-c.html']
-  versions: ['v19.2', 'v20.1']
+- destination: use-managed-service-backups.html
+  sources: ['backups-page.html']
+  versions: ['cockroachcloud']
 
-- destination: stream-data-out-of-cockroachdb-using-changefeeds.html
-  sources: ['change-data-capture.html']
-  versions: ['v20.2', 'v21.1']
+- destination: use-userfile-storage.html
+  sources: ['use-userfile-for-bulk-operations.html']
+  versions: ['v22.2', 'v23.1']
 
 # Removed Pages
 
@@ -443,23 +500,9 @@
 - destination: :version/sql-feature-support.html
   sources: [':version/detailed-sql-support.html']
 
-- destination: cockroachcloud/cmek.html#faq
-  sources: ['cockroachcloud/cmek-faq.html']
-
-- destination: cockroachcloud/connect-to-your-cluster.html
-  sources: ['cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html']
-
-- destination: cockroachcloud/create-your-cluster.html
-  sources: ['cockroachcloud/stable/cockroachcloud-create-your-cluster.html']
-
-- destination: cockroachcloud/quickstart.html
-  sources:
-    - :version/deploy-a-test-cluster.html
-    - :version/hello-world-go-gorm.html
-    - :version/hello-world-go-pgx.html
-    - :version/hello-world-java-jdbc.html
-    - :version/hello-world-node-postgres.html
-    - :version/hello-world-python-sqlalchemy.html
+- destination: admission-control.html
+  sources: ['architecture/admission-control.html']
+  versions: ['v22.1']
 
 - destination: alter-database.html
   sources: ['convert-to-schema.html']
@@ -520,6 +563,10 @@
 - destination: alter-range.html#relocate
   sources: ['alter-range-relocate.html']
   versions: ['v22.2']
+
+- destination: alter-sequence.html
+  sources: ['rename-sequence.html']
+  versions: ['v21.1']
 
 - destination: alter-table.html#add-column
   sources: ['add-column.html']
@@ -593,44 +640,27 @@
   sources: ['stream-data-out-of-cockroachdb-using-changefeeds.html']
   versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
 
-- destination: configure-replication-zones.html
-  sources: ['configure-zone.html']
-  versions: ['v22.2']
-
-- destination: stable/configure-replication-zones.html
-  sources: ['configure-replication-zones.html']
-
-- destination: partitioning.html
-  sources: ['partition-by.html']
-  versions: ['v22.2']
-
-- destination: schema-design-update.html
-  sources: ['set-schema.html']
-  versions: ['v22.2']
-
-- destination: topology-follow-the-workload.html
-  sources: ['demo-follow-the-workload.html']
-  versions: ['v20.1', 'v20.2']
-
-- destination: admission-control.html
-  sources: ['architecture/admission-control.html']
+- destination: changefeed-messages.html
+  sources: ['use-changefeeds.html']
   versions: ['v22.1']
 
-- destination: alter-sequence.html
-  sources: ['rename-sequence.html']
-  versions: ['v21.1']
+- destination: cockroachcloud/cmek.html#faq
+  sources: ['cockroachcloud/cmek-faq.html']
 
-- destination: stable/build-a-python-app-with-cockroachdb.html
-  sources: ['tutorials/build-a-python-app-with-cockroachdb-interactive.html']
+- destination: cockroachcloud/connect-to-your-cluster.html
+  sources: ['cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html']
 
-- destination: stable/cockroach-sql.html
-  sources: ['use-the-built-in-sql-client.html']
+- destination: cockroachcloud/create-your-cluster.html
+  sources: ['cockroachcloud/stable/cockroachcloud-create-your-cluster.html']
 
-- destination: stable/cockroachdb-in-comparison.html
-  sources: ['cockroachdb-in-comparison.html']
-
-- destination: stable/column-families.html
-  sources: ['column-families.html']
+- destination: cockroachcloud/quickstart.html
+  sources:
+    - :version/deploy-a-test-cluster.html
+    - :version/hello-world-go-gorm.html
+    - :version/hello-world-go-pgx.html
+    - :version/hello-world-java-jdbc.html
+    - :version/hello-world-node-postgres.html
+    - :version/hello-world-python-sqlalchemy.html
 
 - destination: community-tooling.html
   sources:
@@ -638,6 +668,14 @@
     - build-a-clojure-app-with-cockroachdb.html
     - build-a-php-app-with-cockroachdb.html
   versions: ['v20.2', 'v21.1', 'v21.2']
+
+- destination: configure-replication-zones.html
+  sources: ['configure-zone.html']
+  versions: ['v22.2']
+
+- destination: create-schema.html
+  sources: ['convert-to-schema.html']
+  versions: ['v22.1']
 
 - destination: example-apps.html
   sources: ['hello-world-example-apps.html']
@@ -655,18 +693,49 @@
     - strong-consistency.html
   versions: ['v19.1', 'v19.2', 'v20.1', 'v20.2', 'v21.1']
 
+- destination: https://docs.peewee-orm.com/en/latest/peewee/playhouse.html
+  sources: [':version/build-a-python-app-with-cockroachdb-peewee.html']
+
+- destination: https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB
+  sources: [':version/contribute-to-cockroachdb.html']
+  force: true
+
+- destination: make-queries-fast.html
+  sources: ['performance-tuning.html']
+  versions: ['v21.1']
+
+- destination: partitioning.html
+  sources: ['partition-by.html']
+  versions: ['v22.2']
+
+- destination: schema-design-update.html
+  sources: ['set-schema.html']
+  versions: ['v22.2']
+
+- destination: show-create.html
+  sources: ['cockroach-dump.html']
+  versions: ['v21.2', 'v22.1']
+
+- destination: stable/build-a-python-app-with-cockroachdb.html
+  sources: ['tutorials/build-a-python-app-with-cockroachdb-interactive.html']
+
+- destination: stable/cockroach-sql.html
+  sources: ['use-the-built-in-sql-client.html']
+
+- destination: stable/cockroachdb-in-comparison.html
+  sources: ['cockroachdb-in-comparison.html']
+
+- destination: stable/column-families.html
+  sources: ['column-families.html']
+
+- destination: stable/configure-replication-zones.html
+  sources: ['configure-replication-zones.html']
+
 - destination: stable/frequently-asked-questions.html
   sources: 
     - automated-scaling-and-repair.html
     - frequently-asked-questions.html
     - sql.html
-
-- destination: v21.1/interleave-in-parent.html#deprecation
-  sources: ['interleave-in-parent.html']
-
-- destination: make-queries-fast.html
-  sources: ['performance-tuning.html']
-  versions: ['v21.1']
 
 - destination: stable/kubernetes-overview.html
   sources: 
@@ -689,33 +758,17 @@
   sources: ['start-a-local-cluster.html']
   versions: ['v21.2', 'v22.1', 'cockroachcloud']
 
+- destination: topology-follow-the-workload.html
+  sources: ['demo-follow-the-workload.html']
+  versions: ['v20.1', 'v20.2']
+
 - destination: tutorials/sql-playground.html
   sources: 
     - :version/sql-playground.html
     - sql-playground.html
 
-- destination: show-create.html
-  sources: ['cockroach-dump.html']
-  versions: ['v21.2', 'v22.1']
-
-- destination: changefeed-messages.html
-  sources: ['use-changefeeds.html']
-  versions: ['v22.1']
-
-- destination: create-schema.html
-  sources: ['convert-to-schema.html']
-  versions: ['v22.1']
-
-- destination: example-apps.html
-  sources: ['hello-world-example-apps.html']
-  versions: ['v21.2', 'v22.1', 'cockroachcloud']
-
-- destination: https://docs.peewee-orm.com/en/latest/peewee/playhouse.html
-  sources: [':version/build-a-python-app-with-cockroachdb-peewee.html']
-
-- destination: https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB
-  sources: [':version/contribute-to-cockroachdb.html']
-  force: true
+- destination: v21.1/interleave-in-parent.html#deprecation
+  sources: ['interleave-in-parent.html']
 
 # Cloud releases
 
@@ -789,18 +842,14 @@
 
 # Redirects for Dockerhub
 
-# /docs/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-linux.html 301
-# /docs/orchestrate-cockroachdb-with-kubernetes.html /docs/stable/deploy-cockroachdb-with-kubernetes.html 301
+- destination: stable/deploy-cockroachdb-with-kubernetes.html
+  sources: ['orchestrate-cockroachdb-with-kubernetes.html']
 
 - destination: stable/install-cockroachdb.html
   sources: ['install-cockroachdb.html']
 
 - destination: stable/start-a-local-cluster-in-docker-linux.html
   sources: ['start-a-local-cluster-in-docker.html']
-
-- destination: stable/deploy-cockroachdb-with-kubernetes.html
-  sources: 
-    - orchestrate-cockroachdb-with-kubernetes.html
 
 # Redirects from jekyll-redirect-from gem
 

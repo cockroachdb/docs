@@ -1,62 +1,58 @@
 ---
 layout: null
 ---
-
-{%- if site.baseurl == "/docs" %}
+# Release notes generated from _data/redirects.yml
+{% if site.baseurl == "/docs" %}
 / /docs/ 301!
+{% assign major_versions = site.data.versions | map: "major_version" -%}
 
-{% assign major_versions = site.data.versions | map: "major_version" %}
-
-{% for r in site.data.redirects %}
-    {% if r.temporary == true %}
-        {% assign status_code = "302" %}
-    {% else %}
-        {% assign status_code = "301" %}
-    {% endif %}
-    {% if r.force == true %}
-        {% assign status_code = status_code | append: "!" %}
-    {% endif %}
-
-
-    {% if r.versions.size > 0 %}
-        {% assign add_dev_stable = false %}
-        {% for v in r.versions %}
-            {% if major_versions contains v %}
-                {% assign add_dev_stable = true %}
-                {% break %}
-            {% endif %}
-        {% endfor %}
-        {% for s in r.sources %}
-            {% for v in r.versions %}
+{%- for r in site.data.redirects -%}
+    {%- if r.temporary == true -%}
+        {%- assign status_code = "302" -%}
+    {%- else -%}
+        {%- assign status_code = "301" -%}
+    {%- endif -%}
+    {%- if r.force == true -%}
+        {%- assign status_code = status_code | append: "!" -%}
+    {%- endif -%}
+    {%- if r.versions.size > 0 -%}
+        {%- assign add_dev_stable = false -%}
+        {%- for v in r.versions -%}
+            {%- if major_versions contains v -%}
+                {%- assign add_dev_stable = true -%}
+                {%- break -%}
+            {%- endif -%}
+        {%- endfor -%}
+        {%- for s in r.sources -%}
+            {%- for v in r.versions -%}
 {{ site.baseurl }}/{{ v }}/{{ s }} {{ site.baseurl }}/{{ v }}/{{ r.destination }} {{ status_code }}
-
 {{ site.baseurl }}/{{ v }}/{{ s | replace: ".html", "" }} {{ site.baseurl }}/{{ v }}/{{ r.destination }} {{ status_code }}
-            {% endfor %}
-            {% if add_dev_stable == true %}
+            {%- endfor -%}
+            {%- if add_dev_stable == true -%}
 {{ site.baseurl }}/dev/{{ s }} {{ site.baseurl }}/dev/{{ r.destination }} {{ status_code }}
-
 {{ site.baseurl }}/stable/{{ s }} {{ site.baseurl }}/stable/{{ r.destination }} {{ status_code }}
-
 {{ site.baseurl }}/dev/{{ s | replace: ".html", "" }} {{ site.baseurl }}/dev/{{ r.destination }} {{ status_code }}
-
 {{ site.baseurl }}/stable/{{ s | replace: ".html", "" }} {{ site.baseurl }}/stable/{{ r.destination }} {{ status_code }}
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        {% for s in r.sources %}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- else -%}
+        {%- for s in r.sources -%}
+            {%- if r.destination contains "http://" or r.destination contains "https://" -%}
+{{ site.baseurl }}/{{ s }} {{ r.destination }} {{ status_code }}
+            {%- else -%}
 {{ site.baseurl }}/{{ s }} {{ site.baseurl }}/{{ r.destination }} {{ status_code }}
-            {% if s contains ".html" %}
+                {%- if s contains ".html" -%}
 {{ site.baseurl }}/{{ s | replace: ".html", "" }} {{ site.baseurl }}/{{ r.destination }} {{ status_code }}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endfor %}
-
+                {%- endif -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endif -%}
+{%- endfor %}
 
 # CockroachDB Self-Hosted release notes
 {% comment %} These should never be removed. These redirects exist to help with the per-version release note implementation. {% endcomment %}
 
-{% assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
+{%- assign rn_rdr = "v1.0,v1.1,v2.0,v2.1,v19.1,v19.2,v20.1,v20.2,v21.1,v21.2" | split: "," -%}
 {%- assign rns = site.data.releases | where_exp: "rns", "rn_rdr contains rns.major_version" -%}
 {%- for r in rns -%}
 {%- capture old_url -%}releases/{{ r.release_name }}{%- endcapture -%}
