@@ -2,7 +2,7 @@
 IPv6 addresses are currently not supported.
 {{site.data.alerts.end}}
 
-To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization, corresponding to, for example, your application servers, hardened administrator access points, and disaster recovery pipelines.
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, it is recommended to restrict your cluster network to allow access only from specific IP address ranges controlled by your organization, corresponding to, for example, your application deployments, hardened administrator access points, or disaster recovery pipelines.
 
 ### Add IP addresses to the allowlist
 
@@ -19,6 +19,6 @@ To prevent denial-of-service attacks, brute force password attacks, and other fo
 1. _(Optional)_ Enter a **Network name**.
 
 1. From the **Network** dropdown, select:
-    - **New Network** to authorize your local machine's network or application server's network. Enter the public IPv4 address of the machine in the **Network** field. To add a range of IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. For a general introduction to IP routing, refer to [Digital Ocean&mdash;Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+    - **New Network** to authorize the network of your local machine or application deployment or another valid source. Enter the public IPv4 address of the source machine in the **Network** field. To add a range of source IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. For a general introduction to IP routing, refer to [Digital Ocean&mdash;Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
     - **Current Network** to auto-populate your local machine's IP address.
     - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.

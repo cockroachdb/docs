@@ -17,7 +17,7 @@ This page shows you how to connect to your {{ site.data.products.dedicated }} cl
 ## Authorize your network
 
 {{site.data.alerts.callout_info}}
-Removing or adding an authorized network on your {{ site.data.products.dedicated }} cluster may take several seconds to take effect.
+Removing or adding an authorized network on your {{ site.data.products.dedicated }} cluster may take a few seconds to take effect.
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/authorize-your-clusters-networks.md %}

@@ -5,11 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-Amazon Web Services (AWS) PrivateLink allows customers to establish SQL access to their {{ site.data.products.dedicated }} clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
+Amazon Web Services (AWS) PrivateLink support in {{ site.data.products.dedicated }} allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
 For broader context, refer to [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
 
-This page describes the steps to setting up an AWS PrivateLink connection for your {{ site.data.products.dedicated }} cluster from the AWS side. You must also configure the AWS PrivateLink connection from the cluster side. Refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink)
+This page describes the steps to setting up an AWS PrivateLink connection for your {{ site.data.products.dedicated }} cluster from your AWS VPC Console. You must also configure the AWS PrivateLink connection from your CockroachDB cluster, to do this, refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink).
 
 {{site.data.alerts.callout_info}}
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
@@ -36,16 +36,16 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 
 1. If you have a multi-region cluster, select the region to create a connection in. Skip this step if you have a single-region cluster.
 1. <a name="step-1"></a> Copy the **Service Name** shown in the connection modal.
-1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/), click **Your VPCs** in the sidebar.
+1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/) in your AWS account, click **Your VPCs** in the sidebar.
 1. Locate the VPC ID of the VPC you want to create your endpoint in.
 
-    This will probably be the same VPC as the VPC your EC2 instances and application are running in. You can also choose a different VPC as long as it is peered to the VPC your application is running in.
+    This will probably be the VPC which hosts the application or source program which is supposed to access your {{ site.data.products.dedicated }} cluster. You can also choose a different VPC as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
 
 1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 4.
 1. Click **Subnets** in the sidebar.
 1. Locate the subnet IDs corresponding to the VPC you chose in Step 4.
 1. Click **Security Groups** in the sidebar.
-1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
+1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program onpPort 26257:
   - In the **Security group name** field, enter a name for the security group.
   - In the **Description** field, enter a description for the security group.
   - From the **VPC** dropdown, select the VPC you chose in Step 4.
@@ -100,7 +100,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1.  Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
 1.  Click **Verify**.
-1.  {{ site.data.products.db }} will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
+1.  {{ site.data.products.db }} will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page in your AWS account.
 
 ### Enable private DNS
 

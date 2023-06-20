@@ -16,8 +16,8 @@ You can authorize network access to your cluster by:
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
 - Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only). Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public internet, and therefore offers several advantages:
 
-    - Enhanced network security (no public IPs, no transit over public networks).
-    - Direct connection to application servers that do not have static public IPs
+    - Enhanced network security (no access through public IPs i.e. no transit over public networks).
+    - Direct connection from application deployment that do not have static public IPs
     - Reduced lower network latency.
     - This option can also be helpful if you need more than the current maximum of 20 authorized networks per cluster.
 
