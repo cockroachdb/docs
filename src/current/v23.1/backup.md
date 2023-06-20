@@ -143,11 +143,12 @@ The `system.users` table stores your users and their passwords. To restore your 
 
 ## Performance
 
-The backup job process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data.
+The backup job process minimizes its impact to the cluster's performance with:
+
+- Distribution of work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data. Refer to the [Backup Architecture](backup-architecture.html) page for a detailed explanation of how a backup job works.
+- {% include_cached new-in.html version="v23.1" %} Integration with elastic CPU by default, which helps to prevent backups from affecting foreground traffic. This integration will result in a cluster prioritizing SQL traffic over backups.
 
 A backup job, like any read, cannot export a range if the range contains an [unresolved intent](architecture/transaction-layer.html#resolving-write-intents). While you typically will want bulk, background jobs like `BACKUP` to have as little impact on your foreground traffic as possible, it's still important for backups to complete (which maintains your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)).
-
-{% include_cached new-in.html version="v23.1" %} By default, backup jobs are integrated with elastic CPU, which helps to prevent backups from affecting foreground traffic. This integration will result in a cluster prioritizing SQL traffic over backups.
 
 Unlike a normal [read transaction](architecture/reads-and-writes-overview.html#read-scenario) that will block until any uncommitted writes it encounters are resolved, a backup job will be allotted a fixed amount of CPU time to read the required keys and values. Once the backup's read request has exhausted this time, the backup will resume once it has been allocated more CPU time. This process allows for other requests, such as foreground SQL traffic to continue, almost unaffected, because there is a cap on how much CPU a backup job will take.
 
@@ -161,9 +162,9 @@ We recommend always starting backups with a specific [timestamp](timestamp.html)
 BACKUP...AS OF SYSTEM TIME '-10s';
 ~~~
 
-This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, since the backup will take priority and will force still-running transactions to restart after the backup is finished.
+This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because [`AS OF SYSTEM TIME`](as-of-system-time.html) returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a best practice to reduce the number of still-running transactions you may encounter, since the backup will take priority and will force still-running transactions to restart after the backup is finished.
 
-`BACKUP` will initially ask individual ranges to back up but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
+A backup job will initially ask individual ranges to back up but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When a backup job has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip.
 
 {% include {{ page.version.version }}/backups/retry-failure.md %}
 
