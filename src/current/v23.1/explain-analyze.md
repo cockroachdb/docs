@@ -66,7 +66,7 @@ Property        | Description
 `sql cpu time` | The total amount of time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).
 `regions` | The [regions](show-regions.html) where the affected nodes were located.
 `max sql temp disk usage` | ([`DISTSQL`](#distsql-option) option only) How much disk spilling occurs when executing a query. This property is displayed only when the disk usage is greater than zero.
-`estimated RUs consumed` | The estimated number of [Request Units (RUs)](../cockroachcloud/plan-your-cluster-serverless.html#request-units) consumed by the statement. This property is only visible on {{ site.data.products.serverless }} clusters.
+`estimated RUs consumed` | The estimated number of [Request Units (RUs)](../cockroachcloud/plan-your-cluster-serverless.html#request-units) consumed by the statement. This property is visible only on {{ site.data.products.serverless }} clusters.
 
 ### Statement plan tree properties
 

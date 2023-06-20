@@ -13,7 +13,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### In what clouds and regions is {{ site.data.products.db }} available?
 
-Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, contact your Cockroach Labs account team.
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 ### What is {{ site.data.products.dedicated }}?
 
