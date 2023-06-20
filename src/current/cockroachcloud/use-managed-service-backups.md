@@ -142,7 +142,7 @@ To restore a cluster:
 1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster. 
 
     {{site.data.alerts.callout_info}}
-    Only active clusters are displayed. Incompatible versions cannot be selected and restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} does not work. 
+    Only active clusters are displayed. You can perform a cross-cluster restore across clusters that belong to the same organization. Incompatible versions cannot be selected and restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
     {{site.data.alerts.end}}
 
 1. Click **Continue**.
@@ -263,6 +263,17 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
     ~~~ sql
     RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
+
+## Known limitations
+
+- For [restoring a cluster](#restore-a-cluster):
+    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an older version does not work. See [Restoring Backups Across Versions](../{{site.current_cloud_version}}/restoring-backups-across-versions.html).  
+    - Restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
+    - Restoring to a different cluster is disabled for [CMEK](cmek.html) clusters.
+    - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
+    - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.   
+
+See [tracking issue](https://github.com/cockroachlabs/managed-service/pull/12211). 
 
 ## Troubleshooting
 
