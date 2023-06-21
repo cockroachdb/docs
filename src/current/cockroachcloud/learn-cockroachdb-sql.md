@@ -54,7 +54,7 @@ SHOW DATABASES;
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string](connect-to-your-cluster.html#step-2-select-a-connection-method).
+It's best to set the default database directly in your [connection string](connect-to-your-cluster.html#select-a-connection-method).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

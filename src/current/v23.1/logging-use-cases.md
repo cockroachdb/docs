@@ -153,8 +153,6 @@ The [`SESSIONS`](logging.html#sessions) channel logs SQL session events. This in
 These logs perform one disk I/O per event. Enabling each setting will impact performance.
 {{site.data.alerts.end}}
 
-{% include common/experimental-warning.md %}
-
 #### Example: Client connection events
 
 To log SQL client connection events to the `SESSIONS` channel, enable the `server.auth_log.sql_connections.enabled` [cluster setting](cluster-settings.html):

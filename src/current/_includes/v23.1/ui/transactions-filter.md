@@ -6,13 +6,42 @@
   {% assign page_prefix = "ui-" %}
 {% endif %}
 
+## Transaction Fingerprints results
+
+The transaction fingerprints returned are determined by the selected **Search Criteria**:
+
+1. By default, the **Top** `100` transaction fingerprints **By** `% of All Runtime` are returned.
+  - To change the number returned, select `25`, `50`, or `500` from the dropdown.
+  - To change the column filter, select `CPU Time`, `Contention Time`, `Execution Count`, or `Transaction Time` from the dropdown.
+1. Select the [**Time Range**](#time-interval).
+1. Click **Apply**.
+
+    The list of transactions that satisfy the search criteria is displayed. The results can be further [searched and filtered](#search-and-filter).
+
 ### Time interval
 
-To view transaction fingerprints within a specific time interval, click the time interval selector and pick an interval. The time interval field supports preset time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
+To view transaction fingerprints within a specific time interval, select a time interval from the selector at the top of the tab. The time interval field supports preset time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
 
-Use the arrow keys to cycle through previous and next time intervals. When you select a time interval, the same interval is selected in the [Metrics]({{ link_prefix }}ui-overview.html#metrics) page.
+Use the arrow buttons to cycle through previous and next time intervals. To select the most recent interval, click **Now**. When you select a time interval, the same interval is selected in the [Metrics]({{ link_prefix }}ui-overview.html#metrics) page.
 
-It's possible to select an interval for which no transaction statistics exist. CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
+CockroachDB persists transaction statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
+
+{{site.data.alerts.callout_info}}
+It's possible to select an interval for which no transaction statistics exist.
+{{site.data.alerts.end}}
+
+## Search and filter
+
+By default, the **Transactions** page shows transactions from all applications and databases running on the cluster.
+
+### Search field
+
+To search using the search field:
+
+1. Enter a string in the search box at the top of the tab. To search for exact terms in order, wrap the search string in quotes.
+1. Press `Enter`.
+
+    The list of transactions is filtered by the string.
 
 ### Filter
 
@@ -27,5 +56,7 @@ To filter the transactions:
       - To display only statement fingerprints that take longer than a specified time to run, specify the time and units.
 
 1. Click **Apply**.
+
+The following screenshot shows the transactions that contain the string `rides` for the `movr` application filtered by `Runs Longer Than: 300 milliseconds`:
 
 <img src="{{ 'images/v23.1/movr-transactions-rides.png' | relative_url }}" alt="Movr rides transactions" style="border:1px solid #eee;max-width:100%" />

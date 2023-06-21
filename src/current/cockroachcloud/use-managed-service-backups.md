@@ -18,11 +18,11 @@ To access your managed-service backups, select a cluster from the [**Clusters** 
 This page describes the **Backups** page and how to restore your data.
 
 <section class="filter-content" markdown="1" data-scope="serverless">
-Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days.
-</section>
+Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days.
+</section> 
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
-Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. Backups are stored in the same region that a [single-region cluster](plan-your-cluster.html#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
+Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. Backups are stored in the same region that a [single-region cluster](plan-your-cluster.html#cluster-configuration) is running in or the primary region of a [multi-region cluster](plan-your-cluster.html#multi-region-clusters).
 
 {{site.data.alerts.callout_info}}
 You cannot restore a backup of a multi-region database into a single-region database.
@@ -260,7 +260,7 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
 
 ### Resolve a database naming conflict
 
-The databases you want to restore cannot have the same name as an existing database in the target cluster. Before you restore a database, verify that the database name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-3-connect-to-your-cluster) and run the following:
+The databases you want to restore cannot have the same name as an existing database in the target cluster. Before you restore a database, verify that the database name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#connect-to-your-cluster) and run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -283,7 +283,7 @@ Or [change the existing database's name](../{{site.current_cloud_version}}/alter
 
 ### Resolve a table naming conflict
 
-The table you want to restore cannot have the same name as an existing table in the target database. Before you restore a table, verify that the table name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-3-connect-to-your-cluster) and run the following:
+The table you want to restore cannot have the same name as an existing table in the target database. Before you restore a table, verify that the table name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#connect-to-your-cluster) and run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

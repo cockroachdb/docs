@@ -216,7 +216,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true';
+    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
     ~~~
 
     You'll receive one message for each of the inserts that affects the specified column family:
@@ -236,7 +236,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true';
+    CREATE CHANGEFEED FOR TABLE office_dogs FAMILY employee, TABLE office_plants FAMILY dog_friendly INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true';
     ~~~
 
     You'll receive one message for each insert that affects the specified column families:
@@ -264,7 +264,7 @@ In this example, you'll set up changefeeds on two tables that have [column famil
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE CHANGEFEED FOR TABLE office_dogs INTO 'webhook-https://localhost:3000?INSECURE_TLS_SKIP_VERIFY=true' with split_column_families;
+    CREATE CHANGEFEED FOR TABLE office_dogs INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' with split_column_families;
     ~~~
 
     You'll receive output for both of the column families in the `office_dogs` table:

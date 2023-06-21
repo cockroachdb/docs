@@ -277,21 +277,21 @@ You can also [create external connections](create-external-connection.html) to d
     Use the `Endpoint` from your cluster details and precede it with the `kafka://` scheme. For example, an endpoint of `pkc-4yyd6.us-east1.gcp.confluent.cloud:9092` would be: `kafka://pkc-4yyd6.us-east1.gcp.confluent.cloud:9092`.
 
     Since the Kafka cluster uses `SASL` authentication, you need to pass the following [parameters](create-changefeed.html#query-parameters). This includes the cluster API and secret key you created in [Step 2](#step-2-create-a-cluster-api-key-and-secret):
-    - `TLS_ENABLED=true`
-    - `SASL_ENABLED=true`
-    - `SASL_USER={CLUSTER API KEY}`
-    - `SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}`
-    - `SASL_MECHANISM=PLAIN`
+    - `tls_enabled=true`
+    - `sasl_enabled=true`
+    - `sasl_user={CLUSTER API KEY}`
+    - `sasl_password={URL-ENCODED CLUSTER SECRET KEY}`
+    - `sasl_mechanism=PLAIN`
 
     ~~~
-    "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN"
+    "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
 
 1. Create an external connection for the Kafka URI:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?TLS_ENABLED=true&SASL_ENABLED=true&SASL_USER={CLUSTER API KEY}&SASL_PASSWORD={URL-ENCODED CLUSTER SECRET KEY}&SASL_MECHANISM=PLAIN"
+    CREATE EXTERNAL CONNECTION kafka AS "kafka://{KAFKA ENDPOINT}?tls_enabled=true&sasl_enabled=true&sasl_user={CLUSTER API KEY}&sasl_password={URL-ENCODED CLUSTER SECRET KEY}&sasl_mechanism=PLAIN"
     ~~~
 
 1. To construct the Confluent Schema Registry URI, you need:

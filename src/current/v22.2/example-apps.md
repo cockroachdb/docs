@@ -37,7 +37,6 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | [psycopg3](https://www.psycopg.org/psycopg3/docs/)           | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-psycopg3.html)
 | [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Multi-region Flask Web App](movr-flask-overview.html)
 | [Django](https://pypi.org/project/Django/)                      | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-django.html)
-| [PonyORM](https://ponyorm.org/)                                 | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-pony.html)
 
 ## Go
 

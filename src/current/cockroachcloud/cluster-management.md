@@ -39,12 +39,11 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 The [**Overview** page](cluster-overview-page.html?filter=dedicated) displays details about the selected {{ site.data.products.db }} cluster:
 
-- The **Current Charges** and next billing date for the cluster
-- The cluster's **Cloud** provider
-- The cluster's **Hardware per node**
-- A list of the selected cluster's nodes.
+The cluster's **Configuration** shows details about the cluster, its deployment environment, and its nodes, such as the cluster's cloud provider, plan type, regions, and each node's status, compute, and storage.
 
-    For each node, the page displays the node's `Name` and `Status`, nested under its region.
+The **Cluster upgrades** section shows the cluster's [**Upgrade window**](#set-an-upgrade-window) for patch upgrades and the current value for the [**Delay patch upgrades**](#set-an-upgrade-window) setting.
+
+- The **PCI Ready** section shows the status of features required for PCI DSS. Requires {{ site.data.products.dedicated }} advanced.
 
 - The status of security features required for [PCI readiness](#configure-pci-ready-features-dedicated-advanced).
 
@@ -163,6 +162,26 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 {% endcomment %}
+  
+## Set an upgrade window
+
+From your cluster's [**Overview** page](cluster-overview-page.html), you can view and manage the patch upgrade window for your cluster. To help keep your clusters updated while minimizing disruption and downtime, set a window of time when your cluster is experiencing the lowest traffic.
+
+{{site.data.alerts.callout_success}}
+If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy](upgrade-policy.html).
+{{site.data.alerts.end}}
+
+To set an upgrade window:
+
+1. Click the pencil icon next to **Cluster upgrades** to edit the upgrade window.
+1. From the **Upgrade day** dropdown, select the day of the week during which upgrades may be applied.
+1. From the **Start of window** dropdown, select a start time for your upgrade window in UTC.
+    
+    The window will last for 6 hours from the start time.
+    
+1. (Optional) If you want to delay automatic upgrades for 60 days, switch **Delay patch upgrades** to **On**.
+    
+    You can enable this setting for development and testing clusters if you want to ensure that they are upgraded before production clusters.
 
 ## Create a database
 

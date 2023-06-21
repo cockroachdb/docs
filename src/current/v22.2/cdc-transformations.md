@@ -276,7 +276,7 @@ For the previous JSON example:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' WITH schema_change_policy='stop'
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop'
 AS SELECT cdc_updated_timestamp()::int AS event_timestamp,
 'dogs' AS table,
 IF (cdc_is_delete(),'delete','create') AS type,
@@ -294,7 +294,7 @@ For the remaining tables, you use the same statement structure to create changef
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' WITH schema_change_policy='stop'
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop'
 AS SELECT cdc_updated_timestamp()::int AS event_timestamp,
 'users' AS table,
 IF (cdc_is_delete(),'delete','create') AS type,
@@ -304,7 +304,7 @@ FROM users;
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' WITH schema_change_policy='stop'
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop'
 AS SELECT cdc_updated_timestamp()::int AS event_timestamp,
 'accounts' AS table,
 IF (cdc_is_delete(),'delete','create') AS type,
@@ -318,7 +318,7 @@ For example, when you delete a message in your outbox table after processing it 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED INTO 'kafka://endpoint?TOPIC_NAME=events' WITH schema_change_policy='stop' AS SELECT * FROM outbox WHERE NOT cdc_is_delete();
+CREATE CHANGEFEED INTO 'kafka://endpoint?topic_name=events' WITH schema_change_policy='stop' AS SELECT * FROM outbox WHERE NOT cdc_is_delete();
 ~~~
 
 Similarly, if you have a status column in your outbox table tracking its lifecycle, you can filter out updates as well so that only the initial insert sends a message:

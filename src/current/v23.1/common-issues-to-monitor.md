@@ -21,9 +21,13 @@ Issues with CPU most commonly arise when there is insufficient CPU to support th
 
 Provision enough CPU to support your operational and workload concurrency requirements:
 
+{% capture cpu_recommendation_minimum %}For cluster stability, Cockroach Labs recommends a _minimum_ of {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='minimum' %}, and strongly recommends no fewer than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='absolute_minimum' %} per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks.{% endcapture %}
+
+{% capture cpu_recommendation_maximum %}Cockroach Labs does not extensively test clusters with more than {% include {{ page.version.version }}/prod-deployment/provision-cpu.md threshold='maximum' %} per node. This is the recommended _maximum_ threshold.{% endcapture %}
+
 | Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CPU      | <ul><li>Each node should have {% include {{ page.version.version }}/prod-deployment/provision-cpu.md %}.</li><li>Use larger VMs to handle temporary workload spikes and processing hot spots.</li><li>Use connection pooling to manage workload concurrency. {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %} For more details, see [Sizing connection pools](connection-pooling.html#sizing-connection-pools).</li><li>See additional CPU recommendations in the [Production Checklist](recommended-production-settings.html#sizing).</li></ul> |
+| CPU      | <ul><li>{{ cpu_recommendation_minimum | strip_newlines }}</li><li>{{ cpu_recommendation_maximum | strip_newlines }}</li><li>Use larger VMs to handle temporary workload spikes and processing hot spots.</li><li>Use connection pooling to manage workload concurrency. {% include {{ page.version.version }}/prod-deployment/prod-guidance-connection-pooling.md %} For more details, refer to [Sizing connection pools](connection-pooling.html#sizing-connection-pools).</li><li>For additional CPU recommendations, refer to [Recommended Production Settings](recommended-production-settings.html#sizing).</li></ul> |
 
 ### CPU monitoring
 
@@ -126,7 +130,7 @@ Provision enough memory and allocate an appropriate portion for data caching:
 
 | Category | Recommendations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 |----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Memory   | <ul><li>Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}</li><li>See additional memory recommendations in the [Production Checklist](recommended-production-settings.html#memory).</li> |
+| Memory   | <ul><li>Provision at least {% include {{ page.version.version }}/prod-deployment/provision-memory.md %}.</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-cache-max-sql-memory.md %} For more details, see the [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size).</li><li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-disable-swap.md %}</li><li>See additional memory recommendations in the [Recommended Production Settings](recommended-production-settings.html#memory).</li> |
 
 ### Memory monitoring
 
@@ -232,7 +236,7 @@ Provision enough storage capacity for CockroachDB data, and configure your volum
       <li>Provision volumes with {% include {{ page.version.version }}/prod-deployment/provision-storage.md %}.</li>
       <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}</li>
       <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-log-volume.md %}</li>
-      <li>See additional storage recommendations in the <a href="recommended-production-settings.html#storage">Production Checklist</a>.</li>
+      <li>See additional storage recommendations in the <a href="recommended-production-settings.html#storage">Recommended Production Settings</a>.</li>
     </ul>
   </td>
 </tr>
@@ -242,7 +246,7 @@ Provision enough storage capacity for CockroachDB data, and configure your volum
     <ul>
       <li>Disks must be able to achieve {% include {{ page.version.version }}/prod-deployment/provision-disk-io.md %}.</li>
       <li>{% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}</li>
-      <li>See additional disk I/O recommendations in the <a href="recommended-production-settings.html#disk-i-o">Production Checklist</a>.</li>
+      <li>See additional disk I/O recommendations in the <a href="recommended-production-settings.html#disk-i-o">Recommended Production Settings</a>.</li>
     </ul>
   </td>
 </tbody>
@@ -308,7 +312,7 @@ Because each node needs to update a liveness record on disk, maxing out disk ban
 
 ## See also
 
-- [Production Checklist](recommended-production-settings.html)
+- [Recommended Production Settings](recommended-production-settings.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [Common Errors and Solutions](common-errors.html)
 - [Operational FAQs](operational-faqs.html)
