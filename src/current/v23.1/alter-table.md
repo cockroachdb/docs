@@ -913,6 +913,8 @@ $ cockroach demo bank
 
 ##### Move a column from one column family to another
 
+Moving frequently updated columns to their own [column family can increase performance](column-families.html#default-behavior).
+
 To move a column from one column family to another column family, create a temporary, [non-visible](create-table.html#not-visible-property) [stored computed column](computed-columns.html) in the target column family, then rename the columns. Once this succeeds, you can drop the original, now renamed column.
 
 For example, to move the `new_name` column from `f2` to `f1`:
@@ -950,10 +952,10 @@ For example, to move the `new_name` column from `f2` to `f1`:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You must set the `sql_safe_updates` [session variable](set-vars.html) to `false` to drop a column in a table that has data.
+    You must set the [`sql_safe_updates` session variable](set-vars.html#sql-safe-updates) to `false` to drop a column in a table that has data.
     {{site.data.alerts.end}}
 
-Moving a column to another column family executes writes to the underlying storage equal to two times the number of rows. For example, if the table has 10 million rows, there will be 20 million writes to the storage layer: 10 million writes when creating the temporary stored computed column, and 10 million writes when removing the original column.
+Moving a column to another column family executes writes to the underlying storage equal to two times the number of rows. For example, if the table has 10 million rows, there will be 20 million writes to the [storage layer](architecture/storage-layer.html): 10 million writes when creating the temporary stored computed column, and 10 million writes when removing the original column.
 
 #### Add a column with an `ON UPDATE` expression
 
