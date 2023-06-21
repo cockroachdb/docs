@@ -286,4 +286,4 @@ Compile the information about the service account and key we've just created int
 	cat cmek_config.json | jq
 	~~~
 
-After you have built your CMEK configuration manifest with the details of your cluster, your newly pr service account and KMS key for your CockroachDB cluster's CMEK, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek-for-your-cockroachdb-dedicated-cluster).
+After you have built your CMEK configuration manifest with the details of your cluster and provisioned the service account and KMS key in GCP, return to [Enabling CMEK for a {{ site.data.products.dedicated }} cluster](managing-cmek.html#step-4-activate-cmek).

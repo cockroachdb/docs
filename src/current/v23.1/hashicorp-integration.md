@@ -28,7 +28,6 @@ CockroachDB customers can integrate these services, using Vault's KMS secrets en
 Resources:
 
 - [CMEK overview](../cockroachcloud/cmek.html)
-- [CMEK FAQ](../cockroachcloud/cmek-faq.html)
 - [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](../cockroachcloud/managing-cmek.html)
 - [Provisioning GCP KMS Keys and Service Accounts for CMEK](../cockroachcloud/cmek-ops-gcp.html)
 - [Provisioning AWS KMS Keys and IAM Roles for CMEK](../cockroachcloud/cmek-ops-aws.html)

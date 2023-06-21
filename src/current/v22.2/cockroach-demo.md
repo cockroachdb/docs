@@ -119,7 +119,7 @@ Flag | Description
 `--no-example-database` |  Start the demo cluster without a pre-loaded dataset.<br>To obtain this behavior automatically in every new `cockroach demo` session, set the `COCKROACH_NO_EXAMPLE_DATABASE` environment variable to `true`.
 `--execute`<br><br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
-`--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
+`--geo-partitioned-replicas` | <a name="geo-partitioned-replicas"></a> Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
 `--global` | <a name="global-flag"></a>Simulates a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
 `--http-port` |  Specifies a custom HTTP port to the [DB Console](ui-overview.html) for the first node of the demo cluster.<br><br>In multi-node clusters, the HTTP ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has an HTTP port of `5000`, the second node will have the HTTP port `5001`.
 `--insecure` |  Include this to start the demo cluster in insecure mode.<br><br>**Env Variable:** `COCKROACH_INSECURE`
@@ -500,7 +500,9 @@ For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-regio
 
 In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to add, shut down, restart, decommission, and recommission individual nodes.
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_info}}
+{% include feature-phases/preview.md %}
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell

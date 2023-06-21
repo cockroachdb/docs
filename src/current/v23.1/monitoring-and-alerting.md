@@ -189,6 +189,685 @@ If you rely on external tools for storing and visualizing your cluster's time-se
 
 When storage of time-series metrics is disabled, the DB Console Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available.
 
+### Critical nodes endpoint
+
+The critical nodes status endpoint is used to:
+
+- Check if any of your nodes are in a critical state.  A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable](ui-cluster-overview-page.html#replication-status).
+- Check if any ranges are [under-replicated or unavailable](ui-cluster-overview-page.html#replication-status). This is useful when determining whether a node is ready for [decommissioning](node-shutdown.html#decommissioning).
+- Check if any of your cluster's data placement constraints (set via [multi-region SQL](multiregion-overview.html) or direct [configuration of replication zones](configure-replication-zones.html)) are being violated. This is useful when implementing [data domiciling](data-domiciling.html).
+
+{{site.data.alerts.callout_info}}
+This HTTP status endpoint supersedes the deprecated [Replication Reports](query-replication-reports.html) SQL API. Due to architectural changes in CockroachDB, the SQL queries described on that page will not result in correct output.
+{{site.data.alerts.end}}
+
+#### Fields
+
+The JSON object returned by the critical nodes status endpoint contains the following top-level fields.
+
+| Field                         | Description                                                                                                   |
+|-------------------------------+---------------------------------------------------------------------------------------------------------------|
+| `criticalNodes`               | A list of nodes that are critical. Critical nodes are not safe to terminate because data loss could occur.    |
+| `report.overReplicated`       | A list of ranges that are over-replicated vs. your [zone config settings](configure-replication-zones.html).  |
+| `report.violatingConstraints` | A list of ranges that are in violation of your [zone config settings](configure-replication-zones.html).      |
+| `report.unavailable`          | A list of ranges that are unavailable.                                                                        |
+| `report.unavailableNodeIds`   | A list of node IDs with unavailable ranges.                                                                   |
+| `report.underReplicated`      | A list of ranges that are under-replicated vs. your [zone config settings](configure-replication-zones.html). |
+
+The `criticalNodes` portion of the response contains a (possibly empty) list of objects, each of which has the following fields.
+
+| Field           | Example                 | Description                                                                                                    |
+|-----------------+-------------------------+----------------------------------------------------------------------------------------------------------------|
+| `nodeId`        | `2`                     | The node ID of the critical node.                                                                              |
+| `address`       | `{...}`                 | An object representing the network address of the node.                                                        |
+| `locality`      | `{...}`                 | An object representing the [locality](cockroach-start.html#locality) of the node.                              |
+| `ServerVersion` | `{...}`                 | An object representing the CockroachDB version of the node.                                                    |
+| `buildTag`      | `"v23.1.0-rc.2"`        | The git build tag of the CockroachDB release of the node.                                                      |
+| `startedAt`     | `"1683655799845426000"` | The UNIX epoch timestamp at which the node was started.                                                        |
+| `clusterName`   | `""`                    | The [name of the cluster](cockroach-start.html#flags-cluster-name) (if any) with which the node is associated. |
+| `sqlAddress`    | `{...}`                 | The [network address for SQL connections](cockroach-start.html#flags-sql-addr) to the node.                    |
+| `httpAddress`   | `{...}`                 | The [address for DB Console HTTP connections](cockroach-start.html#flags-http-addr) to the node.               |
+
+Each report subtype (e.g., `report.unavailable`, `report.violatingConstraints`, etc.) returns a (possibly empty) list of objects describing the [ranges](architecture/overview.html#architecture-range) that report applies to. Each object contains a `rangeDescriptor` and a `config` that describes the range.
+
+| Field                          | Example                                                      | Description                                                                                                                                    |
+|--------------------------------+--------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------|
+| `rangeDescriptor.rangeId`      | `"89"`                                                       | The [range ID](alter-range.html#find-range-id-and-leaseholder-information) this section of the report is referring to.                         |
+| `rangeDescriptor.startKey`     | `"8okSYW1zdGVyZGFtAAE="`                                     | The [start key for the range](show-ranges.html#start-key).                                                                                     |
+| `rangeDescriptor.endKey`       | `"8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ=="` | The [end key for the range](show-ranges.html#end-key).                                                                                         |
+| `config.rangeMinBytes`         | `134217728`                                                  | The [target minimum size](configure-replication-zones.html#range-min-bytes) for the range.                                                     |
+| `config.rangeMaxBytes`         | `536870912`                                                  | The [target maximum size](configure-replication-zones.html#range-min-bytes) for the range.                                                     |
+| `config.gcPolicy`              | `{...}`                                                      | An object representing the garbage collection settings for the range (e.g. [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds)). |
+| `config.globalReads`           | `false`                                                      | Whether the range enables fast [global reads](configure-replication-zones.html#global_reads).                                                  |
+| `config.numReplicas`           | `9`                                                          | The [replication factor](configure-replication-zones.html#num_replicas) for the range.                                                         |
+| `config.numVoters`             | `0`                                                          | The [number of voting replicas](configure-replication-zones.html#num_voters) for the range.                                                    |
+| `config.constraints`           | `[...]`                                                      | The [constraints](configure-replication-zones.html#constraints) for the range.                                                                 |
+| `config.voterConstraints`      | `[...]`                                                      | The [voting replica constraints](configure-replication-zones.html#voter_constraints) for the range.                                            |
+| `config.leasePreferences`      | `[...]`                                                      | The [lease preferences](configure-replication-zones.html#lease_preferences) for the range.                                                     |
+| `config.rangefeedEnabled`      | `false`                                                      | Whether [rangefeeds](create-and-configure-changefeeds.html#enable-rangefeeds) are enabled for this range.                                      |
+| `config.excludeDataFromBackup` | `false`                                                      | Whether this range's data should be excluded from [backups](backup.html).                                                                      |
+
+#### Examples
+
+- [Replication status - normal](#replication-status-normal)
+- [Replication status - constraint violation](#replication-status-constraint-violation)
+- [Replication status - under-replicated ranges](#replication-status-under-replicated-ranges)
+- [Replication status - ranges in critical localities](#replication-status-ranges-in-critical-localities)
+
+##### Replication status - normal
+
+The following example assumes you are running a newly started, local [`cockroach demo`](cockroach-demo.html) cluster started using the following command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach demo --geo-partitioned-replicas --insecure
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+~~~
+
+~~~ json
+{
+  "criticalNodes": [
+  ],
+  "report": {
+    "underReplicated": [
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+~~~
+
+{{site.data.alerts.callout_info}}
+You may have to wait a few minutes after starting the demo cluster before getting the 'all clear' output above. This can happen because it takes time for [replica movement](architecture/replication-layer.html) to occur in order to meet the constraints given by the [zone configurations](configure-replication-zones.html) set by the [`--geo-partitioned-replicas` flag](cockroach-demo.html#geo-partitioned-replicas).
+{{site.data.alerts.end}}
+
+##### Replication status - constraint violation
+
+The following example assumes you are running a newly started, local [`cockroach demo`](cockroach-demo.html) cluster started using the following command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach demo --geo-partitioned-replicas --insecure
+~~~
+
+By default, this geo-distributed demo cluster will not have any constraint violations.
+
+To introduce a violation that you can then query for, you'll modify the [zone configuration](configure-replication-zones.html) of the [`movr.users`](movr.html#the-movr-database) table.
+
+You can use [`SHOW CREATE TABLE`](show-create.html) to see what existing zone configurations are attached to the `users` table, so you know what to modify.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW CREATE TABLE users;
+~~~
+
+~~~
+  table_name |                                    create_statement
+-------------+-----------------------------------------------------------------------------------------
+  users      | CREATE TABLE public.users (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     name VARCHAR NULL,
+             |     address VARCHAR NULL,
+             |     credit_card VARCHAR NULL,
+             |     CONSTRAINT users_pkey PRIMARY KEY (city ASC, id ASC)
+             | ) PARTITION BY LIST (city) (
+             |     PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
+             |     PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
+             |     PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
+             | );
+             | ALTER PARTITION europe_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
+             |     constraints = '[+region=europe-west1]';
+             | ALTER PARTITION us_east OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
+             |     constraints = '[+region=us-east1]';
+             | ALTER PARTITION us_west OF INDEX movr.public.users@users_pkey CONFIGURE ZONE USING
+             |     constraints = '[+region=us-west1]'
+(1 row)
+~~~
+
+To create a constraint violation, use the [`ALTER PARTITION`](alter-partition.html) statement to tell the [ranges](architecture/overview.html#architecture-range) in the `europe_west` partition that they are explicitly supposed to *not* be in the `region=europe-west1` locality:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER PARTITION europe_west of INDEX movr.public.users@users_pkey CONFIGURE ZONE USING constraints = '[-region=europe-west1]';
+~~~
+
+Once the statement above executes, the ranges currently stored in that locality will now be in a state where they are explicitly not supposed to be in that locality, and are thus in violation of a constraint.
+
+In other words, this tells the ranges that "where you are now is exactly where you are *not* supposed to be". This will cause the cluster to rebalance the ranges, which will take some time. During the time it takes for the rebalancing to occur, the ranges will be in violation of a constraint.
+
+The critical nodes endpoint should now report a constraint violation in the `violatingConstraints` field of the response, similar to the one shown below.
+
+{{site.data.alerts.callout_success}}
+You can also use the [`SHOW RANGES`](show-ranges.html) statement to find out more information about the ranges that are in violation of constraints.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+~~~
+
+~~~ json
+{
+  "criticalNodes": [
+  ],
+  "report": {
+    "underReplicated": [
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "89",
+          "startKey": "8okSYW1zdGVyZGFtAAE=",
+          "endKey": "8okSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ==",
+          "internalReplicas": [
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 5,
+              "type": 0
+            },
+            {
+              "nodeId": 4,
+              "storeId": 4,
+              "replicaId": 7,
+              "type": 0
+            },
+            {
+              "nodeId": 3,
+              "storeId": 3,
+              "replicaId": 6,
+              "type": 0
+            }
+          ],
+          "nextReplicaId": 8,
+          "generation": "40",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 3,
+          "numVoters": 0,
+          "constraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 1,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+          ],
+          "leasePreferences": [
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+~~~
+
+##### Replication status - under-replicated ranges
+
+The following example assumes you are running a newly started, local [`cockroach demo`](cockroach-demo.html) cluster started using the following command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach demo --geo-partitioned-replicas --insecure
+~~~
+
+By default, this geo-distributed demo cluster will not have any [under-replicated ranges](ui-replication-dashboard.html#under-replicated-ranges).
+
+To put the cluster into a state where some [ranges](architecture/overview.html#architecture-range) are under-replicated, issue the following [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone) statement, which tells it to store 9 copies of each range underlying the `rides` table.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE rides CONFIGURE ZONE USING num_replicas=9;
+~~~
+
+Once the statement above executes, the cluster will rebalance so that it's storing 9 copies of each range underlying the `rides` table. During the time it takes for the rebalancing to occur, these ranges will be considered under-replicated, since there are not yet as many copies (9) of each range as you have just specified.
+
+The critical nodes endpoint should now report a constraint violation in the `underReplicated` field of the response.
+
+{{site.data.alerts.callout_success}}
+You can also use the [`SHOW RANGES`](show-ranges.html) statement to find out more information about the under-replicated ranges.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+~~~
+
+~~~ json
+{
+  "criticalNodes": [
+    {
+      "nodeId": 2,
+      "address": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26358"
+      },
+      "attrs": {
+        "attrs": [
+        ]
+      },
+      "locality": {
+        "tiers": [
+          {
+            "key": "region",
+            "value": "us-east1"
+          },
+          {
+            "key": "az",
+            "value": "c"
+          }
+        ]
+      },
+      "ServerVersion": {
+        "majorVal": 23,
+        "minorVal": 1,
+        "patch": 0,
+        "internal": 0
+      },
+      "buildTag": "v23.1.0-rc.2",
+      "startedAt": "1683655799845426000",
+      "localityAddress": [
+      ],
+      "clusterName": "",
+      "sqlAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26258"
+      },
+      "httpAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:8081"
+      }
+    },
+    ...
+  ],
+  "report": {
+    "underReplicated": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "76",
+          "startKey": "9A==",
+          "endKey": "9IkSYW1zdGVyZGFtAAE=",
+          "internalReplicas": [
+            {
+              "nodeId": 3,
+              "storeId": 3,
+              "replicaId": 4,
+              "type": 0
+            },
+            {
+              "nodeId": 4,
+              "storeId": 4,
+              "replicaId": 2,
+              "type": 0
+            },
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 3,
+              "type": 0
+            }
+          ],
+          "nextReplicaId": 5,
+          "generation": "44",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 9,
+          "numVoters": 0,
+          "constraints": [
+          ],
+          "voterConstraints": [
+          ],
+          "leasePreferences": [
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "238",
+          "startKey": "9IkSYW1zdGVyZGFtAAE=",
+          "endKey": "9IkSYW1zdGVyZGFtAAESxR64UeuFQAD/gAD/AP8A/wD/AP8BgQAB",
+          "internalReplicas": [
+            {
+              "nodeId": 9,
+              "storeId": 9,
+              "replicaId": 5,
+              "type": 0
+            },
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 4,
+              "type": 0
+            },
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 3,
+              "type": 0
+            }
+          ],
+          "nextReplicaId": 6,
+          "generation": "48",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 9,
+          "numVoters": 0,
+          "constraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+          ],
+          "leasePreferences": [
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+~~~
+
+##### Replication status - ranges in critical localities
+
+The following example assumes you are running a newly started, local [`cockroach demo`](cockroach-demo.html) cluster started using the following command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach demo --geo-partitioned-replicas --insecure
+~~~
+
+By default, this geo-distributed demo cluster will not have any [nodes](architecture/overview.html#node) in a critical state. A node is _critical_ if that node becoming unreachable would cause [replicas to become unavailable](ui-cluster-overview-page.html#replication-status).
+
+The status endpoint describes which of your nodes (if any) are critical via the `criticalNodes` field in the response.
+
+To artificially put the nodes in this demo cluster in "critical" status, we can issue the following SQL statement, which uses [`ALTER TABLE ... CONFIGURE ZONE`](alter-table.html#configure-zone) to tell the cluster to store more copies of each range underlying the `rides` table than there are nodes in the cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE rides CONFIGURE ZONE USING num_replicas=128;
+~~~
+
+The critical nodes endpoint should now report that all of the cluster's nodes are critical by listing them in the `criticalNodes` field of the response.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+~~~
+
+~~~ json
+{
+  "criticalNodes": [
+    {
+      "nodeId": 4,
+      "address": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26360"
+      },
+      "attrs": {
+        "attrs": [
+        ]
+      },
+      "locality": {
+        "tiers": [
+          {
+            "key": "region",
+            "value": "us-west1"
+          },
+          {
+            "key": "az",
+            "value": "a"
+          }
+        ]
+      },
+      "ServerVersion": {
+        "majorVal": 23,
+        "minorVal": 1,
+        "patch": 0,
+        "internal": 0
+      },
+      "buildTag": "v23.1.0-rc.2",
+      "startedAt": "1683656700210217000",
+      "localityAddress": [
+      ],
+      "clusterName": "",
+      "sqlAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:26260"
+      },
+      "httpAddress": {
+        "networkField": "tcp",
+        "addressField": "127.0.0.1:8083"
+      }
+    },
+    ...
+  ],
+  "report": {
+    "underReplicated": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "133",
+          "startKey": "9A==",
+          "endKey": "9IkSYW1zdGVyZGFtAAE=",
+          "internalReplicas": [
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 5,
+              "type": 0
+            },
+            {
+              "nodeId": 4,
+              "storeId": 4,
+              "replicaId": 6,
+              "type": 0
+            },
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 3,
+              "type": 0
+            }
+          ],
+          "nextReplicaId": 7,
+          "generation": "52",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 128,
+          "numVoters": 0,
+          "constraints": [
+          ],
+          "voterConstraints": [
+          ],
+          "leasePreferences": [
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "186",
+          "startKey": "9IkSYW1zdGVyZGFtAAE=",
+          "endKey": "9IkSYW1zdGVyZGFtAAESxR64UeuFQAD/gAD/AP8A/wD/AP8BgQAB",
+          "internalReplicas": [
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 5,
+              "type": 0
+            },
+            {
+              "nodeId": 9,
+              "storeId": 9,
+              "replicaId": 4,
+              "type": 0
+            },
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 3,
+              "type": 0
+            }
+          ],
+          "nextReplicaId": 6,
+          "generation": "52",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 128,
+          "numVoters": 0,
+          "constraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+          ],
+          "leasePreferences": [
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+      ...
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+~~~
+
 ## Alerting tools
 
 In addition to actively monitoring the overall health and performance of a cluster, it is also essential to configure alerting rules that promptly send notifications when CockroachDB experiences events that require investigation or intervention.

@@ -24,16 +24,6 @@ To view this page, select a cluster from the [**Clusters** page](cluster-managem
 If you haven't yet executed any queries in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
-## Search and filter
-
-By default, this page shows statements from all applications and databases running on the cluster.
-
-You can search for statements using the search field or the date range selector.
-
-### Search field
-
-To search using the search field, type a string over `Search Statements` and press `Enter`. The list of statements is filtered by the string.
-
 {% include {{version_prefix}}ui/statements-filter.md %}
 
 ## Statement statistics
