@@ -45,6 +45,7 @@ SQL clients, including some [`cockroach` commands](cockroach-commands.html) can 
 
 A connection URL has the following format:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 ~~~
@@ -108,6 +109,7 @@ are supported.{{site.data.alerts.end}}
 
 The following URL is suitable to connect to a CockroachDB node using an insecure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/mydb?sslmode=disable
 ~~~
@@ -120,6 +122,7 @@ current database. `sslmode=disable` makes the connection insecure.
 
 The following URL is suitable to connect to a CockroachDB node using a secure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 postgres://root@servername:26257/mydb?sslmode=verify-full&sslrootcert=path/to/ca.crt&sslcert=path/to/client.crt&sslkey=path/to/client.key
 ~~~
@@ -161,6 +164,7 @@ Parameters</a> for details.{{site.data.alerts.end}}
 
 The following command-line flags establish an insecure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 --user root \
  --host servername \
@@ -177,6 +181,7 @@ current database. `--insecure` makes the connection insecure.
 
 The following command-line flags establish a secure connection:
 
+{% include_cached copy-clipboard.html %}
 ~~~
 --user root \
  --host servername \

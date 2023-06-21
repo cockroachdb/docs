@@ -153,7 +153,9 @@ The [`SESSIONS`](logging.html#sessions) channel logs SQL session events. This in
 These logs perform one disk I/O per event. Enabling each setting will impact performance.
 {{site.data.alerts.end}}
 
-{% include common/experimental-warning.md %}
+{{site.data.alerts.callout_danger}}
+**This is an experimental feature**. The interface and output are subject to change.
+{{site.data.alerts.end}}
 
 #### Example: Client connection events
 

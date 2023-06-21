@@ -136,7 +136,7 @@ See [Cluster Topography](recommended-production-settings.html#topology) recommen
 
 ### Troubleshooting zone constraint violations
 
-To see if any of the data placement constraints defined in your replication zone configurations are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports](query-replication-reports.html).
+To see if any of the data placement constraints defined in your replication zone configurations are being violated, follow the steps described in [Replication Reports](query-replication-reports.html).
 
 ## View replication zones
 

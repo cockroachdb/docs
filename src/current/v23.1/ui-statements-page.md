@@ -70,19 +70,6 @@ If you click the execution ID in the **Statement Execution ID** column, the [**S
 
 <img src="{{ 'images/v23.1/statement-execution-details.png' | relative_url }}" alt="Statement execution details" style="border:1px solid #eee;max-width:100%" />
 
-## Search and filter
-
-By default, the Statements page shows SQL statements from all applications and databases running on the cluster.
-
-### Search statements
-
-To search using the search field:
-
-1. Type a string over `Search Statements`. To search for exact terms in order, wrap the search string in quotes.
-1. Press `Enter`.
-
-    The list of statements is filtered by the string.
-
 {% include {{ page.version.version }}/ui/statements-filter.md %}
 
 ## Statement statistics

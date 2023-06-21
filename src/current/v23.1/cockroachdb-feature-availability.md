@@ -17,25 +17,32 @@ This page outlines _feature availability_, which is separate from Cockroach Labs
 Phase                                         | Definition | Accessibility
 ----------------------------------------------+------------+-------------
 Private preview                               | Feature is not production-ready and will not be publicly documented. | Invite-only
-[Limited access](#features-in-limited-access) | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
+Limited access                                | Feature is production-ready but not available widely because of known limitations and/or because capabilities may change or be added based on feedback. | Opt-in </br>Contact your Cockroach Labs account team.
 [Preview](#features-in-preview)               | Feature is production-ready and publicly available. However, this feature may have known limitations and/or capabilities may change or be added based on feedback. | Public
 General availability (GA)                     | Feature is production-ready and publicly available. | Public
-
-## Features in limited access
-
-{{site.data.alerts.callout_info}}
-**The following features are in limited access** and are only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
-{{site.data.alerts.end}}
-
-### Export logs from {{ site.data.products.dedicated }} clusters
-
-{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
 ## Features in preview
 
 {{site.data.alerts.callout_info}}
 **The following features are in preview** and are subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
+
+### `cockroach` commands
+
+The table below lists the [`cockroach` commands](cockroach-commands.html) available in preview in CockroachDB.
+
+Command                                     | Description
+--------------------------------------------+-------------
+[`cockroach demo`](cockroach-demo.html)     | Start a temporary, in-memory CockroachDB cluster, and open an interactive SQL shell to it.
+[`cockroach sqlfmt`](cockroach-sqlfmt.html) | Reformat SQL queries for enhanced clarity.
+
+### Super regions
+
+[Super regions](multiregion-overview.html#super-regions) allow you to define a set of database regions such that schema objects will have all of their replicas stored _only_ in regions that are members of the super region. The primary use case for super regions is data domiciling.
+
+### Export logs from {{ site.data.products.dedicated }} clusters
+
+{{ site.data.products.dedicated }} users can use the [Cloud API](../cockroachcloud/cloud-api.html) to configure [log export](../cockroachcloud/export-logs.html) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
 ### Export metrics from {{ site.data.products.dedicated }} clusters
 

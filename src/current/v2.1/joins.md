@@ -177,4 +177,4 @@ Lookup joins are performed on two tables as follows:
 - [Performance Best Practices - Overview](performance-best-practices-overview.html)
 - [SQL join operation (Wikipedia)](https://en.wikipedia.org/wiki/Join_(SQL))
 - [CockroachDB's first implementation of SQL joins (CockroachDB Blog)](https://www.cockroachlabs.com/blog/cockroachdbs-first-join/)
-- [On the Way to Better SQL Joins in CockrochDB (CockroachDB Blog)](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)
+- [On the Way to Better SQL Joins in CockroachDB (CockroachDB Blog)](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb/)

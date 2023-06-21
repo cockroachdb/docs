@@ -12,5 +12,9 @@ The details displayed on the **Transaction Details** page reflect the [time inte
     - **Max memory usage**: The maximum memory used by this transaction at any time during its execution within the aggregation interval.
     - **Max scratch disk usage**: The maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing this transaction within the aggregation interval.
 
+The **Insights** table is displayed when CockroachDB has detected a problem with the transaction fingerprint.
+- **Insights**: Provides the [Workload Insight type](ui-insights-page.html#workload-insight-types).
+- **Details**: Provides a description and possible recommendation.
+- **Latest Execution ID**: The ID of the latest transaction execution. To display the [details of the transaction execution](ui-insights-page.html#transaction-execution-details), click the ID.
 
-The [Statements page]({{ page_prefix }}statements-page.html) displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement fingerprint]({{ page_prefix }}statements-page.html#statement-fingerprint-page), click a statement fingerprint.
+The **Statements Fingerprints** table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement fingerprint]({{ page_prefix }}statements-page.html#statement-fingerprint-page), click a statement fingerprint.

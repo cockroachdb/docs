@@ -79,4 +79,4 @@ The Cluster API version is defined in the request path. For example: `<cluster>/
 
 Future versions of CockroachDB may provide multiple API versions and will continue to provide access to this v2.0 API until it is deprecated.
 
-All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Minor versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy](api-support-policy.html).
+All endpoint paths and payloads will remain available within a major API version number (`v2.x`). Patch versions could add new endpoints but will not remove existing endpoints. For more information, see [API Support Policy](api-support-policy.html).
