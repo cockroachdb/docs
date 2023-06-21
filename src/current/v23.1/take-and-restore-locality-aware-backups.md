@@ -18,7 +18,11 @@ This is useful for:
 
 A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. [Restore jobs can read from a locality-aware backup](#restore-from-a-locality-aware-backup) when you provide the list of URIs that together contain the locations of all of the files for a single locality-aware backup.
 
-{% include {{ page.version.version }}/backups/locality-aware-access.md %} For a technical overview of how a locality-aware backup works, see [Job coordination and export of locality-aware backups](backup-architecture.html#job-coordination-and-export-of-locality-aware-backups).
+{% include {{ page.version.version }}/backups/locality-aware-access.md %}
+
+## Technical overview
+
+For a technical overview of how a locality-aware backup works, refer to [Job coordination and export of locality-aware backups](backup-architecture.html#job-coordination-and-export-of-locality-aware-backups).
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 

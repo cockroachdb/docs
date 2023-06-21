@@ -12,11 +12,13 @@ Defining an execution locality for a backup job is useful in the following cases
 - When nodes in a cluster operate in different locality tiers, networking rules can restrict nodes from accessing a storage bucket. For an example, refer to [Access backup storage restricted by network rules](#access-backup-storage-restricted-by-network-rules).
 - When a multi-region cluster is running heavy workloads and an aggressive backup schedule, designating a region as the "backup" locality may improve latency. For an example, refer to [Create a non-primary region for backup jobs](#create-a-non-primary-region-for-backup-jobs).
 
-For a technical overview of how a locality-restricted backup works, see [Job coordination using the `EXECUTION LOCALITY` option](backup-architecture.html#job-coordination-using-the-execution-locality-option).
-
 {{site.data.alerts.callout_info}}
 CockroachDB also supports _locality-aware backups_, which allow you to partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs. Refer to [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html) for more detail.
 {{site.data.alerts.end}}
+
+## Technical overview
+
+For a technical overview of how a locality-restricted backup works, refer to [Job coordination using the `EXECUTION LOCALITY` option](backup-architecture.html#job-coordination-using-the-execution-locality-option).
 
 {% include {{ page.version.version }}/backups/support-products.md %}
 

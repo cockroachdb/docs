@@ -14,6 +14,8 @@ CockroachDB backups operate as _jobs_, which are potentially long-running operat
 
 The [Overview](#overview) section that follows provides an outline of a backup job's process. For a more detailed explanation of how a backup job works, read from the [Job creation phase](#job-creation-phase) section.
 
+For a technical overview of [locality-aware backups](take-and-restore-locality-aware-backups.html) or [locality-restricted backup execution](take-locality-restricted-backups.html), refer to the [Backup jobs with locality requirements](#backup-jobs-with-locality-requirements) section.
+
 ## Overview
 
 At a high level, CockroachDB performs the following tasks when running a backup job:
@@ -93,9 +95,9 @@ The backup metadata files describe everything a backup contains. That is, all th
 
 With the full backup complete, the specified storage location will contain the backup data and its metadata ready for a potential [restore](restore.html). After subsequent backups of the `movr` database to this storage location, CockroachDB will create a _backup collection_. Refer to [Backup collections](take-full-and-incremental-backups.html#backup-collections) for information on how CockroachDB structures a collection of multiple backups.
 
-## Backups with locality
+## Backup jobs with locality requirements
 
-CockroachDB supports two types of backups that work dependent on node locality. This section provides a technical overview of how these backup types work in the cluster.
+CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored. This section provides a technical overview of how the backup job process works for each of these backup features:
 
 - [Locality-aware backup](#job-coordination-and-export-of-locality-aware-backups): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
 - [Locality-restricted backup execution](#job-coordination-using-the-execution-locality-option): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
