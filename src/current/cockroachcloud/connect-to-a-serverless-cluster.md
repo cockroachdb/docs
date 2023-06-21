@@ -13,6 +13,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 - [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
 - [Create a new SQL user](managing-access.html#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
 
 ## Authorize your network
 

@@ -7,18 +7,16 @@ docs_area: manage
 
 Amazon Web Services (AWS) PrivateLink support in {{ site.data.products.dedicated }} allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
-For broader context, refer to [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
+For broader context, refer to [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html).
 
-This page describes the steps to setting up an AWS PrivateLink connection for your {{ site.data.products.dedicated }} cluster from your AWS VPC Console. You must also configure the AWS PrivateLink connection from your CockroachDB cluster, to do this, refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink).
+This page describes the steps to setting up an AWS PrivateLink connection for your {{ site.data.products.dedicated }} cluster from your AWS VPC Console.
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
+
+You must also configure the AWS PrivateLink connection from your CockroachDB cluster, to do this, refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink).
+
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
-
-1.  [Set up a cluster](#set-up-a-cluster)
-1.  [Create an AWS endpoint](#create-an-aws-endpoint)
-1.  [Verify the endpoint ID](#verify-the-endpoint-id)
-1.  [Enable private DNS](#enable-private-dns)
 
 ### Set up a cluster
 
@@ -45,7 +43,7 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 1. Click **Subnets** in the sidebar.
 1. Locate the subnet IDs corresponding to the VPC you chose in Step 4.
 1. Click **Security Groups** in the sidebar.
-1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program onpPort 26257:
+1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program on Port 26257:
   - In the **Security group name** field, enter a name for the security group.
   - In the **Description** field, enter a description for the security group.
   - From the **VPC** dropdown, select the VPC you chose in Step 4.
@@ -124,7 +122,7 @@ The endpoint status will change to Pending.
 
 After a short (less than 5 minute) delay, the status will change to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
 
-## See also
+**See also**
 
 - [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
 - [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

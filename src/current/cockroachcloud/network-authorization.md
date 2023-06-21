@@ -1,5 +1,5 @@
 ---
-title: Network Authorization for CockroachDB Cloud clusters
+title: Network Authorization for CockroachDB Cloud Clusters
 summary: Learn about the network authorization features for {{ site.data.products.db }} clusters.
 toc: true
 docs_area: manage
@@ -30,7 +30,7 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 {{ site.data.products.dedicated }} and Serverless clusters differ in their default network configuration:
 
-- On creation, a Serverless cluster is open to all traffic as it is created with a 0.0.0.0/0 IP allowlist entry.
+- On creation, a Serverless cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist entry.
 - On creation, a Dedicated cluster is "locked down" and has no access until an authorized network is created.
 
 {{ site.data.products.db }} clusters can only accept SQL connections from [allowed IP addresses](#ip-allowlisting).
@@ -45,8 +45,8 @@ You can add up to 20 IP addresses to your allowlist. If your application servers
 
 Refer to:
 
-- [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#authorize-your-network)
-- [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#authorize-your-network)
+- [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#authorize-your-network).
+- [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#authorize-your-network).
 
 ## VPC peering
 
@@ -57,7 +57,7 @@ GKE users should note that we recommend deploying your application to a VPC-nati
 Setting up a VPC peering connection between your {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
 1. [Configure the IP range and size while creating the {{ site.data.products.dedicated }} cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
-1. [Establish a VPC Peering connection after creating the cluster](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink)
+1. [Establish a VPC Peering connection after creating the cluster](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](use-managed-service-backups.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
@@ -67,4 +67,4 @@ Self-service VPC peering setup is not supported for {{ site.data.products.dedica
 
 If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. 
 
-Refer to: [Managing AWS PrivateLink for a Dedicated Cluster](aws-privatelink.html)
+Refer to: [Managing AWS PrivateLink for a Dedicated Cluster](aws-privatelink.html).

@@ -7,14 +7,22 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
 
-This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.
+This page shows you how to connect to your {{ site.data.products.dedicated }} cluster. This includes the administrative task of creating allowed networks to support SQL client connects, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
 
 ## Before you start
 
 - [Create a cluster](create-your-cluster.html).
 - [Create a SQL user](managing-access.html#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
 
 ## Authorize your network
+
+By default, {{ site.data.products.dedicated }} clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. Dedicated clusters can accept connections via two types of authorized network:
+
+- Allowed IP address ranges on the internet.
+- Cloud-provider-specific peer networking options:
+    - Google Cloud Platform (GCP) VPC Peering
+    - Amazon Web Services (AWS) Private link
 
 {{site.data.alerts.callout_info}}
 Removing or adding an authorized network on your {{ site.data.products.dedicated }} cluster may take a few seconds to take effect.
@@ -28,9 +36,20 @@ Removing or adding an authorized network on your {{ site.data.products.dedicated
 
 1. Click **Apply**.
 
-### Establish VPC Peering or AWS PrivateLink
+### Establish GCP VPC Peering or AWS PrivateLink
 
-VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters. During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters. 
+
+**Prerequisite:**
+
+You must create the VPC Peering or AWS PrivateLink connectionk in your GCP or AWS console.
+
+Refer to:
+- [Network Authorization for CockroachDB Cloud clusters: VPC Peering](network-authorization.html#vpc-peering)
+- [Network Authorization for CockroachDB Cloud clusters: AWS PrivateLink](network-authorization.html#aws-privatelink)
+
+
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="gcp">VPC Peering</button>
@@ -80,11 +99,11 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 
       You can use the **IP Allowlist** option if you have already [added an IP address to your allowlist.](#add-ip-addresses-to-the-allowlist)
 
-      For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-vpc-peering-or-aws-privatelink).
+      For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-gcp-vpc-peering-or-aws-privatelink).
 
       For GCP clusters, you can select **VPC Peering** if you have already:
     - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
-    - [Established a VPC Peering connection](#establish-vpc-peering-or-aws-privatelink)
+    - [Established a VPC Peering connection](#establish-gcp-vpc-peering-or-aws-privatelink)
 
 1. From the **User** dropdown, select the SQL user you created.
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
