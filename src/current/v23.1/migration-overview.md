@@ -14,6 +14,8 @@ This page summarizes the steps of migrating a database to CockroachDB:
 1. Cutover to production.
 {% endcomment %}
 
+<a name="molt"></a>
+
 The following MOLT (Migrate Off Legacy Technology) tools simplify migration:
 
 - [Schema Conversion Tool](../cockroachcloud/migrations-page.html).
