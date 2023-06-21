@@ -62,7 +62,7 @@ Choose the language for the example code.
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="python"><strong>Python (psycopg2)</strong></button>
     <button class="filter-button page-level" data-scope="java"><strong>Java (JDBC)</strong></button>
-    <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgqsl)</strong></button>
+    <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgsql)</strong></button>
 </div>
 
 For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `new_order` table where `no_w_id` is less than `5`, in batches of 5,000 rows. To do this, you can write a query that loops over batches of 5,000 rows, following the `DELETE` query guidance provided above. Note that in this case, `no_w_id` is the first column in the primary index, and, as a result, you do not need to create a secondary index on the column.
@@ -272,7 +272,7 @@ Choose the language for the example code.
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="python"><strong>Python (psycopg2)</strong></button>
     <button class="filter-button page-level" data-scope="java"><strong>Java (JDBC)</strong></button>
-    <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgqsl)</strong></button>
+    <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgsql)</strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="python">
@@ -503,7 +503,7 @@ Choose the language for the example code.
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="python"><strong>Python (psycopg2)</strong></button>
     <button class="filter-button page-level" data-scope="java"><strong>Java (JDBC)</strong></button>
-    <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgqsl)</strong></button>
+    <button class="filter-button page-level" data-scope="csharp"><strong>C# (Npgsql)</strong></button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="python">
