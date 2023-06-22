@@ -115,7 +115,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-[Org Administrators](authorization.html#org-administrator-legacy) can perform the following from the Console:
+Users with the [Org Administrator](authorization#org-administrator), [Org Administrator (legacy)](authorization.html#org-administrator-legacy), [Cluster Operator](authorization#cluster-operator) or [Cluster Administrator](authorization#cluster-administrator) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)
@@ -130,6 +130,13 @@ Additional ways to restore data:
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
+
+This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
+
 {{site.data.alerts.end}}
 
 To restore a cluster:
@@ -148,10 +155,6 @@ To restore a cluster:
 1. Click **Continue**.
 
 1. Enter the name of the destination cluster. 
-
-    {{site.data.alerts.callout_danger}}
-    The restore will completely erase all data in the destination cluster. All cluster data will be replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
-    {{site.data.alerts.end}}
 
 1. Once you have reviewed the restore details, click **Restore**.
 
@@ -267,7 +270,7 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
 ## Known limitations
 
 - For [restoring a cluster](#restore-a-cluster):
-    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an older version does not work. See [Restoring Backups Across Versions](../{{site.current_cloud_version}}/restoring-backups-across-versions.html).  
+    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](../{{site.current_cloud_version}}/restoring-backups-across-versions.html).  
     - Restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
     - Restoring to a different cluster is disabled for [CMEK](cmek.html) clusters.
     - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
