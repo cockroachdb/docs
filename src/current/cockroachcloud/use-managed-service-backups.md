@@ -115,7 +115,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-Users with the [Org Administrator](authorization#org-administrator), [Org Administrator (legacy)](authorization.html#org-administrator-legacy), [Cluster Operator](authorization#cluster-operator) or [Cluster Administrator](authorization#cluster-administrator) roles can perform the following from the Console:
+Users with the [Org Administrator](authorization.html#org-administrator), [Org Administrator (legacy)](authorization.html#org-administrator-legacy), [Cluster Operator](authorization.html#cluster-operator) or [Cluster Administrator](authorization.html#cluster-administrator) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)
