@@ -164,7 +164,7 @@ Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonat
 
 ### Hanging or stuck queries
 
-A hanging or stuck query using {{ site.data.products.serverless }} may be caused by reaching the cluster's configured [resource limits](plan-your-cluster-serverless.html#choose-resource-limits) for [Request Units](plan-your-cluster-serverless.html#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page](cluster-overview-page.html) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will only be able to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
+A hanging or stuck query using {{ site.data.products.serverless }} may be caused by reaching the cluster's configured [resource limits](plan-your-cluster-serverless.html#choose-resource-limits) for [Request Units](plan-your-cluster-serverless.html#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page](cluster-overview-page.html) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
 
 <h4>Solution</h4>
 
