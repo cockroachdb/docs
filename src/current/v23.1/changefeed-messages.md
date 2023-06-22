@@ -25,7 +25,7 @@ This page describes the format and behavior of changefeed messages. You will fin
 
 By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table rows that have changed. The message will contain the following fields depending on the type of emitted change and the [options](create-changefeed.html#options) you specified to create the changefeed:
 
-- **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":{"long":1}}` for Avro).
+- **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for JSON or `{"id":{"long":1}}` for Avro).
 - **Value**:
     - One of three possible top-level fields:
         - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
@@ -65,13 +65,13 @@ The _envelope_ defines the structure of a changefeed message. You can use the [`
 Changefeeds created with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) or [`CREATE CHANGEFEED`](create-changefeed.html) with no sink specified (sinkless changefeeds) produce messages without the envelope metadata fields of changefeeds emitting to sinks.
 {{site.data.alerts.end}}
 
-The following sections provide examples of changefeed messages that are emitted when you specify each of the supported `envelope` options. Other [changefeed options](create-changefeed.html#options) can affect the message envelope and the what messages are emitted. Therefore, the examples are a guide for what you can expect when only the `envelope` option is specified.
+The following sections provide examples of changefeed messages that are emitted when you specify each of the supported `envelope` options. Other [changefeed options](create-changefeed.html#options) can affect the message envelope and what messages are emitted. Therefore, the examples are a guide for what you can expect when only the `envelope` option is specified.
 
 ### `wrapped`
 
 `wrapped` is the default envelope structure for changefeed messages. This envelope contains an array of the primary key (or the key as part of the message metadata), a top-level field for the type of message, and the current state of the row (or `null` for [deleted rows](#delete-messages)).
 
-The message envelope contains a primary key array when your changefeed is emitting to a sink that does not have a message key as part of its protocol, e.g., cloud storage, webhook sinks, or Google Pub/Sub. By default, messages emitted to Kafka sinks do not have the primary key array, because the key is part of the message metadata. If you would like messages emitted to Kafka sinks to contain a primary key array, you can use the [`key_in_value`](create-changefeed.html#key-in-value) option. Refer to the following message outputs for examples of this.
+The message envelope contains a primary key array when your changefeed is emitting to a sink that does not have a message key as part of its protocol, (e.g., cloud storage, webhook sinks, or Google Pub/Sub). By default, messages emitted to Kafka sinks do not have the primary key array, because the key is part of the message metadata. If you would like messages emitted to Kafka sinks to contain a primary key array, you can use the [`key_in_value`](create-changefeed.html#key-in-value) option. Refer to the following message outputs for examples of this.
 
 - Cloud storage sink:
 
