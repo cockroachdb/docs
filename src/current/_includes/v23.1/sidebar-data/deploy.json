@@ -99,16 +99,6 @@
               "title": "Get Started",
               "items": [
                 {
-                  "title": "Install CockroachDB",
-                  "urls": [
-                    "/${VERSION}/install-cockroachdb.html",
-                    "/${VERSION}/install-cockroachdb-mac.html",
-                    "/${VERSION}/install-cockroachdb-linux.html",
-                    "/${VERSION}/fips.html",
-                    "/${VERSION}/install-cockroachdb-windows.html"
-                  ]
-                },
-                {
                   "title": "Start a Local Cluster",
                   "items": [
                     {
@@ -332,27 +322,9 @@
     {
       "title": "Explore CockroachDB Features",
       "items": [{
-          "title": "Replication & Rebalancing",
-          "urls": [
-            "/${VERSION}/demo-replication-and-rebalancing.html"
-          ]
-        },
-        {
-          "title": "Fault Tolerance & Recovery",
-          "urls": [
-            "/${VERSION}/demo-fault-tolerance-and-recovery.html"
-          ]
-        },
-        {
           "title": "Multi-Region Performance",
           "urls": [
             "/${VERSION}/demo-low-latency-multi-region-deployment.html"
-          ]
-        },
-        {
-          "title": "Serializable Transactions",
-          "urls": [
-            "/${VERSION}/demo-serializable.html"
           ]
         },
         {

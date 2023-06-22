@@ -6,13 +6,15 @@
       "/"
     ]
   },
+  {% include_cached v23.1/sidebar-data/feature-overview.json %},
   {% include_cached v23.1/sidebar-data/get-started.json %},
+  {% include_cached v23.1/sidebar-data/migrate.json %},
   {% include_cached v23.1/sidebar-data/develop.json %},
   {% include_cached v23.1/sidebar-data/deploy.json %},
   {% include_cached v23.1/sidebar-data/manage.json %},
-  {% include_cached v23.1/sidebar-data/migrate.json %},
   {% include_cached v23.1/sidebar-data/stream.json %},
   {% include_cached v23.1/sidebar-data/reference.json %},
+  {% include_cached v23.1/sidebar-data/faqs.json %},
   {% include_cached v23.1/sidebar-data/releases.json %},
   {% include_cached sidebar-data-cockroach-university.json %}
 ]
