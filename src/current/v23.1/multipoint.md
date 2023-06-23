@@ -51,7 +51,7 @@ A MultiPoint can be created from SQL by calling an aggregate function such as `S
 
 ### Well known text
 
-A MultiPoint can be created from SQL by calling the `st_geomfromtext` function on a MultiPoint definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format.
+A MultiPoint can be created from SQL by calling the `st_geomfromtext` function on a MultiPoint definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format.
 
 For example, the MultiPoint in the example below includes the locations of [independent bookstores in Chicago, Illinois USA](https://www.bookweb.org/member_directory/search/ABAmember/results/0/Chicago/IL/0):
 

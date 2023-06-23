@@ -85,7 +85,7 @@ true
       </div>
     </li>
     <li>
-      <p>CockroachDB uses custom-built versions of the <a href="spatial-glossary.html#geos">GEOS</a> libraries. To install those libraries:</p>
+      <p>CockroachDB uses custom-built versions of the <a href="architecture/glossary.html#geos">GEOS</a> libraries. To install those libraries:</p>
       <ol>
         <li><p>Note that <a href="known-limitations.html#spatial-features-disabled-for-arm-macs">spatial features are currently disabled for Mac ARM users</a>, for whom these steps do not apply. For an upcoming patch release where this functionality is reenabled, if you downloaded the CockroachDB ARM binary archive using a web browser, macOS flags the GEOS libraries in the extracted archive as quarantined. This flag must be removed before CockroachDB can use the libraries. To remove the quarantine flag from the libraries:</p>
         {{ binary_arm_geos_unquarantine }}

@@ -506,6 +506,10 @@
 
 # Removed Pages
 
+- destination: movr.html#develop-and-deploy-a-global-application
+  sources: ['movr-flask-overview.html']
+  versions: ['v23.1']
+
 - destination: :version/collate.html
   sources: [':version/collatedstring.html']
 
@@ -647,6 +651,10 @@
 - destination: alter-table.html#validate-constraint
   sources: ['validate-constraint.html']
   versions: ['v22.2']
+
+- destination: architecture/glossary.html
+  sources: ['spatial-glossary.html']
+  versions: ['v23.1']
 
 - destination: change-data-capture-overview.html
   sources: ['stream-data-out-of-cockroachdb-using-changefeeds.html']

@@ -13,6 +13,7 @@
   {% include_cached v23.1/sidebar-data/deploy.json %},
   {% include_cached v23.1/sidebar-data/manage.json %},
   {% include_cached v23.1/sidebar-data/stream.json %},
+  {% include_cached v23.1/sidebar-data/sql.json %},
   {% include_cached v23.1/sidebar-data/reference.json %},
   {% include_cached v23.1/sidebar-data/faqs.json %},
   {% include_cached v23.1/sidebar-data/releases.json %},

@@ -11,7 +11,7 @@ A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](spatia
 
 ## Examples
 
-A GeometryCollection can be created from SQL by calling the `st_geomfromtext` function on a GeometryCollection definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format as shown below.
+A GeometryCollection can be created from SQL by calling the `st_geomfromtext` function on a GeometryCollection definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format as shown below.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -102,7 +102,7 @@ This can be addressed in one of the following ways:
 - [Spatial features](spatial-features.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Working with Spatial Data](spatial-data.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Known Limitations](known-limitations.html#spatial-support-limitations)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [POINT](point.html)

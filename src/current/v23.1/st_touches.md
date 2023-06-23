@@ -11,11 +11,11 @@ Given two shapes _A_ and _B_, `ST_Touches(A, B)` returns `true` if both the foll
 - At least one point in the set of points that comprises _A_ is also a member of the set of points that make up _B_.
 - No points that make up the interior of _A_ are also part of the interior of _B_.
 
-In other words, _A_ and _B_ have a point along their boundaries in common (i.e., they "touch"), but none of their interior points intersect.  This distinction between shapes touching along a boundary vs. intersecting is also made by the [DE-9IM](spatial-glossary.html#de-9IM) standard.
+In other words, _A_ and _B_ have a point along their boundaries in common (i.e., they "touch"), but none of their interior points intersect.  This distinction between shapes touching along a boundary vs. intersecting is also made by the [DE-9IM](architecture/glossary.html#de-9IM) standard.
 
 `ST_Touches` works on the following data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
 
 {% if page.has_prefixed_variant %}
 {{site.data.alerts.callout_info}}
@@ -73,7 +73,7 @@ SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.
 
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)

@@ -13,7 +13,7 @@ A `MULTILINESTRING` is a collection of [LineStrings](linestring.html).  MultiLin
 
 ### Well known text
 
-A MultiLineString can be created from SQL by calling the `st_geomfromtext` function on a MultiLineString definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format.
+A MultiLineString can be created from SQL by calling the `st_geomfromtext` function on a MultiLineString definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

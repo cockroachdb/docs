@@ -150,7 +150,7 @@ cockroach sql --insecure --host=localhost --port=26257
 - [Install CockroachDB](install-cockroachdb.html)
 - [Spatial Features](spatial-features.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
