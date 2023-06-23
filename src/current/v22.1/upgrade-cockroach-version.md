@@ -14,7 +14,7 @@ docs_area: manage
 
 Because of CockroachDB's [multi-active availability](multi-active-availability.html) design, you can perform a "rolling upgrade" of your CockroachDB cluster. This means that you can upgrade nodes one at a time without interrupting the cluster's overall health and operations.
 
-This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**.
+This page describes how to upgrade to the latest **{{ page.version.version }}** release, **{{ latest.release_name }}**. To upgrade CockroachDB on Kubernetes, refer to [single-cluster](upgrade-cockroachdb-kubernetes.html) or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) instead.
 
 ## Terminology
 
@@ -137,15 +137,19 @@ For an expanded list of features included in the {{ page.version.version }} rele
 
 ## Step 4. Perform the rolling upgrade
 
+{{site.data.alerts.callout_success}}
+Cockroach Labs recommends creating scripts to perform these steps instead of performing them manually.
+{{site.data.alerts.end}}
+
+Follow these steps to perform the rolling upgrade. To upgrade CockroachDB on Kubernetes, refer to [single-cluster](upgrade-cockroachdb-kubernetes.html) or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) instead.
+
 For each node in your cluster, complete the following steps. Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
 
-{{site.data.alerts.callout_success}}
-We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](upgrade-cockroachdb-kubernetes.html) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
+{{site.data.alerts.callout_danger}}
+After beginning a major-version upgrade, Cockroach Labs recommends upgrading all nodes as quickly as possible. In a cluster with nodes running different major versions of CockroachDB, a query that is sent to an upgraded node can be distributed only among other upgraded nodes. Data accesses that would otherwise be local may become remote, and the performance of these queries can suffer.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.release_name}}**.
-{{site.data.alerts.end}}
+These steps perform an upgrade to the latest {{ page.version.version }} release, **{{ latest.release_name }}**.
 
 1. [Drain and shut down the node.](node-shutdown.html#perform-node-shutdown)
 
