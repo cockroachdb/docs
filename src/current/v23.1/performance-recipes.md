@@ -100,12 +100,9 @@ These are indicators that a transaction is trying to access a row that has been 
 
 These are indicators that lock contention occurred in the past:
 
-- Querying the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table indicates that your transactions have experienced lock contention.
+- Querying the [`crdb_internal.transaction_contention_events`](crdb-internal.html#transaction_contention_events) table indicates that your transactions have experienced lock contention. {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
 
-  - This is also shown in the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view)). Transaction executions will display the **High Contention** insight. 
-    {{site.data.alerts.callout_info}}
-    {% include {{ page.version.version }}/performance/sql-trace-txn-enable-threshold.md %}
-    {{site.data.alerts.end}}
+  - This is also shown in the **Transaction Executions** view on the **Insights** page ([{{ site.data.products.db }} Console](../cockroachcloud/insights-page.html#transaction-executions-view) and [DB Console](ui-insights-page.html#transaction-executions-view)). Transaction executions will display the **High Contention** insight.
 
 - The **SQL Statement Contention** graph ([{{ site.data.products.db }} Console](../cockroachcloud/metrics-page.html#sql-statement-contention) and [DB Console](ui-sql-dashboard.html#sql-statement-contention)) is showing spikes over time.
   <img src="{{ 'images/v23.1/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in DB Console" style="border:1px solid #eee;max-width:100%" />
