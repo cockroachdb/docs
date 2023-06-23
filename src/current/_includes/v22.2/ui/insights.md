@@ -157,7 +157,7 @@ To display this view, click **Insights** in the left-hand navigation of the Clou
 
 This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been used and should be dropped, and/or the ones that should be created, altered, or replaced (based on statement execution).
 
-- The drop recommendations are the same as those on the [**Databases**]({{ link_prefix }}ui-databases-page.html) page.
+- The drop recommendations are the same as those on the [**Databases**]({{ link_prefix }}ui-databases-page.html#index-recommendations) page.
 - The create, alter, and replace recommendations are the same as those on the [**Explain Plans** tab]({{ link_prefix }}ui-statements-page.html#insights) on the Statements page. Whereas the **Explain Plans** tab shows all recommendations, the **Schema Insights** view shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
 
 {% if page.cloud != true -%}
