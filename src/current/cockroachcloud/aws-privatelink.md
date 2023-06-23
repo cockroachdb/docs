@@ -13,7 +13,7 @@ This page describes the steps to setting up an AWS PrivateLink connection for yo
 
 {{site.data.alerts.callout_success}}
 
-You must also configure the AWS PrivateLink connection from your CockroachDB cluster, to do this, refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink).
+You must also configure the AWS PrivateLink connection for your {{ site.data.products.dedicated }} cluster using the Console UI, Cloud API or Terraform Provider, so that {{ site.data.products.db }} can accept the new connection. For help, refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink).
 
 If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}

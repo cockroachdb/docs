@@ -7,19 +7,19 @@ docs_area: manage
 
 {{ site.data.products.dedicated }} allows explicit configurations of the networks that can access your cluster.
 
-To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization, according to the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege). These might include specific networks for your application servers, hardened administrator access points, and backup-restore pipelines for disaster recovery.
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or disaster recovery pipelines.
 
 ## Options for controlling network access
 
 You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only). Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public internet, and therefore offers several advantages:
+- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only). Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public network, and therefore offers several advantages:
 
     - Enhanced network security (no access through public IPs i.e. no transit over public networks).
     - Direct connection from application deployment that do not have static public IPs
     - Reduced lower network latency.
-    - This option can also be helpful if you need more than the current maximum of 20 authorized networks per cluster.
+    - This option can also be helpful if you need more than the current maximum limit of authorized networks per cluster.
 
 {{site.data.alerts.callout_info}}
 
@@ -41,7 +41,7 @@ Authorized network access can be managed from the {{ site.data.products.db }} co
 
 `https://cockroachlabs.cloud/cluster/{ your cluster UUID}/networking`
 
-You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
+You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can use VPC Peering or AWS PrivateLink instead (Dedicated clusters only).
 
 Refer to:
 

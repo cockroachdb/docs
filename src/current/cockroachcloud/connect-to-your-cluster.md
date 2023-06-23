@@ -7,7 +7,7 @@ docs_area: deploy
 
 {% include cockroachcloud/filter-tabs/crdb-cloud-connection.md %}
 
-This page shows you how to connect to your {{ site.data.products.dedicated }} cluster. This includes the administrative task of creating allowed networks to support SQL client connects, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
+This page shows you how to connect to your {{ site.data.products.dedicated }} cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
 
 ## Before you start
 
