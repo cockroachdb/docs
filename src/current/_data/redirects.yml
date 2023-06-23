@@ -497,6 +497,10 @@
 
 # Removed Pages
 
+- destination: movr.html#develop-and-deploy-a-global-application
+  sources: ['movr-flask-overview.html']
+  versions: ['v23.1']
+
 - destination: :version/collate.html
   sources: [':version/collatedstring.html']
 
