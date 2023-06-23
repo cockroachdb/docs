@@ -95,15 +95,7 @@ $ cockroach demo movr
 
 For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies](topology-patterns.html) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment](demo-low-latency-multi-region-deployment.html).
 
-### Develop and deploy a global application
-
-For a tutorial on developing and deploying a globally-available web application for MovR, use the following docs:
-
-1. [MovR: A Global Application Use-case](movr-flask-use-case.html)
-1. [Create a Multi-region Database Schema](movr-flask-database.html)
-1. [Set up a Virtual Environment for Developing Global Applications](movr-flask-setup.html)
-1. [Develop a Global Application](movr-flask-application.html)
-1. [Deploy a Global Application](movr-flask-deployment.html)
+For a tutorial on developing and deploying a globally-available web application for MovR, see [Develop and Deploy a Global Application](movr-flask-overview.html).
 
 ## See also
 
