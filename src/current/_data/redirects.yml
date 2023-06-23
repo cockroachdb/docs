@@ -752,11 +752,9 @@
 
 - destination: stable/show-vars.html
   sources: ['show-database.html']
-  versions: ['v21.2', 'v22.1', 'cockroachcloud']
 
 - destination: stable/start-a-local-cluster.html
   sources: ['start-a-local-cluster.html']
-  versions: ['v21.2', 'v22.1', 'cockroachcloud']
 
 - destination: topology-follow-the-workload.html
   sources: ['demo-follow-the-workload.html']
