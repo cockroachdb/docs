@@ -1,4 +1,4 @@
-- Stored procedures
+- Stored procedures.
   - CockroachDB has support for [user-defined functions](user-defined-functions.html).
 - Triggers.
 - Events.
