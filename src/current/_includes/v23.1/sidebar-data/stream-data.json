@@ -95,6 +95,17 @@
       }
     ]
   },
+  {
+    "title": "Technical Overview",
+    "items": [
+        {
+          "title": "How Does an Enterprise Changefeed Work?",
+          "urls": [
+            "/${VERSION}/how-does-an-enterprise-changefeed-work.html"
+          ]
+        }
+      ]
+    },
     {
       "title": "Advanced Changefeed Configuration",
       "urls": [

@@ -167,6 +167,10 @@ For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
 </section>
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
+
 ## See also
 
 - [`SHOW JOBS`](show-jobs.html)
