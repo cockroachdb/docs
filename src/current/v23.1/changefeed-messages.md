@@ -248,6 +248,41 @@ There are three different ways to configure resolved timestamp messages:
 If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
 {{site.data.alerts.end}}
 
+## Duplicate messages
+
+Under some circumstances, changefeeds will emit duplicate messages to ensure the sink is receiving each message at least once. The following can cause duplicate messages:
+
+- The changefeed job [encounters an error](#changefeed-encounters-an-error).
+- A node in the cluster [restarts](#node-restarts).
+- The changefeed job has the [`min_checkpoint_frequency` option set](#min_checkpoint_frequency-option).
+- A target table undergoes a schema change. Refer to [Schema changes](#schema-changes) for detail on duplicates in this case.
+
+A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
+
+When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint.
+
+<img src="{{ 'images/v23.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
+
+### Changefeed encounters an error
+
+By default, changefeeds treat errors as [retryable except for some specific terminal errors](monitor-and-debug-changefeeds.html#changefeed-retry-errors). When a changefeed encounters a retryable or non-retryable error, the job will pause until a successful retry or you resume the job once the error is solved. This can cause duplicate messages at the sink as the changefeed returns to the last checkpoint.
+
+We recommend monitoring for changefeed retry errors and failures. Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html#recommended-changefeed-metrics-to-track) page.
+
+{{site.data.alerts.callout_info}}
+[Kafka's](changefeed-sinks.html#kafka) batching behavior can increase the number of duplicate messages. For example, if Kafka receives a batch of `N` messages and successfully saves `N-1` of them, the changefeed job only knows that the batch failed, not which message failed to commit. As a result, the changefeed job will resend the full batch of messages, which means all but one of the messages are duplicates. Reducing the Kafka batch size with [`kafka_config_sink`](changefeed-sinks.html#kafka-sink-configuration) may help to reduce the number of duplicate messages at the sink.
+{{site.data.alerts.end}}
+
+### Node restarts
+
+When a node restarts, the changefeed will emit duplicates since the last checkpoint. During a rolling restart of nodes, a changefeed can fall behind as it tries to catch up during each node restart. For example, as part of a rolling upgrade or cluster maintenance, a node may [drain](node-shutdown.html) every 5 minutes and the changefeed job checkpoints every 5 minutes.
+
+To prevent the changefeed from falling too far behind, [pause](create-and-configure-changefeeds.html#configuring-all-changefeeds) changefeed jobs before performing rolling node restarts.
+
+### `min_checkpoint_frequency` option
+
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating changefeed node. Therefore, changefeeds will wait for at least the `min_checkpoint_frequency` duration before flushing to the sink. If a changefeed pauses and then resumes, the `min_checkpoint_frequency` duration is the amount of time that the changefeed will need to catch up when it has not checkpointed its progress. During this catch-up time, you could receive duplicate messages.
+
 ## Schema Changes
 
 In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
