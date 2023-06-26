@@ -136,7 +136,7 @@ Note that the original CockroachDB column definition is also included in the sch
 
 ### Schema changes with column backfill
 
-When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema. When using Avro, rows that have been backfilled by a schema change are always re-emitted.
+When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column](computed-columns.html), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
 
 {{site.data.alerts.callout_info}}
 Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer](online-schema-changes.html#declarative-schema-changer) section.
