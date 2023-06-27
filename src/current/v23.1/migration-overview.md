@@ -148,7 +148,7 @@ Review the [best practices for creating secondary indexes](schema-design-indexes
 
 #### Handling transaction contention
 
-Optimize your queries against [transaction contention](performance-best-practices-overview.html#transaction-contention). You will likely encounter [transaction retry errors](transaction-retry-error-reference.html) related to CockroachDB's [`SERIALIZABLE` isolation level](demo-serializable) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
+Optimize your queries against [transaction contention](performance-best-practices-overview.html#transaction-contention). You will likely encounter [transaction retry errors](transaction-retry-error-reference.html) related to CockroachDB's [`SERIALIZABLE` isolation level](demo-serializable.html) when you [test application queries](#validate-queries), as well as transaction contention due to long-running transactions when you [conduct the migration](#conduct-the-migration) and bulk load data.
 
 #### Unimplemented features and syntax incompatibilities
 
@@ -186,9 +186,9 @@ Based on the error budget you [defined in your migration plan](#develop-a-migrat
 
 Do the following in order:
 
-1. [Convert your schema](#convert-the-schema). 
-1. [Load test data](#load-test-data). 
-1. [Validate your application queries](#validate-queries). 
+1. [Convert your schema](#convert-the-schema).
+1. [Load test data](#load-test-data).
+1. [Validate your application queries](#validate-queries).
 
 #### Convert the schema
 
