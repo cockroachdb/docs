@@ -31,7 +31,15 @@ The following databases are currently supported:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     git clone https://github.com/cockroachdb/molt.git
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
     cd molt
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
     go build .
     ~~~
     
@@ -39,7 +47,7 @@ The following databases are currently supported:
     
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    GOOS=linux GOARCH=amd64 go build -v -o artifacts/molt .
+    GOOS=linux GOARCH=amd64 go build -v .
     ~~~ 
     
     Run the following command to verify the installation:
@@ -54,21 +62,26 @@ The following databases are currently supported:
     The `molt verify` command takes two or more JDBC connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the JDBC string. The first argument is considered as the "source of truth". 
     
     Examples:
+
+    The following example compares a PostgreSQL database with a CockroachDB database (simplified naming for both instances):
     
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    # Compare postgres with cockroachdb (simplified naming for both instances).
     ./molt verify \
       'pg_truth===postgres://<username>:<password>@url:<port>/<database>' \
       'crdb_compare===postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
+    ~~~
 
-    # Compare mysql and cockroachdb.
+    The following example compares a MySQL database with a CockroachDB database (simplified naming for both instances):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
     ./molt verify \
       'mysql===jdbc:mysql://root@tcp(<host>:<port>)/<database>' \         
       'postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
     ~~~
 
-  Optionally, you can use [supported flags](#supported-flags) to customize the verification results.
+    Optionally, you can use [supported flags](#supported-flags) to customize the verification results.
 
 5. Review the verification results:
 
@@ -82,9 +95,9 @@ The following databases are currently supported:
 
 Flag | Description
 ----------|------------
---concurrency int | Number of shards to process at a time. <br><br>Default value: 16 <br><br>For faster verification, set this flag to a higher value.<br><br>Note: Table splitting by shard only works for `int`, `uuid`, and `float` data types.
---table_splits int | Number of shards to split the table into. <br><br>Default value: 16
---row_batch_size int | Number of rows to get from a table at a time. <br><br>Default value: 20000
+--concurrency int | Number of shards to process at a time. <br>Default value: 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for `int`, `uuid`, and `float` data types.
+--table_splits int | Number of shards to split the table into. <br>Default value: 16
+--row_batch_size int | Number of rows to get from a table at a time. <br>Default value: 20000
 
 ## Limitations
 
