@@ -13,7 +13,7 @@ If you need to migrate data from a {{ site.data.products.serverless }} cluster t
 
 A database migration broadly consists of the following phases:
 
-1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar wtih the [application changes](#application-changes) that you need to make for CockroachDB.
+1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
 1. [Prepare for migration:](#prepare-for-migration) Run a [pre-mortem](#run-a-migration-pre-mortem), set up [metrics](#set-up-monitoring-and-alerting), [convert your schema](#convert-the-schema), perform an [initial load of test data](#load-test-data), and [validate your application queries](#validate-queries) for consistency and performance.
 1. [Conduct the migration:](#conduct-the-migration) Use a [lift-and-shift](#lift-and-shift) or ["zero-downtime"](#zero-downtime) method to migrate your data, application, and users to CockroachDB.
 
@@ -38,7 +38,7 @@ A primary consideration is whether your application can tolerate downtime:
 Take the following two use cases:
 
 - An application that is primarily in use during daytime business hours can be taken offline during a predetermined timeframe without disrupting the user experience and business continuity. In this case, your migration can occur in a [downtime window](#downtime-window).
-- An application that must serve writes continuously cannot be taken offline in order to migrate its data, but can tolerate being shut down for 30 seconds to redirect traffic to a new database as cutover process. In this case, you will aim for [zero or near-zero downtime](#zero-or-near-zero-downtime).
+- An application that must serve writes continuously cannot tolerate a long downtime window. In this case, you will aim for [zero or near-zero downtime](#zero-or-near-zero-downtime).
 
 In general, migrating with less downtime raises the possibility of data inconsistencies that have to be reconciled.
 
