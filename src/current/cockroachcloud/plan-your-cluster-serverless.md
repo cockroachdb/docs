@@ -12,7 +12,7 @@ This page describes how resource usage, pricing, and cluster configurations work
 
 ## Request Units
 
-All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. An RU is an abstracted metric that represent the size and complexity of requests made to your cluster. In addition to queries that you run, background activity, such as automatic statistics to optimize your queries or connecting a changefeed to an external sink, also consumes RUs.
+All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. An RU is an abstracted metric that represent the size and complexity of requests made to your cluster. In addition to queries that you run, background activity, such as automatic statistics to optimize your queries or connecting a changefeed to an external sink, also consumes RUs. 
 
 ## Pricing
 
@@ -25,11 +25,11 @@ RU and storage consumption is prorated at the following prices:
   1M Request Units        | $0.20
   1 GiB storage           | $0.50
 
-You can see your cluster's RU and storage usage on the [**Cluster Overview** page](cluster-overview-page.html).
+Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the [**Cluster Overview** page](cluster-overview-page.html).
 
 ## Free vs. paid usage
 
-{{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. All non-contract {{ site.data.products.db }} organizations are given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+{{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract {{ site.data.products.db }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits](serverless-cluster-management.html#edit-your-resource-limits) if you've already created one free {{ site.data.products.serverless }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
   
@@ -66,46 +66,3 @@ Storage for a multi-region cluster is billed at the same rate as a single-region
 - Read-heavy applications may experience a smaller increase in RU consumption because the resources required to read from a single region of a multi-region cluster are comparable with a single-region cluster.
 
 During the multi-region {{ site.data.products.serverless-plan }} [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html#feature-availability-phases), RU usage for queries that cross regions will not account for inter-region bandwidth.
-
-### Common queries
-
-The examples that follow show RU estimates of some common queries and how they increase with the size and complexity of the query. Note that the amounts listed are estimates and your actual usage may vary slightly.
-
-The cost to do a prepared point read (fetching a single row by its key) of a 64 byte row is approximately 1 RU, plus 1 RU for each additional KiB:
-
-  Query                    | RUs pe query    
-  -------------------------|--------------------
-  Read 1 row of 64 bytes   | 1.03              
-  Read 1 row of 1024 bytes | 1.99               
-  Read 1 row of 2048 bytes | 3.01               
-
-Writing a 64 byte row costs approximately 7 RUs, which includes the cost of replicating the write 3 times for high availability and durability, plus 3 RUs for each additional KiB:
-
-  Query                     | RUs per query    
-  --------------------------|--------------------
-  Write 1 row of 64 bytes   | 6.71               
-  Write 1 row of 1024 bytes | 9.59               
-  Write 1 row of 2048 bytes | 12.62              
-
-Adding complexity to a query, such as an index or a join, increases the number of RUs consumed:
-
-  Query                                     | RUs per query    
-  ------------------------------------------|----------------
-  Write 1 row of 1024 bytes, with 0 indexes | 9.59               
-  Write 1 row of 1024 bytes, with 1 index   | 18.69              
-  Write 1 row of 1024 bytes, with 2 indexes | 27.80              
-
-A small scan costs about 3 RUs, and the cost increases with the size of the scan:
-
-  Query                                 | RUs per query 
-  --------------------------------------|-----------------
-  Scan 1K rows of 64 bytes, return 1    | 3.26            
-  Scan 1K rows of 1024 bytes, return 1  | 22.39           
-  Scan 10K rows of 1024 bytes, return 1 | 196.05          
-
-Other cluster activity such as establishing a SQL connection or executing a `SELECT` statement also consume RUs:  
-
-  Query                    | RUs per query  
-  -------------------------|------------------
-  Establish SQL Connection | 4.36             
-  `SELECT 1`               | 0.14             
