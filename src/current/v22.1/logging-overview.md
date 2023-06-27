@@ -9,7 +9,7 @@ If you need to monitor your cluster, tune performance, or [troubleshoot](trouble
 
 ## Details
 
-When a node processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message is composed of:
+When a node starts, shuts down, or processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message is composed of:
 
 - A payload that contains events either structured in JSON or conveyed in an arbitrary string. For details on structured event types and their fields, see [Notable Event Types](eventlog.html).
 - An envelope that contains event metadata (e.g., severity, date, timestamp, channel). Depending on the log format you specify when [configuring logs](configure-logs.html#file-logging-format), the envelope can be formatted either in JSON or as a flat prefix to the message.

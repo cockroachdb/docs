@@ -16,12 +16,6 @@ Several new and updated tables (listed below) are available to help you query th
 The information on this page assumes you are familiar with [replication zones](configure-replication-zones.html) and [partitioning](partitioning.html).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_danger}}
-**This is an experimental feature.**  The interface and output are subject to change.
-
-In particular, the direct access to `system` tables shown here will not be a supported way to inspect CockroachDB in future versions. We're committed to adding stable ways to inspect these replication reports in the future, likely via `SHOW` statements and/or [views](views.html) and [built-in functions](functions-and-operators.html) in the `crdb_internal` schema.
-{{site.data.alerts.end}}
-
 ## Conformance reporting tables
 
 The following new and updated tables are available for verifying constraint conformance.

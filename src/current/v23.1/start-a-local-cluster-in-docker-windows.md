@@ -182,7 +182,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
     ~~~
     CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
-    build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.19.4)
+    build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.19.6)
     webui:               http://roach1:8080
     sql:                 postgresql://root@roach1:26357?sslmode=disable
     client flags:        /cockroach/cockroach <client cmd> --host=roach1:26357
