@@ -15,6 +15,7 @@ You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
 - Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only). Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public network, and therefore offers several advantages:
+
     - Enhanced network security (no access through public IPs i.e. no transit over public networks).
     - Direct connection from application deployment that do not have static public IPs
     - Reduced network latency.
@@ -23,7 +24,11 @@ You can authorize network access to your cluster by:
 **Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
 
 {{site.data.alerts.callout_success}}
-You should use PrivateLink or VPC peering if you need to allowlist more IP addresses than allowed by the maximum (20 for Dedicated clusters and 50 for Serverless), if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
+Use PrivateLink, GCP VPC Peering, or AWS PrivateLink) if:
+
+- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for Dedicated clusters and 50 for Serverless).
+- Your servers’ IP addresses are not static.
+- You want avoid exposing your cluster to the public internet.
 
 Learn more about [Private Clusters (Preview)](private-clusters.html), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 {{site.data.alerts.end}}
@@ -48,7 +53,7 @@ Authorized network access can be managed from the {{ site.data.products.db }} co
 
 `https://cockroachlabs.cloud/cluster/{ your cluster UUID}/networking`
 
-Serverless and Dedicated clusters support different maximum number of IP allowlist rules/authorized sub-networks:
+Serverless and Dedicated clusters support different maximum numbers of IP allowlist rules:
 
 Cluster Type | IP allowlist rule max
 --------|------------
@@ -62,6 +67,7 @@ While developing and testing your application, you may add `0.0.0.0/0` to the al
 If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
 
 Refer to:
+
 - [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#authorize-your-network).
 - [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#authorize-your-network).
 
