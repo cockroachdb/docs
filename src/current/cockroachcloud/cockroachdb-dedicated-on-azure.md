@@ -24,7 +24,6 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 ### Editing and scaling
 
 - A cluster must have at minimum three nodes. Single-node clusters are not supported.
-- After it is created, a cluster cannot yet be modified or scaled in place. Instead, create a new cluster with the desired configuration.
 
 ### Disaster recovery
 
@@ -61,7 +60,7 @@ Not yet. During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-f
 
 ### Is it possible to horizontally scale a dedicated cluster on Azure?
 
-Not yet.
+Yes. You can [add or remove nodes](cluster-management.html#add-or-remove-nodes-from-a-cluster) or modify a cluster's per-node [storage](#cluster-managementhtml#increase-storage-for-a-cluster) or [compute](cluster-management.html#change-compute-for-a-cluster) resources.
 
 ### What Azure regions can we choose to create the dedicated clusters?
 
