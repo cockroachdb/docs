@@ -5,7 +5,7 @@ toc: true
 key: explore-the-admin-ui.html
 docs_area: reference.db_console
 ---
-
+<!-- need to add JWT fetch -->
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
 {{site.data.alerts.callout_info}}

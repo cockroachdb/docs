@@ -7,7 +7,16 @@ docs_area: manage
 
 Cluster Single Sign-On (SSO) allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on CockroachDB {{ site.data.products.cloud }} or self-hosted) with the full security of Single Sign-On (SSO), and the convenience of being able to choose from a variety of cloud-based or customer-managed identity providers (IdPs).
 
-This page describes the procedure for accessing a CockroachDB {{ site.data.products.cloud }} cluster using the JWT access tokens provided by a customer-managed IdP. This document applies for both CockroachDB {{ site.data.products.core }} and CockroachDB {{ site.data.products.dedicated }} customers.
+The [DB Console](ui-overview.html) allows users to easily generate JSON Web Tokens (JWTs) by authenticating to their IdP through an embedded flow. The JWT can then be copied out of the DB Console UI and used in a SQL connection string to authenticate to the cluster.
+
+This page describes:
+
+- The administrative procedure for configuring a cluster to accept an external identity provider.
+- The administrative procedure for configuring a cluster to generate JWTs through the DB Console's embedded authentication UI.
+- The SQL developer/operator procedure for generating a JWT token through the embedded authentication flow provided by the DB Console.
+- The SQL developer/operator procedure for authenticating to a cluster using a JWT token provisioned for their identity (either by the DB Console's embedded flow or directly from their IdP).
+
+This document applies for both {{ site.data.products.core }} and {{ site.data.products.dedicated }} customers.
 
 You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
 
@@ -119,6 +128,13 @@ SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256",
 	By extension, if your provider allows you to specify scopes or permissions on the token, you should specify these as restrictively as possible, while still allowing for the functions intended for the service account or user.
 	{{site.data.alerts.end}}
 
+## How CockroachDB determines the SQL username from a JWT:
+
+1. `server.oidc_authentication.generate_cluster_sso_token.use_token` determines which token to look at (id_token or access_token).
+<!-- this one below needs doing! it's new -->
+1. `server.jwt_authentication.claim` determines which claim in that token, defaulting to picking the token’s subject.
+1. `server.identity_map.configuration` maps that claim (along with the token’s issuer) to a SQL username.
+
 ## Configure your cluster's identity mapping
 
 ### `server.identity_map.configuration`
@@ -130,6 +146,26 @@ Specifies mapping of subject names to SQL usernames, for each allowed IdP. For e
 `https://accounts.google.com   /^([9-0]*)$   gcp_\1`
 
 would yield a mapping where the SQL username for each GCP-provisioned service account would be `gcp_{user ID}`, e.g. `gcp_1234567` for a service account with ID `1234567`.
+
+## Configure your cluster for DB Console-embedded IdP authentication and JWT generation
+
+The following settings, in the `server.oidc_authentication.generate_cluster_sso_token` namespace must be configured to enable DB Console-embedded JWT generation:
+
+### `.enabled`
+
+Defaults to `false`, must be set to `true` to enable embedded JWT generation.
+
+### `.use_token`
+
+This selects which part of the received OIDC credentials to use to determine the user’s identity. (See below for overall data flow.)
+
+### `.sql_host`
+
+This display value informs users the host for their SQL connections. Default: `localhost`.
+### `.sql_port`
+This display value informs users the port for their SQL connections. Default: `26257`.
+
+
 
 ## Authenticate to your cluster with your JWT token
 
