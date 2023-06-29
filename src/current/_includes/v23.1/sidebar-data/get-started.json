@@ -25,11 +25,14 @@
       ]
     },
     {
-      "title": "Developer Overview",
-      "urls": [
-        "/${VERSION}/developer-guide-overview.html"
-      ],
+      "title": "Develop with CockroachDB",
       "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/developer-guide-overview.html"
+          ]
+        },
         {
           "title": "Developer Basics",
           "urls": [

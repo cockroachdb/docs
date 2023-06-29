@@ -13,7 +13,7 @@
           {
             "title": "Why CockroachDB?",
             "urls": [
-              "/${VERSION}/frequently-asked-questions.html#what-is-cockroachdb"
+              "/${VERSION}/why-cockroachdb.html"
             ]
           },
           {
@@ -38,12 +38,6 @@
             "title": "Multi-Active Availability",
             "urls": [
               "/${VERSION}/multi-active-availability.html"
-            ]
-          },
-          {
-            "title": "Cloud vs. Self-Hosted Deployments",
-            "urls": [
-              "/${VERSION}/frequently-asked-questions.html#how-do-i-know-which-cockroachdb-deployment-option-is-right-for-my-project"
             ]
           },
           {
