@@ -7,7 +7,7 @@ docs_area: manage
 
 SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
 
-To enable the feature, [enable auditing](#enable-auditing) for a table and then [contact us](https://support.cockroachlabs.com/hc/en-us) to request the audit logs.
+To enable the feature, [enable auditing](#enable-auditing) for a table and then [contact us](https://support.cockroachlabs.com/hc/) to request the audit logs.
 
 ## Enable auditing
 

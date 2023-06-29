@@ -238,7 +238,7 @@ If you disable full scans, and you provide an [index hint](indexes.html#selectio
 
 ## Control whether the optimizer uses an index
 
-You can specify [whether an index is visible](alter-index.html#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection). 
+You can specify [whether an index is visible](alter-index.html#not-visible) to the cost-based optimizer. By default, indexes are visible. If not visible, the index will not be used in queries unless it is specifically selected with an [index hint](indexes.html#selection).
 
 This allows you to create an index and check for query plan changes without affecting production queries. For an example, see [Set an index to be not visible](alter-index.html#set-an-index-to-be-not-visible).
 
@@ -381,7 +381,7 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 ### Additional considerations
 
-- This syntax is consistent with the [SQL Server syntax for join hints](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-join?view=sql-server-2017), except that:
+- This syntax is consistent with the [SQL Server syntax for join hints](https://docs.microsoft.com/sql/t-sql/queries/hints-transact-sql-join?view=sql-server-2017), except that:
 
   - SQL Server uses `LOOP` instead of `LOOKUP`.
 

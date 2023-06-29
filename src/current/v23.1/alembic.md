@@ -5,11 +5,11 @@ toc: true
 docs_area: develop
 ---
 
-This page guides you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/en/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
+This page guides you through a series of simple database schema changes using the [Alembic](https://alembic.sqlalchemy.org/latest/) schema migration module with a simple Python application built on SQLAlchemy and CockroachDB.
 
-For a detailed tutorial about using Alembic, see [the Alembic documentation site](https://alembic.sqlalchemy.org/en/latest/tutorial.html).
+For a detailed tutorial about using Alembic, see [the Alembic documentation site](https://alembic.sqlalchemy.org/latest/tutorial.html).
 
-For information about specific migration tasks, see Alembic's [Cookbook](https://alembic.sqlalchemy.org/en/latest/cookbook.html).
+For information about specific migration tasks, see Alembic's [Cookbook](https://alembic.sqlalchemy.org/latest/cookbook.html).
 
 ## Before you begin
 
@@ -340,7 +340,7 @@ Suppose you want to add a new [computed column](computed-columns.html) to the `a
 
 ## Execute Raw SQL with Alembic
 
-While [Alembic supports most SQL operations](https://alembic.sqlalchemy.org/en/latest/ops.html), you can always execute raw SQL using the `execute()` operation.
+While [Alembic supports most SQL operations](https://alembic.sqlalchemy.org/latest/ops.html), you can always execute raw SQL using the `execute()` operation.
 
 {{site.data.alerts.callout_success}}
 Executing DDL statements as raw SQL can be particularly helpful when using SQL syntax for DDL statements specific to CockroachDB, like [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-table.html#alter-primary-key) or [`ALTER TABLE ... SET LOCALITY`](alter-table.html#set-locality) statements.
@@ -573,7 +573,7 @@ If you run into problems, please file an issue in the [`alembic` repository](htt
 ## See Also
 
 - [`cockroach demo`](cockroach-demo.html)
-- [Alembic documentation](https://alembic.sqlalchemy.org/en/latest/)
+- [Alembic documentation](https://alembic.sqlalchemy.org/latest/)
 - [`alembic` GitHub repository](https://github.com/sqlalchemy/alembic)
 - [Client connection parameters](connection-parameters.html)
 - [Third-Party Database Tools](third-party-database-tools.html)

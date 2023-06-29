@@ -55,7 +55,7 @@ See the [Security Overview page](../{{site.current_cloud_version}}/security-refe
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
+All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
 
 All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted at rest by the cloud provider where your cluster is deployed.
 
@@ -79,7 +79,7 @@ The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} clu
 
 ### How do I change the configurations on my cluster?
 
-Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your cluster configuration.
+Contact [Support](https://support.cockroachlabs.com/hc/) to change your cluster configuration.
 
 ### How do I add nodes?
 
@@ -95,11 +95,11 @@ We do not automatically scale nodes based on your capacity usage. To add or remo
 
 ### Who is responsible for backup?
 
-Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](../{{site.current_cloud_version}}/disaster-recovery.html). 
+Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](../{{site.current_cloud_version}}/disaster-recovery.html).
 
 {{ site.data.products.db }} automatically runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](../{{site.current_cloud_version}}/backup.html) statement.
 
-Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster. 
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -107,7 +107,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 Learn more:
 
-- Refer to [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated) to learn how to restore data from {{ site.data.products.db }}'s automatic backups in the Console. 
+- Refer to [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated) to learn how to restore data from {{ site.data.products.db }}'s automatic backups in the Console.
 
 - Refer to [Take and Restore Customer-Owned Backups on CockroachDB Cloud](take-and-restore-customer-owned-backups.html) for more information about using customer-managed backups.
 
@@ -151,7 +151,7 @@ Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of C
 
 ### Is there a public API for {{ site.data.products.db }}?
 
-Yes, see the [Cloud API](cloud-api.html) page for more information. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+Yes, see the [Cloud API](cloud-api.html) page for more information. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/) if you have specific API requirements.
 
 ### Do you have a UI? How can I see details?
 
@@ -178,7 +178,7 @@ Yes, an [Org Administrator](authorization.html#org-administrator-legacy) can app
 
 ### What is the support policy for older versions of the software?
 
-{{ site.data.products.dedicated }} supports the latest major version of CockroachDB and the version immediately preceding it. We highly recommend running one of the two latest versions of CockroachDB, but we will never force a major upgrade to a cluster without your knowledge. You can contact [Support](https://support.cockroachlabs.com/hc/en-us) if you require an exception.
+{{ site.data.products.dedicated }} supports the latest major version of CockroachDB and the version immediately preceding it. We highly recommend running one of the two latest versions of CockroachDB, but we will never force a major upgrade to a cluster without your knowledge. You can contact [Support](https://support.cockroachlabs.com/hc/) if you require an exception.
 
 ### How do I check to see if {{ site.data.products.db }} is down?
 
@@ -198,4 +198,4 @@ To optimize schema design to achieve your performance goals, we recommend workin
 
 Yes, {{ site.data.products.dedicated }} clusters support an integration with Datadog that enables data collection and alerting on a subset of CockroachDB metrics. Enabling the Datadog integration on your {{ site.data.products.dedicated }} cluster will apply additional charges to your **Datadog** bill. See [Monitor with Datadog](tools-page.html#monitor-cockroachdb-dedicated-with-datadog) for more information.
 
-If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/).

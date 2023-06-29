@@ -40,7 +40,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, it's important to complete the following steps.
+Before starting the upgrade, it's important to complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
@@ -84,7 +84,7 @@ Use the [DB Console](tools-page.html) or your own tooling to monitor your applic
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
-- If you see unexpected behavior, you can [rollback to v20.2](#roll-back-the-upgrade). This option is available only during the 72-hour window. If you see unexpected behavior after the upgrade has been finalized, you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+- If you see unexpected behavior, you can [rollback to v20.2](#roll-back-the-upgrade). This option is available only during the 72-hour window. If you see unexpected behavior after the upgrade has been finalized, you will have to [reach out to support](https://support.cockroachlabs.com/hc/requests/new).
 
 ### Respect temporary limitations
 
@@ -106,7 +106,7 @@ During the 72-hour window before the upgrade is automatically finalized, if you 
 
 To finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
 
-At this point, all [temporary limitations](#respect-temporary-limitations) are lifted, and all v21.1 features are available for use. However, it's no longer possible to roll back to v20.2. If you see unexpected behavior, [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+At this point, all [temporary limitations](#respect-temporary-limitations) are lifted, and all v21.1 features are available for use. However, it's no longer possible to roll back to v20.2. If you see unexpected behavior, [reach out to support](https://support.cockroachlabs.com/hc/requests/new).
 
 ### Roll back the upgrade
 

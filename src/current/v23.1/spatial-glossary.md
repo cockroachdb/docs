@@ -31,7 +31,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="geocoder"></a>
 
-- _Geocoder_: Takes an address or the name of a place, and returns latitude and longitude coordinates. For more information, see [the wikipedia article on Geocoding](https://en.wikipedia.org/wiki/Geocoding).
+- _Geocoder_: Takes an address or the name of a place, and returns latitude and longitude coordinates. For more information, see [the wikipedia article on Geocoding](https://wikipedia.org/wiki/Geocoding).
 
 <a name="nearest-neighbor-search"></a>
 
@@ -112,7 +112,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="de-9IM"></a>
 
-- _DE-9IM_: The [Dimensionally Extended nine-Intersection Model (DE-9IM)](https://en.wikipedia.org/wiki/DE-9IM) defines a method that uses a 3x3 matrix to determine whether two shapes (1) touch along a boundary, (2), intersect (overlap), or (3) are equal to each other - that is, they are the same shape that covers the same area. This notation is used by the `ST_Relate` built-in function. Almost all other spatial predicate functions can be logically implemented using this model. However, in practice, most are not, and `ST_Relate` is reserved for advanced use cases.
+- _DE-9IM_: The [Dimensionally Extended nine-Intersection Model (DE-9IM)](https://wikipedia.org/wiki/DE-9IM) defines a method that uses a 3x3 matrix to determine whether two shapes (1) touch along a boundary, (2), intersect (overlap), or (3) are equal to each other - that is, they are the same shape that covers the same area. This notation is used by the `ST_Relate` built-in function. Almost all other spatial predicate functions can be logically implemented using this model. However, in practice, most are not, and `ST_Relate` is reserved for advanced use cases.
 
 ## File Formats
 
@@ -122,7 +122,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="vector-file"></a>
 
-- _Vector file_: A file format that uses a non-pixel-based, abstract coordinate representation for geospatial data. Because it is abstract and not tied to pixels, the vector format is scalable. The motivation is similar to that behind the [Scalable Vector Graphics (SVG)](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) image format: scaling the image up or down does not reveal any "jaggedness" (due to loss of information) such as might be revealed by a pixel representation. However, vector files are usually much larger in size and more expensive (in terms of CPU, memory, and disk) to work with than [Raster files](#raster-file).
+- _Vector file_: A file format that uses a non-pixel-based, abstract coordinate representation for geospatial data. Because it is abstract and not tied to pixels, the vector format is scalable. The motivation is similar to that behind the [Scalable Vector Graphics (SVG)](https://wikipedia.org/wiki/Scalable_Vector_Graphics) image format: scaling the image up or down does not reveal any "jaggedness" (due to loss of information) such as might be revealed by a pixel representation. However, vector files are usually much larger in size and more expensive (in terms of CPU, memory, and disk) to work with than [Raster files](#raster-file).
 
 <a name="raster-file"></a>
 
@@ -180,7 +180,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="s2"></a>
 
-- _S2_: The [S2 Geometry Library](http://s2geometry.io) is a C++ code library for performing spherical geometry computations.  It models a sphere using a [quadtree](https://en.wikipedia.org/wiki/Quadtree) "divide the space" approach, and is used by CockroachDB.
+- _S2_: The [S2 Geometry Library](http://s2geometry.io) is a C++ code library for performing spherical geometry computations.  It models a sphere using a [quadtree](https://wikipedia.org/wiki/Quadtree) "divide the space" approach, and is used by CockroachDB.
 
 ## Spatial objects
 
@@ -192,11 +192,11 @@ This section has information about the representation of geometric and geographi
 
 <a name="linestring"></a>
 
-- _LineString_: A linestring is a collection of [points](#point) that are "strung together" into one geometric object, like a necklace. If the "necklace" were "closed", it could also represent a [polygon](#polygon). A linestring can also be used to represent an arbitrary curve, such as a [Bézier curve](https://en.wikipedia.org/wiki/Bézier_curve).
+- _LineString_: A linestring is a collection of [points](#point) that are "strung together" into one geometric object, like a necklace. If the "necklace" were "closed", it could also represent a [polygon](#polygon). A linestring can also be used to represent an arbitrary curve, such as a [Bézier curve](https://wikipedia.org/wiki/Bézier_curve).
 
 <a name="polygon"></a>
 
-- _Polygon_: A polygon is a closed shape that can be made up of straight or curved lines. It can be thought of as a "closed" [linestring](#linestring). Irregular polygons can take on almost any arbitrary shape. Common regular polygons include: squares, rectangles, hexagons, and so forth. For more information about regular polygons, see the ['Regular polygon' Wikipedia article](https://en.wikipedia.org/wiki/Regular_polygon).
+- _Polygon_: A polygon is a closed shape that can be made up of straight or curved lines. It can be thought of as a "closed" [linestring](#linestring). Irregular polygons can take on almost any arbitrary shape. Common regular polygons include: squares, rectangles, hexagons, and so forth. For more information about regular polygons, see the ['Regular polygon' Wikipedia article](https://wikipedia.org/wiki/Regular_polygon).
 
 <a name="geometrycollection"></a>
 

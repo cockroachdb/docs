@@ -41,7 +41,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td>Cluster DB console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
+    <td>Cluster DB console authentication with third-party <a href="../{{site.versions['stable']}}/sso-db-console.html">Single Sign On (SSO)</a> using <a href="https://openid.net/connect/">OpenID Connect OIDC</a> or <a href="https://wikipedia.org/wiki/Security_Assertion_Markup_Language">SAML</a></td>
   </tr>
   <tr>
     <td>✓</td>
@@ -114,7 +114,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <tr>
     <td>&nbsp;</td>
     <td>✓</td>
-    <td><a href="https://www.cockroachlabs.com/docs/cockroachcloud/private-clusters">Private Clusters</a></td>
+    <td><a href="private-clusters.html">Private Clusters</a></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -137,7 +137,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <td><a href="network-authorization.html#aws-privatelink"></a>PrivateLink for AWS clusters </td>
   </tr>
   <tr>
-    <td rowspan="2"><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
+    <td rowspan="2"><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
     <td>✓</td>
     <td>✓</td>
     <td><a href="../{{site.versions['stable']}}/sql-audit-logging.html">SQL Audit Logging</a></td>

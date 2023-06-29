@@ -79,7 +79,7 @@ movr
 
 Object Relational Mappers (ORMs) map classes to tables, class instances to rows, and class methods to transactions on the rows of a table. The `sqlalchemy` package includes some base classes and methods that you can use to connect to your database's server from a Python application, and then map tables in that database to Python classes.
 
-In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/en/13/dialects/). The package includes some functions that help you handle [transactions](transactions.html) in a running CockroachDB cluster.
+In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/13/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/13/dialects/). The package includes some functions that help you handle [transactions](transactions.html) in a running CockroachDB cluster.
 
 ### Mappings
 
@@ -91,7 +91,7 @@ Open [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/master/
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/movr/models.py ||# START front ||# END front %}
 ~~~
 
-The first data structure that the file imports is `declarative_base`, a constructor for the [declarative base class](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/api.html#sqlalchemy.ext.declarative.declarative_base), built on SQLAlchemy's Declarative extension. All mapped objects inherit from this object. We assign a declarative base object to the `Base` variable right below the imports.
+The first data structure that the file imports is `declarative_base`, a constructor for the [declarative base class](https://docs.sqlalchemy.org/13/orm/extensions/declarative/api.html#sqlalchemy.ext.declarative.declarative_base), built on SQLAlchemy's Declarative extension. All mapped objects inherit from this object. We assign a declarative base object to the `Base` variable right below the imports.
 
 The `models.py` file also imports some other standard SQLAlchemy data structures that represent database objects (like columns), data types, and constraints, in addition to a standard Python library to help with default values (i.e., `datetime`).
 
@@ -140,16 +140,16 @@ After you create a class for each table in the database, you can start defining 
 
 #### The SQLAlchemy CockroachDB dialect
 
-The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/tree/master/cockroachdb) Python library handles transactions in SQLAlchemy with the `run_transaction()` function. This function takes a `transactor`, which can be an [`Engine`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine), [`Connection`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Connection), or [`sessionmaker`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.sessionmaker) object, and a callback function. It then uses the `transactor` to connect to the database, and executes the callback as a database transaction. For some examples of `run_transaction()` usage, see [Transaction callback functions](#transaction-callback-functions) below.
+The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/tree/master/cockroachdb) Python library handles transactions in SQLAlchemy with the `run_transaction()` function. This function takes a `transactor`, which can be an [`Engine`](https://docs.sqlalchemy.org/13/core/connections.html#sqlalchemy.engine.Engine), [`Connection`](https://docs.sqlalchemy.org/13/core/connections.html#sqlalchemy.engine.Connection), or [`sessionmaker`](https://docs.sqlalchemy.org/13/orm/session_api.html#sqlalchemy.orm.session.sessionmaker) object, and a callback function. It then uses the `transactor` to connect to the database, and executes the callback as a database transaction. For some examples of `run_transaction()` usage, see [Transaction callback functions](#transaction-callback-functions) below.
 
-`run_transaction()` abstracts the details of [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling) away from your application code. Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#transaction-contention) with other concurrent transactions that cannot be resolved without allowing potential serializable anomalies. As a result, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+`run_transaction()` abstracts the details of [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling) away from your application code. Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#transaction-contention) with other concurrent transactions that cannot be resolved without allowing potential serializable anomalies. As a result, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 `run_transaction()` has the following additional benefits:
 
-- When passed a [`sqlalchemy.orm.session.sessionmaker`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object, it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction. Note that a `sessionmaker` objects is different from a `session` object, which is not an allowable `transactor` for `run_transaction()`.
+- When passed a [`sqlalchemy.orm.session.sessionmaker`](https://docs.sqlalchemy.org/latest/orm/session_api.html#session-and-sessionmaker) object, it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction. Note that a `sessionmaker` objects is different from a `session` object, which is not an allowable `transactor` for `run_transaction()`.
 - By abstracting transaction retry logic away from your application, it keeps your application code portable across different databases.
 
- Because all callback functions are passed to `run_transaction()`, the `Session` method calls within those callback functions are written a little differently than the typical SQLAlchemy application. Most importantly, those functions must not change the session and/or transaction state. This is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/en/latest/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that
+ Because all callback functions are passed to `run_transaction()`, the `Session` method calls within those callback functions are written a little differently than the typical SQLAlchemy application. Most importantly, those functions must not change the session and/or transaction state. This is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/latest/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that
 
 <q>As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.</q>
 
@@ -159,11 +159,11 @@ The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroa
 
  In keeping with the above recommendations from the official docs, we strongly recommend avoiding any explicit mutations of the transaction state inside the callback passed to `run_transaction()`. Specifically, we do not make calls to the following functions from inside `run_transaction()`:
 
- - [`sqlalchemy.orm.Session.commit()`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html?highlight=commit#sqlalchemy.orm.session.Session.commit) (or other variants of `commit()`)
+ - [`sqlalchemy.orm.Session.commit()`](https://docs.sqlalchemy.org/latest/orm/session_api.html?highlight=commit#sqlalchemy.orm.session.Session.commit) (or other variants of `commit()`)
 
     This is not necessary because `run_transaction()` handles the savepoint/commit logic for you.
 
- - [`sqlalchemy.orm.Session.rollback()`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html?highlight=rollback#sqlalchemy.orm.session.Session.rollback) (or other variants of `rollback()`)
+ - [`sqlalchemy.orm.Session.rollback()`](https://docs.sqlalchemy.org/latest/orm/session_api.html?highlight=rollback#sqlalchemy.orm.session.Session.rollback) (or other variants of `rollback()`)
 
     This is not necessary because `run_transaction()` handles the commit/rollback logic for you.
 
@@ -175,10 +175,10 @@ The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroa
 
 #### Transaction callback functions
 
- To separate concerns, we define all callback functions passed to `run_transaction()` calls in a separate file, [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). These callback functions wrap `Session` method calls, like [`session.query()`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.query) and [`session.add()`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.add), to perform database operations within a transaction.
+ To separate concerns, we define all callback functions passed to `run_transaction()` calls in a separate file, [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). These callback functions wrap `Session` method calls, like [`session.query()`](https://docs.sqlalchemy.org/13/orm/session_api.html#sqlalchemy.orm.session.Session.query) and [`session.add()`](https://docs.sqlalchemy.org/13/orm/session_api.html#sqlalchemy.orm.session.Session.add), to perform database operations within a transaction.
 
 {{site.data.alerts.callout_success}}
-We recommend that you use a `sessionmaker` object, bound to an existing `Engine`, as the `transactor` that you pass to `run_transaction()`. This protects you from accidentally reusing objects via any sessions created outside the transaction. Every time `run_transaction()` is called, it uses the `sessionmaker` object to create a new [`Session`](https://docs.sqlalchemy.org/en/13/orm/session.html) object for the callback. If the `sessionmaker` is bound to an existing `Engine`, the same database connection can be reused.
+We recommend that you use a `sessionmaker` object, bound to an existing `Engine`, as the `transactor` that you pass to `run_transaction()`. This protects you from accidentally reusing objects via any sessions created outside the transaction. Every time `run_transaction()` is called, it uses the `sessionmaker` object to create a new [`Session`](https://docs.sqlalchemy.org/13/orm/session.html) object for the callback. If the `sessionmaker` is bound to an existing `Engine`, the same database connection can be reused.
 {{site.data.alerts.end}}
 
 `transactions.py` imports all of the table classes that we defined in [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/models.py), in addition to some standard Python data structures needed to generate correctly-typed row values that the ORM can write to the database.
@@ -225,7 +225,7 @@ Now that we've covered the table classes and some transaction functions, we can 
 
 ### Database connection
 
-The `MovR` class, defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py), handles connections to CockroachDB using SQLAlchemy's [`Engine`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) class.
+The `MovR` class, defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py), handles connections to CockroachDB using SQLAlchemy's [`Engine`](https://docs.sqlalchemy.org/13/core/connections.html#sqlalchemy.engine.Engine) class.
 
 Let's start with the beginning of the file:
 
@@ -235,7 +235,7 @@ Let's start with the beginning of the file:
 
 `movr.py` first imports the transaction callback functions that we defined in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). It then imports the `run_transaction()` function. The `MovR` class methods call `run_transaction()` to execute the transaction callback functions as transactions.
 
-The file also imports some `sqlalchemy` libraries to create instances of the `Engine` and `Session` classes, and to [register the CockroachDB as a dialect](https://docs.sqlalchemy.org/en/13/core/connections.html#registering-new-dialects).
+The file also imports some `sqlalchemy` libraries to create instances of the `Engine` and `Session` classes, and to [register the CockroachDB as a dialect](https://docs.sqlalchemy.org/13/core/connections.html#registering-new-dialects).
 
 When called, the `MovR` class constructor creates an instance of the `Engine` class using an input connection string. This `Engine` object represents the connection to the database, and is used by the `sessionmaker()` function to create `Session` objects for each transaction.
 
@@ -367,7 +367,7 @@ For example, look at the `login()` route:
 
 ### Client Location
 
-To optimize for latency in a global application, when a user arrives at the website, their request needs to be routed to the application deployment closest to the location from which they made the request. This step is handled outside of the application logic, by a [cloud-hosted, global load balancer](https://en.wikipedia.org/wiki/Cloud_load_balancing). In our [example multi-region deployment](movr-flask-deployment.html), we use a [GCP external load balancer](https://cloud.google.com/load-balancing/docs/https) that distributes traffic based on the location of the request.
+To optimize for latency in a global application, when a user arrives at the website, their request needs to be routed to the application deployment closest to the location from which they made the request. This step is handled outside of the application logic, by a [cloud-hosted, global load balancer](https://wikipedia.org/wiki/Cloud_load_balancing). In our [example multi-region deployment](movr-flask-deployment.html), we use a [GCP external load balancer](https://cloud.google.com/load-balancing/docs/https) that distributes traffic based on the location of the request.
 
 Note that the application uses a `region` variable to keep track of the region in which the application is deployed. This variable is read in from the `REGION` environment variable, which is set during application deployment. The application uses this `region` variable to limit the cities in which a user can look for vehicles to ride to the supported cities in the region.
 
@@ -384,7 +384,7 @@ After you finish developing and debugging your application, you can start [deplo
 ## See also
 
 <!-- [MovR (live demo)](https://movr.cloud)-->
-- [SQLAlchemy documentation](https://docs.sqlalchemy.org/en/latest/)
+- [SQLAlchemy documentation](https://docs.sqlalchemy.org/latest/)
 - [Transactions](transactions.html)
 - [Flask documentation](https://flask.palletsprojects.com/en/1.1.x/)
 - [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html)

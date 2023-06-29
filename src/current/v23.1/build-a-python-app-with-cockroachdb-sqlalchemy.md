@@ -11,7 +11,7 @@ docs_area: get_started
 
 {% include cockroach_u_pydev.md %}
 
-This tutorial shows you how build a simple CRUD Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
+This tutorial shows you how build a simple CRUD Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/latest/) ORM.
 
 ## Step 1. Start CockroachDB
 
@@ -105,7 +105,7 @@ This tutorial uses [`virtualenv`](https://virtualenv.pypa.io) for dependency man
 `main.py` uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
 
 {{site.data.alerts.callout_info}}
-The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter. 
+The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter.
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
@@ -164,18 +164,18 @@ In a SQL shell connected to the cluster, you can verify that the rows were inser
 
 ### Use the `run_transaction` function
 
-We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 In addition to the above, using `run_transaction` has the following benefits:
 
-- Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
+- Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/latest/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
 - It abstracts away the [client-side transaction retry logic](transaction-retry-error-reference.html#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
 
 For more information about how transactions (and retries) work, see [Transactions](transactions.html).
 
 ### Avoid mutations of session and/or transaction state inside `run_transaction()`
 
-In general, this is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/en/latest/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that
+In general, this is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/latest/orm/session_basics.html#session-frequently-asked-questions), which state (with emphasis added by the original author) that
 
 > As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.
 
@@ -185,8 +185,8 @@ and
 
 In keeping with the above recommendations from the official docs, we **strongly recommend** avoiding any explicit mutations of the transaction state inside the callback passed to `run_transaction`, since that will lead to breakage. Specifically, do not make calls to the following functions from inside `run_transaction`:
 
-- [`sqlalchemy.orm.Session.commit()`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html?highlight=commit#sqlalchemy.orm.session.Session.commit) (or other variants of `commit()`): This is not necessary because `cockroachdb.sqlalchemy.run_transaction` handles the savepoint/commit logic for you.
-- [`sqlalchemy.orm.Session.rollback()`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html?highlight=rollback#sqlalchemy.orm.session.Session.rollback) (or other variants of `rollback()`): This is not necessary because `cockroachdb.sqlalchemy.run_transaction` handles the commit/rollback logic for you.
+- [`sqlalchemy.orm.Session.commit()`](https://docs.sqlalchemy.org/latest/orm/session_api.html?highlight=commit#sqlalchemy.orm.session.Session.commit) (or other variants of `commit()`): This is not necessary because `cockroachdb.sqlalchemy.run_transaction` handles the savepoint/commit logic for you.
+- [`sqlalchemy.orm.Session.rollback()`](https://docs.sqlalchemy.org/latest/orm/session_api.html?highlight=rollback#sqlalchemy.orm.session.Session.rollback) (or other variants of `rollback()`): This is not necessary because `cockroachdb.sqlalchemy.run_transaction` handles the commit/rollback logic for you.
 - [`Session.flush()`][session.flush]: This will not work as expected with CockroachDB because CockroachDB does not support nested transactions, which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to rollback. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following: `sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3)`.
 
 ### Break up large transactions into smaller units of work
@@ -202,7 +202,7 @@ Instead, we recommend breaking your transaction into smaller units of work (or "
 
 ### Use `IMPORT` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/latest/orm/session_api.html?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
 
 For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](migrate-from-postgres.html).
 
@@ -210,7 +210,7 @@ For more information about importing data from MySQL, see [Migrate from MySQL](m
 
 ### Prefer the query builder
 
-In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Engine.execute()`](https://docs.sqlalchemy.org/en/latest/core/connections.html?highlight=execute#sqlalchemy.engine.Engine.execute)) in your application over the [Session][session]/ORM APIs if at all possible. That way, you know exactly what SQL is being generated and sent to CockroachDB, which has the following benefits:
+In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Engine.execute()`](https://docs.sqlalchemy.org/latest/core/connections.html?highlight=execute#sqlalchemy.engine.Engine.execute)) in your application over the [Session][session]/ORM APIs if at all possible. That way, you know exactly what SQL is being generated and sent to CockroachDB, which has the following benefits:
 
 - It's easier to debug your SQL queries and make sure they are working as expected.
 - You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices](performance-best-practices-overview.html).
@@ -221,12 +221,12 @@ SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to genera
 
 ## See also
 
-- The [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) docs
+- The [SQLAlchemy](https://docs.sqlalchemy.org/latest/) docs
 - [Transactions](transactions.html)
 
 {% include {{page.version.version}}/app/see-also-links.md %}
 
 <!-- Reference Links -->
 
-[session.flush]: https://docs.sqlalchemy.org/en/latest/orm/session_api.html#sqlalchemy.orm.session.Session.flush
-[session]: https://docs.sqlalchemy.org/en/latest/orm/session.html
+[session.flush]: https://docs.sqlalchemy.org/latest/orm/session_api.html#sqlalchemy.orm.session.Session.flush
+[session]: https://docs.sqlalchemy.org/latest/orm/session.html

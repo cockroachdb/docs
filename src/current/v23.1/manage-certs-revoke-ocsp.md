@@ -5,7 +5,7 @@ toc: true
 docs_area: manage.security
 ---
 
-{{ site.data.products.core }} supports [Online Certificate Status Protocol (OCSP)](https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol) for certificate revocation.
+{{ site.data.products.core }} supports [Online Certificate Status Protocol (OCSP)](https://wikipedia.org/wiki/Online_Certificate_Status_Protocol) for certificate revocation.
 
 Read more about [Public Key Infrastructure (PKI) and Transport Layer Security (TLS) in CockroachDB](security-reference/transport-layer-security.html).
 

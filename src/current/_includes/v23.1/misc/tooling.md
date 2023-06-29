@@ -4,7 +4,7 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the latest version documented in the table below.
 - **Beta support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
-- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool. 
+- **Partner supported** indicates that Cockroach Labs has a partnership with a third-party vendor that provides support for the CockroachDB integration with their tool.
 
 {{site.data.alerts.callout_info}}
 Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling](transaction-retry-error-reference.html#client-side-retry-handling). For client-side transaction retry handling samples, see [Example Apps](example-apps.html).
@@ -67,7 +67,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 | Tool | Latest tested version | Support level | Tutorial |
 |-----+------------------------+----------------+----------|
-| [Alembic](https://alembic.sqlalchemy.org/en/latest/) | 1.7 | Full | [Migrate CockroachDB Schemas with Alembic](alembic.html)
+| [Alembic](https://alembic.sqlalchemy.org/latest/) | 1.7 | Full | [Migrate CockroachDB Schemas with Alembic](alembic.html)
 | [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 | Full | [Migrate CockroachDB Schemas with Flyway](flyway.html)
 | [Liquibase](https://www.liquibase.org/download) | 4.2.0 | Full | [Migrate CockroachDB Schemas with Liquibase](liquibase.html)
 | [Prisma](https://prisma.io) | 3.14.0 | Full | [Build a Node.js App with CockroachDB (Prisma)](build-a-nodejs-app-with-cockroachdb-prisma.html)

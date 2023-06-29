@@ -27,7 +27,7 @@ Before starting the tutorial, do the following:
 ## Step 1. Get the code
 
 1. Create a [GitHub](https://github.com/) account if you haven't already.
-1. In GitHub, [create your own fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository) of CockroachDB's [`prisma-examples` repo](https://github.com/cockroachdb/prisma-examples).
+1. In GitHub, [create your own fork](https://docs.github.com/get-started/quickstart/fork-a-repo#forking-a-repository) of CockroachDB's [`prisma-examples` repo](https://github.com/cockroachdb/prisma-examples).
 
 ## Step 2. Create a Vercel project
 
@@ -52,7 +52,7 @@ Before starting the tutorial, do the following:
 1. Accept the permissions and click **Add Integration**.
 
     A window will pop up prompting you to log in to {{ site.data.products.db }} if you haven't already.
-    
+
 1. In the {{ site.data.products.db }} pop-up window, select the organization in which you want to create a new {{ site.data.products.serverless }} cluster.
 1. Click **Create**.
 
@@ -69,7 +69,7 @@ Before starting the tutorial, do the following:
 
 </section>
 <section class="filter-content" markdown="1" data-scope="local">
- 
+
 ## Step 1. Create a {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
@@ -179,7 +179,7 @@ The connection string is pre-populated with your username, cluster name, and oth
     ~~~
 
     Follow the links provided to view and manage your deployed application.
-    
+
 </section>
 
 ## See also

@@ -103,7 +103,7 @@ All of the [`IMPORT`][import] statements in this section pull real data from [Am
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
 
-The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including `CREATE TABLE` and [foreign key constraints](foreign-key.html)) from the full database dump.
+The [`IMPORT`][import] statement below reads the data and [DDL](https://wikipedia.org/wiki/Data_definition_language) statements (including `CREATE TABLE` and [foreign key constraints](foreign-key.html)) from the full database dump.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

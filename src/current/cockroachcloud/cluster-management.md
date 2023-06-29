@@ -162,7 +162,7 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 {% endcomment %}
-  
+
 ## Set an upgrade window
 
 From your cluster's [**Overview** page](cluster-overview-page.html), you can view and manage the patch upgrade window for your cluster. To help keep your clusters updated while minimizing disruption and downtime, set a window of time when your cluster is experiencing the lowest traffic.
@@ -176,11 +176,11 @@ To set an upgrade window:
 1. Click the pencil icon next to **Cluster upgrades** to edit the upgrade window.
 1. From the **Upgrade day** dropdown, select the day of the week during which upgrades may be applied.
 1. From the **Start of window** dropdown, select a start time for your upgrade window in UTC.
-    
+
     The window will last for 6 hours from the start time.
-    
+
 1. (Optional) If you want to delay automatic upgrades for 60 days, switch **Delay patch upgrades** to **On**.
-    
+
     You can enable this setting for development and testing clusters if you want to ensure that they are upgraded before production clusters.
 
 ## Create a database

@@ -21,7 +21,7 @@ The operators in a `TSQUERY` are used to [match a `TSQUERY` to a `TSVECTOR`](ful
 
 You can optionally add the following to each lexeme:
 
-- One or more weight letters (`A`, `B`, `C`, or `D`): 
+- One or more weight letters (`A`, `B`, `C`, or `D`):
 
 	`'These' & 'lexemes':B & 'are' & 'not' & 'normalized':A & 'lexemes':B`
 
@@ -42,7 +42,7 @@ SELECT to_tsquery('These & lexemes & are & not & normalized & lexemes.');
 
 Normalization removes the following from the input:
 
-- Derivatives of words, which are reduced using a [stemming](https://en.wikipedia.org/wiki/Stemming) algorithm. 
+- Derivatives of words, which are reduced using a [stemming](https://wikipedia.org/wiki/Stemming) algorithm.
 - *Stop words*. These are words that are considered not useful for indexing and searching, based on the [text search configuration](full-text-search.html#text-search-configuration). In the preceding example, "These", "are", and "not" are identified as stop words.
 - Punctuation and capitalization.
 

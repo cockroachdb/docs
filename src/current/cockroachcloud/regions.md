@@ -81,7 +81,7 @@ Western Europe  | `eu-central-1`   | Frankfurt
 {% include feature-phases/azure-limited-access.md %}
 {{site.data.alerts.end}}
 
-{{ site.data.products.db }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview#regions):
+{{ site.data.products.db }} clusters can be deployed in the following [Azure regions](https://learn.microsoft.com/azure/reliability/availability-zones-overview#regions):
 
 Geographic Area | Region Name     | Location
 ----------------|-----------------|---------
@@ -109,5 +109,5 @@ Western Europe  | `europe-west1`            | St. Ghislain
                 | `europe-west2`            | London
                 | `europe-west3`            | Frankfurt
                 | `europe-west4`            | Eemshaven
-                
+
 </section>

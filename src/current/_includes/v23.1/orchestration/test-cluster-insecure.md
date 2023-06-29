@@ -26,7 +26,7 @@
     -- sql \
     --insecure \
     --host=my-release-cockroachdb-public
-    ~~~    
+    ~~~
 
     </section>
 

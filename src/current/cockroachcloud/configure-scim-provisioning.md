@@ -33,12 +33,12 @@ Okta disables deprovisioned users and does not support deleting them.
 
 To learn more about user and group assignments and group push on Okta, refer to the following topics in the Okta documentation:
 
-- [Manage Users](https://help.okta.com/en-us/Content/Topics/users-groups-profiles/usgp-people.htm)
-- [Manage Groups](https://help.okta.com/en-us/Content/Topics/users-groups-profiles/usgp-groups-main.htm)
-- [Manage Group Push](https://help.okta.com/en-us/Content/Topics/users-groups-profiles/usgp-group-push-main.htm)
+- [Manage Users](https://help.okta.com/Content/Topics/users-groups-profiles/usgp-people.htm)
+- [Manage Groups](https://help.okta.com/Content/Topics/users-groups-profiles/usgp-groups-main.htm)
+- [Manage Group Push](https://help.okta.com/Content/Topics/users-groups-profiles/usgp-group-push-main.htm)
 
 Before following these instructions, if your IdP is Okta, then it may be helpful to read Okta's [article about SCIM](https://developer.okta.com/docs/concepts/scim/), as well as [Configure provisioning for an app integration
-](https://help.okta.com/en-us/Content/Topics/Provisioning/lcm/lcm-provision-application.htm) in the Okta documentation. Otherwise, refer to your IdP's documentation about configuring SCIM.
+](https://help.okta.com/Content/Topics/Provisioning/lcm/lcm-provision-application.htm) in the Okta documentation. Otherwise, refer to your IdP's documentation about configuring SCIM.
 
 ## Requirements
 

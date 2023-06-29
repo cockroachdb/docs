@@ -27,7 +27,7 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 - For the `SHOW JOBS` statement, jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html). See [Show changefeed jobs](#show-changefeed-jobs) for changefeed job retention time.
 - While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.
 - Garbage collection jobs are created for [dropped tables](drop-table.html) and [dropped indexes](drop-index.html), and will execute after the [GC TTL](configure-replication-zones.html#gc-ttlseconds) has elapsed. These jobs cannot be canceled.
--  CockroachDB automatically retries jobs that fail due to [retry errors](transaction-retry-error-reference.html) or job coordination failures, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff). The `jobs.registry.retry.initial_delay` [cluster setting](cluster-settings.html) sets the initial delay between retries and `jobs.registry.retry.max_delay` sets the maximum delay.
+-  CockroachDB automatically retries jobs that fail due to [retry errors](transaction-retry-error-reference.html) or job coordination failures, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff). The `jobs.registry.retry.initial_delay` [cluster setting](cluster-settings.html) sets the initial delay between retries and `jobs.registry.retry.max_delay` sets the maximum delay.
 
 ## Required privileges
 

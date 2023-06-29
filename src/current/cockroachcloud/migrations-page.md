@@ -44,7 +44,7 @@ The steps to convert your schema depend on your source dialect.
 
 <ul>
 <section class="filter-content" markdown="1" data-scope="postgres">
-<li><b>INT type conversion</b>: On CockroachDB, <code>INT</code> is an alias for <code>INT8</code>, which creates 64-bit signed integers. On PostgreSQL, <code>INT</code> defaults to <code>INT4</code>. For details, see <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">Schema design best practices</a>.</li> 
+<li><b>INT type conversion</b>: On CockroachDB, <code>INT</code> is an alias for <code>INT8</code>, which creates 64-bit signed integers. On PostgreSQL, <code>INT</code> defaults to <code>INT4</code>. For details, see <a href="../{{version_prefix}}migration-overview.html#schema-design-best-practices">Schema design best practices</a>.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
@@ -75,7 +75,7 @@ The steps to convert your schema depend on your source dialect.
 ### Upload File
 <a name="upload-a-sql-dump"></a>
 
-The Schema Conversion Tool expects to analyze a SQL dump file containing only [data definition statements](../{{version_prefix}}sql-statements.html#data-definition-statements). 
+The Schema Conversion Tool expects to analyze a SQL dump file containing only [data definition statements](../{{version_prefix}}sql-statements.html#data-definition-statements).
 
 <section class="filter-content" markdown="1" data-scope="postgres">
 To generate an appropriate PostgreSQL schema file, run the [`pg_dump` utility](https://www.postgresql.org/docs/current/app-pgdump.html) and specify the `-s` or `--schema-only` options to extract **only the schema** of a PostgreSQL database to a `.sql` file.
@@ -90,7 +90,7 @@ To generate an appropriate Oracle schema file, run the [`expdp` utility](https:/
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mssql">
-To generate an appropriate Microsoft SQL Server schema file, use either [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/tutorials/scripting-ssms?view=sql-server-ver16#script-a-database-by-using-the-script-option) or the equivalent [`mssql-scripter` utility](https://github.com/microsoft/mssql-scripter) to extract **only the schema** of the SQL Server database to a `.sql` file.
+To generate an appropriate Microsoft SQL Server schema file, use either [SQL Server Management Studio](https://learn.microsoft.com/sql/ssms/tutorials/scripting-ssms?view=sql-server-ver16#script-a-database-by-using-the-script-option) or the equivalent [`mssql-scripter` utility](https://github.com/microsoft/mssql-scripter) to extract **only the schema** of the SQL Server database to a `.sql` file.
 </section>
 
 The dump file must be smaller than 4 MB. `INSERT` and `COPY` statements will be ignored in schema conversion. To add a schema file:
@@ -285,7 +285,7 @@ You can migrate the schema when the number of errors is zero. This value is disp
 
 To migrate the schema, click **Migrate Schema** when viewing the **Summary Report** or **Statements** list. A modal will open:
 
-1. Name the new database and select a SQL user to own the database. 
+1. Name the new database and select a SQL user to own the database.
 1. Click **Migrate**.
 
 After migrating the schema and creating the new database, [move data into the database](../{{version_prefix}}migration-overview.html#step-2-move-your-data-to-cockroachdb) and [test your application](../{{version_prefix}}migration-overview.html#step-3-test-and-update-your-application).

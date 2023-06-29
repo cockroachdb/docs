@@ -44,7 +44,7 @@ If your deployment requires particular lifecycle and access policies for audit l
 
 ## Performance considerations
 
-To ensure [non-repudiation](https://en.wikipedia.org/wiki/Non-repudiation) in audit logs, we recommend [enabling `auditable`](configure-logs.html#configure-log-sinks) for the `SENSITIVE_ACCESS` channel. CockroachDB will then synchronously log all of the activity of every user on a cluster in a way that is durable to system failures. Note that every query that causes a logging event must access the disk of the node on which audit logging is enabled. As a result, enabling `auditable` on a logging channel negatively impacts performance, and we recommend using this setting for security purposes only.
+To ensure [non-repudiation](https://wikipedia.org/wiki/Non-repudiation) in audit logs, we recommend [enabling `auditable`](configure-logs.html#configure-log-sinks) for the `SENSITIVE_ACCESS` channel. CockroachDB will then synchronously log all of the activity of every user on a cluster in a way that is durable to system failures. Note that every query that causes a logging event must access the disk of the node on which audit logging is enabled. As a result, enabling `auditable` on a logging channel negatively impacts performance, and we recommend using this setting for security purposes only.
 
 For debugging and troubleshooting on production clusters, the most performant way to log all queries is to enable the `SQL_EXEC` logging channel. For details, see [Logging Use Cases](logging-use-cases.html#sql_exec).
 

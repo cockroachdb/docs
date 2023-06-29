@@ -60,7 +60,7 @@ This role will be deprecated in favor of the following more fine-grained roles o
 - [Cluster Administrator](#cluster-administrator)
 - [Billing Coordinator](#billing-coordinator)
 {{site.data.alerts.end}}
-  
+
 ### Org Developer (legacy)
 
 Org Developer (legacy) can read high-level information for all clusters, and monitor all clusters using DB Console.
@@ -152,7 +152,7 @@ Service accounts authenticate with API keys to the {{ site.data.products.db }} A
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
 
-*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated once fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated once fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts).
 
@@ -176,7 +176,7 @@ Cluster Developer is the minimum access role that can be assigned to a cluster u
 
 ### What roles are assigned to the user that creates a {{ site.data.products.db }} organization and thus becomes the first and only user in that organization?
 
-Org Member, Org Administrator (legacy), and Cluster Admin are assigned to the first and only user in a {{ site.data.products.db }} organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc. 
+Org Member, Org Administrator (legacy), and Cluster Admin are assigned to the first and only user in a {{ site.data.products.db }} organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc.
 
 Once the initial user has added more users to the {{ site.data.products.db }} organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
 
@@ -186,11 +186,11 @@ Org Administrator (legacy) role will be deprecated in favor of more fine-grained
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator (legacy), and Cluster Admin roles when they create the {{ site.data.products.db }} organization. 
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator (legacy), and Cluster Admin roles when they create the {{ site.data.products.db }} organization.
 
 ### Can we follow the least privilege principle by using the roles available in the {{ site.data.products.db }} authorization model?
 
-Yes, the roles available in the {{ site.data.products.db }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
+Yes, the roles available in the {{ site.data.products.db }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows.
 
 Cluster level roles like Cluster Admin or Cluster Developer allow to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements. Whereas, the Organization level roles like Org Administrator (legacy), Org Developer (legacy) allow admin and non-admin access respectively for the entire organization.
 

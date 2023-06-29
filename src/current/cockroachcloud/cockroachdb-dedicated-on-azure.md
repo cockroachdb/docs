@@ -57,7 +57,7 @@ The clusters created during this period are recommended for proof-of-concept and
 
 ### Can we create multi-region dedicated clusters on Azure?
 
-Not yet. During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), a cluster can be created only in a single region, and a cluster must have three or more nodes. A cluster's nodes are automatically placed in different [availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) to ensure resiliency to failure of a single availability zone.
+Not yet. During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), a cluster can be created only in a single region, and a cluster must have three or more nodes. A cluster's nodes are automatically placed in different [availability zones](https://learn.microsoft.com/azure/reliability/availability-zones-overview) to ensure resiliency to failure of a single availability zone.
 
 ### Is it possible to horizontally scale a dedicated cluster on Azure?
 
@@ -69,7 +69,7 @@ You can create a cluster in `eastus2` (US East Coast - Virginia) or `westeurope`
 
 ### What kind of compute and storage resources are used for the dedicated clusters on Azure?
 
-{{ site.data.products.dedicated }} clusters on Azure use [Dasv5-series VMs](https://learn.microsoft.com/en-us/azure/virtual-machines/dasv5-dadsv5-series) and [Premium SSDs](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds). This configuration was selected for its optimum price-performance ratio after thorough performance testing across VM families and storage types.
+{{ site.data.products.dedicated }} clusters on Azure use [Dasv5-series VMs](https://learn.microsoft.com/azure/virtual-machines/dasv5-dadsv5-series) and [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds). This configuration was selected for its optimum price-performance ratio after thorough performance testing across VM families and storage types.
 
 ### We use {{ site.data.products.db }} credits to pay for our usage on AWS or GCP. Is it possible to use those same credits for {{ site.data.products.dedicated }} clusters on Azure?
 
@@ -81,17 +81,17 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 ### Are backups available for {{ site.data.products.dedicated }} clusters on Azure? Can we take our own backups to Azure storage in our tenant?
 
-Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html) ([Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) or [ADLS Gen 2](https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction)). Refer to the blog post [CockroachDB locality-aware Backups for Azure Blob](https://www.cockroachlabs.com/blog/locality-aware-backups-azure-blob/) for an example.
+Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html) ([Blob Storage](https://azure.microsoft.com/products/storage/blobs) or [ADLS Gen 2](https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction)). Refer to the blog post [CockroachDB locality-aware Backups for Azure Blob](https://www.cockroachlabs.com/blog/locality-aware-backups-azure-blob/) for an example.
 
 [Managed service backups](use-managed-service-backups.html?filters=dedicated) are not available during the limited access period.
 
 ### Is it possible to take encrypted backups for dedicated clusters in Azure?
 
-Yes, customers can [take and restore from their own encrypted backups](take-and-restore-customer-owned-backups.html) on Azure storage by using an RSA key stored in [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/keys/about-keys).
+Yes, customers can [take and restore from their own encrypted backups](take-and-restore-customer-owned-backups.html) on Azure storage by using an RSA key stored in [Azure Key Vault](https://learn.microsoft.com/azure/key-vault/keys/about-keys).
 
 ### Are changefeeds available for dedicated clusters in Azure?
 
-Yes, customers can create and configure [changefeeds](/docs/{{site.versions["stable"]}}/changefeed-messages.html) to send data events in real-time from a {{ site.data.products.dedicated }} cluster to a [downstream sink](https://www.cockroachlabs.com/docs/stable/changefeed-sinks.html) such as Kafka, Azure storage, or Webhook. [Azure Event Hubs](https://learn.microsoft.com/en-us/azure/event-hubs/azure-event-hubs-kafka-overview) provides an Azure-native service that can be used with a Kafka endpoint as a sink.
+Yes, customers can create and configure [changefeeds](/docs/{{site.versions["stable"]}}/changefeed-messages.html) to send data events in real-time from a {{ site.data.products.dedicated }} cluster to a [downstream sink](https://www.cockroachlabs.com/docs/stable/changefeed-sinks.html) such as Kafka, Azure storage, or Webhook. [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/azure-event-hubs-kafka-overview) provides an Azure-native service that can be used with a Kafka endpoint as a sink.
 
 ### Can we export logs and metrics from a dedicated cluster on Azure to Azure Monitor or a third-party observability service?
 
@@ -107,7 +107,7 @@ CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/d
 
 ### How are {{ site.data.products.dedicated }} clusters on Azure isolated from each other? Do they follow a similar approach like on AWS and GCP?
 
-We follow a similar tenant isolation approach on Azure as on GCP and AWS. During the limited access period, each {{ site.data.products.dedicated }} cluster is created its own unique Azure subscription on a [AKS cluster](https://azure.microsoft.com/en-us/products/kubernetes-service) in a unique [VNet](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview). Implementation details are subject to change.
+We follow a similar tenant isolation approach on Azure as on GCP and AWS. During the limited access period, each {{ site.data.products.dedicated }} cluster is created its own unique Azure subscription on a [AKS cluster](https://azure.microsoft.com/products/kubernetes-service) in a unique [VNet](https://learn.microsoft.com/azure/virtual-network/virtual-networks-overview). Implementation details are subject to change.
 
 ### Can we use Single-Sign On to sign-in to {{ site.data.products.db }} and manage {{ site.data.products.dedicated }} clusters on Azure?
 
@@ -121,10 +121,10 @@ Application users can connect using [JWT tokens](/docs/{{site.versions["stable"]
 
 ### What is the encryption posture for data stored in a {{ site.data.products.dedicated }} cluster on Azure?
 
-Customer data at rest on cluster disks is encrypted using [server-side encryption of Azure disk storage](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption). CockroachDB’s [file-based encryption at rest](/docs/{{site.versions["stable"]}}/security-reference/encryption.html#cockroachdb-self-hosted-clusters) and [Customer-Managed Encryption Keys (CMEK)](cmek.html) are not available during the limited access period. To express interest, contact your Cockroach Labs account team.
+Customer data at rest on cluster disks is encrypted using [server-side encryption of Azure disk storage](https://learn.microsoft.com/azure/virtual-machines/disk-encryption). CockroachDB’s [file-based encryption at rest](/docs/{{site.versions["stable"]}}/security-reference/encryption.html#cockroachdb-self-hosted-clusters) and [Customer-Managed Encryption Keys (CMEK)](cmek.html) are not available during the limited access period. To express interest, contact your Cockroach Labs account team.
 
 All client connections to a {{ site.data.products.dedicated }} cluster on Azure, as well as connections between nodes, are encrypted using TLS.
 
 ### Are private connectivity methods, such as Private Link, available to securely connect to a {{ site.data.products.dedicated }} cluster on Azure?
 
-You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a {{ site.data.products.dedicated }} cluster on Azure. [Azure Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview) is not available during the limited access period. To express interest, contact your Cockroach Labs account team.
+You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a {{ site.data.products.dedicated }} cluster on Azure. [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) is not available during the limited access period. To express interest, contact your Cockroach Labs account team.

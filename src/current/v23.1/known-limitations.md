@@ -441,7 +441,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
 
-- CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
+- CockroachDB does not yet support Triangle or [`TIN`](https://wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
 
@@ -449,7 +449,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56199)
 
-- CockroachDB does not yet support [k-nearest neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm).
+- CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 

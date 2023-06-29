@@ -45,7 +45,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
       id | is_live | replicas | is_decommissioning |   membership    | is_draining
     -----+---------+----------+--------------------+-----------------+--------------
-       4 |  true   |       73 |        true        | decommissioning |    false    
+       4 |  true   |       73 |        true        | decommissioning |    false
     ~~~
 
     Once the node has been fully decommissioned, you'll see a confirmation:
@@ -53,7 +53,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
     ~~~
       id | is_live | replicas | is_decommissioning |   membership    | is_draining
     -----+---------+----------+--------------------+-----------------+--------------
-       4 |  true   |        0 |        true        | decommissioning |    false    
+       4 |  true   |        0 |        true        | decommissioning |    false
     (1 row)
 
     No more data reported on target nodes. Please verify cluster health before removing the nodes.

@@ -26,10 +26,10 @@ Once you create a SQL user, the **Connect to cluster** dialog will show informat
 
     This Quickstart uses default certificates, so you can skip the Download CA Cert instructions.
 
-    {{site.data.alerts.callout_info}} 
+    {{site.data.alerts.callout_info}}
     The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Administrator can reset it. Refer to: [Managing SQL users on a cluster](managing-access.html#manage-sql-users-on-a-cluster)
     {{site.data.alerts.end}}
-    
+
 ## Configure the connection environment variable
 
 <div class="filters clearfix">
@@ -68,7 +68,7 @@ The code sample uses the connection string stored in the environment variable `J
     ~~~ shell
     git clone https://github.com/cockroachdb/quickstart-code-samples
     ~~~
-  
+
 1. Navigate to the `java` directory of the repo:
 
     {% include_cached copy-clipboard.html %}
@@ -99,7 +99,7 @@ The code sample uses the connection string stored in the environment variable `J
     BUILD SUCCESSFUL in 3s
     2 actionable tasks: 2 executed
     ~~~
-    
+
 ## Learn more
 
 Now that you have a free {{ site.data.products.serverless }} cluster running, try out the following:

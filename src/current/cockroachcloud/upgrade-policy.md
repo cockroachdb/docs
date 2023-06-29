@@ -19,7 +19,7 @@ Patch version [releases](../releases/), or "maintenance" releases, contain stabl
 
 For {{ site.data.products.dedicated }} clusters, [Organization Admins](authorization.html#org-administrator-legacy) can [set a weekly 6-hour upgrade window](cluster-management.html#set-an-upgrade-window) during which available patch upgrades will be applied. Patch upgrades can also be [deferred for 60 days](cluster-management.html#set-an-upgrade-window). If no upgrade window is configured, {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 
-{{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported patch version. 
+{{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported patch version.
 
 **To minimize disruption to clients during cluster upgrades, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.**
 
@@ -35,11 +35,11 @@ Major version upgrades are automatic for {{ site.data.products.serverless }} clu
 
 ### Rollback support
 
-When upgrading a {{ site.data.products.dedicated }} cluster to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can [trigger a rollback to the previous major version](upgrade-to-v21.2.html#roll-back-the-upgrade) from the {{ site.data.products.db }} Console. 
+When upgrading a {{ site.data.products.dedicated }} cluster to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can [trigger a rollback to the previous major version](upgrade-to-v21.2.html#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 
 Note that you will roll back to the latest patch version of the previous major version, not the same patch version you were running before you initiated the upgrade.
 
-If you see problems after the upgrade has been finalized, it will not be possible to roll back via the {{ site.data.products.db }} Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+If you see problems after the upgrade has been finalized, it will not be possible to roll back via the {{ site.data.products.db }} Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/requests/new).
 
 ### End of Support for older CockroachDB versions
 

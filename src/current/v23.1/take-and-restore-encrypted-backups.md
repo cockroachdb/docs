@@ -93,8 +93,8 @@ The Azure Key Vault URI uses the following parameters:
 
 To run an encrypted Azure backup, it is necessary to create the following:
 
-- [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) to generate and store your keys. See Microsoft's quickstart to [Create a key vault using the Azure portal](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal).
-- Azure App Registration to manage role-based access control. See Microsoft's [Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) to register an application.
+- [Azure Key Vault](https://learn.microsoft.com/azure/key-vault/general/overview) to generate and store your keys. See Microsoft's quickstart to [Create a key vault using the Azure portal](https://learn.microsoft.com/azure/key-vault/general/quick-create-portal).
+- Azure App Registration to manage role-based access control. See Microsoft's [Register an application with the Microsoft identity platform](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application) to register an application.
 
 Once you have created your App Registration you must assign it permissions to your key vault. To complete a successful encrypted backup, your App Registration needs the following permissions:
 
@@ -105,7 +105,7 @@ Once you have created your App Registration you must assign it permissions to yo
 ]
 ~~~
 
-Follow Microsoft's [Assign a Key Vault access policy](https://learn.microsoft.com/en-us/azure/key-vault/general/assign-access-policy?tabs=azure-portal) tutorial for instructions.
+Follow Microsoft's [Assign a Key Vault access policy](https://learn.microsoft.com/azure/key-vault/general/assign-access-policy?tabs=azure-portal) tutorial for instructions.
 
 #### Google Cloud KMS URI format
 

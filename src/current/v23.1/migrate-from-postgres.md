@@ -94,7 +94,7 @@ Note that all of the [`IMPORT`][import] statements in this section pull real dat
 
 This example assumes you [dumped the entire database](#dump-the-entire-database).
 
-The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including existing foreign key relationships) from the full database dump file.
+The [`IMPORT`][import] statement below reads the data and [DDL](https://wikipedia.org/wiki/Data_definition_language) statements (including existing foreign key relationships) from the full database dump file.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

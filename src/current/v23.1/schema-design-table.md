@@ -153,8 +153,8 @@ CREATE TABLE movr.max_schema.vehicles (
 
 This table includes a few more data types than the `users` table:
 
-- [`UUID`](uuid.html), which we recommend for columns with [values that uniquely identify rows](https://en.wikipedia.org/wiki/Unique_key) (like an "id" column).
-- [`TIMESTAMPTZ`](timestamp.html), which we recommend for [timestamp values](https://en.wikipedia.org/wiki/Timestamp).
+- [`UUID`](uuid.html), which we recommend for columns with [values that uniquely identify rows](https://wikipedia.org/wiki/Unique_key) (like an "id" column).
+- [`TIMESTAMPTZ`](timestamp.html), which we recommend for [timestamp values](https://wikipedia.org/wiki/Timestamp).
 - [`BOOL`](bool.html), which we recommend for columns that will only take one of two possible values.
 
 The rest of the columns are `STRING`-typed.
@@ -197,7 +197,7 @@ Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [co
 
 When a table is created, CockroachDB creates an index (called the _primary index_ and named `{tbl}_pkey`) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
 
-To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://en.wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement.
+To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement.
 
 For examples, see [below](#primary-key-examples).
 
@@ -221,7 +221,7 @@ Here are some best practices to follow when selecting primary key columns:
 
      To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
 
-- When possible, define primary key constraints over multiple columns (i.e., use [composite primary keys](https://en.wikipedia.org/wiki/Composite_key)).
+- When possible, define primary key constraints over multiple columns (i.e., use [composite primary keys](https://wikipedia.org/wiki/Composite_key)).
 
     When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries](order-by.html), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [below](#primary-key-examples).
 
@@ -311,7 +311,7 @@ For detailed reference documentation on the `DEFAULT` constraint, including addi
 
 #### Reference other tables
 
-To reference values in another table, use a `FOREIGN KEY` constraint. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which means that a column can only refer to an existing column.
+To reference values in another table, use a `FOREIGN KEY` constraint. `FOREIGN KEY` constraints enforce [referential integrity](https://wikipedia.org/wiki/Referential_integrity), which means that a column can only refer to an existing column.
 
 For example, suppose you want to add a new table that contains data about the rides that MovR users are taking on vehicles. This table should probably include information about the location and duration of the ride, as well as information about the vehicle used for the ride.
 

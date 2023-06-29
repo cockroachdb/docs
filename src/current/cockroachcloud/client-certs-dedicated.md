@@ -35,7 +35,7 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
 1. [Install Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-install) on your workstation. Your workstation must be secure to ensure the security of the PKI hierarchy you are establishing. Consider using a dedicated secure jumpbox, as described in [PKI Strategy](../{{site.versions["stable"]}}/manage-certs-vault.html#pki-strategy).
 
 1. Obtain the required parameters to target and authenticate to Vault.
-    
+
     1. Option 1: If using a development Vault server (*suitable only for tutorial/testing purposes*), start the Vault development server and obtain your admin token locally on your CA admin jumpbox by running `vault server --dev`.
 
     1. Option 2: If using HashiCorp Cloud Platform (HCP):
@@ -56,7 +56,7 @@ Alternatively, you can generate certificates [using CockroachDB's `cockroach cer
     export VAULT_NAMESPACE="admin"
     ~~~
 
-1. Authenticate with your admin token 
+1. Authenticate with your admin token
 
     {% include_cached copy-clipboard.html %}
     ~~~shell
@@ -77,7 +77,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
     ~~~txt
     Success! Enabled the pki secrets engine at: cockroach_client_ca/
     ~~~
-    
+
 1. Generate a root credential pair for the CA. Certificates created with this CA/secrets engine will be signed with the private key generated here and held within Vault; this key cannot be exported, safeguarding it from being leaked and used to issue fraudulent certificates. The CA public certificate is downloaded in the resulting JSON payload.
 
     Refer to: [Vault documentation - PKI Secrets Engine: Setup and Usage](https://developer.hashicorp.com/vault/docs/secrets/pki/setup)
@@ -122,7 +122,7 @@ This CA certificate will be used to [configure your cluster's Trust Store](#uplo
 You can authenticate to a cluster using the private key and public certificate previously signed by the CA , as long as the cluster's trust store includes the corresponding CA.
 
 1.  Define a client PKI role in Vault:
-    
+
     ~~~txt
     vault write cockroach_client_ca/roles/client \
     allow_any_name=true \
@@ -133,7 +133,7 @@ You can authenticate to a cluster using the private key and public certificate p
     max_ttl=48h
     ~~~
 
-1. Create a PKI private key and public certificate for the `root` user. 
+1. Create a PKI private key and public certificate for the `root` user.
 
     {{site.data.alerts.callout_info}}
     CockroachDB takes the name of the SQL user to be authenticated from the `common_name` field.
@@ -207,14 +207,14 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
     ~~~
 
     `PENDING` indicates that the operation is still in process.
-    
+
     ~~~txt
     {
       "status": "PENDING",
       "x509_pem_cert": ""
     }
     ~~~
-    
+
     `IS_SET` indicates that the operation completed successfully, confirming the configured public CA cert.
 
     ~~~txt
@@ -265,7 +265,7 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
 1. Submit the asynchronous request, supplying your cluster ID, API key, and the path to the certificate JSON with your CA certificate, as described in [Create the certificate authority (CA) certificate](#create-the-certificate-authority-ca-certificate).
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
-    
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request PATCH \
@@ -289,14 +289,14 @@ The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Ad
     ~~~
 
     `PENDING` indicates that the operation is still in process.
-    
+
     ~~~txt
     {
       "status": "PENDING",
       "x509_pem_cert": ""
     }
     ~~~
-    
+
     `IS_SET` indicates that the operation completed successfully, confirming the configured public CA cert.
 
     ~~~txt
@@ -344,7 +344,7 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
 1. Submit the asynchronous `DELETE` request, supplying your cluster ID, API key, and the path to the certificate JSON with your CA certificate, as described in [Create the certificate authority (CA) certificate](#create-the-certificate-authority-ca-certificate).
 
     A `200` successful response code indicates that the asynchronous request was successfully submitted, but does not guarantee that the operation (configuring the CA certificate) successfully completed. You must confirm success with a follow-up `GET` request, as described in the next step.
- 
+
     {% include_cached copy-clipboard.html %}
     ~~~shell
     curl --request DELETE \
@@ -366,14 +366,14 @@ Managing the certificate authority (CA) certificate for a {{ site.data.products.
     ~~~
 
     `PENDING` indicates that the operation is still in process.
-    
+
     ~~~txt
     {
       "status": "PENDING",
       "x509_pem_cert": ""
     }
     ~~~
-    
+
     `NOT_SET` indicates that the operation completed successfully, confirming that no CA cert is currently set.
 
     ~~~txt
@@ -401,7 +401,7 @@ To use certificate authentication for a SQL client, you must include the filepat
     1. Remove the placeholder password from the connection string.
 
     1. Construct the full connection string by providing the paths to `sslrootcert` (the cluster's public CA certificate), `sslcert` (the client's public certificate, which must be signed by the CA specified in `sslrootcert`), and `sslkey` (the client's private key).
-    
+
         Refer to: [Provision a PKI hierarchy for SQL authentication in your cluster ](#provision-a-pki-hierarchy-for-sql-authentication-in-your-cluster).
 
 1. Connect using the `cockroach sql` command, or the SQL client of your choice:
