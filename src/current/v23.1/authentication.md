@@ -255,7 +255,7 @@ For details about when and how to change security certificates without restartin
 
 ## Background on public key cryptography and digital certificates
 
-CockroachDB supports the [TLS 1.3 and TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
+CockroachDB supports the [TLS 1.3 and TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric and asymmetric encryption, to encrypt data in flight and to authenticate the communicating parties, respectively.
 
 {% include common/tls-bad-cipher-warning.md %}
 
