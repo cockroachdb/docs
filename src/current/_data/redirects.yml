@@ -497,10 +497,6 @@
 
 # Removed Pages
 
-- destination: movr.html#develop-and-deploy-a-global-application
-  sources: ['movr-flask-overview.html']
-  versions: ['v23.1']
-
 - destination: :version/collate.html
   sources: [':version/collatedstring.html']
 
@@ -660,6 +656,10 @@
 - destination: cockroachcloud/create-your-cluster.html
   sources: ['cockroachcloud/stable/cockroachcloud-create-your-cluster.html']
 
+- destination: cockroachcloud/learn-cockroachdb-sql.html
+  sources: ['learn-cockroachdb-sql.html']
+  versions: ['v23.1']
+
 - destination: cockroachcloud/quickstart.html
   sources:
     - :version/deploy-a-test-cluster.html
@@ -710,6 +710,10 @@
 - destination: make-queries-fast.html
   sources: ['performance-tuning.html']
   versions: ['v21.1']
+
+- destination: movr.html#develop-and-deploy-a-global-application
+  sources: ['movr-flask-overview.html']
+  versions: ['v23.1']
 
 - destination: partitioning.html
   sources: ['partition-by.html']
