@@ -59,7 +59,7 @@ By default, changefeeds will retry errors with [some exceptions](#changefeed-ret
 - `changefeed.error_retries`: The total number of retryable errors encountered by all changefeeds.
 - `changefeed.failures`: The total number of changefeed jobs that have failed.
 
-If you are running many changefeeds, we recommend monitoring the CPU usage on your cluster. You can use the [Overload Dashboard](ui-overload-dashboard.html) in the DB Console to track the performance of your cluster relating to CPU usage. For recommendations around how many tables a changefeed should target, refer to [System resources and running changefeeds](create-and-configure-changefeeds.html#system-resources-and-running-changefeeds).
+If you are running around 10 changefeeds, we recommend monitoring the CPU usage on your cluster. You can use the [Overload Dashboard](ui-overload-dashboard.html) in the DB Console to track the performance of your cluster relating to CPU usage. For recommendations around how many tables a changefeed should target, refer to [System resources and running changefeeds](create-and-configure-changefeeds.html#system-resources-and-running-changefeeds).
 
 #### Protected timestamp and garbage collection monitoring
 
