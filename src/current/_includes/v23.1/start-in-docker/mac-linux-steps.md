@@ -123,7 +123,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
       -p 8082:8082 \
       -v "roach3:/cockroach/cockroach-data" \
       {{page.release_info.docker_image}}:{{page.release_info.version}} start \
-        --advertise-addr=roach3:26358 \
+        --advertise-addr=roach3:26357 \
         --http-addr=roach3:8082 \
         --listen-addr=roach3:26357 \
         --sql-addr=roach3:26259 \
