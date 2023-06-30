@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-The MOLT Verify tool checks for post-migration data discrepancies between a source and a target database.
+The MOLT Verify tool checks for data discrepancies between a source and a target database during a [database migration](migration-overview.html).
 
 The tool performs the following verifications to ensure post-migration data integrity:
 
