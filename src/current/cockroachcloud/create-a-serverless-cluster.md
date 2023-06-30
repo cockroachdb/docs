@@ -20,6 +20,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachDB {{ site.data.products.cloud }} account.
 {% include cockroachcloud/prefer-sso.md %}
+
 1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
