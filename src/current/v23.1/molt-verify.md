@@ -23,7 +23,7 @@ The following databases are currently supported:
 ## Use the MOLT Verify tool
 
 1. Get the JDBC connection strings for the source and target databases you want to compare.
-2. Make sure the SQL user running the MOLT verify tool has access to the necessary tables.
+2. Make sure the SQL user running MOLT Verify has access to the necessary tables.
 3. Install and build the tool: 
 
     Run the following commands on your local machine:
