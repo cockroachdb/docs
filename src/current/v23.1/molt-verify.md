@@ -88,10 +88,10 @@ The following databases are currently supported:
 
 1. Review the verification results:
 
-    Running the MOLT Verify tool will show if there are any missing rows or extraneous tables in the target database. If any data is missing, you can [add the missing data](insert.md) to the target database and run `./molt verify` again.
+    Running the MOLT Verify tool will show if there are any missing rows or extraneous tables in the target database. If any data is missing, you can [add the missing data](insert.html) to the target database and run `./molt verify` again.
 
     {{site.data.alerts.callout_info}} 
-    Be aware of data type differences. For example, if your source MySQL table uses an auto-incrementing ID, MOLT will identify a difference in the table definitions when comparing with CockroachDB's UUID type. In such cases, you might have to perform extra steps, such as [creating composite types](create-type.md#create-a-composite-data-type) within the target database that use the auto-incrementing ID and other types to maintain referential integrity.
+    Be aware of data type differences. For example, if your source MySQL table uses an auto-incrementing ID, MOLT will identify a difference in the table definitions when comparing with CockroachDB's UUID type. In such cases, you might have to perform extra steps, such as [creating composite types](create-type.html#create-a-composite-data-type) within the target database that use the auto-incrementing ID and other types to maintain referential integrity.
     {{site.data.alerts.end}}
 
 ## Supported flags
