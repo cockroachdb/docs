@@ -17,6 +17,10 @@ The tool performs the following verifications to ensure data integrity during a 
 - **Column Definition Verification:** Check that the column names, data types, constraints, nullability, and other attributes between the source database and the target database are the same. 
 - **Row Value Verification:** Check that the actual data in the tables is the same between the source database and the target database.
 
+For a demo of the MOLT Verify tool, watch the following video:
+
+{% include_cached youtube.html video_id="6mfebmCLClY" %}
+
 ## Supported databases
 
 The following databases are currently supported:
@@ -110,4 +114,6 @@ Flag | Description
 - The tool might give an error in case of schema changes on either the source or target database.
 - Geospatial types cannot yet be compared.
 
+## See also
 
+- [Migration Overview](migration-overview.html)
