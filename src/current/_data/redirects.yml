@@ -656,10 +656,6 @@
 - destination: cockroachcloud/create-your-cluster.html
   sources: ['cockroachcloud/stable/cockroachcloud-create-your-cluster.html']
 
-- destination: cockroachcloud/learn-cockroachdb-sql.html
-  sources: ['learn-cockroachdb-sql.html']
-  versions: ['v23.1']
-
 - destination: cockroachcloud/quickstart.html
   sources:
     - :version/deploy-a-test-cluster.html

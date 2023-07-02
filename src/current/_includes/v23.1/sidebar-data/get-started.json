@@ -10,7 +10,8 @@
     {
       "title": "Learn CockroachDB SQL",
       "urls": [
-        "/cockroachcloud/learn-cockroachdb-sql.html"
+        "/cockroachcloud/learn-cockroachdb-sql.html",
+        "/${VERSION}/learn-cockroachdb-sql.html"
       ]
     },
     {
