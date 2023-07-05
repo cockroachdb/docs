@@ -19,7 +19,7 @@ The main feature of CockroachDB CDC is the _changefeed_, which targets an allowl
 
 ## Stream row-level changes with changefeeds
 
-Changefeeds are customizable jobs that track row-level changes and send data in realtime in your preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an _at-least-once delivery guarantee_ and are ordered by timestamp.
+Changefeeds are customizable jobs that track row-level changes and send data in realtime in your preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an at-least-once delivery guarantee and are ordered by timestamp.
 
 CockroachDB has two implementations of changefeeds:
 
@@ -37,11 +37,9 @@ CockroachDB has two implementations of changefeeds:
 To get started with changefeeds in CockroachDB, refer to:
 
 - [Create and Configure Changefeeds](create-and-configure-changefeeds.html): Learn about the fundamentals of using SQL statements to create and manage Enterprise and Core changefeeds.
-- [_Changefeed Sinks_](changefeed-sinks.html): The downstream system to which the changefeed emits changed row data. Learn about the supported sinks that Enterprise changefeeds can emit to.
-- [_Changefeed Messages_](changefeed-messages.html): The change events that emit from the changefeed to your sink. Learn about how messages are ordered at your sink and the options to configure and format messages.
+- [Changefeed Sinks](changefeed-sinks.html): The downstream system to which the changefeed emits changed row data. Learn about the supported sinks that Enterprise changefeeds can emit to.
+- [Changefeed Messages](changefeed-messages.html): The change events that emit from the changefeed to your sink. Learn about how messages are ordered at your sink and the options to configure and format messages.
 - [Changefeed Examples](changefeed-examples.html): Step-by step-examples for connecting to each changefeed sink.
-
-## Common tasks with changefeeds
 
 ### Authenticate to your changefeed sink
 
@@ -53,6 +51,8 @@ Cloud Storage | Refer to [Cloud Storage Authentication](cloud-storage-authentica
 Kafka | Refer to:<br>[Connect to a Changefeed Kafka Sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) to connect to your Kafka sink using OAuth authentication.<br>[Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) to authenticate to a Confluent Cloud Kafka cluster with a Confluent Schema Registry.<br>[Query parameters](changefeed-sinks.html#kafka) to supply your own certificate credentials.
 Webhook | [Query parameters](changefeed-sinks.html#webhook-sink) to supply your own certificate credentials.
 Google Cloud Pub/Sub | Refer to:<br>[Query parameters](changefeed-sinks.html#google-cloud-pub-sub) for a general list of the supported query parameters.<br>[Cloud Storage Authentication](cloud-storage-authentication.html?filters=gcs#google-cloud-storage-assume-role) for detail on IAM roles with assume role authentication.
+
+## Optimize your changefeeds
 
 ### Filter your change data with CDC queries
 
