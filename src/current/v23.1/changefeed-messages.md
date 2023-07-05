@@ -250,6 +250,8 @@ If you require `resolved` message frequency under `30s`, then you **must** set t
 
 ## Schema Changes
 
+In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
+
 ### Avro schema changes
 
 To ensure that the Avro schemas that CockroachDB publishes will work with the schema compatibility rules used by the Confluent schema registry, CockroachDB emits all fields in Avro as nullable unions. This ensures that Avro and Confluent consider the schemas to be both backward- and forward-compatible, since the Confluent Schema Registry has a different set of rules than Avro for schemas to be backward- and forward-compatible.
@@ -258,9 +260,33 @@ Note that the original CockroachDB column definition is also included in the sch
 
 ### Schema changes with column backfill
 
-When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema. When using Avro, rows that have been backfilled by a schema change are always re-emitted.
+When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column](computed-columns.html), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
 
-For an example of a schema change with column backfill, start with the changefeed created in this [Kafka example](changefeed-examples.html#create-a-changefeed-connected-to-kafka):
+{{site.data.alerts.callout_info}}
+Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer](online-schema-changes.html#declarative-schema-changer) section.
+{{site.data.alerts.end}}
+
+The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE TABLE office_dogs (
+     id INT PRIMARY KEY,
+     name STRING);
+~~~
+{% include_cached copy-clipboard.html %}
+~~~sql
+INSERT INTO office_dogs VALUES
+   (1, 'Petee H'),
+   (2, 'Carl'),
+   (3, 'Ernie');
+~~~
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE office_dogs INTO 'external://cloud';
+~~~
+
+You receive each of the rows at the sink:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -268,14 +294,25 @@ For an example of a schema change with column backfill, start with the changefee
 [3]	{"id": 3, "name": "Ernie"}
 ~~~
 
-Add a column to the watched table:
+For example, add a column to the watched table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
+ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~
 
-The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
+After the schema change, the changefeed will emit a copy of the table with the new schema:
+
+~~~json
+[1]	{"id": 1, "name": "Petee H"}
+[2]	{"id": 2, "name": "Carl"}
+[3]	{"id": 3, "name": "Ernie"}
+[1]	{"id": 1, "likes_treats": true, "name": "Petee H"}
+[2]	{"id": 2, "likes_treats": true, "name": "Carl"}
+[3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
+~~~
+
+If the schema change does **not** use the declarative schema change by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -289,7 +326,9 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema-policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
+To prevent the changefeed from emitting a copy of the table with the new schema, use the `schema_change_policy = nobackfill` option. In the preceding two output blocks, the new schema messages that include the `"likes_treats"` column will not emit.
+
+Refer to the [`CREATE CHANGEFEED` option table](create-changefeed.html#schema-events) for detail on the `schema_change_policy` option. You can also use the `schema_change_events` option to define the type of schema change event that triggers the behavior specified in `schema_change_policy`.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
@@ -302,7 +341,7 @@ By default, [protected timestamps](architecture/storage-layer.html#protected-tim
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
-- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error](monitor-and-debug-changefeeds.html#changefeed-retry-errors). Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
 

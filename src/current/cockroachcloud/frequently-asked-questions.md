@@ -13,7 +13,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### In what clouds and regions is {{ site.data.products.db }} available?
 
-Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, contact your Cockroach Labs account team.
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 ### What is {{ site.data.products.dedicated }}?
 
@@ -50,6 +50,8 @@ Yes. We create individual sub-accounts and VPCs for each cluster within the clou
 The allowlist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from an allowlisted IP address, which protects against both compromised passwords and any potential bugs in the server.
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
+
+{% include common/tls-bad-cipher-warning.md %}
 
 See the [Security Overview page](../{{site.current_cloud_version}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 

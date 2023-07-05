@@ -206,7 +206,14 @@ export KAFKA_OPTS="-Djava.security.auth.login.config={absolute path to kafka_2.1
 
 ## Step 7. Start your Kafka server
 
-Ensure you're in the `kafka_2.13-2.8.2` directory, and then run the following:
+In this step, you will start your Kafka server, create a topic, and run your consumer:
+
+1. Move to the following directory:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cd kafka_2.13-2.8.2
+    ~~~
 
 1. Start the Zookeeper server in one terminal:
 
