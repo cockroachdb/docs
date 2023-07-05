@@ -109,8 +109,6 @@ The code sample uses the connection string stored in the environment variable `J
 </section>
 <section class="filter-content" markdown="1" data-scope="node">
 
-## Connect to the cluster
-
 Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
 
 1. Select **General connection string** from the **Select option** dropdown.
