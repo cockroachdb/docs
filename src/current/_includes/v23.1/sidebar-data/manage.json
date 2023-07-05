@@ -226,6 +226,12 @@
               ]
             },
             {
+              "title": "Managing AWS PrivateLink for a Dedicated Cluster",
+              "urls": [
+                "/cockroachcloud/aws-privatelink.html"
+              ]
+            },
+            {
               "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
               "urls": [],
               "items": [
@@ -291,7 +297,7 @@
 								]
       	    },
             {
-              "title": "Network Authorization",
+              "title": "Network Authorization for CockroachDB Cloud Clusters",
               "urls": [
                 "/cockroachcloud/network-authorization.html"
               ]

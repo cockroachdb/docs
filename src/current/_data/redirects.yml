@@ -755,11 +755,9 @@
 
 - destination: stable/show-vars.html
   sources: ['show-database.html']
-  versions: ['v21.2', 'v22.1', 'cockroachcloud']
 
 - destination: stable/start-a-local-cluster.html
   sources: ['start-a-local-cluster.html']
-  versions: ['v21.2', 'v22.1', 'cockroachcloud']
 
 - destination: topology-follow-the-workload.html
   sources: ['demo-follow-the-workload.html']
@@ -771,7 +769,10 @@
     - sql-playground.html
 
 - destination: v21.1/interleave-in-parent.html#deprecation
-  sources: ['interleave-in-parent.html']
+  sources:
+    - dev/interleave-in-parent.html
+    - interleave-in-parent.html
+    - stable/interleave-in-parent.html
 
 # Cloud releases
 

@@ -144,7 +144,7 @@ Otherwise, to enable VPC peering:
 
 1. Click **Next**.
 
-        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
+        Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
 
 ## Step 8. Enter billing details
 
