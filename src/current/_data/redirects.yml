@@ -249,8 +249,11 @@
   sources: ['operate-cockroachdb-kubernetes.html']
   versions: ['v21.2']
 
-- destination: learn-about-pricing.html
-  sources: ['planning-your-serverless-cluster.html']
+- destination: plan-your-cluster-serverless.html
+  sources: 
+    - 'planning-your-serverless-cluster.html'
+    - 'learn-about-pricing.html'
+    - 'learn-about-request-units.html'
   versions: ['cockroachcloud']
 
 - destination: logging-overview.html
