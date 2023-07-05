@@ -766,7 +766,10 @@
     - sql-playground.html
 
 - destination: v21.1/interleave-in-parent.html#deprecation
-  sources: ['interleave-in-parent.html']
+  sources:
+    - dev/interleave-in-parent.html
+    - interleave-in-parent.html
+    - stable/interleave-in-parent.html
 
 # Cloud releases
 

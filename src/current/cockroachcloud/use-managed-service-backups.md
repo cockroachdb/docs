@@ -115,7 +115,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-[Org Administrators](authorization.html#org-administrator-legacy) can perform the following from the Console:
+Users with the [Org Administrator](authorization.html#org-administrator), [Org Administrator (legacy)](authorization.html#org-administrator-legacy), [Cluster Operator](authorization.html#cluster-operator) or [Cluster Administrator](authorization.html#cluster-administrator) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)
@@ -129,7 +129,14 @@ Additional ways to restore data:
 ### Restore a cluster
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
+
+This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
+
 {{site.data.alerts.end}}
 
 To restore a cluster:
@@ -139,11 +146,15 @@ To restore a cluster:
 
     The **Restore cluster** module displays with backup details.
 
+1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster. 
+
+    {{site.data.alerts.callout_info}}
+    Only active clusters are displayed. You can perform a cross-cluster restore across clusters that belong to the same organization. Incompatible versions cannot be selected and restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
+    {{site.data.alerts.end}}
+
 1. Click **Continue**.
 
-    {{site.data.alerts.callout_danger}}
-    The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
-    {{site.data.alerts.end}}
+1. Enter the name of the destination cluster. 
 
 1. Once you have reviewed the restore details, click **Restore**.
 
@@ -255,6 +266,17 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
     ~~~ sql
     RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
+
+## Known limitations
+
+- For [restoring a cluster](#restore-a-cluster):
+    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](../{{site.current_cloud_version}}/restoring-backups-across-versions.html).  
+    - Restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
+    - Restoring to a different cluster is disabled for [CMEK](cmek.html) clusters.
+    - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
+    - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.   
+
+See [tracking issue](https://github.com/cockroachlabs/managed-service/pull/12211). 
 
 ## Troubleshooting
 

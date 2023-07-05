@@ -15,6 +15,12 @@
       ]
     },
     {
+      "title": "Use the MOLT Verify Tool",
+      "urls": [
+        "/${VERSION}/molt-verify.html"
+      ]
+    },
+    {
       "title": "Migrate Data to CockroachDB",
       "items": [
         {
