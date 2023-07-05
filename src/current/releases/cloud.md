@@ -19,5 +19,4 @@ Get future release notes emailed to you:
 
 {% for rel in crs %}
 {% include releases/cloud/{{ rel.date }}.md %}
-{% include releases/cloud/{{ rel.date }}.md %}
 {% endfor %}
