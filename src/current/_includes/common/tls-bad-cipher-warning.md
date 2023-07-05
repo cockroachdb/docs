@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-CockroachDB clusters support TLS 1.2 or TLS 1.3 encryption and authentication for SQL clients. However, the following less-secure TLS 1.2 cipher suites are rejected by default, in accordance with the IETF's recommended cipher list defined in [RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447):
+CockroachDB clusters support TLS 1.2 or TLS 1.3 encryption for SQL clients. However, the following less-secure TLS 1.2 cipher suites are rejected by default, in accordance with the IETF's recommended cipher list defined in [RFC 8447](https://datatracker.ietf.org/doc/html/rfc8447):
 
 - `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`
 - `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA`
