@@ -55,6 +55,8 @@ Parameter | Description
 
 ### Sink URI
 
+This section provides example URIs for each of the sinks that CockroachDB changefeeds support. For more comprehensive detail of using and configuring each sink, refer to the [Changefeed Sinks](changefeed-sinks.html) page.
+
 The sink URI follows the basic format of:
 
 ~~~
@@ -67,8 +69,6 @@ URI Component      | Description
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
-
-See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
 
 #### Kafka
 
@@ -92,7 +92,7 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
-[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
+[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
 
@@ -105,7 +105,7 @@ Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOU
 Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`
 HTTP         | `'http://localhost:8080/{PATH}'`
 
-[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
+[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. Refer to [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
@@ -119,7 +119,7 @@ Example of a webhook URI:
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
 
-See [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
+Refer to [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
 
 ### Query parameters
 
