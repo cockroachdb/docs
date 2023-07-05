@@ -250,7 +250,7 @@ If you require `resolved` message frequency under `30s`, then you **must** set t
 
 ## Schema Changes
 
-In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will not emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
+In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -341,7 +341,7 @@ By default, [protected timestamps](architecture/storage-layer.html#protected-tim
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
-- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error](monitor-and-debug-changefeeds.html#changefeed-retry-errors). Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
 

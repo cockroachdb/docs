@@ -126,7 +126,7 @@ In some unusual situations you may receive a delete message for a row without fi
 
 ## Schema Changes
 
-In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will not emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
+In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -210,10 +210,6 @@ Refer to the [`CREATE CHANGEFEED` option table](create-changefeed.html#schema-ev
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
-{{site.data.alerts.end}}
-
 ## Garbage collection and changefeeds
 
 By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
@@ -221,7 +217,7 @@ By default, [protected timestamps](architecture/storage-layer.html#protected-tim
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
-- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error](monitor-and-debug-changefeeds.html#changefeed-retry-errors). Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could cause data storage issues. To release the protected timestamps and allow garbage collection to resume, you can cancel the changefeed or [resume](resume-job.html) in the case of a paused changefeed.
 
