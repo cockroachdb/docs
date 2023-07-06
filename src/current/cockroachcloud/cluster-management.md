@@ -183,15 +183,6 @@ To set an upgrade window:
     
     You can enable this setting for development and testing clusters if you want to ensure that they are upgraded before production clusters.
 
-## Create a database
-
-You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
-
-1. Navigate to the **Databases** page from the **Overview** page of your cluster.
-1. Click **Add database**.
-1. Enter a name for the new database.
-1. Click **Create**.
-
 ## Restore data from a backup
 
 {{site.data.alerts.callout_info}}

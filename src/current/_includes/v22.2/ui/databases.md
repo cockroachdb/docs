@@ -4,9 +4,6 @@ The **Databases** page shows:
 
 - Whether [automatic statistics collection]({{ link_prefix }}cost-based-optimizer.html#table-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
-{% if page.cloud == true %}
-- The **Add database** button, which allows you to [create a new database](serverless-cluster-management.html#create-a-database).
-{% endif %}
 
 The following information is displayed for each database:
 
