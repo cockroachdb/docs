@@ -119,7 +119,7 @@ if err != nil {
 defer dbpool.Close()
 ~~~
 
-This example uses the `pool_max_conns` parameter to set the maximum number of connections in the connection pool to 30.
+This example uses the `pool_max_conns` parameter to set the maximum number of connections in the connection pool to 40.
 
 For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#Config).
 
