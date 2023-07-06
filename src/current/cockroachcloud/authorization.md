@@ -98,7 +98,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- Manage a cluster's databases from the [Databases Page](databases-page.html).
 	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster).
 	- View and configure a cluster's authorized networks from the [Networking Page](network-authorization.html).
-	- View backups in a cluster's [Backups Page](use-managed-service-backups.html#backups-page).
+	- View backups in a cluster's [Backup and Restore Page](use-managed-service-backups.html#backups-tab).
 	- [Restore a cluster from a backup](use-managed-service-backups.html#restore-a-cluster).
 	- View a cluster's Jobs from the [Jobs page](jobs-page.html).
 	- View a cluster's Metrics from the [Metrics page](metrics-page.html).
