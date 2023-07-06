@@ -28,6 +28,7 @@ Consider the following as you plan your migration:
 
 - Who will lead and perform the migration? Which teams are involved, and which aspects are they responsible for?
 - Which internal and external parties do you need to inform about the migration?
+- Which external or third-party tools (e.g., microservices, analytics, payment processors, aggregators, CRMs) will also need to be tested and migrated?
 - What portion of the data can be inconsistent, and for how long? What percentage of latency and application errors can you tolerate? This comprises your "error budget".
 - How much [downtime](#approach-to-downtime) can you tolerate, and what [cutover strategy](#cutover-strategy) will you use to switch users to CockroachDB?
 - Will you set up a "dry-run" environment to test the migration? How many [dry-run migrations](#perform-a-dry-run) will you perform?
@@ -61,7 +62,7 @@ A lift-and-shift approach is the most straightforward. However, it's important t
 
 - *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
-For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift](#lift-and-shift). {% comment %}For details, see [Migration Strategy: Lift and Shift](migration-strategy-lift-and-shift).{% endcomment %}
+For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift](#lift-and-shift). {% comment %}For considerations and details about the pros and cons of this approach, see [Migration Strategy: Lift and Shift](migration-strategy-lift-and-shift).{% endcomment %}
 
 #### Minimal downtime
 
@@ -101,7 +102,7 @@ In addition to moving data to CockroachDB, data is also replicated from Cockroac
 
 #### Phased rollout
 
-Also known as the ["strangler fig"](https://en.wikipedia.org/wiki/Strangler_fig) approach, a phased rollout migrates a portion of your users, workload, or tables over time. Until all users, workloads, and/or tables are migrated, the application will continue to write to both databases.
+Also known as the ["strangler fig"](https://en.wikipedia.org/wiki/Strangler_fig) approach, a phased rollout migrates a portion of your users, workloads, or tables over time. Until all users, workloads, and/or tables are migrated, the application will continue to write to both databases.
 
 This approach enables you to take your time with the migration, and to pause or roll back as you [monitor the migration](#set-up-monitoring-and-alerting) for issues and performance. Rolling back the migration involves the same caveats and considerations as for the [all-at-once](#all-at-once-rollback) method. Because you can control the blast radius of your migration by routing traffic for a subset of users or services, a phased rollout has reduced business risk and user impact at the cost of increased implementation risk. You will need to figure out how to migrate in phases while ensuring that your application is unaffected.
 
