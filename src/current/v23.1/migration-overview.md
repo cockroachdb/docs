@@ -29,9 +29,12 @@ Consider the following as you plan your migration:
 - Who will lead and perform the migration? Which teams are involved, and which aspects are they responsible for?
 - Which internal and external parties do you need to inform about the migration?
 - What portion of the data can be inconsistent, and for how long? What percentage of latency and application errors can you tolerate? This comprises your "error budget".
-- How much [downtime](#approach-to-downtime) can you tolerate, and what [cutover strategy](#cutover-strategy) will you use to switch users to CockroachDB? 
+- How much [downtime](#approach-to-downtime) can you tolerate, and what [cutover strategy](#cutover-strategy) will you use to switch users to CockroachDB?
+- Will you set up a "dry-run" environment to test the migration? How many [dry-run migrations](#perform-a-dry-run) will you perform?
 - When is the best time to perform this migration to be minimally disruptive to the database's users?
 - What is your target date for completing the migration?
+
+Create a document that summarizes the intent of the migration, the technical details, and the team members involved.
 
 ### Approach to downtime
 
@@ -66,41 +69,41 @@ If your application cannot tolerate downtime, then you should aim for a "zero-do
 
 The minimum possible downtime depends on whether you can tolerate inconsistency in the migrated data:
 
-- *Consistent* migrations reduce downtime to an absolute minimum (i.e., from 30 seconds to sub-seconds) while keeping data synchronized between the legacy database and CockroachDB. **Consistency requires downtime.** In this approach, downtime occurs right before [cutover](#cutover-strategy), as you drain the remaining transactions from the legacy database to CockroachDB.
+- *Consistent* migrations reduce downtime to an absolute minimum (i.e., from 30 seconds to sub-seconds) while keeping data synchronized between the source database and CockroachDB. **Consistency requires downtime.** In this approach, downtime occurs right before [cutover](#cutover-strategy), as you drain the remaining transactions from the source database to CockroachDB.
 
-- *Inconsistent* migrations can reduce downtime to zero. These require the most preparation, and typically allow read/write traffic to both databases for at least a small amount of time, thereby sacrificing consistency for availability. {% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your legacy database and CockroachDB.{% endcomment %} Without stopping application traffic, you perform an immediate [cutover](#cutover-strategy), while assuming that some writes will not be replicated to CockroachDB. You may want to manually reconcile these data inconsistencies after switching over.
+- *Inconsistent* migrations can reduce downtime to zero. These require the most preparation, and typically allow read/write traffic to both databases for at least a small amount of time, thereby sacrificing consistency for availability. {% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your source database and CockroachDB.{% endcomment %} Without stopping application traffic, you perform an immediate [cutover](#cutover-strategy), while assuming that some writes will not be replicated to CockroachDB. You may want to manually reconcile these data inconsistencies after switching over.
 
 For an overview of zero-downtime migrations to CockroachDB, see [Zero Downtime](#zero-downtime). {% comment %}For details, see [Migration Strategy: Zero Downtime](migration-strategy-zero-downtime).{% endcomment %}
 
 ### Cutover strategy
 
-*Cutover* is the process of switching application traffic from the legacy database to CockroachDB. Consider the following:
+*Cutover* is the process of switching application traffic from the source database to CockroachDB. Consider the following:
 
-- Will you perform the cutover all at once, or incrementally (e.g., by a subset of users, workload, or tables)?
+- Will you perform the cutover all at once, or incrementally (e.g., by a subset of users, workloads, or tables)?
 
 	- Switching all at once generally follows a [downtime window](#downtime-window) approach. Once the data is migrated to CockroachDB, you "flip the switch" to route application traffic to the new database, thus ending downtime.
 
 	- Migrations with [zero or near-zero downtime](#minimal-downtime) can switch either all at once or incrementally, since writes are being synchronously replicated and the system can be gradually migrated as you [validate the queries](#validate-queries).
 
-- Will you have a fallback plan that allows you to reverse ("roll back") the migration from CockroachDB to the legacy database? A fallback plan enables you to fix any issues or inconsistencies that you encounter during or after cutover, then retry the migration.
+- Will you have a fallback plan that allows you to reverse ("roll back") the migration from CockroachDB to the source database? A fallback plan enables you to fix any issues or inconsistencies that you encounter during or after cutover, then retry the migration.
 
 #### All at once (no rollback)
 
 This is the simplest cutover method, since you won't need to develop and execute a fallback plan.
 
-As part of [migration preparations](#prepare-for-migration), you will have already [tested your queries and performance](#test-query-results-and-performance) to have confidence to migrate without a rollback option. After moving all of the data from the legacy database to CockroachDB, you switch application traffic to CockroachDB.
+As part of [migration preparations](#prepare-for-migration), you will have already [tested your queries and performance](#test-query-results-and-performance) to have confidence to migrate without a rollback option. After moving all of the data from the source database to CockroachDB, you switch application traffic to CockroachDB.
 
 #### All at once (rollback)
 
 This method adds a fallback plan to the simple [all-at-once](#all-at-once-no-rollback) cutover.
 
-In addition to moving data to CockroachDB, data is also replicated from CockroachDB back to the legacy database in case you need to roll back the migration. Continuous replication is already possible when performing a [zero-downtime migration](#zero-downtime) that dual writes to both databases. Otherwise, you will need to ensure that data is replicated in the reverse direction at cutover.
+In addition to moving data to CockroachDB, data is also replicated from CockroachDB back to the source database in case you need to roll back the migration. Continuous replication is already possible when performing a [zero-downtime migration](#zero-downtime) that dual writes to both databases. Otherwise, you will need to ensure that data is replicated in the reverse direction at cutover. The challenge is to find a point at which both the source database and CockroachDB are in sync, so that you can roll back to that point. You should also avoid falling into a circular state where updates continuously travel back and forth between the source database and CockroachDB.
 
 #### Phased rollout
 
 Also known as the ["strangler fig"](https://en.wikipedia.org/wiki/Strangler_fig) approach, a phased rollout migrates a portion of your users, workload, or tables over time. Until all users, workloads, and/or tables are migrated, the application will continue to write to both databases.
 
-This approach enables you to take your time with the migration, and to pause or roll back as you [monitor the migration](#set-up-monitoring-and-alerting) for issues and performance. Because you can control the blast radius of your migration by routing traffic for a subset of users or services, a phased rollout has reduced business risk and user impact at the cost of increased implementation risk. You will need to figure out how to migrate in phases while ensuring that your application is unaffected.
+This approach enables you to take your time with the migration, and to pause or roll back as you [monitor the migration](#set-up-monitoring-and-alerting) for issues and performance. Rolling back the migration involves the same caveats and considerations as for the [all-at-once](#all-at-once-rollback) method. Because you can control the blast radius of your migration by routing traffic for a subset of users or services, a phased rollout has reduced business risk and user impact at the cost of increased implementation risk. You will need to figure out how to migrate in phases while ensuring that your application is unaffected.
 
 ### Capacity planning
 
@@ -176,7 +179,7 @@ For more details on the CockroachDB SQL implementation, see [SQL Feature Support
 
 ## Prepare for migration
 
-Once you have a migration plan, prepare the team, application, legacy database, and CockroachDB cluster for the migration.
+Once you have a migration plan, prepare the team, application, source database, and CockroachDB cluster for the migration.
 
 ### Run a migration "pre-mortem"
 
@@ -228,10 +231,10 @@ Then import the converted schema to a CockroachDB cluster:
 
 #### Load test data
 
-After [converting the schema](#convert-the-schema), load a subset of your data onto CockroachDB so that you can [test your application queries](#validate-queries). Then use one of the following methods to migrate the data (you may need to use additional tooling to extract and/or convert the data to an appropriate file format):
+After [converting the schema](#convert-the-schema), load your data onto CockroachDB so that you can [test your application queries](#validate-queries). Then use one of the following methods to migrate the data (you may need to use additional tooling to extract and/or convert the data to an appropriate file format):
 
 - {% include {{ page.version.version }}/migration/load-data-import-into.md %} Typically, initial data loading during a database migration will not be running concurrently with application traffic, so the fact that `IMPORT INTO` takes the table offline may not have any observable availability impact.
-- {% include {{ page.version.version }}/migration/load-data-third-party.md %} Within the tool, you can select a subset of database tables to migrate to the test cluster.
+- {% include {{ page.version.version }}/migration/load-data-third-party.md %} Within the tool, you can select the database tables to migrate to the test cluster.
 - {% include {{ page.version.version }}/migration/load-data-copy-from.md %}
 
 #### Validate queries
@@ -240,7 +243,7 @@ After you [load the test data](#load-test-data), validate your queries on Cockro
 
 ##### Shadowing
 
-You can "shadow" your production workload by replicating all writes from the legacy database to CockroachDB. To do this, use a [change data capture (CDC)](cdc-queries.html) service such as Kafka. {% comment %}The CockroachDB Live Migration Service (MOLT LMS) can also write queries to both databases simultaneously.{% endcomment %} You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
+You can "shadow" your production workload by replicating all writes from the source database to CockroachDB. To do this, use a [change data capture (CDC)](cdc-queries.html) service. {% comment %}The CockroachDB Live Migration Service (MOLT LMS) can also write queries to both databases simultaneously.{% endcomment %} You can then [test the queries](#test-query-results-and-performance) on CockroachDB for consistency, performance, and potential issues with the migration.
 
 Shadowing may not be necessary or practical for your workload. For example, because transactions are serialized on CockroachDB, this will limit your ability to validate the performance of high-throughput workloads.
 
@@ -250,7 +253,7 @@ You can manually validate your queries by testing a subset of "critical queries"
 
 - Check the application logs for error messages and the API response time. If application requests are slower than expected, use the **SQL Activity** page on the [{{ site.data.products.db }} Console](../cockroachcloud/statements-page.html) or [DB Console](ui-statements-page.html) to find the longest-running queries that are part of that application request. If necessary, tune the queries according to our best practices for [SQL performance](performance-best-practices-overview.html).
 
-- Compare the results of the queries and check that they are identical in both the legacy database and CockroachDB. To do this, you can use [MOLT Verify](molt-verify.html).
+- Compare the results of the queries and check that they are identical in both the source database and CockroachDB. To do this, you can use [MOLT Verify](molt-verify.html).
 
 Test performance on a CockroachDB cluster that is appropriately [sized](#capacity-planning) for your workload:
 
@@ -260,11 +263,9 @@ Test performance on a CockroachDB cluster that is appropriately [sized](#capacit
 
 ### Perform a dry run
 
-{{site.data.alerts.callout_success}}
-This step is optional.
-{{site.data.alerts.end}}
-
 To further minimize potential surprises when you conduct the migration, practice [cutover](#cutover-strategy) using your application and similar volumes of data on a "dry-run" environment. Use a test or development environment that is as similar as possible to production.
+
+Performing a dry run is highly recommended. In addition to demonstrating how long the migration may take, a dry run also helps to ensure that team members understand what they need to do during the migration, and that changes to the application are coordinated.
 
 ## Conduct the migration
 
@@ -297,9 +298,9 @@ The following is a high-level overview of the migration steps. {% comment %}For 
 	- {% include {{ page.version.version }}/migration/load-data-import-into.md %}
 	- {% include {{ page.version.version }}/migration/load-data-third-party.md %}
 	- {% include {{ page.version.version }}/migration/load-data-copy-from.md %}
-1. After the data is migrated, you can use [MOLT Verify](molt-verify.html) to validate the consistency of the data between the legacy database and CockroachDB.
+1. After the data is migrated, you can use [MOLT Verify](molt-verify.html) to validate the consistency of the data between the source database and CockroachDB.
 1. Perform a [cutover](#cutover-strategy) by resuming application traffic, now to CockroachDB.
-{% comment %}1. If you want the ability to [roll back](#all-at-once-rollback) the migration, replicate data back to the legacy database.{% endcomment %}
+{% comment %}1. If you want the ability to [roll back](#all-at-once-rollback) the migration, replicate data back to the source database.{% endcomment %}
 
 ### Zero Downtime
 
@@ -307,12 +308,12 @@ Using this method, downtime is minimized by performing the cutover while writes 
 
 The following is a high-level overview of the migration steps. {% comment %}For details on this migration strategy, see [Migration Strategy: Zero Downtime](migration-strategy-lift-and-shift.html).{% endcomment %}
 
-{% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your legacy database and CockroachDB.{% endcomment %}
+{% comment %}You can use the CockroachDB Live Migration Service (MOLT LMS) to run application queries simultaneously on your source database and CockroachDB.{% endcomment %}
 
 To prioritize consistency and minimize downtime:
 
 1. {% include {{ page.version.version }}/migration/load-data-third-party.md %} Select the tool's option to **replicate ongoing changes** after performing the initial load of data onto CockroachDB. 
-1. As the data is migrating, you can use [MOLT Verify](molt-verify.html) to validate the consistency of the data between the legacy database and CockroachDB.
+1. As the data is migrating, you can use [MOLT Verify](molt-verify.html) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), stop application traffic to your source database. **This begins downtime.**
 1. Wait for replication to CockroachDB to complete.
 1. Perform a [cutover](#cutover-strategy) by resuming application traffic, now to CockroachDB.
@@ -320,18 +321,18 @@ To prioritize consistency and minimize downtime:
 To achieve zero downtime with inconsistency:
 
 1. {% include {{ page.version.version }}/migration/load-data-third-party.md %} Select the tool's option to replicate ongoing changes after performing the initial load of data onto CockroachDB.
-1. As the data is migrating, you can use [MOLT Verify](molt-verify.html) to validate the consistency of the data between the legacy database and CockroachDB.
+1. As the data is migrating, you can use [MOLT Verify](molt-verify.html) to validate the consistency of the data between the source database and CockroachDB.
 1. Once nearly all data from your source database has been moved to CockroachDB (for example, with a <1 second delay or <1000 rows), perform a [cutover](#cutover-strategy) by pointing application traffic to CockroachDB.
 1. Manually reconcile any inconsistencies caused by writes that were not replicated during the cutover.
-1. Close the connection to the legacy database when you are ready to finish the migration.
+1. Close the connection to the source database when you are ready to finish the migration.
 
 ## Complete the migration
 
-After you have successfully [conducted the migration](#conduct-the-migration) (congratulations!):
+After you have successfully [conducted the migration](#conduct-the-migration):
 
 - Notify the teams and other stakeholders impacted by the migration.
 - Retire any test or development environments used to verify the migration.
-- Create a document that summarizes the intent of the migration, the technical details, the team members involved, any issues encountered, aspects that need to be monitored, and any follow-up work that needs to be done.
+- Extend the document you created when [developing your migration plan](#develop-a-migration-plan) with any issues encountered and follow-up work that needs to be done.
 
 ## See also
 
