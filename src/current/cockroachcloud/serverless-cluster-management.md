@@ -105,16 +105,6 @@ To remove regions from your cluster:
 1. Click **OK**.
 {% endcomment %}
 
-## Create a database
-
-You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
-
-1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
-1. Click **Databases** in the **Data** section of the left side navigation.
-1. Click **Add database**.
-1. Enter a name for the new database.
-1. Click **Create**.
-
 ## Restore data from a backup
 
 Use the [Managed-Service Backups](use-managed-service-backups.html) to restore your cluster from automatic full cluster backups.
