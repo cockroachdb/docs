@@ -19,7 +19,7 @@ The main feature of CockroachDB CDC is the _changefeed_, which targets an allowl
 
 ## Stream row-level changes with changefeeds
 
-Changefeeds are customizable jobs that track row-level changes and send data in realtime in your preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an at-least-once delivery guarantee and are ordered by timestamp.
+Changefeeds are customizable _jobs_ that track row-level changes and send data in realtime in your preferred format to your specified destination, known as a _sink_. Each version of a row emitted to the sink are subject to an at-least-once delivery guarantee and are ordered by timestamp.
 
 CockroachDB has two implementations of changefeeds:
 
@@ -52,7 +52,17 @@ Kafka | Refer to:<br>[Connect to a Changefeed Kafka Sink with OAuth Using Okta](
 Webhook | [Query parameters](changefeed-sinks.html#webhook-sink) to supply your own certificate credentials.
 Google Cloud Pub/Sub | Refer to:<br>[Query parameters](changefeed-sinks.html#google-cloud-pub-sub) for a general list of the supported query parameters.<br>[Cloud Storage Authentication](cloud-storage-authentication.html?filters=gcs#google-cloud-storage-assume-role) for detail on IAM roles with assume role authentication.
 
-## Optimize your changefeeds
+## Optimize a changefeed for your workload
+
+### Monitor your changefeed job
+
+It is a best practice to monitor your changefeed jobs. You can use the following tools for monitoring:
+
+- The [Changefeed Dashboard](ui-cdc-dashboard.html) on the DB Console
+- The [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs) statement
+- [Changefeed metrics labels](monitor-and-debug-changefeeds.html#using-changefeed-metrics-labels)
+
+Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html) page for recommendations on metrics to track.
 
 ### Filter your change data with CDC queries
 
