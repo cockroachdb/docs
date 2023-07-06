@@ -1,27 +1,30 @@
 ### Create a Dedicated cluster
 
-<div class="filters clearfix">
-    <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
-    <button class="filter-button page-level" data-scope="raw"><strong>Raw</strong></button>
-</div>
+To create a cluster, send a `POST` request to the `/v1/clusters` endpoint, specifying the following parameters:
 
-<section class="filter-content" markdown="1" data-scope="curl">
-<!-- all the below is wrong, cribbed from serverless -->
+- `name`: your cluster's name.
+- `provider`: GCP or AWS.
+- `machine_type`: machine type, e.g. "n2-standard-2".
+- `storage_gib`: storage in GiB.
+- `region_nodes`: a hash where each key is a region name and each value is the desired number of nodes (if not 0).
+- `spend_limit`: specified in dollars
+- `network_visibility`: PRIVATE or PUBLIC
+- `restrict_egress_traffic`: true or false
+
+[API reference](../api/cloud/v1.html#post-/api/v1/clusters)
+
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://cockroachlabs.cloud/api/v1/clusters \
-  --header 'Authorization: Bearer {secret_key}' \
-  --data '{"name":"{cluster_name}","provider":"{cloud_provider}","spec":{"serverless":{"regions":["{region_name}"],"spendLimit":{spend_limit}}}}'
+--url 'https://management-staging.crdb.io/api/v1/clusters' \
+--header 'Authorization: Bearer CCDB1_uk65GaSrAo1FfoMsDgK3Ml_ka74MsxdEOdgERu7zWrB8IrtSKvVCfZzL2oy8dLV' \
+--data @cluster-create.json
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="raw">
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
+<<<<<<< HEAD
   "name": "{cluster_name}",
   "provider": "{cloud_provider}",
   "spec": {
@@ -69,63 +72,69 @@ curl --request POST \
 ~~~ JSON
 {
   "name": "notorious-moose",
+=======
+  "name": "docstestcluster2",
+>>>>>>> 50e1779b2 (add create cluster with API docs)
   "provider": "GCP",
   "spec": {
-    "serverless": {
-      "regions": [
-        "us-central1"
-      ],
-      "spendLimit": 0
+    "dedicated": {
+      "hardware": {
+        "machine_spec": {"machine_type": "n2-standard-2"},
+        "storage_gib":15
+      },
+      "region_nodes": {
+        "us-west2": 1
+      },
+      "spend_limit": 0,
+     "network_visibility": "PRIVATE",
+     "restrict_egress_traffic": true
     }
   }
 }
 ~~~
 
-</section>
+Upon success, the API will return information about the newly created cluster.
+Save your cluster's UUID, in the `id` field, so you can use the API to [Get information about your cluster](#get-information-about-a-specific-cluster), or inspect it in the {{ site.data.products.db }} console at:
+`https://cockroachlabs.cloud/cluster/{ your cluster id}`
 
-If the request was successful, the API will return information about the newly created cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "cloud_provider": "{cloud_provider}",
-  "created_at": "2022-03-14T14:15:22Z",
-  "creator_id": "{account_id}",
-  "deleted_at": "2022-03-14T14:15:22Z",
-  "id": "{cluster_id}",
-  "operation_status": "CLUSTER_STATUS_UNSPECIFIED",
-  "name": "{cluster_name}",
-  "plan": "SERVERLESS",
-  "regions": [
-    {
-      "name": "{region_name}",
-      "sql_dns": "{server_host}",
-      "ui_dns": ""
-    }
-  ],
+  "id": "b453f920-8e9a-488a-8ef5-23f2e86fcc0e",
+  "name": "docstestcluster2",
+  "cockroach_version": "v23.1.1",
+  "upgrade_status": "FINALIZED",
+  "plan": "DEDICATED",
+  "cloud_provider": "GCP",
+  "account_id": "crl-staging-7765",
+  "state": "CREATING",
+  "creator_id": "b9ad8253-8c60-46fd-afc2-62fd39e7d2ed",
+  "operation_status": "UNSPECIFIED",
   "config": {
-    "serverless": {
-      "regions": [
-        "{region_name}"
-      ],
-      "spend_limit": 0,
-      "routing_id": "{routing_id}"
+    "dedicated": {
+      "machine_type": "n2-standard-2",
+      "num_virtual_cpus": 2,
+      "storage_gib": 15,
+      "memory_gib": 8,
+      "disk_iops": 450
     }
   },
-  "state": "CREATING",
-  "updated_at": "2022-03-14T14:15:22Z"
+  "regions": [
+    {
+      "name": "us-west2",
+      "sql_dns": "docstestcluster2-7765.gcp-us-west2.crdb.io",
+      "ui_dns": "admin-docstestcluster2-7765.gcp-us-west2.crdb.io",
+      "internal_dns": "",
+      "node_count": 1,
+      "primary": false
+    }
+  ],
+  "created_at": "2023-07-06T01:22:00.916592Z",
+  "updated_at": "2023-07-06T01:22:02.304708Z",
+  "deleted_at": null,
+  "sql_dns": "docstestcluster2-7765.crdb.io",
+  "network_visibility": "PRIVATE",
+  "egress_traffic_policy": "UNSPECIFIED"
 }
 ~~~
-
-Where:<!-- all the below is wrong, cribbed from serverless -->
-
-  - `{cloud_provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP`, `AWS`, `AZURE`.
-  - `{cluster_id}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
-    {{site.data.alerts.callout_info}}
-    The cluster ID used in the Cloud API is different than the routing ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
-    {{site.data.alerts.end}}
-  - `{cluster_name}` is the name of the cluster you specified when creating the cluster.
-  - `{account_id}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{region_name}` is the zone code of the cloud infrastructure provider where the cluster is located.
-  - `{routing_id}` is the cluster name and tenant ID of the cluster used when [connecting to clusters](connect-to-a-serverless-cluster.html). For example, `funky-skunk-123`.
-  - `{server_host}` is the DNS name of the host on which the cluster is located.

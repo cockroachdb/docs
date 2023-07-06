@@ -77,10 +77,8 @@ Cc-Version: {version}
 Where `{secret_key}` is the [secret key string you stored when you created the API key in the Console]({% link cockroachcloud/managing-access.md %}#create-api-keys) and `{version}` is the version of the Cloud API.
 
 ## Create a new cluster
-<!-- restrict_egress_traffic  bool -->
-To create a cluster, send a `POST` request to the `/v1/clusters` endpoint.
 
-
+**Required Permissions**:
 The service account associated with the secret key must have one of the following [organization roles](authorization.html#organization-user-roles), in order to create a cluster in that organization:
 
 - the [Cluster Creator role]({% link authorization.html %}#cluster-creator).
@@ -94,7 +92,6 @@ Serverless and Dedicated clusters have different configuration options. Refer to
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>Serverless</strong></button>
     <button class="filter-button page-level" data-scope="dedicated"><strong>Dedicated</strong></button>
-
 <section class="filter-content" markdown="1" data-scope="dedicated">
 {% include cockroachcloud/create-cluster-api-dedicated.md %}
 </section>
