@@ -1,9 +1,7 @@
 {
     "title": "FAQs",
     "is_top_level": true,
-    "items": [{
-        "title": "FAQs",
-        "items": [
+    "items": [
           {
             "title": "CockroachDB FAQs",
             "urls": [
@@ -31,5 +29,3 @@
           }
         ]
       }
-    ]
-  }
