@@ -707,6 +707,10 @@
   sources: ['performance-tuning.html']
   versions: ['v21.1']
 
+- destination: movr.html#develop-and-deploy-a-global-application
+  sources: ['movr-flask-overview.html']
+  versions: ['v23.1']
+
 - destination: partitioning.html
   sources: ['partition-by.html']
   versions: ['v22.2']

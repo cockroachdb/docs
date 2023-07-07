@@ -3,6 +3,12 @@
     "is_top_level": true,
     "items": [
       {
+        "title": "Glossary",
+        "urls": [
+          "/${VERSION}/architecture/glossary.html"
+        ]
+      },
+      {
         "title": "Architecture",
         "items": [
           {
@@ -64,18 +70,6 @@
       {
         "title": "SQL",
         "items": [
-          {
-            "title": "SQL Overview",
-            "urls": [
-              "/${VERSION}/sql-feature-support.html"
-            ]
-          },
-          {
-            "title": "PostgreSQL Compatibility",
-            "urls": [
-              "/${VERSION}/postgresql-compatibility.html"
-            ]
-          },
           {
             "title": "SQL Syntax",
             "items": [
