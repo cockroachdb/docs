@@ -34,7 +34,12 @@ To view the [Range Report](#range-report) for a hot range, click its range ID.
 Parameter | Description
 ----------|------------
 Range ID | The ID of the hot range. Click the range ID to view the [Range Report](#range-report) for this range.
-QPS | Total number of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` queries executed per second on this range.
+QPS | The total number of [`SELECT`](selection-queries.html), [`UPDATE`](update.html), [`INSERT`](insert.html), and [`DELETE`](delete.html) queries executed per second on this range. The per-second rate is averaged over the last 30 minutes.
+CPU | The total CPU time per second used in processing this range. The per-second rate is averaged over the last 30 minutes.
+Write (keys) | The total number of keys written per second on this range. The per-second rate is averaged over the last 30 minutes.
+Write (bytes) | The total number of bytes written per second on this range. The per-second rate is averaged over the last 30 minutes.
+Read (keys) | The total number of bytes written per second on this range. The per-second rate is averaged over the last 30 minutes.
+Read (bytes) | The total number of bytes read per second on this range. The per-second rate is averaged over the last 30 minutes.
 Nodes | The ID of each node where the range data is found.
 Store ID | The ID of the store where the range data is found.
 Leaseholder | The ID of the node that has the [range lease](architecture/reads-and-writes-overview.html#cockroachdb-architecture-terms).
