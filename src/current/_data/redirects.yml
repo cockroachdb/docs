@@ -741,8 +741,8 @@
   versions: ['v21.2', 'v22.1']
 
 - destination: spatial-data-overview.html
-sources: ['spatial-features.html']
-versions: ['v23.1']
+  sources: ['spatial-features.html']
+  versions: ['v23.1']
 
 - destination: stable/build-a-python-app-with-cockroachdb.html
   sources: ['tutorials/build-a-python-app-with-cockroachdb-interactive.html']
