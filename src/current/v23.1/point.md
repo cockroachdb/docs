@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `POINT` is a sizeless location identified by its X and Y coordinates. These coordinates are then translated according to the current [spatial reference system](architecture/glossary.html#spatial-reference-system) (denoted by an [SRID](architecture/glossary.html#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](spatial-features.html#spatial-objects) (if any) in the data set. 
+A `POINT` is a sizeless location identified by its X and Y coordinates. These coordinates are then translated according to the current [spatial reference system](architecture/glossary.html#spatial-reference-system) (denoted by an [SRID](architecture/glossary.html#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](spatial-data-overview.html#spatial-objects) (if any) in the data set. 
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
@@ -48,7 +48,7 @@ SELECT ST_GeomFromText('POINT(0 0)');
 ## See also
 
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-features.html#spatial-objects)
+- [Spatial objects](spatial-data-overview.html#spatial-objects)
 - [LINESTRING](linestring.html)
 - [POLYGON](polygon.html)
 - [MULTIPOINT](multipoint.html)

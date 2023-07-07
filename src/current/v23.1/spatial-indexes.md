@@ -226,7 +226,7 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 - [GIN Indexes](inverted-indexes.html)
 - [S2 Geometry Library](https://s2geometry.io/)
 - [Indexes](indexes.html)
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)

@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](spatial-features.html#spatial-objects), such as [Points](point.html), [LineStrings](linestring.html), [Polygons](polygon.html), or other `GEOMETRYCOLLECTION`s.  It provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently using various SQL functions.
+A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](spatial-data-overview.html#spatial-objects), such as [Points](point.html), [LineStrings](linestring.html), [Polygons](polygon.html), or other `GEOMETRYCOLLECTION`s.  It provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently using various SQL functions.
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
@@ -28,7 +28,7 @@ SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900)
 ## See also
 
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-features.html#spatial-objects)
+- [Spatial objects](spatial-data-overview.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)
 - [POLYGON](polygon.html)

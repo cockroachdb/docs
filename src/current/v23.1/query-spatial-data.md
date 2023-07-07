@@ -140,7 +140,7 @@ It might be interesting to draw these points on a map. The image below shows the
 
 ## See also
 
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Working with Spatial Data](spatial-data.html)

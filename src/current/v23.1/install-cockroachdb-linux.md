@@ -28,10 +28,10 @@ To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-complia
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
   <ol>
     <li>
-      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your Linux host. <b>ARM binaries are experimental and have not been validated for production use.</b> The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>. Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
+      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your Linux host. <b>ARM binaries are experimental and have not been validated for production use.</b> The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-data-overview.html">spatial features</a>. Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
     </li>
     <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
-    <p>If you plan to use CockroachDB's <a href="spatial-features.html">spatial features</a>, you must complete the following steps. Otherwise, your installation is now complete.</p>
+    <p>If you plan to use CockroachDB's <a href="spatial-data-overview.html">spatial features</a>, you must complete the following steps. Otherwise, your installation is now complete.</p>
     </div>
     <li>
       <p>CockroachDB uses custom-built versions of the <a href="architecture/glossary.html#geos">GEOS</a> libraries. Copy these libraries to one of the locations where CockroachDB expects to find them.</p>

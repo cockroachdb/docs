@@ -16,7 +16,7 @@ docs_area: deploy
 <p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
 {{site.data.alerts.callout_danger}}
-<p>For CockroachDB v22.2.0 on ARM Macs, <a href="spatial-features.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
+<p>For CockroachDB v22.2.0 on ARM Macs, <a href="spatial-data-overview.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
@@ -77,11 +77,11 @@ true
   {{ arch_note_binaries }}
   <ol>
     <li>
-      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>.</p>
+      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-data-overview.html">spatial features</a>.</p>
       <p>You can download the binary using a web browser or you can copy the link and use a utility like <code>curl</code> to download it. If you download the ARM binary using a web browser and you plan to use CockroachDB&apos;s spatial features, an additional step is required before you can install the library, as outlined in the next step.</p>
       <p>Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
       <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
-        <p>If you plan to use CockroachDB&apos;s <a href="spatial-features.html">spatial features</a>, you must complete all of the following steps. Otherwise, your installation is now complete.</p>
+        <p>If you plan to use CockroachDB&apos;s <a href="spatial-data-overview.html">spatial features</a>, you must complete all of the following steps. Otherwise, your installation is now complete.</p>
       </div>
     </li>
     <li>

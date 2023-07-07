@@ -99,7 +99,7 @@ This can be addressed in one of the following ways:
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
-- [Spatial features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)

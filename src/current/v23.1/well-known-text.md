@@ -43,7 +43,7 @@ CockroachDB only supports 2-dimensional geometries.
 
 ## See also
 
-- [Spatial features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)

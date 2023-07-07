@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities](spatial-features.html):
+In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities](spatial-data-overview.html):
 
 + Importing spatial data from SQL files (including how to build spatial geometries from data in CSV files).
 + Putting together separate spatial data sets to ask and answer potentially interesting questions.
@@ -1645,7 +1645,7 @@ ORDER BY
 
 Now that you are familiar with writing and tuning spatial queries, you are ready for the following steps:
 
-- Learn more details about the [spatial features](spatial-features.html) supported by CockroachDB.
+- Learn more details about the [spatial features](spatial-data-overview.html) supported by CockroachDB.
 
 - Learn how to migrate spatial data from [shapefiles](migrate-from-shapefiles.html), [GeoPackages](migrate-from-geopackage.html), [GeoJSON](migrate-from-geojson.html), or [OpenStreetMap](migrate-from-openstreetmap.html) into CockroachDB.
 
@@ -1657,7 +1657,7 @@ Now that you are familiar with writing and tuning spatial queries, you are ready
 
 The queries are presented above in a "narrative order" that corresponds roughly to the order in which you might ask questions about bookstores and loon habitat as you plan for your vacation.
 
-However, you may just want to see what queries are exercising a specific [spatial feature](spatial-features.html) supported by CockroachDB. The table below provides a mapping from a feature (such as 'spatial indexing' or 'spatial joins') to the queries that use that feature.
+However, you may just want to see what queries are exercising a specific [spatial feature](spatial-data-overview.html) supported by CockroachDB. The table below provides a mapping from a feature (such as 'spatial indexing' or 'spatial joins') to the queries that use that feature.
 
 | Feature                      | Queries                                                                                                                                                | Description(s)                                                                                                                                                            |
 |------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1805,7 +1805,7 @@ This data is stored in a separate `birds` database due to the fact that it is sp
 
 - [Install CockroachDB](install-cockroachdb.html)
 - [Working with Spatial Data](spatial-data.html)
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Working with Spatial Data](spatial-data.html)

@@ -18,7 +18,7 @@ The Extended Well Known Binary (_EWKB_) format is the same as WKB, with an [SRID
 
 ## See also
 
-- [Spatial features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)

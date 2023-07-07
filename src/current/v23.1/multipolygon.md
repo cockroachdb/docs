@@ -28,7 +28,7 @@ SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.99277
 ## See also
 
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-features.html#spatial-objects)
+- [Spatial objects](spatial-data-overview.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)
 - [POLYGON](polygon.html)
