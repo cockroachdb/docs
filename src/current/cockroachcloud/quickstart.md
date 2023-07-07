@@ -7,7 +7,7 @@ referral_id: docs_quickstart_free
 docs_area: get_started
 ---
 
-This page shows you how to get started with CockroachDB quickly. You'll use the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java or Node.js sample application.
+This page shows you how to get started with CockroachDB. You'll use the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) to create a {{ site.data.products.serverless }} cluster and then insert and read some sample data from a Java or Node.js sample application.
 
 ## Create a {{ site.data.products.serverless }} cluster
 
