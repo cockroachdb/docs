@@ -91,3 +91,51 @@ Self-service VPC peering setup is not supported for {{ site.data.products.dedica
 If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. 
 
 Refer to: [Managing AWS PrivateLink for a Dedicated Cluster](aws-privatelink.html).
+
+## DB Console
+
+The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
+
+For the functionality offered by the DB Console, refer to: [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html)
+
+To access the DB Console, you must first authorize your current IP address:
+
+1. Visit your Dedicated cluster's IP allowlist page:
+
+    `https://cockroachlabs.io/cluster/{ cluster ID }/networking/allowlist`
+
+1. Click **Add Network**.
+
+1. Add your **Current Network**:
+
+1. Give it a **Name** indicating its use for DB Console access from your current location.
+
+1. Select **DB Console to monitor the cluster** under **Allow this network to access**.
+
+1. Click **Apply**.
+
+{{site.data.alerts.callout_danger}}
+When you have finished your work with the DB Console, be sure to remove your authorized network from the allowlist, by selecting **Delete** from the **Action** dropdown in your network's row.
+{{site.data.alerts.end}}
+
+To get the URL for your cluster's DB Console:
+
+1. Visit your Dedicated cluster's monitoring page:
+
+    `https://cockroachlabs.io/cluster/{ cluster ID }/monitoring`
+
+1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
+
+To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL which opens in the browser. These IP addresses are static for the lifecycle of the cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+dig examplary-dedicated-clusterberry-77tq.crdb.io | grep -A3 'ANSWER SECTION'
+~~~
+
+~~~txt
+;; ANSWER SECTION:
+examplary-dedicated-clusterberry-77tq.crdb.io. 300 IN A 35.245.55.160
+examplary-dedicated-clusterberry-77tq.crdb.io. 300 IN A 34.129.61.133
+examplary-dedicated-clusterberry-77tq.crdb.io. 300 IN A 34.117.21.266
+~~~
