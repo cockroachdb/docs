@@ -74,91 +74,42 @@
         ]
       },
       {
-        "title": "Security",
+        "title": "Benchmarking",
         "items": [
           {
-            "title": "Security Overview",
+            "title": "Overview",
             "urls": [
-              "/${VERSION}/security-reference/security-overview.html"
+              "/${VERSION}/performance.html"
             ]
           },
           {
-            "title": "Authentication",
+            "title": "Benchmarking Instructions",
             "urls": [
-              "/${VERSION}/security-reference/authentication.html"
-            ],
-            "items": [
-              {
-                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
-                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
-              }
-            ]
-          },
-          {
-            "title": "Authorization",
-            "urls": [
-              "/${VERSION}/security-reference/authorization.html"
-            ]
-          },
-          {
-            "title": "Encryption",
-            "urls": [
-              "/${VERSION}/security-reference/encryption.html"
-            ]
-          },
-          {
-            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
-            "urls": [
-              "/${VERSION}/security-reference/transport-layer-security.html"
-            ]
-          },
-          {
-            "title": "Customer-Managed Encryption Keys (CMEK)",
-            "urls": [
-              "/cockroachcloud/cmek.html"
-            ]
-          },
-          {
-            "title": "Payment Card Industry Data Security Standard (PCI DSS)",
-            "urls": [
-              "/cockroachcloud/pci-dss.html"
-            ]
-          },
-          {
-            "title": "System Catalogs",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/system-catalogs.html"
-                    ]
-              },
-              {
-                "title": "<code>crdb_internal</code>",
-                "urls": [
-                  "/${VERSION}/crdb-internal.html"
-                ]
-              },
-              {
-                "title": "<code>information_schema</code>",
-                "urls": [
-                  "/${VERSION}/information-schema.html"
-                ]
-              },
-              {
-                "title": "<code>pg_catalog</code>",
-                "urls": [
-                  "/${VERSION}/pg-catalog.html"
-                ]
-              },
-              {
-                "title": "<code>pg_extension</code>",
-                "urls": [
-                  "/${VERSION}/pg-extension.html"
-                ]
-              }
+              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
             ]
           }
+        ]
+      },
+      {
+        "title": "Cloud API",
+        "urls": [
+          "/api/cloud/v1.html"
+        ]
+      },
+      {
+        "title": "Cluster API",
+        "urls": [
+          "/api/cluster/v2.html"
+        ]
+      },
+      {
+        "title": "Cluster Settings",
+        "urls": [
+          "/${VERSION}/cluster-settings.html"
         ]
       },
       {
@@ -347,93 +298,6 @@
         ]
       },
       {
-        "title": "Metrics",
-        "urls": [
-          "/${VERSION}/metrics.html"
-        ]
-      },
-      {
-        "title": "Logs",
-        "items": [
-          {
-            "title": "Logging Levels and Channels",
-            "urls": [
-              "/${VERSION}/logging.html"
-            ]
-          },
-          {
-            "title": "Log Formats",
-            "urls": [
-              "/${VERSION}/log-formats.html"
-            ]
-          },
-          {
-            "title": "Notable Event Types",
-            "urls": [
-              "/${VERSION}/eventlog.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Cluster Settings",
-        "urls": [
-          "/${VERSION}/cluster-settings.html"
-        ]
-      },
-      {
-        "title": "Diagnostics Reporting",
-        "urls": [
-          "/${VERSION}/diagnostics-reporting.html"
-        ]
-      },
-      {
-        "title": "Policies",
-        "items": [
-          {
-            "title": "CockroachDB Feature Availability",
-            "urls": [
-              "/${VERSION}/cockroachdb-feature-availability.html"
-            ]
-          },
-          {
-            "title": "Unsupported Features in CockroachDB Serverless",
-            "urls": [
-              "/cockroachcloud/serverless-unsupported-features.html"
-            ]
-          },
-          {
-            "title": "API Support Policy",
-            "urls": [
-              "/${VERSION}/api-support-policy.html"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Third-Party Support",
-        "items": [
-          {
-            "title": "Tools Supported by Cockroach Labs",
-            "urls": [
-              "/${VERSION}/third-party-database-tools.html"
-            ]
-          },
-          {
-            "title": "Third-Party Monitoring Integrations",
-            "urls": [
-              "/${VERSION}/third-party-monitoring-tools.html"
-            ]
-          },
-          {
-            "title": "Tools Supported by the Community",
-            "urls": [
-              "/${VERSION}/community-tooling.html"
-            ]
-          }
-        ]
-      },
-      {
         "title": "DB Console",
         "items": [
           {
@@ -600,6 +464,87 @@
         ]
       },
       {
+        "title": "Diagnostics Reporting",
+        "urls": [
+          "/${VERSION}/diagnostics-reporting.html"
+        ]
+      },
+      {
+        "title": "Logs",
+        "items": [
+          {
+            "title": "Logging Levels and Channels",
+            "urls": [
+              "/${VERSION}/logging.html"
+            ]
+          },
+          {
+            "title": "Log Formats",
+            "urls": [
+              "/${VERSION}/log-formats.html"
+            ]
+          },
+          {
+            "title": "Notable Event Types",
+            "urls": [
+              "/${VERSION}/eventlog.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Metrics",
+        "urls": [
+          "/${VERSION}/metrics.html"
+        ]
+      },
+      {
+        "title": "Policies",
+        "items": [
+          {
+            "title": "CockroachDB Feature Availability",
+            "urls": [
+              "/${VERSION}/cockroachdb-feature-availability.html"
+            ]
+          },
+          {
+            "title": "Unsupported Features in CockroachDB Serverless",
+            "urls": [
+              "/cockroachcloud/serverless-unsupported-features.html"
+            ]
+          },
+          {
+            "title": "API Support Policy",
+            "urls": [
+              "/${VERSION}/api-support-policy.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Tools Supported by Cockroach Labs",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Third-Party Monitoring Integrations",
+            "urls": [
+              "/${VERSION}/third-party-monitoring-tools.html"
+            ]
+          },
+          {
+            "title": "Tools Supported by the Community",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Transaction Retry Error Reference",
         "urls": [
           "/${VERSION}/transaction-retry-error-reference.html"
@@ -611,44 +556,100 @@
          "/${VERSION}/transaction-retry-error-example.html"
        ]
      },
-      {
-        "title": "Cluster API",
-        "urls": [
-          "/api/cluster/v2.html"
-        ]
-      },
-      {
-        "title": "Cloud API",
-        "urls": [
-          "/api/cloud/v1.html"
-        ]
-      },
-      {
-        "title": "Benchmarking",
-        "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/performance.html"
-            ]
-          },
-          {
-            "title": "Benchmarking Instructions",
-            "urls": [
-              "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-              "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
-            ]
-          },
-          {
-            "title": "Serverless Performance Benchmarking",
-            "urls": [
-              "/cockroachcloud/serverless-benchmarking.html"
-            ]
-          }
-        ]
-      }
-    ]
-  }
+    {
+      "title": "Security",
+      "items": [
+        {
+          "title": "Security Overview",
+          "urls": [
+            "/${VERSION}/security-reference/security-overview.html"
+          ]
+        },
+        {
+          "title": "Authentication",
+          "urls": [
+            "/${VERSION}/security-reference/authentication.html"
+          ],
+          "items": [
+            {
+              "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+              "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+            }
+          ]
+        },
+        {
+          "title": "Authorization",
+          "urls": [
+            "/${VERSION}/security-reference/authorization.html"
+          ]
+        },
+        {
+          "title": "Encryption",
+          "urls": [
+            "/${VERSION}/security-reference/encryption.html"
+          ]
+        },
+        {
+          "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
+          "urls": [
+            "/${VERSION}/security-reference/transport-layer-security.html"
+          ]
+        },
+        {
+          "title": "Customer-Managed Encryption Keys (CMEK)",
+          "urls": [
+            "/cockroachcloud/cmek.html"
+          ]
+        },
+        {
+          "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+          "urls": [
+            "/cockroachcloud/pci-dss.html"
+          ]
+        },
+        {
+          "title": "System Catalogs",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/system-catalogs.html"
+                  ]
+            },
+            {
+              "title": "<code>crdb_internal</code>",
+              "urls": [
+                "/${VERSION}/crdb-internal.html"
+              ]
+            },
+            {
+              "title": "<code>information_schema</code>",
+              "urls": [
+                "/${VERSION}/information-schema.html"
+              ]
+            },
+            {
+              "title": "<code>pg_catalog</code>",
+              "urls": [
+                "/${VERSION}/pg-catalog.html"
+              ]
+            },
+            {
+              "title": "<code>pg_extension</code>",
+              "urls": [
+                "/${VERSION}/pg-extension.html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Serverless Performance Benchmarking",
+      "urls": [
+        "/cockroachcloud/serverless-benchmarking.html"
+      ]
+    }
+  ]
+}
+
