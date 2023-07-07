@@ -39,7 +39,7 @@ To watch multiple tables, we recommend creating a changefeed with a comma-separa
 
 #### System resources and running changefeeds
 
-Cockroach Labs recommends monitoring [CPU usage](ui-overload-dashboard.html) when you are running around 10 changefeeds on a cluster. A larger cluster will be able to run more changefeeds concurrently compared to a smaller cluster with more limited resources.
+Cockroach Labs recommends monitoring [CPU usage](ui-overload-dashboard.html) when you are running more than 10 changefeeds on a cluster. A larger cluster will be able to run more changefeeds concurrently compared to a smaller cluster with more limited resources.
 
 To maintain more running changefeeds in your cluster:
 
