@@ -20,19 +20,24 @@ The **Cluster settings** panel displays the settings you chose during [cluster c
 
 | Field     | Description                                                                                             |
 |-----------|---------------------------------------------------------------------------------------------------------|
-| Cloud     | The cluster's [cloud provider]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-2-select-the-cloud-provider). |
-| Plan type | The plan type used to create the cluster.                                                               |
-| Regions    | The cluster's [regions]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-3-select-the-regions).         |
+| Cloud     | The cluster's cloud provider. |
+| Plan type | The plan type used to create the cluster.  |
+| Regions    | The cluster's regions.         |
 
 ## Usage this month
 
-The **Usage this month** panel displays your cluster usage statistics for the current month. You can click [**Estimate usage cost**]({% link cockroachcloud/serverless-cluster-management.md %}#estimate-usage-cost) to open a tool that estimates your monthly costs based on your workload during a selected time frame.
+The **Usage this month** panel displays your cluster usage statistics for the current month.
 
-| Field         | Description                                                                                                                                                                                                                                                                      |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Resource limits   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured resource limits]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-set-resource-limits). Click the **edit** icon to change the resource limits.                                                                                                         |
+For explanations of {{ site.data.products.db }} terms, for example Request Units, and Storage, see [{{ site.data.products.db }} Architecture: {{ site.data.products.db }} Terms]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).
+
+Refer to [**Estimate usage cost**]({% link cockroachcloud/serverless-cluster-management.md %}#estimate-usage-cost) to learn how to estimate your monthly costs based on your workload during a selected time frame.
+
+
+| Field         | Description        |
+|---------------|--------------------|
+| Resource limits   | The CockroachDB {{ site.data.products.serverless }} cluster's [configured resource limits]({% link cockroachcloud/create-a-serverless-cluster.md %}#step-4-set-resource-limits). Click the **edit** icon to change the resource limits. |
 | Storage       | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your resource limits. For details, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#performance). |
-| [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).              |
+| [Request Units]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units) | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your resource limits. For more context, see [CockroachDB {{ site.data.products.cloud }} Architecture]({% link cockroachcloud/architecture.md %}#cockroachdb-cloud-terms).  |
 
 ## Cluster statistics panel
 

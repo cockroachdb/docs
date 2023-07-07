@@ -6,7 +6,13 @@
 
 ## CockroachDB {{ site.data.products.cloud }} terms
 
-#### Organization
+### Console
+
+**The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a {{ site.data.products.db }} **organization** (or create a new one).
+
+Refer to [Organization user roles]({{ link_prefix }}authorization.html#organization-user-roles) to learn what functions organization users can perform.
+
+### Organization
 
 In CockroachDB {{ site.data.products.cloud }}, an organization corresponds to an authorization hierarchy rooted linked to a billing account. The admins of the organization can add or invite other users to it.
 

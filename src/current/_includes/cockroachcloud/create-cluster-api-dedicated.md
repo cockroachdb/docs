@@ -1,30 +1,32 @@
-### Create a Dedicated cluster
+**API request**
 
-To create a cluster, send a `POST` request to the `/v1/clusters` endpoint, specifying the following parameters:
+To create a **Dedicated** cluster, send a `POST` request to the `/v1/clusters` endpoint, specifying the following parameters:
 
-- `name`: your cluster's name.
-- `provider`: GCP or AWS.
-- `machine_type`: machine type, e.g. "n2-standard-2".
-- `storage_gib`: storage in GiB.
+- `name`: your cluster's name, a short string with no whitespace.
+- `provider`: "GCP", "AWS", or`AZURE`. Note that support for Azure is in [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
+- `hardware`:
+  - `machine_spec`
+    - `machine_type`: machine type, e.g. "n2-standard-2".
+  - `storage_gib`: (int) storage in GiB.
 - `region_nodes`: a hash where each key is a region name and each value is the desired number of nodes (if not 0).
 - `spend_limit`: specified in dollars
 - `network_visibility`: PRIVATE or PUBLIC
 - `restrict_egress_traffic`: true or false
 
-[API reference](../api/cloud/v1.html#post-/api/v1/clusters)
+[API reference](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters)
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
 --url 'https://management-staging.crdb.io/api/v1/clusters' \
---header 'Authorization: Bearer CCDB1_uk65GaSrAo1FfoMsDgK3Ml_ka74MsxdEOdgERu7zWrB8IrtSKvVCfZzL2oy8dLV' \
---data @cluster-create.json
+--header 'Authorization: Bearer { api key }' \
+--data @create-dedicated-cluster.json
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ json
+#create-dedicated-cluster-create.json
 {
-<<<<<<< HEAD
   "name": "{cluster_name}",
   "provider": "{cloud_provider}",
   "spec": {
@@ -71,10 +73,7 @@ curl --request POST \
 {% include_cached copy-clipboard.html %}
 ~~~ JSON
 {
-  "name": "notorious-moose",
-=======
-  "name": "docstestcluster2",
->>>>>>> 50e1779b2 (add create cluster with API docs)
+  "name": "docstestcluster",
   "provider": "GCP",
   "spec": {
     "dedicated": {
@@ -92,6 +91,8 @@ curl --request POST \
   }
 }
 ~~~
+
+**API response**
 
 Upon success, the API will return information about the newly created cluster.
 Save your cluster's UUID, in the `id` field, so you can use the API to [Get information about your cluster](#get-information-about-a-specific-cluster), or inspect it in the {{ site.data.products.db }} console at:

@@ -6,15 +6,17 @@ docs_area: manage
 cloud: true
 ---
 
-The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
+The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows service accounts programmatic access to manage the lifecycle of clusters within your organization.
 
 ## API reference
 
-Refer to the [full API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1) for detailed descriptions of the API endpoints and options.
+Refer to the [full API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1.html#post-/api/v1/clusters) for detailed descriptions of the API endpoints and options.
 
 ## Call the API
 
-The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access). The secret key is associated with a service account, and inherits the [permissions of the account]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
+The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key]({% link cockroachcloud/managing-access.md %}#api-access), associated with a service account. The API calls you can make is limited by the roles granted to the service account you are using.
+
+Refer to: [Manage service accounts]({% link cockroachcloud/managing-access.md %}#manage-service-accounts).
 
 To send the secret key when making an API call, add the secret key to the `Authorization` HTTP header sent with the request.
 
@@ -78,16 +80,17 @@ Where `{secret_key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-**Required Permissions**:
-The service account associated with the secret key must have one of the following [organization roles](authorization.html#organization-user-roles), in order to create a cluster in that organization:
+**Required Permissions**
 
-- the [Cluster Creator role]({% link authorization.html %}#cluster-creator).
-- The [Cluster Administrator role]({% link authorization.html %}#cluster-administrator)  scoped to the entire organization (Cluster creator can be assigned to a signle cluster, which does not allow the user to create new clusters).
-- The [Org Administrator (legacy) role]({% link authorization.html %}#org-administrator-legacy) .
-- The `ADMIN` or `CREATE` [permission]({% link (authorization.html %})#service-accounts) if it is a legacy service account.
+The service account associated with the secret key must have one of the following [organization roles]({% link cockroachcloud/authorization.md %}#organization-user-roles) , in order to create a cluster in that organization:
+
+- the [Cluster Creator role]({% link cockroachcloud/authorization.md %}#cluster-creator).
+- The [Cluster Administrator role]({% link cockroachcloud/authorization.md %}#cluster-administrator)  scoped to the entire organization (Cluster creator can be assigned to a signle cluster, which does not allow the user to create new clusters).
+- The [Org Administrator (legacy) role]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) .
+- The `ADMIN` or `CREATE` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.
 
 Serverless and Dedicated clusters have different configuration options. Refer to [CockroachDB Cloud FAQs
-](frequently-asked-questions.html) for an overview of the differences between the two.
+]({% link cockroachcloud/frequently-asked-questions.md %}) for an overview of the differences between the two.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>Serverless</strong></button>
