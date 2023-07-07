@@ -11,7 +11,7 @@ Given two shapes _A_ and _B_, `ST_Touches(A, B)` returns `true` if both the foll
 - At least one point in the set of points that comprises _A_ is also a member of the set of points that make up _B_.
 - No points that make up the interior of _A_ are also part of the interior of _B_.
 
-In other words, _A_ and _B_ have a point along their boundaries in common (i.e., they "touch"), but none of their interior points intersect.  This distinction between shapes touching along a boundary vs. intersecting is also made by the [DE-9IM](architecture/glossary.html#de-9IM) standard.
+In other words, _A_ and _B_ have a point along their boundaries in common (i.e., they "touch"), but none of their interior points intersect.  This distinction between shapes touching along a boundary vs. intersecting is also made by the [DE-9IM](architecture/glossary.html#DE-9IM) standard.
 
 `ST_Touches` works on the following data types:
 
