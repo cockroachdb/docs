@@ -2,7 +2,7 @@
     "title": "Feature Overview",
     "is_top_level": true,
     "items": [{
-        "title": "CockroachDB Products",
+        "title": "Deployment Options",
         "urls": [
           "/${VERSION}/choose-a-deployment-option.html"
         ]

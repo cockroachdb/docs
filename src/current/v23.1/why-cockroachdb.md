@@ -38,6 +38,14 @@ For more information, refer to [Transactions](transactions.html).
 
 ### Geo-partitioning and multi-region features
 
+CockroachDB's geo-partitioning functionality lets you tie data to specific geographical locations, which is beneficial for many reasons, including:
+
+- Reduced Latency: By tying data to a specific location closer to where it is accessed from, latency can be significantly reduced, leading to improved application performance.
+- Regulatory Compliance: Geo-partitioning aids in meeting data sovereignty requirements, as it allows storing and processing of data within defined geographic boundaries.
+- Surviving Outages: Geo-partitioning ensures that your database can survive availability zone or regional outages, providing an additional layer of data safety.
+
+For more information, refer to [Multi-Region Capabilities Overview](multiregion-overview.html).
+
 ### PostgreSQL compatibility
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of PostgreSQL syntax. This means that existing applications built on PostgreSQL can often be migrated to CockroachDB without changing application code.
