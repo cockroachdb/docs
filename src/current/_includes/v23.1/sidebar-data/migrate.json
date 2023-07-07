@@ -18,6 +18,12 @@
           ]
         },
         {
+          "title": "MOLT Verify Tool",
+          "urls": [
+            "/${VERSION}/molt-verify.html"
+          ]
+        },
+        {
           "title": "AWS DMS",
           "urls": [
             "/${VERSION}/aws-dms.html"
