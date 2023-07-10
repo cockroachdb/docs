@@ -100,12 +100,6 @@
               ]
         },
         {
-          "title": "Backup Architecture",
-          "urls": [
-            "/${VERSION}/backup-architecture.html"
-          ]
-        },
-        {
           "title": "Managed-Service Backups",
           "urls": [
             "/cockroachcloud/use-managed-service-backups.html"
@@ -535,12 +529,6 @@
         {
           "title": "Third-Party Monitoring Integrations",
           "items": [
-            {
-              "title": "Third-Party Monitoring Integration Overview",
-              "urls": [
-                "/${VERSION}/third-party-monitoring-tools.html"
-              ]
-            },
             {
              "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
              "urls": [

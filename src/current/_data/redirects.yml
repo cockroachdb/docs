@@ -506,6 +506,10 @@
 
 # Removed Pages
 
+- destination: movr.md#develop-and-deploy-a-global-application
+  sources: ['movr-flask-overview.md']
+  versions: ['v23.1']
+
 - destination: :version/collate.md
   sources: [':version/collatedstring.md']
 
@@ -648,6 +652,10 @@
   sources: ['validate-constraint.md']
   versions: ['v22.2']
 
+- destination: architecture/glossary.md
+  sources: ['spatial-glossary.md']
+  versions: ['v23.1']
+
 - destination: change-data-capture-overview.md
   sources: ['stream-data-out-of-cockroachdb-using-changefeeds.md']
   versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
@@ -731,6 +739,10 @@
 - destination: show-create.md
   sources: ['cockroach-dump.md']
   versions: ['v21.2', 'v22.1']
+
+- destination: spatial-data-overview.md
+  sources: ['spatial-features.md']
+  versions: ['v23.1']
 
 - destination: stable/build-a-python-app-with-cockroachdb.md
   sources: ['tutorials/build-a-python-app-with-cockroachdb-interactive.md']

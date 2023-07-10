@@ -27,7 +27,7 @@ For more detailed information, see the [GeoJSON RFC](https://www.rfc-editor.org/
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-GeoJSON should only be used for spatial data that uses the [WGS84](spatial-glossary.html) geographic spatial reference system.  For more information, see [SRID 4326](srid-4326.html).
+GeoJSON should only be used for spatial data that uses the [WGS84](architecture/glossary.html) geographic spatial reference system.  For more information, see [SRID 4326](srid-4326.html).
 {{site.data.alerts.end}}
 
 ## Example
@@ -194,10 +194,10 @@ Here is the geometry described above as shown on [geojson.io](http://geojson.io)
 ## See also
 
 - [GeoJSON RFC](https://www.rfc-editor.org/rfc/rfc7946.txt)
-- [Spatial features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Well known text](well-known-text.html)
 - [Well known binary](well-known-binary.html)
 - [SRID 4326 - longitude and latitude](srid-4326.html)

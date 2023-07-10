@@ -10,7 +10,7 @@ Given two shapes _A_ and _B_, `ST_Disjoint(A, B)` returns `true` if the shapes d
 
 `ST_Disjoint` works on the following spatial data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
 
 {% if page.has_prefixed_variant %}
 {{site.data.alerts.callout_info}}
@@ -75,7 +75,7 @@ SELECT st_disjoint(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)
