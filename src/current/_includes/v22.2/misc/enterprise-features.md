@@ -19,5 +19,5 @@ Feature | Description
 --------+-------------------------
 [Encryption at Rest](security-reference/encryption.html#encryption-at-rest-enterprise) | Enable automatic transparent encryption of a node's data on the local disk using AES in counter mode, with all key sizes allowed. This feature works together with CockroachDB's automatic encryption of data in transit.
 [GSSAPI with Kerberos Authentication](gssapi_authentication.html) | Authenticate to your cluster using identities stored in an external enterprise directory system that supports Kerberos, such as Active Directory.
-[Cluster Single Sign-on (SSO)](sso-sql.html) | Grant SQL access to a cluster using JSON Web Tokens (JWTs) issued by an external identity provider(IdP) or custom JWT issuer.
+[Cluster Single Sign-on (SSO)](sso-sql.html) | Grant SQL access to a cluster using JSON Web Tokens (JWTs) issued by an external identity provider (IdP) or custom JWT issuer.
 [Single Sign-on (SSO) for DB Console](sso-db-console.html) | Grant access to a cluster's DB Console interface using SSO through an IdP that supports OIDC.

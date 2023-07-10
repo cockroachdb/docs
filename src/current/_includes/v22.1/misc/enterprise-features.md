@@ -3,7 +3,7 @@
 Feature | Description
 --------+-------------------------
 [Follower Reads](follower-reads.html) | Reduce read latency in multi-region deployments by using the closest replica at the expense of reading slightly historical data.
-[Multi-Region Capabilities](multiregion-overview.html) | Row-level controls where your data is stored to help you reduce read and write latency and meet regulatory requirements.
+[Multi-Region Capabilities](multiregion-overview.html) | Row-level control over where your data is stored to help you reduce read and write latency and meet regulatory requirements.
 [Node Map](enable-node-map.html) | Visualize the geographical distribution of a cluster by plotting its node localities on a world map.
 
 ## Recovery and streaming
