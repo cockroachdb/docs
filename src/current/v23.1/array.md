@@ -338,9 +338,9 @@ CockroachDB supports implicit casting from string literals to arrays of all data
 - [`ENUM`](enum.html)
 - [`JSONB`](jsonb.html)
 - [`SERIAL`](serial.html)
-- `Box2D` [(spatial type)](spatial-glossary.html#data-types)
-- `GEOGRAPHY` [(spatial type)](spatial-glossary.html#data-types)
-- `GEOMETRY` [(spatial type)](spatial-glossary.html#data-types)
+- `Box2D` [(spatial type)](architecture/glossary.html#data-types)
+- `GEOGRAPHY` [(spatial type)](architecture/glossary.html#data-types)
+- `GEOMETRY` [(spatial type)](architecture/glossary.html#data-types)
 
 For example, if you create a table with a column of type `INT[]`:
 
