@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset](spatial-glossary.html#file-formats) from the National Oceanic and Atmospheric Administration.
+This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset](architecture/glossary.html#file-formats) from the National Oceanic and Atmospheric Administration.
 
 ## Before you begin
 
@@ -140,9 +140,9 @@ It might be interesting to draw these points on a map. The image below shows the
 
 ## See also
 
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)

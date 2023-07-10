@@ -14,14 +14,14 @@ WKB is obtained by serializing a shape as a sequence of numbers. For more detail
 
 <a name="ewkb"></a>
 
-The Extended Well Known Binary (_EWKB_) format is the same as WKB, with an [SRID](spatial-glossary.html#srid) representation prepended to the data structure.
+The Extended Well Known Binary (_EWKB_) format is the same as WKB, with an [SRID](architecture/glossary.html#srid) representation prepended to the data structure.
 
 ## See also
 
-- [Spatial features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 1: Common architecture](https://portal.opengeospatial.org/files/?artifact_id=25355)
 - [Well known text](well-known-text.html)
 - [GeoJSON](geojson.html)
