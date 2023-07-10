@@ -241,7 +241,7 @@ For more information, see [Zone Config Extensions](zone-config-extensions.html).
 - [Global Tables](global-tables.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
-- [Develop and Deploy a Global Application](movr-flask-overview.html)
+- [Develop and Deploy a Global Application](movr.html#develop-and-deploy-a-global-application)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)

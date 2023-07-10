@@ -233,6 +233,10 @@
   sources: ['build-an-app-with-cockroachdb.html']
   versions: ['v21.2']
 
+- destination: example-apps.html#python
+  sources: ['build-a-python-app-with-cockroachdb-pony.html']
+  versions: ['v20.2', 'v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
+
 - destination: fips.html
   sources: ['fips-compliance.html']
   versions: ['v23.1']
@@ -373,6 +377,11 @@
     - show-time-zone.html
     - show-transaction.html
   versions: [':version']
+
+- destination: stable/example-apps.html#python
+  sources: 
+    - v19.2/build-a-python-app-with-cockroachdb-pony.html
+    - v20.1/build-a-python-app-with-cockroachdb-pony.html
 
 - destination: stable/install-client-drivers.html
   sources: ['install-client-drivers.html']
@@ -706,6 +715,10 @@
 - destination: make-queries-fast.html
   sources: ['performance-tuning.html']
   versions: ['v21.1']
+
+- destination: movr.html#develop-and-deploy-a-global-application
+  sources: ['movr-flask-overview.html']
+  versions: ['v23.1']
 
 - destination: partitioning.html
   sources: ['partition-by.html']

@@ -1,5 +1,5 @@
 ---
-title: Availability FAQs
+title: Multi-Active Availability
 summary: Learn about CockroachDB's high availability model, known as Multi-Active Availability.
 toc: true
 docs_area: get_started
