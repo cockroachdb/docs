@@ -6,12 +6,6 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Plan Your Cluster",
-          "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
-          ]
-        },
-        {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
@@ -104,12 +98,6 @@
           "urls": [
                 "/${VERSION}/backup-and-restore-overview.html"
               ]
-        },
-        {
-          "title": "Backup Architecture",
-          "urls": [
-            "/${VERSION}/backup-architecture.html"
-          ]
         },
         {
           "title": "Managed-Service Backups",
@@ -541,12 +529,6 @@
         {
           "title": "Third-Party Monitoring Integrations",
           "items": [
-            {
-              "title": "Third-Party Monitoring Integration Overview",
-              "urls": [
-                "/${VERSION}/third-party-monitoring-tools.html"
-              ]
-            },
             {
              "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
              "urls": [

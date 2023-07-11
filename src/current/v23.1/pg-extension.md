@@ -9,7 +9,7 @@ The `pg_extension` [system catalogs](system-catalogs.html) provides information 
 
 ## Data exposed by `pg_extension`
 
-In CockroachDB {{ page.version.version }}, `pg_extension` contains the following tables, all of which provide information about CockroachDB's [spatial extension](spatial-features.html):
+In CockroachDB {{ page.version.version }}, `pg_extension` contains the following tables, all of which provide information about CockroachDB's [spatial extension](spatial-data-overview.html):
 
 - `geography_columns`
 - `geometry_columns`

@@ -7,7 +7,7 @@ docs_area: manage
 
 This page describes how to use [managed-service backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html#cockroachdb-backup-types) from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters.
 
-To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backups** in the **Data** section of the left side navigation.
+To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left side navigation.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
@@ -15,7 +15,7 @@ To access your managed-service backups, select a cluster from the [**Clusters** 
 </div>
 
 
-This page describes the **Backups** page and how to restore your data.
+This page describes the **Backup and Restore** page and how to restore your data.
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days.
@@ -32,10 +32,10 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 </section>
 
-## Backups page
+## Backups tab
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+The **Backups** tab displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
@@ -50,7 +50,7 @@ For each backup, the following details display:
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
-Your cluster's **Backups** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+The **Backups** tab displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
@@ -66,7 +66,7 @@ For each backup, the following details display:
 
 ### Databases
 
-To view the databases included in the backup, click the number in the **Databases** column on the cluster view of the **Backups** page.
+To view the databases included in the backup, click the number in the **Databases** column on the cluster view of the **Backups** tab.
 
 For each database in the backup, the following details display:
 
@@ -104,7 +104,7 @@ For each table in the database, the following details display:
 
 ### Incomplete Backups
 
-To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backups** page.
+To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backup and Restore** page.
 
 For each incomplete backup, the following details display:
 
@@ -141,7 +141,7 @@ This operation is disruptive and is to be performed with caution. Use the [Princ
 
 To restore a cluster:
 
-1. Find the cluster backup on the **Backups** page.
+1. Find the cluster backup on the **Backups** tab.
 1. Click **Restore** for the cluster you want to restore.
 
     The **Restore cluster** module displays with backup details.

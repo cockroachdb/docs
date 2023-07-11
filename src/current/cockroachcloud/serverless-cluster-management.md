@@ -47,13 +47,13 @@ This feature is not available if your organization is billed through [Credits](b
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.
 
 1. In the **Usage this month** section of your cluster's [**Overview** page](cluster-overview-page.html), click **Estimate usage cost**.
-1. Select a time frame in which your workload was active.
+1. Select a time period in which your workload was active.
 
-    Your used [RUs](learn-about-request-units.html), used storage, and spend from the selected time frame will be shown along with your monthly cost estimate. The spend and cost estimate do not account for the [free resources](learn-about-pricing.html#free-vs-paid-usage) granted to every organization, which you would have to use up before being charged.
+    Your used [RUs](plan-your-cluster-serverless.html#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrused costs and monthly cost estimate do not account for the [free resources](plan-your-cluster-serverless.html#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
 
 ## Edit your resource limits
 
-You can edit your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) from the **Overview** page. The change in your resource limits will affect current and upcoming billing cycles. See [Planning your cluster](plan-your-cluster.html) for more information on resource usage.
+On the **Overview** page, you can edit your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.
@@ -104,16 +104,6 @@ To remove regions from your cluster:
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 {% endcomment %}
-
-## Create a database
-
-You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
-
-1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
-1. Click **Databases** in the **Data** section of the left side navigation.
-1. Click **Add database**.
-1. Enter a name for the new database.
-1. Click **Create**.
 
 ## Restore data from a backup
 

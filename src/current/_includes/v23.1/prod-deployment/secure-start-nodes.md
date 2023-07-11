@@ -33,7 +33,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+1. CockroachDB uses custom-built versions of the [GEOS](architecture/glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -110,7 +110,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+1. CockroachDB uses custom-built versions of the [GEOS](architecture/glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

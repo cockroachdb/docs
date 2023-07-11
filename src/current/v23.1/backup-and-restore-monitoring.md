@@ -18,7 +18,7 @@ We recommend setting up monitoring to alert when anomalies occur. You can then u
 - [`SHOW JOBS`](show-jobs.html)
 - [`SHOW BACKUP`](show-backup.html)
 
-For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your {{ site.data.products.db }} cluster, see the **Backups** page in the Cloud Console.
+For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your {{ site.data.products.db }} cluster, see the **Backup and Restore** page in the Cloud Console.
 
 {% include {{ page.version.version }}/backups/metrics-per-node.md %}
 

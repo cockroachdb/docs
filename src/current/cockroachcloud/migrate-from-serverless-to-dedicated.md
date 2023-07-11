@@ -1,5 +1,5 @@
 ---
-title: Migrate from a CockroachDB Serverless to CockroachDB Dedicated Cluster
+title: Migrate from Serverless to Dedicated
 summary: Learn how to migrate data from a CockroachDB Serverless cluster into a CockroachDB Dedicated cluster.
 toc: true
 docs_area: migrate

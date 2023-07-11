@@ -42,10 +42,14 @@ It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisio
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
 1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
-1. Note that a number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+
+    {{site.data.alerts.callout_info}}
+    When editing roles for a group in the **Groups** tab, the fields for that group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
+    {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-As an [Org Administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
+As an [Org Administrator (legacy)](authorization.html#org-administrator-legacy) or [Org Administrator](authorization.html#org-administrator), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
 {{site.data.alerts.end}}
 
 ### Remove a team member
@@ -107,8 +111,9 @@ Service accounts, like users, are given only the **Org Member** role by default 
 
 1. On the **Access Management** page, select the **Service Accounts** tab.
 1. In the row for the target service account, click, click the three-dots **Action** button and select **Edit Roles**.
-1. Note that a number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](authorization.html#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](authorization.html#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
+    The fields for a group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
 ### API access
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.

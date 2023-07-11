@@ -24,7 +24,9 @@ After an application establishes a connection to {{ site.data.products.db }}, th
 
 Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing, connection validation, and connection retry logic, see [Use Connection Pools](../{{site.current_cloud_version}}/connection-pooling.html).
 
-{% include common/transaction-retries.md %}
+## Transaction retries
+
+When several transactions try to modify the same underlying data concurrently, they may experience [contention](../{{ site.current_cloud_version }}/performance-best-practices-overview.html#transaction-contention) that leads to [transaction retries](../{{ site.current_cloud_version }}/transactions.html#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](../{{ site.current_cloud_version }}/transaction-retry-error-reference.html#client-side-retry-handling).
 
 ## Authorize the right network (Dedicated)
 

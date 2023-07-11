@@ -27,9 +27,9 @@ When a shape is made up of homogeneous subcomponents, such as a polygon made up 
 
 <a name="ewkt"></a>
 
-Shapes expressed in WKT can have an [SRID](spatial-glossary.html) prepended to the shape and followed by a semicolon, in the form `SRID=123;TAG(...)`.  The format is known as Extended Well Known Text (_EWKT_); it is the same as WKT, with an [SRID](spatial-glossary.html#srid) representation prepended to the data structure.
+Shapes expressed in WKT can have an [SRID](architecture/glossary.html) prepended to the shape and followed by a semicolon, in the form `SRID=123;TAG(...)`.  The format is known as Extended Well Known Text (_EWKT_); it is the same as WKT, with an [SRID](architecture/glossary.html#srid) representation prepended to the data structure.
 
-For example, below is a polygon representing a geometry that uses [SRID 4326](srid-4326.html), which is used to represent latitude and longitude coordinates on the Earth as defined in the [WGS84](spatial-glossary.html#wgs84) standard:
+For example, below is a polygon representing a geometry that uses [SRID 4326](srid-4326.html), which is used to represent latitude and longitude coordinates on the Earth as defined in the [WGS84](architecture/glossary.html#wgs84) standard:
 
 `SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))`
 
@@ -43,10 +43,10 @@ CockroachDB only supports 2-dimensional geometries.
 
 ## See also
 
-- [Spatial features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Geographic information — Well-known text representation of coordinate reference systems](http://www.opengis.net/doc/is/wkt-crs/2.0.6)
 - [OpenGIS Implementation Specification for Geographic information - Simple feature access - Part 1: Common architecture](https://portal.opengeospatial.org/files/?artifact_id=25355)
 - [Well known binary](well-known-binary.html)

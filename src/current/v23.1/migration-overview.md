@@ -211,6 +211,13 @@ In the following order:
 1. [Load test data](#load-test-data).
 1. [Validate your application queries](#validate-queries).
 
+<a name="molt"></a>
+
+You can use the following MOLT (Migrate Off Legacy Technology) tools to simplify these steps:
+
+- [Schema Conversion Tool](migrations-page.html)
+- [MOLT Verify](molt-verify.html)
+
 #### Convert the schema
 
 First, convert your database schema to an equivalent CockroachDB schema:

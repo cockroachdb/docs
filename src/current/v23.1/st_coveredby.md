@@ -12,8 +12,8 @@ In other words, shape _B_ must completely cover every point in _A_.
 
 `ST_CoveredBy` works on the following data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
-- [`GEOGRAPHY`](spatial-glossary.html#geography)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
+- [`GEOGRAPHY`](architecture/glossary.html#geography)
 
 
 {% if page.has_prefixed_variant %}
@@ -74,7 +74,7 @@ SELECT ST_CoveredBy(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -9
 
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)

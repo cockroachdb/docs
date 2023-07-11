@@ -23,7 +23,7 @@ A CockroachDB cluster can store multiple databases. Each database can store mult
 
 When you first [start a cluster](start-a-local-cluster.html), a number of [preloaded databases](show-databases.html#preloaded-databases) and schemas are included, including the `defaultdb` database and the `public` schema. By default, objects (e.g., tables) are stored in the preloaded `public` schema, in the [current database](#current-database) (`defaultdb`, by default).
 
-In addition to the `public` schema, CockroachDB supports a fixed set of [system catalog schemas](system-catalogs.html), available in every database, that provide ancillary, non-stored data to client applications. For example, [`information_schema`](information-schema.html) is provided for compatibility with the SQL standard, and [`pg_catalog`](pg-catalog.html) and [`pg_extension`](spatial-glossary.html#spatial-system-tables) are provided for compatibility with PostgreSQL.
+In addition to the `public` schema, CockroachDB supports a fixed set of [system catalog schemas](system-catalogs.html), available in every database, that provide ancillary, non-stored data to client applications. For example, [`information_schema`](information-schema.html) is provided for compatibility with the SQL standard, and [`pg_catalog`](pg-catalog.html) and [`pg_extension`](architecture/glossary.html#spatial-system-tables) are provided for compatibility with PostgreSQL.
 
 To create a new database, use a [`CREATE DATABASE`](create-database.html) statement. To create a new schema, use a [`CREATE SCHEMA`](create-schema.html) statement. The list of all databases can be obtained with [`SHOW DATABASES`](show-databases.html). The list of all schemas for a given database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The list of all objects for a given schema can be obtained with other `SHOW` statements.
 
@@ -225,7 +225,7 @@ When resolving a partially qualified name with just one component
 prefix, CockroachDB will look up a schema with the given prefix name
 first, and only look up a database with that name if the schema lookup
 fails. This matters in the (likely uncommon) case where you wish your
-database to be called `information_schema`, `public`, `pg_catalog`, [`pg_extension`](spatial-glossary.html#spatial-system-tables),
+database to be called `information_schema`, `public`, `pg_catalog`, [`pg_extension`](architecture/glossary.html#spatial-system-tables),
 or `crdb_internal`.
 
 For example:

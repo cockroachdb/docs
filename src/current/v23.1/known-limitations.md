@@ -54,7 +54,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Low estimated Request Units are rounded to zero
 
-The [Request Units](../cockroachcloud/learn-about-request-units.html) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+The [Request Units](../cockroachcloud/plan-your-cluster-serverless.html#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
 
@@ -157,7 +157,7 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 ### Spatial features disabled for ARM Macs
 
-[Spatial features](spatial-features.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
+[Spatial features](spatial-data-overview.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
 
 [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
 
@@ -437,7 +437,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56124)
 
-- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](spatial-glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
+- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](architecture/glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
 

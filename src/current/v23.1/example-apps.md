@@ -36,7 +36,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 | [psycopg2](https://www.psycopg.org/docs/install.html) | Full  | [Simple CRUD](build-a-python-app-with-cockroachdb.html)<br>[AWS Lambda](deploy-lambda-function.html)
 | [psycopg3](https://www.psycopg.org/psycopg3/docs/)           | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-psycopg3.html)
 | [asyncpg](https://magicstack.github.io/asyncpg/current/index.html) | Beta  | [Simple CRUD](build-a-python-app-with-cockroachdb-asyncpg.html)
-| [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Multi-region Flask Web App](movr-flask-overview.html)
+| [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Multi-region Flask Web App](movr.html)
 | [Django](https://pypi.org/project/Django/)                      | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-django.html)
 
 ## Go
