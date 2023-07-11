@@ -62,7 +62,7 @@ A lift-and-shift approach is the most straightforward. However, it's important t
 
 - *Reduced functionality* takes some, but not all, application functionality offline. For example, you can disable writes but not reads while you migrate the application data, and queue data to be written after completing the migration.
 
-For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift](#lift-and-shift). {% comment %}For considerations and details about the pros and cons of this approach, see [Migration Strategy: Lift and Shift](migration-strategy-lift-and-shift).{% endcomment %}
+For an overview of lift-and-shift migrations to CockroachDB, see [Lift and Shift](#lift-and-shift). For considerations and details about the pros and cons of this approach, see [Migration Strategy: Lift and Shift](migration-strategy-lift-and-shift).
 
 #### Minimal downtime
 
@@ -120,7 +120,7 @@ Determine the size of the target CockroachDB cluster. To do this, consider your 
 Use this information to size the CockroachDB cluster you will create. If you are migrating to a {{ site.data.products.db }} cluster, see [Plan Your Cluster](../cockroachcloud/plan-your-cluster.html) for details:
 
 - For {{ site.data.products.dedicated }}, refer to the [example](../cockroachcloud/plan-your-cluster.html#dedicated-example) that shows how your data volume, storage requirements, and replication factor affect the recommended node size (number of vCPUs per node) and total number of nodes on the cluster.
-- For {{ site.data.products.serverless }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to [Choosing resource limits](../cockroachcloud/learn-about-pricing.html#choosing-resource-limits) to learn about how to limit your resource consumption.
+- For {{ site.data.products.serverless }}, your cluster will scale automatically to meet your storage and usage requirements. Refer to [Choosing resource limits](../cockroachcloud/plan-your-cluster-serverless.html#choose-resource-limits) to learn about how to limit your resource consumption.
 - For guidance on sizing for connection pools, see the {{ site.data.products.db }} [Production Checklist](../cockroachcloud/production-checklist.html#use-a-pool-of-persistent-connections).
 
 If you are migrating to a {{ site.data.products.core }} cluster:
@@ -215,7 +215,7 @@ In the following order:
 
 You can use the following MOLT (Migrate Off Legacy Technology) tools to simplify these steps:
 
-- [Schema Conversion Tool](migrations-page.html)
+- [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [MOLT Verify](molt-verify.html)
 
 #### Convert the schema
@@ -299,7 +299,7 @@ Migrate your data to CockroachDB using the method that is appropriate for your [
 
 Using this method, consistency is achieved by only performing the cutover once all writes have been replicated from the source database to CockroachDB. This requires downtime during which the application traffic is stopped.
 
-The following is a high-level overview of the migration steps. {% comment %}For details on this migration strategy, see [Migration Strategy: Lift-and-shift](migration-strategy-lift-and-shift.html).{% endcomment %}
+The following is a high-level overview of the migration steps. For considerations and details about the pros and cons of this approach, see [Migration Strategy: Lift and Shift](migration-strategy-lift-and-shift).
 
 1. Stop application traffic to your source database. **This begins downtime.**
 1. Move data in one of the following ways:
