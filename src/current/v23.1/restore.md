@@ -174,7 +174,7 @@ Also, consider that:
 
 - [Temporary tables](temporary-tables.html) will be restored to their original database during a full cluster restore.
 - The restore will drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
-- [Changefeed jobs](change-data-capture-overview.html) will not resume automatically on the new cluster. It is necessary to manually start changefeeds after a full cluster restore.
+- [Changefeed jobs](change-data-capture-overview.html) will not resume automatically on the new cluster. It is necessary to manually [create changefeeds](create-and-configure-changefeeds.html) after a full-cluster restore.
 - When the cluster is in a mixed-version state during an [upgrade](upgrade-cockroach-version.html), a full cluster restore will fail. To perform a full cluster restore, it is necessary to first [finalize the upgrade](upgrade-cockroach-version.html#step-3-decide-how-the-upgrade-will-be-finalized).
 
 {{site.data.alerts.callout_info}}
