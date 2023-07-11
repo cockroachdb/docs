@@ -18,7 +18,7 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 A single node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#dedicated-example) for more information.
 
-Note that {{ site.data.products.dedicated }} clusters use some provisioned RAM for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster.
+Some of a {{ site.data.products.dedicated }} cluster's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 {{ site.data.products.dedicated }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
