@@ -267,9 +267,9 @@ CockroachDB does **not** support incremental-only restores.
 
 - A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](alter-database.html#set-primary-region) from this cluster setting assigned to the target database.
 
-- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
+- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](table-localities.html#regional-tables) to the primary region of the target database.
 
-- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](alter-table.html#regional-by-table), and [`GLOBAL`](alter-table.html#global) to another multi-region database is supported.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](alter-table.html#regional-by-table), and [`GLOBAL`](alter-table.html#global) to another multi-region database is supported.
 
 - When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
 

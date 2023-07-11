@@ -1804,11 +1804,10 @@ This data is stored in a separate `birds` database due to the fact that it is sp
 ## See also
 
 - [Install CockroachDB](install-cockroachdb.html)
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html)
 - [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial & GIS Glossary of Terms](architecture/glossary.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)

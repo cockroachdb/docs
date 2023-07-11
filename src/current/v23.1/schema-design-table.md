@@ -134,7 +134,7 @@ CREATE TABLE movr.max_schema.users (
 
 All of the columns shown above use the [`STRING`](string.html) data type, meaning that any value in any of the columns must be of the data type `STRING`.
 
-CockroachDB supports a number of other column data types, including [`DECIMAL`](decimal.html), [`INT`](int.html), [`TIMESTAMP`](timestamp.html), [`UUID`](uuid.html), and [enumerated data types](enum.html) and [spatial data types](spatial-data.html). We recommend that you review the [supported types](data-types.html), and create columns with data types that correspond to the types of data that you intend to persist to the cluster from your application.
+CockroachDB supports a number of other column data types, including [`DECIMAL`](decimal.html), [`INT`](int.html), [`TIMESTAMP`](timestamp.html), [`UUID`](uuid.html), and [enumerated data types](enum.html) and [spatial data types](export-spatial-data.html). We recommend that you review the [supported types](data-types.html), and create columns with data types that correspond to the types of data that you intend to persist to the cluster from your application.
 
 Let's add another example table to our `max_schema` schema, with more column data types.
 

@@ -35,7 +35,7 @@ As of February 2023, the products listed below do not yet support SCRAM authenti
 | [Looker](https://cloud.google.com/looker) or [Google Data Studio](https://datastudio.google.com) | <https://issuetracker.google.com/issues/203573707>                                                          |
 | [Amazon Quicksight](https://aws.amazon.com/quicksight/)                                          | <https://community.amazonquicksight.com/t/my-quicksight-cannot-connect-to-rds-postgresql-db-via-vpc/4696/4> |
 
-If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
+If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../query-behavior-troubleshooting.html#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ### Advantages and tradeoffs
@@ -53,7 +53,7 @@ SCRAM authentication imposes additional computational load on your application s
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
-For more details, refer to [Troubleshoot SQL client application problems](../error-handling-and-troubleshooting.html#troubleshoot-sql-client-application-problems)
+For more details, refer to [Troubleshoot SQL client application problems](../query-behavior-troubleshooting.html#troubleshoot-sql-client-application-problems)
 {{site.data.alerts.end}}
 
 #### Defense from replay attacks
@@ -168,7 +168,7 @@ It is not possible to automatically convert credentials to SCRAM in bulk, withou
     ~~~
 
 {{site.data.alerts.callout_info}}
-Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion](../error-handling-and-troubleshooting.html#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled](../error-handling-and-troubleshooting.html#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
+Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion](../query-behavior-troubleshooting.html#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled](../query-behavior-troubleshooting.html#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication](../query-behavior-troubleshooting.html#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ## Implement strict isolation of cleartext credentials

@@ -1,0 +1,67 @@
+{
+    "title": "Troubleshooting",
+    "is_top_level": true,
+    "items": [
+      {
+        "title": "Troubleshooting Overview",
+        "urls": [
+          "/${VERSION}/troubleshooting-overview.html"
+        ]
+      },
+      {
+        "title": "Common Errors and Solutions",
+        "urls": [
+          "/${VERSION}/common-errors.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot Cloud Setup",
+        "urls": [
+          "/cockroachcloud/troubleshooting-page.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot Self-Hosted Setup",
+        "urls": [
+          "/${VERSION}/cluster-setup-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Troubleshoot SQL Statements",
+        "urls": [
+          "/${VERSION}/query-behavior-troubleshooting.html"
+        ]
+      },
+      {
+        "title": "Transaction Retry Error Reference",
+        "urls": [
+          "/${VERSION}/transaction-retry-error-reference.html"
+        ]
+      },
+
+      {
+        "title": "Replication Reports",
+        "urls": [
+          "/${VERSION}/query-replication-reports.html"
+        ]
+      },
+      {
+        "title": "Support Resources",
+        "urls": [
+          "/${VERSION}/support-resources.html"
+        ]
+      },
+      {
+        "title": "File an Issue",
+        "urls": [
+          "/${VERSION}/file-an-issue.html"
+        ]
+      },
+      {
+        "title": "Automatic CPU Profiler",
+        "urls": [
+          "/${VERSION}/automatic-cpu-profiler.html"
+        ]
+      }
+    ]
+  }

@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-This page describes CockroachDB's support for indexing [spatial data](spatial-data.html), including:
+This page describes CockroachDB's support for indexing [spatial data](export-spatial-data.html), including:
 
 - What spatial indexes are
 - How they work
@@ -228,7 +228,7 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 - [Indexes](indexes.html)
 - [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)

@@ -448,7 +448,6 @@ A troubleshooting guide helps users quickly recognize the source of an error con
 
 #### Examples
 
-- [Error Handling and Troubleshooting](https://www.cockroachlabs.com/docs/stable/error-handling-and-troubleshooting.html)
 - [Troubleshoot SQL Behavior](https://www.cockroachlabs.com/docs/stable/query-behavior-troubleshooting.html)
 
 ### FAQ

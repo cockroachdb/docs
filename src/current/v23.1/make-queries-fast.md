@@ -42,7 +42,7 @@ For more information about how to choose the cluster topology that is right for 
 
 - [Statement Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
+- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
 
 ### Reference
 
