@@ -87,6 +87,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     ----------|------------
     Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
     Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
+    Memory | Some provisioned RAM may be used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster.
 
 1. Select the **Storage**.
 
