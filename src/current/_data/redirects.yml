@@ -244,6 +244,7 @@
 - destination: global-tables.md
   sources: ['topology-duplicate-indexes.md']
   versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+  force: true
 
 - destination: grant.md
   sources: ['grant-roles.md']
