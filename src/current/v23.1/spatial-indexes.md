@@ -36,7 +36,7 @@ Spatial indexes differ from other types of indexes as follows:
 
 There are two main approaches to building geospatial indexes:
 
-- One approach is to "divide the objects" by inserting the objects into a tree (usually an [R-tree](https://en.wikipedia.org/wiki/R-tree)) whose shape depends on the data being indexed. This is the approach taken by [PostGIS](https://postgis.net).
+- One approach is to "divide the objects" by inserting the objects into a tree (usually an [R-tree](https://wikipedia.org/wiki/R-tree)) whose shape depends on the data being indexed. This is the approach taken by [PostGIS](https://postgis.net).
 
 - The other approach is to "divide the space" by creating a decomposition of the space being indexed into buckets of various sizes.
 
@@ -45,7 +45,7 @@ CockroachDB takes the "divide the space" approach to spatial indexing. This is n
 CockroachDB uses the "divide the space" approach for the following reasons:
 
 - It's easy to scale horizontally.
-- It requires no balancing operations, unlike [R-tree indexes](https://en.wikipedia.org/wiki/R-tree).
+- It requires no balancing operations, unlike [R-tree indexes](https://wikipedia.org/wiki/R-tree).
 - Inserts under this approach require no locking.
 - Bulk ingest is simpler to implement than under other approaches.
 - It allows advanced users to make a per-object tradeoff between index size and false positives during index creation. (See [Tuning spatial indexes](#tuning-spatial-indexes).)
@@ -54,7 +54,7 @@ Whichever approach to indexing is used, when an object is indexed, a "covering" 
 
 ### Details
 
-Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://en.wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
+Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/quadtree.png' | relative_url }}" alt="Quadtree">
 
@@ -62,7 +62,7 @@ Visually, you can think of the S2 library as enclosing a sphere in a cube. We ma
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/s2-cubed-sphere-2d.png' | relative_url }}" alt="S2 Cubed Sphere - 2D">
 
-Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://en.wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
+Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/s2-cubed-sphere-3d.png' | relative_url }}" alt="S2 Cubed Sphere - 3D">
 

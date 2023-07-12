@@ -1,6 +1,6 @@
 - Use index keys with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) on row IDs for suggestions.
 
-- Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://en.wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
+- Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
 
     - Benefits:
 

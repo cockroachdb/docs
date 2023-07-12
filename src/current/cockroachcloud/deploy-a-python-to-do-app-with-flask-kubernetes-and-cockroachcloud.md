@@ -16,7 +16,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
     Tool | Purpose
     -----|--------
-    [pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
+    [pip](https://pip.pypa.io/en/stable/installation/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
@@ -167,7 +167,7 @@ In a new terminal:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+    You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/core/engines.html#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
     Copy the application connection string to an accessible location since you need it to configure the sample application in the next step.
@@ -181,7 +181,7 @@ In a new terminal:
     $ pip install flask sqlalchemy sqlalchemy-cockroachdb Flask-SQLAlchemy
     ~~~
 
-    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
+    For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/intro.html#installation-guide).
 
 1. Run the `hello.py` code:
 
@@ -253,7 +253,7 @@ SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=v
 ~~~
 
 {{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/core/engines.html#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
 ### Step 4. Dockerize the application
