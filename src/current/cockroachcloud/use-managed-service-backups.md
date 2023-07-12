@@ -334,8 +334,12 @@ Or [change the existing table's name](../{{site.current_cloud_version}}/alter-ta
 
 Find the cluster backup you want to restore, and click **Restore**.
 
+{{site.data.alerts.callout_info}}
+{{ site.data.products.serverless }} does not support cross-cluster restores. If you need to restore data into a new or different cluster, [contact support](https://support.cockroachlabs.com).
+{{site.data.alerts.end}}
+
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud).
+You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud). 
 
 </section>
