@@ -5,9 +5,9 @@ toc: true
 docs_area: migrate
 ---
 
-There are multiple strategies for [migrating off legacy technology](migration-overview.html#molt) to CockroachDB.
+There are multiple strategies for [migrating off legacy technology](migration-overview.html) to CockroachDB.
 
-This page discusses the "Lift and Shift" strategy for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
+This page discusses the ["Lift and Shift" strategy](migration-overview.html#lift-and-shift) for migrating your database, which is a commonly used approach. This approach, which is also known as "Big Bang" (and by other names), refers to the process where your data is moved in its entirety from a source system to a target system within a defined period of time. This typically involves some application downtime and can involve some service degradation.
 
 Lift and Shift may not be the right approach if a strong application service continuity during the migration is required. It may be a viable method if application downtime is permitted.
 
@@ -25,14 +25,14 @@ Pros:
 - Less complex: If you can afford some downtime, the overall effort will usually be lower, and the chance of errors is lower.
 - Lower time start-to-finish: In general, the more downtime you can afford, the shorter the overall migration project timeframe can be.
 - Lower technical risk: It does not involve running multiple systems alongside each other for an extended period of time.
-- Easy to practice dry runs of import/export using testing/non-production systems.
+- Easy to practice [dry runs](migration-overview.html#perform-a-dry-run) of import/export using testing/non-production systems.
 - Good import/export tooling is available (e.g., external tools like: [AWS Database Migration Service (DMS)](aws-dms.html), [Qlik Replicate](qlik.html), [Striim](striim.html); or internal tools like [`IMPORT INTO`](import-into.html), [`COPY FROM`](copy-from.html), [`cockroach userdata`](cockroach-userfile-upload.html)).
 - If your application already has regularly scheduled maintenance windows, your customers will not encounter application downtime.
 
 Cons:
 
-- All or nothing: It either works or does not work; once you start, you have to finish or roll back.
-- Higher project risk: The project *must* be completed to meet a given downtime / service degradation window.
+- All or nothing: It either works or does not work; once you start, you have to finish or [roll back](migration-overview.html#all-at-once-rollback).
+- Higher project risk: The project **must** be completed to meet a given [downtime / service degradation window](migration-overview.html#downtime-window).
 - Application service continuity requirements must be relaxed (that is, application downtime or increased latency may be needed).
 
 ## Process design considerations
@@ -43,10 +43,10 @@ The high-level considerations in this section only refer to the data-loading por
 
 Keep in mind the following considerations when designing a Lift and Shift data migration process.
 
-- [Decide on your data migration tooling](#managed-migration)
-- [Decide which data formats you will use](#data-formats)
-- [Design a restartable process](#restartable)
-- [Design a scalable process](#scalable)
+- [Decide on your data migration tooling.](#managed-migration)
+- [Decide which data formats you will use.](#data-formats)
+- [Design a restartable process.](#restartable)
+- [Design a scalable process.](#scalable)
 
 <a name="managed-migration"></a>
 
