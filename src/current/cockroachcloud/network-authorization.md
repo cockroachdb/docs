@@ -1,32 +1,29 @@
 ---
 title: Network Authorization for CockroachDB Cloud Clusters
-summary: Learn about the network authorization features for {{ site.data.products.db }} clusters.
+summary: Learn about the network authorization features for CockroachDB Cloud clusters.
 toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.dedicated }} allows explicit configurations of the networks that can access your cluster.
-
 To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or disaster recovery pipelines.
+
+This page describes these options and how they help to protect {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters.
 
 ## Options for controlling network access
 
 You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster (Dedicated clusters only). Access via [GCP VPC peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) avoids traversing the public network, and therefore offers several advantages:
+- Setting up private connections so that inbound connections to your cluster from your cloud tenant flow over private networks rather than the public internet, for enhanced network security, reduced network latency, and to avoid defining static public IP addresses in your applications and services. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to the allowlist.
 
-    - Enhanced network security (no access through public IPs i.e. no transit over public networks).
-    - Direct connection from application deployment that do not have static public IPs
-    - Reduced network latency.
-    - This option can also be helpful if you need more than the current maximum limit of authorized networks per cluster.
+    For {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering). For {{ site.data.products.dedicated }} clusters or multi-region {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink](#aws-privatelink).
 
 **Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
 
 {{site.data.alerts.callout_success}}
-Use PrivateLink, GCP VPC Peering, or AWS PrivateLink) if:
+Use GCP VPC Peering or AWS PrivateLink if:
 
-- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for Dedicated clusters and 50 for Serverless).
+- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for {{ site.data.products.dedicated }} clusters and 50 for {{ site.data.products.serverless }}).
 - Your servers’ IP addresses are not static.
 - You want avoid exposing your cluster to the public internet.
 
@@ -88,9 +85,11 @@ Self-service VPC peering setup is not supported for {{ site.data.products.dedica
 
 ## AWS PrivateLink
 
-If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. 
+If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} or multi-region {{ site.data.products.serverless }} clusters using private endpoints. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency.
 
-Refer to: [Managing AWS PrivateLink for a Dedicated Cluster](aws-privatelink.html).
+Refer to:
+- [Managing AWS PrivateLink for a {{ site.data.products.dedicated }} Cluster](aws-privatelink.html)
+- [Managing AWS PrivateLink for a multi-region {{ site.data.products.serverless }} Cluster](aws-privatelink.html?filters=serverless)
 
 ## DB Console
 
