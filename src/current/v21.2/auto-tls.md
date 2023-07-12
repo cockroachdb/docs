@@ -1,5 +1,5 @@
 ---
-title: Use Auto TLS (alpha) to generate security certificates
+title: Use Auto TLS (EXPERIMENTAL) to generate security certificates
 summary: Let CockroachDB handle TLS cert creation for encrypted inter-node and client-node communication.
 toc: true
 docs_area: 
@@ -14,7 +14,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, t
 With Auto TLS, your cluster creates the CA (certificate authority) certificate and key pair required for secure communication with other nodes and clients and then securely distributes these among the nodes. The cluster also creates the additional certificates that each node requires to connect to other nodes and enable connections from clients.
 
 {{site.data.alerts.callout_info}}
- This feature is an alpha release with core functionality that may not yet meet your requirements. Planned enhancements in future versions include:
+This feature is EXPERIMENTAL with core functionality that may not yet meet your requirements. Planned enhancements in future versions include:
 
 - Auto TLS cert generation when adding more nodes to an existing cluster, though cert generation for such nodes is already possible using [`cockroach cert`](cockroach-cert.html) on clusters that initially used Auto TLS. Note that relevant example steps in [Start a Local Cluster](secure-a-cluster.html) show a folder name for storing the CA key that may differ from what you have used with Auto TLS, so these may need to be adapted.
 - Support for cross-region deployments (cases where not all nodes are on the same subnet, and the listening and advertised addresses are different).
