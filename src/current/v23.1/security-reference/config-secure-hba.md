@@ -14,7 +14,7 @@ This document describes the rationale for restricting database access to specifi
 
 ## Why customize your authentication configuration?
 
-{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)).
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} both include industry-standard security controls at the network and infrastructure levels, and {{ site.data.products.core }} may be deployed with any measure of network security one cares to put in place. Nevertheless, a hardened authentication configuration offers a powerful measure of [security in depth](https://wikipedia.org/wiki/Defense_in_depth_(computing)).
 
 Limiting allowed database connections to secure IP addresses reduces the risk that your cluster is compromised, because a potential attacker who acquires database credentials (e.g., username/password combinations or client [PKI certificates](transport-layer-security.html#certificates-signing-trust-and-authority)) cannot use those credentials without also gaining infrastructure access. Infrastructure access can and should be protected with multifactor authentication and restricted to appropriate parties using infrastructure-level IAM.
 
@@ -117,7 +117,7 @@ Of course, it's likely that an application will also need to access the database
 
 Further, we can fine-tune our configuration and improve the overall security and resilience of our system by restricting access from the given IP to the appropriate user.
 
-Each user's permissions should then be precisely configured using CockroachDB's system of [access grants](authorization.html). Always keep in mind the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), which is one of the golden rules of security!
+Each user's permissions should then be precisely configured using CockroachDB's system of [access grants](authorization.html). Always keep in mind the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), which is one of the golden rules of security!
 
 ```shell
 SET CLUSTER SETTING server.host_based_authentication.configuration TO '

@@ -38,7 +38,7 @@ BACKUP INTO
 
 When you run the `BACKUP` statement for a locality-aware backup, check the following:
 
-- The locality query string parameters must be [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
+- The locality query string parameters must be [URL-encoded](https://wikipedia.org/wiki/Percent-encoding).
 - {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
 
 You can restore the backup by running:

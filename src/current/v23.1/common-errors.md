@@ -174,7 +174,7 @@ only possible for the last statement of a transaction (`COMMIT` or
 
 In general, you should handle ambiguous errors the same way as
 `connection closed` errors. If your transaction is
-[idempotent](https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning),
+[idempotent](https://wikipedia.org/wiki/Idempotence#Computer_science_meaning),
 it is safe to retry it on ambiguous errors. `UPSERT` operations are
 typically idempotent, and other transactions can be written to be
 idempotent by verifying the expected state before performing any

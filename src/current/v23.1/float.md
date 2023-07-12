@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB supports various inexact, floating-point number [data types](data-types.html) with up to 17 digits of decimal precision.
 
-They are handled internally using the [standard double-precision (64-bit binary-encoded) IEEE754 format](https://en.wikipedia.org/wiki/IEEE_floating_point).
+They are handled internally using the [standard double-precision (64-bit binary-encoded) IEEE754 format](https://wikipedia.org/wiki/IEEE_floating_point).
 
 
 ## Names and Aliases
@@ -24,7 +24,7 @@ A constant value of type `FLOAT` can be entered as a [numeric literal](sql-const
 For example: `1.414` or `-1234`.
 
 The special IEEE754 values for positive infinity, negative infinity
-and [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN) cannot be
+and [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN) cannot be
 entered using numeric literals directly and must be converted using an
 [interpreted literal](sql-constants.html#interpreted-literals) or an
 [explicit conversion](scalar-expressions.html#explicit-type-coercions)
@@ -36,7 +36,7 @@ The following values are recognized:
 ----------------------------------------|------------------------------------------------
  `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;
  `-inf`, `-infinity`                    | -&#8734;
- `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN)
+ `nan`                                  | [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN)
 
 For example:
 

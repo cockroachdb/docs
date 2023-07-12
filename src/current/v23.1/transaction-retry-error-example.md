@@ -16,7 +16,7 @@ The Python-like pseudocode below shows how to implement an application-level ret
 - Raise an error if the `max_retries` limit is reached
 - Retry on `40001` error codes
 - [`COMMIT`](commit-transaction.html) at the end of the `try` block
-- Implement [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) logic as shown below for best performance
+- Implement [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff) logic as shown below for best performance
 
 ~~~ python
 while true:
