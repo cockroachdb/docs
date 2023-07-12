@@ -59,7 +59,7 @@ Flag | Description
 -----|-----------
 `--listen-addr` | The IP address/hostname and port to listen on for connections from clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>**Default:** Listen on all IP addresses on port `26257`
 `--http-addr` | The IP address/hostname and port to listen on for DB Console HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
-`--socket-dir` |  The directory path on which to listen for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections from clients installed on the same Unix-based machine. For an example, see [Connect to a cluster listening for Unix domain socket connections](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections).
+`--socket-dir` |  The directory path on which to listen for [Unix domain socket](https://wikipedia.org/wiki/Unix_domain_socket) connections from clients installed on the same Unix-based machine. For an example, see [Connect to a cluster listening for Unix domain socket connections](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections).
 
 ### Security
 

@@ -77,7 +77,7 @@ The covering of a shape _A_ is a set of locations (in CockroachDB, [S2 cell IDs]
 
 #### Geocoder
 
-Takes an address or the name of a place, and returns latitude and longitude coordinates. For more information, see [the Wikipedia article on Geocoding](https://en.wikipedia.org/wiki/Geocoding).
+Takes an address or the name of a place, and returns latitude and longitude coordinates. For more information, see [the Wikipedia article on Geocoding](https://wikipedia.org/wiki/Geocoding).
 
 #### Nearest-neighbor search
 
@@ -156,17 +156,17 @@ The latest revision of the [World Geodetic System](http://wiki.gis.com/wiki/inde
 
 #### DE-9IM
 
-The [Dimensionally Extended nine-Intersection Model (DE-9IM)](https://en.wikipedia.org/wiki/DE-9IM) defines a method that uses a 3x3 matrix to determine whether two shapes (1) touch along a boundary, (2), intersect (overlap), or (3) are equal to each other - that is, they are the same shape that covers the same area. This notation is used by the `ST_Relate` built-in function. Almost all other spatial predicate functions can be logically implemented using this model. However, in practice, most are not, and `ST_Relate` is reserved for advanced use cases.
+The [Dimensionally Extended nine-Intersection Model (DE-9IM)](https://wikipedia.org/wiki/DE-9IM) defines a method that uses a 3x3 matrix to determine whether two shapes (1) touch along a boundary, (2), intersect (overlap), or (3) are equal to each other - that is, they are the same shape that covers the same area. This notation is used by the `ST_Relate` built-in function. Almost all other spatial predicate functions can be logically implemented using this model. However, in practice, most are not, and `ST_Relate` is reserved for advanced use cases.
 
 ### File Formats
 
 #### Shapefile
 
-A spatial data file format developed by [Esri](#esri) and used by [GIS](#gis) software for storing geospatial data. It can be automatically converted to SQL by tools like [shp2pgsql](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html) for use by a database that can run spatial queries.
+A spatial data file format developed by [Esri](#esri) and used by [GIS](#gis) software for storing geospatial data. It can be automatically converted to SQL by tools like [shp2pgsql](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html) for use by a database that can run spatial queries.
 
 #### Vector file
 
-A file format that uses a non-pixel-based, abstract coordinate representation for geospatial data. Because it is abstract and not tied to pixels, the vector format is scalable. The motivation is similar to that behind the [Scalable Vector Graphics (SVG)](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) image format: scaling the image up or down does not reveal any "jaggedness" (due to loss of information) such as might be revealed by a pixel representation. However, vector files are usually much larger in size and more expensive (in terms of CPU, memory, and disk) to work with than [Raster files](#raster-file).
+A file format that uses a non-pixel-based, abstract coordinate representation for geospatial data. Because it is abstract and not tied to pixels, the vector format is scalable. The motivation is similar to that behind the [Scalable Vector Graphics (SVG)](https://wikipedia.org/wiki/Scalable_Vector_Graphics) image format: scaling the image up or down does not reveal any "jaggedness" (due to loss of information) such as might be revealed by a pixel representation. However, vector files are usually much larger in size and more expensive (in terms of CPU, memory, and disk) to work with than [Raster files](#raster-file).
 
 #### Raster file
 
@@ -224,7 +224,7 @@ The "Topographically Integrated Geographic Encoding and Referencing System" rele
 
 #### S2
 
-The [S2 Geometry Library](http://s2geometry.io) is a C++ code library for performing spherical geometry computations.  It models a sphere using a [quadtree](https://en.wikipedia.org/wiki/Quadtree) "divide the space" approach, and is used by CockroachDB.
+The [S2 Geometry Library](http://s2geometry.io) is a C++ code library for performing spherical geometry computations.  It models a sphere using a [quadtree](https://wikipedia.org/wiki/Quadtree) "divide the space" approach, and is used by CockroachDB.
 
 ### Spatial objects
 
@@ -236,11 +236,11 @@ A point is a sizeless location identified by its X and Y coordinates. These coor
 
 #### LineString
 
-A linestring is a collection of [points](#point) that are "strung together" into one geometric object, like a necklace. If the "necklace" were "closed", it could also represent a [polygon](#polygon). A linestring can also be used to represent an arbitrary curve, such as a [Bézier curve](https://en.wikipedia.org/wiki/Bézier_curve).
+A linestring is a collection of [points](#point) that are "strung together" into one geometric object, like a necklace. If the "necklace" were "closed", it could also represent a [polygon](#polygon). A linestring can also be used to represent an arbitrary curve, such as a [Bézier curve](https://wikipedia.org/wiki/Bézier_curve).
 
 #### Polygon
 
-A polygon is a closed shape that can be made up of straight or curved lines. It can be thought of as a "closed" [linestring](#linestring). Irregular polygons can take on almost any arbitrary shape. Common regular polygons include: squares, rectangles, hexagons, and so forth. For more information about regular polygons, see the ['Regular polygon' Wikipedia article](https://en.wikipedia.org/wiki/Regular_polygon).
+A polygon is a closed shape that can be made up of straight or curved lines. It can be thought of as a "closed" [linestring](#linestring). Irregular polygons can take on almost any arbitrary shape. Common regular polygons include: squares, rectangles, hexagons, and so forth. For more information about regular polygons, see the ['Regular polygon' Wikipedia article](https://wikipedia.org/wiki/Regular_polygon).
 
 #### GeometryCollection
 

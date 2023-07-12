@@ -127,7 +127,7 @@ values equivalent to the `'aaa'` string literal.
 
  To make it easier to write certain types of string constants in SQL code, CockroachDB supports dollar-quoted string literals.  This is particularly useful for strings that need to contain lots of single quotes (`'`) or backslashes (`\`).
 
-At a high level, the dollar-quoting behavior works similarly to ["heredocs"](https://en.wikipedia.org/wiki/Here_document) as used in UNIX shells and some programming languages.
+At a high level, the dollar-quoting behavior works similarly to ["heredocs"](https://wikipedia.org/wiki/Here_document) as used in UNIX shells and some programming languages.
 
 Dollar-quoted strings have the form: `$` + (optional) tag + `$` + arbitrary text + `$` + (optional) tag + `$`
 

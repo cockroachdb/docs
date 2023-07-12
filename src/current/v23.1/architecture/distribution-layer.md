@@ -97,7 +97,7 @@ For more information about gRPC, see the [official gRPC documentation](http://ww
 
 ### BatchRequest
 
-All KV operation requests are bundled into a [protobuf](https://en.wikipedia.org/wiki/Protocol_Buffers), known as a `BatchRequest`. The destination of this batch is identified in the `BatchRequest` header, as well as a pointer to the request's transaction record. (On the other side, when a node is replying to a `BatchRequest`, it uses a protobuf––`BatchResponse`.)
+All KV operation requests are bundled into a [protobuf](https://wikipedia.org/wiki/Protocol_Buffers), known as a `BatchRequest`. The destination of this batch is identified in the `BatchRequest` header, as well as a pointer to the request's transaction record. (On the other side, when a node is replying to a `BatchRequest`, it uses a protobuf––`BatchResponse`.)
 
 This `BatchRequest` is also what's used to send requests between nodes using gRPC, which accepts and sends protocol buffers.
 

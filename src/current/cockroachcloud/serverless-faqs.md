@@ -128,7 +128,7 @@ As noted above, we rely on the cloud provider's encryption implementation. We do
 
 ### Is there a public API for {{ site.data.products.db }}?
 
-Yes, see the [Cloud API](cloud-api.html) page for more information. Note that the Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer), and we do not currently support an HTTP data API. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+Yes, see the [Cloud API](cloud-api.html) page for more information. Note that the Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer), and we do not currently support an HTTP data API. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 

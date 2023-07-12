@@ -50,7 +50,7 @@ CockroachDB scales horizontally with minimal operator overhead.
 
 At the key-value level, CockroachDB starts off with a single, empty range. As you put data in, this single range eventually reaches [a threshold size](configure-replication-zones.html#range-max-bytes). When that happens, the data [splits into two ranges](architecture/distribution-layer.html#range-splits), each covering a contiguous segment of the entire key-value space. This process continues indefinitely; as new data flows in, existing ranges continue to split into new ranges, aiming to keep a relatively small and consistent range size.
 
-When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
+When your cluster spans multiple nodes (physical machines, virtual machines, or containers), newly split ranges are automatically rebalanced to nodes with more capacity. CockroachDB communicates opportunities for rebalancing using a peer-to-peer [gossip protocol](https://wikipedia.org/wiki/Gossip_protocol) by which nodes exchange network addresses, store capacity, and other information.
 
 For more information about scaling a CockroachDB cluster, see the following docs:
 
@@ -64,7 +64,7 @@ CockroachDB is designed to survive software and hardware failures, from server r
 
 **Replication**
 
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/en-us/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different servers within a rack to tolerate server failures
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
@@ -82,7 +82,7 @@ CockroachDB guarantees [serializable SQL transactions](demo-serializable.html), 
 
 - Stored data is versioned with MVCC, so [reads simply limit their scope to the data visible at the time the read transaction started](architecture/transaction-layer.html#time-and-hybrid-logical-clocks).
 
-- Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/en-us/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
+- Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
 
   To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache](architecture/transaction-layer.html#timestamp-cache) which remembers when data was last read by ongoing transactions.
 
@@ -90,7 +90,7 @@ CockroachDB guarantees [serializable SQL transactions](demo-serializable.html), 
 
 ### How is CockroachDB both highly available and strongly consistent?
 
-The [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees:
+The [CAP theorem](https://wikipedia.org/wiki/CAP_theorem) states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees:
 
 - Consistency
 - Availability

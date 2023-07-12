@@ -91,7 +91,7 @@ AWS disks can only be scaled once every six hours.
 1. Select the new amount of storage per node.
 
     {{site.data.alerts.callout_danger}}
-    Storage space cannot be removed from a node once added.
+    Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.

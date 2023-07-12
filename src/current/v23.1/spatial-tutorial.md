@@ -1691,7 +1691,7 @@ Below is an entity-relationship diagram showing the `bookstores` and `bookstore_
 
 <img src="{{ 'images/v23.1/geospatial/tutorial/er-bookstores.png' | relative_url }}" alt="tutorial.bookstores and tutorial.bookstore_routes ER diagrams" style="max-width:100%" />
 
-As mentioned above, the `bookstores` table was created by scraping web data from the [American Booksellers Association website's member directory](https://bookweb.org/member_directory/search/ABAmember). In addition, the `geom` column was constructed by doing some [address geocoding](https://en.wikipedia.org/wiki/Address_geocoding) that converted each bookstore's address to a lon/lat pair and converted to a spatial object using `ST_MakePoint`. For each bookstore, the script did a bit of parsing and geocoding and ran essentially the following query:
+As mentioned above, the `bookstores` table was created by scraping web data from the [American Booksellers Association website's member directory](https://bookweb.org/member_directory/search/ABAmember). In addition, the `geom` column was constructed by doing some [address geocoding](https://wikipedia.org/wiki/Address_geocoding) that converted each bookstore's address to a lon/lat pair and converted to a spatial object using `ST_MakePoint`. For each bookstore, the script did a bit of parsing and geocoding and ran essentially the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

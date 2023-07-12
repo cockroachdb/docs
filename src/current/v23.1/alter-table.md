@@ -1299,7 +1299,7 @@ To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`U
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
+When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
 {{site.data.alerts.end}}
 
 #### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables

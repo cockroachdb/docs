@@ -45,7 +45,7 @@ A connection URL has the following format:
 postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 ~~~
 
-`cockroach` client commands also support [UNIX domain socket URIs](https://en.wikipedia.org/wiki/Unix_domain_socket) of the following form:
+`cockroach` client commands also support [UNIX domain socket URIs](https://wikipedia.org/wiki/Unix_domain_socket) of the following form:
 
 {% include_cached copy-clipboard.html %}
 ~~~
