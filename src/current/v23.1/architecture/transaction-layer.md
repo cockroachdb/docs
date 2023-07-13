@@ -91,7 +91,7 @@ This then lets the node primarily responsible for the range (i.e., the leasehold
 
 CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the [maximum offset allowed](../cockroach-start.html#flags-max-offset), **it crashes immediately**.
 
-While [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. It's therefore important to prevent clocks from drifting too far by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
+While [serializable consistency](https://wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. It's therefore important to prevent clocks from drifting too far by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
 For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
 
@@ -191,7 +191,7 @@ Whenever an operation encounters a write intent for a key, it attempts to "resol
 
 ### Concurrency control
 
- The *concurrency manager* sequences incoming requests and provides isolation between the transactions that issued those requests that intend to perform conflicting operations. This activity is also known as [concurrency control](https://en.wikipedia.org/wiki/Concurrency_control).
+ The *concurrency manager* sequences incoming requests and provides isolation between the transactions that issued those requests that intend to perform conflicting operations. This activity is also known as [concurrency control](https://wikipedia.org/wiki/Concurrency_control).
 
 The concurrency manager combines the tasks of a *latch manager* and a *lock table* to accomplish this work:
 
@@ -258,7 +258,7 @@ To enforce this serialization, the leaseholder creates a "latch" for the keys in
 
 Read requests also generate latches.  Multiple read latches over the same keys can be held concurrently, but a read latch and a write latch over the same keys cannot.
 
-Another way to think of a latch is like a [mutex](https://en.wikipedia.org/wiki/Lock_(computer_science)) which is only needed for the duration of a single, low-level request. To coordinate longer-running, higher-level requests (i.e., client transactions), we use a durable system of [write intents](#write-intents).
+Another way to think of a latch is like a [mutex](https://wikipedia.org/wiki/Lock_(computer_science)) which is only needed for the duration of a single, low-level request. To coordinate longer-running, higher-level requests (i.e., client transactions), we use a durable system of [write intents](#write-intents).
 
 ### Isolation levels
 

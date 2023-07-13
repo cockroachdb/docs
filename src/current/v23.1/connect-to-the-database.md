@@ -589,7 +589,7 @@ For more information about connecting with Psycopg, see the [official Psycopg do
 
 <div class="filter-content" markdown="1" data-scope="sqlalchemy">
 
-To connect to CockroachDB with [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/), [create an `Engine` object](https://docs.sqlalchemy.org/en/14/core/engines.html) by passing the connection string to the `create_engine` function.
+To connect to CockroachDB with [SQLAlchemy](http://docs.sqlalchemy.org/), [create an `Engine` object](https://docs.sqlalchemy.org/core/engines.html) by passing the connection string to the `create_engine` function.
 
 For example:
 
@@ -639,7 +639,7 @@ cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcer
 To connect to CockroachDB with SQLAlchemy, you must install the [CockroachDB SQLAlchemy adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb).
 {{site.data.alerts.end}}
 
-For more information about connecting with SQLAlchemy, see the [official SQLAlchemy documentation](https://docs.sqlalchemy.org/en/14/core/engines_connections.html).
+For more information about connecting with SQLAlchemy, see the [official SQLAlchemy documentation](https://docs.sqlalchemy.org/core/engines_connections.html).
 
 {{site.data.alerts.callout_info}}
 In order for SQLAlchemy to use the CockroachDB adapter, the connection string must begin with `cockroachdb://`. You can use the following code to modify the general connection string, which begins with `postgresql://`, to the format that works with SQLAlchemy and the CockroachDB adapter:
@@ -1171,7 +1171,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
+`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate that you [downloaded from the CockroachDB Cloud Console](../cockroachcloud/authentication.html#node-identity-verification).
 
 </div>
 
@@ -1183,9 +1183,9 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{root-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
-`{client-cert}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
-`{client-key}`  | The [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
+`{root-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the root certificate.<br>You can generate this certificate with [`cockroach cert create-ca`](cockroach-cert.html#subcommands), or you can use a [custom CA cert](create-security-certificates-custom-ca.html).
+`{client-cert}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the [client certificate](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this certificate with [`cockroach cert create-client`](cockroach-cert.html#subcommands).
+`{client-key}`  | The [URL-encoded](https://wikipedia.org/wiki/Percent-encoding) path to the [PKCS#8](https://tools.ietf.org/html/rfc5208)-formatted [client key](cockroach-cert.html#client-key-and-certificates) for the user connecting to the cluster.<br>You can generate this key with [`cockroach cert create-client --also-generate-pkcs8-key`](cockroach-cert.html#subcommands).
 
 {% include {{ page.version.version }}/connect/core-note.md %}
 

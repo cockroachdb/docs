@@ -6,7 +6,7 @@ has_prefixed_variant: false
 docs_area: reference.sql
 ---
 
-Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://en.wikipedia.org/wiki/Convex_set) of points that [contains](st_contains.html) every point in the set that comprises that shape.
+Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://wikipedia.org/wiki/Convex_set) of points that [contains](st_contains.html) every point in the set that comprises that shape.
 
 In other words, given a set of points _A_ in the plane, the convex hull is the shape _B_ created by stretching an imaginary rubber band around the outermost points in _A_.
 

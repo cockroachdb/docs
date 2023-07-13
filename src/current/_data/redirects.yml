@@ -247,7 +247,7 @@
 
 - destination: global-tables.md
   sources: ['topology-duplicate-indexes.md']
-  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
 
 - destination: grant.md
   sources: ['grant-roles.md']
@@ -327,7 +327,7 @@
   sources:
     - topology-geo-partitioned-leaseholders.md
     - topology-geo-partitioned-replicas.md
-  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
 
 - destination: revoke.md
   sources: ['revoke-roles.md']

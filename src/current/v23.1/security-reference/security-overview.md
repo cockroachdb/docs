@@ -96,7 +96,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td><a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td>
+  <td><a href="https://wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td>
  </tr>
  <tr>
    <td rowspan="5" ><a href="encryption.html">Encryption</a></td>
@@ -125,14 +125,14 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>
-  <td>Industry-standard encryption at rest is provided at the infrastructure level by your chosen deployment environment, such as Google Cloud Platform (GCP), Amazon Web Services (AWS), or Microsoft Azure. You can learn more about <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS Elastic Block Storage</a>, or <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview">Azure managed disk encryption</a>.
+  <td>Industry-standard encryption at rest is provided at the infrastructure level by your chosen deployment environment, such as Google Cloud Platform (GCP), Amazon Web Services (AWS), or Microsoft Azure. You can learn more about <a href="https://cloud.google.com/compute/docs/disks#pd_encryption">GCP persistent disk encryption</a>, <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">AWS Elastic Block Storage</a>, or <a href="https://docs.microsoft.com/azure/virtual-machines/disk-encryption-overview">Azure managed disk encryption</a>.
  </tr>
  <tr>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td>Cockroach Labs's proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></td>
+  <td>Cockroach Labs's proprietary storage-level <a href="encryption.html#encryption-at-rest-enterprise">{{ site.data.products.enterprise }} Encryption At Rest service</a> implementing the <a href="https://wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard (AES)</a></td>
  </tr>
  <tr>
    <td rowspan="2" ><a href="authorization.html">Authorization</a></td>
@@ -172,7 +172,7 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
   <td><a href="../../cockroachcloud/create-your-cluster.html#step-7-enable-vpc-peering-optional">VPC Peering</a> for GCP clusters and AWS PrivateLink for AWS clusters </td>
  </tr>
  <tr>
-  <td><a href="https://en.wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
+  <td><a href="https://wikipedia.org/wiki/Non-repudiation">Non-Repudiation</a></td>
   <td>✓</td>
   <td>✓</td>
   <td>✓</td>

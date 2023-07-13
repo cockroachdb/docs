@@ -226,8 +226,8 @@ The following table lists some important values used by CockroachDB's replicatio
 
 Constant | Default value | Notes
 ---------|---------------|------
-[Raft](#raft) election timeout | {{site.data.constants.cockroach_raft_election_timeout_ticks}} * {{site.data.constants.cockroach_tick_interval}} | Controlled by `COCKROACH_RAFT_ELECTION_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the timeout value. This value is then multiplied by a random factor of 1-2 to avoid election ties.
-[Raft](#raft) proposal timeout | {{site.data.constants.cockroach_raft_reproposal_timeout_ticks}} * {{site.data.constants.cockroach_tick_interval}} | Controlled by `COCKROACH_RAFT_REPROPOSAL_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the value.
+[Raft](#raft) election timeout | {{site.data.constants.cockroach_raft_election_timeout_ticks}} * {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_ELECTION_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the timeout value. This value is then multiplied by a random factor of 1-2 to avoid election ties.
+[Raft](#raft) proposal timeout | {{site.data.constants.cockroach_raft_reproposal_timeout_ticks}} * {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_REPROPOSAL_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the value.
 [Lease interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} | Controlled by `COCKROACH_RANGE_LEASE_DURATION`.
 [Lease acquisition timeout](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_acquisition_timeout}} |
 [Node heartbeat interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} / 2 | Used to determine if you're having [node liveness issues](../cluster-setup-troubleshooting.html#node-liveness-issues).  This is calculated as one half of the lease interval.

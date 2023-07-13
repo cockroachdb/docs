@@ -1,0 +1,1 @@
+When migrating from PostgreSQL, you can use [`COPY FROM`](copy-from.html) to copy CSV or tab-delimited data to your CockroachDB tables. This option enables your tables to remain online and accessible. However, it is slower than using [`IMPORT INTO`](import-into.html).

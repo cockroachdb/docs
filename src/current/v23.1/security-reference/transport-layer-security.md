@@ -96,7 +96,7 @@ At its core, PKI is a hierarchy of cryptographically-backed trust relationships 
 
 ### Certificates, signing, trust, and authority
 
-The core mechanism of PKI is the PKI certificate, also commonly known as a "security certificate", "digital certificate" or "TLS certificate" (because it is used in TLS), or abbreviated "cert". In TLS the [x509 certificate format](https://en.wikipedia.org/wiki/X.509) is used.
+The core mechanism of PKI is the PKI certificate, also commonly known as a "security certificate", "digital certificate" or "TLS certificate" (because it is used in TLS), or abbreviated "cert". In TLS the [x509 certificate format](https://wikipedia.org/wiki/X.509) is used.
 
 A PKI certificate is a file containing the following:
 
@@ -126,7 +126,7 @@ A **trust store** is a collection of public certificates for trusted CAs&mdash;C
 
 It is up to each hardware or software vendor to decide which root CAs to include in trust stores they distribute, and ultimately the end user decides which vendors to trust. CAs must comply with formalized industry standard [baseline requirements](https://cabforum.org/baseline-requirements-documents/) to maintain good standing with vendors.
 
-Internally, organizations must maintain their own trust architectures, deciding what parties (individual persons), should have access to what network, computing, data, financial, and physical resources, and using certificates or other means to authenticate identity and establish encryption. Certificates and TLS are powerful tools, provided the trusted certificate authorities are properly protected (and the infrastructure that they exist in are carefully protected according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege)), certificates are only issued for systems that they should be, and the private keys involved are protected against exfiltration from the machines using them.
+Internally, organizations must maintain their own trust architectures, deciding what parties (individual persons), should have access to what network, computing, data, financial, and physical resources, and using certificates or other means to authenticate identity and establish encryption. Certificates and TLS are powerful tools, provided the trusted certificate authorities are properly protected (and the infrastructure that they exist in are carefully protected according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege)), certificates are only issued for systems that they should be, and the private keys involved are protected against exfiltration from the machines using them.
 
 ### Revoking trust
 

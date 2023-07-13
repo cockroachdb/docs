@@ -7,7 +7,7 @@ docs_area: migrate
 
 CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html).
 
-This page has instructions for migrating data from ESRI [Shapefiles](architecture/glossary.html#shapefile) into CockroachDB using [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html) and [`IMPORT`][import].
+This page has instructions for migrating data from ESRI [Shapefiles](architecture/glossary.html#shapefile) into CockroachDB using [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html) and [`IMPORT`][import].
 
 {{site.data.alerts.callout_success}}
 We are using `shp2pgsql` in the example below, but [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) could also be used, e.g.
@@ -27,7 +27,7 @@ Please refer to the documentation of your GIS software for instructions on expor
 To follow along with the example below, you will need the following prerequisites:
 
 - CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
-- [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html)
+- [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html)
 - [Python 3](https://www.python.org)
 
 ## Step 1. Download the Shapefile data

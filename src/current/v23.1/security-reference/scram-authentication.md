@@ -21,7 +21,7 @@ CockroachDB's support for SCRAM-SHA-256 is PostgreSQL-compatible. PostgreSQL cli
 
 The Simple Authentication and Security Layer [(SASL)](https://www.rfc-editor.org/info/rfc4422) is a framework for authentication and data security in Internet protocols. SASL formalizes the requirements for challenge-and-response authentication protocols designed by the [Internet Engineering Task Force (IETF)](https://www.ietf.org/). It is designed chiefly on the principle of *separation of concerns*: authentication mechanisms must be independent from applications and interact via a structured interface.
 
-[Salted Challenge Response Authentication Mechanism (SCRAM)](https://en.wikipedia.org/wiki/Salted_Challenge_Response_Authentication_Mechanism) is a modern, SASL-compliant, general solution to the security problems posed by the use of plain-text (unencrypted) passwords for authentication.
+[Salted Challenge Response Authentication Mechanism (SCRAM)](https://wikipedia.org/wiki/Salted_Challenge_Response_Authentication_Mechanism) is a modern, SASL-compliant, general solution to the security problems posed by the use of plain-text (unencrypted) passwords for authentication.
 
 [SCRAM-SHA-256](https://datatracker.ietf.org/doc/html/rfc7677) is a cryptographically strong implementation of SCRAM. It includes a configurable parameter, *iteration count*, which is the number of times the hashing function is performed; this allows operators to tune the cryptographic strength of the hashing to their needs by increasing the iteration count.
 
@@ -60,7 +60,7 @@ For more details, refer to [Troubleshoot SQL client application problems](../que
 
 Without SCRAM, cleartext passwords can be TLS-encrypted when sent to the server, which offers some protection. However, if clients skip validation of the server's certificate (i.e., fail to use `sslmode=verify-full`), attackers may be able to intercept authentication messages (containing the password), and later reuse them to impersonate the user.
 
-SCRAM offers strong protection against such [replay attacks](https://en.wikipedia.org/wiki/Replay_attack), wherein an attacker records and re-uses authentication messages.
+SCRAM offers strong protection against such [replay attacks](https://wikipedia.org/wiki/Replay_attack), wherein an attacker records and re-uses authentication messages.
 
 #### Separation of concerns
 
@@ -173,7 +173,7 @@ Enabling SCRAM authentication can cause [high CPU load or connection pool exhaus
 
 ## Implement strict isolation of cleartext credentials
 
-Cleartext credentials are a valuable asset to malicious agents; known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles cleartext credentials becomes a favorable target for malicious attackers with potentially weak points in the system.
+Cleartext credentials are a valuable asset to malicious agents; known as ["credential stuffing,"](https://wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles cleartext credentials becomes a favorable target for malicious attackers with potentially weak points in the system.
 
 While the measures [described previously](#implement-scram-authentication-in-your-cockroachdb-cluster) allow CockroachDB to avoid transmitting cleartext passwords across the network, the  credentials still have a footprint within CockroachDB: they are transmitted in cleartext from the CockroachDB client to the server, and are hence vulnerable in transit. While the secrets are protected in transit by TLS, CA certificate server authentication is not infallible.
 

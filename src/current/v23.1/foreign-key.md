@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
+A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
 
 For example, given an `orders` table and a `customers` table, if you create a column `orders.customer_id` that references the `customers.id` primary key:
 

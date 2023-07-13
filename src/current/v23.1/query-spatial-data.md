@@ -171,7 +171,7 @@ Import some sample spatial data into CockroachDB by following the instructions a
 
 After you have imported [the sample tornado data into CockroachDB](migrate-from-shapefiles.html), you can query the spatial data from SQL.
 
-For example, we may be interested in the [1999 Oklahoma tornado outbreak](https://en.wikipedia.org/wiki/1999_Oklahoma_tornado_outbreak), which is described by Wikipedia as:
+For example, we may be interested in the [1999 Oklahoma tornado outbreak](https://wikipedia.org/wiki/1999_Oklahoma_tornado_outbreak), which is described by Wikipedia as:
 
 > a significant tornado outbreak that affected much of the Central and parts of the Eastern United States, with the highest record-breaking wind speeds of 302 ± 22 mph (486 ± 35 km/h). During this week-long event, 154 tornadoes touched down (including one in Canada), more than half of them on May 3 and 4 when activity reached its peak over Oklahoma, Kansas, Nebraska, Texas, and Arkansas.
 
