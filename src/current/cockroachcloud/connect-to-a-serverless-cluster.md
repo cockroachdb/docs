@@ -25,6 +25,18 @@ Removing or adding an authorized network on your {{ site.data.products.serverles
 
 {% include cockroachcloud/authorize-your-clusters-networks.md %}
 
+### Establish AWS PrivateLink
+
+Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
+
+AWS PrivateLink is available only for multiregion {{ site.data.products.serverless }} clusters deployed on AWS. GCP Peering is not yet available for {{ site.data.products.serverless }}.
+
+To configure PrivateLink, you create the AWS PrivateLink connection in your or AWS console, then configure your cluster to allow connections from the connection. For more information and detailed instructions, refer to[Network Authorization for {{ site.data.products.dedicated }} clusters: AWS PrivateLink](network-authorization.html#aws-privatelink).
+
+AWS Privatelink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html?filter-content=serverless).
+
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+
 ## Select a connection method
 
 1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).

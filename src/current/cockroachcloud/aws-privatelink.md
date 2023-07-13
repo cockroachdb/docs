@@ -29,14 +29,14 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-For each region where you deploy {{ site.data.products.serverless }} clusters with private connections, you must also configure the AWS PrivateLink connection for {{ site.data.products.serverless }} using the Console UI, Cloud API or Terraform Provider, so that {{ site.data.products.db }} can accept the new connection. For help, refer to [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink).
+For each region where you deploy {{ site.data.products.serverless }} clusters with private connections, you must also configure the AWS PrivateLink connection for {{ site.data.products.serverless }} using the Console UI, Cloud API or Terraform Provider, so that {{ site.data.products.db }} can accept the new connection.
 
 All {{ site.data.products.serverless }} clusters in your organization that use private connections in a given region connect over the same shared VPC. You will have to complete these steps once per region you want to connect to using AWS PrivateLink.
 {{site.data.alerts.end}}
 
 </section>
 
-## Set up a cluster
+## Step 1. Set up a cluster
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
@@ -66,7 +66,7 @@ All {{ site.data.products.serverless }} clusters in your organization that use p
 
 </section>
 
-## Create an AWS endpoint
+## Step 2. Create an AWS endpoint
 
 {% capture security_group_substeps %}
     <ul><li>In the **Security group name** field, enter a name for the security group.</li>
@@ -78,23 +78,23 @@ All {{ site.data.products.serverless }} clusters in your organization that use p
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
-1. Select the region to create a connection in.
+1. <a name="step-1"></a>Select the region to create a connection in.
 
 1. Copy the **Service Name** shown in the connection modal.
 
 1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/) in your AWS account, click **Your VPCs** in the sidebar.
 
-1. Locate the VPC ID of the VPC you want to create your endpoint in. Cockroach Labs recommends that you create the VPC in the availability zones where your cluster is deployed, and as near as possible to the availability zones where your application or service is deployed. You can also choose a different VPC as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
+1. <a name="step-4"></a>Locate the VPC ID of the VPC you want to create your endpoint in. Cockroach Labs recommends that you create the VPC in the availability zones where your cluster is deployed, and as near as possible to the availability zones where your application or service is deployed. You can also choose a different VPC as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
 
-1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 4.
+1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in [step 4](#step-4).
 
 1. Click **Subnets** in the sidebar.
 
-1. Locate the subnet IDs corresponding to the VPC you chose in Step 4.
+1. Locate the subnet IDs corresponding to the VPC you chose in [step 4](#step-4).
 
 1. Click **Security Groups** in the sidebar.
 
-1. Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program on Port 26257: {{ security_group_substeps }}
+1. <a name="step-8"></a>Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program on Port 26257: {{ security_group_substeps }}
 
 Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
 
@@ -132,11 +132,11 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws ec2 create-vpc-endpoint --region {REGION} \
-                                --vpc-id {VPC_ID} \
-                                --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
-                                --vpc-endpoint-type Interface \
-                                --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
-                                --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
+                                  --vpc-id {VPC_ID} \
+                                  --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
+                                  --vpc-endpoint-type Interface \
+                                  --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
+                                  --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
     ~~~
 
 1. Locate the VPC Endpoint ID in the CLI output.
@@ -149,16 +149,16 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-1. Select the region to create a connection in. All of your {{ site.data.products.serverless }} clusters in this region that use PrivateLink will share this connection.
+1. <a name="step-1"></a>Select the region to create a connection in. All of your {{ site.data.products.serverless }} clusters in this region that use PrivateLink will share this connection.
 1. Copy the **Service Name** shown in the connection modal. Make a note of the availability zones where your cluster is deployed in this region.
 1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/) in your AWS account, click **Your VPCs** in the sidebar.
-1. Locate the VPC ID of the VPC you want to create your endpoint in. Cockroach Labs recommends that you create the VPC in the availability zones where your cluster is deployed, and as near as possible to the availability zones where your application or service is deployed. You can also choose a different VPC as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
+1. <a name="step-4"></a>Locate the VPC ID of the VPC you want to create your endpoint in. Cockroach Labs recommends that you create the VPC in the availability zones where your cluster is deployed, and as near as possible to the availability zones where your application or service is deployed. You can also choose a different VPC as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
 
-1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 4.
+1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in [step 4](#step-4).
 1. Click **Subnets** in the sidebar.
-1. Locate the subnet IDs corresponding to the VPC you chose in Step 4.
+1. Locate the subnet IDs corresponding to the VPC you chose in [step 4](#step-4).
 1. Click **Security Groups** in the sidebar.
-1. Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program on Port 26257: {{ security_group_substeps }}
+1. <a name="step-8"></a>Click **Create security group** to create a security group within your VPC that allows inbound access from your application or source program on Port 26257: {{ security_group_substeps }}
 
 Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
 
@@ -196,11 +196,11 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     aws ec2 create-vpc-endpoint --region {REGION} \
-                                --vpc-id {VPC_ID} \
-                                --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
-                                --vpc-endpoint-type Interface \
-                                --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
-                                --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
+                                  --vpc-id {VPC_ID} \
+                                  --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
+                                  --vpc-endpoint-type Interface \
+                                  --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
+                                  --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
     ~~~
 
 1. Locate the VPC Endpoint ID in the CLI output.
@@ -211,7 +211,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 </section>
 
-## Verify the endpoint ID
+## Step 3. Verify the endpoint ID
 
 1. Click **Next**.
 1. Enter the Endpoint ID, then click **Validate**. If validation fails, check the endpoint ID and try again. Otherwise, click **Next**.
@@ -222,7 +222,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 1. Follow the instructions in the modal to enable **private DNS name** for the endpoint in AWS. When this option is enabled, {{ site.data.products.db }} maintains private DNS records in the VPC for each {{ site.data.products.serverless }} cluster with PrivateLink enabled in the region.
 1. Click **Complete** to save the configuration and close the modal.
 
-## Enable private DNS
+## Step 4. Enable private DNS
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
@@ -245,11 +245,11 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 <section class="filter-content" markdown="1" data-scope="aws-console">
 
-1.  On the Amazon VPC Console **Endpoints** page, select the endpoint you created.
-1.  Click **Actions**.
-1.  Click **Modify Private DNS Names**.
-1.  Check the **Enable Private DNS Name** checkbox.
-1.  Click **Modify Private DNS Name**.
+1. On the Amazon VPC Console **Endpoints** page, select the endpoint you created.
+1. Click **Actions**.
+1. Click **Modify Private DNS Names**.
+1. Check the **Enable Private DNS Name** checkbox.
+1. Click **Modify Private DNS Name**.
 1. In the {{ site.data.products.db }} Console, click **Complete** to save the configuration and close the modal.
 
 </section>
@@ -261,8 +261,8 @@ After the endpoint status changes to Available, run the following AWS CLI comman
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 aws ec2 modify-vpc-endpoint --region {REGION} \
-                            --vpc-endpoint-id {VPC_ENDPOINT_ID} \
-                            --private-dns-enabled
+                              --vpc-endpoint-id {VPC_ENDPOINT_ID} \
+                              --private-dns-enabled
 ~~~
 
 The endpoint status will change to Pending.
@@ -281,8 +281,12 @@ After a short (less than 5 minute) delay, the status will change to Available. Y
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="dedicated serverless">
+
 ## What's next?
 
 - [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
 - [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)
 - [Connect to a {{ site.data.products.serverless }} cluster](connect-to-a-serverless-cluster.html)
+
+</section>

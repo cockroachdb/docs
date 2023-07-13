@@ -38,27 +38,17 @@ Removing or adding an authorized network on your {{ site.data.products.dedicated
 
 ### Establish GCP VPC Peering or AWS PrivateLink
 
-VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters. 
+GCP VPC Peering and AWS PrivateLink allow customers to establish SQL access to their clusters entirely through private cloud infrastructure, without exposure to the public internet, affording enhanced security and performance.
 
-**Prerequisite:**
+VPC peering is available only for GCP clusters, and AWS PrivateLink is available for AWS clusters.
 
-You must create the VPC Peering or AWS PrivateLink connectionk in your GCP or AWS console.
+To configure VPC Peering or PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from the connection. For more information, refer to [Network Authorization for {{ site.data.products.dedicated }} clusters: GCP VPC Peering](network-authorization.html#vpc-peering) and [Network Authorization for {{ site.data.products.dedicated }} clusters: AWS PrivateLink](network-authorization.html#aws-privatelink).
 
-Refer to:
-- [Network Authorization for CockroachDB Cloud clusters: VPC Peering](network-authorization.html#vpc-peering)
-- [Network Authorization for CockroachDB Cloud clusters: AWS PrivateLink](network-authorization.html#aws-privatelink)
-
+AWS Privatelink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html). To configure VPC Peering, continue to the [VPC Peering](#vpc-peering) section below.
 
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="gcp">VPC Peering</button>
-  <button class="filter-button" data-scope="aws">AWS PrivateLink</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="gcp">
-
-<a name="vpc-peering"></a>
+#### VPC Peering
 
 1. Navigate to your cluster's **Networking > VPC Peering** tab.
 1. Click **Set up a VPC peering connection**.
@@ -68,26 +58,6 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 1. Click **Request Connection**.
 1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
 1. On the **Networking** page, verify the connection status is **Active**.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="aws">
-
-<a name="aws-privatelink"></a>
-
-1. Navigate to your cluster's **Networking > PrivateLink** tab.
-1. Click **Set up a PrivateLink connection**.
-1. If you have a multi-region cluster, select the region to create a connection in. Skip this step if you have a single-region cluster.
-1. Use the **Service Name** provided in the dialog to [create an AWS endpoint](aws-privatelink.html#create-an-aws-endpoint) in the AWS console.
-1. Click **Next**.
-1. Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
-1. Click **Verify** to verify the ID.
-1. Click **Next** to continue to the third step.
-1. Return to the AWS console to [enable private DNS](aws-privatelink.html#enable-private-dns).
-1. Click **Complete**.
-1. On the **Networking** page, verify the connection status is **Available**.
-
-</section>
 
 ## Select a connection method
 
