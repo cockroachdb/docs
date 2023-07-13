@@ -1,5 +1,5 @@
 ---
-title: Managing AWS PrivateLink for a cluster.
+title: Managing AWS PrivateLink for a cluster
 summary: Instructions for establishing AWS PrivateLink network access for a cluster.
 toc: true
 docs_area: manage
