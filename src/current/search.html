@@ -65,7 +65,7 @@ docs_area: search
         arrayFormat: "repeat"
       });
 
-      return `${baseUrl}search.html${queryString}`;
+      return `${baseUrl}search${queryString}`;
     },
 
     parseURL({ qsModule, location }) {
@@ -138,7 +138,7 @@ docs_area: search
           hit =>
             `<div class="search-item">
           <div class="search-title">
-            <a href="${hit.url.replace("/{{ site.versions["stable"] }}/", "/stable/").replace("/{{ site.versions["dev"] }}/", "/dev/").replace("https://www.cockroachlabs.com", "{{ site.url }}")}">${hit.title}</a>
+            <a href="${'{{ site.url }}{{ site.baseurl }}' + hit.canonical}">${hit.title}</a>
           </div>
           <div class="search-snippet">${showResult(hit._highlightResult)}</div>
           <div class="search-link">${hit.doc_type}</div>
