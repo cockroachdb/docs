@@ -98,6 +98,10 @@ All {{ site.data.products.serverless }} clusters in your organization that use p
 
 Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="aws-console">AWS Console</button>
   <button style="width: 15%" class="filter-button" data-scope="aws-cli">AWS CLI</button>
@@ -131,7 +135,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
                                 --vpc-id {VPC_ID} \
                                 --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
                                 --vpc-endpoint-type Interface \
-                                --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2| \
+                                --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
                                 --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
     ~~~
 
@@ -158,6 +162,10 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="aws-console">AWS Console</button>
   <button style="width: 15%" class="filter-button" data-scope="aws-cli">AWS CLI</button>
@@ -191,7 +199,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
                                 --vpc-id {VPC_ID} \
                                 --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
                                 --vpc-endpoint-type Interface \
-                                --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2| \
+                                --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
                                 --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
     ~~~
 
@@ -250,16 +258,14 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 After the endpoint status changes to Available, run the following AWS CLI command:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    aws ec2 modify-vpc-endpoint --region {REGION} \
-                                --vpc-endpoint-id {VPC_ENDPOINT_ID} \
-                                --private-dns-enabled
-    ~~~
+{% include_cached copy-clipboard.html %}
+~~~ shell
+aws ec2 modify-vpc-endpoint --region {REGION} \
+                            --vpc-endpoint-id {VPC_ENDPOINT_ID} \
+                            --private-dns-enabled
+~~~
 
 The endpoint status will change to Pending.
-
-</section>
 
 </section>
 
