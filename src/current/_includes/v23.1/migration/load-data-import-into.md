@@ -1,0 +1,1 @@
+Use [`IMPORT INTO`](import-into.html) to migrate [CSV](migrate-from-csv.html) or [Avro](migrate-from-avro.html) data stored via [userfile](use-userfile-storage.html) or [cloud storage](use-cloud-storage.html) into pre-existing tables on CockroachDB. This option achieves the highest throughput, but requires taking the tables **offline** to achieve its import speed.

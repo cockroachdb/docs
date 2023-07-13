@@ -10,14 +10,14 @@ This page provides information about working with spatial data in CockroachDB.
 
 ## Supported data types
 
-Supported [spatial](spatial-features.html) data types include:
+Supported [spatial](spatial-data-overview.html) data types include:
 
 - Geometric objects such as [points](point.html), [lines](linestring.html), and [polygons](polygon.html) in 2-dimensional space. These are projected onto the flat surface of a plane and are represented in SQL by the `GEOMETRY` data type.
 
 - Geographic objects, which are also made up of [points](point.html), [lines](linestring.html), [polygons](polygon.html), etc., in 2-dimensional space. They are projected onto the surface of a sphere and are represented in SQL by the `GEOGRAPHY` data type. (Technically, they are projected onto a spheroid: "a sphere with a bulge"). The spheroid projection means that:
 
     - The X and Y coordinates of 2-dimensional points are longitude and latitude values.
-    - The paths between geographic objects are not straight lines; they are curves, and so the distances between objects are calculated using [great circle math](https://en.wikipedia.org/wiki/Great-circle_distance).
+    - The paths between geographic objects are not straight lines; they are curves, and so the distances between objects are calculated using [great circle math](https://wikipedia.org/wiki/Great-circle_distance).
 
 ## Compatibility
 
@@ -87,7 +87,7 @@ CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 
 This creates a (spatial) [GIN index](inverted-indexes.html) on the `geom` column.
 
-Because CockroachDB is a scale-out, multi-node database, our spatial indexing strategy is based on a [space-filling curve](https://en.wikipedia.org/wiki/Space-filling_curve)/quad-tree design (also known as "divide the space"), rather than the [R-Tree](https://en.wikipedia.org/wiki/R-tree) data structure used by some other spatial databases (also known as "divide the objects"). Other databases that use a "divide the space" strategy include Microsoft SQL Server and MongoDB.
+Because CockroachDB is a scale-out, multi-node database, our spatial indexing strategy is based on a [space-filling curve](https://wikipedia.org/wiki/Space-filling_curve)/quad-tree design (also known as "divide the space"), rather than the [R-Tree](https://wikipedia.org/wiki/R-tree) data structure used by some other spatial databases (also known as "divide the objects"). Other databases that use a "divide the space" strategy include Microsoft SQL Server and MongoDB.
 
 For more detailed information about how CockroachDB's spatial indexes work, see [Spatial indexes](spatial-indexes.html).
 
@@ -148,9 +148,9 @@ cockroach sql --insecure --host=localhost --port=26257
 ## See also
 
 - [Install CockroachDB](install-cockroachdb.html)
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)

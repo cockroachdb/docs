@@ -1,5 +1,5 @@
 ---
-title: Spatial Features
+title: Spatial Data Overview
 summary: A summary of CockroachDB's support for storing and querying spatial data.
 toc: true
 docs_area: reference.sql
@@ -26,7 +26,7 @@ See the links below for more information about how to use CockroachDB for spatia
 ## Reference
 
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Known Limitations](known-limitations.html#spatial-support-limitations)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Client library compatibility](spatial-data.html#compatibility)

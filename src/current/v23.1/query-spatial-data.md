@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset](spatial-glossary.html#file-formats) from the National Oceanic and Atmospheric Administration.
+This page has instructions for querying spatial data imported into CockroachDB. On this page, we use a sample [Shapefile dataset](architecture/glossary.html#file-formats) from the National Oceanic and Atmospheric Administration.
 
 ## Before you begin
 
@@ -26,7 +26,7 @@ This page has instructions for querying spatial data imported into CockroachDB. 
 
 After you have imported [the sample tornado data into CockroachDB](migrate-from-shapefiles.html), you can query the spatial data from SQL.
 
-For example, we may be interested in the [1999 Oklahoma tornado outbreak](https://en.wikipedia.org/wiki/1999_Oklahoma_tornado_outbreak), which is described by Wikipedia as:
+For example, we may be interested in the [1999 Oklahoma tornado outbreak](https://wikipedia.org/wiki/1999_Oklahoma_tornado_outbreak), which is described by Wikipedia as:
 
 > a significant tornado outbreak that affected much of the Central and parts of the Eastern United States, with the highest record-breaking wind speeds of 302 ± 22 mph (486 ± 35 km/h). During this week-long event, 154 tornadoes touched down (including one in Canada), more than half of them on May 3 and 4 when activity reached its peak over Oklahoma, Kansas, Nebraska, Texas, and Arkansas.
 
@@ -140,9 +140,9 @@ It might be interesting to draw these points on a map. The image below shows the
 
 ## See also
 
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)

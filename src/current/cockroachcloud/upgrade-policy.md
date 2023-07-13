@@ -39,7 +39,7 @@ When upgrading a {{ site.data.products.dedicated }} cluster to a new major versi
 
 Note that you will roll back to the latest patch version of the previous major version, not the same patch version you were running before you initiated the upgrade.
 
-If you see problems after the upgrade has been finalized, it will not be possible to roll back via the {{ site.data.products.db }} Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+If you see problems after the upgrade has been finalized, it will not be possible to roll back via the {{ site.data.products.db }} Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/requests/new).
 
 ### End of Support for older CockroachDB versions
 

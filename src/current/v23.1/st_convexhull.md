@@ -6,13 +6,13 @@ has_prefixed_variant: false
 docs_area: reference.sql
 ---
 
-Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://en.wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://en.wikipedia.org/wiki/Convex_set) of points that [contains](st_contains.html) every point in the set that comprises that shape.
+Given a shape _A_, `ST_ConvexHull(A)` returns another shape _B_ that is the [convex hull](https://wikipedia.org/wiki/Convex_hull) of _A_.  The convex hull of a shape is the smallest [convex set](https://wikipedia.org/wiki/Convex_set) of points that [contains](st_contains.html) every point in the set that comprises that shape.
 
 In other words, given a set of points _A_ in the plane, the convex hull is the shape _B_ created by stretching an imaginary rubber band around the outermost points in _A_.
 
 `ST_ConvexHull` works on the following data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
 
 {{site.data.alerts.callout_info}}
 `ST_ConvexHull` is not an aggregate function.  It operates on a single `GEOMETRY` object.  This means that in practice it is most often used in combination with an aggregate function such as [`ST_Union`](st_union.html).
@@ -22,7 +22,7 @@ In other words, given a set of points _A_ in the plane, the convex hull is the s
 
 In this example, we will generate the convex hull of a single geometry.  The geometry is made from many individual points using [`ST_Union`](st_union.html).
 
-1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](spatial-glossary.html#wkt) format:
+1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](architecture/glossary.html#wkt) format:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -211,7 +211,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
     ('POINT (-73.957583 41.417974999999998)');
     ~~~
 
-1. Run the query below, which gathers the points into a single geometry using [`ST_Union`](st_union.html) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON](spatial-glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
+1. Run the query below, which gathers the points into a single geometry using [`ST_Union`](st_union.html) that can be operated on by `ST_ConvexHull`, and converts the output to [GeoJSON](architecture/glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql 
@@ -248,7 +248,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)

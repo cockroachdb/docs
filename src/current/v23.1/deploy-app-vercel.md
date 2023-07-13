@@ -27,7 +27,7 @@ Before starting the tutorial, do the following:
 ## Step 1. Get the code
 
 1. Create a [GitHub](https://github.com/) account if you haven't already.
-1. In GitHub, [create your own fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository) of CockroachDB's [`prisma-examples` repo](https://github.com/cockroachdb/prisma-examples).
+1. In GitHub, [create your own fork](https://docs.github.com/get-started/quickstart/fork-a-repo#forking-a-repository) of CockroachDB's [`prisma-examples` repo](https://github.com/cockroachdb/prisma-examples).
 
 ## Step 2. Create a Vercel project
 
