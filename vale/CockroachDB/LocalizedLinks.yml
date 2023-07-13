@@ -1,5 +1,5 @@
 extends: existence
-message: "Link contains a localization element (e.g., `en`, `en-us`). Some websites will auto-localize. Try to remove it from the URL if it doesn't 404: '%s'..."
+message: "Link contains a localization element (e.g., `en`, `en-us`). Some websites will auto-localize. Try to remove it from the URL if dsdasfdfsdafdsit doesn't 404: '%s'..."
 link: https://github.com/cockroachdb/docs/blob/main/StyleGuide.md#links
 scope: raw
 level: warning
