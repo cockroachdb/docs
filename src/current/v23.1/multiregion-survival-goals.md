@@ -4,6 +4,7 @@ summary: Learn how to set survival goals in a CockroachDB multi-region cluster.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 docs_area: deploy
+key: when-to-use-zone-vs-region-survival-goals.html
 ---
 
 A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.
