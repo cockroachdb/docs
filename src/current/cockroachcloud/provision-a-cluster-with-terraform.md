@@ -44,12 +44,18 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
     cluster_name = "{cluster name}"
     sql_user_name = "{SQL user name}"
     sql_user_password = "{SQL user password}"
+    allow_list_name = "{allow list name}"
+    cidr_ip = "{allow list CIDR IP}"
+    cidr_mask = {allow list CIDR mask}
     ~~~
 
     Where:
     - `{cluster name}` is the name of the cluster you want to create.
     - `{SQL user name}` is the name of the SQL user you want to create.
     - `{SQL user password}` is the password for the SQL user you want to create.
+    - `{allow list name}` is the name for the [IP allow list](network-authorization.html#ip-allowlisting). Use a descriptive name to identify the IP allow list.
+    - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
+    - `{allow list CIDR mask}` is the CIDR mask.
 
     For example, the following `terraform.tfvars` file creates a {{ site.data.products.serverless }} with a `maxroach` SQL user.
 
@@ -58,6 +64,9 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
     cluster_name = "dim-dog"
     sql_user_name = "maxroach"
     sql_user_password = "NotAGoodPassword"
+    allow_list_name = "Max's home network"
+    cidr_ip = "1.2.3.4"
+    cidr_mask = 32
     ~~~
 
 1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
