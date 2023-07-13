@@ -37,7 +37,6 @@ The sample code in `example.py` does the following:
 
 To [handle transaction retry errors](query-behavior-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
-
 ## Step 3. Install the Psycopg 3 driver
 
 `psycopg[binary]` is the sample app's only third-party module dependency.
