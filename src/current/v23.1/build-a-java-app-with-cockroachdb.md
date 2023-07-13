@@ -67,7 +67,7 @@ The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDA
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
 
-The sample app uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
+The sample app uses JDBC and the [Data Access Object (DAO)](https://wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 
 1. `BasicExample`, which is where the application logic lives.
 1. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function (`runSql`) that runs SQL statements inside a transaction, [retrying statements](transactions.html#transaction-retries) as needed.

@@ -41,7 +41,7 @@ This allows you to group channels that log related information (e.g., operationa
 | [`SQL_PERF`](logging.html#sql_perf)                 | SQL executions that impact performance, such as slow queries (when enabled via the `sql.log.slow_query.latency_threshold` and/or `sql.log.slow_query.experimental_full_table_scans.enabled` [cluster settings](cluster-settings.html)).                                                                                    |
 | [`TELEMETRY`](logging.html#telemetry)               |  Telemetry events for internal usage.                                                                                                                                                                                                                                        |
 
-Logging channels are analogous to [logging facilities in Syslog](https://en.wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
+Logging channels are analogous to [logging facilities in Syslog](https://wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
 
 ## Logging destinations
 

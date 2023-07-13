@@ -135,7 +135,7 @@ Additional ways to restore data:
 {{site.data.alerts.callout_danger}}
 The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
 
-This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
+This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
 
 {{site.data.alerts.end}}
 
@@ -340,6 +340,6 @@ Find the cluster backup you want to restore, and click **Restore**.
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 
-You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud). 
+You can [manage your own backups](take-and-restore-customer-owned-backups.html), including incremental, database, and table level backups. To perform manual backups, you must configure either a [`userfile`](take-and-restore-customer-owned-backups.html) location or a [cloud storage location](take-and-restore-customer-owned-backups.html?filters=cloud).
 
 </section>

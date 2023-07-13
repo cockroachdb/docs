@@ -20,7 +20,7 @@ For optimal cluster performance, Cockroach Labs recommends that all nodes use th
 
 ## Software
 
-We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
+We recommend running a [glibc](https://www.gnu.org/software/libc/)-based Linux distribution and Linux kernel version from the last 5 years, such as [Ubuntu](https://ubuntu.com/), [Red Hat Enterprise Linux (RHEL)](https://www.redhat.com/technologies/linux-platforms/enterprise-linux), [CentOS](https://www.centos.org/), or [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs).
 
 ## Hardware
 
@@ -156,7 +156,7 @@ Disks must be able to achieve {% include {{ page.version.version }}/prod-deploym
 
 - {% include {{ page.version.version }}/prod-deployment/prod-guidance-lvm.md %}
 
-- The optimal configuration for striping more than one device is [RAID 10](https://en.wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
+- The optimal configuration for striping more than one device is [RAID 10](https://wikipedia.org/wiki/Nested_RAID_levels#RAID_10_(RAID_1+0)). RAID 0 and 1 are also acceptable from a performance perspective.
 
 {{site.data.alerts.callout_info}}
 Disk I/O especially affects [performance on write-heavy workloads](architecture/reads-and-writes-overview.html#network-and-i-o-bottlenecks). For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [node liveness issues](cluster-setup-troubleshooting.html#node-liveness-issues).
@@ -201,7 +201,7 @@ Based on our internal testing, we recommend the following cloud-specific configu
 
 {% include {{ page.version.version }}/prod-deployment/recommended-instances-azure.md %}
 
-- Use [Premium Storage](https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). Note that [the size of a Premium Storage disk affects its IOPS](https://docs.microsoft.com/en-us/azure/virtual-machines/premium-storage-performance#iops).
+- Use [Premium Storage](https://docs.microsoft.com/azure/virtual-machines/disks-types#premium-ssds) or local SSD storage with a Linux filesystem such as `ext4` (not the Windows `ntfs` filesystem). Note that [the size of a Premium Storage disk affects its IOPS](https://docs.microsoft.com/azure/virtual-machines/premium-storage-performance#iops).
 
 - If you choose local SSD storage, on reboot, the VM can come back with the `ntfs` filesystem. Be sure your automation monitors for this and reformats the disk to the Linux filesystem you chose initially.
 
@@ -273,7 +273,7 @@ When running a cluster across multiple networks, the setup depends on whether no
 Nodes reachable across networks? | Recommended setup
 ---------------------------------|------------------
 Yes | This is typical when all networks are on the same cloud. In this case, use the relevant [single network setup](#cluster-on-a-single-network) above.
-No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://en.wikipedia.org/wiki/Virtual_private_network), [VPC](https://en.wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://en.wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>Also, if a node is reachable from other nodes in its network on a private or local address, set [`--locality-advertise-addr`](cockroach-start.html#networking) to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`](cockroach-start.html#locality) flag. For more details, see this [example](cockroach-start.html#start-a-multi-node-cluster-across-private-networks).
+No | This is typical when networks are on different clouds. In this case, set up a [VPN](https://wikipedia.org/wiki/Virtual_private_network), [VPC](https://wikipedia.org/wiki/Virtual_private_cloud), [NAT](https://wikipedia.org/wiki/Network_address_translation), or another such solution to provide unified routing across the networks. Then start each node with `--advertise-addr` set to the address that is reachable from other networks and do not specify `--listen-addr`. This will tell other nodes to use the specific IP address advertised, but load balancers/clients will be able to use any address that routes to the node.<br><br>Also, if a node is reachable from other nodes in its network on a private or local address, set [`--locality-advertise-addr`](cockroach-start.html#networking) to that address. This will tell nodes within the same network to prefer the private or local address to improve performance. Note that this feature requires that each node is started with the [`--locality`](cockroach-start.html#locality) flag. For more details, see this [example](cockroach-start.html#start-a-multi-node-cluster-across-private-networks).
 
 ## Load balancing
 
@@ -588,7 +588,7 @@ For example, for a node with 3 stores, we would set the hard limit to at least 3
     $ ulimit -a
     ~~~
 
-Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
+Alternately, if you're using [Systemd](https://wikipedia.org/wiki/Systemd):
 
 1.  Edit the service definition to configure the maximum number of open files:
 

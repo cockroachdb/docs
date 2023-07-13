@@ -3,7 +3,7 @@ title: Deploy CockroachDB on Microsoft Azure (Insecure)
 summary: Learn how to deploy CockroachDB on Microsoft Azure.
 toc: true
 toc_not_nested: true
-ssh-link: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
+ssh-link: https://docs.microsoft.com/azure/virtual-machines/linux/mac-create-ssh-keys
 docs_area:
 ---
 
@@ -34,11 +34,11 @@ CockroachDB requires TCP communication on two ports:
 
 To enable this in Azure, you must create a Resource Group, Virtual Network, and Network Security Group.
 
-1. [Create a Resource Group](https://azure.microsoft.com/en-us/updates/create-empty-resource-groups/).
+1. [Create a Resource Group](https://azure.microsoft.com/updates/create-empty-resource-groups/).
 
-1. [Create a Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
+1. [Create a Virtual Network](https://docs.microsoft.com/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
 
-1. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following **inbound** rules to it:
+1. [Create a Network Security Group](https://docs.microsoft.com/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following **inbound** rules to it:
     - **DB Console support**:
 
          Field | Recommended Value
@@ -71,7 +71,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 ## Step 2. Create VMs
 
-[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
+[Create Linux VMs](https://docs.microsoft.com/azure/virtual-machine-scale-sets/quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
 
@@ -95,7 +95,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
 Microsoft Azure offers fully-managed load balancing to distribute traffic between instances.
 
-1. [Add Azure load balancing](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview). Be sure to:
+1. [Add Azure load balancing](https://docs.microsoft.com/azure/load-balancer/load-balancer-overview). Be sure to:
     - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the nodes.
     - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
 

@@ -19,7 +19,7 @@ To get good SQL statement performance, follow these rules:
 - [Rule 2. Use the right index](apply-statement-performance-rules.html#rule-2-use-the-right-index). Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
 - [Rule 3. Use the right join type](apply-statement-performance-rules.html#rule-3-use-the-right-join-type). Depending on the relative sizes of the tables you are querying, the type of [join](joins.html) may be important. You should only rarely need to specify the join type because the [cost-based optimizer](cost-based-optimizer.html) should pick the best-performing join type if you add the right indexes as described in Rule 2. However, in some circumstances you may want to specify a [join hint](cost-based-optimizer.html#join-hints).
 
-These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
+These rules apply to an environment where thousands of [OLTP](https://wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://wikipedia.org/wiki/Online_analytical_processing), statements.
 
 For an example of applying the rules to a query, see [Apply SQL Statement Performance Rules](apply-statement-performance-rules.html).
 

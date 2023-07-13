@@ -49,8 +49,8 @@ CGo Total | Total memory managed by the C layer.
 
 <img src="{{ 'images/v23.1/ui_cpu_time.png' | relative_url }}" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
 
-- In the node view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
-- In the cluster view, the graph shows the [CPU time](https://en.wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
+- In the node view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations for the selected node.
+- In the cluster view, the graph shows the [CPU time](https://wikipedia.org/wiki/CPU_time) used by CockroachDB user and system-level operations across all nodes in the cluster.
 
 On hovering over the CPU Time graph, the values for the following metrics are displayed:
 

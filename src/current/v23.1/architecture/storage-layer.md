@@ -88,7 +88,7 @@ The compaction process is necessary in order for an LSM to work efficiently; fro
 
 SST files are never modified during the compaction process. Instead, new SSTs are written, and old SSTs are deleted. This design takes advantage of the fact that sequential disk access is much, much faster than random disk access.
 
-The process of compaction works like this: if two SST files _A_ and _B_ need to be merged, their contents (key-value pairs) are read into memory. From there, the contents are sorted and merged together in memory, and a new file _C_ is opened and written to disk with the new, larger sorted list of key-value pairs. This step is conceptually similar to a [merge sort](https://en.wikipedia.org/wiki/Merge_sort). Finally, the old files _A_ and _B_ are deleted.
+The process of compaction works like this: if two SST files _A_ and _B_ need to be merged, their contents (key-value pairs) are read into memory. From there, the contents are sorted and merged together in memory, and a new file _C_ is opened and written to disk with the new, larger sorted list of key-value pairs. This step is conceptually similar to a [merge sort](https://wikipedia.org/wiki/Merge_sort). Finally, the old files _A_ and _B_ are deleted.
 
 ##### Inverted LSMs
 
@@ -134,13 +134,13 @@ The tradeoffs in the LSM design are meant to take advantage of the way modern di
 
 ### MVCC
 
-CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) to process concurrent requests and guarantee consistency. Much of this work is done by using [hybrid logical clock (HLC) timestamps](transaction-layer.html#time-and-hybrid-logical-clocks) to differentiate between versions of data, track commit timestamps, and identify a value's garbage collection expiration. All of this MVCC data is then stored in Pebble.
+CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https://wikipedia.org/wiki/Multiversion_concurrency_control) to process concurrent requests and guarantee consistency. Much of this work is done by using [hybrid logical clock (HLC) timestamps](transaction-layer.html#time-and-hybrid-logical-clocks) to differentiate between versions of data, track commit timestamps, and identify a value's garbage collection expiration. All of this MVCC data is then stored in Pebble.
 
 Despite being implemented in the storage layer, MVCC values are widely used to enforce consistency in the [transaction layer](transaction-layer.html). For example, CockroachDB maintains a [timestamp cache](transaction-layer.html#timestamp-cache), which stores the timestamp of the last time that the key was read. If a write operation occurs at a lower timestamp than the largest value in the read timestamp cache, it signifies there’s a potential anomaly and the transaction must be restarted at a later timestamp.
 
 #### Time-travel
 
-As described in the [SQL:2011 standard](https://en.wikipedia.org/wiki/SQL:2011#Temporal_support), CockroachDB supports time travel queries (enabled by MVCC).
+As described in the [SQL:2011 standard](https://wikipedia.org/wiki/SQL:2011#Temporal_support), CockroachDB supports time travel queries (enabled by MVCC).
 
 To do this, all of the schema information also has an MVCC-like model behind it. This lets you perform `SELECT...AS OF SYSTEM TIME`, and CockroachDB uses the schema information as of that time to formulate the queries.
 
