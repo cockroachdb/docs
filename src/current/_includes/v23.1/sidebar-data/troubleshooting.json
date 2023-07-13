@@ -38,7 +38,12 @@
           "/${VERSION}/transaction-retry-error-reference.html"
         ]
       },
-
+      {
+        "title": "Transaction Retry Error Example",
+        "urls": [
+          "/${VERSION}/transaction-retry-error-example.html"
+        ]
+      },
       {
         "title": "Replication Reports",
         "urls": [

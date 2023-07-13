@@ -812,10 +812,6 @@
   sources: ['demo-follow-the-workload.md']
   versions: ['v20.1', 'v20.2']
 
-- destination: transaction-retry-error-reference.md
-  sources: ['transaction-retry-error-example.md']
-  versions: ['v23.1']
-
 - destination: tutorials/sql-playground.md
   sources: 
     - :version/sql-playground.md
