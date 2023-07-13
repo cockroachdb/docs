@@ -4,6 +4,7 @@ summary: Learn how to use table localities in a CockroachDB multi-region cluster
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
 docs_area: deploy
+key: when-to-use-regional-vs-global-tables.html
 ---
 
 _Table locality_ determines how CockroachDB optimizes access to the table's data. Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level. A table or row's home region is where the [leaseholder](architecture/replication-layer.html#leases) of its ranges is placed, along with a number of voting replicas determined by the [survival goal](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals) of the database.
