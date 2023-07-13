@@ -2,7 +2,7 @@
     "title": "Schema Design",
     "items": [
       {
-        "title": "Overview",
+        "title": "Database Schemas",
         "urls": [
           "/${VERSION}/schema-design-overview.html"
         ]
