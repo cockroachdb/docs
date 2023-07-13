@@ -7,7 +7,8 @@ docs_area: reference.transaction_retry_error_example
 
 When a [transaction](transactions.html) is unable to complete due to [contention](performance-best-practices-overview.html#transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a [transaction retry error](transaction-retry-error-reference.html) is emitted to the client.
 
-This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#testing-transaction-retry-logic) against your application's needs.
+This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#test-transaction-retry-logic) against your application's needs.
+
 ## Client-side retry handling example
 
 The Python-like pseudocode below shows how to implement an application-level retry loop; it does not require your driver or ORM to implement [advanced retry handling logic](advanced-client-side-transaction-retries.html), so it can be used from any programming language or environment. In particular, your retry loop must:

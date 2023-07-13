@@ -360,7 +360,7 @@ Retry transaction _A_ as described in [client-side retry handling](#client-side-
 
 When the `inject_retry_errors_enabled` [session variable](set-vars.html) is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return this error.
 
-For more details, see [Testing transaction retry logic](#test-transaction-retry-logic).
+For more details, see [Test transaction retry logic](transaction-retry-error-example.html#test-transaction-retry-logic).
 
 **Action:**
 
