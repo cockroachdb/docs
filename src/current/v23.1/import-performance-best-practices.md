@@ -51,27 +51,27 @@ IMPORT INTO customers (id, name)
     );
 ~~~
 
-CockroachDB imports the files that you give it, and does not further split them. For example, if you import one large file for all of your data, CockroachDB will process that file on one node—even if you have more nodes available. However, if you import two files (and your cluster has at least two nodes), each node will process a file in parallel. This is why splitting your data into as many files as you have nodes will dramatically decrease the time it takes to import data.
+CockroachDB imports the files that you give it, and does not further split them. For example, if you import one large file for all of your data, CockroachDB will process that file on one node, even if you have more nodes available. However, if you import three files (and your cluster has at least three nodes), each node will process a file in parallel. This is why splitting your data into at least as many files as you have nodes will dramatically decrease the time it takes to import data.
 
 {{site.data.alerts.callout_info}}
 You can split the data into **more** files than you have nodes. CockroachDB will process the files in parallel across the cluster. When splitting the data Cockroach Labs recommends splitting it into a multiple of the number of nodes in your cluster, if possible. For example, if you have a 3 node cluster, split the dataset into 9, 27, or 300 files.
 
-Cockroach Labs recommends keeping the files to a maximum file size of 4 GB, and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset split into 3 files into a 3 node cluster, don't split the data into two 4 GB files, and one 1 GB file. Keep each file around 3 GB in size if possible.
+Cockroach Labs recommends keeping the files to a maximum file size of 4 GB, and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
 {{site.data.alerts.end}}
 
-For maximum performance each split file should be *partitioned*, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, if your dataset had an alphabetic string primary key and you were importing the data into a 3 node cluster, you would split the files so that the first file contained rows where the primary key began with the letter "a" to "i", the second file "j" to "r" and the third file "s" to "z". No file would contain duplicate rows.
+For maximum performance each split file should be *partitioned*, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, if your dataset had an alphabetic string primary key and you were importing the data into a 3 node cluster, you would split the files so that the first file contained rows where the primary key began with the letter "a" to "i", the second file "j" to "r" and the third file "s" to "z". No file should contain duplicate rows.
 
 ### File storage during import
 
-During migration, all of the features of [`IMPORT`](import-into.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
+During migration, all of the features of [`IMPORT INTO`](import-into.html) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
 
 If a node runs out of disk space while processing an import job, CockroachDB will pause the import job. Make sure each node has enough free disk space to process the file and store the data.
 
 ## Sort your data
 
-Within each split file with your import data, sort the data based on how it will be stored in CockroachDB. For example, in the example above where a data set was partitioned by an alphabetic string primary key, within each split file the data should be sorted by the alphabetic primary key.
+Within each split file with your import data, sort the data based on how it will be stored in CockroachDB. For example, in the example where a dataset was partitioned by an alphabetic string primary key, within each split file the data should be sorted by the alphabetic primary key.
 
-In tests performed by Cockroach Labs, the best import performance measured in both throughput and overall time was observed when data was split into partitioned files and sorted within each partitioned file. An import on an unpartitioned and unsorted dataset was about 16 times slower than the same dataset with partitioned and sorted files. If you cannot both partition and sort your dataset, the performance of either partitioned or sorted data was similar, around 1.5 to 2 times slower than partitioned and sorted data, but still much faster than unpartitioned and unsorted data.
+In tests performed by Cockroach Labs, the best import performance, measured in both throughput and overall time, was observed when data was split into partitioned files and sorted within each partitioned file. Imports using an unpartitioned and unsorted dataset were about 16 times slower than imports using the same dataset with partitioned and sorted files. If you cannot both partition and sort your dataset, the performance of either partitioned or sorted data was similar, around 2 times slower than both partitioned and sorted data, but still much faster than both unpartitioned and unsorted data.
 
 ## Choose a performant import format
 
