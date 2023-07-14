@@ -35,7 +35,7 @@ Parameter | Description
 `target_list` | The columns to emit data from if you're using a [CDC query](cdc-queries.html) expression.
 `insert_target` | The target tables for the changefeed if you're using a [CDC query](cdc-queries.html) expression.
 `where_clause` | An optional `WHERE` clause to apply filters to the table if you're using a [CDC query](cdc-queries.html) expression.
-`crontab` | The frequency of the changefeed. The schedule is specified as a `STRING` in [crontab format](https://en.wikipedia.org/wiki/Cron). All times in UTC. For example, `'@daily'`, `'@hourly'`, `'1 0 * * *'`.
+`crontab` | The frequency of the changefeed. The schedule is specified as a `STRING` in [crontab format](https://wikipedia.org/wiki/Cron). All times in UTC. For example, `'@daily'`, `'@hourly'`, `'1 0 * * *'`.
 `schedule_option` | The schedule options to control the schedule's behavior. For example, `first_run = now`. See [Schedule options](#schedule-options).
 
 ## Changefeed options

@@ -15,7 +15,7 @@ This page has instructions for exporting spatial data from CockroachDB and conve
 
 First, use the [`EXPORT`](export.html) statement to export your data to a CSV file.
 
-In the example statement below, we export the tornadoes database used in [Working with spatial data](spatial-data.html).
+In the example statement below, we export the tornadoes database used in [Query Spatial Data](query-spatial-data.html#use-a-sample-shapefile-dataset).
 
 The statement will place the CSV file in the node's [store directory](cockroach-start.html#store), in a subdirectory named `extern/tornadoes`. The file's name is automatically generated, and will be displayed as output in the [SQL shell](cockroach-sql.html).
 
@@ -101,7 +101,6 @@ This can be addressed in one of the following ways:
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Known Limitations](known-limitations.html#spatial-support-limitations)
 - [Spatial functions](functions-and-operators.html#spatial-functions)

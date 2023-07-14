@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-Generalized inverted indexes, or GIN indexes, store mappings from values within a container column (such as a [`JSONB`](jsonb.html) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". GIN indexes are commonly used in [document retrieval systems](https://en.wikipedia.org/wiki/Document_retrieval).
+Generalized inverted indexes, or GIN indexes, store mappings from values within a container column (such as a [`JSONB`](jsonb.html) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". GIN indexes are commonly used in [document retrieval systems](https://wikipedia.org/wiki/Document_retrieval).
 
 CockroachDB stores the contents of the following data types in GIN indexes:
 

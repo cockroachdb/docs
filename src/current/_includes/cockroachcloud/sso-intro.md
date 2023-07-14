@@ -4,7 +4,7 @@ Single Sign-On (SSO) allows members of your {{ site.data.products.db }} organiza
 
 [Cloud Organization SSO](cloud-org-sso.html#cloud-organization-sso) lets users sign in at a custom login page unique to your organization, and provides additional customization and capabilities to help your organization meet its security and compliance requirements.
 
-Cloud Organization SSO supports autoprovisioning, allows you to restrict the email addresses that can log in using a given method, and allows you to connect to your identity provider (IdP) using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+Cloud Organization SSO supports autoprovisioning, allows you to restrict the email addresses that can log in using a given method, and allows you to connect to your identity provider (IdP) using the [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 
 {{site.data.alerts.callout_success}}
 If you sign in using a URL other than [https://cockroachlabs.cloud](https://cockroachlabs.cloud), Cloud Organization SSO is already enabled for your organization.

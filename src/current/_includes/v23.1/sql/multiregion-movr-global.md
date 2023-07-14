@@ -1,4 +1,4 @@
-Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostly"), and needs to be available from any region, the right table locality is [`GLOBAL`](multiregion-overview.html#global-tables).
+Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostly"), and needs to be available from any region, the right table locality is [`GLOBAL`](table-localities.html#global-tables).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

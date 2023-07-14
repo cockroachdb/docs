@@ -219,11 +219,11 @@ For a detailed discussion of isolation in CockroachDB transactions, see [Seriali
 
 With `SERIALIZABLE` isolation, a transaction behaves as though it has the entire database all to itself for the duration of its execution. This means that no concurrent writers can affect the transaction unless they commit before it starts, and no concurrent readers can be affected by the transaction until it has successfully committed. This is the strongest level of isolation provided by CockroachDB and it's the default.
 
-`SERIALIZABLE` isolation permits no anomalies. To prevent [write skew](https://en.wikipedia.org/wiki/Snapshot_isolation) anomalies, `SERIALIZABLE` isolation may require transaction restarts. For a demonstration of `SERIALIZABLE` preventing write skew, see [Serializable Transactions](demo-serializable.html).
+`SERIALIZABLE` isolation permits no anomalies. To prevent [write skew](https://wikipedia.org/wiki/Snapshot_isolation) anomalies, `SERIALIZABLE` isolation may require transaction restarts. For a demonstration of `SERIALIZABLE` preventing write skew, see [Serializable Transactions](demo-serializable.html).
 
 ### Comparison to ANSI SQL isolation levels
 
-CockroachDB uses slightly different isolation levels than [ANSI SQL isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
+CockroachDB uses slightly different isolation levels than [ANSI SQL isolation levels](https://wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels).
 
 #### Aliases
 

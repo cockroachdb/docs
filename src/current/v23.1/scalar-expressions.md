@@ -80,10 +80,10 @@ All comparisons accept any combination of argument types and result in type `BOO
 
 #### Comparison with `NaN`
 
-CockroachDB recognizes the special value `NaN` ([Not-a-Number](https://en.wikipedia.org/wiki/NaN)) for scalars of
+CockroachDB recognizes the special value `NaN` ([Not-a-Number](https://wikipedia.org/wiki/NaN)) for scalars of
 type [`FLOAT`](float.html) or [`DECIMAL`](decimal.html).
 
-As per the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
+As per the [IEEE 754](https://wikipedia.org/wiki/IEEE_754)
 standard, `NaN` is considered to be different from every other numeric
 value in comparisons.
 
@@ -303,7 +303,7 @@ a match is found or `FALSE` otherwise, or the inverted value for the
 The variants with an asterisk `*` use case-insensitive matching;
 otherwise the matching is case-sensitive.
 
-The pattern is expressed using [POSIX regular expression syntax](https://en.wikipedia.org/wiki/Regular_expression). Unlike
+The pattern is expressed using [POSIX regular expression syntax](https://wikipedia.org/wiki/Regular_expression). Unlike
 `LIKE` patterns, a regular expression is allowed to match anywhere inside a string, not only at the beginning.
 
 For example:

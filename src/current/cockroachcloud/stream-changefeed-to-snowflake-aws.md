@@ -21,7 +21,7 @@ Before you begin, make sure you have:
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
 
     {{site.data.alerts.callout_info}}
-    This tutorial uses AWS S3 for cloud storage, but Snowflake also supports [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html) and [Google Cloud Storage](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-gcs.html).
+    This tutorial uses AWS S3 for cloud storage, but Snowflake also supports [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html) and [Google Cloud Storage](https://docs.snowflake.com/user-guide/data-load-snowpipe-auto-gcs.html).
     {{site.data.alerts.end}}
 
 - [Read and write access](https://docs.snowflake.net/manuals/user-guide/security-access-control-overview.html) to a Snowflake cluster
@@ -184,7 +184,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Auto-ingest in Snowflake works with [AWS](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-s3.html), [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html), and [Google Cloud Storage](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-gcs.html).
+    Auto-ingest in Snowflake works with [AWS](https://docs.snowflake.com/user-guide/data-load-snowpipe-auto-s3.html), [Azure](https://docs.snowflake.net/manuals/user-guide/data-load-snowpipe-auto-azure.html), and [Google Cloud Storage](https://docs.snowflake.com/user-guide/data-load-snowpipe-auto-gcs.html).
     {{site.data.alerts.end}}
 
 1. In the Worksheet, view the Snowpipe:
@@ -223,7 +223,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
     > SELECT * FROM order_alerts;
     ~~~
 
-    The ingested rows will display in the **Results** panel. It may take a few minutes for the data to load into the Snowflake cluster. To check on the progress of data being written to the destination table, see [Snowflake's documentation on querying a stage](https://docs.snowflake.com/en/user-guide/querying-stage.html).
+    The ingested rows will display in the **Results** panel. It may take a few minutes for the data to load into the Snowflake cluster. To check on the progress of data being written to the destination table, see [Snowflake's documentation on querying a stage](https://docs.snowflake.com/user-guide/querying-stage.html).
 
 Your changefeed is now streaming to Snowflake.
 

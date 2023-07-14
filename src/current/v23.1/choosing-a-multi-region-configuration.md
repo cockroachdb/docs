@@ -26,8 +26,8 @@ The options for configuring your multi-region cluster include:
 
 - _Change only [table localities](multiregion-overview.html#table-localities)_: This is useful for multi-region apps that require different read and write latency guarantees for different tables in the database, and are not concerned with surviving a region failure. In this configuration, you get:
   - Zone survival (the default).
-  - For [global tables](multiregion-overview.html#global-tables), low-latency reads from all regions.
-  - For [regional by row tables](multiregion-overview.html#regional-by-row-tables), low-latency reads and writes from each row's [home region](alter-table.html#crdb_region), and low-latency [follower reads](follower-reads.html) from all other regions.
+  - For [global tables](table-localities.html#global-tables), low-latency reads from all regions.
+  - For [regional by row tables](table-localities.html#regional-by-row-tables), low-latency reads and writes from each row's [home region](alter-table.html#crdb_region), and low-latency [follower reads](follower-reads.html) from all other regions.
 
 - _Change both [survival goals](multiregion-overview.html#survival-goals) and [table localities](multiregion-overview.html#table-localities)_: This is useful for multi-region apps that want a high level of survival. In this configuration, you move from zone survival and get:
   - Region survival.
@@ -60,8 +60,8 @@ Different databases and tables within the same cluster can each use different co
 ## See also
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
-- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
 - [Survive Region Outages with CockroachDB](https://www.cockroachlabs.com/blog/under-the-hood-multi-region/)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)

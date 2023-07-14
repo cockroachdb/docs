@@ -83,7 +83,7 @@ The [`EXPLAIN`](explain.html#success-responses) command provides index recommend
 
 - If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](computed-columns.html) and index the column.
 
-- Avoid indexing on sequential keys. Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid indexing on sequential keys (e.g., [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html) columns). Writes to indexes with sequential keys can result in range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
     If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 

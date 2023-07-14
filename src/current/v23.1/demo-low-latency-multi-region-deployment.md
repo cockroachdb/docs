@@ -46,9 +46,9 @@ The workload you'll run against the cluster is our open-source, fictional, peer-
 
 {% include {{ page.version.version }}/misc/movr-schema.md %}
 
-All of the tables except `promo_codes` have a composite primary key of `city` and `id`, in that order. This means that the rows in these tables are ordered by their geography. These tables are read from and written to very frequently. To keep read and write latency low, you'll use the [`REGIONAL BY ROW` table locality pattern](multiregion-overview.html#regional-by-row-tables) for these tables.
+All of the tables except `promo_codes` have a composite primary key of `city` and `id`, in that order. This means that the rows in these tables are ordered by their geography. These tables are read from and written to very frequently. To keep read and write latency low, you'll use the [`REGIONAL BY ROW` table locality pattern](table-localities.html#regional-by-row-tables) for these tables.
 
-The data in the `promo_codes` table is different: it is not tied to geography, and it is rarely updated. This type of table is often referred to as a "reference table" or "lookup table". In this case, you'll use the [Global table locality pattern](multiregion-overview.html#global-tables) to keep read latencies low.
+The data in the `promo_codes` table is different: it is not tied to geography, and it is rarely updated. This type of table is often referred to as a "reference table" or "lookup table". In this case, you'll use the [Global table locality pattern](table-localities.html#global-tables) to keep read latencies low.
 
 For a description of the sequence of SQL statements issued by the MovR application in response to user actions, see [How the MovR application works](movr.html#how-the-movr-application-works).
 
@@ -320,8 +320,8 @@ The small demo cluster used in this example is essentially in a state of overloa
 
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
-- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)

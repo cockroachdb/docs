@@ -31,7 +31,7 @@ changefeed.cpu.per_event_elastic_control.enabled
 kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 ~~~
 
-For a more technical explanation of elastic CPU, refer to the [Rubber control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
+For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
 
 ## Tuning for high durability delivery
 
