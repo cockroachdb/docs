@@ -163,6 +163,45 @@ BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
     );
 ~~~
 
+#### Show a backup with multi-region encryption
+
+To view a backup with [multi-region encryption](#multi-region), use the `kms` option and the same KMS URIs that were used to create the backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP FROM '2023/07/14-211406.03' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    WITH KMS=(
+      'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1',
+      'aws:///{key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-west-1'
+    );
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+  database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
+----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
+  NULL          | NULL               | system                 | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  system        | public             | users                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        136 |    2 |        t        | NULL
+  system        | public             | zones                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        338 |   13 |        t        | NULL
+  system        | public             | settings               | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        373 |    5 |        t        | NULL
+  system        | public             | ui                     | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | locations              | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        261 |    5 |        t        | NULL
+  system        | public             | role_members           | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        217 |    1 |        t        | NULL
+  system        | public             | comments               | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | role_options           | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | scheduled_jobs         | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        496 |    2 |        t        | NULL
+  system        | public             | database_role_settings | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | role_id_seq            | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |         11 |    1 |        t        | NULL
+  system        | public             | tenant_settings        | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |         50 |    1 |        t        | NULL
+  system        | public             | privileges             | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | external_connections   | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  NULL          | NULL               | defaultdb              | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  defaultdb     | NULL               | public                 | schema      | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  NULL          | NULL               | postgres               | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  postgres      | NULL               | public                 | schema      | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+(19 rows)
+~~~
+
 #### Restore from an encrypted Amazon S3 backup
 
 To decrypt an [encrypted backup](#take-an-encrypted-amazon-s3-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
