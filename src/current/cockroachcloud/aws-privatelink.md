@@ -213,14 +213,23 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 ## Step 3. Verify the endpoint ID
 
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
 1. Click **Next**.
 1. Enter the Endpoint ID, then click **Validate**. If validation fails, check the endpoint ID and try again. Otherwise, click **Next**.
+1. Follow the instructions in the modal to enable **private DNS name** for the endpoint in AWS. When this option is enabled, {{ site.data.products.db }} maintains private DNS records in the VPC for the cluster.
+1. Click **Complete** to save the configuration and close the modal.
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
 
 1. Click **Next**.
 1. Enter the Endpoint ID, then click **Validate**. If validation fails, check the endpoint ID and try again. Otherwise, click **Next**.
 1. Follow the instructions in the modal to enable **private DNS name** for the endpoint in AWS. When this option is enabled, {{ site.data.products.db }} maintains private DNS records in the VPC for each {{ site.data.products.serverless }} cluster with PrivateLink enabled in the region.
 1. Click **Complete** to save the configuration and close the modal.
+
+</section>
 
 ## Step 4. Enable private DNS
 
