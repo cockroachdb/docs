@@ -7,25 +7,45 @@ docs_area: stream_data
 
 Core and {{ site.data.products.enterprise }} changefeeds offer different levels of configurability. {{ site.data.products.enterprise }} changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).
 
-Both Core and {{ site.data.products.enterprise }} changefeeds require that you enable rangefeeds before creating a changefeed. See the [Enable rangefeeds](#enable-rangefeeds) section for further detail.
+This page describes:
 
-## Considerations
+- [Guidelines](#before-you-create-a-changefeed) to consider before creating a changefeed.
+- [Reference examples](#configure-a-changefeed) for creating and managing a changefeed.
 
-- It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
+## Before you create a changefeed
+
+- Enable rangefeeds on {{ site.data.products.dedicated }} and {{ site.data.products.core }}. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+- Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. Refer to [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
+- Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
+
+### Considerations
+
 - If you require [`resolved`](create-changefeed.html#resolved-option) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
 - Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. See change data capture [Known Limitations](change-data-capture-overview.html) for more detail.
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](changefeed-messages.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](monitor-and-debug-changefeeds.html#monitor-a-changefeed).
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
+- After you [restore from a full-cluster backup](restore.html#full-cluster), changefeed jobs will **not** resume on the new cluster. It is necessary to manually create the changefeeds following the full-cluster restore.
 - {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
+
+### Recommendations for the number of target tables
 
 When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
 
 - Changefeeds each have their own memory overhead, so every running changefeed will increase total memory usage.
-- Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling, where the performance of a watched table affects the performance of the changefeed watching it. For example, any [schema change](changefeed-messages.html#schema-changes) on any of the tables will affect the entire changefeed's performance.
+- Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling, where the performance of a target table affects the performance of the changefeed watching it. For example, any [schema change](changefeed-messages.html#schema-changes) on any of the tables will affect the entire changefeed's performance.
 
 To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables.
 
 {% include {{ page.version.version }}/cdc/recommendation-monitoring-pts.md %}
+
+#### System resources and running changefeeds
+
+Cockroach Labs recommends monitoring [CPU usage](ui-overload-dashboard.html) when you are running more than 10 changefeeds on a cluster. A larger cluster will be able to run more changefeeds concurrently compared to a smaller cluster with more limited resources.
+
+To maintain more running changefeeds in your cluster:
+
+- Connect to different nodes to create each changefeed. The node on which you start the changefeed will become the _coordinator_ node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. Refer to [How does an Enterprise changefeed work?](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) for more detail.
+- Consider logically grouping the target tables into one changefeed. When a changefeed pauses, it will stop emitting messages for the target tables. Grouping tables of related data into a single changefeed may make sense for your workload. However, we do not recommend watching hundreds of tables in a single changefeed. Refer to [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on protecting data from garbage collection when a changefeed is paused.
 
 ## Enable rangefeeds
 

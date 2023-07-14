@@ -3,7 +3,10 @@ title: Plan a CockroachDB Dedicated Cluster
 summary: Plan your cluster's configuration.
 toc: true
 docs_area: deploy
+cloud: true
 ---
+
+{% include cockroachcloud/filter-tabs/plan-your-cluster.md %}
 
 This page describes how to plan your {{ site.data.products.dedicated }} cluster.
 
@@ -15,7 +18,9 @@ Before making any changes to your cluster's configuration, review the requiremen
 
 A single node cluster is only appropriate for single-region application development and testing. For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#dedicated-example) for more information.
 
-All {{ site.data.products.db }} clusters use 3 Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (e.g., 3, 6, or 9 nodes per region).
+Some of a {{ site.data.products.dedicated }} cluster's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
+
+{{ site.data.products.dedicated }} clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
 
 #### {{ site.data.products.dedicated }} advanced
 
@@ -23,7 +28,7 @@ You should choose {{ site.data.products.dedicated }} advanced if your cluster ne
 
 #### Multi-region clusters
 
-Multi-region clusters must contain at least 3 regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](../{{site.current_cloud_version}}/global-tables.html) table locality or the [`REGIONAL BY TABLE`](../{{site.current_cloud_version}}/regional-tables.html#regional-tables) table locality and [`REGION` survival goal](../{{site.current_cloud_version}}/multiregion-overview.html#surviving-region-failures).
+Multi-region {{ site.data.products.dedicated }} clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](../{{site.current_cloud_version}}/global-tables.html) table locality or the [`REGIONAL BY TABLE`](../{{site.current_cloud_version}}/regional-tables.html#regional-tables) table locality and [`REGION` survival goal](../{{site.current_cloud_version}}/multiregion-survival-goals.html#survive-region-failures).
 
 Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](../{{site.current_cloud_version}}/regional-tables.html#regional-by-row-tables) table locality. We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
 

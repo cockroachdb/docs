@@ -16,16 +16,16 @@ docs_area: deploy
 <p>See <a href="../releases/{{page.version.version}}.html" class="mac-releasenotes-download" id="mac-releasenotes-download-{{page.version.version}}" data-eventcategory="mac-releasenotes-download">Release Notes</a> for what's new in the latest release, {{ page.release_info.version }}. To upgrade to this release from an older version, see <a href="upgrade-cockroach-version.html">Cluster Upgrade</a>.</p>
 
 {{site.data.alerts.callout_danger}}
-<p>For CockroachDB v22.2.0 on ARM Macs, <a href="spatial-features.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
+<p>For CockroachDB v22.2.0 on ARM Macs, <a href="spatial-data-overview.html">spatial features</a> are disabled due to an issue with macOS code signing for the <a href="https://libgeos.org/">GEOS</a> libraries. Users needing spatial features on an ARM Mac may instead <a href="https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta">use Rosetta</a> to <a href="#install-binary">run the Intel binary</a> or use the <a href="#use-docker">Docker image</a> distribution. This issue is expected to be resolved in an upcoming 22.2 patch release. See the <a href="https://github.com/cockroachdb/cockroach/issues/93161">GitHub tracking issue</a> for more information.</p>
 {{site.data.alerts.end}}
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+{% capture arch_note_homebrew %}<p>For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
 
-{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+{% capture arch_note_binaries %}<p>For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>).</p><p>For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
 
-{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contains binaries for both Intel and ARM (<a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>). CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use. Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
+{% capture arch_note_docker %}<p>For CockroachDB v22.2.beta-5 and above, Docker images are <a href="https://docs.docker.com/build/building/multi-platform/">multi-platform images</a> that contains binaries for both Intel and ARM (<a href="https://support.apple.com/HT211814">Apple Silicon</a>). CockroachDB on ARM systems is <b>experimental</b> and is not yet qualified for production use. Multi-platform images do not take up additional space on your Docker host.</p><p>Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.</p>{% endcapture %}
 
 Use one of the options below to install CockroachDB.
 
@@ -77,15 +77,15 @@ true
   {{ arch_note_binaries }}
   <ol>
     <li>
-      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>.</p>
+      <p>Visit <a href="/docs/releases/index.html">Releases</a> to download the CockroachDB archive for the architecture of your macOS host. The archive contains the <code>cockroach</code> binary and the supporting libraries that are used to provide <a href="spatial-data-overview.html">spatial features</a>.</p>
       <p>You can download the binary using a web browser or you can copy the link and use a utility like <code>curl</code> to download it. If you download the ARM binary using a web browser and you plan to use CockroachDB&apos;s spatial features, an additional step is required before you can install the library, as outlined in the next step.</p>
       <p>Extract the archive and optionally copy the <code>cockroach</code> binary into your <code>PATH</code> so you can execute <a href="cockroach-commands.html">cockroach commands</a> from any shell. If you get a permission error, use <code>sudo</code>.</p>
       <div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
-        <p>If you plan to use CockroachDB&apos;s <a href="spatial-features.html">spatial features</a>, you must complete all of the following steps. Otherwise, your installation is now complete.</p>
+        <p>If you plan to use CockroachDB&apos;s <a href="spatial-data-overview.html">spatial features</a>, you must complete all of the following steps. Otherwise, your installation is now complete.</p>
       </div>
     </li>
     <li>
-      <p>CockroachDB uses custom-built versions of the <a href="spatial-glossary.html#geos">GEOS</a> libraries. To install those libraries:</p>
+      <p>CockroachDB uses custom-built versions of the <a href="architecture/glossary.html#geos">GEOS</a> libraries. To install those libraries:</p>
       <ol>
         <li><p>Note that <a href="known-limitations.html#spatial-features-disabled-for-arm-macs">spatial features are currently disabled for Mac ARM users</a>, for whom these steps do not apply. For an upcoming patch release where this functionality is reenabled, if you downloaded the CockroachDB ARM binary archive using a web browser, macOS flags the GEOS libraries in the extracted archive as quarantined. This flag must be removed before CockroachDB can use the libraries. To remove the quarantine flag from the libraries:</p>
         {{ binary_arm_geos_unquarantine }}

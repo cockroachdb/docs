@@ -26,9 +26,9 @@ The following screenshot shows the statement fingerprint of the query described 
 #### Insights
 
 The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
-- **Insights**: Provides the [Workload Insight type](ui-insights-page.html#workload-insight-types).
+- **Insights**: Provides the [Workload Insight type]({{ link_prefix }}ui-insights-page.html#workload-insight-types).
 - **Details**: Provides a description and possible recommendation.
-- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution](ui-insights-page.html#statement-execution-details), click the ID.
+- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution]({{ link_prefix }}ui-insights-page.html#statement-execution-details), click the ID.
 
 The following screenshot shows the insights of the statement fingerprint illustrated in [Overview](#overview):
 

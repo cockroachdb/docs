@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 A `POLYGON` is a shape with a closed exterior that is made up of lines. Polygons can also contain holes.  Polygons are often used to represent areas such as countries, states, or municipalities.
 
-The coordinates of each Point and line that make up the Polygon are translated according to the current [spatial reference system](spatial-glossary.html#spatial-reference-system) (denoted by an [SRID](spatial-glossary.html#srid)) to determine what the point "is", or what it "means" relative to the [other spatial objects](spatial-features.html#spatial-objects) (if any) in the data set.
+The coordinates of each Point and line that make up the Polygon are translated according to the current [spatial reference system](architecture/glossary.html#spatial-reference-system) (denoted by an [SRID](architecture/glossary.html#srid)) to determine what the point "is", or what it "means" relative to the [other spatial objects](spatial-data-overview.html#spatial-objects) (if any) in the data set.
 
 {% include {{page.version.version}}/spatial/zmcoords.md %}
 
@@ -15,7 +15,7 @@ The coordinates of each Point and line that make up the Polygon are translated a
 
 ### Well known text
 
-A Polygon can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format as shown below.
+A Polygon can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)](architecture/glossary.html#wkt) format as shown below.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -31,7 +31,7 @@ SELECT ST_GeomFromText('POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0))');
 
 ### Polygons with holes
 
-To represent a polygon with holes in [WKT](spatial-glossary.html#wkt), add one or more additional lists of coordinates that define the boundaries of the holes as shown below:
+To represent a polygon with holes in [WKT](architecture/glossary.html#wkt), add one or more additional lists of coordinates that define the boundaries of the holes as shown below:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -63,7 +63,7 @@ SELECT ST_MakePolygon('LINESTRING(0 0, 0 1024, 1024 1024, 1024 0, 0 0)');
 ## See also
 
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial objects](spatial-features.html#spatial-objects)
+- [Spatial objects](spatial-data-overview.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)
 - [MULTIPOINT](multipoint.html)

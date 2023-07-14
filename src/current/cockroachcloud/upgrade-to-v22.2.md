@@ -127,7 +127,7 @@ The upgrade is automatically finalized after 72 hours.
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
 
-After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted, and all v22.2 features are available for use. However, it will no longer be possible to roll back to v22.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted, and all v22.2 features are available for use. However, it will no longer be possible to roll back to v22.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](../v22.2/ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 

@@ -58,9 +58,9 @@ CockroachDB also supports implicit casting from string literals to arrays of all
   - [`ENUM`](enum.html)
   - [`JSONB`](jsonb.html)
   - [`SERIAL`](serial.html)
-  - `Box2D` [(spatial type)](spatial-glossary.html#data-types)
-  - `GEOGRAPHY` [(spatial type)](spatial-glossary.html#data-types)
-  - `GEOMETRY` [(spatial type)](spatial-glossary.html#data-types)
+  - `Box2D` [(spatial type)](architecture/glossary.html#data-types)
+  - `GEOGRAPHY` [(spatial type)](architecture/glossary.html#data-types)
+  - `GEOMETRY` [(spatial type)](architecture/glossary.html#data-types)
 
 For an example, see [Implicit casting to `ARRAY`s](array.html#implicit-casting).
 

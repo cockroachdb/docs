@@ -98,7 +98,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- Manage a cluster's databases from the [Databases Page](databases-page.html).
 	- [Scale a cluster's nodes](cluster-management.html#scale-your-cluster).
 	- View and configure a cluster's authorized networks from the [Networking Page](network-authorization.html).
-	- View backups in a cluster's [Backups Page](use-managed-service-backups.html#backups-page).
+	- View backups in a cluster's [Backup and Restore Page](use-managed-service-backups.html#backups-tab).
 	- [Restore a cluster from a backup](use-managed-service-backups.html#restore-a-cluster).
 	- View a cluster's Jobs from the [Jobs page](jobs-page.html).
 	- View a cluster's Metrics from the [Metrics page](metrics-page.html).
@@ -152,7 +152,7 @@ Service accounts authenticate with API keys to the {{ site.data.products.db }} A
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
 
-*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated once fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+*Legacy service accounts* that were created before the updated authorization model was enabled for your cloud organization may have roles assigned under the *legacy model*: (ADMIN, CREATE, EDIT, READ, DELETE).  Legacy service accounts will be considered deprecated once fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). You should update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts).
 

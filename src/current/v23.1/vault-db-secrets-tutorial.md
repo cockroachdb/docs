@@ -308,7 +308,7 @@ For a SQL role, the template is defined by its `creation_statements`, SQL statem
 
     The purpose of the previous work is to make a dynamic secret that can be used to access the CockroachDB database by generating credentials on demand. Performing the above work (establishing the connection between the CockroachDB cluster and the Vault cluster, creating the template for database client credentials, etc.) required admin privileges. But for the work to be meaningful, a Vault user with more limited permissions must be able to access the generated credentials.
 
-    This policy will be used to access CockroachDB client credentials. In keeping with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), let's give it only the required ability to read the required credential.
+    This policy will be used to access CockroachDB client credentials. In keeping with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), let's give it only the required ability to read the required credential.
 
     Vault policies are specified using [HashiCorp Configuration Language (HCL)]( https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md). The following configuration specifies a policy of read access for the `crdb-role` credential:
 

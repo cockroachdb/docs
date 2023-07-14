@@ -147,7 +147,6 @@ hostnames?
 hotspots?
 href
 (?i)html
-https?
 hyperthreads?
 IdP
 IdP's
@@ -207,6 +206,7 @@ manpages
 mapbox
 marketo
 maxroach
+Mebibytes
 memtables?
 metacommand
 metatables

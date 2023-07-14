@@ -13,7 +13,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### In what clouds and regions is {{ site.data.products.db }} available?
 
-Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, contact your Cockroach Labs account team.
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 ### What is {{ site.data.products.dedicated }}?
 
@@ -51,11 +51,13 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
 
+{% include common/tls-bad-cipher-warning.md %}
+
 See the [Security Overview page](../{{site.current_cloud_version}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
+All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
 
 All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted at rest by the cloud provider where your cluster is deployed.
 

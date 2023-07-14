@@ -15,7 +15,7 @@ In other words, `ST_Overlaps` returns `true` if the shapes intersect (in the [`S
 
 `ST_Overlaps` works on the following spatial data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
 
 {% if page.has_prefixed_variant %}
 {{site.data.alerts.callout_info}}
@@ -71,9 +71,9 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.
 
 ## See also
 
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html]
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)

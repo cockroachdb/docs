@@ -12,7 +12,7 @@ NFS/Local&nbsp;[<sup>4</sup>](#considerations)              | `nodelocal` | `nod
 S3-compatible services&nbsp;[<sup>6</sup>](#considerations) | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>7</sup>](#considerations) (optional), `AWS_ENDPOINT`
 
 {{site.data.alerts.callout_info}}
-The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [`url.QueryEscape`](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [`encodeURIComponent`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [`url.QueryEscape`](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

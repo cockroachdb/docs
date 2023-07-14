@@ -5,9 +5,9 @@ toc: true
 docs_area: develop
 ---
 
-CockroachDB supports [column-oriented](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Column-oriented_systems) ("vectorized") query execution on all [CockroachDB data types](data-types.html).
+CockroachDB supports [column-oriented](https://wikipedia.org/wiki/Column-oriented_DBMS#Column-oriented_systems) ("vectorized") query execution on all [CockroachDB data types](data-types.html).
 
-Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_plan) one row of table data at a time. Row-oriented execution models can offer good performance for [online transaction processing (OLTP)](https://en.wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [online analytical processing (OLAP)](https://en.wikipedia.org/wiki/Online_analytical_processing) queries. The CockroachDB vectorized execution engine dramatically improves performance over [row-oriented execution](https://en.wikipedia.org/wiki/Column-oriented_DBMS#Row-oriented_systems) by processing each component of a query plan on type-specific batches of column data.
+Many SQL databases execute [query plans](https://wikipedia.org/wiki/Query_plan) one row of table data at a time. Row-oriented execution models can offer good performance for [online transaction processing (OLTP)](https://wikipedia.org/wiki/Online_transaction_processing) queries, but suboptimal performance for [online analytical processing (OLAP)](https://wikipedia.org/wiki/Online_analytical_processing) queries. The CockroachDB vectorized execution engine dramatically improves performance over [row-oriented execution](https://wikipedia.org/wiki/Column-oriented_DBMS#Row-oriented_systems) by processing each component of a query plan on type-specific batches of column data.
 
 ## Configure vectorized execution
 
@@ -38,7 +38,7 @@ For detailed examples of vectorized query execution for hash and merge joins, se
 
 ## Disk-spilling operations
 
-The following disk-spilling operations require [memory buffering](https://en.wikipedia.org/wiki/Data_buffer) during execution. If there is not enough memory allocated for a disk-spilling operation, CockroachDB will spill the intermediate execution results to disk.
+The following disk-spilling operations require [memory buffering](https://wikipedia.org/wiki/Data_buffer) during execution. If there is not enough memory allocated for a disk-spilling operation, CockroachDB will spill the intermediate execution results to disk.
 
 - Global [sorts](order-by.html)
 - [Unordered aggregations](order-by.html)
@@ -73,7 +73,7 @@ The vectorized engine does not support queries containing:
 
 ### Spatial features
 
-The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
+The vectorized engine does not support [working with spatial data](export-spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](export-spatial-data.html) will revert to the row-oriented execution engine.
 
 ## See also
 

@@ -18,8 +18,20 @@ You can authorize network access to your cluster by:
 
     - Enhanced network security (no access through public IPs i.e. no transit over public networks).
     - Direct connection from application deployment that do not have static public IPs
-    - Reduced lower network latency.
+    - Reduced network latency.
     - This option can also be helpful if you need more than the current maximum limit of authorized networks per cluster.
+
+**Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
+
+{{site.data.alerts.callout_success}}
+Use PrivateLink, GCP VPC Peering, or AWS PrivateLink) if:
+
+- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for Dedicated clusters and 50 for Serverless).
+- Your servers’ IP addresses are not static.
+- You want avoid exposing your cluster to the public internet.
+
+Learn more about [Private Clusters (Preview)](private-clusters.html), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 
@@ -41,7 +53,18 @@ Authorized network access can be managed from the {{ site.data.products.db }} co
 
 `https://cockroachlabs.cloud/cluster/{ your cluster UUID}/networking`
 
-You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can use VPC Peering or AWS PrivateLink instead (Dedicated clusters only).
+Serverless and Dedicated clusters support different maximum numbers of IP allowlist rules:
+
+Cluster Type | IP allowlist rule max
+--------|------------
+Dedicated|20
+Serverless|50
+
+{{site.data.alerts.callout_info}}
+While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network.
+{{site.data.alerts.end}}
+
+If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
 
 Refer to:
 

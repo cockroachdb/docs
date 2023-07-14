@@ -18,11 +18,11 @@ Currently, this flow will not work for service accounts provisioned in {{ site.d
 
 ## Before you begin
 
+For more details and examples, refer to [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
+
 - **IdP:**
 
 	You must have the ability to create identities and issue access tokens formatted using JSON Web Token (JWT).
-
-	This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
 - **CockroachDB:**
 
@@ -35,7 +35,7 @@ Currently, this flow will not work for service accounts provisioned in {{ site.d
 	- SQL users/credentials:
 
 		- Your SQL user must have the ability to update cluster settings. This permission is provided by either the [`admin` role](security-reference/authorization.html#admin-role) or the [`MODIFYCLUSTERSETTING` role option](security-reference/authorization.html#supported-privileges). This is required to designate an IdP as an external token issuer.
-	
+
 		- A SQL user that corresponds with your external identity must be pre-provisioned on the cluster. To provision such users, you must have access to the [`admin` role](security-reference/authorization.html#admin-role).
 
 ## Learn more
@@ -110,7 +110,7 @@ SET CLUSTER SETTING server.jwt_authentication.jwks = '{"keys": [{"alg": "RS256",
 	{{site.data.alerts.end}}
 
 ### `server.jwt_authentication.audience`
-	
+
 	The ID of your cluster as specified by the IdP, or a JSON array of such names. One of the audience values here must match the `audience` claim of an access token, or it will be rejected.
 
 	{{site.data.alerts.callout_danger}}
@@ -152,3 +152,7 @@ cockroach sql --url "postgresql://{SQL_USERNAME}:{JWT_TOKEN}@{CLUSTER_HOST}:2625
 Welcome to the cockroach SQL interface...
 ~~~
 
+## What's Next?
+
+- Read about [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
+- Learn more about [Authentication](authentication.html) in CockroachDB.

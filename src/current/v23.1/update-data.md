@@ -59,7 +59,7 @@ Here are some best practices to follow when updating rows:
 
 - Always specify a `WHERE` clause in `UPDATE` queries. If no `WHERE` clause is specified, CockroachDB will update all of the rows in the specified table.
 - To update a large number of rows (i.e., tens of thousands of rows or more), use a [batch-update loop](bulk-update-data.html).
-- When executing `UPDATE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under [contention](performance-best-practices-overview.html#transaction-contention).
+- When executing `UPDATE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](query-behavior-troubleshooting.html#transaction-retry-errors) that can occur under [contention](performance-best-practices-overview.html#transaction-contention).
 
 ### `UPDATE` example
 
@@ -161,7 +161,7 @@ For detailed reference documentation on the `UPSERT` statement, including additi
 Here are some best practices to follow when using `UPSERT`:
 
 - Limit the number of `UPSERT` statements that you execute. It's more efficient to insert multiple rows with a single statement than to execute multiple `UPSERT` statements that each insert a single row.
-- When executing `UPSERT` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+- When executing `UPSERT` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](query-behavior-troubleshooting.html#transaction-retry-errors) that can occur under contention.
 
 ### `UPSERT` example
 
@@ -311,7 +311,7 @@ Note that the statement contains an `UPDATE` clause, which is semantically ident
 Here are some best practices to follow when using `INSERT ... ON CONFLICT ... DO UPDATE`:
 
 - Limit the number of `INSERT` statements that you execute. It's more efficient to insert multiple rows with a single statement than to execute multiple `INSERT` statements that each insert a single row.
-- When executing `INSERT` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+- When executing `INSERT` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](query-behavior-troubleshooting.html#transaction-retry-errors) that can occur under contention.
 - Follow the [performance best practices listed on the `INSERT`](insert.html#performance-best-practices) page.
 
 ### `INSERT ON CONFLICT` example
@@ -432,7 +432,7 @@ Other common tasks:
 
 <!-- Reference Links -->
 
-[error_handling]: error-handling-and-troubleshooting.html
+[error_handling]: query-behavior-troubleshooting.html
 [manual]: manual-deployment.html
 [orchestrated]: orchestration.html
 [selection]: selection-queries.html

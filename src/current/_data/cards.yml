@@ -11,7 +11,7 @@ develop:
   - link: "/PREFIX/example-apps.html"
     title: "Example applications"
     text: "Browse our example applications written in your favorite language and framework."
-  - link: "/PREFIX/tutorials-overview.html"
+  - link: "/PREFIX/example-apps.html"
     title: "Tutorials"
     text: "Browse our tutorials."
   - link: "/PREFIX/developer-basics.html"
@@ -29,7 +29,7 @@ develop:
   - link: "/PREFIX/insert-data.html"
     title: "Write data"
     text: "How to insert data into your cluster."
-  - link: "/PREFIX/error-handling-and-troubleshooting.html"
+  - link: "/PREFIX/query-behavior-troubleshooting.html"
     title: "Troubleshoot your application"
     text: "Handle errors and solve problems with your application."
   - link: '/PREFIX/make-queries-fast.html'

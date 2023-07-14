@@ -106,7 +106,7 @@ The example commands below must be tailored for your environment and run for eac
 On any node's machine, manually [create the certificate and key pair](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) for the root user.
 
 {{site.data.alerts.callout_danger}}
-Do not share the root cert. In a later step, you can use the root user to create additional administrative users, specifying their privileges. You can then create and securely share their certs, as appropriate, using the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+Do not share the root cert. In a later step, you can use the root user to create additional administrative users, specifying their privileges. You can then create and securely share their certs, as appropriate, using the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
 ~~~ shell

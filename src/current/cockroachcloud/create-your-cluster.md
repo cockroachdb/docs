@@ -42,7 +42,7 @@ Cloud | Compute type                                                            
 ------|---------------------------------------------------------------------------------------|-------------
 GCP   | [N2 standard](https://cloud.google.com/compute/docs/machine-types#n2_machine_types)   | [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs)
 AWS   | [M6](https://aws.amazon.com/ec2/instance-types/m6/#Product_Details)                   | [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/)
-Azure | [Dasv5](https://learn.microsoft.com/en-us/azure/virtual-machines/dasv5-dadsv5-series) | [Premium SSDs](https://learn.microsoft.com/en-us/azure/virtual-machines/disks-types#premium-ssds)
+Azure | [Dasv5](https://learn.microsoft.com/azure/virtual-machines/dasv5-dadsv5-series) | [Premium SSDs](https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssds)
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -67,7 +67,7 @@ In the **Regions & nodes** section, select the number of nodes.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
-Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/requests/new).
 
 {{site.data.alerts.callout_danger}}
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), a {{ site.data.products.dedicated }} cluster deployed on Azure cannot be edited or scaled after it is created. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
@@ -87,11 +87,12 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     ----------|------------
     Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
     Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
+    Memory | Some of a node's provisioned RAM is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
 
 1. Select the **Storage**.
 
     {{site.data.alerts.callout_danger}}
-    Storage space cannot be removed from a node once added.
+    Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
     For optimal performance, choose up to <b>{{ cap_per_vcpu }}</b>. Refer to [Pricing](https://www.cockroachlabs.com/pricing/) for details. When selecting your storage capacity, consider the following factors:
@@ -103,7 +104,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
     Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
-    For more details about disk performance on a given cloud provider, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/en-us/azure/security/fundamentals/encryption-atrest">Azure Data Encryption at Rest</a></li></ul>
+    For more details about disk performance on a given cloud provider, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/azure/security/fundamentals/encryption-atrest">Azure Data Encryption at Rest</a></li></ul>
 
 To change the hardware configuration after the cluster is created, see [Manage a {{ site.data.products.dedicated }} Cluster](cluster-management.html).
 
@@ -123,7 +124,7 @@ Click **Next**. Optionally, you can enable VPC peering for a cluster deployed on
 
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect a GCP application to a {{ site.data.products.db }} cluster deployed on GCP. A separate VPC Peering connection is required for each cluster.
 
-VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster. For clusters deployed on Azure during [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), [Azure Virtual Network Peering](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+VPC peering is only available for GCP clusters. For clusters deployed on AWS, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster. For clusters deployed on Azure during [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), [Azure Virtual Network Peering](https://learn.microsoft.com/azure/virtual-network/virtual-network-peering-overview) is not yet supported. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 
 To continue without enabling VPC peering, click **Next** to [enter billing details](#step-8-enter-billing-details).
 {{ site.data.products.db }}
@@ -172,8 +173,8 @@ To start using your {{ site.data.products.db }} cluster, see the following pages
 
 If you created a multi-region cluster, it is important to carefully choose:
 
-- The right [survival goal](../{{site.current_cloud_version}}/multiregion-overview.html#survival-goals) for each database.
-- The right [table locality](../{{site.current_cloud_version}}/multiregion-overview.html#table-locality) for each of your tables.
+- The right [survival goal](../{{site.current_cloud_version}}/multiregion-survival-goals.html) for each database.
+- The right [table locality](../{{site.current_cloud_version}}/table-localities.html) for each of your tables.
 
 Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
 

@@ -6,12 +6,6 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Plan Your Cluster",
-          "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
-          ]
-        },
-        {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
@@ -104,12 +98,6 @@
           "urls": [
                 "/${VERSION}/backup-and-restore-overview.html"
               ]
-        },
-        {
-          "title": "Backup Architecture",
-          "urls": [
-            "/${VERSION}/backup-architecture.html"
-          ]
         },
         {
           "title": "Managed-Service Backups",
@@ -542,12 +530,6 @@
           "title": "Third-Party Monitoring Integrations",
           "items": [
             {
-              "title": "Third-Party Monitoring Integration Overview",
-              "urls": [
-                "/${VERSION}/third-party-monitoring-tools.html"
-              ]
-            },
-            {
              "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
              "urls": [
                "/cockroachcloud/export-metrics.html"
@@ -693,65 +675,6 @@
           "title": "Disaster Recovery",
           "urls": [
             "/${VERSION}/disaster-recovery.html"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Replication Controls",
-      "urls": [
-        "/${VERSION}/configure-replication-zones.html"
-      ]
-    },
-    {
-      "title": "Troubleshooting",
-      "items": [
-        {
-          "title": "Troubleshooting Overview",
-          "urls": [
-            "/${VERSION}/troubleshooting-overview.html"
-          ]
-        },
-        {
-          "title": "Common Errors and Solutions",
-          "urls": [
-            "/${VERSION}/common-errors.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Cluster Setup",
-          "urls": [
-            "/${VERSION}/cluster-setup-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Statement Behavior",
-          "urls": [
-            "/${VERSION}/query-behavior-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot CockroachDB Cloud",
-          "urls": [
-            "/cockroachcloud/troubleshooting-page.html"
-          ]
-        },
-        {
-          "title": "Replication Reports",
-          "urls": [
-            "/${VERSION}/query-replication-reports.html"
-          ]
-        },
-        {
-          "title": "Support Resources",
-          "urls": [
-            "/${VERSION}/support-resources.html"
-          ]
-        },
-        {
-          "title": "File an Issue",
-          "urls": [
-            "/${VERSION}/file-an-issue.html"
           ]
         }
       ]

@@ -14,8 +14,8 @@ The details displayed on the **Transaction Details** page reflect the [time inte
 
 The **Insights** table is displayed when CockroachDB has detected a problem with the transaction fingerprint.
 
-- **Insights**: Provides the [Workload Insight type](ui-insights-page.html#workload-insight-types).
+- **Insights**: Provides the [Workload Insight type]({{ link_prefix }}ui-insights-page.html#workload-insight-types).
 - **Details**: Provides a description and possible recommendation.
-- **Latest Execution ID**: The ID of the latest transaction execution. To display the [details of the transaction execution](ui-insights-page.html#transaction-execution-details), click the ID.
+- **Latest Execution ID**: The ID of the latest transaction execution. To display the [details of the transaction execution]({{ link_prefix }}ui-insights-page.html#transaction-execution-details), click the ID.
 
 The **Statements Fingerprints** table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement fingerprint]({{ page_prefix }}statements-page.html#statement-fingerprint-page), click a statement fingerprint.

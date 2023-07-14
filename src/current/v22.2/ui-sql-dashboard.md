@@ -23,6 +23,14 @@ The **SQL** dashboard displays the following time series graphs:
 
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
 
+## SQL Connection Rate
+
+The **SQL Connection Rate** is an average of the number of connection attempts per second over an aggregation window.
+
+- In the node view, the graph shows the rate of SQL connection attempts between clients and the selected node.
+  
+- In the cluster view, the graph shows the rate of SQL connection attempts to all nodes, with lines for each node.
+
 ## Open SQL Transactions
 
 - In the node view, the graph shows the total number of open SQL transactions on the node.

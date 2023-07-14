@@ -91,7 +91,7 @@ AWS disks can only be scaled once every six hours.
 1. Select the new amount of storage per node.
 
     {{site.data.alerts.callout_danger}}
-    Storage space cannot be removed from a node once added.
+    Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
@@ -182,15 +182,6 @@ To set an upgrade window:
 1. (Optional) If you want to delay automatic upgrades for 60 days, switch **Delay patch upgrades** to **On**.
     
     You can enable this setting for development and testing clusters if you want to ensure that they are upgraded before production clusters.
-
-## Create a database
-
-You can use the [**Databases** page](databases-page.html) to create a new database from the {{ site.data.products.db }} Console.
-
-1. Navigate to the **Databases** page from the **Overview** page of your cluster.
-1. Click **Add database**.
-1. Enter a name for the new database.
-1. Click **Create**.
 
 ## Restore data from a backup
 
