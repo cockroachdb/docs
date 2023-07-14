@@ -46,6 +46,8 @@ If you do not specify a point-in-time, the data will be restored to the backup t
 
 To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
 
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an `AS OF SYSTEM TIME` restore. A restore will not include historical data even if you ran your backup with `revision_history`. This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query.
+
 ## See also
 
 - [`BACKUP`][backup]

@@ -452,6 +452,8 @@ Finally, use the `start_time` and `end_time` detail to define the required time 
 RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 'external://backup_s3' AS OF SYSTEM TIME '2023-01-23 18:56:48';
 ~~~
 
+`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`. 
+
 ### Restore a backup asynchronously
 
 Use the [`DETACHED`](#detached) option to execute the restore [job](show-jobs.html) asynchronously:
