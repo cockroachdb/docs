@@ -246,7 +246,7 @@ In this example, we will generate the convex hull of a single geometry.  The geo
 
 ## See also
 
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html]
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)

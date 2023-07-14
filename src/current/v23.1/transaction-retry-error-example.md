@@ -7,7 +7,7 @@ docs_area: reference.transaction_retry_error_example
 
 When a [transaction](transactions.html) is unable to complete due to [contention](performance-best-practices-overview.html#transaction-contention) with another concurrent or recent transaction attempting to write to the same data, CockroachDB will [automatically attempt to retry the failed transaction](transactions.html#automatic-retries) without involving the client (i.e., silently). If the automatic retry is not possible or fails, a [transaction retry error](transaction-retry-error-reference.html) is emitted to the client.
 
-This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#testing-transaction-retry-logic) against your application's needs.
+This page presents an [example of an application's transaction retry logic](#client-side-retry-handling-example), as well as a manner by which that logic can be [tested and verified](#test-transaction-retry-logic) against your application's needs.
 
 ## Client-side retry handling example
 
@@ -40,7 +40,7 @@ while true:
             sleep(sleep_ms) # Assumes your sleep() takes milliseconds
 ~~~
 
-## Testing transaction retry logic
+## Test transaction retry logic
 
 To test your application's transaction retry logic, use the [`inject_retry_errors_enabled` session variable](set-vars.html#supported-variables). When `inject_retry_errors_enabled` is set to `true`, any statement (with the exception of [`SET` statements](set-vars.html)) executed in the session inside of an explicit transaction will return a [transaction retry error](transaction-retry-error-reference.html) with the message ```restart transaction: TransactionRetryWithProtoRefreshError: injected by `inject_retry_errors_enabled` session variable```.
 
@@ -132,12 +132,3 @@ def run_transaction(conn, op=None, max_retries=3):
 ~~~
 
 Calling `run_transaction` without an `op` input sets `inject_retry_errors_enabled` as `true` until the final retry attempt, before which the `inject_retry_errors_enabled` is set back to `false`. For all attempts except the last one, CockroachDB will inject a retryable serialization error for the client to handle. If the client cannot handle the error properly, the retry logic isn't working properly.
-
-## See also
-
-- [Common Errors and Solutions](common-errors.html)
-- [Transactions](transactions.html)
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
-- [Transaction Retry Error Reference](transaction-retry-error-reference.html)
-- [DB Console Transactions Page](ui-transactions-page.html)
-- [Architecture - Transaction Layer](architecture/transaction-layer.html)

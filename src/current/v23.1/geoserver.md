@@ -171,11 +171,10 @@ Your browser should open a new tab with the title **OpenLayers map preview**. It
 ## See also
 
 - [Install CockroachDB](install-cockroachdb.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial Indexes](spatial-indexes.html)
 - [Spatial & GIS Glossary of Terms](architecture/glossary.html)
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)

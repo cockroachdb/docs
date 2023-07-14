@@ -426,7 +426,7 @@ The non-blocking transaction protocol and replication scheme differ from standar
 
 These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments](../multiregion-overview.html). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.
 
-Most users will not interact with the non-blocking transaction mechanism directly. Instead, they will [set a `GLOBAL` table locality](../multiregion-overview.html#global-tables) using the SQL API.
+Most users will not interact with the non-blocking transaction mechanism directly. Instead, they will [set a `GLOBAL` table locality](../table-localities.html#global-tables) using the SQL API.
 
 ### How non-blocking transactions work
 
