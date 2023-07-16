@@ -83,7 +83,7 @@ docs_area:
         <li><a href="example-apps.html">Sample Apps</a></li>
         <li><a href="sql-feature-support.html">SQL Reference</a></li>
         <li><a href="performance-best-practices-overview.html">SQL Best Practices</a></li>
-        <li><a href="error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
+        <li><a href="query-behavior-troubleshooting.html">SQL Troubleshooting</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">

@@ -1,0 +1,117 @@
+{
+    "title": "Multi-Region Capabilities",
+    "is_top_level": true,
+    "items": [
+        {
+        "title": "Overview",
+        "urls": [
+            "/${VERSION}/multiregion-overview.html"
+            ]
+        },
+        {
+        "title": "Survival Goals",
+        "urls": [
+            "/${VERSION}/multiregion-survival-goals.html"
+            ]
+        },
+        {
+        "title": "Data Domiciling and Performance",
+        "items": [
+            {
+                "title": "Table Localities",
+                "urls": [
+                "/${VERSION}/table-localities.html"
+                ]
+            },
+            {
+                "title": "Table Partitioning",
+                "urls": [
+                "/${VERSION}/partitioning.html"
+                ]
+            }
+            ]
+        },
+        {
+            "title": "How to Choose a Multi-Region Configuration",
+            "urls": [
+            "/${VERSION}/choosing-a-multi-region-configuration.html"
+            ]
+        },
+        {
+            "title": "Multi-Region Zone Config Extensions",
+            "urls": [
+            "/${VERSION}/zone-config-extensions.html"
+            ]
+        },
+        {
+            "title": "Multi-Region Tutorials",
+            "items": [
+                {
+                    "title": "Low Latency Reads and Writes",
+                    "urls": [
+                    "/${VERSION}/demo-low-latency-multi-region-deployment.html"
+                    ]
+                },
+                {
+                    "title": "Data Domiciling with CockroachDB",
+                    "urls": [
+                    "/${VERSION}/data-domiciling.html"
+                    ]
+                },
+                {
+                    "title": "Migrate to Multi-Region SQL with Replication Zones",
+                    "urls": [
+                    "/${VERSION}/migrate-to-multiregion-sql.html"
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Topology Patterns",
+            "items": [
+            {
+                "title": "Overview",
+                "urls": [
+                "/${VERSION}/topology-patterns.html"
+                ]
+            },
+            {
+                "title": "Development",
+                "urls": [
+                "/${VERSION}/topology-development.html"
+                ]
+            },
+            {
+                "title": "Basic Production",
+                "urls": [
+                "/${VERSION}/topology-basic-production.html"
+                ]
+            },
+            {
+                "title": "Regional Tables",
+                "urls": [
+                "/${VERSION}/regional-tables.html"
+                ]
+            },
+            {
+                "title": "Global Tables",
+                "urls": [
+                "/${VERSION}/global-tables.html"
+                ]
+            },
+            {
+                "title": "Follower Reads",
+                "urls": [
+                "/${VERSION}/topology-follower-reads.html"
+                ]
+            },
+            {
+                "title": "Follow-the-Workload",
+                "urls": [
+                "/${VERSION}/topology-follow-the-workload.html"
+                ]
+            }
+            ]
+        }
+    ]
+}

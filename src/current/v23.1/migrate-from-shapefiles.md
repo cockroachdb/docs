@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
+CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html).
 
 This page has instructions for migrating data from ESRI [Shapefiles](architecture/glossary.html#shapefile) into CockroachDB using [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html) and [`IMPORT`][import].
 
@@ -108,7 +108,6 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 
 - [`IMPORT`][import]
 - [Export Spatial Data](export-spatial-data.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Using GeoServer with CockroachDB](geoserver.html)

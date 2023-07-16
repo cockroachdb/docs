@@ -98,4 +98,4 @@ Specific tasks:
 - [Delete Data](delete-data.html)
 - [Optimize Statement Performance](make-queries-fast.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
+- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)

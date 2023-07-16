@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
+ CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html).
 
 This page has instructions for migrating data from the [GeoJSON](https://wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
 
@@ -88,7 +88,6 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 - [`IMPORT`][import]
 - [Export Spatial Data](export-spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
