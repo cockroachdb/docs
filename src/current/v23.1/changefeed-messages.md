@@ -250,12 +250,12 @@ If you require `resolved` message frequency under `30s`, then you **must** set t
 
 ## Duplicate messages
 
-Under some circumstances, changefeeds will emit duplicate messages to ensure the sink is receiving each message at least once. The following can cause duplicate messages:
+Under some circumstances, changefeeds will emit duplicate messages to ensure the sink is receiving each message at least once. The following can cause or increase duplicate messages:
 
-- The changefeed job [encounters an error](#changefeed-encounters-an-error).
-- A node in the cluster [restarts](#node-restarts).
-- The changefeed job has the [`min_checkpoint_frequency` option set](#min_checkpoint_frequency-option).
-- A target table undergoes a schema change. Refer to [Schema changes](#schema-changes) for detail on duplicates in this case.
+- The changefeed job [encounters an error](#changefeed-encounters-an-error) and pauses, or is manually paused.
+- A node in the cluster [restarts](#node-restarts) or fails.
+- The changefeed job has the [`min_checkpoint_frequency` option set](#min_checkpoint_frequency-option), which can potentially increase duplicate messages.
+- A target table undergoes a schema change. Schema changes may also cause the changefeed to emit the whole target table. Refer to [Schema changes](#schema-changes) for detail on duplicates in this case.
 
 A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
 
@@ -270,7 +270,9 @@ By default, changefeeds treat errors as [retryable except for some specific term
 We recommend monitoring for changefeed retry errors and failures. Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html#recommended-changefeed-metrics-to-track) page.
 
 {{site.data.alerts.callout_info}}
-[Kafka's](changefeed-sinks.html#kafka) batching behavior can increase the number of duplicate messages. For example, if Kafka receives a batch of `N` messages and successfully saves `N-1` of them, the changefeed job only knows that the batch failed, not which message failed to commit. As a result, the changefeed job will resend the full batch of messages, which means all but one of the messages are duplicates. Reducing the Kafka batch size with [`kafka_config_sink`](changefeed-sinks.html#kafka-sink-configuration) may help to reduce the number of duplicate messages at the sink.
+A sink's batching behavior can increase the number of duplicate messages. For example, if Kafka receives a batch of `N` messages and successfully saves `N-1` of them, the changefeed job only knows that the batch failed, not which message failed to commit. As a result, the changefeed job will resend the full batch of messages, which means all but one of the messages are duplicates. For Kafka sinks, reducing the batch size with [`kafka_sink_config`](changefeed-sinks.html#kafka-sink-configuration) may help to reduce the number of duplicate messages at the sink.
+
+Refer to the [Changefeed Sinks](changefeed-sinks.html) page for details on sink batching configuration.
 {{site.data.alerts.end}}
 
 ### Node restarts
