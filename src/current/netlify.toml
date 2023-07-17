@@ -18,9 +18,9 @@
   [build.processing.images]
     compress = false
 
-# [[edge_functions]]
-#   function = "strip-slash"
-#   path = "/*"
+[[edge_functions]]
+  function = "strip-slash"
+  path = "/*"
 
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
