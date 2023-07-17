@@ -7,25 +7,68 @@ docs_area: migrate
 
 This page provides best practices for optimizing [import](import-into.html) performance in CockroachDB.
 
-Import speed primarily depends on the amount of data that you want to import. However, there are four main factors that have can have a large impact on the amount of time it will take to run an import:
+Import speed primarily depends on the amount of data that you want to import. However, there are three actions you can take before importing that have a significant impact on the amount of time it will take to run an import:
 
-- [Split your data into multiple files](#split-your-data-into-multiple-files)
-  - [File storage during import](#file-storage-during-import)
-- [Sort your data](#sort-your-data)
 - [Choose a performant import format](#choose-a-performant-import-format)
-  - [Import the schema separately from the data](#import-the-schema-separately-from-the-data)
-  - [Import into a schema with secondary indexes](#import-into-a-schema-with-secondary-indexes)
-  - [Temporarily remove foreign keys](#temporarily-remove-foreign-keys)
-  - [Data type sizes](#data-type-sizes)
-- [See also](#see-also)
+- [Split your data into multiple files](#split-your-data-into-multiple-files)
+- [Sort your data](#sort-your-data)
 
 {{site.data.alerts.callout_info}}
-If the import size is small, then you do not need to do anything to optimize performance. In this case, the import should run quickly, regardless of the settings.
+If the import size is small, then you do not need to do anything to optimize performance. For small datasets, the import should run quickly, regardless of the settings.
 {{site.data.alerts.end}}
+
+## Choose a performant import format
+
+Different import file formats do not have the same performance due to the way they are processed by CockroachDB. The fastest import file formats are:
+
+1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import-into.html) (both have about the same import performance).
+1. [`AVRO`](migrate-from-avro.html).
+
+We recommend formatting your import files as `CSV` or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
+
+{% include {{ page.version.version }}/import-table-deprecate.md %}
+
+### Import the schema separately from the data
+
+Split your dump data into two files:
+
+1. A SQL file containing the table schema.
+1. A CSV or AVRO file containing the table data.
+
+Convert the schema-only file using the [Schema Conversion Tool](../cockroachcloud/migrations-page.html). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
+
+Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
+
+~~~ sql
+> IMPORT INTO customers (id, name)
+CSV DATA (
+    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.csv'
+);
+~~~
+
+This method has the added benefit of alerting on potential issues with the import sooner; that is, you will not have to wait for the file to load both the schema and data just to find an error in the schema.
+
+### Import into a schema with secondary indexes
+
+When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, suitable for most import jobs.
+
+However, in **large** imports, it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. This provides increased visibility into its progress and ability to retry each step independently.
+
+- [Remove the secondary indexes](drop-index.html)
+- [Perform the import](import-into.html)
+- [Create a secondary index](schema-design-indexes.html#create-a-secondary-index)
+
+### Temporarily remove foreign keys
+
+When importing data into a table with foreign keys, temporarily remove the foreign keys, and add them after the initial migration with an [`ALTER TABLE` statement](alter-table.html#add-the-foreign-key-constraint-with-cascade).
+
+### Data type sizes
+
+Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](architecture/storage-layer.html#write-amplification). See each data type's documentation for its recommended size limits.
 
 ## Split your data into multiple files
 
-Splitting the import data into multiple files can have a large impact on the import performance. The following formats support multi-file import using `IMPORT INTO`:
+Splitting the import data into multiple files can have a significant impact on the import performance. The following formats support multi-file import using `IMPORT INTO`:
 
 - `CSV`
 - `DELIMITED DATA`
@@ -33,7 +76,7 @@ Splitting the import data into multiple files can have a large impact on the imp
 
 For these formats, we recommend splitting your data into at least as many files as there are nodes.
 
-For example, if you have a 3-node cluster, split your data into at least 3 files, create your table, and [import into that table](import-into.html):
+For example, if you have a 3-node cluster, split your data into at least 3 files, create your table schema, and [import into that table](import-into.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -69,58 +112,11 @@ If a node runs out of disk space while processing an import job, CockroachDB wil
 
 ## Sort your data
 
-Within each split file with your import data, sort the data based on how it will be stored in CockroachDB. For example, in the example where a dataset was partitioned by an alphabetic string primary key, within each split file the data should be sorted by the alphabetic primary key.
+Within each split file with your import data, sort the data based on how it will be stored in CockroachDB. For example, in the previous example where a dataset was partitioned by an alphabetic string primary key, within each split file the data should be sorted by the alphabetic primary key.
 
-In tests performed by Cockroach Labs, the best import performance, measured in both throughput and overall time, was observed when data was split into partitioned files and sorted within each partitioned file. Imports using an unpartitioned and unsorted dataset were about 16 times slower than imports using the same dataset with partitioned and sorted files. If you cannot both partition and sort your dataset, the performance of either partitioned or sorted data was similar, around 2 times slower than both partitioned and sorted data, but still much faster than both unpartitioned and unsorted data.
+In tests performed by Cockroach Labs, the best import performance, measured in both throughput and overall time, was observed when data was split into partitioned files and sorted within each partitioned file. Imports using an unpartitioned and unsorted dataset were about 16 times slower than imports using the same dataset with partitioned and sorted files.
 
-## Choose a performant import format
-
-Import formats do not have the same performance because of the way they are processed. Below, import formats are listed from fastest to slowest:
-
-1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import-into.html) (both have about the same import performance).
-1. [`AVRO`](migrate-from-avro.html).
-
-We recommend formatting your import files as `CSV`, `DELIMITED DATA`, or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
-
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
-### Import the schema separately from the data
-
-Split your dump data into two files:
-
-1. A SQL file containing the table schema.
-1. A CSV file containing the table data.
-
-Convert the schema-only file using the [Schema Conversion Tool](../cockroachcloud/migrations-page.html). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
-
-Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
-
-~~~ sql
-> IMPORT INTO customers (id, name)
-CSV DATA (
-    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.csv'
-);
-~~~
-
-This method has the added benefit of alerting on potential issues with the import sooner; that is, you will not have to wait for the file to load both the schema and data just to find an error in the schema.
-
-### Import into a schema with secondary indexes
-
-When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, suitable for most import jobs.
-
-However, in **large** imports, it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. This provides increased visibility into its progress and ability to retry each step independently.
-
-- [Remove the secondary indexes](drop-index.html)
-- [Perform the import](import-into.html)
-- [Create a secondary index](schema-design-indexes.html#create-a-secondary-index)
-
-### Temporarily remove foreign keys
-
-When importing data into a table with foreign keys, temporarily remove the foreign keys, and add them after the initial migration with an [`ALTER TABLE` statement](alter-table.html#add-the-foreign-key-constraint-with-cascade).
-
-### Data type sizes
-
-Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](architecture/storage-layer.html#write-amplification). See each data type's documentation for its recommended size limits.
+If you cannot both partition and sort your dataset, the performance of either partitioned or sorted data was similar, around 2 times slower than both partitioned and sorted data, but still much faster than both unpartitioned and unsorted data.
 
 ## See also
 
