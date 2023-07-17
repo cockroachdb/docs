@@ -178,7 +178,7 @@ SHOW BACKUP FROM '2023/07/14-211406.03' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-  database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
+database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
 ----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
   NULL          | NULL               | system                 | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
   system        | public             | users                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        136 |    2 |        t        | NULL
@@ -239,6 +239,45 @@ BACKUP INTO 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account
     );
 ~~~
 
+#### Show a backup with multi-region encryption
+
+To view a backup with [multi-region encryption](#multi-region), use the `kms` option and the same KMS URIs that were used to create the backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP FROM '2023/07/14-211406.03' IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    WITH KMS=(
+      'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}',
+      'azure-kms:///{key}/{key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
+    );
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
+----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
+  NULL          | NULL               | system                 | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  system        | public             | users                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        136 |    2 |        t        | NULL
+  system        | public             | zones                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        338 |   13 |        t        | NULL
+  system        | public             | settings               | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        373 |    5 |        t        | NULL
+  system        | public             | ui                     | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | locations              | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        261 |    5 |        t        | NULL
+  system        | public             | role_members           | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        217 |    1 |        t        | NULL
+  system        | public             | comments               | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | role_options           | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | scheduled_jobs         | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        496 |    2 |        t        | NULL
+  system        | public             | database_role_settings | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | role_id_seq            | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |         11 |    1 |        t        | NULL
+  system        | public             | tenant_settings        | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |         50 |    1 |        t        | NULL
+  system        | public             | privileges             | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | external_connections   | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  NULL          | NULL               | defaultdb              | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  defaultdb     | NULL               | public                 | schema      | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  NULL          | NULL               | postgres               | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  postgres      | NULL               | public                 | schema      | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+(19 rows)
+~~~
+
 #### Restore from an encrypted Azure Blob Storage backup
 
 {% include_cached new-in.html version="v23.1" %} To decrypt an [encrypted backup](#take-an-encrypted-azure-blob-storage-backup), use the `kms` option and any subset of the KMS URIs that were used to take the backup:
@@ -274,6 +313,45 @@ BACKUP INTO 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
       'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}',
       'gs:///projects/{project name}/locations/us-west1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}'
     );
+~~~
+
+#### Show a backup with multi-region encryption
+
+To view a backup with [multi-region encryption](#multi-region), use the `kms` option and the same KMS URIs that were used to create the backup:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP FROM '2023/07/14-211406.03' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    WITH KMS=(
+      'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}',
+      'gs:///projects/{project name}/locations/us-west1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=specified&CREDENTIALS={encoded key}'
+    );
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+database_name | parent_schema_name |      object_name       | object_type | backup_type | start_time |          end_time          | size_bytes | rows | is_full_cluster | regions
+----------------+--------------------+------------------------+-------------+-------------+------------+----------------------------+------------+------+-----------------+----------
+  NULL          | NULL               | system                 | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  system        | public             | users                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        136 |    2 |        t        | NULL
+  system        | public             | zones                  | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        338 |   13 |        t        | NULL
+  system        | public             | settings               | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        373 |    5 |        t        | NULL
+  system        | public             | ui                     | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | locations              | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        261 |    5 |        t        | NULL
+  system        | public             | role_members           | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        217 |    1 |        t        | NULL
+  system        | public             | comments               | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | role_options           | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | scheduled_jobs         | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |        496 |    2 |        t        | NULL
+  system        | public             | database_role_settings | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | role_id_seq            | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |         11 |    1 |        t        | NULL
+  system        | public             | tenant_settings        | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |         50 |    1 |        t        | NULL
+  system        | public             | privileges             | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  system        | public             | external_connections   | table       | full        | NULL       | 2023-07-14 21:14:06.031943 |          0 |    0 |        t        | NULL
+  NULL          | NULL               | defaultdb              | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  defaultdb     | NULL               | public                 | schema      | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  NULL          | NULL               | postgres               | database    | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+  postgres      | NULL               | public                 | schema      | full        | NULL       | 2023-07-14 21:14:06.031943 |       NULL | NULL |        t        | NULL
+(19 rows)
 ~~~
 
 #### Restore from an encrypted Google Cloud Storage backup
