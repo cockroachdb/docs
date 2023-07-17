@@ -24,5 +24,5 @@ export default async function handler(request: Request, context: Context) {
     request.headers.set('x-nf-subrequest', '1')
     return context.rewrite(new URL(location || '', request.url).toString())
   }
-  return response
+  //return response
 }
