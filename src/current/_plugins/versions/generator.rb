@@ -29,7 +29,7 @@ module JekyllVersions
         page.data['release_info'] = vp.release_info
         page.data['sidebar_data'] ||= vp.sidebar_data
         canonical = stable_vp(vp.key)&.url || page.url
-        page.data['canonical'] ||= canonical.sub('.html', '')
+        page.data['canonical'] ||= canonical.sub('/index.html', '/').sub('.html', '').downcase
 
         page.data['versions'] = versions.map do |v|
           { 'version' => v, 'url' => vps_with_key(vp.key)[v]&.url }
