@@ -7,30 +7,27 @@ export default async function handler(request: Request, context: Context) {
   // Skip for root, or if we're already proxying the request
   const pathsToSkip = [
     /\/docs\/.*?\/contribute-to-cockroachdb(\.html)?/,
-    /\/docs\/.*?\/build-a-python-app-with-cockroachdb-peewee(\.html)?/
+    /\/docs\/.*?\/build-a-python-app-with-cockroachdb-peewee(\.html)?/,
+    /\/docs\/css\/.*?/,
+    /\/docs\/js\/.*?/,
+    /\/docs\/_redirects/,
+    /\/docs(\/(advisories|api|cockroachcloud|releases|tutorials|v\d{1,2}\.\d(\/(architecture|security-reference))?))?\/?$/
   ];
-  
-  let canonical = pathname.replace("/index.html", "/").replace(".html", "").toLowerCase();
 
-  if (pathname === '/' || request.headers.get('x-nf-subrequest') || pathsToSkip.some(rx => rx.test(pathname) || pathname === canonical)) {
+  function canonicalize(pathname: string) {
+    let result = pathname.replace("/index.html", "").replace(".html", "").toLowerCase();
+    if (result.endsWith("/")) {
+      result = result.slice(0, -1);
+    }
+    return result;
+  }
+  
+  let canonical = canonicalize(pathname);
+
+  if (pathname === '/' || request.headers.get('x-nf-subrequest') || pathsToSkip.some(x => x.test(pathname) || pathname === canonical)) {
     return
   }
 
-  if (pathname !== canonical) {
-    // Redirect to desired canonical
-    return Response.redirect(`${request.url.replace("/index.html", "/").replace(".html", "").toLowerCase()}`, 301)
-  }
+  return Response.redirect(`${canonicalize(request.url)}`, 301)
 
-  const response = await context.next({ sendConditionalRequest: true })
-
-  // If origin returns a 301 we need to proxy it to avoid a redirect loop
-  // TODO: check that this is just a redirect to the canonical URL, not some other kind
-  if (response.status === 301) {
-    const location = response.headers.get('Location')
-    // Avoid infinite loops
-    request.headers.set('x-nf-subrequest', '1')
-    return context.rewrite(new URL(location || '', request.url).toString())
-  }
-  // We don't want to return a response here because redirect rules won't process
-  // see https://docs.netlify.com/edge-functions/declarations/#processing-order-caveats
 }

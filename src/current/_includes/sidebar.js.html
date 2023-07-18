@@ -97,7 +97,7 @@
             // This condition makes it possible to use external
             // urls in the sidebar.
             if (!/^https?:/.test(url)) {
-              url = sidebar.baseUrl + url.replace("/index.html", "/").replace(".html", "");
+              url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");
             }
             return url;
           });
