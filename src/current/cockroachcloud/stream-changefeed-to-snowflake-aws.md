@@ -233,4 +233,4 @@ Your changefeed is now streaming to Snowflake.
 - Snowpipe is unaware of CockroachDB [resolved timestamps](../{{site.current_cloud_version}}/create-changefeed.html#resolved-option). This means CockroachDB transactions will not be loaded atomically and partial transactions can briefly be returned from Snowflake.
 - Snowpipe works best with append-only workloads, as Snowpipe lacks native ETL capabilities to perform updates to data. You may need to pre-process data before uploading it to Snowflake.
 
-See the [Change Data Capture Overview](../{{site.current_cloud_version}}/change-data-capture-overview.html#known-limitations) for more general changefeed known limitations.
+See the [Change Data Capture Overview](../{{site.current_cloud_version}}/create-and-configure-changefeeds.html#known-limitations) for more general changefeed known limitations.
