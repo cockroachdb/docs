@@ -9,18 +9,16 @@ export default async function handler(request: Request, context: Context) {
     /\/docs\/.*?\/contribute-to-cockroachdb(\.html)?/,
     /\/docs\/.*?\/build-a-python-app-with-cockroachdb-peewee(\.html)?/
   ];
-  if (pathname === '/' || request.headers.get('x-nf-subrequest') || pathsToSkip.some(rx => rx.test(pathname) || !pathname.includes('.html'))) {
+  
+  let canonical = pathname.replace("/index.html", "/").replace(".html", "").toLowerCase();
+
+  if (pathname === '/' || request.headers.get('x-nf-subrequest') || pathsToSkip.some(rx => rx.test(pathname) || pathname === canonical)) {
     return
   }
 
-  if (pathname.includes("/index.html")) {
-    // Replace the suffix with a slash
-    return Response.redirect(`${request.url.replace("/index.html", "/")}`, 301)
-  }
-
-  if (pathname.includes('.html')) {
-    // Replace the suffix with nothing
-    return Response.redirect(`${request.url.replace('.html', "")}`, 301)
+  if (pathname !== canonical) {
+    // Redirect to desired canonical
+    return Response.redirect(`${request.url.replace("/index.html", "/").replace(".html", "").toLowerCase()}`, 301)
   }
 
   const response = await context.next({ sendConditionalRequest: true })
