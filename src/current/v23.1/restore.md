@@ -410,6 +410,10 @@ RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
 
 ### Restore with `AS OF SYSTEM TIME`
 
+{{site.data.alerts.callout_danger}}
+`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`. 
+{{site.data.alerts.end}}
+
 Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history.
 
 If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
@@ -451,8 +455,6 @@ Finally, use the `start_time` and `end_time` detail to define the required time 
 ~~~sql
 RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 'external://backup_s3' AS OF SYSTEM TIME '2023-01-23 18:56:48';
 ~~~
-
-`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`. 
 
 ### Restore a backup asynchronously
 
