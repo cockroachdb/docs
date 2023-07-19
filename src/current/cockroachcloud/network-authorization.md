@@ -96,7 +96,7 @@ Refer to: [Managing AWS PrivateLink for a Dedicated Cluster](aws-privatelink.htm
 
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
-For the functionality offered by the DB Console, refer to: [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html)
+For information on functionality, refer to: [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
 
 To access the DB Console, you must first authorize your current IP address:
 
