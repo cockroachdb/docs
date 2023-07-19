@@ -59,7 +59,7 @@ cockroach workload init tpcc \
 'postgresql://root@127.0.0.1:26257/tpcc?sslmode=disable'
 ~~~
 
-This will load 2 GB of data for 10 "warehouses", and spread the data across all 3 regions with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+This will load 2 GB of data for 10 "warehouses", and spread the data across all 3 regions with a [`ZONE` survival goal](multiregion-survival-goals.html#survive-zone-failures).
 
 ## Step 3. Run the benchmark
 

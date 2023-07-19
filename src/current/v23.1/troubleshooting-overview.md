@@ -13,7 +13,7 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 
 - If the problem doesn't match a common error, try the following pages:
   - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html) helps you start and scale your cluster.
-  - [Troubleshoot Common Problems](error-handling-and-troubleshooting.html) helps you handle errors and troubleshooting problems that may arise during application development.
+  - [Troubleshoot Common Problems](query-behavior-troubleshooting.html) helps you handle errors and troubleshooting problems that may arise during application development.
   - [Troubleshoot Statement Behavior](query-behavior-troubleshooting.html) helps you with unexpected query results.
 
 - If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](../cockroachcloud/troubleshooting-page.html).

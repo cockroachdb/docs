@@ -26,7 +26,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
 
-- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables).
+- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](table-localities.html#regional-by-row-tables).
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
@@ -214,7 +214,7 @@ CockroachDB does not allow inverted indexes with a [`STORING` column](create-ind
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
-[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](alter-index.html#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](export-spatial-data.html) columns with a multi-column or [partitioned](alter-index.html#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
 
 To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
 
@@ -419,7 +419,7 @@ CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON 
 
 ### Spatial support limitations
 
-CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
+CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html), with the following limitations:
 
 - Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported.
 
@@ -455,7 +455,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
 - CockroachDB does not support using [schema name prefixes](sql-name-resolution.html#how-name-resolution-works) to refer to [data types](data-types.html) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
-    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
+    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](export-spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 

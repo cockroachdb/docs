@@ -70,7 +70,7 @@ SELECT st_intersects(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -
 
 ## See also
 
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html]
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)

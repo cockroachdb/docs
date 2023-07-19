@@ -73,7 +73,7 @@ The vectorized engine does not support queries containing:
 
 ### Spatial features
 
-The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
+The vectorized engine does not support [working with spatial data](export-spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](export-spatial-data.html) will revert to the row-oriented execution engine.
 
 ## See also
 

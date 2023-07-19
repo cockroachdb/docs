@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
+ CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html).
 
 This page has instructions for migrating data from [OpenStreetMap](https://www.openstreetmap.org) `.pbf` data files into CockroachDB using [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/) and [`IMPORT`][import].
 
@@ -124,7 +124,6 @@ Osm2pgsql took 2879s overall
 
 - [`IMPORT`][import]
 - [Export Spatial Data](export-spatial-data.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from GeoPackages](migrate-from-geopackage.html)

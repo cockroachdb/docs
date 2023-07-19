@@ -89,5 +89,5 @@ When you use the `cockroach start-single-node` command to start a single-node cl
 
 ## See also
 
-- [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
+- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
 - [Optimize Statement Performance](make-queries-fast.html)

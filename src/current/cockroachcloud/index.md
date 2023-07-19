@@ -98,7 +98,7 @@ docs_area:
         <li><a href="../{{site.current_cloud_version}}/example-apps.html">Sample Apps</a></li>
         <li><a href="../{{site.current_cloud_version}}/sql-feature-support.html">SQL Reference</a></li>
         <li><a href="../{{site.current_cloud_version}}/performance-best-practices-overview.html">SQL Best Practices</a></li>
-        <li><a href="../{{site.current_cloud_version}}/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
+        <li><a href="../{{site.current_cloud_version}}/query-behavior-troubleshooting.html">SQL Troubleshooting</a></li>
         </ul>
       </div>
     </div>
