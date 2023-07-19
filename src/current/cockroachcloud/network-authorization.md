@@ -102,7 +102,10 @@ To access the DB Console, you must first authorize your current IP address:
 
 1. Visit your Dedicated cluster's IP allowlist page:
 
-    `https://cockroachlabs.io/cluster/{ cluster ID }/networking/allowlist`
+    {% include_cached copy-clipboard.html %}
+    ~~~txt
+    https://cockroachlabs.io/cluster/{ your cluster UUID }/networking/allowlist
+    ~~~
 
 1. Click **Add Network**.
 
