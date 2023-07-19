@@ -129,7 +129,7 @@ To get the URL for your cluster's DB Console:
 
 1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
 
-To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL which opens in the browser. These IP addresses are static for the lifecycle of the cluster.
+To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
