@@ -81,7 +81,7 @@ The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} clu
 
 ### How do I change the configurations on my cluster?
 
-You can [change your cluster's compute](cluster-management.html#change-compute-for-a-cluster), [add and remove nodes](cluster-management.html#add-or-remove-nodes-from-a-cluster), and [increase storage](cluster-management.html#increase-storage-for-a-cluster) from the {{ site.data.products.db }} Console. Due to cloud provider limitations, storage space cannot be removed from a node once added.
+You can [change your cluster's compute](cluster-management.html#change-compute-for-a-cluster), [add and remove nodes](cluster-management.html#add-or-remove-nodes-from-a-cluster), and [increase storage](cluster-management.html#increase-storage-for-a-cluster) using the {{ site.data.products.db }} Console, the [Cloud API](cloud-api.html), or [Terraform](provision-a-cluster-with-terraform.html). Due to cloud provider limitations, storage space cannot be removed from a node once added.
 
 ### How do I add nodes?
 
