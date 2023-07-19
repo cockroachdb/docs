@@ -111,34 +111,39 @@ To access the DB Console, you must first authorize your current IP address:
 
 1. Add your **Current Network**:
 
-1. Give it a **Name** indicating its use for DB Console access from your current location.
+    1. Give it a **Name** indicating its use for DB Console access from your current location.
 
-1.  Under **Allow this network to access**, select **DB Console to monitor the cluster**.
+    1.  Under **Allow this network to access**, select **DB Console to monitor the cluster**.
 
-1. Click **Apply**.
+    1. Click **Apply**.
 
 {{site.data.alerts.callout_danger}}
-When you have finished your work with the DB Console, be sure to remove your authorized network from the allowlist, by selecting **Delete** from the **Action** dropdown in your network's row.
+When you have finished your work with the DB Console, it is recommended to remove your authorized network from the allowlist, in the interest of the general best practice of restricting network access as much as possible.
+
+Remove an authorized network by selecting **Delete** from the **Action** dropdown its row on the allowlist page.
 {{site.data.alerts.end}}
 
 To get the URL for your cluster's DB Console:
 
 1. Visit your Dedicated cluster's monitoring page:
 
-    `https://cockroachlabs.io/cluster/{ cluster ID }/monitoring`
+    {% include_cached copy-clipboard.html %}
+    ~~~txt
+    https://cockroachlabs.io/cluster/{ cluster ID }/monitoring
+    ~~~
 
 1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
 
-To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster.
+(Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
-dig examplary-dedicated-clusterberry-77tq.crdb.io | grep -A3 'ANSWER SECTION'
+dig examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud | grep -A3 'ANSWER SECTION'
 ~~~
 
 ~~~txt
 ;; ANSWER SECTION:
-examplary-dedicated-clusterberry-77tq.crdb.io. 300 IN A 35.245.55.160
-examplary-dedicated-clusterberry-77tq.crdb.io. 300 IN A 34.129.61.133
-examplary-dedicated-clusterberry-77tq.crdb.io. 300 IN A 34.117.21.266
+examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 35.245.55.160
+examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 34.129.61.133
+examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 34.117.21.266
 ~~~
