@@ -97,12 +97,12 @@
             // This condition makes it possible to use external
             // urls in the sidebar.
             if (!/^https?:/.test(url)) {
-              url = sidebar.baseUrl + url;
+              url = sidebar.baseUrl + url.replace(".html", "");
             }
             return url;
           });
 
-          // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
+          // this ensures page will be highlighted in sidebar if URL is accessed with or without `.html` appended
           var activePathname
           if (!/^https?:/.test(location.pathname)) {
             activePathname = location.pathname
@@ -110,9 +110,10 @@
           else {
             activePathname = location.pathname
           }
-          if (location.pathname.slice(-5) !== '.html') {
-            activePathname += '.html'
+          if (location.pathname.slice(-5) === '.html') {
+            activePathname = activePathname.replace(".html", "")
           }
+          // console.log(urls);
 
           const active = (urls.indexOf(activePathname) !== -1);
           if (active) {
@@ -163,7 +164,7 @@
         // like "v1.0" or "v1.10".
         return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
       },
-      items: {%- include {{ page.sidebar_data }} -%}
+      items: {%- include_cached {{ include.sidebar_data }} -%}
     };
 
     // implemented in initSidebar.js

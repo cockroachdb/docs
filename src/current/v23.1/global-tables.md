@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-In a [multi-region deployment](multiregion-overview.html), [`GLOBAL` table locality](multiregion-overview.html#global-tables) is a good choice for tables with the following requirements:
+In a [multi-region deployment](multiregion-overview.html), [`GLOBAL` table locality](table-localities.html#global-tables) is a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be much higher.
 - Reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](foreign-key.html).
@@ -43,7 +43,7 @@ To use this pattern, set the [table locality](multiregion-overview.html#table-lo
 
 {% include {{page.version.version}}/topology-patterns/multiregion-db-setup.md %}
 
-1. Create a [`GLOBAL` table](multiregion-overview.html#global-tables) by issuing the following statement:
+1. Create a [`GLOBAL` table](table-localities.html#global-tables) by issuing the following statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -80,9 +80,9 @@ Writes incur higher latencies than reads, since they require a "commit-wait" ste
 
 ### Resiliency
 
-Because the `test` database does not specify a [survival goal](multiregion-overview.html#survival-goals), it uses the default [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures). With the default settings, an entire zone can fail without interrupting access to the database.
+Because the `test` database does not specify a [survival goal](multiregion-overview.html#survival-goals), it uses the default [`ZONE` survival goal](multiregion-survival-goals.html#survive-zone-failures). With the default settings, an entire zone can fail without interrupting access to the database.
 
-For more information about how to choose a database survival goal, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about how to choose a database survival goal, see [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals).
 
 ## Troubleshooting
 

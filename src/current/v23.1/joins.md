@@ -106,7 +106,7 @@ CockroachDB supports the following algorithms for performing a join:
 
 ### Merge joins
 
-To perform a [merge join](https://en.wikipedia.org/wiki/Sort-merge_join) of two tables, both tables must be indexed on the equality columns, and any indexes must have the same ordering. Merge joins offer better computational performance and more efficient memory usage than [hash joins](#hash-joins). When tables and indexes are ordered for a merge, CockroachDB chooses to use merge joins over hash joins, by default. When merge conditions are not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
+To perform a [merge join](https://wikipedia.org/wiki/Sort-merge_join) of two tables, both tables must be indexed on the equality columns, and any indexes must have the same ordering. Merge joins offer better computational performance and more efficient memory usage than [hash joins](#hash-joins). When tables and indexes are ordered for a merge, CockroachDB chooses to use merge joins over hash joins, by default. When merge conditions are not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb/).
 
 Merge joins are performed on the indexed columns of two tables as follows:
 
@@ -123,12 +123,12 @@ Merge joins are performed on the indexed columns of two tables as follows:
 
 ### Hash joins
 
-If a merge join cannot be used, CockroachDB uses a [hash join](https://en.wikipedia.org/wiki/Hash_join). Hash joins are computationally expensive and require additional memory.
+If a merge join cannot be used, CockroachDB uses a [hash join](https://wikipedia.org/wiki/Hash_join). Hash joins are computationally expensive and require additional memory.
 
 Hash joins are performed on two tables as follows:
 
 1. CockroachDB reads both tables and attempts to pick the smaller table.
-1. CockroachDB creates an in-memory [hash table](https://en.wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
+1. CockroachDB creates an in-memory [hash table](https://wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
 1. CockroachDB then scans the large table, looking up each row in the hash table.
 
 ### Lookup joins

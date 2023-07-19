@@ -31,7 +31,7 @@ changefeed.cpu.per_event_elastic_control.enabled
 kvadmission.rangefeed_catchup_scan_elastic_control.enabled
 ~~~
 
-For a more technical explanation of elastic CPU, refer to the [Rubber control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
+For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
 
 ## Tuning for high durability delivery
 
@@ -46,7 +46,7 @@ Before tuning these settings, we recommend reading details on our [changefeed at
 
 ### Pausing changefeeds and garbage collection
 
-By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). Protected timestamps will protect changefeed data from garbage collection if the downstream [changefeed sink](changefeed-sinks.html) is unavailable until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
+By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](how-does-an-enterprise-changefeed-work.html). Protected timestamps will protect changefeed data from garbage collection if the downstream [changefeed sink](changefeed-sinks.html) is unavailable until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads.
 
@@ -106,7 +106,7 @@ When designing a system that needs to emit a lot of changefeed messages, whether
 
 When a changefeed emits a [resolved](create-changefeed.html#resolved-option) message, it force flushes all outstanding messages that have buffered, which will diminish your changefeed's throughput while the flush completes. Therefore, if you are aiming for higher throughput, we suggest setting the duration higher (e.g., 10 minutes), or **not** using the `resolved` option.
 
-If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option, which defaults to `30s`. This option controls how often nodes flush their progress to the [coordinating changefeed node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as long as your `resolved` option duration.
+If you are setting the `resolved` option when you are aiming for high throughput, you must also consider the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option, which defaults to `30s`. This option controls how often nodes flush their progress to the [coordinating changefeed node](how-does-an-enterprise-changefeed-work.html). As a result, `resolved` messages will not be emitted more frequently than the configured `min_checkpoint_frequency`. Set this option to at least as long as your `resolved` option duration.
 
 ### Batching and buffering messages
 

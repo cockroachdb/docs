@@ -159,8 +159,8 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 
 The `compress` option defines which decompression codec should be used on the CSV file to be imported. Options include:
 
-- `gzip`: Uses the [gzip](https://en.wikipedia.org/wiki/Gzip) algorithm to decompress the file.
-- `bzip`: Uses the [bzip](https://en.wikipedia.org/wiki/Bzip2) algorithm to decompress the file.
+- `gzip`: Uses the [gzip](https://wikipedia.org/wiki/Gzip) algorithm to decompress the file.
+- `bzip`: Uses the [bzip](https://wikipedia.org/wiki/Bzip2) algorithm to decompress the file.
 - `none`: Disables decompression.
 - `auto`: **Default**. Guesses based on file extension ('none' for `.csv`, 'gzip' for `.gz`, 'bzip' for `.bz` and `.bz2`).
 

@@ -14,7 +14,7 @@ This page guides you through setting up a virtual environment for developing and
 1. Make sure that you have the following installed on your local machine:
       - [CockroachDB](install-cockroachdb-mac.html)
       - [Python 3](https://www.python.org/downloads/)
-      - [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+      - [Pipenv](https://pipenv.pypa.io)
 
 1. Clone the [`movr-flask`](https://github.com/cockroachlabs/movr-flask) repository. We'll reference the source code in this repository throughout the tutorial.
 
@@ -115,4 +115,4 @@ Now that you've set up a development environment, you can start [developing and 
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [`cockroach demo`](cockroach-demo.html)
-- [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+- [Pipenv](https://pipenv.pypa.io)

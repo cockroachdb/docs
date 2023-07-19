@@ -14,7 +14,7 @@ If you need to migrate data from a {{ site.data.products.serverless }} cluster t
 A database migration broadly consists of the following phases:
 
 1. [Develop a migration plan:](#develop-a-migration-plan) Evaluate your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy), [size the CockroachDB cluster](#capacity-planning) that you will migrate to, and become familiar with the [application changes](#application-changes) that you need to make for CockroachDB.
-1. [Prepare for migration:](#prepare-for-migration) Run a [pre-mortem](#run-a-migration-pre-mortem) (optional), set up [metrics](#set-up-monitoring-and-alerting) (optional), [convert your schema](#convert-the-schema), perform an [initial load of test data](#load-test-data), [validate your application queries](#validate-queries) for correctness and performance, and [perform a dry run](#perform-a-dry-run) of the migration (optional).
+1. [Prepare for migration:](#prepare-for-migration) Run a [pre-mortem](#run-a-migration-pre-mortem) (optional), set up [metrics](#set-up-monitoring-and-alerting) (optional), [convert your schema](#convert-the-schema), perform an [initial load of test data](#load-test-data), [validate your application queries](#validate-queries) for correctness and performance, and [perform a dry run](#perform-a-dry-run) of the migration.
 1. [Conduct the migration:](#conduct-the-migration) Use a [lift-and-shift](#lift-and-shift) or ["zero-downtime"](#zero-downtime) method to migrate your data, application, and users to CockroachDB.
 1. [Complete the migration:](#complete-the-migration) Notify the appropriate parties and summarize the details.
 

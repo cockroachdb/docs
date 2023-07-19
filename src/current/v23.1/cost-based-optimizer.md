@@ -250,7 +250,7 @@ You can instruct the optimizer to use indexes marked as `NOT VISIBLE` with the [
 
 ## Locality optimized search in multi-region clusters
 
-In [multi-region deployments](multiregion-overview.html) with [regional by row tables](multiregion-overview.html#regional-by-row-tables), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), may perform a *locality optimized search* to attempt to avoid high-latency, cross-region communication between nodes. If there is a possibility that the results of a query all live in local rows, the database will first search for rows in the gateway node's region. The search only continues in remote regions if rows in the local region did not satisfy the query. Examples of queries that can use locality optimized search include unique key lookups and queries with [`LIMIT`](limit-offset.html) clauses.
+In [multi-region deployments](multiregion-overview.html) with [regional by row tables](table-localities.html#regional-by-row-tables), the optimizer, in concert with the [SQL engine](architecture/sql-layer.html), may perform a *locality optimized search* to attempt to avoid high-latency, cross-region communication between nodes. If there is a possibility that the results of a query all live in local rows, the database will first search for rows in the gateway node's region. The search only continues in remote regions if rows in the local region did not satisfy the query. Examples of queries that can use locality optimized search include unique key lookups and queries with [`LIMIT`](limit-offset.html) clauses.
 
 Even if a value cannot be read locally, CockroachDB takes advantage of the fact that some of the other regions are much closer than others and thus can be queried with lower latency. Unless [queries are limited to a single region](#control-whether-queries-are-limited-to-a-single-region), CockroachDB performs all lookups against the remote regions in parallel and returns the result once it is retrieved, without having to wait for each lookup to come back. This can lead to increased performance in multi-region deployments, since it means that results can be returned from wherever they are first found without waiting for all of the other lookups to return.
 
@@ -268,14 +268,14 @@ Locality optimized search is supported for scans that are guaranteed to return 1
 
 ## Control whether queries are limited to a single region
 
-Although the optimizer prefers to [read from rows in local regions](#locality-optimized-search-in-multi-region-clusters) when possible, by default, it does not guarantee that any query will not visit a remote region. This can occur if a query has no [home region](multiregion-overview.html#table-localities) (for example, if it reads from different home regions in a [regional by row table](multiregion-overview.html#regional-by-row-tables)) or a query's home region differs from the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) region.
+Although the optimizer prefers to [read from rows in local regions](#locality-optimized-search-in-multi-region-clusters) when possible, by default, it does not guarantee that any query will not visit a remote region. This can occur if a query has no [home region](multiregion-overview.html#table-localities) (for example, if it reads from different home regions in a [regional by row table](table-localities.html#regional-by-row-tables)) or a query's home region differs from the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) region.
 
 For some latency-sensitive applications, cross-region latency may not be acceptable. In these cases, set the [`enforce_home_region` session variable](show-vars.html#enforce-home-region) to `on`. This configures the optimizer to return one of the following error types, and in some cases a suggested resolution, if a query cannot be run entirely in a single region:
 
 - `Query has no home region`. The optimizer provides a hint on how to run the query in a single region.
 - `Query is not running in its home region`. The optimizer provides a hint containing the home region of the query. The application should disconnect and then reconnect with a [connection string](connection-parameters.html) specifying a node in the query's home region.
 
-Only tables with `ZONE` [survivability](when-to-use-zone-vs-region-survival-goals.html) can be scanned without error when this setting is enabled.
+Only tables with `ZONE` [survivability](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals) can be scanned without error when this setting is enabled.
 
 ## Query plan cache
 

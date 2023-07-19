@@ -24,6 +24,7 @@ This page describes:
 - Many DDL queries (including [`TRUNCATE`](truncate.html), [`DROP TABLE`](drop-table.html), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. See change data capture [Known Limitations](change-data-capture-overview.html) for more detail.
 - Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](configure-replication-zones.html#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](changefeed-messages.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](monitor-and-debug-changefeeds.html#monitor-a-changefeed).
 - When an [`IMPORT INTO`](import-into.html) statement is run, any current changefeed jobs targeting that table will fail.
+- After you [restore from a full-cluster backup](restore.html#full-cluster), changefeed jobs will **not** resume on the new cluster. It is necessary to manually create the changefeeds following the full-cluster restore.
 - {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
 
 ### Recommendations for the number of target tables
@@ -43,7 +44,7 @@ Cockroach Labs recommends monitoring [CPU usage](ui-overload-dashboard.html) whe
 
 To maintain more running changefeeds in your cluster:
 
-- Connect to different nodes to create each changefeed. The node on which you start the changefeed will become the _coordinator_ node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. Refer to [How does an Enterprise changefeed work?](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) for more detail.
+- Connect to different nodes to create each changefeed. The node on which you start the changefeed will become the _coordinator_ node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. Refer to [How does an Enterprise changefeed work?](how-does-an-enterprise-changefeed-work.html) for more detail.
 - Consider logically grouping the target tables into one changefeed. When a changefeed pauses, it will stop emitting messages for the target tables. Grouping tables of related data into a single changefeed may make sense for your workload. However, we do not recommend watching hundreds of tables in a single changefeed. Refer to [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on protecting data from garbage collection when a changefeed is paused.
 
 ## Enable rangefeeds
@@ -165,6 +166,10 @@ EXPERIMENTAL CHANGEFEED FOR table_name;
 For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
 </section>
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ## See also
 

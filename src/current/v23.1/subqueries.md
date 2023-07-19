@@ -49,12 +49,12 @@ For example, to find every customer with at least one order, run:
 
 The subquery is correlated because it uses `c` defined in the surrounding query.
 
-The [cost-based optimizer](cost-based-optimizer.html) supports most [correlated subqueries](https://en.wikipedia.org/wiki/Correlated_subquery),
+The [cost-based optimizer](cost-based-optimizer.html) supports most [correlated subqueries](https://wikipedia.org/wiki/Correlated_subquery),
 with the exception of correlated subqueries that generate side effects inside a `CASE` statement.
 
 ### `LATERAL` subqueries
 
-A `LATERAL` subquery is a correlated subquery that references another query or subquery in its `SELECT` statement, usually in the context of a [`LEFT` join](joins.html#left-outer-joins) or an [`INNER` join](joins.html#inner-joins). Unlike other correlated subqueries, `LATERAL` subqueries iterate through each row in the referenced query for each row in the inner subquery, like a [for loop](https://en.wikipedia.org/wiki/For_loop).
+A `LATERAL` subquery is a correlated subquery that references another query or subquery in its `SELECT` statement, usually in the context of a [`LEFT` join](joins.html#left-outer-joins) or an [`INNER` join](joins.html#inner-joins). Unlike other correlated subqueries, `LATERAL` subqueries iterate through each row in the referenced query for each row in the inner subquery, like a [for loop](https://wikipedia.org/wiki/For_loop).
 
 To create a `LATERAL` subquery, use the `LATERAL` keyword directly before the inner subquery's `SELECT` statement.
 

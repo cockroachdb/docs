@@ -135,7 +135,7 @@ Additional ways to restore data:
 {{site.data.alerts.callout_danger}}
 The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
 
-This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
+This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
 
 {{site.data.alerts.end}}
 

@@ -47,7 +47,7 @@ SELECT to_tsvector('How do trees get on the internet?');
 
 This `TSVECTOR` consists of the lexemes `get`, `internet`, and `tree`. Normalization removes the following from the input:
 
-- Derivatives of words, which are reduced using a [stemming](https://en.wikipedia.org/wiki/Stemming) algorithm. In this example, "trees" is normalized to `tree`.
+- Derivatives of words, which are reduced using a [stemming](https://wikipedia.org/wiki/Stemming) algorithm. In this example, "trees" is normalized to `tree`.
 - *Stop words*. These are words that are considered not useful for indexing and searching, based on the [text search configuration](#text-search-configuration). This example does not specify a configuration, and `english` is used by default. "How", "do", "on", and "the" are identified as stop words.
 - Punctuation and capitalization.
 

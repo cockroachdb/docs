@@ -448,7 +448,6 @@ A troubleshooting guide helps users quickly recognize the source of an error con
 
 #### Examples
 
-- [Error Handling and Troubleshooting](https://www.cockroachlabs.com/docs/stable/error-handling-and-troubleshooting.html)
 - [Troubleshoot SQL Behavior](https://www.cockroachlabs.com/docs/stable/query-behavior-troubleshooting.html)
 
 ### FAQ
@@ -539,6 +538,15 @@ Whenever a CockroachDB feature is referenced, provide a link to the relevant doc
 Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
 
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
+
+For websites that automatically localize pages, avoid using localization elements directly within the URL. For example:
+
+- GitHub
+  - Instead of `https://docs.github.com/**en/**graphql/overview/explorer`
+  - Use `https://docs.github.com/graphql/overview/explorer`
+- Wikipedia
+  - Instead of `https://en.wikipedia.org/wiki/SQL:2011`
+  - Use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
 

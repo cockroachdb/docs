@@ -233,6 +233,10 @@
   sources: ['build-an-app-with-cockroachdb.md']
   versions: ['v21.2']
 
+- destination: example-apps.md
+  sources: ['tutorials-overview.md']
+  versions: ['v23.1']
+
 - destination: example-apps.md#python
   sources: ['build-a-python-app-with-cockroachdb-pony.md']
   versions: ['v20.2', 'v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
@@ -243,7 +247,7 @@
 
 - destination: global-tables.md
   sources: ['topology-duplicate-indexes.md']
-  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
 
 - destination: grant.md
   sources: ['grant-roles.md']
@@ -323,7 +327,7 @@
   sources:
     - topology-geo-partitioned-leaseholders.md
     - topology-geo-partitioned-replicas.md
-  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2']
+  versions: ['v21.1', 'v21.2', 'v22.1', 'v22.2', 'v23.1']
 
 - destination: revoke.md
   sources: ['revoke-roles.md']
@@ -724,13 +728,29 @@
   sources: ['performance-tuning.md']
   versions: ['v21.1']
 
+- destination: make-queries-fast.md
+  sources: ['performance-features-overview.md']
+  versions: ['v23.1']
+
 - destination: movr.md#develop-and-deploy-a-global-application
   sources: ['movr-flask-overview.md']
+  versions: ['v23.1']
+
+- destination: multiregion-survival-goals.md
+  sources: ['when-to-use-zone-vs-region-survival-goals.md']
   versions: ['v23.1']
 
 - destination: partitioning.md
   sources: ['partition-by.md']
   versions: ['v22.2']
+
+- destination: query-behavior-troubleshooting.md
+  sources: ['error-handling-and-troubleshooting.md']
+  versions: ['v23.1']
+
+- destination: query-spatial-data.md
+  sources: ['spatial-data.md']
+  versions: ['v23.1']
 
 - destination: schema-design-update.md
   sources: ['set-schema.md']
@@ -783,6 +803,10 @@
 
 - destination: stable/start-a-local-cluster.md
   sources: ['start-a-local-cluster.md']
+
+- destination: table-localities.md
+  sources: ['when-to-use-regional-vs-global-tables.md']
+  versions: ['v23.1']
 
 - destination: topology-follow-the-workload.md
   sources: ['demo-follow-the-workload.md']

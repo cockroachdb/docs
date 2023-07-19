@@ -91,7 +91,7 @@ AWS disks can only be scaled once every six hours.
 1. Select the new amount of storage per node.
 
     {{site.data.alerts.callout_danger}}
-    Storage space cannot be removed from a node once added.
+    Storage space cannot be removed due to cloud provider limitations.
     {{site.data.alerts.end}}
 
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
@@ -165,9 +165,9 @@ When you remove a region from a [multi-region](plan-your-cluster.html#multi-regi
   
 ## Set an upgrade window
 
-From your cluster's [**Overview** page](cluster-overview-page.html), you can view and manage the patch upgrade window for your cluster. To help keep your clusters updated while minimizing disruption and downtime, set a window of time when your cluster is experiencing the lowest traffic.
+From your cluster's [**Overview** page](cluster-overview-page.html), you can view and manage the [patch upgrade](upgrade-policy.html#patch-version-upgrades) window for your cluster. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. To help keep your clusters updated while minimizing disruptions, set a window of time when your cluster is experiencing the lowest traffic. Note that upgrades may not always be completed by the end of the window, and other kinds of cluster maintenance may occur outside the window.
 
-{{site.data.alerts.callout_success}}
+{{site.data.alerts.callout_info}}
 If no upgrade window is set, your cluster will be automatically upgraded as soon as new patch versions are available. Refer to [Upgrade Policy](upgrade-policy.html).
 {{site.data.alerts.end}}
 

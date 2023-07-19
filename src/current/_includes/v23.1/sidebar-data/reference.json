@@ -58,18 +58,6 @@
             "urls": [
               "/${VERSION}/backup-architecture.html"
             ]
-          },
-          {
-            "title": "Life of a Distributed Transaction",
-            "urls": [
-              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
-            ]
-          },
-          {
-            "title": "Reads and Writes Overview",
-            "urls": [
-              "/${VERSION}/architecture/reads-and-writes-overview.html"
-            ]
           }
         ]
       },
@@ -281,12 +269,6 @@
             "title": "<code>cockroach import</code>",
             "urls": [
               "/${VERSION}/cockroach-import.html"
-            ]
-          },
-          {
-            "title": "Client Connection Parameters",
-            "urls": [
-              "/${VERSION}/connection-parameters.html"
             ]
           },
           {
@@ -545,111 +527,99 @@
         ]
       },
       {
-        "title": "Transaction Retry Error Reference",
-        "urls": [
-          "/${VERSION}/transaction-retry-error-reference.html"
+        "title": "Security",
+        "items": [
+          {
+            "title": "Security Overview",
+            "urls": [
+              "/${VERSION}/security-reference/security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+              }
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
+            ]
+          },
+          {
+            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
+            "urls": [
+              "/${VERSION}/security-reference/transport-layer-security.html"
+            ]
+          },
+          {
+            "title": "Customer-Managed Encryption Keys (CMEK)",
+            "urls": [
+              "/cockroachcloud/cmek.html"
+            ]
+          },
+          {
+            "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+            "urls": [
+              "/cockroachcloud/pci-dss.html"
+            ]
+          },
+          {
+            "title": "System Catalogs",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/system-catalogs.html"
+                    ]
+              },
+              {
+                "title": "<code>crdb_internal</code>",
+                "urls": [
+                  "/${VERSION}/crdb-internal.html"
+                ]
+              },
+              {
+                "title": "<code>information_schema</code>",
+                "urls": [
+                  "/${VERSION}/information-schema.html"
+                ]
+              },
+              {
+                "title": "<code>pg_catalog</code>",
+                "urls": [
+                  "/${VERSION}/pg-catalog.html"
+                ]
+              },
+              {
+                "title": "<code>pg_extension</code>",
+                "urls": [
+                  "/${VERSION}/pg-extension.html"
+                ]
+              }
+            ]
+          }
         ]
       },
       {
-       "title": "Transaction Retry Error Example",
-       "urls": [
-         "/${VERSION}/transaction-retry-error-example.html"
-       ]
-     },
-    {
-      "title": "Security",
-      "items": [
-        {
-          "title": "Security Overview",
-          "urls": [
-            "/${VERSION}/security-reference/security-overview.html"
-          ]
-        },
-        {
-          "title": "Authentication",
-          "urls": [
-            "/${VERSION}/security-reference/authentication.html"
-          ],
-          "items": [
-            {
-              "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
-              "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
-            }
-          ]
-        },
-        {
-          "title": "Authorization",
-          "urls": [
-            "/${VERSION}/security-reference/authorization.html"
-          ]
-        },
-        {
-          "title": "Encryption",
-          "urls": [
-            "/${VERSION}/security-reference/encryption.html"
-          ]
-        },
-        {
-          "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
-          "urls": [
-            "/${VERSION}/security-reference/transport-layer-security.html"
-          ]
-        },
-        {
-          "title": "Customer-Managed Encryption Keys (CMEK)",
-          "urls": [
-            "/cockroachcloud/cmek.html"
-          ]
-        },
-        {
-          "title": "Payment Card Industry Data Security Standard (PCI DSS)",
-          "urls": [
-            "/cockroachcloud/pci-dss.html"
-          ]
-        },
-        {
-          "title": "System Catalogs",
-          "items": [
-            {
-              "title": "Overview",
-              "urls": [
-                "/${VERSION}/system-catalogs.html"
-                  ]
-            },
-            {
-              "title": "<code>crdb_internal</code>",
-              "urls": [
-                "/${VERSION}/crdb-internal.html"
-              ]
-            },
-            {
-              "title": "<code>information_schema</code>",
-              "urls": [
-                "/${VERSION}/information-schema.html"
-              ]
-            },
-            {
-              "title": "<code>pg_catalog</code>",
-              "urls": [
-                "/${VERSION}/pg-catalog.html"
-              ]
-            },
-            {
-              "title": "<code>pg_extension</code>",
-              "urls": [
-                "/${VERSION}/pg-extension.html"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Serverless Performance Benchmarking",
-      "urls": [
-        "/cockroachcloud/serverless-benchmarking.html"
-      ]
-    }
-  ]
+        "title": "Serverless Performance Benchmarking",
+        "urls": [
+          "/cockroachcloud/serverless-benchmarking.html"
+        ]
+      }
+    ]
 }
 

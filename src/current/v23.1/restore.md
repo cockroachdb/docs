@@ -22,7 +22,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 ## Considerations
 
 - `RESTORE` cannot restore backups made by newer versions of CockroachDB.
-- `RESTORE` only supports backups taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. 
+- `RESTORE` only supports backups taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Refer to the [Restoring Backups Across Versions](restoring-backups-across-versions.html) page for more detail.
 - `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
 - `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
 - [Zone configurations](configure-replication-zones.html) present on the destination cluster prior to a restore will be **overwritten** during a [cluster restore](restore.html#full-cluster) with the zone configurations from the [backed up cluster](backup.html#back-up-a-cluster). If there were no customized zone configurations on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](configure-replication-zones.html#view-the-default-replication-zone).
@@ -32,7 +32,7 @@ For details on restoring across versions of CockroachDB, see [Restoring Backups 
 ## Required privileges
 
 {{site.data.alerts.callout_info}}
-Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups. 
+Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups.
 
 There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all restores.
 {{site.data.alerts.end}}
@@ -45,7 +45,7 @@ Cluster | Grant a user the system level `RESTORE` privilege. For example, `GRANT
 Database | Grant a user the system level `RESTORE` privilege to restore databases onto the cluster. For example, `GRANT SYSTEM RESTORE TO user;`.
 Table | Grant a user the database level `RESTORE` privilege to restore schema objects into the database. For example, `GRANT RESTORE ON DATABASE nonadmin TO user;`.
 
-The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role). 
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](security-reference/authorization.html#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#grant-default-privileges-to-a-specific-role).
 
 Members of the [`admin` role](security-reference/authorization.html#admin-role) can run all three types of restore (cluster, database, and table) without the need to grant a specific `RESTORE` privilege.  However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
 
@@ -83,7 +83,7 @@ Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](security-referenc
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3.
 - [Nodelocal](cockroach-nodelocal-upload.html)
 
-No special privilege is required for: 
+No special privilege is required for:
 
 - Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
 - Using [Userfile](use-userfile-storage.html) storage.
@@ -170,10 +170,11 @@ You can exclude a table's row data from a backup using the [`exclude_data_from_b
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
 
-Also, a full cluster restore will:
+Also, consider that:
 
-- Restore [temporary tables](temporary-tables.html) to their original database during a full cluster restore.
-- Drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
+- [Temporary tables](temporary-tables.html) will be restored to their original database during a full cluster restore.
+- The restore will drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](show-databases.html#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](take-full-and-incremental-backups.html).
+- [Changefeed jobs](change-data-capture-overview.html) will not resume automatically on the new cluster. It is necessary to manually [create changefeeds](create-and-configure-changefeeds.html) after a full-cluster restore.
 - When the cluster is in a mixed-version state during an [upgrade](upgrade-cockroach-version.html), a full cluster restore will fail. To perform a full cluster restore, it is necessary to first [finalize the upgrade](upgrade-cockroach-version.html#step-3-decide-how-the-upgrade-will-be-finalized).
 
 {{site.data.alerts.callout_info}}
@@ -223,7 +224,7 @@ In general, two types are compatible if they are the same kind (e.g., an enum is
 
 ### Object dependencies
 
-Dependent objects must be restored at the same time as the objects they depend on. 
+Dependent objects must be restored at the same time as the objects they depend on.
 
 Object | Depends On
 -------|-----------
@@ -231,7 +232,7 @@ Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCE
 Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
 
-Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option. 
+Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip_missing_udfs) option.
 
 ### Users and privileges
 
@@ -267,9 +268,9 @@ CockroachDB does **not** support incremental-only restores.
 
 - A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](alter-database.html#set-primary-region) from this cluster setting assigned to the target database.
 
-- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
+- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](table-localities.html#regional-tables) to the primary region of the target database.
 
-- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](alter-table.html#regional-by-table), and [`GLOBAL`](alter-table.html#global) to another multi-region database is supported.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](alter-table.html#regional-by-table), and [`GLOBAL`](alter-table.html#global) to another multi-region database is supported.
 
 - When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
 
@@ -305,7 +306,7 @@ In this section, each example demonstrates restoring from the most recent backup
 The examples in this section use external connections, which allow you to represent an external storage or sink URI. This means that you can specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](create-external-connection.html) page.
 
 For guidance on connecting to cloud storage or using other authentication parameters, read [Use Cloud Storage](use-cloud-storage.html#example-file-urls).
- 
+
 If you need to limit the control specific users have over your storage buckets, see [Assume role authentication](cloud-storage-authentication.html) for setup instructions.
 
 ### View the backup subdirectories
@@ -408,8 +409,12 @@ RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
 {{site.data.alerts.end}}
 
 ### Restore with `AS OF SYSTEM TIME`
- 
-Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history. 
+
+{{site.data.alerts.callout_danger}}
+`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`. 
+{{site.data.alerts.end}}
+
+Running a backup with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history.
 
 If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
 
@@ -483,7 +488,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore. 
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database. Note that the target database must exist prior to the restore.
 
 1. Create the new database that you'll restore the table or view into:
 

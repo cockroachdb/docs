@@ -17,7 +17,7 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 
 This page has instructions for data domiciling in [multi-region clusters](multiregion-overview.html) using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement. At a high level, this process involves:
 
-1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) clauses.
+1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](table-localities.html#regional-tables) clauses.
 1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement, which constrains the voting and non-voting replicas for a partition or table to be stored in only the [home regions](multiregion-overview.html#table-localities) associated with those rows or tables.
 
 ## Before you begin
@@ -271,8 +271,8 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
-- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
 - [`ADD REGION`](alter-database.html#add-region)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [Zone Config Extensions](zone-config-extensions.html)

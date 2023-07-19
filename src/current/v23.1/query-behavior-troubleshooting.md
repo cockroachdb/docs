@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot Statement Behavior
+title: Troubleshoot SQL Statements
 summary: Learn how to troubleshoot issues with specific SQL statements with CockroachDB
 toc: true
 docs_area: manage
@@ -260,6 +260,26 @@ Throughput is affected by the disk I/O, CPU usage, and network latency. Use the 
 
 If your query returns the error code `SQLSTATE: 53200` with the message `ERROR: root: memory budget exceeded`, follow the guidelines in [memory budget exceeded](common-errors.html#memory-budget-exceeded).
 
+## Transaction retry errors
+
+Messages with the error code `40001` and the string `restart transaction` are known as [*transaction retry errors*](transaction-retry-error-reference.html). These indicate that a transaction failed due to [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with another concurrent or recent transaction attempting to write to the same data. The transaction needs to be retried by the client.
+
+{% include {{ page.version.version }}/performance/transaction-retry-error-actions.md %}
+
+## Unsupported SQL features
+
+CockroachDB has support for [most SQL features](sql-feature-support.html).
+
+Additionally, CockroachDB supports [the PostgreSQL wire protocol and the majority of its syntax](postgresql-compatibility.html). This means that existing applications can often be migrated to CockroachDB without changing application code.
+
+However, you may encounter features of SQL or the PostgreSQL dialect that are not supported by CockroachDB. For example, the following PostgreSQL features are not supported:
+
+{% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
+
+For more information about the differences between CockroachDB and PostgreSQL feature support, see [PostgreSQL Compatibility](postgresql-compatibility.html).
+
+For more information about the SQL standard features supported by CockroachDB, see [SQL Feature Support](sql-feature-support.html).
+
 ## Node issues
 
 ### Single hot node
@@ -367,11 +387,100 @@ The following [cluster settings](cluster-settings.html) are supported:
 </tbody>
 </table>
 
+## Troubleshoot SQL client application problems
+
+<a name="scram-client-troubleshooting"></a>
+
+### High client CPU load, connection pool exhaustion, or increased connection latency when SCRAM Password-based Authentication is enabled
+
++ [Overview](#overview)
++ [Mitigation steps while keeping SCRAM enabled](#mitigation-steps-while-keeping-scram-enabled)
++ [Downgrade from SCRAM authentication](#downgrade-from-scram-authentication)
+
+#### Overview
+
+When [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html) (SCRAM Authentication) is enabled on a cluster, some additional CPU load is incurred on client applications, which are responsible for handling SCRAM hashing. It's important to plan for this additional CPU load to avoid performance degradation, CPU starvation, and [connection pool](connection-pooling.html) exhaustion on the client. For example, the following set of circumstances can exhaust the client application's resources:
+
+1. SCRAM Authentication is enabled on the cluster (the `server.user_login.password_encryption` [cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) is set to `scram-sha-256`).
+1. The client driver's [connection pool](connection-pooling.html) has no defined maximum number of connections, or is configured to close idle connections eagerly.
+1. The client application issues [transactions](transactions.html) concurrently.
+
+In this situation, each new connection uses more CPU on the client application server than connecting to a cluster without SCRAM Authentication enabled. Because of this additional CPU load, each concurrent transaction is slower, and a larger quantity of concurrent transactions can accumulate, in conjunction with a larger number of concurrent connections. In this situation, it can be difficult for the client application server to recover.
+
+Some applications may also see increased connection latency. This can happen because SCRAM incurs additional round trips during authentication which can add latency to the initial connection.
+
+For more information about how SCRAM works, see [SASL/SCRAM-SHA-256 Secure Password-based Authentication](security-reference/scram-authentication.html).
+
+#### Mitigation steps while keeping SCRAM enabled
+
+To mitigate against this situation while keeping SCRAM authentication enabled, Cockroach Labs recommends that you:
+
+{% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
+
+If the above steps don't work, you can try lowering the default hashing cost and reapplying the password as described below.
+
+##### Lower default hashing cost and reapply the password
+
+To decrease the CPU usage of SCRAM password hashing while keeping SCRAM enabled:
+
+1. Set the [`server.user_login.password_hashes.default_cost.scram_sha_256` cluster setting](cluster-settings.html#setting-server-user-login-password-hashes-default-cost-scram-sha-256) to `4096`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.password_hashes.default_cost.scram_sha_256 = 4096;
+    ~~~
+
+1. Make sure the [`server.user_login.rehash_scram_stored_passwords_on_cost_change.enabled` cluster setting](cluster-settings.html) is set to `true` (the default).
+
+{{site.data.alerts.callout_success}}
+When lowering the default hashing cost, we recommend that you use strong, complex passwords for [SQL users](security-reference/authorization.html#sql-users).
+{{site.data.alerts.end}}
+
+If you are still seeing higher connection latencies than before, you can [downgrade from SCRAM authentication](#downgrade-from-scram-authentication).
+
+#### Downgrade from SCRAM authentication
+
+As an alternative to the [mitigation steps listed above](#mitigation-steps-while-keeping-scram-enabled), you can downgrade from SCRAM authentication to bcrypt as follows:
+
+1. Set the [`server.user_login.password_encryption` cluster setting](cluster-settings.html#setting-server-user-login-password-encryption) to `crdb-bcrypt`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.password_encryption = 'crdb-bcrypt';
+    ~~~
+
+1. Ensure the [`server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled` cluster setting](cluster-settings.html#setting-server-user-login-downgrade-scram-stored-passwords-to-bcrypt-enabled) is set to `true`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING server.user_login.downgrade_scram_stored_passwords_to_bcrypt.enabled = true;
+    ~~~
+
+{{site.data.alerts.callout_info}}
+The [`server.user_login.upgrade_bcrypt_stored_passwords_to_scram.enabled` cluster setting](cluster-settings.html#setting-server-user-login-upgrade-bcrypt-stored-passwords-to-scram-enabled) can be left at its default value of `true`.
+{{site.data.alerts.end}}
+
+
 ## Something else?
 
-Try searching the rest of our docs for answers or using our other [support resources](support-resources.html), including:
+Try searching the rest of our docs for answers:
+
+- [Connect to a CockroachDB Cluster](connect-to-the-database.html)
+- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
+- [Optimize Statement Performance Overview][fast]
+- [Common Errors and Solutions](common-errors.html)
+- [Transactions](transactions.html)
+- [Client-side transaction retry handling](transaction-retry-error-reference.html#client-side-retry-handling)
+- [SQL Layer][sql]
+
+Or try using our other [support resources](support-resources.html), including:
 
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [CockroachDB Community Slack](https://cockroachdb.slack.com)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Support Portal](https://support.cockroachlabs.com)
+
+<!-- Reference Links -->
+
+[sql]: architecture/sql-layer.html
+[fast]: make-queries-fast.html

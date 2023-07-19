@@ -32,7 +32,7 @@ All enabled authentication methods appear on your custom URL and are available t
 - Google
 - Microsoft
 
-In addition, you can create authentication methods that connect to your identity provider (IdP) using the [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language), [System for Cross-Domain Identity Management SCIM](https://www.rfc-editor.org/rfc/rfc7644), and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
+In addition, you can create authentication methods that connect to your identity provider (IdP) using the [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language), [System for Cross-Domain Identity Management SCIM](https://www.rfc-editor.org/rfc/rfc7644), and [OpenID Connect (OIDC)](https://openid.net/connect/) identity protocols.
 
 Members are identified by their email address. To allow members to migrate from password authentication to SSO, ensure that their email addresses in your {{ site.data.products.db }} organization match those in your IdPs. To allow your members to select from multiple SSO authentication methods, ensure that the email addresses match across all of them.
 
@@ -154,7 +154,7 @@ To enable autoprovisioning for an SSO authentication method:
 
 ## Add a custom authentication method
 
-You can add a custom authentication method to connect to any IdP that supports [Security Access Markup Language (SAML)](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/).
+You can add a custom authentication method to connect to any IdP that supports [Security Access Markup Language (SAML)](https://wikipedia.org/wiki/Security_Assertion_Markup_Language) or [OpenID Connect (OIDC)](https://openid.net/connect/).
 
 ### OIDC
 

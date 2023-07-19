@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A `LINESTRING` is a collection of [Points](point.html) that are "strung together" into one geometric object. A LineString can be used to represent an arbitrary curve, such as a [Bézier curve](https://en.wikipedia.org/wiki/Bézier_curve).  In practice, this means that LineStrings are useful for representing real-world objects such as roads and rivers.
+A `LINESTRING` is a collection of [Points](point.html) that are "strung together" into one geometric object. A LineString can be used to represent an arbitrary curve, such as a [Bézier curve](https://wikipedia.org/wiki/Bézier_curve).  In practice, this means that LineStrings are useful for representing real-world objects such as roads and rivers.
 
 The coordinates of each Point that makes up the LineString are translated according to the current [spatial reference system](architecture/glossary.html#spatial-reference-system) (denoted by an [SRID](architecture/glossary.html#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](spatial-data-overview.html#spatial-objects) (if any) in the data set.
 
