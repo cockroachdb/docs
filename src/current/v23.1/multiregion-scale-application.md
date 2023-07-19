@@ -122,7 +122,7 @@ In the absence of an explicit, back-filling computed column for the hidden `crdb
     ~~~
 
     {{site.data.alerts.callout_info}}
-    SQLAlchemy allows you to update all table mappings to reflect the database with the `sqlalchemy.schema.MetaData` class method [`reflect()`](https://docs.sqlalchemy.org/en/14/core/metadata.html#sqlalchemy.schema.MetaData.reflect). If your ORM framework does not support updating mapping objects dynamically, you might need to add the column to the table-mapping class definition as a `String`-typed column and reinstantiate the object.
+    SQLAlchemy allows you to update all table mappings to reflect the database with the `sqlalchemy.schema.MetaData` class method [`reflect()`](https://docs.sqlalchemy.org/core/metadata.html#sqlalchemy.schema.MetaData.reflect). If your ORM framework does not support updating mapping objects dynamically, you might need to add the column to the table-mapping class definition as a `String`-typed column and reinstantiate the object.
     {{site.data.alerts.end}}
 
 1. Reference the column value as needed.

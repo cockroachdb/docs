@@ -54,7 +54,7 @@ Because this log is treated as serializable, it can be replayed to bring a node 
 
 In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#architecture-replica) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
 
-In order to provide [better support for multi-region clusters](../multiregion-overview.html) (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica was introduced: the _non-voting_ replica.
+In order to provide [better support for multi-region clusters](../multiregion-overview.html) (including the features that make [fast multi-region reads](../table-localities.html#global-tables) and [surviving region failures](../multiregion-survival-goals.html#survive-region-failures) possible), a new type of replica was introduced: the _non-voting_ replica.
 
 Non-voting replicas follow the [Raft log](#raft-logs) (and are thus able to serve [follower reads](../follower-reads.html)), but do not participate in quorum. They have almost no impact on write latencies.
 
@@ -226,8 +226,8 @@ The following table lists some important values used by CockroachDB's replicatio
 
 Constant | Default value | Notes
 ---------|---------------|------
-[Raft](#raft) election timeout | {{site.data.constants.cockroach_raft_election_timeout_ticks}} * {{site.data.constants.cockroach_tick_interval}} | Controlled by `COCKROACH_RAFT_ELECTION_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the timeout value. This value is then multiplied by a random factor of 1-2 to avoid election ties.
-[Raft](#raft) proposal timeout | {{site.data.constants.cockroach_raft_reproposal_timeout_ticks}} * {{site.data.constants.cockroach_tick_interval}} | Controlled by `COCKROACH_RAFT_REPROPOSAL_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the value.
+[Raft](#raft) election timeout | {{site.data.constants.cockroach_raft_election_timeout_ticks}} * {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_ELECTION_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the timeout value. This value is then multiplied by a random factor of 1-2 to avoid election ties.
+[Raft](#raft) proposal timeout | {{site.data.constants.cockroach_raft_reproposal_timeout_ticks}} * {{site.data.constants.cockroach_raft_tick_interval}} | Controlled by `COCKROACH_RAFT_REPROPOSAL_TIMEOUT_TICKS`, which is then multiplied by the default tick interval to determine the value.
 [Lease interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} | Controlled by `COCKROACH_RANGE_LEASE_DURATION`.
 [Lease acquisition timeout](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_acquisition_timeout}} |
 [Node heartbeat interval](#how-leases-are-transferred-from-a-dead-node) | {{site.data.constants.cockroach_range_lease_duration}} / 2 | Used to determine if you're having [node liveness issues](../cluster-setup-troubleshooting.html#node-liveness-issues).  This is calculated as one half of the lease interval.

@@ -10,13 +10,27 @@
 
 The transaction fingerprints returned are determined by the selected **Search Criteria**:
 
-1. By default, the **Top** `100` transaction fingerprints **By** `% of All Runtime` are returned.
-  - To change the number returned, select `25`, `50`, or `500` from the dropdown.
-  - To change the column filter, select `CPU Time`, `Contention Time`, `Execution Count`, or `Transaction Time` from the dropdown.
+### Search Criteria ###
+
+By default, the **Top** `100` transaction fingerprints **By** `Transaction Time` for the `Past Hour` are returned.
+
+1. To change the number of results returned, select `25`, `50`, `100`, or `500` from the **Top** dropdown. To return a larger number, select `More` and choose an option: `1000`, `5000`, `10000`.
+1. To change the sort column, from the **By** dropdown, select a commonly sorted column: `CPU Time`, `Contention Time`, `Execution Count`, or `Transaction Time`. To sort by other columns, select `More` from the dropdown and choose an option: `Max Memory`, `Network`, `Retries`, `Rows Processed`.
+{{site.data.alerts.callout_info}}
+The `More` options may increase the page loading time and are not generally recommended.
+{{site.data.alerts.end}}
 1. Select the [**Time Range**](#time-interval).
 1. Click **Apply**.
 
     The list of transactions that satisfy the search criteria is displayed. The results can be further [searched and filtered](#search-and-filter).
+
+{{site.data.alerts.callout_danger}}
+Results are not automatically refreshed.
+
+The actual time range of the statistics is displayed at the top right of the results, for example, `Showing aggregated stats from 20:00 to 21:59 (UTC)`. If you select a preset time interval, such as `Past Hour`, be aware that since the statistics displayed are not automatically refreshed, they may become stale. To see the latest statistics, update the **Search Criteria** and apply.
+
+However, it may take up to 10 minutes for the most recent statistics to be included in the aggregated statistics. 10 minutes is the default for the [`sql.stats.flush.interval` cluster setting](#transaction-statistics). For in-memory statistics, directly query the following in-memory table: `crdb_internal.cluster_transaction_statistics`.{% if page.cloud != true %} Alternatively, use the [**Active Executions** view](#active-executions-view).{% endif %}
+{{site.data.alerts.end}}
 
 ### Time interval
 
@@ -33,6 +47,10 @@ It's possible to select an interval for which no transaction statistics exist.
 ## Search and filter
 
 By default, the **Transactions** page shows transactions from all applications and databases running on the cluster.
+
+{{site.data.alerts.callout_info}}
+For the **Transaction Fingerprints** view, the search and filter are applied **after** results are returned based on the [**Search Criteria**](#search-criteria).
+{{site.data.alerts.end}}
 
 ### Search field
 

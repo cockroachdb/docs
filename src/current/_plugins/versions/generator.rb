@@ -1,5 +1,5 @@
 module JekyllVersions
- class JekyllGenerator < Jekyll::Generator
+  class JekyllGenerator < Jekyll::Generator
     # Ordering requirements:
     #   - Run after JekyllRedirectFrom so we can apply version aliases
     #     (e.g., stable) to redirects.
@@ -28,13 +28,12 @@ module JekyllVersions
         page.data['version'] = vp.version
         page.data['release_info'] = vp.release_info
         page.data['sidebar_data'] ||= vp.sidebar_data
-        if page.data['canonical'].nil?
-          page.data['canonical'] = stable_vp(vp.key)&.url || page.url
-        end
+        canonical = stable_vp(vp.key)&.url || page.url
+        page.data['canonical'] ||= canonical.sub('.html', '')
+
         page.data['versions'] = versions.map do |v|
           { 'version' => v, 'url' => vps_with_key(vp.key)[v]&.url }
         end
-
 
         # if vp.stable?
         #   if vp.url != "/stable/" and vp.unversioned_path != ""
@@ -47,8 +46,8 @@ module JekyllVersions
         # end
 
         # if page.main_homepage != true
-          # @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-            # @site, vp.unversioned_path, vp.url) if vp.stable?
+        # @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
+        # @site, vp.unversioned_path, vp.url) if vp.stable?
         # end
       end
 
@@ -68,9 +67,8 @@ module JekyllVersions
     end
 
     def vps_with_key(key)
-      @vps_by_key ||= vps.reduce(Hash.new { |h, k| h[k] = {} }) do |memo, vp|
+      @vps_by_key ||= vps.each_with_object(Hash.new { |h, k| h[k] = {} }) do |vp, memo|
         memo[vp.key][vp.version] = vp if vp.version
-        memo
       end
       @vps_by_key[key]
     end

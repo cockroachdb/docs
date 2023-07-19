@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot Cluster Setup
+title: Troubleshoot Self-Hosted Setup
 summary: Learn how to troubleshoot issues with starting CockroachDB clusters
 toc: true
 docs_area: manage
@@ -405,7 +405,7 @@ Causes of disk stalls include:
 
 CockroachDB's built-in disk stall detection works as follows:
 
-- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://en.wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
+- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
 
 - Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
 
@@ -587,15 +587,15 @@ Even with `server.eventlog.enabled` set to `false`, notable log events are still
 
 ## Check for under-replicated or unavailable data
 
-To see if any data is under-replicated or unavailable in your cluster, use the `system.replication_stats` report as described in [Replication Reports](query-replication-reports.html).
+To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports](query-replication-reports.html).
 
 ## Check for replication zone constraint violations
 
-To see if any of your cluster's [data placement constraints](configure-replication-zones.html#replication-constraints) are being violated, use the `system.replication_constraint_stats` report as described in [Replication Reports](query-replication-reports.html).
+To see if any of your cluster's [data placement constraints](configure-replication-zones.html#replication-constraints) are being violated, follow the steps described in [Replication Reports](query-replication-reports.html).
 
 ## Check for critical localities
 
-To see which of your [localities](cockroach-start.html#locality) (if any) are critical, use the `system.replication_critical_localities` report as described in [Replication Reports](query-replication-reports.html). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+To see which of your [localities](cockroach-start.html#locality) (if any) are critical, follow the steps described in [Replication Reports](query-replication-reports.html). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 ## Something else?
 

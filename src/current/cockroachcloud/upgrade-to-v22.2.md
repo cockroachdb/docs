@@ -27,8 +27,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 ## Step 3. Understand the upgrade process
 
-<section class="filter-content" markdown="1" data-scope="multi-node">
-In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, pausing for a few minutes between each node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. {{ site.data.products.db }} stops one node at a time and restarts it with the new version, waits a few minutes to observe the upgraded node's behavior, then moves on to the next node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
 
 Approximately 72 hours after all nodes are running v22.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.2](#expect-temporary-limitations). Finalization also removes the ability to roll back to v22.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
@@ -128,7 +127,7 @@ The upgrade is automatically finalized after 72 hours.
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
 
-After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted, and all v22.2 features are available for use. However, it will no longer be possible to roll back to v22.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted, and all v22.2 features are available for use. However, it will no longer be possible to roll back to v22.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
 After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](../v22.2/ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 

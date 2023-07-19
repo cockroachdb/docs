@@ -35,8 +35,7 @@ The sample code in `example.py` does the following:
 - Transfers funds between two accounts inside a [transaction](transactions.html)
 - Deletes the accounts from the table before exiting so you can re-run the example code
 
-To [handle transaction retry errors](error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
-
+To [handle transaction retry errors](query-behavior-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff).
 
 ## Step 3. Install the asyncpg driver
 

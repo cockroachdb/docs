@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-This page describes CockroachDB's support for indexing [spatial data](spatial-data.html), including:
+This page describes CockroachDB's support for indexing [spatial data](export-spatial-data.html), including:
 
 - What spatial indexes are
 - How they work
@@ -36,7 +36,7 @@ Spatial indexes differ from other types of indexes as follows:
 
 There are two main approaches to building geospatial indexes:
 
-- One approach is to "divide the objects" by inserting the objects into a tree (usually an [R-tree](https://en.wikipedia.org/wiki/R-tree)) whose shape depends on the data being indexed. This is the approach taken by [PostGIS](https://postgis.net).
+- One approach is to "divide the objects" by inserting the objects into a tree (usually an [R-tree](https://wikipedia.org/wiki/R-tree)) whose shape depends on the data being indexed. This is the approach taken by [PostGIS](https://postgis.net).
 
 - The other approach is to "divide the space" by creating a decomposition of the space being indexed into buckets of various sizes.
 
@@ -45,7 +45,7 @@ CockroachDB takes the "divide the space" approach to spatial indexing. This is n
 CockroachDB uses the "divide the space" approach for the following reasons:
 
 - It's easy to scale horizontally.
-- It requires no balancing operations, unlike [R-tree indexes](https://en.wikipedia.org/wiki/R-tree).
+- It requires no balancing operations, unlike [R-tree indexes](https://wikipedia.org/wiki/R-tree).
 - Inserts under this approach require no locking.
 - Bulk ingest is simpler to implement than under other approaches.
 - It allows advanced users to make a per-object tradeoff between index size and false positives during index creation. (See [Tuning spatial indexes](#tuning-spatial-indexes).)
@@ -54,7 +54,7 @@ Whichever approach to indexing is used, when an object is indexed, a "covering" 
 
 ### Details
 
-Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://en.wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
+Under the hood, CockroachDB uses the [S2 geometry library](https://s2geometry.io/) to divide the space being indexed into a [quadtree](https://wikipedia.org/wiki/Quadtree) data structure with a set number of levels and a data-independent shape. Each node in the quadtree (really, [S2 cell](https://s2geometry.io/devguide/s2cell_hierarchy.html)) represents some part of the indexed space and is divided once horizontally and once vertically to produce 4 child cells in the next level. The following image shows visually how a location (marked in red) is represented using levels of a quadtree:
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/quadtree.png' | relative_url }}" alt="Quadtree">
 
@@ -62,13 +62,13 @@ Visually, you can think of the S2 library as enclosing a sphere in a cube. We ma
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/s2-cubed-sphere-2d.png' | relative_url }}" alt="S2 Cubed Sphere - 2D">
 
-Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://en.wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
+Next, let's look at a 3-dimensional image that shows the cube and sphere more clearly. Each cube face is mapped to the quadtree data structure mentioned, and each node in the quadtree is numbered using a [Hilbert space-filling curve](https://wikipedia.org/wiki/Hilbert_curve) which preserves locality of reference. In the following image, you can imagine the points of the Hilbert curve on the rear face of the cube being projected onto the sphere in the center. The use of a space-filling curve means that two shapes that are near each other on the sphere are very likely to be near each other on the line that makes up the Hilbert curve. This is good for performance.
 
 <img style="display: block; margin-left: auto; margin-right: auto; width: 50%" src="{{ 'images/v23.1/geospatial/s2-cubed-sphere-3d.png' | relative_url }}" alt="S2 Cubed Sphere - 3D">
 
 When you index a spatial object, a covering is computed using some number of the cells in the quadtree. The number of covering cells can vary per indexed object by passing special arguments to `CREATE INDEX` that tell CockroachDB how many levels of S2 cells to use. The leaf nodes of the S2 quadtree are at level 30, and for `GEOGRAPHY` measure 1cm across the Earth's surface. By default, `GEOGRAPHY` indexes use up to level 30, and get this level of precision. We also use S2 cell coverings in a slightly different way for `GEOMETRY` indexes. The precision you get there is the bounding length of the `GEOMETRY` index divided by 4^30. For more information, see [Tuning spatial indexes](#tuning-spatial-indexes).
 
-CockroachDB stores spatial indexes as a special type of [GIN index](inverted-indexes.html). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings](spatial-glossary.html#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
+CockroachDB stores spatial indexes as a special type of [GIN index](inverted-indexes.html). The spatial index maps from a location, which is a square cell in the quadtree, to one or more shapes whose [coverings](architecture/glossary.html#covering) include that location. Since a location can be used in the covering for multiple shapes, and each shape can have multiple locations in its covering, there is a many-to-many relationship between locations and shapes.
 
 ## Tuning spatial indexes
 
@@ -118,10 +118,10 @@ If a shape falls outside the bounding coordinates determined by the following `g
 | `s2_level_mod`   | 1                                             | `s2_max_level` must be divisible by `s2_level_mod`. `s2_level_mod` must be between `1` and `3`.                                                                                                                                                                                                                                                                                                                                                 |
 | `s2_max_level`   | 30                                            | The maximum level of S2 cell used in the covering. Allowed values: 1-30. Setting it to less than the default means that CockroachDB will be forced to generate coverings using larger cells.                                                                                                                                                                                                                                                    |
 | `s2_max_cells`   | 4                                             | The maximum number of S2 cells used in the covering. Provides a limit on how much work is done exploring the possible coverings. Allowed values: 1-30. You may want to use higher values for odd-shaped regions such as skinny rectangles.                                                                                                                                                                                                      |
-| `geometry_min_x` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum X-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if the default bounds of the SRID are too large/small for the given data, or SRID = 0 and you wish to use a smaller range (unfortunately this is currently not exposed, but is viewable on <https://epsg.io/3857>). By default, SRID = 0 assumes `[-min int32, max int32]` ranges. |
-| `geometry_max_x` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum X-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](spatial-glossary.html#srid).                                                                                                                                                                                                                      |
-| `geometry_min_y` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum Y-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](spatial-glossary.html#srid).                                                                                                                                                                                                                      |
-| `geometry_max_y` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum Y-value of the [spatial reference system](spatial-glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](spatial-glossary.html#srid).                                                                                                                                                                                                                      |
+| `geometry_min_x` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum X-value of the [spatial reference system](architecture/glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if the default bounds of the SRID are too large/small for the given data, or SRID = 0 and you wish to use a smaller range (unfortunately this is currently not exposed, but is viewable on <https://epsg.io/3857>). By default, SRID = 0 assumes `[-min int32, max int32]` ranges. |
+| `geometry_max_x` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum X-value of the [spatial reference system](architecture/glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](architecture/glossary.html#srid).                                                                                                                                                                                                                      |
+| `geometry_min_y` | Derived from SRID bounds, else `-(1 << 31)`   | Minimum Y-value of the [spatial reference system](architecture/glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](architecture/glossary.html#srid).                                                                                                                                                                                                                      |
+| `geometry_max_y` | Derived from SRID bounds, else `(1 << 31) -1` | Maximum Y-value of the [spatial reference system](architecture/glossary.html#spatial-reference-system) for the object(s) being covered. This only needs to be set if you are using a custom [SRID](architecture/glossary.html#srid).                                                                                                                                                                                                                      |
 
 ## Examples
 
@@ -226,10 +226,10 @@ CREATE INDEX geog_idx_3 ON geo_table USING GIST(geog);
 - [GIN Indexes](inverted-indexes.html)
 - [S2 Geometry Library](https://s2geometry.io/)
 - [Indexes](indexes.html)
-- [Spatial Features](spatial-features.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Working with Spatial Data](spatial-data.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Export Spatial Data](export-spatial-data.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)

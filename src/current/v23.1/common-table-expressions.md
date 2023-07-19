@@ -188,7 +188,7 @@ In this single query, you define two CTEs and then reference them in a table joi
 
 ## Recursive common table expressions
 
-[Recursive common table expressions](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression) are common table expressions that contain subqueries that refer to their own output.
+[Recursive common table expressions](https://wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL#Common_table_expression) are common table expressions that contain subqueries that refer to their own output.
 
 Recursive CTE definitions take the following form:
 

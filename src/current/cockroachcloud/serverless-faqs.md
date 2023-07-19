@@ -33,7 +33,7 @@ Organizations without billing information on file can only create one cluster. O
 
 ### What is a Request Unit?
 
-With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](learn-about-request-units.html), or RUs. RUs are an abstracted metric that represent the size and complexity of requests made to your cluster. See [Learn About Request Units](learn-about-request-units.html) for more information.
+With {{ site.data.products.serverless }}, you are charged for the storage and activity of your cluster. All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in [Request Units](plan-your-cluster-serverless.html#request-units), or RUs. An RU is an abstracted metric that represent the size and complexity of requests made to your cluster. See [Plan your {{ site.data.products.serverless }} Cluster](plan-your-cluster-serverless.html#request-units) for more information.
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
@@ -41,7 +41,7 @@ No, you can create one {{ site.data.products.serverless }} cluster for free. The
 
 ### What regions are available for {{ site.data.products.serverless }} clusters?
 
-Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. A multi-region Serverless cluster can have a maximum of six regions. To express interest in additional regions, contact your Cockroach Labs account team.
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. A multi-region Serverless cluster can have a maximum of six regions. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 ### How can I estimate how many RUs my workload will consume?
 
@@ -113,7 +113,7 @@ Yes, intra-cluster communications are secured using certificates, and all connec
 
 All connections to {{ site.data.products.serverless }} require SSL encryption. When connecting to your cluster using the CockroachDB SQL client or many drivers and ORMs, you don't need to download a root CA certificate and configure your client to use that certificate because the client will connect using the system root CA certificates.
 
-However, some drivers and ORMs don't use the system root CA certificates. In those cases, you need to download a root CA certificate and configure your client to use that certificate to verify the cluster's identity when connecting to it. You can [download the root CA certificate](connect-to-a-serverless-cluster.html?filters=connection-string#step-2-connect-to-your-cluster) by following the instructions in the {{ site.data.products.db }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root CA certificate>` in your [connection string](../{{site.current_cloud_version}}/connection-parameters.html#additional-connection-parameters)) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster. We recommend using `sslmode=verify-full` so that your cluster is not vulnerable to man-in-the-middle attacks.
+However, some drivers and ORMs don't use the system root CA certificates. In those cases, you need to download a root CA certificate and configure your client to use that certificate to verify the cluster's identity when connecting to it. You can [download the root CA certificate](connect-to-a-serverless-cluster.html?filters=connection-string#connect-to-your-cluster) by following the instructions in the {{ site.data.products.db }} Console. Configure your client to use this certificate (for example, by setting `sslrootcert=<path to the root CA certificate>` in your [connection string](../{{site.current_cloud_version}}/connection-parameters.html#additional-connection-parameters)) and to use SSL (for example, by setting `sslmode=verify-full` in your connection string) to connect to your cluster. We recommend using `sslmode=verify-full` so that your cluster is not vulnerable to man-in-the-middle attacks.
 
 See [Connect to a CockroachDB Cluster](../{{site.current_cloud_version}}/connect-to-the-database.html) for detailed information on connecting to your cluster using CockroachDB supported languages, drivers, and ORMs
 
@@ -128,7 +128,7 @@ As noted above, we rely on the cloud provider's encryption implementation. We do
 
 ### Is there a public API for {{ site.data.products.db }}?
 
-Yes, see the [Cloud API](cloud-api.html) page for more information. Note that the Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer), and we do not currently support an HTTP data API. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+Yes, see the [Cloud API](cloud-api.html) page for more information. Note that the Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer), and we do not currently support an HTTP data API. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -175,4 +175,6 @@ You can run a "sinkless" changefeed to the current SQL session with [`EXPERIMENT
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-The [**Backups** page](use-managed-service-backups.html) allows you to [restore](use-managed-service-backups.html#restore-a-cluster) your cluster from automatic [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups), which are performed hourly and stored for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also back up and restore your {{ site.data.products.serverless }} cluster manually. You can [take backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html#back-up-data).
+{{ site.data.products.db }} automatically [runs full backups](use-managed-service-backups.html?filters=serverless) daily for every {{ site.data.products.serverless }} cluster. Full backups are retained for 30 days. {{ site.data.products.db }} does not take incremental backups of {{ site.data.products.serverless }} clusters, or allow database or table level restores from automatic full cluster backups. However, you can also [take manual backups locally](take-and-restore-customer-owned-backups.html#back-up-data) and store them in your cloud storage buckets using the [`BACKUP`](../{{site.current_cloud_version}}/backup.html) statement.
+
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster.

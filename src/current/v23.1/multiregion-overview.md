@@ -74,10 +74,10 @@ If the default survival goals and table localities meet your needs, there is not
 
 Super regions allow you to define a set of [database regions](#database-regions) such that the following [schema objects](schema-design-overview.html#database-schema-objects) will have all of their replicas stored _only_ in regions that are members of the super region:
 
-- [Regional tables](#regional-tables) whose home region is a member of the super region.
-- Any row of a [regional by row table](#regional-by-row-tables) whose [home region](alter-table.html#crdb_region) is a member of the super region.
+- [Regional tables](table-localities.html#regional-tables) whose home region is a member of the super region.
+- Any row of a [regional by row table](table-localities.html#regional-by-row-tables) whose [home region](alter-table.html#crdb_region) is a member of the super region.
 
-The primary use case for super regions is data domiciling. As mentioned above, data from [regional](#regional-tables) and [regional by row](#regional-by-row-tables) tables will be stored only in regions that are members of the super region. Further, if the super region contains 3 or more regions and if you use [`REGION` survival goals](#survive-region-failures), the data domiciled in the super region will remain available if you lose a region.
+The primary use case for super regions is data domiciling. As mentioned above, data from [regional](table-localities.html#regional-tables) and [regional by row](table-localities.html#regional-by-row-tables) tables will be stored only in regions that are members of the super region. Further, if the super region contains 3 or more regions and if you use [`REGION` survival goals](multiregion-survival-goals.html#survive-region-failures), the data domiciled in the super region will remain available if you lose a region.
 
 {% include {{page.version.version}}/sql/super-region-considerations.md %}
 
@@ -135,90 +135,19 @@ If you are using [super regions](#super-regions) in your cluster, there are addi
 
 A _survival goal_ dictates how many simultaneous failure(s) a database can survive. All tables within the same database operate with the **same survival goal**. Each database can have its own survival goal setting.
 
-The following survival goals are available:
-
-- Zone failure
-- Region failure
-
-The zone failure survival goal is the default. You can configure a database to survive region failures at the cost of slower write performance (due to network hops) using the following statement:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE <db> SURVIVE REGION FAILURE;
-~~~
-
-For more information about the survival goals supported by CockroachDB, see the following sections:
-
-- [Survive zone failures](#survive-zone-failures)
-- [Survive region failures](#survive-region-failures)
-
-<a id="surviving-zone-failures"></a>
-
-### Survive zone failures
-
-With the zone level survival goal, the database will remain fully available for reads and writes, even if a zone becomes unavailable. However, the database may not remain fully available if multiple zones in the same region fail. This is the default setting for multi-region databases.
-
-You can configure a database to survive zone failures using the [`ALTER DATABASE ... SURVIVE ZONE FAILURE` statement](alter-database.html#survive-zone-region-failure).
-
-If your application has performance or availability needs that are different than what the default settings provide, you can explore the other customization options described on this page.
-
-<a id="surviving-region-failures"></a>
-
-### Survive region failures
-
-The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region becomes unavailable. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
-
-You can upgrade a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](alter-database.html#survive-zone-region-failure).
-
-Setting this goal on a database in a cluster with 3 [cluster regions](#cluster-regions) will automatically increase the [replication factor](configure-replication-zones.html#num_replicas) of the [ranges](architecture/glossary.html#architecture-range) underlying the database from 3 (the default) to 5. This ensures that there will be 5 replicas of each range spread across the 3 regions (2+2+1=5). This is how CockroachDB is able to provide region level resiliency while maintaining good read performance in the leaseholder's region. For writes, CockroachDB will need to coordinate across 2 of the 3 regions, so you will pay additional write latency in exchange for the increased resiliency.
-
-{{site.data.alerts.callout_info}}
-To survive region failures, you must add at least 3 [database regions](#database-regions).
-{{site.data.alerts.end}}
+For more information, refer to [Multi-Region Survival Goals](multiregion-survival-goals.html).
 
 <a id="table-locality"></a>
 
 ## Table localities
 
-_Table locality_ determines how CockroachDB optimizes access to the table's data. Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level. A table or row's home region is where the [leaseholder](architecture/replication-layer.html#leases) of its ranges is placed, along with a number of voting replicas determined by the [survival goal](when-to-use-zone-vs-region-survival-goals.html) of the database.
+_Table locality_ determines how CockroachDB optimizes access to the table's data. Every table in a multi-region database has a "table locality setting" that configures one or more *home regions* at the table or row level.
 
-By default, all tables in a multi-region database are _regional_ tables—that is, CockroachDB optimizes access to the table's data from a single home region (by default, the database's primary region).
-
-For information about the table localities CockroachDB supports, see the sections:
-
-- [Regional tables](#regional-tables) provide low-latency reads and writes for an entire table from _a single region_.
-- [Regional by row tables](#regional-by-row-tables) provide low-latency reads and writes for one or more rows of a table from _a single region_. Different rows in the table can be optimized for access from _different regions_.
-- [Global tables](#global-tables) are optimized for low-latency reads from _all regions_.
-
-{{site.data.alerts.callout_info}}
-Table locality settings are used for optimizing latency under different read and write patterns. If you are optimizing for read and write access to all of your tables from a single region (the primary region), there is nothing else you need to do once you set your [database's primary region](#database-regions).
-{{site.data.alerts.end}}
-
-### Regional tables
-
-{% include {{page.version.version}}/sql/regional-table-description.md %}
-
-### Regional by row tables
-
-{% include {{page.version.version}}/sql/regional-by-row-table-description.md %}
-
-### Global tables
-
-{% include {{page.version.version}}/sql/global-table-description.md %}
+For more information, refer to [Table Localities](table-localities.html).
 
 ## Additional features
 
 The features listed in this section make working with multi-region clusters easier.
-
-### Indexes on `REGIONAL BY ROW` tables
-
-{% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
-
-This behavior also applies to [GIN indexes](inverted-indexes.html).
-
-For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](alter-table.html#add-a-unique-index-to-a-regional-by-row-table).
-
-Regional by row tables can take advantage of [hash-sharded indexes](hash-sharded-indexes.html) provided the `crdb_region` column is not part of the columns in the hash-sharded index.
 
 ### Zone config extensions
 
@@ -236,12 +165,12 @@ For more information, see [Zone Config Extensions](zone-config-extensions.html).
 
 ## See also
 
-- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
 - [Global Tables](global-tables.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
-- [Develop and Deploy a Global Application](movr-flask-overview.html)
+- [Develop and Deploy a Global Application](movr.html#develop-and-deploy-a-global-application)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
 - [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)

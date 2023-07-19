@@ -41,7 +41,7 @@ KV admission slots are an internal aspect of the admission control system, and a
 
 ## KV Admission IO Tokens Exhausted Duration Per Second
 
-This graph indicates write I/O overload, which affects KV write operations to storage. The admission control system dynamically calculates write tokens (similar to a [token bucket](https://en.wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds per second that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
+This graph indicates write I/O overload, which affects KV write operations to storage. The admission control system dynamically calculates write tokens (similar to a [token bucket](https://wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds per second that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
 
 - In the node view, the graph shows the number of microseconds per second that there were no write tokens on the selected node.
 - In the cluster view, the graph shows the number of microseconds per second that there were no write tokens across all nodes in the cluster.
@@ -64,7 +64,7 @@ This sums up the delay experienced by operations of each kind, and takes the rat
 
 ## Admission Delay: 75th percentile
 
-This graph shows the 75th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of latency when admitting operations to the work queues within the admission control system. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
+This graph shows the 75th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of latency when admitting operations to the work queues within the admission control system. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
 
 This 75th percentile is computed over requests that waited in the admission queue. Work that did not wait is not represented on the graph.
 

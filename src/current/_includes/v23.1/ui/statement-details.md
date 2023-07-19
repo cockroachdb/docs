@@ -26,9 +26,9 @@ The following screenshot shows the statement fingerprint of the query described 
 #### Insights
 
 The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
-- **Insights**: Provides the [Workload Insight type](ui-insights-page.html#workload-insight-types).
+- **Insights**: Provides the [Workload Insight type]({{ link_prefix }}ui-insights-page.html#workload-insight-types).
 - **Details**: Provides a description and possible recommendation.
-- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution](ui-insights-page.html#statement-execution-details), click the ID.
+- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution]({{ link_prefix }}ui-insights-page.html#statement-execution-details), click the ID.
 
 The following screenshot shows the insights of the statement fingerprint illustrated in [Overview](#overview):
 
@@ -44,6 +44,7 @@ Charts following the execution attributes display statement fingerprint statisti
 - **Execution Count**: The total number of executions. It is calculated as the sum of first attempts and retries.
 - **Contention Time**: The amount of time spent waiting for resources. For more information about contention, see [Understanding and avoiding transaction contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 - **CPU Time**: The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators.
+- **Client Wait Time**: The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements]({{ link_prefix }}transactions.html#batched-statements).
 
 The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
 
@@ -62,6 +63,7 @@ The plan table shows the following details:
 Column | Description
 -----|----
 Plan Gist | A sequence of bytes representing the flattened tree of operators and operator-specific metadata of the statement plan.
+Used Indexes | The table [indexes]({{ link_prefix }}indexes.html) used by the plan. To see [table details]({{ link_prefix }}ui-databases-page.html#table-details), click on the table name. To see [index details]({{ link_prefix }}ui-databases-page.html#index-details), click on the index name.
 Insights | The number of [insights](#insights) for the plan. To configure when to trigger insights, see [Schema insights settings]({{ link_prefix }}ui-insights-page.html#schema-insights-settings).
 Last Execution Time | The timestamp when the statement was last executed.
 Average Execution Time | The average execution time for all the executions of the plan.

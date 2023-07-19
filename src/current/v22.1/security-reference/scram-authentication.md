@@ -96,9 +96,24 @@ SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical
 ~~~
   username            |                     hashedPassword
 ----------------------+---------------------------------------------------------
-  hypothetical_user   | SCRAM-SHA-256$119680:e0tDGk...
+  hypothetical_user   | \x534352414d2d5348412d3235362431303631303a794478793878564830...
 (1 row)
 ~~~
+
+Note that by default, hashed passwords are displayed in hex format. You can escape the hex format by setting the `bytea_output` session variable.
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SET bytea_output = escape;
+SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user';
+~~~
+~~~
+  username            |                     hashedPassword
+----------------------+---------------------------------------------------------
+  hypothetical_user   | SCRAM-SHA-256$10610:nxneWi2Pmoex7o28Mt0kWg==$1nN7UXhK4TnQktMBr5uK...
+(1 row)
+~~~
+
 
 {{site.data.alerts.callout_info}}
 The procedure documented here, creating a SCRAM-SHA-256-authenticated user by passing a *cleartext* password to the CockroachDB client, achieves the benefit of not requiring the cleartext password to be transmitted over the network; this offers good protection from replay attacks in case attackers bypass TLS. But it does not achieve full separation of concerns by isolating the cleartext password to a delegated service. The necessary additional steps to achieve this are documented in [Implement strict isolation of cleartext credentials](#implement-strict-isolation-of-cleartext-credentials).
@@ -261,12 +276,25 @@ In this way, the server stores the information needed for SCRAM authentication, 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
-SELECT *  FROM system.users WHERE username = "cool_user";
 ~~~
 ~~~
   username  |                                                             hashedPassword
 ------------+------------------------------------------------------------------------------------------------------------------------------------------
-  cool_user | SCRAM-SHA-256$119680:6XN0y7A83hylmX+3uMRPvQ==$mOI18rsucBjSrNMDDqNJ1/q4cROvRDLIUqjC0BzQHEg=:4zPCVFflWWHD53ZEIrcH4q3X1+le86TBIV0Dce6fIuc=
+  cool_user | \x534352414d2d5348412d3235362431303631303a794478793878564830...
+~~~
+
+Note that by default, hashed passwords are displayed in hex format. You can escape the hex format by setting the `bytea_output` session variable.
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SET bytea_output = escape;
+SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
+~~~
+~~~
+  username            |                     hashedPassword
+----------------------+---------------------------------------------------------
+  cool_user   | SCRAM-SHA-256$119680:6XN0y7A83hylmX+3uMRPvQ==$mOI18rsucBjSrNMDDqNJ1/q4cROvRDLIUqjC0BzQHEg=:4zPCVFflWWHD53ZEIrcH4q3X1+le86TBIV0Dce6fIuc=
+(1 row)
 ~~~
 
 ## Appendix: Python SCRAM-hashing script

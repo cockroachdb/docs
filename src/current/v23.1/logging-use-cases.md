@@ -45,7 +45,7 @@ When monitoring your cluster, consider using these logs in conjunction with [Pro
 
 ### OPS
 
-The [`OPS`](logging.html#ops) channel logs operational events initiated by users or automation. These can include node additions and removals, process starts and shutdowns, [gossip](https://en.wikipedia.org/wiki/Gossip_protocol) connection events, and [zone configuration changes](configure-replication-zones.html) on the SQL schema or system ranges.
+The [`OPS`](logging.html#ops) channel logs operational events initiated by users or automation. These can include node additions and removals, process starts and shutdowns, [gossip](https://wikipedia.org/wiki/Gossip_protocol) connection events, and [zone configuration changes](configure-replication-zones.html) on the SQL schema or system ranges.
 
 #### Example: Node decommissioning
 
@@ -78,7 +78,7 @@ All possible `OPS` event types are detailed in the [reference documentation](eve
 
 ### HEALTH
 
-The [`HEALTH`](logging.html#health) channel logs operational events initiated by CockroachDB or reported by automatic processes. These can include resource usage details, connection errors, [gossip](https://en.wikipedia.org/wiki/Gossip_protocol) status, [replication](architecture/replication-layer.html) events, and runtime statistics.
+The [`HEALTH`](logging.html#health) channel logs operational events initiated by CockroachDB or reported by automatic processes. These can include resource usage details, connection errors, [gossip](https://wikipedia.org/wiki/Gossip_protocol) status, [replication](architecture/replication-layer.html) events, and runtime statistics.
 
 #### Example: Runtime stats
 

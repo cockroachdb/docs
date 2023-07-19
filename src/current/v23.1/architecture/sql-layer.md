@@ -60,16 +60,16 @@ When a node in a CockroachDB cluster receives a SQL request from a client, it [p
 
 #### Parsing
 
-SQL queries are parsed against our `yacc` file (which describes our supported syntax), and the SQL version of each query is converted into an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
+SQL queries are parsed against our `yacc` file (which describes our supported syntax), and the SQL version of each query is converted into an [abstract syntax tree](https://wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 
 #### Logical planning
 
 During the *logical planning* phase, the AST is transformed into a query plan in the following steps:
 
-1. The AST is transformed into a high-level logical query plan. During this transformation, CockroachDB also performs [semantic analysis](https://en.wikipedia.org/wiki/Semantic_analysis_(compilers)), which includes operations like:
+1. The AST is transformed into a high-level logical query plan. During this transformation, CockroachDB also performs [semantic analysis](https://wikipedia.org/wiki/Semantic_analysis_(compilers)), which includes operations like:
     - Checking whether the query is a valid statement in the SQL language.
     - Resolving names, such as the names of tables or variables to their values.
-    - Eliminating unneeded intermediate computations, e.g., by replacing `0.6 + 0.4` with `1.0`. This is also known as [constant folding](https://en.wikipedia.org/wiki/Constant_folding).
+    - Eliminating unneeded intermediate computations, e.g., by replacing `0.6 + 0.4` with `1.0`. This is also known as [constant folding](https://wikipedia.org/wiki/Constant_folding).
     - Finalizing which data types to use for intermediate results, e.g., when a query contains one or more [subqueries](../subqueries.html).
 
 1. The logical plan is *simplified* using a series of transformations that are always valid. For example, `a BETWEEN b AND c` may be converted to `a >= b AND a <= c`.
@@ -85,7 +85,7 @@ the execution of the query, based on range locality information. This
 is where CockroachDB decides to distribute a query to perform some
 computations close to where the data is stored.
 
-More concretely, the physical planning phase transforms the optimized logical plan generated during [logical planning](#logical-planning) into a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph) (DAG) of physical *SQL operators*. These operators can be viewed by running the [`EXPLAIN(DISTSQL)`](../explain.html) statement.
+More concretely, the physical planning phase transforms the optimized logical plan generated during [logical planning](#logical-planning) into a [directed acyclic graph](https://wikipedia.org/wiki/Directed_acyclic_graph) (DAG) of physical *SQL operators*. These operators can be viewed by running the [`EXPLAIN(DISTSQL)`](../explain.html) statement.
 
 Because the [distribution layer](distribution-layer.html) presents the abstraction of a single key space, the SQL layer can perform read and write operations for any range on any node. This allows the SQL operators to behave identically whether planned in gateway or distributed mode.
 

@@ -8,15 +8,29 @@
 
 ## Statement Fingerprints results
 
-The statement fingerprints returned are determined by the selected **Search Criteria**:
+The statement fingerprints returned are determined by the selected **Search Criteria**.
 
-1. By default, the **Top** `100` statement fingerprints **By** `% of All Runtime` are returned.
-  - To change the number returned, select `25`, `50`, or `500` from the dropdown.
-  - To change the column filter, select `CPU Time`, `Contention Time`, `Execution Count`, `P99 Latency`, or `Statement Time` from the dropdown.
+### Search Criteria ###
+
+By default, the **Top** `100` statement fingerprints **By** `% of All Runtime` for the `Past Hour` are returned.
+
+1. To change the number of results returned, select `25`, `50`, `100`, or `500` from the **Top** dropdown. To return a larger number, select `More` and choose an option: `1000`, `5000`, `10000`.
+1. To change the sort column, from the **By** dropdown, select a commonly sorted column: `% of All Runtime`, `CPU Time`, `Contention Time`, `Execution Count`, `P99 Latency`, `Statement Time`. To sort by other columns, select `More` from the dropdown and choose an option: `Last Execution Time`, `Max Latency`,`Max Memory`, `Min Latency`, `Network`, `P50 Latency`, `P90 Latency`, `Retries`, `Rows Processed`.
+{{site.data.alerts.callout_info}}
+The `More` options may increase the page loading time and are not generally recommended.
+{{site.data.alerts.end}}
 1. Select the [**Time Range**](#time-interval).
 1. Click **Apply**.
 
     The list of statements that satisfy the search criteria is displayed. The results can be further [searched and filtered](#search-and-filter).
+
+{{site.data.alerts.callout_danger}}
+Results are not automatically refreshed.
+
+The actual time range of the statistics is displayed at the top right of the results, for example, `Showing aggregated stats from 20:00 to 21:59 (UTC)`. If you select a preset time interval, such as `Past Hour`, be aware that since the statistics displayed are not automatically refreshed, they may become stale. To see the latest statistics, update the **Search Criteria** and apply.
+
+However, it may take up to 10 minutes for the most recent statistics to be included in the aggregated statistics. 10 minutes is the default for the [`sql.stats.flush.interval` cluster setting](#statement-statistics). For in-memory statistics, directly query the following in-memory table: `crdb_internal.cluster_statement_statistics`.{% if page.cloud != true %} Alternatively, use the [**Active Executions** view](#active-executions-view).{% endif %}
+{{site.data.alerts.end}}
 
 ### Time interval
 
@@ -33,6 +47,10 @@ It's possible to select an interval for which no statement statistics exist.
 ## Search and filter
 
 By default, the **Statements** page shows SQL statements from all applications and databases running on the cluster.
+
+{{site.data.alerts.callout_info}}
+For the **Statement Fingerprints** view, the search and filter are applied **after** results are returned based on the [**Search Criteria**](#search-criteria).
+{{site.data.alerts.end}}
 
 ### Search results
 

@@ -17,7 +17,7 @@ This behavior is similar to [`ST_Covers`](st_covers.html), except that the crite
 
 `ST_Contains` works on the following data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
 
 {% if page.has_prefixed_variant %}
 {{site.data.alerts.callout_info}}
@@ -79,9 +79,9 @@ SELECT st_contains(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95
 
 ## See also
 
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)

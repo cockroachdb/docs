@@ -911,6 +911,52 @@ $ cockroach demo bank
 (1 row)
 ~~~
 
+##### Move a column from one column family to another
+
+Moving frequently updated columns to their own [column family can increase performance](column-families.html#default-behavior).
+
+To move a column from one column family to another column family, create a temporary, [non-visible](create-table.html#not-visible-property) [stored computed column](computed-columns.html) in the target column family, then rename the columns. Once this succeeds, you can drop the original, now renamed column.
+
+For example, to move the `new_name` column from `f2` to `f1`:
+
+1. Create a temporary computed column in the target column family of the same data type as the column you want to move:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE bank
+        ADD COLUMN newer_name STRING
+        FAMILY f1 NOT VISIBLE AS (new_name) STORED;
+    ~~~
+
+    This causes `newer_name` to have the same values as `new_name`.
+
+1. Rename the columns:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE bank
+        ALTER COLUMN newer_name DROP STORED,
+        ALTER COLUMN newer_name SET VISIBLE,
+        RENAME COLUMN new_name TO old_name,
+        RENAME COLUMN newer_name TO new_name,
+        ALTER COLUMN old_name SET NOT VISIBLE;
+    ~~~
+
+1. Drop the old column:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET sql_safe_updates = false;
+    ALTER TABLE bank DROP COLUMN old_name;
+    SET sql_safe_updates = true;
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You must set the [`sql_safe_updates` session variable](set-vars.html#sql-safe-updates) to `false` to drop a column in a table that has data.
+    {{site.data.alerts.end}}
+
+Moving a column to another column family executes writes to the underlying storage equal to two times the number of rows. For example, if the table has 10 million rows, there will be 20 million writes to the [storage layer](architecture/storage-layer.html): 10 million writes when creating the temporary stored computed column, and 10 million writes when removing the original column.
+
 #### Add a column with an `ON UPDATE` expression
 
  `ON UPDATE` expressions set the value for a column when other values in a row are updated.
@@ -1253,7 +1299,7 @@ To auto-generate unique row identifiers in `REGIONAL BY ROW` tables, use the [`U
 ~~~
 
 {{site.data.alerts.callout_info}}
-When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
+When using `DEFAULT gen_random_uuid()` on columns in `REGIONAL BY ROW` tables, uniqueness checks on those columns are disabled by default for performance purposes. CockroachDB assumes uniqueness based on the way this column generates [`UUIDs`](uuid.html#create-a-table-with-auto-generated-unique-row-ids). To enable this check, you can modify the `sql.optimizer.uniqueness_checks_for_gen_random_uuid.enabled` [cluster setting](cluster-settings.html). Note that while there is virtually no chance of a [collision](https://wikipedia.org/wiki/Universally_unique_identifier#Collisions) occurring when enabling this setting, it is not truly zero.
 {{site.data.alerts.end}}
 
 #### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
@@ -2456,7 +2502,7 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN "us-east-1";
 If no region is supplied, `REGIONAL BY TABLE` defaults the table's home region to the primary region.
 {{site.data.alerts.end}}
 
-For more information about how this table locality works, see [Regional tables](multiregion-overview.html#regional-tables).
+For more information about how this table locality works, see [Regional tables](table-localities.html#regional-tables).
 
 <a name="regional-by-row"></a>
 
@@ -2504,7 +2550,7 @@ This is necessary because every row in a regional by row table must have a home 
 
 If you do not set a home region for a row in a regional by row table, it defaults to the value returned by the built-in function `gateway_region()`. If the value returned by `gateway_region()` does not belong to the multi-region database the table is a part of, the home region defaults to the database's primary region.
 
-For more information about how this table locality works, see [Regional by row tables](multiregion-overview.html#regional-by-row-tables).
+For more information about how this table locality works, see [Regional by row tables](table-localities.html#regional-by-row-tables).
 
 <a name="rename-crdb_region"></a>
 
@@ -2682,7 +2728,7 @@ ALTER TABLE {table} SET LOCALITY GLOBAL;
 ALTER TABLE SET LOCALITY
 ~~~
 
-For more information about how this table locality works, see [Global tables](multiregion-overview.html#global-tables).
+For more information about how this table locality works, see [Global tables](table-localities.html#global-tables).
 
 ### Set table schema
 

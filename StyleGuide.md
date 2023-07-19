@@ -448,7 +448,6 @@ A troubleshooting guide helps users quickly recognize the source of an error con
 
 #### Examples
 
-- [Error Handling and Troubleshooting](https://www.cockroachlabs.com/docs/stable/error-handling-and-troubleshooting.html)
 - [Troubleshoot SQL Behavior](https://www.cockroachlabs.com/docs/stable/query-behavior-troubleshooting.html)
 
 ### FAQ
@@ -539,6 +538,15 @@ Whenever a CockroachDB feature is referenced, provide a link to the relevant doc
 Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
 
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
+
+For websites that automatically localize pages, avoid using localization elements directly within the URL. For example:
+
+- GitHub
+  - Instead of `https://docs.github.com/**en/**graphql/overview/explorer`
+  - Use `https://docs.github.com/graphql/overview/explorer`
+- Wikipedia
+  - Instead of `https://en.wikipedia.org/wiki/SQL:2011`
+  - Use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
 
@@ -744,6 +752,8 @@ All product names except CockroachDB should be written as Liquid variables unles
 
 
 The first occurrence of a product name within a docs page should use full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
+
+It should be noted that each of these words can occur uncapitalized if referring to general concepts, rather than CockroachDB concepts/products. For example, we can refer to "Serverless clusters and serverless applications", note that "Dedicated clusters used dedicated (rather than shared) network and compute infrastructure".
 
 ### Code
 

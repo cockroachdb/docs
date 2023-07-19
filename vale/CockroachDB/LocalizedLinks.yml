@@ -1,0 +1,28 @@
+extends: existence
+message: "Link contains a localization element (e.g., `en`, `en-us`). Some websites will auto-localize. Try to remove it from the URL if it doesn't 404: '%s'..."
+link: https://github.com/cockroachdb/docs/blob/main/StyleGuide.md#links
+scope: raw
+level: warning
+nonword: true
+tokens:
+  - '(?i)https?:\/\/[^\)"]*?(?:\/en\/|\/en-us\/|\/en_us\/|\ben\.|\?hl=en)'
+exceptions:
+  - http://docs.peewee-orm.com/en/
+  - https://access.redhat.com/documentation/en-us/
+  - https://alembic.sqlalchemy.org/en/
+  - https://dev.mysql.com/doc/employee/en/
+  - https://dev.mysql.com/doc/refman/8.0/en/
+  - https://docs.ceph.com/en/
+  - https://docs.djangoproject.com/en/
+  - https://docs.geoserver.org/latest/en/
+  - https://docs.geoserver.org/stable/en/
+  - https://docs.oracle.com/en/
+  - https://docs.peewee-orm.com/en/
+  - https://flask.palletsprojects.com/en/
+  - https://help.okta.com/en-us/
+  - https://marketplace.redhat.com/en-us/
+  - https://passlib.readthedocs.io/en/
+  - https://postgrest.org/en/
+  - https://www.elastic.co/guide/en/
+  - https://www.esri.com/en-us/
+  - https://www.striim.com/docs/en/

@@ -356,6 +356,8 @@ To drain the node without process termination, see [Drain a node manually](#drai
 
 ## Monitor shutdown progress
 
+After you initiate a node shutdown or restart, the node's progress is regularly logged to the [default logging destination](logging-overview.html#logging-destinations) until the operation is complete. The following sections provide additional ways to monitor the operation's progress.
+
 ### `OPS`
 
 During node shutdown, progress messages are generated in the [`OPS` logging channel](logging-overview.html#logging-channels). The frequency of these messages is configured with [`server.shutdown.lease_transfer_wait`](#server-shutdown-lease_transfer_wait). [By default](configure-logs.html#default-logging-configuration), the `OPS` logs output to a `cockroach.log` file.

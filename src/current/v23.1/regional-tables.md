@@ -123,9 +123,9 @@ For [`REGIONAL BY ROW` tables](#regional-by-row-tables), you get low-latency con
 
 ### Resiliency
 
-Because the `test` database does not specify a [survival goal](multiregion-overview.html#survival-goals), it uses the default [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).  With the default settings, an entire availability zone (AZ) can fail without interrupting access to the database.
+Because the `test` database does not specify a [survival goal](multiregion-overview.html#survival-goals), it uses the default [`ZONE` survival goal](multiregion-survival-goals.html#survive-zone-failures).  With the default settings, an entire availability zone (AZ) can fail without interrupting access to the database.
 
-For more information about how to choose a database survival goal, see [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about how to choose a database survival goal, see [When to use `ZONE` vs. `REGION` survival goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals).
 
 ## Alternatives
 

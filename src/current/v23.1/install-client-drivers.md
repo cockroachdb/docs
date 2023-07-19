@@ -136,7 +136,7 @@ $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 You can substitute psycopg2 for other alternatives that include the psycopg python package.
 {{site.data.alerts.end}}
 
-For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
+For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/intro.html#installation-guide).
 
 For a simple but complete example app, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
 

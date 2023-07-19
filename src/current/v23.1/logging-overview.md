@@ -9,7 +9,7 @@ If you need to monitor your cluster, tune performance, or [troubleshoot](trouble
 
 ## Details
 
-When a node processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message is composed of:
+When a node starts, shuts down, or processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message is composed of:
 
 - A payload that contains events either structured in JSON or conveyed in an arbitrary string. For details on structured event types and their fields, see [Notable Event Types](eventlog.html).
 - An envelope that contains event metadata (e.g., severity, date, timestamp, channel). Depending on the log format you specify when [configuring logs](configure-logs.html#file-logging-format), the envelope can be formatted either in JSON or as a flat prefix to the message.
@@ -41,7 +41,7 @@ This allows you to group channels that log related information (e.g., operationa
 | [`SQL_PERF`](logging.html#sql_perf)                 | SQL executions that impact performance, such as slow queries (when enabled via the `sql.log.slow_query.latency_threshold` and/or `sql.log.slow_query.experimental_full_table_scans.enabled` [cluster settings](cluster-settings.html)).                                                                                    |
 | [`TELEMETRY`](logging.html#telemetry)               |  Telemetry events for internal usage.                                                                                                                                                                                                                                        |
 
-Logging channels are analogous to [logging facilities in Syslog](https://en.wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
+Logging channels are analogous to [logging facilities in Syslog](https://wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
 
 ## Logging destinations
 

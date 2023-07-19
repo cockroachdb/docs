@@ -13,7 +13,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### In what clouds and regions is {{ site.data.products.db }} available?
 
-Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, contact your Cockroach Labs account team.
+Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.dedicated }} and {{ site.data.products.serverless-plan }} clusters can be deployed. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 ### What is {{ site.data.products.dedicated }}?
 
@@ -51,11 +51,13 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2 or 1.3.
 
+{% include common/tls-bad-cipher-warning.md %}
+
 See the [Security Overview page](../{{site.current_cloud_version}}/security-reference/security-overview.html) for more information, and for comparison of security options by CockroachDB product.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
+All data on {{ site.data.products.db }} is encrypted at rest by the cloud provider where your cluster is deployed. Refer to [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption) for GCP, [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html) for AWS, and [Azure disk encryption](https://learn.microsoft.com/azure/virtual-machines/disk-encryption) for Azure (limited access). With {{ site.data.products.dedicated }} advanced, [Customer Managed Encryption Keys (CMEK)](cmek.html) allows you to optionally protect cluster data at rest with cryptographic keys that are entirely within your control.
 
 All data in {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} is encrypted at rest by the cloud provider where your cluster is deployed.
 
@@ -95,19 +97,33 @@ We do not automatically scale nodes based on your capacity usage. To add or remo
 
 ### Who is responsible for backup?
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. Only {{ site.data.products.dedicated }} cluster backups are available to users at this time. See the [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated#ways-to-restore-data) page for ways to restore data from your cluster's automatic backups in the Console.
+Taking regular backups of your data is an operational best practice. Both a) frequently and securely backing up your data, and b) maintaining readiness to quickly restore from saved backups, are essential to resilience and [disaster recovery](../{{site.current_cloud_version}}/disaster-recovery.html). 
 
-{{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed backups are not available for {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
-{{site.data.alerts.end}}
+{{ site.data.products.db }} automatically runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. Full backups are retained for 30 days and incremental backups for 7 days. In addition to these managed backups, you can also take manual backups and store them in your cloud storage buckets using the [`BACKUP`](../{{site.current_cloud_version}}/backup.html) statement.
 
-The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
+Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days and incremental backups for 7 days. If an organization is deleted, you will lose access to all of the managed-service backups that Cockroach Labs has taken of the cluster. 
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 
-You can also [back up and restore](take-and-restore-customer-owned-backups.html) data on your own. If you need additional help, [contact us](https://support.cockroachlabs.com).
+Learn more:
+
+- Refer to [Use Managed-Service Backups](use-managed-service-backups.html?filters=dedicated) to learn how to restore data from {{ site.data.products.db }}'s automatic backups in the Console. 
+
+- Refer to [Take and Restore Customer-Owned Backups on CockroachDB Cloud](take-and-restore-customer-owned-backups.html) for more information about using customer-managed backups.
+
+- Refer to [Disaster Recovery](../{{site.versions["stable"]}}/disaster-recovery.html) for information about more holistically maintaining a capacity to recover from potential disruptions.
+
+- [Contact support](https://support.cockroachlabs.com).
+
+#### Cloud provider considerations
+
+The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
+
+{{site.data.alerts.callout_info}}
+During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), managed backups are not available for {{ site.data.products.dedicated }} clusters on Azure. Customers can [take and restore from their own backups on Azure storage](take-and-restore-customer-owned-backups.html). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+{{site.data.alerts.end}}
 
 ### Can I download the backups that {{ site.data.products.db }} takes for me?
 

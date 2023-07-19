@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
+A foreign key is a column (or combination of columns) in a table whose values must match values of a column in some other table. `FOREIGN KEY` constraints enforce [referential integrity](https://wikipedia.org/wiki/Referential_integrity), which essentially says that if column value A refers to column value B, then column value B must exist.
 
 For example, given an `orders` table and a `customers` table, if you create a column `orders.customer_id` that references the `customers.id` primary key:
 
@@ -29,7 +29,7 @@ To read more about how foreign keys work, see our [What is a Foreign Key? (With 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a virtual [computed column](computed-columns.html), but it can be a stored computed column.
 - A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
-- A foreign key column can reference the [`crdb_region` column](alter-table.html#crdb_region) in [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
+- A foreign key column can reference the [`crdb_region` column](alter-table.html#crdb_region) in [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables) tables even if the `crdb_region` column is not explicitly part of a `UNIQUE` constraint. This is possible because `crdb_region` is implicitly included in every index on `REGIONAL BY ROW` tables as the partitioning key. This applies to whichever column is used as the partitioning column, in case a different name is used via `REGIONAL BY ROW AS`.
 
 **Referenced Columns**
 

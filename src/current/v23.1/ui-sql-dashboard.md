@@ -23,6 +23,14 @@ The **SQL** dashboard displays the following time series graphs:
 
 - In the cluster view, the graph shows the total number of SQL client connections to all nodes combined, with lines for each node.
 
+## SQL Connection Rate
+
+The **SQL Connection Rate** is an average of the number of connection attempts per second over an aggregation window.
+
+- In the node view, the graph shows the rate of SQL connection attempts between clients and the selected node.
+  
+- In the cluster view, the graph shows the rate of SQL connection attempts to all nodes, with lines for each node.
+
 ## Open SQL Transactions
 
 - In the node view, the graph shows the total number of open SQL transactions on the node.
@@ -89,9 +97,9 @@ The statement contention metric is a counter that represents the number of state
 
 Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
 
-- In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 99% of connections within this time, not including network latency between the node and the client.
+- In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 99% of connections within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
 
 ## Connection Latency: 90th Percentile
 
@@ -101,17 +109,17 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 
 Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
 
-- In the node view, the graph shows the 99.99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99.99% of queries within this time, not including network latency between the node and the client.
+- In the node view, the graph shows the 99.99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99.99% of queries within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 99.99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 99.99% of queries within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99.99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 99.99% of queries within this time, not including network latency between the node and the client.
 
 ## Service Latency: SQL, 99.9th percentile
 
 Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
 
-- In the node view, the graph shows the 99.9th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99.9% of queries within this time, not including network latency between the node and the client.
+- In the node view, the graph shows the 99.9th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99.9% of queries within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 99.9th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 99.9% of queries within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99.9th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 99.9% of queries within this time, not including network latency between the node and the client.
 
 ## Service Latency: SQL, 99th percentile
 
@@ -121,25 +129,25 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](architecture/sql-layer.html). This time does not include returning results to the client. Service latency includes metrics only from DML  (`SELECT`,` INSERT`, `UPDATE`, and `DELETE`) statements.
 
-- In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 90% of queries within this time, not including network latency between the node and the client.
+- In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 90% of queries within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 90% of queries within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 90% of queries within this time, not including network latency between the node and the client.
 
 ## KV Execution Latency: 99th percentile
 
 KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/overview.html) receives the request and delivers a response.
 
-- In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 99% of requests within this time.
+- In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 99% of requests within this time.
 
-- In the cluster view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for each node in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 99% of requests within this time.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for each node in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 99% of requests within this time.
 
 ## KV Execution Latency: 90th percentile
 
 KV execution latency is calculated as the time in milliseconds between when the [KV layer](architecture/overview.html) receives the request and delivers a response.
 
-- In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 90% of requests within this time.
+- In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 90% of requests within this time.
 
-- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for each node in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 90% of requests within this time.
+- In the cluster view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for each node in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 90% of requests within this time.
 
 ## Transactions
 
@@ -163,9 +171,9 @@ See the [Transaction Retry Error Reference](transaction-retry-error-reference.ht
 
 Transaction latency is calculated as the total time in nanoseconds a [transaction](transactions.html) took to complete.
 
-- In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for the node. Over the last minute the node completed 99% of transactions within this time.
+- In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for the node. Over the last minute the node completed 99% of transactions within this time.
 
-- In the cluster view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for each node in the cluster. Over the last minute the node completed 99% of transactions within this time.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for each node in the cluster. Over the last minute the node completed 99% of transactions within this time.
 
 See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
 
@@ -173,9 +181,9 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 Transaction latency is calculated as the total time in nanoseconds a [transaction](transactions.html) took to complete.
 
-- In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for the node. Over the last minute the node completed 90% of transactions within this time.
+- In the node view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for the node. Over the last minute the node completed 90% of transactions within this time.
 
-- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for each node in the cluster. Over the last minute the node completed 90% of transactions within this time.
+- In the cluster view, the graph shows the 90th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of transaction time over a 1 minute period for each node in the cluster. Over the last minute the node completed 90% of transactions within this time.
 
 See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
 
