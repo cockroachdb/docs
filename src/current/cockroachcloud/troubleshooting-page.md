@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot CockroachDB Cloud
+title: Troubleshoot Cloud Setup
 summary: CockroachDB Cloud errors and solutions.
 toc: true
 docs_area: manage

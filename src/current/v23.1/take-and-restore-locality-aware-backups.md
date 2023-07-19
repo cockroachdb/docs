@@ -9,22 +9,26 @@ docs_area: manage
 Locality-aware [`BACKUP`](backup.html) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
 
-You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](cockroach-start.html).
+Locality-aware backups allow you to partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the [cloud storage](use-cloud-storage.html) bucket that is closest to the node locality configured at [node startup](cockroach-start.html).
 
 This is useful for:
 
 - Reducing cloud storage data transfer costs by keeping data within cloud regions.
 - Helping you comply with data domiciling requirements.
 
-A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. Given a list of URIs that together contain the locations of all of the files for a single locality-aware backup, [`RESTORE` can read in that backup](#restore-from-a-locality-aware-backup).
+A locality-aware backup is specified by a list of URIs, each of which has a `COCKROACH_LOCALITY` URL parameter whose single value is either `default` or a single locality key-value pair such as `region=us-east`. At least one `COCKROACH_LOCALITY` must be the `default`. [Restore jobs can read from a locality-aware backup](#restore-from-a-locality-aware-backup) when you provide the list of URIs that together contain the locations of all of the files for a single locality-aware backup.
 
-Every node involved in the backup is responsible for backing up the ranges for which it was the [leaseholder](architecture/replication-layer.html#leases) at the time the [distributed backup flow](architecture/sql-layer.html#distsql) was planned. The locality of the node running the distributed backup flow determines where the backup files will be placed in a locality-aware backup. The node running the backup flow, and the leaseholder node of the range being backed up are usually the same, but can differ when lease transfers have occurred during the execution of the backup. The leaseholder node returns the files to the node running the backup flow (usually a local transfer), which then writes the file to the external storage location with a locality that matches its own localities (with an overall preference for more specific values in the locality hierarchy). If there is no match, the `default` locality is used.
+{% include {{ page.version.version }}/backups/locality-aware-access.md %}
+
+## Technical overview
+
+For a technical overview of how a locality-aware backup works, refer to [Job coordination and export of locality-aware backups](backup-architecture.html#job-coordination-and-export-of-locality-aware-backups).
+
+{% include {{ page.version.version }}/backups/support-products.md %}
 
 {{site.data.alerts.callout_info}}
 CockroachDB also supports _locality-restricted backup execution_, which allow you to specify a set of locality filters for a backup job to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket. Refer to [Take Locality-restricted Backups](take-locality-restricted-backups.html) for more detail.
 {{site.data.alerts.end}}
-
-{% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Create a locality-aware backup
 
@@ -40,6 +44,7 @@ When you run the `BACKUP` statement for a locality-aware backup, check the follo
 
 - The locality query string parameters must be [URL-encoded](https://wikipedia.org/wiki/Percent-encoding).
 - {% include {{ page.version.version }}/backups/cap-parameter-ext-connection.md %}
+- {% include {{ page.version.version }}/backups/locality-aware-access.md %}
 
 You can restore the backup by running:
 

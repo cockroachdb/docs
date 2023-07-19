@@ -76,6 +76,11 @@
   }
 }
 
+.comparison-chart td {
+  padding: 20px;
+  text-align: left;
+}
+
 .widescreen-youtube-video__container {
   height: 0;
 	overflow: hidden;
@@ -106,6 +111,9 @@ table {
       td {
         strong {
           line-height: 22px;
+        }
+        ul {
+          font-size: 14px;
         }
       }
     }

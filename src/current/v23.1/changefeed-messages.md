@@ -236,7 +236,7 @@ In some unusual situations you may receive a delete message for a row without fi
 
 When you create a changefeed with the [`resolved` option](create-changefeed.html#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink](changefeed-sinks.html). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges](architecture/overview.html#range) in the changefeed have progressed to a specific point in time.
 
-When you specify the `resolved` option at changefeed creation, the [job's coordinating node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
+When you specify the `resolved` option at changefeed creation, the [job's coordinating node](how-does-an-enterprise-changefeed-work.html) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
 
 There are three different ways to configure resolved timestamp messages:
 
@@ -336,7 +336,7 @@ Refer to the [`CREATE CHANGEFEED` option table](create-changefeed.html#schema-ev
 
 ## Garbage collection and changefeeds
 
-By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](how-does-an-enterprise-changefeed-work.html).
 
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 

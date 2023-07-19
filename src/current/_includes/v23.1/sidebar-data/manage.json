@@ -678,65 +678,6 @@
           ]
         }
       ]
-    },
-    {
-      "title": "Replication Controls",
-      "urls": [
-        "/${VERSION}/configure-replication-zones.html"
-      ]
-    },
-    {
-      "title": "Troubleshooting",
-      "items": [
-        {
-          "title": "Troubleshooting Overview",
-          "urls": [
-            "/${VERSION}/troubleshooting-overview.html"
-          ]
-        },
-        {
-          "title": "Common Errors and Solutions",
-          "urls": [
-            "/${VERSION}/common-errors.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Cluster Setup",
-          "urls": [
-            "/${VERSION}/cluster-setup-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Statement Behavior",
-          "urls": [
-            "/${VERSION}/query-behavior-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot CockroachDB Cloud",
-          "urls": [
-            "/cockroachcloud/troubleshooting-page.html"
-          ]
-        },
-        {
-          "title": "Replication Reports",
-          "urls": [
-            "/${VERSION}/query-replication-reports.html"
-          ]
-        },
-        {
-          "title": "Support Resources",
-          "urls": [
-            "/${VERSION}/support-resources.html"
-          ]
-        },
-        {
-          "title": "File an Issue",
-          "urls": [
-            "/${VERSION}/file-an-issue.html"
-          ]
-        }
-      ]
     }
   ]
 }

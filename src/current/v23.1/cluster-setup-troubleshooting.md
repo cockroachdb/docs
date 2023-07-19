@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot Cluster Setup
+title: Troubleshoot Self-Hosted Setup
 summary: Learn how to troubleshoot issues with starting CockroachDB clusters
 toc: true
 docs_area: manage

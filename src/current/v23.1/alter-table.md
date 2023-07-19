@@ -2502,7 +2502,7 @@ ALTER TABLE {table} SET LOCALITY REGIONAL BY TABLE IN "us-east-1";
 If no region is supplied, `REGIONAL BY TABLE` defaults the table's home region to the primary region.
 {{site.data.alerts.end}}
 
-For more information about how this table locality works, see [Regional tables](multiregion-overview.html#regional-tables).
+For more information about how this table locality works, see [Regional tables](table-localities.html#regional-tables).
 
 <a name="regional-by-row"></a>
 
@@ -2550,7 +2550,7 @@ This is necessary because every row in a regional by row table must have a home 
 
 If you do not set a home region for a row in a regional by row table, it defaults to the value returned by the built-in function `gateway_region()`. If the value returned by `gateway_region()` does not belong to the multi-region database the table is a part of, the home region defaults to the database's primary region.
 
-For more information about how this table locality works, see [Regional by row tables](multiregion-overview.html#regional-by-row-tables).
+For more information about how this table locality works, see [Regional by row tables](table-localities.html#regional-by-row-tables).
 
 <a name="rename-crdb_region"></a>
 
@@ -2728,7 +2728,7 @@ ALTER TABLE {table} SET LOCALITY GLOBAL;
 ALTER TABLE SET LOCALITY
 ~~~
 
-For more information about how this table locality works, see [Global tables](multiregion-overview.html#global-tables).
+For more information about how this table locality works, see [Global tables](table-localities.html#global-tables).
 
 ### Set table schema
 
