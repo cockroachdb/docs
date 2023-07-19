@@ -113,7 +113,7 @@ To access the DB Console, you must first authorize your current IP address:
 
 1. Give it a **Name** indicating its use for DB Console access from your current location.
 
-1. Select **DB Console to monitor the cluster** under **Allow this network to access**.
+1.  Under **Allow this network to access**, select **DB Console to monitor the cluster**.
 
 1. Click **Apply**.
 
