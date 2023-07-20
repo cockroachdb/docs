@@ -14,7 +14,7 @@ This page describes these options and how they help to protect {{ site.data.prod
 You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up private connections so that inbound connections to your cluster from your cloud tenant flow over private networks rather than the public internet, for enhanced network security, reduced network latency, and to avoid defining static public IP addresses in your applications and services. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to the allowlist.
+- Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made the cloud provider's private network rather than the public internet, for enhanced network security and reduced network latency. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
 
     For {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering). For {{ site.data.products.dedicated }} clusters or multi-region {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink](#aws-privatelink).
 
@@ -23,7 +23,7 @@ You can authorize network access to your cluster by:
 {{site.data.alerts.callout_success}}
 Use GCP VPC Peering or AWS PrivateLink if:
 
-- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for {{ site.data.products.dedicated }} clusters and 50 for {{ site.data.products.serverless }}).
+- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for {{ site.data.products.dedicated }} clusters and 50 for {{ site.data.products.serverless }}). For {{ site.data.products.dedicated }} clusters on AWS, reach out to your Cockroach Labs team or support to increase the limit if needed.
 - Your servers’ IP addresses are not static.
 - You want avoid exposing your cluster to the public internet.
 

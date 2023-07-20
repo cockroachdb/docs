@@ -31,11 +31,9 @@ Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL 
 
 AWS PrivateLink is available only for multiregion {{ site.data.products.serverless }} clusters deployed on AWS. GCP Peering is not yet available for {{ site.data.products.serverless }}.
 
-To configure PrivateLink, you create the AWS PrivateLink connection in your or AWS console, then configure your cluster to allow connections from the connection. For more information and detailed instructions, refer to[Network Authorization for {{ site.data.products.dedicated }} clusters: AWS PrivateLink](network-authorization.html#aws-privatelink).
+To configure PrivateLink, you create the AWS PrivateLink connection in your or AWS console, then configure your cluster to allow connections from your VPC. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink](network-authorization.html#aws-privatelink).
 
-AWS Privatelink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html?filter-content=serverless).
-
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Azure Private Link is not available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html?filter-content=serverless).
 
 ## Select a connection method
 
