@@ -11,8 +11,11 @@ Changefeeds emit messages as changes happen to watched tables. CockroachDB chang
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
 - [Responses](#responses): The general format of changefeed messages.
+- [Message envelopes](#message-envelopes): The structure of the changefeed message.
 - [Ordering guarantees](#ordering-guarantees): CockroachDB's guarantees for a changefeed's message ordering.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
+- [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
+- [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
