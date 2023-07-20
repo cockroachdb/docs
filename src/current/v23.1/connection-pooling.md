@@ -29,11 +29,27 @@ Connection pooling can be a enabled as a feature of the driver, a separate libra
 To read more about connection pooling, see our [What is Connection Pooling, and Why Should You Care](https://www.cockroachlabs.com/blog/what-is-connection-pooling/) blog post.
 {{site.data.alerts.end}}
 
-## Sizing connection pools
+## Size connection pools
+
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
+  <button class="filter-button page-level" data-scope="dedicated"><strong>{{ site.data.products.dedicated }}</strong></button>
+  <button class="filter-button page-level" data-scope="selfhosted"><strong>{{ site.data.products.core }}</strong></button>
+</div>
 
 Idle connections in CockroachDB do not consume many resources compared to PostgreSQL. Cockroach Labs estimates the memory overhead of idle connections in CockroachDB is 20 kB to 30 kB per connection.
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+In {{ site.data.products.serverless }} clusters, the purpose of the connection pool is to reduce connection latency, not to set a maximum number of simultaneous connections. {{ site.data.products.serverless }} clusters will automatically scale up to meet the demand from multiple simultaneous client connections.
+
+Set the connection pool size to match your application and workload.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
 
 Each processor core can only execute one thread at a time. When there are more threads than processor cores, the system will use context switching to [time-slice](https://wikipedia.org/wiki/Preemption_(computing)#Time_slice) the thread execution. For example, if you have a system with a single core and two threads, processing threads 1 and 2 in parallel results in the system context switching to pause execution of thread 1 and begin executing thread 2, and then pause execution of thread 2 to resume executing thread 1. Executing thread 1 completely and then executing thread 2 will be faster because the system doesn't need to context switch, even though thread 2 had to wait until thread 1 fully completed to begin executing.
 
@@ -49,13 +65,45 @@ If you have a large number of services connecting to the same cluster, make sure
 
 In addition to setting a maximum connection pool size, set the maximum number of idle connections if possible. Cockroach Labs recommends setting the maximum number of idle connections to the maximum pool size. While this uses more memory, it allows many connections when concurrency is high without having to create a new connection for every new operation.
 
+Configure the minimum number of connections to equal to the maximum number of connections, creating a fixed pool size.
+
+Do not set the connection pool timeout values to be too short, as it may cause the connection pool software to close and reopen connections frequently, causing increased latency. [Monitor the `sql.new_conns` metric](#monitor-new-connections) to make sure the timeout values are set correctly.
+
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %} This may be useful in addition to your connection pool settings.
 
-## Validating connections in a pool
+</section>
+
+### Size connection pools in multi-region clusters
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+Similar to single-region {{ site.data.products.serverless }} clusters, the purpose of connection pools in multi-region {{ site.data.products.serverless }} clusters is to reduce connection latency. Add a connection pool for each region, and size the idle pool for your application and workload.
+
+The cluster will automatically scale up to meet demand, so there's no need to set a maximum connection pool size.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+
+For multi-region clusters, create a connection pool per region, and size the maximum connection pool for each region in your cluster using the same formula as a single-region cluster.
+
+For example, if you have 3 regions in your cluster, and each region has 12 vCPUs, create a connection pool for each region, with each connection pool having a maximum pool size of 48 (12 [processor cores] * 4).
+
+</section>
+
+## Validate connections in a pool
 
 After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. {{ site.data.products.db }} clusters periodically are restarted for patch version updates, for example, so previously established connections would be invalid after the restart.
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
+
+<section class="filter-content" markdown="1" data-scope="dedicated selfhosted">
+
+## Monitor new connections
+
+The [`sql.new_conns` metric](metrics.html#available-metrics) exposes the number of new SQL connections per second. A properly configured connection pool will show this value to be in the low single digits. A misconfigured connection pool will result in much higher values. You can expose and monitor this metric in the [DB Console](ui-custom-chart-debug-page.html).
+
+</section>
 
 ## Example
 
@@ -66,7 +114,7 @@ Validating connections is typically handled automatically by the connection pool
 
 <section class="filter-content" markdown="1" data-scope="java">
 
-In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a {{ site.data.products.dedicated }} CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
@@ -96,7 +144,7 @@ Connection conn = ds.getConnection();
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-In this example, a Go application similar to the [basic pgx example](build-a-go-app-with-cockroachdb.html) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+In this example, a Go application similar to the [basic pgx example](build-a-go-app-with-cockroachdb.html) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool) to create a connection pool on a {{ site.data.products.dedicated }} CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
@@ -125,7 +173,7 @@ For a full list of connection pool configuration parameters for pgxpool, see [th
 
 </section>
 
-## Implementing connection retry logic
+## Implement connection retry logic
 
 Some operational processes involve [node shutdown](node-shutdown.html). During the shutdown sequence, the server forcibly closes all SQL client connections to the node. If any open transactions were interrupted or not admitted by the server because of the connection closure, they will fail with a connection error.
 
