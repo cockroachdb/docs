@@ -35,15 +35,17 @@ You do not need an account with the cloud provider you choose in order to create
 
 In the **Regions** section, select a region for the cluster. Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.serverless }} clusters can be deployed.
 
-To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
-
 For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For multi-region clusters, CockroachDB will optimize access to data from the [**Primary region**](../{{site.versions["stable"]}}/multiregion-overview.html). Refer to [Plan a {{ site.data.products.serverless }} Cluster](plan-your-cluster-serverless.html#multi-region-clusters) to learn more. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
-After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink](network-authorization.html#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS tenant flow over private networks rather than the public internet. For multi-region clusters deployed on GCP, VPC Peering is not yet available.
+To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
 
 {{site.data.alerts.callout_info}}
 **Multi-region for {{ site.data.products.serverless }} is in [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
+
+After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)](network-authorization.html#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
+
+Private connectivity is yet available for {{ site.data.products.serverless-plan }} clusters on GCP.
 
 ## Step 4. Set resource limits
 

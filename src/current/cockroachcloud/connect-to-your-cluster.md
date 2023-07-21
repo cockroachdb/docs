@@ -42,7 +42,7 @@ GCP VPC Peering and AWS PrivateLink allow customers to establish SQL access to t
 
 VPC peering is available only for GCP clusters, and AWS PrivateLink is available for AWS clusters.
 
-To configure VPC Peering or PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from your VPC. For more information, refer to [Network Authorization for {{ site.data.products.dedicated }} clusters: GCP VPC Peering](network-authorization.html#vpc-peering) and [Network Authorization for {{ site.data.products.dedicated }} clusters: AWS PrivateLink](network-authorization.html#aws-privatelink).
+To configure VPC Peering or PrivateLink, you create the private connection in your cloud provider, then configure your cluster to allow connections from your VPC or private endpoint. For more information, refer to [Network Authorization for {{ site.data.products.dedicated }} clusters: GCP VPC Peering](network-authorization.html#vpc-peering) and [Network Authorization for {{ site.data.products.dedicated }} clusters: AWS PrivateLink](network-authorization.html#aws-privatelink).
 
 AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html). To configure VPC Peering, continue to the [VPC Peering](#vpc-peering) section below.
 

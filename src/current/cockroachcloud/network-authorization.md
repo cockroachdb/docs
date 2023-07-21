@@ -14,7 +14,7 @@ This page describes these options and how they help to protect {{ site.data.prod
 You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made the cloud provider's private network rather than the public internet, for enhanced network security and reduced network latency. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
+- Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet, for enhanced network security and reduced network latency. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
 
     For {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering). For {{ site.data.products.dedicated }} clusters or multi-region {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink](#aws-privatelink).
 
