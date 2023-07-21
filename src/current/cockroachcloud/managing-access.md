@@ -1,5 +1,5 @@
 ---
-title: Managing Access (Authorization) in CockroachDB Cloud
+title: Managing Users, Roles, and Service Accounts in CockroachDB Cloud
 summary: Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles.
 toc: true
 docs_area: manage
@@ -13,8 +13,6 @@ Access management tasks for the organization level are performed in the {{ site.
 Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
-
-{% include_cached cockroachcloud/fgac-transition-callout.md %}
 
 ## Manage your organizations
 
@@ -85,15 +83,11 @@ If you are sure you want to delete the organization, proceed with the following 
 
 ## Manage service accounts
 
-{{site.data.alerts.callout_info}}
-The access management model for service accounts is unified with users if the updated model is enabled for your organization. Service accounts created prior to that may still have the following legacy roles:
+The access management model for service accounts is unified with that for users, meaning service accounts may have all of the same [access roles](authorization.html#organization-user-roles), although it should be noted that service accounts and users still differ in the actions they can performed, as only users can access the console, and only service accounts can access the API, and the console and API differ in functionality.
 
-- The `ADMIN` role  allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
-- The `CREATE` role allows the service account to create new clusters within the organization.
-- The `DELETE` role allows the service account to delete clusters within the organization.
-- The `EDIT` role allows the service account to modify clusters within the organization.
-- The `READ` role allows the service account to get details about clusters within the organization.
-{{site.data.alerts.end}}
+Legacy service accounts created prior to the current authorization model may still have the following legacy roles: (ADMIN, CREATE, EDIT, READ, DELETE). Refer to [Service accounts](authorization.html#service-accounts).
+
+It is recommended to update service accounts to fine-grained access roles, by [editing their roles](#edit-roles-on-a-service-account).
 
 ### Create a service account
 
