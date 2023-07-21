@@ -210,7 +210,7 @@
       "title": "Security",
       "items": [
         {
-          "title": "Secure CockroachDB Cloud Clusters",
+          "title": "CockroachDB Cloud",
           "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
@@ -220,7 +220,7 @@
               ]
             },
             {
-              "title": "Managing AWS PrivateLink for a Dedicated Cluster",
+              "title": "AWS PrivateLink for Dedicated Clusters",
               "urls": [
                 "/cockroachcloud/aws-privatelink.html"
               ]
@@ -230,19 +230,19 @@
               "urls": [],
               "items": [
                 {
-                  "title": "Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+                  "title": "Manage CMEK for Dedicated Clusters",
                   "urls": [
                     "/cockroachcloud/managing-cmek.html"
                   ]
                 },
                 {
-                  "title": "Provisioning AWS KMS Keys and IAM Roles for CMEK",
+                  "title": "Provision AWS for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-aws.html"
                   ]
                 },
                 {
-                  "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
+                  "title": "Provision GCP for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                   ]
@@ -323,19 +323,19 @@
           ]
         },
         {
-          "title": "Secure CockroachDB Self-Hosted Clusters",
+          "title": "Self-Hosted CockroachDB",
           "items": [
             {
               "title": "Managing Security Certificates",
               "items": [
                 {
-                  "title": "Use the CockroachDB CLI to provision a development cluster",
+                  "title": "Use the CLI to provision a development cluster",
                   "urls": [
                     "/${VERSION}/manage-certs-cli.html"
                   ]
                 },
                 {
-                  "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
+                  "title": "Manage a cluster's PKI certificates with Vault",
                   "urls": [
                     "/${VERSION}/manage-certs-vault.html"
                   ]
@@ -414,7 +414,7 @@
               ]
             },
             {
-              "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
+              "title": "Use Vault to Securly Manage Database Credentials",
               "urls": [
                 "/${VERSION}/vault-db-secrets-tutorial.html"
               ]

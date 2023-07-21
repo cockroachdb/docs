@@ -210,7 +210,7 @@
       "title": "Security",
       "items": [
         {
-          "title": "Secure CockroachDB Cloud Clusters",
+          "title": "CockroachDB Cloud",
           "urls": ["/cockroachcloud/security-overview.html"],
           "items": [
             {
@@ -230,19 +230,19 @@
               "urls": [],
               "items": [
                 {
-                  "title": "Managing Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+                  "title": "Manage CMEK for Dedicated Clusters",
                   "urls": [
                     "/cockroachcloud/managing-cmek.html"
                   ]
                 },
                 {
-                  "title": "Provisioning AWS KMS Keys and IAM Roles for CMEK",
+                  "title": "Provision AWS for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-aws.html"
                   ]
                 },
                 {
-                  "title": "Provisioning GCP KMS Keys and Service Accounts for CMEK",
+                  "title": "Provision GCP for CMEK",
                   "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                   ]
@@ -323,7 +323,7 @@
           ]
         },
         {
-          "title": "Secure CockroachDB Self-Hosted Clusters",
+          "title": "Self-Hosted CockroachDB",
           "items": [
             {
               "title": "Managing Security Certificates",
@@ -335,7 +335,7 @@
                   ]
                 },
                 {
-                  "title": "Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault",
+                  "title": "Manage a cluster's PKI certificates with Vault",
                   "urls": [
                     "/${VERSION}/manage-certs-vault.html"
                   ]

@@ -5,7 +5,6 @@ toc: true
 docs_area: manage.security
 ---
 
-
 The CockroachDB CLI's [`cockroach cert`](cockroach-cert.html) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption](security-reference/transport-layer-security.html) in communication between CockroachDB nodes, and from SQL clients to the cluster.
 
 {{site.data.alerts.callout_info}}
