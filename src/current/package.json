@@ -4,7 +4,8 @@
   "devDependencies": {
     "@netlify/plugin-lighthouse": "^4.0.7",
     "jest": "^26",
-    "jest-cli": "^26"
+    "jest-cli": "^26",
+    "netlify-plugin-jekyll-cache": "^1.0.0"
   },
   "dependencies": {
     "front-matter": "^4.0.2",

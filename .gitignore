@@ -18,3 +18,4 @@ tmp/
 node_modules
 /src/*/bootstrap
 /src/*/vendor/
+package-lock.json

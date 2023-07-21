@@ -22,6 +22,9 @@
   function = "pretty-urls"
   path = "/*"
 
+[[plugins]]
+  package = "netlify-plugin-jekyll-cache"
+
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
 #  [plugins.inputs]
