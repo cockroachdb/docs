@@ -54,6 +54,8 @@ If you have multiple clusters, you will have to repeat these steps for each clus
 1. Select the **PrivateLink** tab.
 1. Click **Add Connection** to open the connection dialog.
 
+Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -74,6 +76,8 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 
 ## Step 2. Create an AWS endpoint
 
+<section class="filter-content" markdown="1" data-scope="dedicated serverless">
+
 {% capture security_group_substeps %}
     <ul><li>In the **Security group name** field, enter a name for the security group.</li>
     <li>In the **Description** field, enter a description for the security group.</li>
@@ -82,10 +86,14 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
     <li>Click **Create security group**.</li></ul>
 {% endcapture %}
 
+</section>
+
 <section class="filter-content" markdown="1" data-scope="serverless">
+
 {{site.data.alerts.callout_success}}
 Complete these steps once for each VPC in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless-plan }} clusters. If you connect additional clusters to the same VPC, you do not need to make additional changes to the VPC.
 {{site.data.alerts.end}}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated serverless">
@@ -164,7 +172,11 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 1. Follow the instructions in the dialog to enable **private DNS name** for the endpoint in AWS. When this option is enabled, {{ site.data.products.db }} maintains private DNS records in the VPC for the cluster.
 1. Click **Complete** to save the configuration and close the dialog.
 
+</section>
+
 ## Step 4. Enable private DNS
+
+<section class="filter-content" markdown="1" data-scope="dedicated serverless">
 
 Allow {{ site.data.products.db }} to modify the **private DNS name** for the endpoint in AWS. When this option is enabled, {{ site.data.products.db }} maintains private DNS records in the VPC for your cluster.
 
@@ -203,10 +215,20 @@ The endpoint status will change to Pending.
 
 After a short (less than 5 minute) delay, the status will change to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
 
+</section>
+
 ## What's next?
 
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
 - [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
-- [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)
+- [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+- [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
 - [Connect to a {{ site.data.products.serverless }} cluster](connect-to-a-serverless-cluster.html)
 
 </section>
