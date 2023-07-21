@@ -123,162 +123,186 @@
                 "/cockroachcloud/security-overview.html"
                 ]
             },
+
             {
-                "title": "Create Private Clusters",
+            "title": "Manage AWS PrivateLink for a Dedicated Cluster",
+            "urls": [
+                "/cockroachcloud/aws-privatelink.html"
+            ]
+            },
+            {
+            "title": "CMEK for Dedicated",
+            "items": [
+                {
+                "title": "Manage Customer-Managed Encryption Keys (CMEK) for Dedicated",
                 "urls": [
-                    "/cockroachcloud/private-clusters.html"
+                    "/cockroachcloud/managing-cmek.html"
                 ]
                 },
                 {
-                "title": "Manage AWS PrivateLink for a Dedicated Cluster",
+                "title": "Provision AWS KMS Keys and IAM Roles for CMEK",
                 "urls": [
-                    "/cockroachcloud/aws-privatelink.html"
+                    "/cockroachcloud/cmek-ops-aws.html"
                 ]
                 },
                 {
-                "title": "CMEK for Dedicated",
-                "items": [
-                    {
-                    "title": "Manage Customer-Managed Encryption Keys (CMEK) for Dedicated",
-                    "urls": [
-                        "/cockroachcloud/managing-cmek.html"
-                    ]
-                    },
-                    {
-                    "title": "Provision AWS KMS Keys and IAM Roles for CMEK",
-                    "urls": [
-                        "/cockroachcloud/cmek-ops-aws.html"
-                    ]
-                    },
-                    {
-                    "title": "Provision GCP KMS Keys and Service Accounts for CMEK",
-                    "urls": [
-                        "/cockroachcloud/cmek-ops-gcp.html"
-                    ]
-                    },
-                    {
-                    "title": "Customer-Managed Encryption Keys (CMEK)",
-                    "urls": [
-                        "/cockroachcloud/cmek.html"
-                    ]
-                    }
+                "title": "Provision GCP KMS Keys and Service Accounts for CMEK",
+                "urls": [
+                    "/cockroachcloud/cmek-ops-gcp.html"
                 ]
                 },
                 {
-                "title": "Compliance",
-                "items": [
-                    {
-                    "title": "Payment Card Industry Data Security Standard (PCI DSS)",
-                    "urls": [
-                        "/cockroachcloud/pci-dss.html"
-                    ]
-                    }
+                "title": "Customer-Managed Encryption Keys (CMEK)",
+                "urls": [
+                    "/cockroachcloud/cmek.html"
                 ]
-                },
-                {
-                "title": "Authentication",
-                    "items": [
-                        {
-                            "title": "Authentication Overview",
-                            "urls": [
-                                "/cockroachcloud/authentication.html"
-                            ]
-                        },
-                        {
-                            "title": "Single Sign-On (SSO) for CockroachDB Cloud Organizations",
-                            "urls": [
-                                "/cockroachcloud/cloud-org-sso.html"
-                            ]
-                        },
-                        {
-                            "title": "Configure Cloud Organization SSO",
-                            "urls": [
-                                "/cockroachcloud/configure-cloud-org-sso.html"
-                            ]
-                        },
-                        {
-                            "title": "Configure SCIM Provisioning",
-                            "urls": [
-                                "/cockroachcloud/configure-scim-provisioning.html"
-                            ]
-                        },
-                        {
-                            "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
-                            "urls": [
-                            "/cockroachcloud/cloud-sso-sql.html"
-                            ]
-                        },
-                        {
-                            "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
-                            "urls": [
-                            "/cockroachcloud/client-certs-dedicated.html"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "title": "Authorization",
-                    "items": [
-                        {
-                            "title": "Authorization Overview",
-                            "urls": [
-                                "/cockroachcloud/authorization.html"
-                            ]
-                        },
-                        {
-                            "title": "Network Authorization",
-                            "urls": [
-                                "/cockroachcloud/network-authorization.html"
-                            ]
-                        },
-                        {
-                            "title": "Manage Console Access",
-                            "urls": [
-                                "/cockroachcloud/managing-access.html"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "title": "Audit Logs",
-                    "items": [
-                        {
-                            "title": "SQL Audit Logging",
-                            "urls": [
-                                "/cockroachcloud/sql-audit-logging.html"
-                            ]
-                        },
-                        {
-                        "title": "Export Cloud Organization Audit Logs",
-                        "urls": [
-                            "/cockroachcloud/cloud-org-audit-logs.html"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "title": "Security Tutorials",
-                    "items": [
-                        {
-                            "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
-                            "urls": [
-                                "/${VERSION}/security-reference/config-secure-hba.html"
-                            ]
-                        },
-                        {
-                            "title": "Satori",
-                            "urls": [
-                                "/${VERSION}/satori-integration.html"
-                            ]
-                        },
-                        {
-                            "title": "HashiCorp Vault",
-                            "urls": [
-                                "/${VERSION}/hashicorp-integration.html"
-                            ]
-                        }
-                    ]
                 }
+            ]
+            },
+            {
+            "title": "Compliance",
+            "items": [
+                {
+                "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+                "urls": [
+                    "/cockroachcloud/pci-dss.html"
+                ]
+                }
+            ]
+            },
+            {
+            "title": "Authentication",
+                "items": [
+                    {
+                        "title": "Authentication Overview",
+                        "urls": [
+                            "/cockroachcloud/authentication.html"
+                        ]
+                    },
+                    {
+                        "title": "Single Sign-On (SSO) for CockroachDB Cloud Organizations",
+                        "urls": [
+                            "/cockroachcloud/cloud-org-sso.html"
+                        ]
+                    },
+                    {
+                        "title": "Configure Cloud Organization SSO",
+                        "urls": [
+                            "/cockroachcloud/configure-cloud-org-sso.html"
+                        ]
+                    },
+                    {
+                        "title": "Configure SCIM Provisioning",
+                        "urls": [
+                            "/cockroachcloud/configure-scim-provisioning.html"
+                        ]
+                    },
+                    {
+                        "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
+                        "urls": [
+                        "/cockroachcloud/cloud-sso-sql.html"
+                        ]
+                    },
+                    {
+                        "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                        "urls": [
+                        "/cockroachcloud/client-certs-dedicated.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Authorization",
+                "items": [
+                    {
+                        "title": "Authorization Overview",
+                        "urls": [
+                            "/cockroachcloud/authorization.html"
+                        ]
+                    },
+                    {
+                        "title": "Network Authorization",
+                        "urls": [
+                            "/cockroachcloud/network-authorization.html"
+                        ]
+                    },
+                    {
+                        "title": "Manage Console Access",
+                        "urls": [
+                            "/cockroachcloud/managing-access.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Network Authorization",
+                "items": [
+                    {
+                        "title": "Network Authorization Overview",
+                        "urls": [
+                            "/cockroachcloud/network-authorization.html"
+                        ]
+                    },
+                    {
+                        "title": "Create Private Clusters",
+                        "urls": [
+                            "/cockroachcloud/private-clusters.html"
+                        ]
+                        },
+                    {
+                        "title": "Egress Perimeter Controls",
+                        "urls": [
+                            "/cockroachcloud/egress-perimeter-controls.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Audit Logs",
+                "items": [
+                    {
+                        "title": "SQL Audit Logging",
+                        "urls": [
+                            "/cockroachcloud/sql-audit-logging.html"
+                        ]
+                    },
+                    {
+                    "title": "Export Cloud Organization Audit Logs",
+                    "urls": [
+                        "/cockroachcloud/cloud-org-audit-logs.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Logs From {{ site.data.products.dedicated }}",
+                        "urls": [
+                        "/cockroachcloud/export-logs.html"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Security Tutorials",
+                "items": [
+                    {
+                        "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
+                        "urls": [
+                            "/${VERSION}/security-reference/config-secure-hba.html"
+                        ]
+                    },
+                    {
+                        "title": "Satori",
+                        "urls": [
+                            "/${VERSION}/satori-integration.html"
+                        ]
+                    },
+                    {
+                        "title": "HashiCorp Vault",
+                        "urls": [
+                            "/${VERSION}/hashicorp-integration.html"
+                        ]
+                    }
+                ]
+            }
             ]
         },
         {
@@ -348,12 +372,6 @@
                     "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
-                    ]
-                  },
-                  {
-                    "title": "Export Logs From {{ site.data.products.dedicated }}",
-                    "urls": [
-                    "/cockroachcloud/export-logs.html"
                     ]
                   }
                 ]
@@ -448,4 +466,3 @@
               }
     ]
 }
-
