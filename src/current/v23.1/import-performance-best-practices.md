@@ -7,7 +7,9 @@ docs_area: migrate
 
 This page provides best practices for optimizing [import](import-into.html) performance in CockroachDB.
 
-Import speed primarily depends on the amount of data that you want to import. However, there are three actions you can take before importing that have a significant impact on the amount of time it will take to run an import:
+`IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`](copy-from.html) instead.
+
+Import performance primarily depends on the amount of data that you want to import. However, there are three actions you can take before importing that have a significant impact on the amount of time it will take to run an import:
 
 - [Choose a performant import format](#choose-a-performant-import-format)
 - [Split your data into multiple files](#split-your-data-into-multiple-files)
@@ -24,7 +26,7 @@ Different import file formats do not have the same performance due to the way th
 1. [`CSV`](migrate-from-csv.html) or [`DELIMITED DATA`](import-into.html) (both have about the same import performance).
 1. [`AVRO`](migrate-from-avro.html).
 
-We recommend formatting your import files as `CSV` or `AVRO`. These formats can be processed in parallel by multiple threads, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
+We recommend formatting your import files as `CSV` or `AVRO`. These formats can be processed in parallel by all the nodes in the cluster, which increases performance. To import in these formats, use [`IMPORT INTO`](import-into.html).
 
 {% include {{ page.version.version }}/import-table-deprecate.md %}
 
@@ -33,7 +35,7 @@ We recommend formatting your import files as `CSV` or `AVRO`. These formats can 
 Split your dump data into two files:
 
 1. A SQL file containing the table schema.
-1. A CSV or AVRO file containing the table data.
+1. A CSV, delimited, or AVRO file containing the table data.
 
 Convert the schema-only file using the [Schema Conversion Tool](../cockroachcloud/migrations-page.html). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
@@ -50,9 +52,20 @@ This method has the added benefit of alerting on potential issues with the impor
 
 ### Import into a schema with secondary indexes
 
-When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, suitable for most import jobs.
+When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, an effective strategy for most migrations.
 
-However, in **large** imports, it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. This provides increased visibility into its progress and ability to retry each step independently.
+However, in **large** imports, it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. Write operations on tables with many secondary indexes take longer to complete, and importing large datasets have a greater risk of timeouts. Removing the table's secondary indexes allows you to separate the initial data import from the secondary index creation operation, and the total import time is lower. Separating these operations also provides increased visibility into each operation's progress, and the ability to retry each operation independently if you encounter errors or timeouts.
+
+When recreating the secondary indexes, execute all the [`CREATE INDEX`](create-index.html) statements in a single transaction. For example:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN
+  CREATE INDEX idx1 ON table1;
+  CREATE INDEX idx2 ON table1;
+  CREATE INDEX idx3 ON table1;
+COMMIT;
+~~~
 
 - [Remove the secondary indexes](drop-index.html)
 - [Perform the import](import-into.html)
@@ -102,7 +115,41 @@ You can split the data into **more** files than you have nodes. CockroachDB will
 Cockroach Labs recommends keeping the files to a maximum file size of 4 GB, and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
 {{site.data.alerts.end}}
 
-For maximum performance each split file should be *partitioned*, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, if your dataset had an alphabetic string primary key and you were importing the data into a 3 node cluster, you would split the files so that the first file contained rows where the primary key began with the letter "a" to "i", the second file "j" to "r" and the third file "s" to "z". No file should contain duplicate rows.
+For maximum performance each split file should be sorted within and across all files, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, suppose your table has an alphabetic string primary key and you were importing the data into a 3 node cluster.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE contacts (email STRING PRIMARY KEY, first_name TEXT, last_name TEXT);
+~~~
+
+You should split the files so that the first file contains rows where the primary key begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file contains duplicate rows, and within each file the data is sorted alphabetically by the primary key.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SELECT * FROM contacts ORDER BY email;
+~~~
+
+~~~
+                 email                |  first_name  |     last_name
+--------------------------------------+--------------+--------------------
+  aallabartonb6@google.co.uk          | Artemas      | Allabarton
+  aantonijevicae@simplemachines.org   | Anselma      | Antonijevic
+  abaakeo2@washington.edu             | Adolphus     | Baake
+  abamellg0@edublogs.org              | Abey         | Bamell
+  abasson3w@yelp.com                  | Anastasie    | Basson
+  abilverstone1v@omniture.com         | Ajay         | Bilverstone
+  ablackleyfe@craigslist.org          | Alberik      | Blackley
+  aboutwelln4@msn.com                 | Anabella     | Boutwell
+  abremner7j@narod.ru                 | Aveline      | Bremner
+  abumpusby@opensource.org            | Ansel        | Bumpus
+  acaesaref@fda.gov                   | Allyn        | Caesar
+  acottamav@nymag.com                 | Alair        | Cottam
+  adackei2@symantec.com               | Andrea       | Dacke
+  adaenen@answers.com                 | Alessandra   | Daen
+  adalgety1x@shinystat.com            | Aura         | Dalgety
+  adenyukhinh2@examiner.com           | Arvy         | Denyukhin
+...
+~~~
 
 ### File storage during import
 
@@ -114,9 +161,9 @@ If a node runs out of disk space while processing an import job, CockroachDB wil
 
 Within each split file with your import data, sort the data based on how it will be stored in CockroachDB. For example, in the previous example where a dataset was partitioned by an alphabetic string primary key, within each split file the data should be sorted by the alphabetic primary key.
 
-In tests performed by Cockroach Labs, the best import performance, measured in both throughput and overall time, was observed when data was split into partitioned files and sorted within each partitioned file. Imports using an unpartitioned and unsorted dataset were about 16 times slower than imports using the same dataset with partitioned and sorted files.
+In tests performed by Cockroach Labs, the best import performance, measured in both throughput and overall time, was observed when data was split into multiple files and sorted within each file. Imports using an unsplit and unsorted dataset were about 16 times slower than imports using the same dataset with split and sorted files.
 
-If you cannot both partition and sort your dataset, the performance of either partitioned or sorted data was similar, around 2 times slower than both partitioned and sorted data, but still much faster than both unpartitioned and unsorted data.
+If you cannot both split and sort your dataset, the performance of either split or sorted data was similar, around 2 times slower than both split and sorted data, but still much faster than both unsplit and unsorted data.
 
 ## See also
 
