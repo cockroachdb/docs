@@ -113,11 +113,7 @@ A database migration task, also known as a replication task, controls what data 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
-<<<<<<< HEAD:v23.1/aws-dms.md
-1. For the **Target table preparation mode**, select **Truncate** or **Do nothing** to preserve the schema you manually created.
-=======
 1. To preserve the schema you manually created, select **Truncate** or **Do nothing** for the **Target table preparation mode**.
->>>>>>> origin/main:src/current/v23.1/aws-dms.md
     <img src="{{ 'images/v23.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
 1. Optionally check **Enable validation** to compare the data in the source and target rows, and verify that the migration succeeded. You can view the results in the [**Table statistics**](#step-3-verify-the-migration) for your migration task. For more information about data validation, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html).
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues. 

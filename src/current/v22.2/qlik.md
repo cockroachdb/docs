@@ -84,11 +84,7 @@ To use a {{ site.data.products.serverless }} cluster as the target endpoint, set
 - To perform both an initial load and continuous replication of ongoing changes to the target tables, select **Full Load** and **Apply Changes**. This minimizes downtime for your migration.
 - To perform a one-time migration to CockroachDB, select **Full Load** only.
 
-<<<<<<< HEAD:v22.2/qlik.md
-Select **TRUNCATE before loading** or **Do nothing** to preserve the schema you manually created.
-=======
 To preserve the schema you manually created, select **TRUNCATE before loading** or **Do nothing**.
->>>>>>> origin/main:src/current/v22.2/qlik.md
 
 {% comment %}
 ## Replicate data from CockroachDB to a secondary source
