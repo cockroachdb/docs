@@ -1,19 +1,22 @@
 ---
-title: Use the CLI to provision a development cluster
+title: Use the CockroachDB CLI to provision a development cluster
 summary: A secure CockroachDB cluster uses TLS for encrypted inter-node and client-node communication.
 toc: true
 docs_area: manage.security
 ---
 
+
 The CockroachDB CLI's [`cockroach cert`](cockroach-cert.html) command allows you to generate [private key/public certificate pairs for TLS authentication and encryption](security-reference/transport-layer-security.html) in communication between CockroachDB nodes, and from SQL clients to the cluster.
 
 {{site.data.alerts.callout_info}}
 
-The ability to rapidly and locally generate private key/public certificate pairs is useful in development, but careful management of security certificates is an essential component of cluster security. We recommend that you use a cloud-native tool, such as Google Cloud Platform's Certificate Authority Service (CAS), to manage security certificates, particularly in any production environments.
+The ability to rapidly and locally generate private key/public certificate pairs is important for development, but careful management of security certificates is an essential component of cluster security. We recommend that you use a cloud-native tool, such as Google Cloud Platform's Certificate Authority Service (CAS), to manage security certificates.
 
 Learn more: [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](manage-certs-vault.html).
 
+
 {{site.data.alerts.end}}
+
 
 ## Create the CA certificate and key pair
 

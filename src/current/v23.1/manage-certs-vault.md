@@ -1,5 +1,5 @@
 ---
-title: Manage a cluster's PKI certificates with Vault
+title: Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault
 summary: Using Google Cloud Platform Certificate Authority Service to manage PKI certificates
 toc: true
 docs_area: manage.security

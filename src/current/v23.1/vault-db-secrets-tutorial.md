@@ -1,5 +1,5 @@
 ---
-title: Use Vault to Securly Manage Database Credentials
+title: Using HashiCorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB
 summary: Learn how to achieve enhanced credential security using HashiCorp Vault's Dynamic Secrets functionality.
 toc: true
 docs_area: manage
