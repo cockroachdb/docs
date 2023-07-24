@@ -17,7 +17,7 @@ You can also execute many administrative commands using the `ccloud` command-lin
 - The {{ site.data.products.db }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
 - You can [use Terraform to provision users and other aspects of your {{ site.data.products.db }} clusters](provision-a-cluster-with-terraform.html). However, note that currently Terraform can only be used to provision admin SQL users, as this is a current limitation of the API, on which Terraform depends.
 
-In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each {{ site.data.products.db }} organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belong to an organization.
+In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each {{ site.data.products.db }} organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belongs to an organization.
 
 {{ site.data.products.db }} has a two-level authorization model:
 
@@ -139,7 +139,7 @@ This role will is deprecated in favor of the following more fine-grained roles, 
   
 ### Org Developer (legacy)
 
-Org Developer (legacy) can read high-level information for all clusters, and monitor all clusters using DB Console.
+Org Developer (legacy) can read information for all clusters, and monitor all clusters using DB Console.
 
 {{site.data.alerts.callout_info}}
 This role will is deprecated in favor of more fine-grained roles described above.

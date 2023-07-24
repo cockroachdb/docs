@@ -47,7 +47,7 @@ Yes, an admin could assign a cluster level role like Cluster Admin or Cluster De
 
 When all role assignments have been removed for a user, they still implicitly have the Org Member role which is granted to each newly-added {{ site.data.products.db }} member, and the member is not automatically removed from the organization. Refer to: [Remove a team member](managing-access.html#remove-a-team-member)
 
-### Which roles grant the ability to add, remove, and manage members in in a {{ site.data.products.db }} organization?
+### Which roles grant the ability to add, remove, and manage members in a {{ site.data.products.db }} organization?
 
 Users with the Org Administrator (legacy) role are allowed to manage users and roles at both the organization and the cluster scopes. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster scope.
 

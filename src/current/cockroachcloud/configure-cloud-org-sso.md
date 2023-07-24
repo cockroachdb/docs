@@ -56,7 +56,7 @@ If your migration fails with the error: `Cloud Organization SSO cannot be enable
 
 For your migration to succeed, you must ensure that at least one admin belongs to no other {{ site.data.products.db }} organization than the one to be migrated. If all admins belong to multiple organizations, the migration will fail with the generic error `Cloud Organization SSO cannot be enabled`.
 
-If all of your administrators belongs to multiple organizations, you can create a temporary user in your SSO provider or directly in {{ site.data.products.db }}. Grant the [**Org Administrator** role](authorization.html#org-administrator) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Org Administrator** role.
+If all of your administrators belong to multiple organizations, you can create a temporary user in your SSO provider or directly in {{ site.data.products.db }}. Grant the [**Org Administrator** role](authorization.html#org-administrator) to the temporary user, and use this temporary admin to enable Cloud Organization SSO. After migration, you should delete this temporary user or revoke the **Org Administrator** role.
 
 ## Enable Cloud Organization SSO
 

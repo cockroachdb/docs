@@ -83,7 +83,7 @@ If you are sure you want to delete the organization, proceed with the following 
 
 ## Manage service accounts
 
-The access management model for service accounts is unified with that for users, meaning service accounts may have all of the same [access roles](authorization.html#organization-user-roles), although it should be noted that service accounts and users still differ in the actions they can performed, as only users can access the console, and only service accounts can access the API, and the console and API differ in functionality.
+The access management model for service accounts is unified with the [user model](#manage-an-organizations-users). This means that service accounts may have all of the same [access roles](authorization.html#organization-user-roles). However, service accounts and users still differ in the actions they can perform: only users can access the console, and only service accounts can access the API. The console and API differ in functionality.
 
 Legacy service accounts created prior to the current authorization model may still have the following legacy roles: (ADMIN, CREATE, EDIT, READ, DELETE). Refer to [Service accounts](authorization.html#service-accounts).
 
