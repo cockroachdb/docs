@@ -35,7 +35,7 @@ Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL 
 
 AWS PrivateLink is available only for multiregion {{ site.data.products.serverless }} clusters deployed on AWS.
 
-To configure PrivateLink, you create the AWS PrivateLink connection in your AWS account, then configure your cluster to allow connections from your private endpoint. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink](network-authorization.html#aws-privatelink).
+To configure PrivateLink, you create the AWS PrivateLink connection in your AWS account, then configure your cluster to allow connections from your private endpoint or VPC endpoint. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink](network-authorization.html#aws-privatelink).
 
 AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html?filter-content=serverless).
 

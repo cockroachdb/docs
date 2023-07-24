@@ -87,7 +87,7 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-Complete these steps once for each private endpoint in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless-plan }} clusters. If you connect additional clusters to the same private endpoint, you do not need to make additional changes to the VPC.
+Complete these steps once for each private endpoint or VPC endpoint in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless-plan }} clusters. If you connect additional clusters to the same private endpoint or VPC endpoint, you do not need to make additional changes to the VPC.
 {{site.data.alerts.end}}
 
 </section>
@@ -102,7 +102,7 @@ Complete these steps once for each private endpoint in your AWS account that wil
 
 1. <a name="step-4"></a>Locate the VPC ID of the VPC you want to create your endpoint in.
 
-    Cockroach Labs recommends that you use a VPC that has subnets in the availability zones where your cluster is deployed, and that your application or service is also deployed in the same availability zones. You can choose a different VPC for the private endpoint as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
+    Cockroach Labs recommends that you use a VPC that has subnets in the availability zones where your cluster is deployed, and that your application or service is also deployed in the same availability zones. You can choose a different VPC for the private endpoint or VPC endpoint as long as it is peered to the VPC your application is running in and the private endpoint or VPC endpoint is configured to be DNS-accessible across the peered VPCs.
 
 1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in [step 4](#step-4).
 1. Click **Subnets** in the sidebar.
