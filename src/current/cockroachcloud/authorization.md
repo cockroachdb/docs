@@ -78,6 +78,7 @@ This role can be granted for one or more specific clusters, or for all clusters 
 	- View a cluster's [PCI-readiness status (Dedicated Advanced clusters only)](cluster-overview-page.html?filters=dedicated#pci-ready-dedicated-advanced).
 	- Send a test alert from the [Alerts Page](alerts-page.html).
 	- Configure single sign-on (SSO) enforcement.
+	- Access the [DB Console](network-authorization.html#db-console).
 
 - *Service accounts* with this role can perform the following *API operations*:
 
@@ -105,7 +106,7 @@ Cluster Administrators can perform all of the [Cluster Operator actions](#cluste
 - Edit cluster-scope role assignments (specifically, the Cluster Administrator, Cluster Operator, and Cluster Developer roles) on [users](managing-access.html#change-a-team-members-role), and [service accounts](managing-access.html#edit-roles-on-a-service-account).
 - [Edit or delete a cluster](cluster-management.html).
 - Cluster Administrators for the whole organization (rather than scoped to a single cluster) can [create new clusters](create-your-cluster.html).
-
+- Access the [DB Console](network-authorization.html#db-console).
 
 ### Cluster Creator
 
@@ -113,7 +114,7 @@ Cluster Creators can create clusters in an organization. A cluster's creator is 
 
 ### Cluster Developer
 
-Users with this role can view cluster details, allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
+Users with this role can view cluster details and access the [DB Console](network-authorization.html#db-console), allowing them to [export a connection string from the cluster page UI](authentication.html#the-connection-string), although they will still need a Cluster Administrator to [provision their SQL credentials](managing-access.html#manage-sql-users-on-a-cluster) for the cluster.
 
 This role can be granted for specific clusters or for all clusters in the organization.
 
