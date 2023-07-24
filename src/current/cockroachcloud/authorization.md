@@ -53,13 +53,11 @@ Users with this role on an organization can:
 - [Create service accounts](managing-access.html#create-a-service-account).
 - Grant and revoke roles for both [users](managing-access.html#manage-an-organizations-users) and [service accounts](managing-access.html#manage-service-accounts).
 
-This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which will be considered deprecated when fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
+This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) role, which is considered deprecated.
 
 ### Billing Coordinator
 
 Users with this role in an organization can [manage billing for that organization](billing-management.html) through the {{ site.data.products.db }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
-
-Note that billing can also be managed by the [Org Administrator (legacy) role](#org-administrator-legacy).
 
 ### Cluster Operator
 
@@ -132,7 +130,7 @@ Org Administrator (legacy) can manage the organization and its members, clusters
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
-This role will be deprecated in favor of the following more fine-grained roles once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html), which, in combination, cover the same permissions:
+This role will is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -142,8 +140,9 @@ This role will be deprecated in favor of the following more fine-grained roles o
 ### Org Developer (legacy)
 
 Org Developer (legacy) can read high-level information for all clusters, and monitor all clusters using DB Console.
+
 {{site.data.alerts.callout_info}}
-This role will be deprecated in favor of more fine-grained roles introduced below, once the latter are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
+This role will is deprecated in favor of more fine-grained roles described above.
 {{site.data.alerts.end}}
 
 ## Service accounts
@@ -160,7 +159,7 @@ Service accounts operate under a unified authorization model with organization u
 - The `EDIT` role allows the service account to modify clusters within the organization.
 - The `READ` role allows the service account to get details about clusters within the organization.
 
-Legacy service accounts are considered deprecated once fine-grained access roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html). Update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
+Legacy service accounts are considered deprecated. Update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts).
 

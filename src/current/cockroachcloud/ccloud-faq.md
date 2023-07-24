@@ -15,12 +15,10 @@ Cluster Developer is the minimum access role that can be assigned to a cluster u
 
 ### What roles are assigned to the user that creates a {{ site.data.products.db }} organization and thus becomes the first and only user in that organization?
 
-Org Member, Org Administrator (legacy), and Cluster Admin are assigned to the first and only user in a {{ site.data.products.db }} organization. This is done to allow the user to perform all actions required to invite other users, create and manage clusters, configure billing, etc. 
-
-Once the initial user has added more users to the {{ site.data.products.db }} organization, it is possible to assign Cluster Admin role to one or more of those users and optionally remove that role from the initial user.
+The first user in a newly created organization is assigned a combination of Org Administrator, Billing Coordinator, and Cluster Admin at the organization scope. Any of these roles may subsequently be removed, although another user must have the Org Adminstrator role before it can be removed.
 
 {{site.data.alerts.callout_info}}
-Org Administrator (legacy) role will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions, once those fine-grained roles are [generally available (GA)](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html).
+The Org Administrator (legacy) role is deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
 {{site.data.alerts.end}}
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
