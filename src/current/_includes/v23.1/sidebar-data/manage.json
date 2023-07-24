@@ -220,7 +220,7 @@
               ]
             },
             {
-              "title": "Managing AWS PrivateLink for a Dedicated Cluster",
+              "title": "Managing AWS PrivateLink for CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/aws-privatelink.html"
               ]
