@@ -183,11 +183,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
     > SELECT table_catalog, table_schema, table_name, column_name FROM information_schema.columns WHERE is_hidden = 'YES';
     ~~~
 
-<<<<<<< HEAD:v23.1/aws-dms.md
-- If you are migrating from PostgreSQL, select **Enable validation** in your [task settings](#step-2-2-task-settings), and are using a [`STRING`](string.html) as a [`PRIMARY KEY`](primary-key.html), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
-=======
 - If you are migrating from PostgreSQL, are using a [`STRING`](string.html) as a [`PRIMARY KEY`](primary-key.html), and have selected **Enable validation** in your [task settings](#step-2-2-task-settings), validation can fail due to a difference in how CockroachDB handles case sensitivity in strings. 
->>>>>>> origin/main:src/current/v23.1/aws-dms.md
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation](collate.html) such as `COLLATE "en_US"` in CockroachDB.
 
