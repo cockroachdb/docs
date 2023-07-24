@@ -100,12 +100,6 @@
               ]
         },
         {
-          "title": "Backup Architecture",
-          "urls": [
-            "/${VERSION}/backup-architecture.html"
-          ]
-        },
-        {
           "title": "Managed-Service Backups",
           "urls": [
             "/cockroachcloud/use-managed-service-backups.html"
@@ -139,6 +133,12 @@
               ]
             },
             {
+              "title": "Locality-restricted Backup Execution",
+              "urls": [
+                "/${VERSION}/take-locality-restricted-backups.html"
+              ]
+            },
+            {
               "title": "Locality-aware Backup and Restore",
               "urls": [
                 "/${VERSION}/take-and-restore-locality-aware-backups.html"
@@ -155,13 +155,13 @@
               "urls": [
                 "/${VERSION}/backup-validation.html"
               ]
-            },
-            {
-              "title": "Backup and Restore Monitoring",
-              "urls": [
-              "/${VERSION}/backup-and-restore-monitoring.html"
-              ]
             }
+          ]
+        },
+        {
+          "title": "Backup and Restore Monitoring",
+          "urls": [
+            "/${VERSION}/backup-and-restore-monitoring.html"
           ]
         },
         {
@@ -220,7 +220,7 @@
               ]
             },
             {
-              "title": "AWS PrivateLink for Dedicated Clusters",
+              "title": "Managing AWS PrivateLink for CockroachDB Cloud",
               "urls": [
                 "/cockroachcloud/aws-privatelink.html"
               ]
@@ -291,7 +291,7 @@
 								]
       	    },
             {
-              "title": "Network Authorization",
+              "title": "Network Authorization for CockroachDB Cloud Clusters",
               "urls": [
                 "/cockroachcloud/network-authorization.html"
               ]
@@ -309,9 +309,9 @@
               ]
             },
             {
-              "title": "CockroachDB Cloud Access Management Overview and FAQ",
+              "title": "CockroachdB Cloud Access Management Overview and FAQ",
               "urls": [
-                "/cockroachcloud/authorization.html"
+                 "/cockroachcloud/authorization.html"
               ]
             },
             {
@@ -329,7 +329,7 @@
               "title": "Managing Security Certificates",
               "items": [
                 {
-                  "title": "Use the CLI to provision a development cluster",
+                  "title": "Use the CockroachDB CLI to provision a development cluster",
                   "urls": [
                     "/${VERSION}/manage-certs-cli.html"
                   ]
@@ -414,7 +414,7 @@
               ]
             },
             {
-              "title": "Use Vault to Securly Manage Database Credentials",
+              "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
               "urls": [
                 "/${VERSION}/vault-db-secrets-tutorial.html"
               ]
@@ -442,7 +442,7 @@
               ]
             },
             {
-              "title": "Tools Page",
+              "title": "Monitoring Page",
               "urls": [
                 "/cockroachcloud/tools-page.html"
               ]
@@ -530,12 +530,6 @@
           "title": "Third-Party Monitoring Integrations",
           "items": [
             {
-              "title": "Third-Party Monitoring Integration Overview",
-              "urls": [
-                "/${VERSION}/third-party-monitoring-tools.html"
-              ]
-            },
-            {
              "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
              "urls": [
                "/cockroachcloud/export-metrics.html"
@@ -609,6 +603,12 @@
                   ]
                 },
                 {
+                  "title": "Upgrade to v23.1",
+                  "urls": [
+                     "/cockroachcloud/upgrade-to-v23.1.html"
+                  ]
+                },
+                {
                   "title": "Upgrade to v22.2",
                   "urls": [
                      "/cockroachcloud/upgrade-to-v22.2.html"
@@ -675,65 +675,6 @@
           "title": "Disaster Recovery",
           "urls": [
             "/${VERSION}/disaster-recovery.html"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Replication Controls",
-      "urls": [
-        "/${VERSION}/configure-replication-zones.html"
-      ]
-    },
-    {
-      "title": "Troubleshooting",
-      "items": [
-        {
-          "title": "Troubleshooting Overview",
-          "urls": [
-            "/${VERSION}/troubleshooting-overview.html"
-          ]
-        },
-        {
-          "title": "Common Errors and Solutions",
-          "urls": [
-            "/${VERSION}/common-errors.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Cluster Setup",
-          "urls": [
-            "/${VERSION}/cluster-setup-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot Statement Behavior",
-          "urls": [
-            "/${VERSION}/query-behavior-troubleshooting.html"
-          ]
-        },
-        {
-          "title": "Troubleshoot CockroachDB Cloud",
-          "urls": [
-            "/cockroachcloud/troubleshooting-page.html"
-          ]
-        },
-        {
-          "title": "Replication Reports",
-          "urls": [
-            "/${VERSION}/query-replication-reports.html"
-          ]
-        },
-        {
-          "title": "Support Resources",
-          "urls": [
-            "/${VERSION}/support-resources.html"
-          ]
-        },
-        {
-          "title": "File an Issue",
-          "urls": [
-            "/${VERSION}/file-an-issue.html"
           ]
         }
       ]
