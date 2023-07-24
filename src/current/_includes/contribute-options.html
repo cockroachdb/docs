@@ -1,0 +1,13 @@
+<div>
+  <div class="contribute dropdown">
+    <button class="btn-contribute dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <i class="fab fa-github"></i> Contribute
+      <span class="carat-arrow-down"><img src="{{ 'images/carat-down-fill.svg' | relative_url }}" alt="Carat arrow pointing down"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li><a href="https://github.com/cockroachdb/docs/tree/main/src/current/{{ page.path }}" target="_blank" id="view-page-source">View Page Source</a></li>
+      <li><a href="https://github.com/cockroachdb/docs/edit/main/src/current/{{ page.path }}" target="_blank" id="edit-this-page">Edit This Page</a></li>
+      <li><a href="https://github.com/cockroachdb/docs/issues/new?title=Feedback:%20{{page.title}}&amp;body=Page%3A%20https%3A%2F%2Fcockroachlabs.com/docs{{page.url}}%0A%0A%23%23%20What is the reason for your feedback?%0A%0A&#91;%20&#93;%20Missing the information I need%0A%0A&#91;%20&#93;%20Too complicated%0A%0A&#91;%20&#93;%20Out of date%0A%0A&#91;%20&#93;%20Something is broken%0A%0A&#91;%20&#93;%20Other%0A%0A%23%23%20Additional details&amp;" target="_blank">Report Doc Issue</a></li>
+    </ul>
+  </div>
+</div>

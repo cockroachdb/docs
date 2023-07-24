@@ -265,7 +265,7 @@ CockroachDB docs are mainly comprised of pages (`.md`) and images (`.png` or `.g
 - `this-is-a-doc.md`
 - `name-of-your-image.png`
 
-Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/master/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
+Each version's pages are found in a directory named for the version. For example, pages for CockroachDB v21.1 are in the `docs > v21.1` directory. For more information about page structure, see the [Pages](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md#pages) section in our [Contributing Guide](https://github.com/cockroachdb/docs/blob/main/CONTRIBUTING.md). For more information about how to style page content, see [Components](#components).
 
 Each version's images are stored in a versioned directory under the `images` directory. For example, images for CockroachDB v21.1 are in the `docs > images > v21.1` directory. For more information, see [Images](#images).
 
@@ -448,7 +448,6 @@ A troubleshooting guide helps users quickly recognize the source of an error con
 
 #### Examples
 
-- [Error Handling and Troubleshooting](https://www.cockroachlabs.com/docs/stable/error-handling-and-troubleshooting.html)
 - [Troubleshoot SQL Behavior](https://www.cockroachlabs.com/docs/stable/query-behavior-troubleshooting.html)
 
 ### FAQ
@@ -539,6 +538,15 @@ Whenever a CockroachDB feature is referenced, provide a link to the relevant doc
 Avoid using non-descriptive link names such as `here`, `this page`, or `go`.
 
 Use Markdown reference-style links when several parts of the same page refer to the same target URL (e.g., [Release Notes](releases/v22.1.html)).
+
+For websites that automatically localize pages, avoid using localization elements directly within the URL. For example:
+
+- GitHub
+  - Instead of `https://docs.github.com/**en/**graphql/overview/explorer`
+  - Use `https://docs.github.com/graphql/overview/explorer`
+- Wikipedia
+  - Instead of `https://en.wikipedia.org/wiki/SQL:2011`
+  - Use `https://www.wikipedia.org/wiki/SQL:2011` or `https://wikipedia.org/wiki/SQL:2011`
 
 Link capitalization should match our [capitalization rules](#capitalization-rules) for page titles and headers:
 
@@ -745,6 +753,8 @@ All product names except CockroachDB should be written as Liquid variables unles
 
 The first occurrence of a product name within a docs page should use full name. Discretionarily, subsequent occurrences may be shortened to “Dedicated”, “Serverless”, "Cloud", or "Self-Hosted", unless a writer (or reviewer) senses contextual ambiguity that could be improved by using the full product name. In long pages, it may be helpful to use the full name for each occurrence in a new sentence or if it's been a few paragraphs since an occurrence of the full product name.
 
+It should be noted that each of these words can occur uncapitalized if referring to general concepts, rather than CockroachDB concepts/products. For example, we can refer to "Serverless clusters and serverless applications", note that "Dedicated clusters used dedicated (rather than shared) network and compute infrastructure".
+
 ### Code
 
 You can mark up code [inline](#inline-code) or as a [code block](#code-blocks).
@@ -878,7 +888,7 @@ Examples help show the feature in action. Examples follow a basic format:
 
 ### Version tags
 
-Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or minor version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
+Version tags inform users of new and updated features in CockroachDB, and could motivate users to upgrade to the latest major or patch version of CockroachDB. Version tags also help us identify new and updated features that we can call out in [our GA release notes](https://cockroachlabs.atlassian.net/wiki/spaces/ED/pages/402718726/GA+Release+Checklist).
 
 To add a version tag, use the following Liquid tag:
 
@@ -894,7 +904,7 @@ Put version tags at the beginning of a paragraph, sentence, or description in a 
 
 If a feature is new in a GA release, use the major release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2" %}`).
 
-If a feature has been backported to a previous version in a patch release, use the minor release number for the release version tag (e.g., `{% include_cached new-in.html version="v21.2.10" %}`).
+If a feature has been backported to a previous version in a patch release, use the patch release number for the release version tag (for example, `{% include_cached new-in.html version="v21.2.10" %}`).
 
 Version tags should only refer to the version of the docset that contains them. For example, the version tag `{% include_cached new-in.html version="v21.1.9" %}` should only be on pages in `v21.1` directories.
 
@@ -981,7 +991,7 @@ You can use the following HTML formatting  within an HTML table:
 - Paragraph breaks (`<p>`)
 - Lists (`<ol>` / `<ul>` / `<li>`)
 
-**Example:** [Query Options](admin-ui-custom-chart-debug-page.html#query-options) table (see [GitHub](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v2.1/admin-ui-custom-chart-debug-page-00.html) for the raw HTML)
+**Example:** [Query Options](admin-ui-custom-chart-debug-page.html#query-options) table (see [GitHub](https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/v2.1/admin-ui-custom-chart-debug-page-00.html) for the raw HTML)
 
 ### Lists
 
@@ -1223,7 +1233,7 @@ For more information about the `remote_include` tag, see the README in the [jeky
   
 On some pages in our docs, there are tabs at the top of the page that will link to different pages at different hyperlinks. For example, in the [Install CockroachDB docs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb.html), there are links to the Mac, Linux, and Windows pages at the top of the page.
   
-Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/master/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
+Use [`filter-tabs.md`](https://github.com/cockroachdb/docs/blob/main/src/current/_includes/filter-tabs.md) to specify these tabs for any `cockroachcloud` docs or docs for CockroachDB v21.2 and later.
 
 **Note:** this include file only produces tabs that link to different URLs/pages. It cannot be used for creating tabs within a single page.
 

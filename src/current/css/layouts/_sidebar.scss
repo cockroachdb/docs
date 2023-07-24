@@ -1,0 +1,160 @@
+body.sidenav-open{
+  overflow: hidden;
+  &:before{
+    content:"";
+    display: block;
+    position: fixed;
+    top: 50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: rgba(4,2,28,0.73);
+    z-index: 1;
+  }
+}
+.col-sidebar{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .col-sidebar-content{
+    flex: 0 1 auto;
+  }
+  .stiky-spacer{
+    flex: 1 1 auto;
+  }
+  .form-control {
+    max-width: 196px;
+    background-size: 17px 17px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    padding-left: 30px;
+  }
+}
+#sidebarMenu{
+  @include at-query('max-width', $screen-md) {
+    height: auto;
+    position: fixed;
+    z-index: 10;
+    background-color: $white;
+    top: 108px;
+    border-top: 1px solid $neutral-300;
+    border-bottom: 1px solid $neutral-300;
+    height: 60%;
+    overflow: scroll;
+    padding-bottom: 15px;
+	}
+}
+
+.col-sidebar-content{
+  max-height: calc(100vh - 120px);
+  overflow-y: scroll;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  // Desktop fix sidebar lower to show search
+  @include at-query($min, $screen-md) {
+    max-width: 290px;
+    top: 118px;
+  }
+}
+
+.nav-docs-mobile {
+  position: fixed;
+  top: 54px;
+  z-index: 999;
+  background: #fff;
+  .h3 {
+    font-size: 22px;
+  }
+  .arrow-down {
+    padding: 4px;
+    border-width: 2px 0 0 2px;
+    margin: 0;
+  }
+}
+
+#sidebar,
+.js-sidebar {
+  width: 100%;
+  padding: 10px 0 5px 15px;
+  display: flex;
+  flex-direction: column;
+  @include sourcesanspro_r(16px);
+
+  &.nav--collapsed{
+    padding: 0;
+    &:before{display: none;}
+  }
+
+  .sidenav-arrow {
+    display: none;
+    @include at-query(0, $screen-sm) {
+      display: block;
+      position: fixed;
+      z-index: 1030;
+      top: 114px;
+      right: 15px;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li{
+      list-style: none;
+      position: relative;
+      padding: 4px 0 4px 20px;
+      margin: 0;
+      .nav-expand {
+        position: absolute;
+        top: 13px;
+        left: 2px;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+
+      }
+
+      &.visited a {
+        color: $electric-purple;
+      }
+
+      &.visited code {
+        color: $electric-purple;
+      }
+
+      &.active > a .nav-expand{
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+      }
+    }
+  }
+
+  .tier-1 {
+    a {
+      color: $neutral-800;
+    }
+
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
+  }
+
+  .tier-2 {
+    a, code {
+      color: $neutral-800;
+    }
+
+    a:hover, code:hover{
+      text-decoration: none;
+      color: $electric-purple;
+    }
+
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
+  }
+}

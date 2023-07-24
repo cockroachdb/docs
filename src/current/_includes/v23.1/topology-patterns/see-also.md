@@ -1,0 +1,18 @@
+- [Multi-Region Capabilities Overview](multiregion-overview.html)
+- [How to Choose a Multi-Region Configuration](choosing-a-multi-region-configuration.html)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
+- [Migrate to Multi-Region SQL](migrate-to-multiregion-sql.html)
+- [Secondary regions](multiregion-overview.html#secondary-regions)
+- [`ALTER DATABASE ... SET SECONDARY REGION`](alter-database.html#set-secondary-region)
+- [`ALTER DATABASE ... DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
+- [Topology Patterns Overview](topology-patterns.html)
+  - Single-region patterns
+      - [Development](topology-development.html)
+      - [Basic Production](topology-basic-production.html)
+  - Multi-region patterns
+      - [`REGIONAL` Tables](regional-tables.html)
+      - [`GLOBAL` Tables](global-tables.html)
+      - [Follower Reads](topology-follower-reads.html)
+      - [Follow-the-Workload](topology-follow-the-workload.html)
