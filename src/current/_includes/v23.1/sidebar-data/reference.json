@@ -106,6 +106,70 @@
           {
             "title": "Overview",
             "urls": [
+              "/${VERSION}/security-reference/security-overview.html"
+            ]
+          },
+          {
+            "title": "Authentication",
+            "urls": [
+              "/${VERSION}/security-reference/authentication.html"
+            ],
+            "items": [
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [ "/${VERSION}/security-reference/scram-authentication.html" ]
+              }
+            ]
+          },
+          {
+            "title": "Authorization",
+            "urls": [
+              "/${VERSION}/security-reference/authorization.html"
+            ]
+          },
+          {
+            "title": "Encryption",
+            "urls": [
+              "/${VERSION}/security-reference/encryption.html"
+            ]
+          },
+          {
+            "title": "Public Key Infrastructure (PKI) and Transport Layer Security (TLS)",
+            "urls": [
+              "/${VERSION}/security-reference/transport-layer-security.html"
+            ]
+          },
+          {
+            "title": "Customer-Managed Encryption Keys (CMEK)",
+            "urls": [
+              "/cockroachcloud/cmek.html"
+            ]
+          },
+          {
+            "title": "Compliance",
+            "items": [
+              {
+                "title": "CockroachDB Dedicated Compliance Overview",
+                "urls": [
+                  "/cockroachcloud/compliance.html"
+                ]
+              },
+              {
+                "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+                "urls": [
+                  "/cockroachcloud/pci-dss.html"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "CLI",
+        "items": [
+          {
+            "title": "<code>cockroach</code> Commands Overview",
+            "urls": [
               "/${VERSION}/cockroach-commands.html"
             ]
           },
@@ -622,4 +686,3 @@
       }
     ]
 }
-

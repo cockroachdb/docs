@@ -167,13 +167,9 @@ The **Summary Report** displays the results of the schema analysis and provides 
 
 To apply bulk actions to statements, refer to the tables in the Summary Report:
 
-<ul>
-<li><a href="#required-fixes">Required Fixes</a></li>
-<section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
-<li>[Compatibility Notes](#compatibility-notes)</li>
-</section>
-<li><a href="#suggestions">Suggestions</a></li>
-</ul>
+- [Required Fixes](#required-fixes)
+- [Compatibility Notes](#compatibility-notes)
+- [Suggestions](#suggestions)
 
 {{site.data.alerts.callout_danger}}
 Bulk actions **cannot** be undone after you [retry the migration](#retry-the-migration).
@@ -190,15 +186,14 @@ After updating the schema, click [**Retry Migration**](#retry-the-migration). If
 |        Column       |                                                                                                                                                                                                                                                                                                            Description                                                                                                                                                                                                                                                                                                             |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Description         | A summary of the error type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Category            | The category of error:<ul><li>**Unimplemented Feature:** A statement that uses an [unimplemented feature](../{{version_prefix}}migration-overview.html#unimplemented-features-and-syntax-incompatibilities).</li><li>**Uncreated User:** A statement that references a nonexistent user.</li><li>**Incompatibility:** (Non-PostgreSQL dialects) A statement that could not be converted because it has no equivalent syntax on CockroachDB.</li><li>**Uncategorized:** A statement that the tool did not or could not execute.</li><li>**Incidental:** A statement that failed because another SQL statement encountered one of the preceding error types.</ul> |
+| Category            | The category of error:<ul><li>**Unimplemented Feature:** A statement that uses an [unimplemented feature](../{{version_prefix}}migration-overview.html#unimplemented-features-and-syntax-incompatibilities).</li><li>**Uncreated User:** A statement that references a nonexistent user.</li><li>**Incompatibility:** (Non-PostgreSQL schemas) A statement that could not be converted because it has no equivalent syntax on CockroachDB.</li><li>**Uncategorized:** A statement that the tool did not or could not execute.</li><li>**Incidental:** A statement that failed because another SQL statement encountered one of the preceding error types.</ul> |
 | Complexity          | The estimated difficulty of addressing the error.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | Remaining Instances | The number of times the error still occurs on the provided schema. This number will change as you [update the schema](#update-the-schema) to fix errors. Click the `+` icon on the row to view up to 20 individual statements where this occurs.                                                                                                                                                                                                                                                                                                                                                                                   |
 | Actions             | The option to **Add User** to add a missing SQL user, or **Delete** all statements that contain the error type. This cannot be undone after you [retry the migration](#retry-the-migration).                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
-<section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
 #### Compatibility Notes
 
-**Compatibility Notes** indicate compatibility issues that do not block [schema migration](#migrate-the-schema).
+**Compatibility Notes** indicate compatibility issues that do not block [schema migration](#migrate-the-schema). These are only displayed for non-PostgreSQL schemas.
 
 |    Column   |                                                                            Description                                                                            |
 |-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -206,7 +201,6 @@ After updating the schema, click [**Retry Migration**](#retry-the-migration). If
 | Complexity  | The estimated difficulty of addressing the suggestion.                                                                                                            |
 | Instances   | The number of times the compatibility note occurs on the provided schema. Click the `+` icon on the row to view up to 20 individual statements where this occurs. |
 | Actions     | The option to **Acknowledge** all instances of the compatibility note. This is not required for schema migration.                                                 |
-</section>
 
 #### Suggestions
 
@@ -223,11 +217,9 @@ After updating the schema, click [**Retry Migration**](#retry-the-migration). If
 
 The **Statements** list displays the result of analyzing each statement in the `.sql` file that you provided. The numbers from the [**Summary Report**](#summary-report) are displayed above the list of statements.
 
-To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
+- To [migrate the schema](#migrate-the-schema) and create a new database for migration, click **Migrate Schema**. The schema must have zero errors.
 
-If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
-
-By default, the **Statements** list displays both successful and failed statements. To view only the statements that failed, check **Collapse successful statements**.
+- If the **Migrate Schema** button is disabled, use the **Statements** list to [update the schema](#update-the-schema). Navigate the list by scrolling or by clicking the arrows and **Scroll to Top** button on the bottom-right.
 
 Statements are displayed as follows:
 
@@ -253,22 +245,43 @@ To edit a statement, click the **Edit** button or the statement itself and enter
 
 To remove or add a statement, click the ellipsis above the statement and then click **Delete statement**, **Add statement above**, or **Add statement below**.
 
+#### Filter the Statements list
+
+To filter the statements that are displayed in the **Statements** list, click the dropdown menu above the list. 
+
+The available filters match the results displayed in the **Summary Report**:
+
+- [Required Fixes](#required-fixes)
+- [Suggestions](#suggestions)
+- [Compatibility Notes](#compatibility-notes) (non-PostgreSQL schemas)
+
+{{site.data.alerts.callout_info}}
+If a filter is not available, `No Options` is displayed.
+{{site.data.alerts.end}}
+
+Click **Apply** to filter the **Statements** list using the selected filters.
+
+To remove a filter, click the `x` next to the active filter. To remove all active filters, click **Clear filters** above the **Statements** list.
+
 ## Export the schema
 
-To export the current schema, click **Export SQL File** at the top of the [**Statements** list](#statements-list).
+To export the current schema, click **Download File** at the top of the [**Statements** list](#statements-list).
 
 ## Update the schema
 
-To update the schema, apply bulk actions in the [**Summary Report**](#summary-report) or edit, add, or remove statements in the [**Statements** list](#statements-list).
+To update the schema: 
+
+- Apply bulk actions in the [**Summary Report**](#summary-report). 
+- Edit, add, or remove statements in the [**Statements** list](#statements-list). Click **Replace All** above the list to find and replace text across all statements.
 
 |                   Category                   |                                                                                                                                                                                                          Solution                                                                                                                                                                                                         |   Bulk Actions   | Required for schema migration? |
 |----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|--------------------------------|
 | Unimplemented feature                        | The feature does not yet exist on CockroachDB. Implement a workaround by editing the statement and adding statements. Otherwise, remove the statement from the schema. If a link to a tracking issue is included, click the link for further context. For more information about unimplemented features, see [Migrate Your Database to CockroachDB](../{{version_prefix}}migration-overview.html#unimplemented-features-and-syntax-incompatibilities). | Delete           | Yes                            |
 | Uncreated user                               | Click the **Add User** button next to the error message. You must be a member of the [`admin` role](managing-access.html). This adds the missing user to the cluster.                                                                                                                                                                                                                                                     | Add User, Delete | Yes                            |
 | Incidental                                   | Resolve the error in the earlier failed statement that caused the incidental error.                                                                                                                                                                                                                                                                                                                                       | Delete           | Yes                            |
-| Incompatibility (non-PostgreSQL dialects)    | There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check **Acknowledge**.                                                                                                                                                                                                                                             | Delete           | Yes                            |
+| Incompatibility (non-PostgreSQL schemas)    | There is no equivalent syntax on CockroachDB. Implement a workaround by replacing the statement. Otherwise, remove the statement from the schema. Then check **Acknowledge**.                                                                                                                                                                                                                                             | Delete           | Yes                            |
 | Uncategorized                                | Edit the statement to fix the error. Otherwise, remove the statement from the schema.                                                                                                                                                                                                                                                                                                                                     | Delete           | Yes                            |
-| Compatibility note (non-PostgreSQL dialects) | Edit the statement to match the CockroachDB syntax. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                                | Acknowledge      | No                             |
+| Compatibility note (non-PostgreSQL schemas) | Edit the statement to match the CockroachDB syntax. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                                | Acknowledge      | No                             |
 | Suggestion                                   | Review and take any relevant actions indicated by the message. Then optionally check **Acknowledge**.                                                                                                                                                                                                                                                                                                                     | Acknowledge      | No                             |
 
 After updating the schema, click [**Retry Migration**](#retry-the-migration). If the schema has zero errors, click **Migrate Schema** to [migrate the schema](#migrate-the-schema) to a new {{ site.data.products.serverless }} database.
