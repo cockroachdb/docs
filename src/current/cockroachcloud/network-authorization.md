@@ -95,6 +95,11 @@ Refer to:
 
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
+{{site.data.alerts.callout_info}}
+Users must have the Cluster Developer, Cluster Operator, Cluster Admin, or Cluster Creator on a specific cluster role to access its DB Console.
+Refer to [Organization user roles](authorization.html#organization-user-roles)
+{{site.data.alerts.end}}
+
 For information on functionality, refer to: [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
 
 To access the DB Console, you must first authorize your current IP address:
