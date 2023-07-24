@@ -11,11 +11,11 @@ Org Member is the default and only role assignable to new users as they are adde
 
 ### What is the minimum access role that can be granted on a cluster?
 
-Cluster Developer is the minimum access role that can be assigned to a cluster user on a cluster. Cluster Developers can view the details of the target cluster and can modify its IP allowlist.
+Cluster Developer is the minimum access role that can be assigned to a cluster user on a cluster. Cluster Developers can view the details of the target cluster and access DB Console for monitoring.
 
 ### What roles are assigned to the user that creates a {{ site.data.products.db }} organization and thus becomes the first and only user in that organization?
 
-The first user in a newly created organization is assigned a combination of Org Administrator, Billing Coordinator, and Cluster Admin at the organization scope. Any of these roles may subsequently be removed, although another user must have the Org Adminstrator role before it can be removed.
+The user who creates a new organization is assigned a combination of Org Administrator, Billing Coordinator, and Cluster Admin at the organization scope. Any of these roles may subsequently be removed, although another user must have the Org Adminstrator role, and the Cluster Admin role at organization, before either of those can be removed. This is to ensure that at least one user has each of these roles.
 
 {{site.data.alerts.callout_info}}
 The Org Administrator (legacy) role is deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
@@ -23,25 +23,21 @@ The Org Administrator (legacy) role is deprecated in favor of more fine-grained 
 
 ### Is it possible to assign more than one role to a user in a {{ site.data.products.db }} organization?
 
-Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator (legacy), and Cluster Admin roles when they create the {{ site.data.products.db }} organization. 
+Yes, it is possible, and often necessary, to assign more than one role to a user. The default minimum access role Org Member is always assigned to every user as long as they’re a part of the {{ site.data.products.db }} organization. Beyond that, every other assigned role is additive to the overall entitlements of a user. Best example of this is the initial user who is by default assigned the Org Member, Org Administrator, and Cluster Admin roles at organization scope when they create the {{ site.data.products.db }} organization. 
 
 ### Can we follow the least privilege principle by using the roles available in the {{ site.data.products.db }} authorization model?
 
 Yes, the roles available in the {{ site.data.products.db }} authorization model allow admins to grant only those entitlements to users that are supposed to map to their intended workflows. 
 
-Cluster level roles like Cluster Admin or Cluster Developer allow to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements. Whereas, the Organization level roles like Org Administrator (legacy), Org Developer (legacy) allow admin and non-admin access respectively for the entire organization.
-
-{{site.data.alerts.callout_info}}
-In a future release, legacy roles will be deprecated in favor of more fine-grained roles for separately administering organization-level user-management functions, cluster management functions, and billing management functions.
-{{site.data.alerts.end}}
+Cluster level roles like Cluster Admin and Cluster Developer allow users to perform pertinent actions for one or more clusters, while providing differentiation between admin and non-admin entitlements.
 
 ### Is the same authorization model used for both service accounts and human users in a {{ site.data.products.db }} organization?
 
-Yes, for service accounts created after the updated authorization model is enabled for your organization. Service accounts created previously continue to use the previous, less fine-grained authorization model. See [Service Accounts](authorization.html#service-accounts).
+Yes, service accounts and human users utilize the same authorization model. Older service accounts that were created before the new authorization model came into effect may still be assigned the legacy permissions, which can be updated to roles from the new authorization model.
 
 ### Can I assign a cluster-level role to a few users such that they have the relevant entitlements on all clusters in the {{ site.data.products.db }} organization?
 
-Yes, an admin could assign a cluster level role like Cluster Admin or Cluster Developer on the entire CockroachDB DB Cloud organization or on one or more specific clusters. There are two scopes in the authorization model - organization and clusters, with organization being the parent, and clusters being the children in the hierarchy. So if an admin assigns cluster level roles at the organization scope, they are automatically applicable on all clusters in the CockroachDB DB Cloud organization. Such access should be granted only to users who need to work with all clusters.
+Yes, an admin could assign a cluster level role like Cluster Admin, Cluster Operator or Cluster Developer on the entire CockroachDB DB Cloud organization or on one or more specific clusters. There are two scopes in the authorization model - organization and clusters, with organization being the parent, and clusters being the children in the hierarchy. So if an admin assigns cluster level roles at the organization scope, they are automatically applicable on all clusters in the CockroachDB DB Cloud organization. Such access should be granted only to users who need to work with all clusters.
 
 ### If an admin removes all role assignments for a particular user, is that user automatically removed from the {{ site.data.products.db }} organization?
 
@@ -49,7 +45,7 @@ When all role assignments have been removed for a user, they still implicitly ha
 
 ### Which roles grant the ability to add, remove, and manage members in a {{ site.data.products.db }} organization?
 
-Users with the Org Administrator (legacy) role are allowed to manage users and roles at both the organization and the cluster scopes. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster scope.
+Users with the Org Administrator role are allowed to manage users and roles at both the organization and the cluster scopes. Users with the Cluster Admin role are only allowed to manage role assignments at the cluster scope.
 
 ### What is the Cluster Creator role useful for when there’s a Cluster Admin role as well?
 
@@ -63,7 +59,7 @@ This overlap allows admins to give users from different projects or teams access
 
 {{ site.data.products.db }} has a two-level authorization model:
 
-1. SQL level in a cluster: Each CockroachDB cluster has its own set of SQL users and roles defined in it. Roles grant users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
+1. SQL level in a cluster: Each CockroachDB cluster has its own set of SQL users and SQL roles defined in it. SQL roles grant SQL users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
 2. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined in it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
 ### What methods can an admin use to assign organization-wide and cluster-specific roles to human users and service accounts?
@@ -75,7 +71,6 @@ To manage roles for service accounts, you must use the Cloud API.
 Refer to:
 - [Manage organization users](managing-access.html#manage-an-organizations-users)
 - [Manage service accounts](managing-access.html#manage-service-accounts)
-
 
 ### How can we track and audit role-assignment actions in a {{ site.data.products.db }} organization?
 

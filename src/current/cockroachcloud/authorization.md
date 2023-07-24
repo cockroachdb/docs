@@ -132,7 +132,7 @@ Org Administrator (legacy) can manage the organization and its members, clusters
 - [Delete an organization](managing-access.html#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
-This role will is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
+This role is deprecated in favor of the following more fine-grained roles, which, in combination, cover the same permissions:
 
 - [Org Administrator](#org-administrator)
 - [Cluster Administrator](#cluster-administrator)
@@ -144,7 +144,7 @@ This role will is deprecated in favor of the following more fine-grained roles, 
 Org Developer (legacy) can read information for all clusters, and monitor all clusters using DB Console.
 
 {{site.data.alerts.callout_info}}
-This role will is deprecated in favor of more fine-grained roles described above.
+This role is deprecated in favor of more fine-grained roles described above.
 {{site.data.alerts.end}}
 
 ## Service accounts
@@ -161,7 +161,7 @@ Service accounts operate under a unified authorization model with organization u
 - The `EDIT` role allows the service account to modify clusters within the organization.
 - The `READ` role allows the service account to get details about clusters within the organization.
 
-Legacy service accounts are considered deprecated. Update legacy service accounts to fine-grained access roles, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
+Update legacy service accounts to roles in the new authorization model, and grant only the required access, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 Refer to [Manage Service Accounts](managing-access.html#manage-service-accounts).
 

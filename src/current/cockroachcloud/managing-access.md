@@ -87,7 +87,7 @@ The access management model for service accounts is unified with the [user model
 
 Legacy service accounts created prior to the current authorization model may still have the following legacy roles: (ADMIN, CREATE, EDIT, READ, DELETE). Refer to [Service accounts](authorization.html#service-accounts).
 
-It is recommended to update service accounts to fine-grained access roles, by [editing their roles](#edit-roles-on-a-service-account).
+It is recommended to update service accounts to roles in the new authorization model, by [editing their roles](#edit-roles-on-a-service-account).
 
 ### Create a service account
 
