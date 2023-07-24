@@ -117,6 +117,8 @@ Users with this role can view cluster details, allowing them to [export a connec
 
 This role can be granted for specific clusters or for all clusters in the organization.
 
+## Legacy Roles (deprecated)
+
 ### Org Administrator (legacy)
 
 Org Administrator (legacy) can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
@@ -169,4 +171,4 @@ Cluster Single Sign-On (SSO) for {{ site.data.products.db }} allows authorized o
 
 However, because organization users and cluster SQL users are logically separate, a corresponding SQL user must be created for each SSO organization user, on each particular cluster.
 
-This correspondence lies in the SQL user name, which must be in the format `sso_{email_name}`. Replace '(email_name}' with the portion of the user's email address before `@`. For example, the SQL username of a user with the email address `docs@cockroachlabs.com`  is `sso_docs`. If the role is not set up correctly, `ccloud` prompts you to create or add it. Only an SQL admin can manage SQL users.
+This correspondence lies in the SQL user name, which must be in the format `sso_{email_name}`. Replace `(email_name}` with the portion of the user's email address before `@`. For example, the SQL username of a user with the email address `docs@cockroachlabs.com`  is `sso_docs`. If the role is not set up correctly, `ccloud` prompts you to create or add it. Only an SQL admin can manage SQL users.
