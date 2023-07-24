@@ -60,7 +60,7 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-1. Use the {{ site.data.products.db }} Console to [create a multi-region {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html) on AWS in the same region as your application.
+1. Use the {{ site.data.products.db }} Console to [create a multi-region {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html) on AWS in the same regions as your application.
 
     {{site.data.alerts.callout_info}}
     **Multi-region for {{ site.data.products.serverless }} is in [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
@@ -91,7 +91,7 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-Complete these steps once for each VPC in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless-plan }} clusters. If you connect additional clusters to the same VPC, you do not need to make additional changes to the VPC.
+Complete these steps once for each private endpoint in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless-plan }} clusters. If you connect additional clusters to the same private endpoint, you do not need to make additional changes to the VPC.
 {{site.data.alerts.end}}
 
 </section>

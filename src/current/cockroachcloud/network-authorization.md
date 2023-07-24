@@ -25,7 +25,7 @@ Use GCP VPC Peering or AWS PrivateLink if:
 
 - You need to allowlist more defined IP address ranges than allowed by the maximum (20 for {{ site.data.products.dedicated }} clusters and 50 for {{ site.data.products.serverless }}). For {{ site.data.products.dedicated }} clusters on AWS, reach out to your Cockroach Labs team or support to increase the limit if needed.
 - Your servers’ IP addresses are not static.
-- You want avoid exposing your cluster to the public internet.
+- You want to avoid exposing your cluster to the public internet.
 
 Learn more about [Private Clusters (Preview)](private-clusters.html), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 {{site.data.alerts.end}}

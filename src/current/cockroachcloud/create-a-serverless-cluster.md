@@ -45,7 +45,7 @@ To create a multi-region cluster, click **Add regions** and select additional re
 
 After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)](network-authorization.html#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
 
-Private connectivity is yet available for {{ site.data.products.serverless-plan }} clusters on GCP.
+Private connectivity is not available for {{ site.data.products.serverless-plan }} clusters on GCP.
 
 ## Step 4. Set resource limits
 
