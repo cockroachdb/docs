@@ -163,6 +163,12 @@
             "title": "Compliance",
             "items": [
                 {
+                    "title": "CockroachDB Dedicated Compliance Overview",
+                    "urls": [
+                      "/cockroachcloud/compliance.html"
+                    ]
+                  },
+                {
                 "title": "Payment Card Industry Data Security Standard (PCI DSS)",
                 "urls": [
                     "/cockroachcloud/pci-dss.html"
