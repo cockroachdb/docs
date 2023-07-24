@@ -226,7 +226,7 @@
               ]
             },
             {
-              "title": "Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated",
+              "title": "Customer-Managed Encryption Keys (CMEK)",
               "urls": [],
               "items": [
                 {
