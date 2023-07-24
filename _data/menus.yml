@@ -13,13 +13,16 @@ product_caps:
     name: Elastic Scale
     url: https://www.cockroachlabs.com/product/scale/
     weight: 100
+  - name: Cloud-Native & Kubernetes
+    url: https://www.cockroachlabs.com/product/kubernetes/
   - name: Built-in Survivability
     url: https://www.cockroachlabs.com/product/resilience/
     # Right
-  - name: Global Data
-    url: https://www.cockroachlabs.com/product/geo-partitioning/
   - name: Familiar, Consistent SQL
     url: https://www.cockroachlabs.com/product/sql/
+  - name: Global Data
+    url: https://www.cockroachlabs.com/product/geo-partitioning/
+
 
 solutions:
   - identifier: solutions
@@ -34,17 +37,22 @@ solutions_industries:
   - name: Finance
     url: https://www.cockroachlabs.com/solutions/verticals/financialservices/
     weight: 100
-  - name: Gambling
-    url: https://www.cockroachlabs.com/solutions/verticals/gambling/
-    weight: 100
   - name: Gaming
     url: https://www.cockroachlabs.com/solutions/verticals/gaming/
     weight: 100
   - name: Manufacturing & Logistics
     url: https://resources.cockroachlabs.com/manufacturing-logistics
     weight: 100
+  - name: Media & Streaming
+    url: https://www.cockroachlabs.com/solutions/verticals/media/
+  - name: Real-Money Gaming
+    url: https://www.cockroachlabs.com/solutions/verticals/gambling/
+    weight: 100
   - name: Retail & eCommerce
     url: https://www.cockroachlabs.com/solutions/verticals/retail-ecommerce/
+    weight: 100
+  - name: SaaS
+    url: https://www.cockroachlabs.com/solutions/verticals/saas
     weight: 100
   - name: Startups
     url: https://resources.cockroachlabs.com/startups
@@ -74,8 +82,8 @@ resources:
         text: "<h3 class='text-primary'>Cockroach <br>University</h3>World-class training and tutorials for beginners and advanced use cases."
 
 resources_learn:
-  - name: Guides & Tech Briefs
-    url: https://resources.cockroachlabs.com/guides
+  - name: Resource center
+    url: https://www.cockroachlabs.com/resources/
     weight: 100
   - name: Blog
     url: https://www.cockroachlabs.com/blog/
@@ -83,8 +91,11 @@ resources_learn:
   - name: Developers
     url: https://www.cockroachlabs.com/developers/
     weight: 200
-  - name: Tech Talks
-    url: https://www.cockroachlabs.com/community/tech-talks/
+  - name: Webinars
+    url: https://www.cockroachlabs.com/community/webinars/
+    weight: 200
+  - name: Podcast
+    url: https://www.cockroachlabs.com/big-ideas-podcast/
     weight: 200
 
 
