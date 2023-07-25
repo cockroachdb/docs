@@ -95,12 +95,6 @@
       "urls": [
         "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
-    },
-    {
-      "title": "Migrate from Serverless to Dedicated",
-      "urls": [
-        "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
-      ]
     }
   ]
 }

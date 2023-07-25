@@ -448,7 +448,7 @@ To answer this question:
 1. Join the results of the above CTE and a query against the `birds` database that lists the names and observation totals (sums) of birds whose habitats are within 10 miles of the location of the bookstore.
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](query-spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -716,7 +716,7 @@ To answer this question:
 1. Join the results of the above CTE with a query against [the `birds` database](#the-birds-database) that checks whether the distance between the route geometry and the location of the bird observation (`birds.routes.geom`) bookstore's location is less than the desired length of 10 miles. Note that because the call to `ST_Distance` is operating on shapes cast to `GEOGRAPHY` data type, the results are in meters, which then have to be converted to miles by dividing the result by 1609 (the number of meters in a mile).
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](query-spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -899,7 +899,7 @@ To answer this question:
 1. Finally, query the results of the `nearby_roads` subquery to get a list of 10 distinct road names that you can plan to visit.
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](query-spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

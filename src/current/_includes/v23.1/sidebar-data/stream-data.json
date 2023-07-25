@@ -73,7 +73,7 @@
       ]
     },
     {
-    "title": "Tutorials",
+    "title": "Changefeed Tutorials",
     "items": [
       {
         "title": "Connect to a Changefeed Kafka Sink with OAuth Using Okta",
