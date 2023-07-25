@@ -377,43 +377,43 @@
             "urls": [
               "/${VERSION}/security-reference/transport-layer-security.html"
             ]
+          }
+        ]
+      },
+      {
+        "title": "System Catalogs",
+        "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/system-catalogs.html"
+                ]
           },
           {
-            "title": "System Catalogs",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/system-catalogs.html"
-                    ]
-              },
-              {
-                "title": "<code>crdb_internal</code>",
-                "urls": [
-                  "/${VERSION}/crdb-internal.html"
-                ]
-              },
-              {
-                "title": "<code>information_schema</code>",
-                "urls": [
-                  "/${VERSION}/information-schema.html"
-                ]
-              },
-              {
-                "title": "<code>pg_catalog</code>",
-                "urls": [
-                  "/${VERSION}/pg-catalog.html"
-                ]
-              },
-              {
-                "title": "<code>pg_extension</code>",
-                "urls": [
-                  "/${VERSION}/pg-extension.html"
-                ]
-              }
+            "title": "<code>crdb_internal</code>",
+            "urls": [
+              "/${VERSION}/crdb-internal.html"
+            ]
+          },
+          {
+            "title": "<code>information_schema</code>",
+            "urls": [
+              "/${VERSION}/information-schema.html"
+            ]
+          },
+          {
+            "title": "<code>pg_catalog</code>",
+            "urls": [
+              "/${VERSION}/pg-catalog.html"
+            ]
+          },
+          {
+            "title": "<code>pg_extension</code>",
+            "urls": [
+              "/${VERSION}/pg-extension.html"
             ]
           }
         ]
       }
     ]
-}
+  }
