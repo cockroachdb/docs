@@ -74,22 +74,8 @@
 # https://docs.netlify.com/routing/redirects/redirect-options/#splats
 ############################################################
 
-- destination: v19.1/:splat
-  sources: ['v2.2/*']
-  force: true
-
-- destination: cockroachcloud/:splat
-  sources: ['managed/*']
-  force: true
-
-- destination: releases/index.md
-  sources: ['releases/']
-  force: true
-
 - destination: advisories/index.md
-  sources:
-    - advisories/
-    - advisories/advisories.md
+  sources: ['advisories/advisories.md']
 
 # Pages undergoing maintenance
 

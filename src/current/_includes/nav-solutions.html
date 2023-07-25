@@ -3,7 +3,7 @@
 <div class="col-md-4">
     <p class="font-size-16 lh-n semibold my-3 text-primary">By Industries</p>
     <ul class="list-unstyled p-0">
-    {% for item in site.data.menus.solutions_industries %}
+    {% for item in site.data.menus.solutions_industries limit:4 %}
         <li class="border-bottom">
             <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{ item.url }}">{{ item.name }}
                 <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,9 +15,9 @@
     </ul>
 </div>
 <div class="col-md-4">
-    <p class="font-size-16 lh-n semibold my-3 text-primary">By Use Case</p>
+    <p class="font-size-16 lh-n semibold my-3 text-primary">&nbsp;</p>
     <ul class="list-unstyled p-0">
-        {% for item in site.data.menus.solutions_usecase %}
+        {% for item in site.data.menus.solutions_industries offset:4 %}
             <li class="border-bottom">
                 <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{ item.url }}">{{ item.name }}
                     <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">

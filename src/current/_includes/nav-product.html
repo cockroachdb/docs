@@ -21,7 +21,7 @@
 <div class="col-md-4">
     <p class="font-size-16 lh-n semibold my-3">Capabilities</p>
     <ul class="mb-0 mb-md-3 list-unstyled p-0">
-    {% for item in site.data.menus.product_caps limit:2 %}
+    {% for item in site.data.menus.product_caps limit:3 %}
         <li class="border-bottom">
             <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{item.url }}">{{item.name}}
                 <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@
 <div class="col-md-4">
     <p class="d-none d-md-block font-size-16 lh-n semibold my-3">&nbsp;</p>
     <ul class="list-unstyled p-0">
-        {% for item in site.data.menus.product_caps limit:2 offset:2 %}
+        {% for item in site.data.menus.product_caps limit:2 offset:3 %}
         <li class="border-bottom">
             <a class="text-xs text-black d-flex pb-2 pt-3 align-items-center" href="{{item.url }}">{{item.name}}
                 <svg class="ml-auto" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">

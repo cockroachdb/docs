@@ -156,9 +156,9 @@ Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html)
 
 ### Filter your change data with CDC queries
 
-_Change data capture queries_ allow you to define and filter the change data emitted to your sink when your create an Enterprise changefeed.
+_Change data capture queries_ allow you to define and filter the change data emitted to your sink when you create an Enterprise changefeed.
 
-For example, you use CDC queries to:
+For example, you can use CDC queries to:
 
 - [Filter out rows and columns](cdc-queries.html#filter-columns) from changefeed messages to decrease the load on your downstream sink.
 - [Modify data before it emits](cdc-queries.html#customize-changefeed-messages) to reduce the time and operational burden of filtering or transforming data downstream.
@@ -177,4 +177,4 @@ For examples and more detail, refer to:
 
 ### Determine the nodes running a changefeed by locality
 
-CockroachDB supports an option to set locality filter requirements that nodes must meet in order to take part in a changefeed job. This is helpful in multi-region clusters to ensure the nodes that physically closest to the sink emit changefeed messages. For syntax and further technical detail, refer to [Run a changefeed job by locality](changefeeds-in-multi-region-deployments.html#run-a-changefeed-job-by-locality).
+CockroachDB supports an option to set locality filter requirements that nodes must meet in order to take part in a changefeed job. This is helpful in multi-region clusters to ensure the nodes that are physically closest to the sink emit changefeed messages. For syntax and further technical detail, refer to [Run a changefeed job by locality](changefeeds-in-multi-region-deployments.html#run-a-changefeed-job-by-locality).
