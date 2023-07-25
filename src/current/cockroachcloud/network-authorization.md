@@ -127,7 +127,7 @@ When you have finished your work with the DB Console, it is recommended to remov
 Remove an authorized network by selecting **Delete** from the **Action** dropdown its row on the allowlist page.
 {{site.data.alerts.end}}
 
-To get the URL for your cluster's DB Console:
+To access your cluster's DB Console:
 
 1. Navigate to your {{ site.data.products.dedicated }} cluster's [**Tools** page](tools-page.html) in the **Monitoring** section of the {{ site.data.products.db }} Console.
 
