@@ -108,7 +108,7 @@ To access the DB Console, you must first authorize your current IP address:
 
     {% include_cached copy-clipboard.html %}
     ~~~txt
-    https://cockroachlabs.io/cluster/{ your cluster UUID }/networking/allowlist
+    https://cockroachlabs.cloud/cluster/{ your cluster UUID }/networking/allowlist
     ~~~
 
 1. Click **Add Network**.
@@ -129,14 +129,11 @@ Remove an authorized network by selecting **Delete** from the **Action** dropdow
 
 To get the URL for your cluster's DB Console:
 
-1. Visit your Dedicated cluster's monitoring page:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~txt
-    https://cockroachlabs.io/cluster/{ cluster ID }/monitoring
-    ~~~
+1. Navigate to your {{ site.data.products.dedicated }} cluster's [**Tools** page](tools-page.html) in the **Monitoring** section of the {{ site.data.products.db }} Console.
 
 1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
+
+  You can also access the DB Console by navigating to `https://admin-<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 
 (Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster.
 

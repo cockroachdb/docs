@@ -32,7 +32,7 @@ Removing or adding an authorized network on your {{ site.data.products.dedicated
 
 1. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
 
-    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../{{site.current_cloud_version}}/ui-overview.html).
+    The DB Console is where you can observe your cluster's health and performance. For more information, see [Tools Page - Access the DB Console](tools-page.html#access-the-db-console).
 
 1. Click **Apply**.
 
