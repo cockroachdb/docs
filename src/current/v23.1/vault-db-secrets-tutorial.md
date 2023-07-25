@@ -1,5 +1,5 @@
 ---
-title: Use Vault to Securly Manage Database Credentials
+title: Use HashiCorp Vault to Securely Manage Database Credentials
 summary: Learn how to achieve enhanced credential security using HashiCorp Vault's Dynamic Secrets functionality.
 toc: true
 docs_area: manage

@@ -335,7 +335,7 @@
                   ]
                 },
                 {
-                  "title": "Manage a cluster's PKI certificates with Vault",
+                  "title": "Manage a cluster's PKI certificates with HashiCorp Vault",
                   "urls": [
                     "/${VERSION}/manage-certs-vault.html"
                   ]
@@ -414,7 +414,7 @@
               ]
             },
             {
-              "title": "Using Hashicorp Vault's Dynamic Secrets for Enhanced Database Credential Security",
+              "title": "Use HashiCorp Vault to Securely Manage Database Credentials",
               "urls": [
                 "/${VERSION}/vault-db-secrets-tutorial.html"
               ]
