@@ -16,7 +16,7 @@ Import performance primarily depends on the amount of data that you want to impo
 - [Sort your data](#sort-your-data)
 
 {{site.data.alerts.callout_info}}
-If the import size is small, then you do not need to do anything to optimize performance. For small datasets, the import should run quickly, regardless of the settings.
+If the import size is less than 100 GiB, then you do not need to do anything to optimize performance. For such small datasets, the import should run quickly, regardless of the settings.
 {{site.data.alerts.end}}
 
 ## Choose a performant import format
@@ -32,7 +32,7 @@ We recommend formatting your import files as `CSV` or `AVRO`. These formats can 
 
 ### Import the schema separately from the data
 
-Split your dump data into two files:
+When importing into a new table split your dump data into two files:
 
 1. A SQL file containing the table schema.
 1. A CSV, delimited, or AVRO file containing the table data.
@@ -54,17 +54,15 @@ This method has the added benefit of alerting on potential issues with the impor
 
 When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, an effective strategy for most migrations.
 
-However, in **large** imports, it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. Write operations on tables with many secondary indexes take longer to complete, and importing large datasets have a greater risk of timeouts. Removing the table's secondary indexes allows you to separate the initial data import from the secondary index creation operation, and the total import time is lower. Separating these operations also provides increased visibility into each operation's progress, and the ability to retry each operation independently if you encounter errors or timeouts.
+However, in **large** imports (that is, datasets larger than 100 GiB in total size), it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. Write operations on tables with many secondary indexes take longer to complete, and importing large datasets have a greater risk of timeouts. Removing the table's secondary indexes allows you to separate the initial data import from the secondary index creation operation, and the total import time is lower. Separating these operations also provides increased visibility into each operation's progress, and the ability to retry each operation independently if you encounter errors or timeouts.
 
-When recreating the secondary indexes, execute all the [`CREATE INDEX`](create-index.html) statements in a single transaction. For example:
+When recreating the secondary indexes, execute the [`CREATE INDEX`](create-index.html) statements one at a time for best performance. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-BEGIN
-  CREATE INDEX idx1 ON table1;
-  CREATE INDEX idx2 ON table1;
-  CREATE INDEX idx3 ON table1;
-COMMIT;
+CREATE INDEX idx1 ON table1;
+CREATE INDEX idx2 ON table1;
+CREATE INDEX idx3 ON table1;
 ~~~
 
 - [Remove the secondary indexes](drop-index.html)
@@ -107,12 +105,12 @@ IMPORT INTO customers (id, name)
     );
 ~~~
 
-CockroachDB imports the files that you give it, and does not further split them. For example, if you import one large file for all of your data, CockroachDB will process that file on one node, even if you have more nodes available. However, if you import three files (and your cluster has at least three nodes), each node will process a file in parallel. This is why splitting your data into at least as many files as you have nodes will dramatically decrease the time it takes to import data.
+CockroachDB ingests the files as provided and does not automatically split them further. For example, if you import one large file containing all of your data, CockroachDB will process that file on one node, even if you have more nodes available. However, if you import three files (and your cluster has at least three nodes), each node will process a file in parallel. This is why splitting your data into at least as many files as you have nodes will dramatically decrease the time it takes to import data.
 
 {{site.data.alerts.callout_info}}
 You can split the data into **more** files than you have nodes. CockroachDB will process the files in parallel across the cluster. When splitting the data Cockroach Labs recommends splitting it into a multiple of the number of nodes in your cluster, if possible. For example, if you have a 3 node cluster, split the dataset into 9, 27, or 300 files.
 
-Cockroach Labs recommends keeping the files to a maximum file size of 4 GB, and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
+Cockroach Labs recommends keeping the files to a maximum file size of 4 GB unless the files are streamed (for example, [cloud storage locations](use-cloud-storage.html) will stream the data to CockroachDB), and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
 {{site.data.alerts.end}}
 
 For maximum performance each split file should be sorted within and across all files, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, suppose your table has an alphabetic string primary key and you were importing the data into a 3 node cluster.
