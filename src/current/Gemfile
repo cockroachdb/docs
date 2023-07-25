@@ -7,7 +7,6 @@ source "https://rubygems.org"
 # instructions.
 
 gem "jekyll", "~> 4.3"
-gem "jekyll-redirect-from", "~> 0.15"
 gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.6"
 gem "rss"

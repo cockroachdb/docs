@@ -10,9 +10,7 @@ module JekyllVersions
     end
 
     def unversioned_path
-      # `page.path` isn't sufficient, as the JekyllRedirectFrom plugin uses
-      # permalinks to hide the fact that every RedirectPage has a basename of
-      # "redirect.html". Using `page.url` properly takes the permalink into
+      # Using `page.url` properly takes the permalink into
       # account, but we need to convert the URL back to a path by a) dropping
       # the leading slash and maybe the version from the front of the URL, and
       # b) tacking on `index.html` to bare directories.
