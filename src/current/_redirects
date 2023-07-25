@@ -4,6 +4,11 @@ layout: null
 # Release notes generated from _data/redirects.yml
 {% if site.baseurl == "/docs" %}
 / /docs/ 301!
+/docs/managed/* /docs/cockroachcloud/:splat 301!
+/docs/api/cloud /docs/api/cloud/v1 301!
+/docs/api/cloud/ /docs/api/cloud/v1 301!
+/docs/api/cluster /docs/api/cluster/v2 301!
+/docs/api/cluster/ /docs/api/cluster/v2 301!
 {% assign major_versions = site.data.versions | map: "major_version" -%}
 
 {%- for r in site.data.redirects -%}

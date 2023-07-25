@@ -50,8 +50,10 @@ See [Service accounts](managing-access.html#manage-service-accounts) for instruc
 
 <section class="filter-content" markdown="1" data-scope="aws-metrics-export">
 
-{{site.data.alerts.callout_danger}}
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+
+{{site.data.alerts.callout_info}}
+Enabling metrics export will send around 250 metrics per node to AWS CloudWatch. Review the [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
 {{site.data.alerts.end}}
 
 Perform the following steps to enable metrics export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
@@ -83,7 +85,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
 	1. Select **Roles** and click **Create role**.
 	1. For **Trusted entity type**, select **AWS account**.
 	1. Choose **Another AWS account**.
-	1. For **Account ID**, provide the {{ site.data.products.dedicated }} cloud provider account ID from step 2.
+	1. For **Account ID**, provide the {{ site.data.products.dedicated }} cloud provider account ID from step 3.
 	1. Finish creating the IAM role with a suitable name. These instructions will use the role name `CockroachCloudMetricsExportRole`. You do not need to add any permissions.
 
 	{{site.data.alerts.callout_info}}
@@ -119,7 +121,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
     ~~~
 
     Where:
-    - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudMetricsExportRole` role, **not** the cloud provider account ID of your {{ site.data.products.dedicated }} cluster from step 2. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
+    - `{your_aws_acct_id}` is the AWS Account ID of the AWS account where you created the `CockroachCloudMetricsExportRole` role, **not** the cloud provider account ID of your {{ site.data.products.dedicated }} cluster from step 3. You can find your AWS Account ID on the AWS [IAM page](https://console.aws.amazon.com/iam/).
     - `{log_group_name}` is the target AWS CloudWatch log group you created in step 1.
 
     This defines the set of permissions that the {{ site.data.products.dedicated }} metrics export feature requires to be able to write metrics to CloudWatch.
@@ -173,19 +175,6 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
 	1. Click on the name of your cluster.
 	1. Find your cluster ID in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`. It should resemble `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
 
-1. Determine your cluster's cloud provider account ID. This command uses the third-party JSON parsing tool [`jq`](https://stedolan.github.io/jq/download/) to isolate just the needed `account_id` field:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~shell
-    curl --request GET \
-      --url https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id} \
-      --header 'Authorization: Bearer {secret_key}' | jq .account_id
-    ~~~
-
-    Where:
-    - `{your_cluster_id}` is the cluster ID of your {{ site.data.products.dedicated }} cluster as determined in step 1.
-    - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for more details.
-
 1. Determine the [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/) you'd like to use. If you don't already have one, follow the steps to [add a new Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/#add-an-api-key-or-client-token).
 
 1. Issue the following Cloud API command to enable metrics export for your {{ site.data.products.dedicated }} cluster:
@@ -202,7 +191,7 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
     - `{cluster_id}` is your {{ site.data.products.dedicated }} cluster ID as determined in step 1, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
     - `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
     - `{datadog_site}` is your Datadog site. Valid sites are: `US1`, `US3`, `US5`, `US1_GOV`, and `EU1`.
-    - `{datadog_api_key}` is the Datadog API key determined in step 3.
+    - `{datadog_api_key}` is the Datadog API key determined in step 2.
 
 1. Depending on the size of your cluster and how many regions it spans, the configuration may take a moment. You can monitor the ongoing status of the configuration using the following Cloud API command:
 
@@ -318,7 +307,7 @@ Where:
 
 ### AWS CloudWatch
 
-Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM page](https://console.aws.amazon.com/iam/) to step 6, **not** the AWS cloud provider account ID as returned from step 2.
+Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM page](https://console.aws.amazon.com/iam/) to step 6, **not** the AWS cloud provider account ID as returned from step 3.
 
 If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
 

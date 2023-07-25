@@ -46,7 +46,7 @@ body.sidenav-open{
 }
 
 .col-sidebar-content{
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - 120px);
   overflow-y: scroll;
   position: -webkit-sticky; /* Safari */
   position: sticky;
