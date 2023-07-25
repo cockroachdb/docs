@@ -53,9 +53,7 @@ See [Service accounts](managing-access.html#manage-service-accounts) for instruc
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
 
 {{site.data.alerts.callout_info}}
-Enabling metrics export will send around 250 metrics per node to AWS CloudWatch.
-
-Consult with [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
+Enabling metrics export will send around 250 metrics per node to AWS CloudWatch. Review the [AWS CloudWatch documentation](https://aws.amazon.com/cloudwatch/pricing/) to gauge how this adds to your AWS CloudWatch spend.
 {{site.data.alerts.end}}
 
 Perform the following steps to enable metrics export from your {{ site.data.products.dedicated }} cluster to AWS CloudWatch.
