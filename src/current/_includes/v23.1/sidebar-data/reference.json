@@ -349,15 +349,20 @@
             ]
           },
           {
-            "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
-            "urls": [
-              "/${VERSION}/security-reference/scram-authentication.html"
-            ]
-          },
-          {
             "title": "Authentication",
-            "urls": [
-              "/${VERSION}/security-reference/authentication.html"
+            "items": [
+              {
+                "title": "SQL Authentication",
+                "urls": [
+                  "/${VERSION}/security-reference/authentication.html"
+                ]
+              },
+              {
+                "title": "SASL/SCRAM-SHA-256 Secure Password-based Authentication",
+                "urls": [
+                  "/${VERSION}/security-reference/scram-authentication.html"
+                ]
+              }
             ]
           },
           {
