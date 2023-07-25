@@ -168,50 +168,45 @@
             "title": "Multi-Region for Self-Hosted Deployments",
             "items": [
                 {
-                    "title": "Multi-Region Topology Patterns",
-                    "items": [
-                    {
-                        "title": "Overview",
-                        "urls": [
-                        "/${VERSION}/topology-patterns.html"
-                        ]
-                    },
-                    {
-                        "title": "Development",
-                        "urls": [
-                        "/${VERSION}/topology-development.html"
-                        ]
-                    },
-                    {
-                        "title": "Basic Production",
-                        "urls": [
-                        "/${VERSION}/topology-basic-production.html"
-                        ]
-                    },
-                    {
-                        "title": "Regional Tables",
-                        "urls": [
-                        "/${VERSION}/regional-tables.html"
-                        ]
-                    },
-                    {
-                        "title": "Global Tables",
-                        "urls": [
-                        "/${VERSION}/global-tables.html"
-                        ]
-                    },
-                    {
-                        "title": "Follower Reads",
-                        "urls": [
-                        "/${VERSION}/topology-follower-reads.html"
-                        ]
-                    },
-                    {
-                        "title": "Follow-the-Workload",
-                        "urls": [
-                        "/${VERSION}/topology-follow-the-workload.html"
-                        ]
-                    }
+                    "title": "Topology Patterns Overview",
+                    "urls": [
+                    "/${VERSION}/topology-patterns.html"
+                    ]
+                },
+                {
+                    "title": "Development Topology",
+                    "urls": [
+                    "/${VERSION}/topology-development.html"
+                    ]
+                },
+                {
+                    "title": "Basic Production Topology",
+                    "urls": [
+                    "/${VERSION}/topology-basic-production.html"
+                    ]
+                },
+                {
+                    "title": "Regional Tables",
+                    "urls": [
+                    "/${VERSION}/regional-tables.html"
+                    ]
+                },
+                {
+                    "title": "Global Tables",
+                    "urls": [
+                    "/${VERSION}/global-tables.html"
+                    ]
+                },
+                {
+                    "title": "Follower Reads",
+                    "urls": [
+                    "/${VERSION}/topology-follower-reads.html"
+                    ]
+                },
+                {
+                    "title": "Follow-the-Workload",
+                    "urls": [
+                    "/${VERSION}/topology-follow-the-workload.html"
                     ]
                 }
             ] 
@@ -360,101 +355,98 @@
             "title": "Administration",
             "items": [
                 {
-                    "title": "DB Console",
-                    "items": [
-                      {
-                        "title": "DB Console Overview",
-                        "urls": [
-                          "/${VERSION}/ui-overview.html"
-                        ]
-                      },
-                      {
-                        "title": "Cluster Overview Page",
-                        "urls": [
-                          "/${VERSION}/ui-cluster-overview-page.html"
-                        ]
-                      },
-                      {
-                        "title": "Metrics Dashboards",
-                        "items": [
-                          {
-                            "title": "Overview Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-overview-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Hardware Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-hardware-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Runtime Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-runtime-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "SQL Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-sql-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Storage Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-storage-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Replication Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-replication-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Distributed Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-distributed-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Queues Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-queues-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Slow Requests Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-slow-requests-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Changefeeds Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-cdc-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Overload Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-overload-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "TTL Dashboard",
-                            "urls": [
-                              "/${VERSION}/ui-ttl-dashboard.html"
-                            ]
-                          },
-                          {
-                            "title": "Custom Chart",
-                            "urls": [
-                              "/${VERSION}/ui-custom-chart-debug-page.html"
-                            ]
-                          }
+                  "title": "DB Console Overview",
+                  "urls": [
+                    "/${VERSION}/ui-overview.html"
+                  ]
+                },
+                {
+                  "title": "Cluster Overview Page",
+                  "urls": [
+                    "/${VERSION}/ui-cluster-overview-page.html"
+                  ]
+                },
+                {
+                  "title": "Metrics Dashboards",
+                  "items": [
+                    {
+                      "title": "Overview Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-overview-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Hardware Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-hardware-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Runtime Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-runtime-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "SQL Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-sql-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Storage Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-storage-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Replication Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-replication-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Distributed Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-distributed-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Queues Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-queues-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Slow Requests Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-slow-requests-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Changefeeds Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-cdc-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Overload Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-overload-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "TTL Dashboard",
+                      "urls": [
+                        "/${VERSION}/ui-ttl-dashboard.html"
+                      ]
+                    },
+                    {
+                      "title": "Custom Chart",
+                      "urls": [
+                        "/${VERSION}/ui-custom-chart-debug-page.html"
+                      ]
+                    }
                         ]
                       },
                       {
@@ -522,10 +514,8 @@
                        "urls": [
                          "/${VERSION}/ui-key-visualizer.html"
                        ]
-                     }
-                    ]
-                  }
-            ]
+                   }
+               ]
           },
           {
             "title": "Backups",
