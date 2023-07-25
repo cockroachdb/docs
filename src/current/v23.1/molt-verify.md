@@ -34,10 +34,11 @@ The following databases are currently supported:
 1. Get the JDBC connection strings for the source and target databases you want to compare.
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
 1. From the [Releases](https://github.com/cockroachdb/molt/releases/) page, download the binary that matches your system:
-   - For Mac: molt.darwin.*, arm64 for M1/M2s, amd64 otherwise
-   - For windows: .exe
-   - For Linux: molt.linux.amd64
-   Optionally, add the binary to your `PATH` so you can execute the `molt verify` command from any shell.
+  - For Mac: molt.darwin.*, arm64 for M1/M2s, amd64 otherwise
+  - For windows: .exe
+  - For Linux: molt.linux.amd64
+   
+    Optionally, add the binary to your `PATH` so you can execute the `molt verify` command from any shell.
 1. Run MOLT Verify: 
 
     The `molt verify` command takes two or more JDBC connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the JDBC string. The first argument is considered the "source of truth". 
