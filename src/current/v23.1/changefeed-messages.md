@@ -286,7 +286,7 @@ To prevent the changefeed from falling too far behind, [pause](create-and-config
 
 ### `min_checkpoint_frequency` option
 
-The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating changefeed node. Therefore, changefeeds will wait for at least the `min_checkpoint_frequency` duration before flushing to the sink. If a changefeed pauses and then resumes, the `min_checkpoint_frequency` duration is the amount of time that the changefeed will need to catch up when it has not checkpointed its progress. During this catch-up time, you could receive duplicate messages.
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating changefeed node. Therefore, changefeeds will wait for at least the `min_checkpoint_frequency` duration before flushing to the sink. If a changefeed pauses and then resumes, the `min_checkpoint_frequency` duration is the amount of time that the changefeed will need to catch up since its previous checkpoint. During this catch-up time, you could receive duplicate messages.
 
 ## Schema Changes
 
