@@ -670,27 +670,6 @@
             ]
           },
           {
-            "title": "Benchmarking",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/performance.html"
-                ]
-              },
-              {
-                "title": "Benchmarking Instructions",
-                "urls": [
-                  "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
-                ]
-              }
-            ]
-          },
-          {
             "title": "Cluster API",
             "urls": [
               "/${VERSION}/cluster-api.html"

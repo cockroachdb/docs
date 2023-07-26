@@ -8,10 +8,9 @@
       ]
     },
     {
-      "title": "Learn CockroachDB SQL",
+      "title": "Deployment Options",
       "urls": [
-        "/cockroachcloud/learn-cockroachdb-sql.html",
-        "/${VERSION}/learn-cockroachdb-sql.html"
+        "/${VERSION}/choose-a-deployment-option.html"
       ]
     },
     {
@@ -22,6 +21,13 @@
         "/${VERSION}/install-cockroachdb-linux.html",
         "/${VERSION}/fips.html",
         "/${VERSION}/install-cockroachdb-windows.html"
+      ]
+    },
+    {
+      "title": "Learn CockroachDB SQL",
+      "urls": [
+        "/cockroachcloud/learn-cockroachdb-sql.html",
+        "/${VERSION}/learn-cockroachdb-sql.html"
       ]
     },
     {
