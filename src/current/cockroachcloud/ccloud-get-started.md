@@ -86,7 +86,7 @@ This command creates a {{ site.data.products.serverless }} cluster in the defaul
 ~~~
 ∙∙∙ Creating cluster...
 Success! Created cluster
-  name: dim-dog
+  name: blue-dog
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
@@ -96,7 +96,7 @@ You can set the cluster name, cloud infrastructure provider, region, and [resour
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create serverless dim-dog us-central1 --cloud GCP --spend-limit 0
+ccloud cluster create serverless blue-dog us-central1 --cloud GCP --spend-limit 0
 ~~~
 </section>
 
@@ -115,13 +115,13 @@ You can set the cluster name, cloud infrastructure provider, region, number of n
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated dim-dog us-central1:1 --cloud GCP --vcpus 2 --storage-gib 15
+ccloud cluster create dedicated blue-dog us-central1:1 --cloud GCP --vcpus 2 --storage-gib 15
 ~~~
 
 ~~~
 ∙∙∙ Creating cluster
 Success! Created cluster
-  name: dim-dog
+  name: blue-dog
   id: ec5e50eb-67dd-4d25-93b0-91ee7ece778d
 ~~~
 
@@ -131,7 +131,7 @@ When creating multi node clusters, you must specify how many nodes should be in 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster create dedicated dim-dog us-central1:2 us-west2:1 --cloud GCP --vcpus 2 --storage-gib 15
+ccloud cluster create dedicated blue-dog us-central1:2 us-west2:1 --cloud GCP --vcpus 2 --storage-gib 15
 ~~~
 </section>
 
@@ -151,7 +151,7 @@ For example, to allow incoming connections from a single IP address, 1.1.1.1, to
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist create dim-dog 1.1.1.1/32 --sql --ui
+ccloud cluster networking allowlist create blue-dog 1.1.1.1/32 --sql --ui
 ~~~
 
 ~~~
@@ -165,7 +165,7 @@ Use the `ccloud cluster networking allowlist list` command to list the IP allowl
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist list dim-dog
+ccloud cluster networking allowlist list blue-dog
 ~~~
 
 ~~~
@@ -178,7 +178,7 @@ To modify an allowlist entry, use the `ccloud cluster networking allowlist updat
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist update dim-dog 1.1.1.1/32 --name home
+ccloud cluster networking allowlist update blue-dog 1.1.1.1/32 --name home
 ~~~
 
 ~~~
@@ -192,7 +192,7 @@ Rerunning the `allowlist list` command shows the updated entry:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist list dim-dog
+ccloud cluster networking allowlist list blue-dog
 ~~~
 
 ~~~
@@ -205,7 +205,7 @@ To delete an entry, run the `ccloud cluster networking allowlist delete` command
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster networking allowlist delete dim-dog 1.1.1.1/32
+ccloud cluster networking allowlist delete blue-dog 1.1.1.1/32
 ~~~
 
 ~~~
@@ -230,7 +230,7 @@ ccloud cluster list
 ~~~
 ∙∙∙ Retrieving clusters...
 NAME                 ID                                    PLAN TYPE        CREATED AT                            STATE                   CLOUD               VERSION
-dim-dog              041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_SERVERLESS  2022-03-20 13:47:40.529531 +0000 UTC  CLUSTER_STATE_CREATED   CLOUD_PROVIDER_GCP  v21.2.4
+blue-dog              041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_SERVERLESS  2022-03-20 13:47:40.529531 +0000 UTC  CLUSTER_STATE_CREATED   CLOUD_PROVIDER_GCP  v21.2.4
 ...
 ~~~
 </section>
@@ -239,7 +239,7 @@ dim-dog              041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_SERVERLESS  2022
 ~~~
 ∙∙∙ Retrieving clusters...
 NAME      ID                                    PLAN TYPE        CREATED AT                            STATE                   CLOUD               VERSION
-dim-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:07:35.7177 +0000 UTC    CLUSTER_STATE_CREATING  CLOUD_PROVIDER_GCP  v21.2.4
+blue-dog   041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d  PLAN_DEDICATED   2022-03-22 21:07:35.7177 +0000 UTC    CLUSTER_STATE_CREATING  CLOUD_PROVIDER_GCP  v21.2.4
 ...
 ~~~
 </section>
@@ -250,14 +250,14 @@ Use the `ccloud cluster info` command with the cluster name as the parameter to 
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster info dim-dog
+ccloud cluster info blue-dog
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 ~~~
 ∙∙∙ Retrieving cluster...
 Cluster info
- name: dim-dog
+ name: blue-dog
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
  cockroach version: v21.2.4
  cloud: CLOUD_PROVIDER_GCP
@@ -272,7 +272,7 @@ Cluster info
 ~~~
 ∙∙∙ Retrieving cluster...
 Cluster info
- name: ievans-dim-dog-dos
+ name: ievans-blue-dog-dos
  id: 041d4c6b-69b9-4121-9c5a-8dd6ffd6b73d
  cockroach version: v21.2.4
  cloud: CLOUD_PROVIDER_GCP
@@ -294,7 +294,7 @@ Use the `ccloud cluster sql` command to start a CockroachDB SQL shell connection
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql dim-dog
+ccloud cluster sql blue-dog
 ~~~
 
 ~~~
@@ -332,7 +332,7 @@ Use the `--sso` flag to connect to your cluster using [single sign-on (SSO) auth
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --sso dim-dog
+ccloud cluster sql --sso blue-dog
 ~~~
 
 This will open a browser window on the local machine where you will log in to your organization if you are not already authenticated.
@@ -341,7 +341,7 @@ If you are running `ccloud` on a remote machine, use the `--no-redirect` flag. `
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --sso --no-redirect dim-dog
+ccloud cluster sql --sso --no-redirect blue-dog
 ~~~
 
 Using SSO login requires that a separate SSO SQL user for your account is created on the cluster you are connecting to. SSO SQL usernames are prefixed with `sso_`. The SSO SQL username you use must match the SSO SQL username generated for you.
@@ -352,7 +352,7 @@ To create a SSO SQL user:
    
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster --sso dim-dog
+    ccloud cluster --sso blue-dog
     ~~~
 
 1. Log in to your organization when prompted by `ccloud`.
@@ -366,14 +366,14 @@ To create a SSO SQL user:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster user create dim-dog sso_maxroach
+    ccloud cluster user create blue-dog sso_maxroach
     ~~~
 
 1. Re-run the SQL client command to login and connect to your cluster.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    ccloud cluster sql dim-dog --sso
+    ccloud cluster sql blue-dog --sso
     ~~~
 
 {{site.data.alerts.callout_info}}
@@ -405,14 +405,14 @@ To get the [connection URL](../{{site.current_cloud_version}}/connection-paramet
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --connection-url dim-dog
+ccloud cluster sql --connection-url blue-dog
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
+postgresql://blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2F.postgresql%2Froot.crt
 ~~~
 
 </section>
@@ -421,7 +421,7 @@ postgresql://dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-
 
 ~~~
 ∙∙∙ Retrieving cluster info...
-postgresql://dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fdim-dog-ca.crt
+postgresql://blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fuser%2FLibrary%2FCockroachCloud%2Fcerts%2Fblue-dog-ca.crt
 ~~~
 
 </section>
@@ -430,7 +430,7 @@ To get the individual connection parameters, use the `--connection-params` optio
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster sql --connection-params dim-dog
+ccloud cluster sql --connection-params blue-dog
 ~~~
 
 <section class="filter-content" markdown="1" data-scope="serverless">
@@ -438,7 +438,7 @@ ccloud cluster sql --connection-params dim-dog
 ~~~
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-147.6wr.cockroachlabs.cloud
+ Host:      blue-dog-147.6wr.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -450,7 +450,7 @@ Connection parameters
 ∙∙∙ Retrieving cluster info...
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-5bct.gcp-us-east4.cockroachlabs.cloud
+ Host:      blue-dog-5bct.gcp-us-east4.cockroachlabs.cloud
  Port:      26257
 ~~~
 
@@ -462,7 +462,7 @@ Use the `ccloud cluster user create` command to create a new SQL user by passing
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster user create dim-dog maxroach
+ccloud cluster user create blue-dog maxroach
 ~~~
 
 ~~~
@@ -476,7 +476,7 @@ Use the `ccloud cluster delete` command to delete the specified cluster using th
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-ccloud cluster delete dim-dog
+ccloud cluster delete blue-dog
 ~~~
 
 ~~~

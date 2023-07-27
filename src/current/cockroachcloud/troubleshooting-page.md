@@ -46,7 +46,7 @@ For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgr
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cockroach sql --url "postgresql://maxroach@dim-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
+cockroach sql --url "postgresql://maxroach@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
 ~~~
 
 ### Invalid cluster name in a third-party tool
