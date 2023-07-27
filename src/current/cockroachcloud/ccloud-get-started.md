@@ -397,6 +397,15 @@ If the organization is incorrect:
 
 {{site.data.alerts.end}}
 
+### Skip the IP allowlist check when connecting to your cluster
+
+By default, the `ccloud cluster sql` command will allow connections only from IP addresses in your cluster's [allowlist](network-authorization.html#ip-allowlisting). Use the `--skip-ip-check` flag to disable the client-side IP allowlist check:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+ccloud cluster sql dim-dog --skip-ip-check
+~~~
+
 ## Get the connection information for your cluster using `ccloud cluster sql`
 
 Use the `ccloud cluster sql` command to get connection information for the specified cluster using the cluster name.
