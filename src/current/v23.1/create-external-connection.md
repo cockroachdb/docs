@@ -70,12 +70,10 @@ For more information on authentication and forming the URI that an external conn
 
 ### Changefeed sinks as external connections
 
-Consider the following when you create an external connection for:
+Consider the following when you create an external connection for changefeeds:
 
-- Kafka sinks: You can only include the query parameters and options that Kafka sinks support. See the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
-- Cloud storage sinks: {% include {{ page.version.version }}/cdc/cloud-storage-external-connection.md %}
-
-{% include {{ page.version.version }}/cdc/ext-conn-cluster-setting.md %}
+- You can only include the query parameters and options that Kafka sinks support. Refer to the [Options](create-changefeed.html#options) table and the Kafka [query parameters](changefeed-sinks.html#kafka) for more detail.
+- {% include {{ page.version.version }}/cdc/ext-conn-cluster-setting.md %}
 
 ## External connection URI format
 
