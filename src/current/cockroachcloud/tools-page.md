@@ -145,7 +145,7 @@ To access the DB Console:
 
 1. On the cluster's **Tools** page, click **Open DB Console** in the **DB Console** panel.
 
-    You can also access the DB Console by navigating to `https://admin-<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+    You can also access the DB Console by navigating to `https://admin-{cluster-name}crdb.io:8080/#/metrics/overview/cluster`. Replace the `{cluster-name}` placeholder with the name of your cluster.
 
 1. Log in with your [SQL username](managing-access.html) and password.
 

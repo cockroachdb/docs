@@ -133,7 +133,7 @@ To access your cluster's DB Console:
 
 1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
 
-  You can also access the DB Console by navigating to `https://admin-<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+  You can also access the DB Console by navigating to `https://admin-{cluster-name}crdb.io:8080/#/metrics/overview/cluster`. Replace the `{cluster-name}` placeholder with the name of your cluster.
 
 (Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster.
 
