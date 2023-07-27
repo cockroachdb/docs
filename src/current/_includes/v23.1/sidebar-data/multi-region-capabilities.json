@@ -65,53 +65,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "title": "Topology Patterns",
-            "items": [
-            {
-                "title": "Overview",
-                "urls": [
-                "/${VERSION}/topology-patterns.html"
-                ]
-            },
-            {
-                "title": "Development",
-                "urls": [
-                "/${VERSION}/topology-development.html"
-                ]
-            },
-            {
-                "title": "Basic Production",
-                "urls": [
-                "/${VERSION}/topology-basic-production.html"
-                ]
-            },
-            {
-                "title": "Regional Tables",
-                "urls": [
-                "/${VERSION}/regional-tables.html"
-                ]
-            },
-            {
-                "title": "Global Tables",
-                "urls": [
-                "/${VERSION}/global-tables.html"
-                ]
-            },
-            {
-                "title": "Follower Reads",
-                "urls": [
-                "/${VERSION}/topology-follower-reads.html"
-                ]
-            },
-            {
-                "title": "Follow-the-Workload",
-                "urls": [
-                "/${VERSION}/topology-follow-the-workload.html"
-                ]
-            }
-            ]
         }
     ]
 }

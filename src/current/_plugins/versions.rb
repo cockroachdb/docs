@@ -29,8 +29,6 @@
 #         Non-versioned pages use the `STABLE_VERSION`'s sidebar data.
 #     `canonical` — the relative URL of the stable version of the page, if any
 
-Jekyll::External.require_with_graceful_fail('jekyll-redirect-from')
-
 require_relative 'versions/symlink'
 require_relative 'versions/version'
 require_relative 'versions/versioned_page'
