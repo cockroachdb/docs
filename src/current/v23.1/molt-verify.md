@@ -38,7 +38,7 @@ The following databases are currently supported:
   - For Windows: `molt.amd64.exe`
   - For Linux: `molt.linux.amd64`
    
-    Optionally, add the binary to your `PATH` so you can execute the `molt verify` command from any shell.
+    Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
 1. Run MOLT Verify: 
 
     The `molt verify` command takes two or more JDBC connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the JDBC string. The first argument is considered the "source of truth". 
