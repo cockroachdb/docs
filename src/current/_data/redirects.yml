@@ -887,6 +887,15 @@
 - destination: stable/install-cockroachdb.md
   sources: ['install-cockroachdb.md']
 
+- destination: stable/install-cockroachdb-mac
+  sources: ['stable/install-cockroachdb/install-cockroachdb-mac']
+
+- destination: stable/install-cockroachdb-windows
+  sources: ['stable/install-cockroachdb/install-cockroachdb-windows']
+
+- destination: stable/install-cockroachdb-linux
+  sources: ['stable/install-cockroachdb/install-cockroachdb-linux']
+
 - destination: stable/start-a-local-cluster-in-docker-linux.md
   sources: ['start-a-local-cluster-in-docker.md']
 
