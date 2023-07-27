@@ -20,7 +20,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 {% include cockroachcloud/prefer-sso.md %}
-1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
 ## Step 2. Select the cloud provider
@@ -49,7 +49,7 @@ Private connectivity is not available for {{ site.data.products.serverless-plan 
 
 ## Step 4. Set resource limits
 
-Your cluster's [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+Your cluster's [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) are the maximum amount of storage and RUs you can use in a month. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
 
 All {{ site.data.products.db }} organizations get 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
 
@@ -82,7 +82,7 @@ All {{ site.data.products.db }} organizations get 50M RUs and 10 GiB of storage 
 
 1. Click **Next: Payment**.
 
-1. Verify your cluster configuration and [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits).
+1. Verify your cluster configuration and [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits).
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.

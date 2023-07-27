@@ -22,7 +22,7 @@ Refer to: [Overview of the {{ site.data.products.db }} two-level authorization m
 
 	Refer to: [`ccloud` authentication](#ccloud-authentication)
 
-- The {{ site.data.products.db }} API allows [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account) to perform many organization and cluster administration functions.
+- The {{ site.data.products.db }} API allows [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account) to perform many organization and cluster administration functions.
 
 	Refer to: [Cloud API authentication](#cloud-api-authentication)
 
@@ -55,7 +55,7 @@ Refer to: [Log in to CockroachDB Cloud using ccloud auth](ccloud-get-started.htm
 
 ## Cloud API authentication
 
-The [Cloud API](cloud-api.html) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account).
+The [Cloud API](cloud-api.html) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account).
 
 Service accounts authenticate to the API using API keys, which are provisioned through the console UI.
 

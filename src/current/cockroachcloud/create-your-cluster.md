@@ -20,7 +20,7 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 1. Select the **Dedicated standard** or **Dedicated advanced** plan.
 

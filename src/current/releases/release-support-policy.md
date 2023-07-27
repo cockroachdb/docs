@@ -33,7 +33,7 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 ## Current supported releases
 
-As of v19.1, Cockroach Labs uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
+As of v19.1, Cockroach Labs uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming]({% link releases/index.md %}#release-naming).
 
 Date format: YYYY-MM-DD
 

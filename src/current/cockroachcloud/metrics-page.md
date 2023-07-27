@@ -20,29 +20,29 @@ On the **Monitor SQL Activity** tab, you can view the following time series grap
 
 ### Open SQL Transactions
 
-The graph shows the total number of open [SQL transactions](../{{site.versions["stable"]}}/transactions.html) across the cluster.
+The graph shows the total number of open [SQL transactions](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transactions) across the cluster.
 
 See the [**Transactions** page](transactions-page.html) for more details on the transactions.
 
 ### SQL Statements
 
-- The graph shows a moving average of the number of [`SELECT`](../{{site.versions["stable"]}}/selection-queries.html)/[`INSERT`](../{{site.versions["stable"]}}/insert.html)/[`UPDATE`](../{{site.versions["stable"]}}/update.html)/[`DELETE`](../{{site.versions["stable"]}}/delete.html) statements per second issued by SQL clients on the cluster.
+- The graph shows a moving average of the number of [`SELECT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/selection-queries)/[`INSERT`](../{{site.versions["stable"]}}/insert.html)/[`UPDATE`](../{{site.versions["stable"]}}/update.html)/[`DELETE`](../{{site.versions["stable"]}}/delete.html) statements per second issued by SQL clients on the cluster.
 
 See the [**Statements** page](statements-page.html) for more details on the statements.
 
 ### SQL Statement Latency
 
-SQL statement latency is calculated as the total time in nanoseconds a [statement](../{{site.versions["stable"]}}/sql-statements.html) took to complete. This graph shows the p50-p99.99 latencies for statements issued on the cluster.
+SQL statement latency is calculated as the total time in nanoseconds a [statement](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-statements) took to complete. This graph shows the p50-p99.99 latencies for statements issued on the cluster.
 
 ### SQL Open Sessions
 
-This graph shows the total number of SQL [client connections](../{{site.versions["stable"]}}/show-sessions.html) across the cluster.
+This graph shows the total number of SQL [client connections](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-sessions) across the cluster.
 
 See the [**Sessions** page](sessions-page.html) for more details on the sessions.
 
 ### SQL Connection Latency
 
-Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including [authentication](authentication.html). This graph shows the p90-p99.99 latencies for [SQL connections](../{{site.versions["stable"]}}/show-sessions.html) to the cluster.
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including [authentication](authentication.html). This graph shows the p90-p99.99 latencies for [SQL connections](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-sessions) to the cluster.
 
 ### SQL Connection Attempts
 
@@ -54,25 +54,25 @@ On the **Identify SQL Problems** tab, you can view the following time series gra
 
 ### Transaction Restarts
 
-This graph shows the number of [transactions restarted](../{{site.versions["stable"]}}/common-errors.html#restart-transaction) across the cluster.
+This graph shows the number of [transactions restarted](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/common-errors#restart-transaction) across the cluster.
 
-See the [Transaction Retry Error Reference](../{{site.versions["stable"]}}/transaction-retry-error-reference.html) for details on the errors that caused the transaction to restart.
+See the [Transaction Retry Error Reference](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transaction-retry-error-reference) for details on the errors that caused the transaction to restart.
 
 ### SQL Statement Errors
 
-This graph shows a moving average of the number of SQL statements that returned a [planning](../{{site.versions["stable"]}}/architecture/sql-layer.html#sql-parser-planner-executor), [runtime](../{{site.versions["stable"]}}/architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](../{{site.versions["stable"]}}/transactions.html#error-handling) across all nodes.
+This graph shows a moving average of the number of SQL statements that returned a [planning](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/sql-layer#sql-parser-planner-executor), [runtime](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/sql-layer#sql-parser-planner-executor), or [retry error](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/transactions#error-handling) across all nodes.
 
 See the [Statements page](statements-page.html) for more details on the cluster's SQL statements.
 
 ### SQL Statement Full Scans 
 
-This graph shows a moving average of the number of statements with [full table and index scans](../{{site.versions["stable"]}}/show-full-table-scans.html) across all nodes in the cluster.
+This graph shows a moving average of the number of statements with [full table and index scans](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-full-table-scans) across all nodes in the cluster.
 
-[Examine the statements](../{{site.versions["stable"]}}/sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](../{{site.versions["stable"]}}/schema-design-indexes.html#create-a-secondary-index).
+[Examine the statements](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-tuning-with-explain) that result in full table scans and consider adding [secondary indexes](../{{site.versions["stable"]}}/schema-design-indexes.html#create-a-secondary-index).
 
 ### SQL Statement Contention 
 
-This graph shows a moving average of the number of SQL statements that experienced [contention](../{{site.versions["stable"]}}/performance-best-practices-overview.html#transaction-contention) across the cluster.
+This graph shows a moving average of the number of SQL statements that experienced [contention](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/performance-best-practices-overview#transaction-contention) across the cluster.
 
 See the [Statements page](statements-page.html) for more details on the cluster's SQL statements.
 

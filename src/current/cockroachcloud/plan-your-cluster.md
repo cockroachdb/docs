@@ -24,7 +24,7 @@ Some of a {{ site.data.products.dedicated }} cluster's provisioned RAM is used f
 
 #### {{ site.data.products.dedicated }} advanced
 
-You should choose {{ site.data.products.dedicated }} advanced if your cluster needs access to all features required for [PCI readiness](../{{site.versions["stable"]}}/security-reference/security-overview.html). {{ site.data.products.dedicated }} advanced clusters have all the features of {{ site.data.products.dedicated }} standard clusters plus these security features.
+You should choose {{ site.data.products.dedicated }} advanced if your cluster needs access to all features required for [PCI readiness](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/security-overview). {{ site.data.products.dedicated }} advanced clusters have all the features of {{ site.data.products.dedicated }} standard clusters plus these security features.
 
 #### Multi-region clusters
 

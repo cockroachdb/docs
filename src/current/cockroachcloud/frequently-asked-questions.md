@@ -113,7 +113,7 @@ Learn more:
 
 - Refer to [Take and Restore Customer-Owned Backups on CockroachDB Cloud](take-and-restore-customer-owned-backups.html) for more information about using customer-managed backups.
 
-- Refer to [Disaster Recovery](../{{site.versions["stable"]}}/disaster-recovery.html) for information about more holistically maintaining a capacity to recover from potential disruptions.
+- Refer to [Disaster Recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery) for information about more holistically maintaining a capacity to recover from potential disruptions.
 
 - [Contact support](https://support.cockroachlabs.com).
 

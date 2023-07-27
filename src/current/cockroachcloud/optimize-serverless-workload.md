@@ -63,7 +63,7 @@ The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. Th
 
 Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
 
-You can use the [`EXPLAIN ANALYZE` SQL command](../{{site.versions["stable"]}}/explain-analyze.html) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
+You can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
