@@ -50,7 +50,7 @@ Example of a Kafka sink URI using `SASL-SCRAM-SHA-256` authentication:
 {% include_cached new-in.html version="v23.1" %} Example of a Kafka sink URI using `OAUTHBEARER` authentication:
 
 ~~~
-'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&SASL_CLIENT_SECRET={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
+'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
 ~~~
 
 {% include {{ page.version.version }}/cdc/oauth-description.md %}
@@ -68,7 +68,7 @@ URI Parameter      | Description
 `client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
 <span class="version-tag">New in v23.1:</span> `sasl_client_id`   | Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-<span class="version-tag">New in v23.1:</span> `SASL_CLIENT_SECRET` | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
+<span class="version-tag">New in v23.1:</span> `sasl_client_secret` | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
 `sasl_enabled`     | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
 <span class="version-tag">New in v23.1:</span> `sasl_grant_type` | Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_mechanism`   | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html), [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
