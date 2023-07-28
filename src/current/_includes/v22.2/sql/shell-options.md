@@ -36,5 +36,5 @@ For example, to change the prompt to just the user, host, and database:
 ~~~
 
 ~~~
-maxroach@dim-dog-595.g95.cockroachlabs.cloud/defaultdb>
+maxroach@blue-dog-595.g95.cockroachlabs.cloud/defaultdb>
 ~~~
