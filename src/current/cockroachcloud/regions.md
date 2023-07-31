@@ -97,17 +97,30 @@ Geographic Area | Region Name               | Location
 Asia Pacific    | `asia-east1`              | Changhua County
                 | `asia-east2`              | Hong Kong
                 | `asia-northeast1`         | Tokyo
+                | `asia-northeast2`         | Osaka
+                | `asia-northeast3`         | Seoul
+                | `asia-south1`             | Mumbai
+                | `asia-south2`             | Delhi
                 | `asia-southeast1`         | Jurong West
-                | `australia-southeast1`    | Australia
+                | `asia-southeast2`         | Jakarta
+                | `australia-southeast1`    | Sydney
+                | `australia-southeast2`    | Melbourne
 North America   | `northamerica-northeast1` | Montréal
+                | `northamerica-northeast2` | Toronto
                 | `us-central1`             | Iowa
                 | `us-east1`                | South Carolina
+                | `us-east4`                | Virginia
                 | `us-west1`                | Oregon
                 | `us-west2`                | California
+                | `us-west3`                | Salt Lake City
+                | `us-west4`                | Las Vegas
 South America   | `southamerica-east1`      | São Paulo
-Western Europe  | `europe-west1`            | St. Ghislain
+Western Europe  | `europe-central2`         | Warsaw
+                | `europe-north1`           | Hamina
+                | `europe-west1`            | St. Ghislain
                 | `europe-west2`            | London
                 | `europe-west3`            | Frankfurt
                 | `europe-west4`            | Eemshaven
+                | `europe-west6`            | Zürich
                 
 </section>

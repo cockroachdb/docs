@@ -1,12 +1,7 @@
 {
     "title": "Feature Overview",
     "is_top_level": true,
-    "items": [{
-        "title": "Deployment Options",
-        "urls": [
-          "/${VERSION}/choose-a-deployment-option.html"
-        ]
-      },
+    "items": [
       {
         "title": "CockroachDB Basics",
         "items": [

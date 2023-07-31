@@ -4,7 +4,6 @@ summary: Release notes for older versions of CockroachDB.
 toc: true
 docs_area: releases
 toc_not_nested: true
-canonical: /releases/index.html
 ---
 
 {% comment %}

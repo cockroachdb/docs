@@ -44,7 +44,7 @@ Cockroach Labs recommends monitoring [CPU usage](ui-overload-dashboard.html) whe
 
 To maintain more running changefeeds in your cluster:
 
-- Connect to different nodes to create each changefeed. The node on which you start the changefeed will become the _coordinator_ node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. Refer to [How does an Enterprise changefeed work?](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) for more detail.
+- Connect to different nodes to create each changefeed. The node on which you start the changefeed will become the _coordinator_ node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. Refer to [How does an Enterprise changefeed work?](how-does-an-enterprise-changefeed-work.html) for more detail.
 - Consider logically grouping the target tables into one changefeed. When a changefeed pauses, it will stop emitting messages for the target tables. Grouping tables of related data into a single changefeed may make sense for your workload. However, we do not recommend watching hundreds of tables in a single changefeed. Refer to [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on protecting data from garbage collection when a changefeed is paused.
 
 ## Enable rangefeeds
@@ -166,6 +166,10 @@ EXPERIMENTAL CHANGEFEED FOR table_name;
 For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 
 </section>
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/cdc.md %}
 
 ## See also
 

@@ -1,5 +1,5 @@
 ---
-title: Egress Perimeter Controls for CockroachDB dedicated (Preview)
+title: Egress Perimeter Controls for CockroachDB Dedicated
 summary: Learn how to configure Egress Perimeter Controls for enhanced network security on a {{ site.data.products.dedicated }} cluster.
 toc: true
 toc_not_nested: true
@@ -10,7 +10,7 @@ cloud: true
 This page describes how Egress Perimeter Controls can enhance the security of {{ site.data.products.dedicated }} clusters, and gives an overview of how to manage a cluster's egress rules.
 
 {{site.data.alerts.callout_info}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), Egress Perimeter Controls are not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+Egress Perimeter Controls are not supported for {{ site.data.products.dedicated }} clusters on Azure ([limited access](../{{ site.current_cloud_version }}/cockroachdb-feature-availability.html)). Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
 ## Why use Egress Perimeter Controls

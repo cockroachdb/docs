@@ -1,7 +1,7 @@
 [build]
   base = "src/current/"
   publish = "_site/"
-  command = "./build-netlify.sh"
+  command = "netlify/build.sh"
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
@@ -17,6 +17,10 @@
     pretty_urls = true
   [build.processing.images]
     compress = false
+
+[[edge_functions]]
+  function = "pretty-urls"
+  path = "/*"
 
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"

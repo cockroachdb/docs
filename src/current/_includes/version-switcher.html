@@ -9,9 +9,9 @@
       <ul class="list-unstyled"  style="display: none">
         {% for v in page.versions %}
         <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
-          <a
+          <a data-proofer-ignore
           {% if v.url %}
-            href="{{ v.url | relative_url }}"
+            href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
             class="version--mobile"
           {% else %}
             class="version--mobile version--page-dne"
@@ -24,9 +24,9 @@
               </span>
             {% endunless %}
           </a>
-          <a
+          <a data-proofer-ignore
           {% if v.url %}
-            href="{{ v.url | relative_url }}"
+            href="{{ v.url | relative_url | replace: "/index.html", "" | replace: ".html", "" | downcase }}"
             class="version--desktop"
           {% else %}
             class="version--desktop version--page-dne"

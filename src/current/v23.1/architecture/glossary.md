@@ -54,7 +54,7 @@ For more information on CockroachDB Cloud, see [CockroachDB Cloud Architecture](
 This section contains a glossary of terms common to spatial databases and geographic information systems (GIS). Where possible, we provide links to further information.
 
 {{site.data.alerts.callout_info}}
-This section is provided for reference purposes only. The inclusion of a term in this glossary does not imply that CockroachDB has support for any feature(s) related to that term. For more information about the specific spatial and GIS features supported by CockroachDB, see [Working with Spatial Data](../spatial-data.html).
+This section is provided for reference purposes only. The inclusion of a term in this glossary does not imply that CockroachDB has support for any feature(s) related to that term. For more information about the specific spatial and GIS features supported by CockroachDB, see [Working with Spatial Data](../query-spatial-data.html).
 {{site.data.alerts.end}}
 
 ### Geometry terms
@@ -180,7 +180,7 @@ A format for encoding geometric and geographic data as [JSON](https://www.json.o
 
 #### GIS
 
-A "Geographic Information System" (or GIS) is used to store geographic information in a computer for processing and interaction by humans and/or other software. Some systems provide graphical "point and click" user interfaces, and some are embedded in programming languages or data query languages like SQL. For example, CockroachDB versions 20.2 and later provide support for [executing spatial queries from SQL](../spatial-data.html).
+A "Geographic Information System" (or GIS) is used to store geographic information in a computer for processing and interaction by humans and/or other software. Some systems provide graphical "point and click" user interfaces, and some are embedded in programming languages or data query languages like SQL. For example, CockroachDB versions 20.2 and later provide support for [executing spatial queries from SQL](../query-spatial-data.html).
 
 #### ArcGIS
 
