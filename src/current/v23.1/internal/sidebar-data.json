@@ -1,0 +1,5 @@
+---
+layout: null
+---
+
+{%- include_cached {{ page.sidebar_data }} %}
