@@ -18,10 +18,6 @@
   [build.processing.images]
     compress = false
 
-[[edge_functions]]
-  function = "pretty-urls"
-  path = "/*"
-
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
 #  [plugins.inputs]
