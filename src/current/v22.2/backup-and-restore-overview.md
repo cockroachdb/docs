@@ -66,8 +66,8 @@ We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabl
 
 For detail on additional cloud storage features CockroachDB supports:
 
-- [Object locking](use-cloud-storage.html#object-locking) to prevent backups from being overwritten or deleted.
-- [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
+- Prevent backups from being overwritten or deleted with [immutable storage buckets](use-cloud-storage.html#immutable-storage).
+- Set a specific storage class for your backups with [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes).
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 
