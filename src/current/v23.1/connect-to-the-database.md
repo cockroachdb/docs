@@ -20,7 +20,7 @@ For a list of community-supported third-party tools, see [Third-Party Tools Supp
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless dedicated">
-To connect to CockroachDB Cloud clusters you will need a general connection string or connection parameters. You can find these in the **Connect** dialog for your cluster in the [CockroachDB Cloud Console](https://cockroachlabs.cloud).
+To connect to a {{ site.data.products.db }} cluster, you need a general connection string or connection parameters, which include the username, host, database, and port. To find these, open the **Connect** dialog for your cluster in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) and select either **General connection string** or **Parameters only** as the option.
 </div>
 
 <div class="filter-content" markdown="1" data-scope="core">

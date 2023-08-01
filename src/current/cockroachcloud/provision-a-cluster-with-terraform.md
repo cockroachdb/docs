@@ -55,7 +55,7 @@ In this tutorial, you will create a {{ site.data.products.serverless }} cluster.
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    cluster_name = "dim-dog"
+    cluster_name = "blue-dog"
     sql_user_name = "maxroach"
     sql_user_password = "NotAGoodPassword"
     ~~~
@@ -116,7 +116,7 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    cluster_name = "dim-dog"
+    cluster_name = "blue-dog"
     sql_user_name = "maxroach"
     sql_user_password = "NotAGoodPassword"
     cloud_provider = "GCP"
@@ -185,7 +185,7 @@ Terraform will perform the following actions:
       + cockroach_version = (known after apply)
       + creator_id        = (known after apply)
       + id                = (known after apply)
-      + name              = "dim-dog"
+      + name              = "blue-dog"
       + operation_status  = (known after apply)
       + plan              = (known after apply)
       + regions           = [
@@ -291,7 +291,7 @@ Terraform will perform the following actions:
           + storage_gib      = 15
         }
       + id                = (known after apply)
-      + name              = "dim-dog"
+      + name              = "blue-dog"
       + operation_status  = (known after apply)
       + plan              = (known after apply)
       + regions           = [
@@ -365,15 +365,15 @@ cluster = {
     "storage_gib" = 15
   }
   "id" = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-  "name" = "dim-dog"
+  "name" = "blue-dog"
   "operation_status" = "CLUSTER_STATUS_UNSPECIFIED"
   "plan" = "DEDICATED"
   "regions" = tolist([
     {
       "name" = "us-west2"
       "node_count" = 3
-      "sql_dns" = "dim-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
-      "ui_dns" = "admin-dim-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
+      "sql_dns" = "blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
+      "ui_dns" = "admin-blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
     },
   ])
   "serverless" = null /* object */
@@ -403,14 +403,14 @@ resource "cockroach_cluster" "example" {
     cockroach_version = "v22.1"
     creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
     id                = "1aaae1f8-19e2-4653-ba62-db16de2a84b9"
-    name              = "dim-dog"
+    name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
     plan              = "SERVERLESS"
     regions           = [
         # (1 unchanged element hidden)
     ]
     serverless        = {
-        routing_id  = "dim-dog-6821"
+        routing_id  = "blue-dog-6821"
         spend_limit = 0
     }
     state             = "CREATED"
@@ -455,7 +455,7 @@ resource "cockroach_cluster" "example" {
         storage_gib      = 15
     }
     id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    name              = "dim-dog"
+    name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
     plan              = "DEDICATED"
     regions           = [
@@ -484,7 +484,7 @@ data "cockroach_cluster" "example" {
         storage_gib      = 15
     }
     id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    name              = "dim-dog"
+    name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
     plan              = "DEDICATED"
     regions           = [
@@ -509,15 +509,15 @@ cluster = {
         storage_gib      = 15
     }
     id                = "2697e5de-73e6-4d67-a4b4-2b2075dc2dfe"
-    name              = "dim-dog"
+    name              = "blue-dog"
     operation_status  = "CLUSTER_STATUS_UNSPECIFIED"
     plan              = "DEDICATED"
     regions           = [
         {
             name       = "us-west2"
             node_count = 3
-            sql_dns    = "dim-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
-            ui_dns     = "admin-dim-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
+            sql_dns    = "blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
+            ui_dns     = "admin-blue-dog-gwq.gcp-us-west2.cockroachlabs.cloud"
         },
     ]
     serverless        = null

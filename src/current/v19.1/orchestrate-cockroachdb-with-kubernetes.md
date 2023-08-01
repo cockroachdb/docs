@@ -4,7 +4,7 @@ summary: How to orchestrate the deployment, management, and monitoring of a secu
 toc: true
 toc_not_nested: true
 secure: true
-canonical: /stable/deploy-cockroachdb-with-kubernetes.html
+canonical: /stable/deploy-cockroachdb-with-kubernetes
 ---
 
 <div class="filters filters-big clearfix">

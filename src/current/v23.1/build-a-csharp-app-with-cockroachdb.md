@@ -112,7 +112,7 @@ connStringBuilder.Database = "bank";
 Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{host-name}` is the name of the {{ site.data.products.db }} host (e.g., `dim-dog-4300.6wr.cockroachlabs.cloud`).
+- `{host-name}` is the name of the {{ site.data.products.db }} host (e.g., `blue-dog-4300.6wr.cockroachlabs.cloud`).
 
 </section>
 
