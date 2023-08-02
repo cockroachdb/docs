@@ -9,7 +9,7 @@ This page provides best practices for optimizing [import](import-into.html) perf
 
 `IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`](copy-from.html) instead.
 
-Import performance primarily depends on the amount of data that you want to import. However, there are three actions you can take before importing that have a significant impact on the amount of time it will take to run an import:
+Import performance primarily depends on the amount of data that you want to import. However, there are three actions you should take before importing that have a significant impact on the amount of time it takes to run an import:
 
 - [Choose a performant import format](#choose-a-performant-import-format)
 - [Split your data into multiple files](#split-your-data-into-multiple-files)
@@ -32,7 +32,7 @@ We recommend formatting your import files as `CSV` or `AVRO`. These formats can 
 
 ### Import the schema separately from the data
 
-When importing into a new table split your dump data into two files:
+When importing into a new table, split your dump data into two files:
 
 1. A SQL file containing the table schema.
 1. A CSV, delimited, or AVRO file containing the table data.
@@ -52,9 +52,9 @@ This method has the added benefit of alerting on potential issues with the impor
 
 ### Import into a schema with secondary indexes
 
-When importing data into a table with secondary indexes, the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, an effective strategy for most migrations.
+When importing data into a table with [secondary indexes](schema-design-indexes.html), the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, an effective strategy for most migrations.
 
-However, in **large** imports (that is, datasets larger than 100 GiB in total size), it may be preferable to temporarily remove the secondary indexes from the schema, perform the import, and then re-create the indexes separately. Write operations on tables with many secondary indexes take longer to complete, and importing large datasets have a greater risk of timeouts. Removing the table's secondary indexes allows you to separate the initial data import from the secondary index creation operation, and the total import time is lower. Separating these operations also provides increased visibility into each operation's progress, and the ability to retry each operation independently if you encounter errors or timeouts.
+However, in **large** imports (that is, datasets larger than 100 GiB in total size), it may be preferable to temporarily [remove the secondary indexes](drop-index.html) from the schema, [perform the import](import-into.html), and then [re-create the indexes separately](schema-design-indexes.html#create-a-secondary-index). Write operations on tables with many secondary indexes take longer to complete, and importing large datasets have a greater risk of timeouts. Removing the table's secondary indexes allows you to separate the initial data import from the secondary index creation operation, and the total import time is lower. Separating these operations also provides increased visibility into each operation's progress, and the ability to retry each operation independently if you encounter errors or timeouts.
 
 When recreating the secondary indexes, execute the [`CREATE INDEX`](create-index.html) statements one at a time for best performance. For example:
 
@@ -65,13 +65,9 @@ CREATE INDEX idx2 ON table1;
 CREATE INDEX idx3 ON table1;
 ~~~
 
-- [Remove the secondary indexes](drop-index.html)
-- [Perform the import](import-into.html)
-- [Create a secondary index](schema-design-indexes.html#create-a-secondary-index)
-
 ### Temporarily remove foreign keys
 
-When importing data into a table with foreign keys, temporarily remove the foreign keys, and add them after the initial migration with an [`ALTER TABLE` statement](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
+When importing data into a table with [foreign keys](foreign-key.html), temporarily remove the foreign keys, and add them after the initial migration with an [`ALTER TABLE` statement](add-constraint.html#add-the-foreign-key-constraint-with-cascade).
 
 ### Data type sizes
 
@@ -120,7 +116,7 @@ For maximum performance each split file should be sorted within and across all f
 CREATE TABLE contacts (email STRING PRIMARY KEY, first_name TEXT, last_name TEXT);
 ~~~
 
-You should split the files so that the first file contains rows where the primary key begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file contains duplicate rows, and within each file the data is sorted alphabetically by the primary key.
+You should split the files so that the first file contains rows where the [primary key](primary-key.html) begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file should contain duplicate rows, and within each file the data is sorted alphabetically by the primary key.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
