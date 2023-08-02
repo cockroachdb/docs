@@ -57,15 +57,15 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that require PCI-readiness.</li>
       </ul></td>
       <td>
-      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated-advanced }}</a></b>: A fully managed, single tenant, <a href="../cockroachcloud/pci-dss">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated-advanced }}</a></b>: A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
       </td>
       <td><ul>
         <li><b>All CockroachDB Dedicated features.</b></li>
-        <li><b><a href="../cockroachcloud/export-logs">Audit log</a></b>: Configurable cluster log export to AWS CloudWatch or GCP Cloud Logging using the Cloud API.</li>
-        <li><b><a href="../cockroachcloud/cmek">Customer-Managed Encryption Keys (CMEK)</a></b>: Data protection at rest using a cryptographic key hosted in a supported cloud provider key-management system (KMS).</li>
-        <li><b><a href="../cockroachcloud/egress-perimeter-controls">Egress Perimeter Controls</a></b>: Allowlist configuration to ensure that the data is sent to a secure location.</li>
-        <li><b><a href="../cockroachcloud/cloud-org-sso">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP.</li>
-        <li><b><a href="../cockroachcloud/network-authorization">Network security</a></b>: VPC peering or AWS PrivateLink for enhanced network security and lower network latency.</li>
+        <li><b><a href="../cockroachcloud/export-logs.html">Audit log</a></b>: Configurable cluster log export to AWS CloudWatch or GCP Cloud Logging using the Cloud API.</li>
+        <li><b><a href="../cockroachcloud/cmek.html">Customer-Managed Encryption Keys (CMEK)</a></b>: Data protection at rest using a cryptographic key hosted in a supported cloud provider key-management system (KMS).</li>
+        <li><b><a href="../cockroachcloud/egress-perimeter-controls.html">Egress Perimeter Controls</a></b>: Allowlist configuration to ensure that the data is sent to a secure location.</li>
+        <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP.</li>
+        <li><b><a href="../cockroachcloud/network-authorization.html">Network security</a></b>: VPC peering or AWS PrivateLink for enhanced network security and lower network latency.</li>
       </ul></td>
   </tr>
   <tr>
