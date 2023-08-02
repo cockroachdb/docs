@@ -11,8 +11,11 @@ Changefeeds emit messages as changes happen to watched tables. CockroachDB chang
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
 - [Responses](#responses): The general format of changefeed messages.
+- [Message envelopes](#message-envelopes): The structure of the changefeed message.
 - [Ordering guarantees](#ordering-guarantees): CockroachDB's guarantees for a changefeed's message ordering.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
+- [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
+- [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
@@ -236,7 +239,7 @@ In some unusual situations you may receive a delete message for a row without fi
 
 When you create a changefeed with the [`resolved` option](create-changefeed.html#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink](changefeed-sinks.html). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges](architecture/overview.html#range) in the changefeed have progressed to a specific point in time.
 
-When you specify the `resolved` option at changefeed creation, the [job's coordinating node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
+When you specify the `resolved` option at changefeed creation, the [job's coordinating node](how-does-an-enterprise-changefeed-work.html) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
 
 There are three different ways to configure resolved timestamp messages:
 
@@ -247,6 +250,43 @@ There are three different ways to configure resolved timestamp messages:
 {{site.data.alerts.callout_info}}
 If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
 {{site.data.alerts.end}}
+
+## Duplicate messages
+
+Under some circumstances, changefeeds will emit duplicate messages to ensure the sink is receiving each message at least once. The following can cause or increase duplicate messages:
+
+- The changefeed job [encounters an error](#changefeed-encounters-an-error) and pauses, or is manually paused.
+- A node in the cluster [restarts](#node-restarts) or fails.
+- The changefeed job has the [`min_checkpoint_frequency` option set](#min_checkpoint_frequency-option), which can potentially increase duplicate messages.
+- A target table undergoes a schema change. Schema changes may also cause the changefeed to emit the whole target table. Refer to [Schema changes](#schema-changes) for detail on duplicates in this case.
+
+A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
+
+When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint.
+
+<img src="{{ 'images/v23.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
+
+### Changefeed encounters an error
+
+By default, changefeeds treat errors as [retryable except for some specific terminal errors](monitor-and-debug-changefeeds.html#changefeed-retry-errors). When a changefeed encounters a retryable or non-retryable error, the job will pause until a successful retry or you resume the job once the error is solved. This can cause duplicate messages at the sink as the changefeed returns to the last checkpoint.
+
+We recommend monitoring for changefeed retry errors and failures. Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html#recommended-changefeed-metrics-to-track) page.
+
+{{site.data.alerts.callout_info}}
+A sink's batching behavior can increase the number of duplicate messages. For example, if Kafka receives a batch of `N` messages and successfully saves `N-1` of them, the changefeed job only knows that the batch failed, not which message failed to commit. As a result, the changefeed job will resend the full batch of messages, which means all but one of the messages are duplicates. For Kafka sinks, reducing the batch size with [`kafka_sink_config`](changefeed-sinks.html#kafka-sink-configuration) may help to reduce the number of duplicate messages at the sink.
+
+Refer to the [Changefeed Sinks](changefeed-sinks.html) page for details on sink batching configuration.
+{{site.data.alerts.end}}
+
+### Node restarts
+
+When a node restarts, the changefeed will emit duplicates since the last checkpoint. During a rolling restart of nodes, a changefeed can fall behind as it tries to catch up during each node restart. For example, as part of a rolling upgrade or cluster maintenance, a node may [drain](node-shutdown.html) every 5 minutes and the changefeed job checkpoints every 5 minutes.
+
+To prevent the changefeed from falling too far behind, [pause](create-and-configure-changefeeds.html#configuring-all-changefeeds) changefeed jobs before performing rolling node restarts.
+
+### `min_checkpoint_frequency` option
+
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating changefeed node. Therefore, changefeeds will wait for at least the `min_checkpoint_frequency` duration before flushing to the sink. If a changefeed pauses and then resumes, the `min_checkpoint_frequency` duration is the amount of time that the changefeed will need to catch up since its previous checkpoint. During this catch-up time, you could receive duplicate messages.
 
 ## Schema Changes
 
@@ -336,7 +376,7 @@ Refer to the [`CREATE CHANGEFEED` option table](create-changefeed.html#schema-ev
 
 ## Garbage collection and changefeeds
 
-By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](how-does-an-enterprise-changefeed-work.html).
 
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 

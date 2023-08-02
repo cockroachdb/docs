@@ -1,8 +1,6 @@
 module JekyllVersions
   class JekyllGenerator < Jekyll::Generator
     # Ordering requirements:
-    #   - Run after JekyllRedirectFrom so we can apply version aliases
-    #     (e.g., stable) to redirects.
     #   - Run after FlavorSelector, so that we do not see pages that do not
     #     apply to this flavor.
     priority :lowest
@@ -29,26 +27,11 @@ module JekyllVersions
         page.data['release_info'] = vp.release_info
         page.data['sidebar_data'] ||= vp.sidebar_data
         canonical = stable_vp(vp.key)&.url || page.url
-        page.data['canonical'] ||= canonical.sub('.html', '')
+        page.data['canonical'] ||= canonical.sub('/index.html', '').sub('.html', '').downcase
 
         page.data['versions'] = versions.map do |v|
           { 'version' => v, 'url' => vps_with_key(vp.key)[v]&.url }
         end
-
-        # if vp.stable?
-        #   if vp.url != "/stable/" and vp.unversioned_path != ""
-        #     # puts "vp.unversioned_path: #{vp.unversioned_path}"
-        #     # puts "vp.url: #{vp.url}"
-        #     # puts "page. #{page.path}"
-        #     @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-        #       @site, vp.unversioned_path, vp.url) if vp.stable?
-        #   end
-        # end
-
-        # if page.main_homepage != true
-        # @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-        # @site, vp.unversioned_path, vp.url) if vp.stable?
-        # end
       end
 
       @config.versions.each do |name, version|
