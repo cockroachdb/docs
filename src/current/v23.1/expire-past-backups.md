@@ -19,7 +19,7 @@ For example: Retain [full backups](take-full-and-incremental-backups.html#full-b
 
 Once you have determined your retention policy, identify the past backups that need to be expired. You can use the creation time of the backup files to identify backups that are older than your desired retention period.
 
-Since individual files within a backup have different creation times and will as a result be moved or deleted at different times. Configuring the policy that moves or deletes them to run a day after your intended retention period ensures all files within a retained backup remain available for the entire desired retention period.
+Since individual files within a backup have different creation times, they will be moved or deleted at different times. To ensure that all files within a retained backup remain available during the entire deisred retention period, configure the policy that moves or deletes them to run one day **after** your intended retention period.
 
 We recommend using immutable storage for your backups to ensure that the backups cannot be modified or deleted during the retention period specified in your retention policy. For more information about using immutable storage for backups, see [Use Cloud Storage](use-cloud-storage.html#immutable-storage).   
 
