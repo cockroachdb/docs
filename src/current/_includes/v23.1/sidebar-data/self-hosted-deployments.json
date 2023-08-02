@@ -573,6 +573,12 @@
                     ]
                   },
                   {
+                    "title": "Expire Past Backups",
+                    "urls": [
+                      "/${VERSION}/expire-past-backups.html"
+                    ]
+                  },
+                  {
                     "title": "Backup and Restore Monitoring",
                     "urls": [
                       "/${VERSION}/backup-and-restore-monitoring.html"
