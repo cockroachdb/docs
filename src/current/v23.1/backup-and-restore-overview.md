@@ -81,6 +81,7 @@ For detail on additional cloud storage features CockroachDB supports:
 
 - Prevent backups from being overwritten or deleted with [immutable storage buckets](use-cloud-storage.html#immutable-storage).
 - Set a specific storage class for your backups with [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes).
+- [Expire past backups](expire-past-backups.html) from cloud storage
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 
