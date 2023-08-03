@@ -81,19 +81,19 @@ When a table is created, all columns are stored as a single column family. This 
 The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
 
 1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
-1. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](change-data-capture-overview.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
+1. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [change data capture (CDC)](change-data-capture-overview.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher-performance ID strategies outlined in the following sections.
 
-The approaches described above are likely to create hot spots for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
+The preceding approaches are likely to create [hot spots](#hot-spots) for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
 
 | Approach                                                                             | Pros                                             | Cons                                                                                    |
 |--------------------------------------------------------------------------------------+--------------------------------------------------+-----------------------------------------------------------------------------------------|
 | 1. [Use multi-column primary keys](#use-multi-column-primary-keys)                   | Potentially fastest, if done right               | Complex, requires up-front design and testing to ensure performance                     |
-| 2. [Use `UUID` to generate unique IDs](#use-uuid-to-generate-unique-ids)             | Good performance; spreads load well; easy choice | May leave some performance on the table; requires other columns to be useful in queries |
+| 2. [Use functions to generate unique IDs](#use-functions-to-generate-unique-ids)             | Good performance; spreads load well; easy choice | May leave some performance on the table; requires other columns to be useful in queries |
 | 3. [Use `INSERT` with the `RETURNING` clause](#use-insert-with-the-returning-clause-to-generate-unique-ids) | Easy to query against; familiar design           | Slower performance than the other options; higher chance of [transaction contention](#transaction-contention)      |
 
 ### Use multi-column primary keys
 
-A well-designed multi-column primary key can yield even better performance than a [UUID primary key](#use-uuid-to-generate-unique-ids), but it requires more up-front schema design work. To get the best performance, ensure that any monotonically increasing field is located **after** the first column of the primary key. When done right, such a composite primary key should result in:
+A well-designed multi-column primary key can yield even better performance than a [UUID primary key](#use-functions-to-generate-unique-ids), but it requires more up-front schema design work. To get the best performance, ensure that any monotonically increasing field is located **after** the first column of the primary key. When done right, such a composite primary key should result in:
 
 - Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hot spots. By "enough randomness" we mean that the prefix of the primary key should be relatively uniformly distributed over its domain. Its domain should have at least as many elements as you have nodes.
 - A monotonically increasing column that is part of the primary key (and thus indexed) which is also useful in your queries.
@@ -167,13 +167,13 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 Note that the above query also follows the [indexing best practice](indexes.html#best-practices) of indexing all columns in the `WHERE` clause.
 
-### Use `UUID` to generate unique IDs
+### Use functions to generate unique IDs
 
-{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.md %}
 
 ### Use `INSERT` with the `RETURNING` clause to generate unique IDs
 
-If something prevents you from using [multi-column primary keys](#use-multi-column-primary-keys) or [`UUID`s](#use-uuid-to-generate-unique-ids) to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) as shown below for improved performance.
+If something prevents you from using [multi-column primary keys](#use-multi-column-primary-keys) or [`UUID`s](#use-functions-to-generate-unique-ids) to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](insert.html#insert-and-return-values) as shown below for improved performance.
 
 #### Generate monotonically-increasing unique IDs
 

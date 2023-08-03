@@ -351,7 +351,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
     ALTER TABLE account ADD COLUMN unique_id UUID NOT NULL DEFAULT gen_random_uuid();
     ~~~
 
-    This statement adds [a new `unique_id` column](alter-table.html#add-column) to the `accounts` table, with the default value as [a randomly-generated UUID](performance-best-practices-overview.html#use-uuid-to-generate-unique-ids).
+    This statement adds [a new `unique_id` column](alter-table.html#add-column) to the `accounts` table, with the default value as [a randomly-generated UUID](performance-best-practices-overview.html#use-functions-to-generate-unique-ids).
 
 1. In the `changelog-main.xml` file, add the following after the second `changeSet` element:
 
