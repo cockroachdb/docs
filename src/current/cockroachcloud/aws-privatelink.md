@@ -87,7 +87,7 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 <section class="filter-content" markdown="1" data-scope="serverless">
 
 {{site.data.alerts.callout_success}}
-Complete these steps once for each private endpoint in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless-plan }} clusters. If you connect additional clusters to the same private endpoint, you do not need to make additional changes in your AWS account.
+Complete these steps once for each private endpoint in your AWS account that will be used to privately connect to one or more of your {{ site.data.products.serverless }} clusters. If you connect additional clusters to the same private endpoint, you do not need to make additional changes in your AWS account.
 {{site.data.alerts.end}}
 
 </section>
@@ -186,7 +186,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 <section class="filter-content" markdown="1" data-scope="aws-cli">
 
-After the endpoint status changes to Available, run the following AWS CLI command:
+After the endpoint status changes to **Available** on the Amazon VPC Console **Endpoints** page, run the following AWS CLI command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -197,7 +197,7 @@ aws ec2 modify-vpc-endpoint --region {REGION} \
 
 The endpoint status will change to Pending.
 
-After a short (less than 5 minute) delay, the status will change to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
+After a short (less than 5 minute) delay, the status will change from **Pending Request** to **Pending** and then to **Available**. You can now [connect to your cluster](connect-to-your-cluster.html).
 
 </section>
 
