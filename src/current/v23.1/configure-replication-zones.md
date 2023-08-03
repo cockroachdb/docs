@@ -1,5 +1,5 @@
 ---
-title: Configure Replication Zones
+title: Replication Controls
 summary: In CockroachDB, you use replication zones to control the number and location of replicas for specific sets of data.
 keywords: ttl, time to live, availability zone
 toc: true

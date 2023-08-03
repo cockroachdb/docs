@@ -1,5 +1,5 @@
 ---
-title: Views
+title: Reusable Views
 summary: Learn about CockroachDB's dematerialized and materialized views.
 toc: true
 docs_area: develop

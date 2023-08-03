@@ -1,5 +1,5 @@
 ---
-title: Migrate Your Database to CockroachDB
+title: Migratation Overview
 summary: Learn how to migrate your database to a CockroachDB cluster.
 toc: true
 docs_area: migrate

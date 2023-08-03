@@ -1,5 +1,5 @@
 ---
-title: Example Apps
+title: Advanced Example Applications Overview
 summary: Examples that show you how to build simple applications with CockroachDB
 tags: golang, python, java
 toc: true

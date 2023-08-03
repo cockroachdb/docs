@@ -1,5 +1,5 @@
 ---
-title: Export CockroachDB Cloud organization audit logs
+title: Export CockroachDB Cloud Organization Audit Logs
 summary: Learn about exporting CockroachDB Cloud organization audit logs.
 toc: true
 docs_area: manage

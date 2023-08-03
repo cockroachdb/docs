@@ -1,5 +1,5 @@
 ---
-title: Deploy a Local Cluster with Kubernetes
+title: Deploy a Local Cluster in Kubernetes
 summary: Deploy a local 3-node CockroachDB cluster with Kubernetes.
 toc: true
 secure: true

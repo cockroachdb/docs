@@ -3,7 +3,7 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Migration Overview",
+      "title": "Overview",
       "urls": [
         "/${VERSION}/migration-overview.html"
       ]

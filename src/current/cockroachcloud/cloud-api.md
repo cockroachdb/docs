@@ -1,5 +1,5 @@
 ---
-title: Use the Cloud API
+title: Use the CockroachDB Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
 docs_area: manage
