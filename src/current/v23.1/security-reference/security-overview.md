@@ -8,21 +8,21 @@ docs_area: reference.security
 
 ### CockroachDB Cloud
 
-{{ site.data.products.serverless }} provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
+CockroachDB {{ site.data.products.serverless }} provides fast and easy access (including a *free* tier) to CockroachDB as a web service, hosted by Cockroach Labs. Clusters run in multi-tenant Google Cloud Platform (GCP) or Amazon Web Services (AWS) environments with shared compute and networking resources.
 
-{{ site.data.products.dedicated }} offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. {{ site.data.products.dedicated }} provides additional security-enhancing features such as single sign-on (SSO) and SQL audit logging.
+CockroachDB {{ site.data.products.dedicated }} offers a single-tenant cluster running in its own Virtual Private Cloud (VPC). Compute and networking resources are isolated. CockroachDB {{ site.data.products.dedicated }} provides additional security-enhancing features such as single sign-on (SSO) and SQL audit logging.
 
 [Sign up for a CockroachDB Cloud account!](https://www.cockroachlabs.com/get-started-cockroachdb/)
 
 {% include {{ page.version.version }}/dedicated-pci-compliance.md %}
 
-Learn more: [Integrate {{ site.data.products.dedicated }} with Satori]({% link {{ page.version.version }}/satori-integration.md %})
+Learn more: [Integrate CockroachDB {{ site.data.products.dedicated }} with Satori]({% link {{ page.version.version }}/satori-integration.md %})
 
 ### Self-Hosted
 
 Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">CockroachDB as an open-source core</a>, which is available to operate under a number of different licensing options, including several free options.
 
-{{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
+CockroachDB {{ site.data.products.core }} here refers to the situation of a user deploying and operating their own cluster.
 
 {{ site.data.products.enterprise }} refers to an ongoing paid license relationship with Cockroach Labs. This license unlocks advanced features (see below). In this situation the customer maintains full control over their data, compute, and network resources while benefiting from the expertise of the Cockroach Labs's {{ site.data.products.enterprise }} Support staff.
 
@@ -35,9 +35,9 @@ Cockroach Labs maintains <a href="https://github.com/cockroachdb/cockroach">Cock
 <table>
   <tr>
     <th width="120">Security Domain</th>
-    <th>{{ site.data.products.serverless }}</th>
-    <th>{{ site.data.products.dedicated }}</th>
-    <th>{{ site.data.products.core }}</th>
+    <th>CockroachDB {{ site.data.products.serverless }}</th>
+    <th>CockroachDB {{ site.data.products.dedicated }}</th>
+    <th>CockroachDB {{ site.data.products.core }}</th>
     <th>{{ site.data.products.enterprise }}</th>
     <th>Feature</th>
   </tr>

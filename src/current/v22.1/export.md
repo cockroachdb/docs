@@ -219,7 +219,7 @@ export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
 {% include {{ page.version.version }}/misc/storage-classes.md %}
 
 
-### Export data out of {{ site.data.products.db }}
+### Export data out of CockroachDB {{ site.data.products.cloud }}
 
 Using `EXPORT` with [`userfile`](use-userfile-for-bulk-operations.html) is not recommended. You can either export data to [cloud storage](use-cloud-storage-for-bulk-operations.html) or to a local CSV file by using [`cockroach sql --execute`](../{{site.current_cloud_version}}/cockroach-sql.html#general):
 

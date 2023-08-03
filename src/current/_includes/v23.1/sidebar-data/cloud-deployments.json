@@ -273,7 +273,7 @@
                         ]
                     },
                     {
-                        "title": "Export Logs From Dedicated",
+                        "title": "Export Logs From CockroachDB {{ site.data.products.dedicated }}",
                         "urls": [
                         "/cockroachcloud/export-logs.html"
                         ]
@@ -374,7 +374,7 @@
                     ]
                   },
                   {
-                    "title": "Export Metrics From a Dedicated Cluster",
+                    "title": "Export Metrics From a CockroachDB {{ site.data.products.dedicated }} Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
                     ]

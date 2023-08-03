@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-This page describes how to take and restore [customer-owned backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview#cockroachdb-backup-types) from **{{ site.data.products.serverless }}** and **{{ site.data.products.dedicated }}** clusters. 
+This page describes how to take and restore [customer-owned backups](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup-and-restore-overview#cockroachdb-backup-types) from **CockroachDB {{ site.data.products.serverless }}** and **CockroachDB {{ site.data.products.dedicated }}** clusters. 
 
 The examples demonstrate how to back up and restore from cloud storage and `userfile` storage. We recommend using cloud storage for your backups.
 
@@ -15,7 +15,7 @@ You cannot restore a backup of a multi-region database into a single-region data
 
 ## Examples
 
-Before you begin, connect to your cluster. For guidance on connecting to your {{ site.data.products.db }} cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) or [Connect to Your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
+Before you begin, connect to your cluster. For guidance on connecting to your CockroachDB {{ site.data.products.cloud }} cluster, visit [Connect to a CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) or [Connect to Your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}).
 
 The examples on this page demonstrate how to take customer-owned backups.
 

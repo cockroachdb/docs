@@ -1,28 +1,28 @@
 ---
 title: CockroachDB Cloud Access Management (Authorization) Overview
-summary: Learn about the {{ site.data.products.db }} Authorization features and concepts
+summary: Learn about the CockroachDB {{ site.data.products.cloud }} Authorization features and concepts
 toc: true
 docs_area: manage
 ---
 
-This page covers the essential concepts related to access management (authorization) in {{ site.data.products.db }}. Procedures for managing access are covered in [Managing Users, Roles, and Service Accounts in {{ site.data.products.db }}]({% link cockroachcloud/managing-access.md %}). For Frequently Asked Questions, refer to [CockroachDB Cloud FAQ]({% link cockroachcloud/ccloud-faq.md %}).
+This page covers the essential concepts related to access management (authorization) in CockroachDB {{ site.data.products.cloud }}. Procedures for managing access are covered in [Managing Users, Roles, and Service Accounts in CockroachDB {{ site.data.products.cloud }}]({% link cockroachcloud/managing-access.md %}). For Frequently Asked Questions, refer to [CockroachDB Cloud FAQ]({% link cockroachcloud/ccloud-faq.md %}).
 
-## Overview of the {{ site.data.products.db }} two-level authorization model
+## Overview of the CockroachDB {{ site.data.products.cloud }} two-level authorization model
 
-**The {{ site.data.products.db }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a {{ site.data.products.db }} **organization** (or create a new one).
+**The CockroachDB {{ site.data.products.cloud }} console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering CockroachDB {{ site.data.products.serverless }} and CockroachDB {{ site.data.products.dedicated }} clusters. When accessing the console, users must sign in to a CockroachDB {{ site.data.products.cloud }} **organization** (or create a new one).
 
-You can also execute many administrative commands using the `ccloud` command-line utility and the {{ site.data.products.db }} API:
+You can also execute many administrative commands using the `ccloud` command-line utility and the CockroachDB {{ site.data.products.cloud }} API:
 
-- `ccloud` allows human users to authenticate their terminal via a browser token from the {{ site.data.products.db }} console.
-- The {{ site.data.products.db }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
-- You can [use Terraform to provision users and other aspects of your {{ site.data.products.db }} clusters]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). However, note that currently Terraform can only be used to provision admin SQL users, as this is a current limitation of the API, on which Terraform depends.
+- `ccloud` allows human users to authenticate their terminal via a browser token from the CockroachDB {{ site.data.products.cloud }} console.
+- The CockroachDB {{ site.data.products.cloud }} API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
+- You can [use Terraform to provision users and other aspects of your CockroachDB {{ site.data.products.cloud }} clusters]({% link cockroachcloud/provision-a-cluster-with-terraform.md %}). However, note that currently Terraform can only be used to provision admin SQL users, as this is a current limitation of the API, on which Terraform depends.
 
-In {{ site.data.products.db }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each {{ site.data.products.db }} organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belongs to an organization.
+In CockroachDB {{ site.data.products.cloud }}, an organization corresponds to an authorization hierarchy linked to a billing account. Within each CockroachDB {{ site.data.products.cloud }} organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belongs to an organization.
 
-{{ site.data.products.db }} has a two-level authorization model:
+CockroachDB {{ site.data.products.cloud }} has a two-level authorization model:
 
 1. SQL level within a cluster: Each CockroachDB cluster has its own set of SQL users and roles defined in it. Roles grant users permission to execute some set of SQL statements against some set of database resources (like tables, databases) on the cluster.
-1. Organization level: Each {{ site.data.products.db }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
+1. Organization level: Each CockroachDB {{ site.data.products.cloud }} organization has a set of roles defined on it, which allow users to perform administrative tasks relating to the management of clusters, organization users, SQL users, and billing.
 
 This page primarily covers the latter, organization level. However, the two levels intersect because administrating SQL-level users on specific clusters within an organization is an organization-level function.
 
@@ -33,13 +33,13 @@ For the main pages covering users and roles at the SQL level within a specific d
 
 ## Organization user roles
 
-When a user is first added to an organization, they are granted the default role, **Org Member**, which grants no permissions and only indicates membership in the organization. Org or Cluster Administrators may edit the roles assigned to organization users in the {{ site.data.products.db }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the {{ site.data.products.db }} API /Terraform Provider.
+When a user is first added to an organization, they are granted the default role, **Org Member**, which grants no permissions and only indicates membership in the organization. Org or Cluster Administrators may edit the roles assigned to organization users in the CockroachDB {{ site.data.products.cloud }} console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB {{ site.data.products.cloud }} API /Terraform Provider.
 
 {% include_cached cockroachcloud/first-org-user-roles.md %}
 
 To learn more, refer to [Manage organization users]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users).
 
-The following roles may be granted to {{ site.data.products.db }} organization users within a specific organization:
+The following roles may be granted to CockroachDB {{ site.data.products.cloud }} organization users within a specific organization:
 
 ### Organization Member
 
@@ -57,7 +57,7 @@ This role replaces the [Org Administrator (legacy)](#org-administrator-legacy) r
 
 ### Billing Coordinator
 
-Users with this role in an organization can [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the {{ site.data.products.db }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+Users with this role in an organization can [manage billing for that organization]({% link cockroachcloud/billing-management.md %}) through the CockroachDB {{ site.data.products.cloud }} console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
 
 ### Cluster Operator
 
@@ -122,14 +122,14 @@ This role can be granted for specific clusters or for all clusters in the organi
 
 ### Org Administrator (legacy)
 
-Org Administrator (legacy) can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a {{ site.data.products.db }} organization:
+Org Administrator (legacy) can manage the organization and its members, clusters, and configuration. This role grants the user permissions to perform all critical functions managing a CockroachDB {{ site.data.products.cloud }} organization:
 
 - [Create or delete a cluster]({% link cockroachcloud/create-your-cluster.md %})
 - [Invite team members to the organization]({% link cockroachcloud/managing-access.md %}#invite-team-members-to-an-organization)
 - [Manage an organization's users and their roles]({% link cockroachcloud/managing-access.md %}#manage-an-organizations-users)
 - [Create and manage SQL users]({% link cockroachcloud/managing-access.md %}#create-a-sql-user)
 - [Manage billing for the organization]({% link cockroachcloud/billing-management.md %})
-- [Restore databases and tables from a {{ site.data.products.db }} backup]({% link cockroachcloud/use-managed-service-backups.md %}#ways-to-restore-data)
+- [Restore databases and tables from a CockroachDB {{ site.data.products.cloud }} backup]({% link cockroachcloud/use-managed-service-backups.md %}#ways-to-restore-data)
 - [Delete an organization]({% link cockroachcloud/managing-access.md %}#delete-an-organization)
 
 {{site.data.alerts.callout_info}}
@@ -150,7 +150,7 @@ This role is deprecated in favor of more fine-grained roles described above.
 
 ## Service accounts
 
-Service accounts authenticate with API keys to the {{ site.data.products.db }} API, rather than to the {{ site.data.products.db }} Console UI.
+Service accounts authenticate with API keys to the CockroachDB {{ site.data.products.cloud }} API, rather than to the CockroachDB {{ site.data.products.cloud }} Console UI.
 
 Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [organization roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
 
@@ -168,7 +168,7 @@ Refer to [Manage Service Accounts]({% link cockroachcloud/managing-access.md %}#
 
 ## Cluster roles for organization users using Cluster SSO
 
-Cluster Single Sign-On (SSO) for {{ site.data.products.db }} allows authorized organization users to directly access clusters within the organization via [`ccloud`]({% link cockroachcloud/ccloud-get-started.md %}), the {{ site.data.products.db }} command line interface.
+Cluster Single Sign-On (SSO) for CockroachDB {{ site.data.products.cloud }} allows authorized organization users to directly access clusters within the organization via [`ccloud`]({% link cockroachcloud/ccloud-get-started.md %}), the CockroachDB {{ site.data.products.cloud }} command line interface.
 
 However, because organization users and cluster SQL users are logically separate, a corresponding SQL user must be created for each SSO organization user, on each particular cluster.
 

@@ -7,10 +7,10 @@ docs_area: manage
 
 CockroachDB includes metrics to monitor [backup](backup.html), [restore](restore.html), and [scheduled backup](create-schedule-for-backup.html) jobs. You can use monitoring integrations to alert when there are anomalies, such as backups that have failed or restore jobs encountering a retryable error.
 
-Depending on whether you are using a {{ site.data.products.dedicated }} or {{ site.data.products.core }} cluster, you can use the following to monitor backup and restore metrics for your CockroachDB cluster:
+Depending on whether you are using a CockroachDB {{ site.data.products.dedicated }} or CockroachDB {{ site.data.products.core }} cluster, you can use the following to monitor backup and restore metrics for your CockroachDB cluster:
 
-- [Prometheus endpoint](#prometheus-endpoint): {{ site.data.products.core }}
-- [Datadog integration](#datadog-integration): {{ site.data.products.dedicated }}
+- [Prometheus endpoint](#prometheus-endpoint): CockroachDB {{ site.data.products.core }}
+- [Datadog integration](#datadog-integration): CockroachDB {{ site.data.products.dedicated }}
 
 We recommend setting up monitoring to alert when anomalies occur. You can then use the following SQL statements to inspect details relating to schedules, jobs, and backups:
 
@@ -18,13 +18,13 @@ We recommend setting up monitoring to alert when anomalies occur. You can then u
 - [`SHOW JOBS`](show-jobs.html)
 - [`SHOW BACKUP`](show-backup.html)
 
-For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your {{ site.data.products.db }} cluster, see the **Backups** page in the Cloud Console.
+For detail on [managed-service backups](../cockroachcloud/use-managed-service-backups.html) that Cockroach Labs stores for your CockroachDB {{ site.data.products.cloud }} cluster, see the **Backups** page in the Cloud Console.
 
 {% include {{ page.version.version }}/backups/metrics-per-node.md %}
 
 ## Prometheus endpoint
 
-You can access the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint) (`http://<host>:<http-port>/_status/vars`) for backup and restore metrics with **{{ site.data.products.dedicated }} or {{ site.data.products.core }}** clusters.
+You can access the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint) (`http://<host>:<http-port>/_status/vars`) for backup and restore metrics with **CockroachDB {{ site.data.products.dedicated }} or CockroachDB {{ site.data.products.core }}** clusters.
 
 See the [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html) tutorial for guidance on installing and setting up Prometheus and Alertmanager to track metrics.
 
@@ -58,7 +58,7 @@ Metric | Description
 
 ## Datadog integration
 
-To use the Datadog integration with your **{{ site.data.products.dedicated }}** cluster, you can:
+To use the Datadog integration with your **CockroachDB {{ site.data.products.dedicated }}** cluster, you can:
 
 - Export the following schedule backup metrics to Datadog using the [Cloud API](../cockroachcloud/cloud-api.html). To set this up, see [Export Metrics From a CockroachDB Dedicated Cluster](../cockroachcloud/export-metrics.html?filters=datadog-metrics-export).
 - Access the Cloud Console **Monitoring** page to enable the integration. To set this up, see [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog).

@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from a {{ site.data.products.serverless }} cluster to a {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT INTO`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import-into). You may want to migrate to {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.
+This page has instructions for migrating data from a CockroachDB {{ site.data.products.serverless }} cluster to a CockroachDB {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT INTO`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import-into). You may want to migrate to CockroachDB {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.
 
 The steps below use sample data from the [`tpcc` workload](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads).
 
@@ -13,15 +13,15 @@ The steps below use sample data from the [`tpcc` workload](https://www.cockroach
 
 These instructions assume you already have the following:
 
-- A [{{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
-- A [paid {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
+- A [CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) from which you want to migrate data.
+- A [paid CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/quickstart-trial-cluster.md %}). Your first paid CockroachDB {{ site.data.products.dedicated }} cluster is free for a 30-day trial.
 - [Cloud storage](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-cloud-storage).
 
 ## Step 1. Export data to cloud storage
 
-First, upload your {{ site.data.products.serverless }} data to a cloud storage location where the {{ site.data.products.dedicated }} cluster can access it.
+First, upload your CockroachDB {{ site.data.products.serverless }} data to a cloud storage location where the CockroachDB {{ site.data.products.dedicated }} cluster can access it.
 
-1. [Connect to your {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) and run the [`EXPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads) database to an Amazon S3 bucket:
+1. [Connect to your CockroachDB {{ site.data.products.serverless }} cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) and run the [`EXPORT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/export) statement for each table you need to migrate. For example, the following statement exports the `warehouse` table from the [`tpcc`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroach-workload#workloads) database to an Amazon S3 bucket:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -86,7 +86,7 @@ First, upload your {{ site.data.products.serverless }} data to a cloud storage l
 For best practices for optimizing import performance in CockroachDB, see [Import Performance Best Practices](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/import-performance-best-practices).
 {{site.data.alerts.end}}
 
-1. [Connect to your {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-database) you want to import the tables into. For example:
+1. [Connect to your CockroachDB {{ site.data.products.dedicated }} cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) and [create the database](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-database) you want to import the tables into. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -96,7 +96,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 1. Write a [`CREATE TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-table) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
-    You can use the [`SHOW CREATE TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-create#show-the-create-table-statement-for-a-table) statement in the {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
+    You can use the [`SHOW CREATE TABLE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-create#show-the-create-table-statement-for-a-table) statement in the CockroachDB {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
     {{site.data.alerts.end}}
 
     {% include v20.2/misc/csv-import-callout.md %}
@@ -190,7 +190,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 3. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the {{ site.data.products.dedicated }} cluster, add the [foreign key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/foreign-key) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-table#add-constraint). For example:
+Once all of the tables you want to migrate have been imported into the CockroachDB {{ site.data.products.dedicated }} cluster, add the [foreign key](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/foreign-key) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/alter-table#add-constraint). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql

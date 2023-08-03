@@ -332,19 +332,19 @@
                     ]
                   },
                   {
-                    "title": "Monitor with Datadog",
+                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Datadog",
                     "urls": [
                       "/${VERSION}/datadog.html"
                     ]
                   },
                   {
-                    "title": "Monitor with DBmarlin",
+                    "title": "Monitor CockroachDB {{ site.data.products.core }} with DBmarlin",
                     "urls": [
                       "/${VERSION}/dbmarlin.html"
                     ]
                   },
                   {
-                    "title": "Monitor with Kibana",
+                    "title": "Monitor CockroachDB {{ site.data.products.core }} with Kibana",
                     "urls": [
                       "/${VERSION}/kibana.html"
                     ]

@@ -5,7 +5,7 @@ toc: true
 docs_area: 
 ---
 
-This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)](security-reference/transport-layer-security.html) for a {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
+This tutorial shows how to provision a [public key infrastructure (PKI) certificate authority (CA)](security-reference/transport-layer-security.html) for a CockroachDB {{ site.data.products.core }} cluster deployed in Google Cloud Platform (GCP).
 
 See also:
 

@@ -170,9 +170,9 @@ Where `<connection_string>` is the `sql` connection URL provided in the cluster'
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Where `<connection_string>` is the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console, but with the root certificate located in the local `certs` directory.
+Where `<connection_string>` is the connection string provided in the **Connection info** window of the CockroachDB {{ site.data.products.cloud }} Console, but with the root certificate located in the local `certs` directory.
 
-Note that you also need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+Note that you also need to provide a SQL user password in order to securely connect to a CockroachDB {{ site.data.products.cloud }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
 
 </section>
 

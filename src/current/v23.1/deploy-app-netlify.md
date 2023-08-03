@@ -7,7 +7,7 @@ referral_id: docs_netlify
 docs_area: get_started
 ---
 
-This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a {{ site.data.products.serverless }} cluster.
+This tutorial shows you how to deploy a [Netlify](https://www.netlify.com/) web application that communicates with a CockroachDB {{ site.data.products.serverless }} cluster.
 
 The sample app used in this tutorial simulates [a gaming leaderboard](https://www.cockroachlabs.com/blog/react-typescript-cockroachdb-sample-app/). The [Netlify functions](https://www.netlify.com/products/functions/) used for the app are written in TypeScript. The functions use [Prisma](https://www.prisma.io/) to connect to CockroachDB. The app's frontend, also written in TypeScript, uses React, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -17,11 +17,11 @@ The source code for the completed app is available on GitHub at [https://github.
 
 Before starting the tutorial, do the following:
 
-1. Create a [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
+1. Create a [CockroachDB {{ site.data.products.cloud }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
 
 1. Create a Starter [Netlify](https://app.netlify.com/signup) account. You can do this with your GitHub login credentials.
 
-## Step 1. Create a {{ site.data.products.serverless }} cluster
+## Step 1. Create a CockroachDB {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
@@ -75,7 +75,7 @@ The connection string is pre-populated with your username, cluster name, and oth
 
 ## Step 3. Initialize the database
 
-1. In the `.env` file in your project, set the `DATABASE_URL` environment variable to [the connection string](#connection-string) you obtained earlier from the {{ site.data.products.db }} Console:
+1. In the `.env` file in your project, set the `DATABASE_URL` environment variable to [the connection string](#connection-string) you obtained earlier from the CockroachDB {{ site.data.products.cloud }} Console:
 
     {% include_cached copy-clipboard.html %}
     ~~~ text

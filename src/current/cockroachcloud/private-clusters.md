@@ -6,11 +6,11 @@ docs_area: manage.security
 cloud: true
 ---
 
-Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. Private clusters on {{ site.data.products.dedicated }} advanced help organizations to meet this objective.
+Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. Private clusters on CockroachDB {{ site.data.products.dedicated }} advanced help organizations to meet this objective.
 
-By default, {{ site.data.products.db }} has safeguards in place to protect cluster's data from the public internet. Ingress traffic to a cluster is routed through a load balancer, and it is possible to restrict inbound connections using a combination of [IP allowlisting]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), and either of [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) or [GCP VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) depending on your cloud provider. However, data egress operations such as [exports](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/export), [backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/backup), and [Change Data Capture (CDC)](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/change-data-capture-overview.html) use public subnets.
+By default, CockroachDB {{ site.data.products.cloud }} has safeguards in place to protect cluster's data from the public internet. Ingress traffic to a cluster is routed through a load balancer, and it is possible to restrict inbound connections using a combination of [IP allowlisting]({% link cockroachcloud/network-authorization.md %}#ip-allowlisting), and either of [AWS PrivateLink]({% link cockroachcloud/network-authorization.md %}#aws-privatelink) or [GCP VPC peering]({% link cockroachcloud/network-authorization.md %}#vpc-peering) depending on your cloud provider. However, data egress operations such as [exports](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/export), [backups](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/backup), and [Change Data Capture (CDC)](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/change-data-capture-overview.html) use public subnets.
 
-On the other hand, a {{ site.data.products.dedicated }} advanced cluster is a _private cluster_: its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
+On the other hand, a CockroachDB {{ site.data.products.dedicated }} advanced cluster is a _private cluster_: its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
 
 In a private cluster, one private network exists per cluster region, and each node is connected to the private network for its region. A NAT gateway is connected to each private network and provides a static egress public IP address.
 
@@ -19,13 +19,13 @@ Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across
 This page shows how to create a private cluster.
 
 {{site.data.alerts.callout_info}}
-During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), private {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), private CockroachDB {{ site.data.products.dedicated }} clusters are not available on Azure. Refer to [CockroachDB {{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 {{site.data.alerts.end}}
 
 ## Create a private cluster
 
-On GCP, new {{ site.data.products.dedicated }} clusters are private by default.
-On AWS, newly {{ site.data.products.dedicated }} advanced clusters deployed on AWS are private by default.
+On GCP, new CockroachDB {{ site.data.products.dedicated }} clusters are private by default.
+On AWS, newly CockroachDB {{ site.data.products.dedicated }} advanced clusters deployed on AWS are private by default.
 
 {{site.data.alerts.callout_info}}
 An existing cluster can't be migrated in-place to a private cluster.
@@ -44,4 +44,4 @@ Egress traffic from a private cluster to non-cloud external resources will alway
 ## Limitations
 
 - An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/migration-overview).
-- Private clusters are not available with {{ site.data.products.serverless }}.
+- Private clusters are not available with CockroachDB {{ site.data.products.serverless }}.

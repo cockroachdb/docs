@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.third_party_support
 ---
 
-Satori offers tooling to extend CockroachDB's data security capabilities. Satori's Data Access Controller (DAC) can be used in concert with {{ site.data.products.db }} or {{ site.data.products.core }}.
+Satori offers tooling to extend CockroachDB's data security capabilities. Satori's Data Access Controller (DAC) can be used in concert with CockroachDB {{ site.data.products.cloud }} or CockroachDB {{ site.data.products.core }}.
 
 A Satori integration offers CockroachDB users the following enhanced data security capabilities at scale:
 

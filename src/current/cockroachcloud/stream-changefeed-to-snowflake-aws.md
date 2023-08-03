@@ -17,7 +17,7 @@ Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. 
 
 Before you begin, make sure you have:
 
-- Admin access to a [{{ site.data.products.db }} account](https://cockroachlabs.cloud/)
+- Admin access to a [CockroachDB {{ site.data.products.cloud }} account](https://cockroachlabs.cloud/)
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
 
     {{site.data.alerts.callout_info}}
@@ -41,7 +41,7 @@ If you have not done so already, [create a cluster]({% link cockroachcloud/creat
     ~~~
 
     {{site.data.alerts.callout_info}}
-    If you haven't connected to your cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) for information on how to initially connect.
+    If you haven't connected to your cluster before, see [Connect to your CockroachDB {{ site.data.products.dedicated }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) or [Connect to your CockroachDB {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}) for information on how to initially connect.
     {{site.data.alerts.end}}
 
 1. Enable [rangefeeds](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/create-and-configure-changefeeds#enable-rangefeeds):
