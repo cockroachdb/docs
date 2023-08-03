@@ -1,24 +1,13 @@
-{%- assign today = "today" | date: "%Y-%m-%d" -%}
-{%- comment -%} set today's date {%- endcomment -%}
-
-{%- assign v_prod = site.data.versions | where_exp: "v_prod", "v_prod.asst_supp_exp_date > today" | where_exp: "v_prod", "v_prod.release_date != 'N/A'" | where_exp: "v_prod", "v_prod.major_version != site.versions['stable']" | sort: "release_date" | reverse | map: "major_version" -%}
-{%- comment -%} v_prod iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases within the assistance support period, sorted in reverse chronological order, excluding whatever's the latest stable production release. We then pull only the major version name instead of the whole dictionary with map: "major_version" {%- endcomment -%}
-
+{%- assign versions = site.data.versions | where_exp: "versions", "versions.major_version != site.versions['dev']" | where_exp: "versions", "versions.major_version != site.versions['stable']" | map: "major_version" -%}
+{%- comment -%} versions iterates through the list of major versions (e.g., v21.2) in _data/versions.csv and returns all releases that are not dev or stable. We then pull only the major version name instead of the whole dictionary with map: "major_version" {%- endcomment -%}
 {
-  "title": "CockroachDB",
-  "items": [
-    {
-      "title": "All Releases",
-      "urls": [
-        "/releases/index.html"
-      ]
-    }{% for x in v_prod %} {% comment %} iterate through all supported versions {% endcomment %}
-      ,{
-        "title": "{{ x }}",
-        "urls": [
-          "/releases/{{ x }}.html"
-        ]
-      }{% endfor %}    
+  "title": "All CockroachDB Releases",
+  "urls": [
+    "/releases/index.html",
+    "/releases/"
+  {% for v in versions %}
+    ,"/releases/{{ v }}.html"
+  {% endfor %}    
   ]
 },
 {
