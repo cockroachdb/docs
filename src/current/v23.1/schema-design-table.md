@@ -5,26 +5,26 @@ toc: true
 docs_area: develop
 ---
 
-This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
+This page provides best-practice guidance on creating tables, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR]({% link {{ page.version.version }}/movr.md %}).
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `CREATE TABLE` statement, including additional examples, see the [`CREATE TABLE` syntax page](create-table.html).
+For detailed reference documentation on the `CREATE TABLE` statement, including additional examples, see the [`CREATE TABLE` syntax page]({% link {{ page.version.version }}/create-table.md %}).
 {{site.data.alerts.end}}
 
 ## Before you begin
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Review the database schema objects](schema-design-overview.html).
-- [Create a database](schema-design-database.html).
-- [Create a user-defined schema](schema-design-schema.html).
+- [Create a {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
+- [Review the database schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}).
+- [Create a database]({% link {{ page.version.version }}/schema-design-database.md %}).
+- [Create a user-defined schema]({% link {{ page.version.version }}/schema-design-schema.md %}).
 
 ## Create a table
 
-Tables are the [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that store data sent from your application's persistence layer. Tables organize records of data in rows and columns.
+Tables are the [logical objects in a cluster]({% link {{ page.version.version }}/schema-design-overview.md %}#database-schema-objects) that store data sent from your application's persistence layer. Tables organize records of data in rows and columns.
 
-To create a table, use a [`CREATE TABLE` statement](create-table.html), following the best practices that we have listed in the following sections:
+To create a table, use a [`CREATE TABLE` statement]({% link {{ page.version.version }}/create-table.md %}), following the best practices that we have listed in the following sections:
 
 - [Name a table](#name-a-table)
 - [Define columns](#define-columns)
@@ -58,13 +58,13 @@ For an example, see [below](#table-naming-example).
 
 Here are some best practices to follow when naming tables:
 
-- Use a [fully-qualified name](sql-name-resolution.html#how-name-resolution-works) (i.e., `CREATE TABLE database_name.schema_name.table_name`). If you do not specify the database name, CockroachDB will use the SQL session's [current database](sql-name-resolution.html#current-database) (`defaultdb`, by default). If you do not specify the user-defined schema in the table name, CockroachDB will create the table in the preloaded `public` schema.
+- Use a [fully-qualified name]({% link {{ page.version.version }}/sql-name-resolution.md %}#how-name-resolution-works) (i.e., `CREATE TABLE database_name.schema_name.table_name`). If you do not specify the database name, CockroachDB will use the SQL session's [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) (`defaultdb`, by default). If you do not specify the user-defined schema in the table name, CockroachDB will create the table in the preloaded `public` schema.
 
 - Use a table name that reflects the contents of the table. For example, for a table containing information about orders, you could use the name `orders` (as opposed to naming the table something like `table1`).
 
 #### Table naming example
 
-Suppose you want to create a table to store information about users of the [MovR](movr.html) platform, and you want the SQL user `max` to manage that table.
+Suppose you want to create a table to store information about users of the [MovR]({% link {{ page.version.version }}/movr.md %}) platform, and you want the SQL user `max` to manage that table.
 
 Create an empty `.sql` file for `max`:
 
@@ -73,7 +73,7 @@ Create an empty `.sql` file for `max`:
 $ touch max_init.sql
 ~~~
 
-This file will initialize the objects in the `max_schema` user-defined schema that you created in [Create a Schema](schema-design-schema.html), starting with a `users` table.
+This file will initialize the objects in the `max_schema` user-defined schema that you created in [Create a Schema]({% link {{ page.version.version }}/schema-design-schema.md %}), starting with a `users` table.
 
 In a text editor, open `max_init.sql`, and add an empty `CREATE TABLE` statement for the `users` table:
 
@@ -98,8 +98,8 @@ Column definitions generally take the following form:
 Parameter | Description
 ----------|------------
 `{column_name}` | The name of the column.
-`{DATA_TYPE}` | The [data type](data-types.html) of the row values in the column.
-`{column_qualification}` | Some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause](computed-columns.html).
+`{DATA_TYPE}` | The [data type]({% link {{ page.version.version }}/data-types.md %}) of the row values in the column.
+`{column_qualification}` | Some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause]({% link {{ page.version.version }}/computed-columns.md %}).
 
 For examples, see [below](#column-definition-examples).
 
@@ -107,9 +107,9 @@ For examples, see [below](#column-definition-examples).
 
 Here are some best practices to follow when defining table columns:
 
-- Review the supported column [data types](data-types.html), and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
+- Review the supported column [data types]({% link {{ page.version.version }}/data-types.md %}), and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
 
-- Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](architecture/storage-layer.html#write-amplification) and cause significant performance degradation.
+- Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`]({% link {{ page.version.version }}/bit.md %}#size)). Values exceeding 1MB can lead to [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and cause significant performance degradation.
 
 - Review the [primary key best practices](#select-primary-key-columns) and [examples](#primary-key-examples), decide if you need to define any dedicated primary key columns.
 
@@ -132,9 +132,9 @@ CREATE TABLE movr.max_schema.users (
 );
 ~~~
 
-All of the columns shown above use the [`STRING`](string.html) data type, meaning that any value in any of the columns must be of the data type `STRING`.
+All of the columns shown above use the [`STRING`]({% link {{ page.version.version }}/string.md %}) data type, meaning that any value in any of the columns must be of the data type `STRING`.
 
-CockroachDB supports a number of other column data types, including [`DECIMAL`](decimal.html), [`INT`](int.html), [`TIMESTAMP`](timestamp.html), [`UUID`](uuid.html), and [enumerated data types](enum.html) and [spatial data types](export-spatial-data.html). We recommend that you review the [supported types](data-types.html), and create columns with data types that correspond to the types of data that you intend to persist to the cluster from your application.
+CockroachDB supports a number of other column data types, including [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}), [`INT`]({% link {{ page.version.version }}/int.md %}), [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), [`UUID`]({% link {{ page.version.version }}/uuid.md %}), and [enumerated data types]({% link {{ page.version.version }}/enum.md %}) and [spatial data types]({% link {{ page.version.version }}/export-spatial-data.md %}). We recommend that you review the [supported types]({% link {{ page.version.version }}/data-types.md %}), and create columns with data types that correspond to the types of data that you intend to persist to the cluster from your application.
 
 Let's add another example table to our `max_schema` schema, with more column data types.
 
@@ -153,15 +153,15 @@ CREATE TABLE movr.max_schema.vehicles (
 
 This table includes a few more data types than the `users` table:
 
-- [`UUID`](uuid.html), which we recommend for columns with [values that uniquely identify rows](https://wikipedia.org/wiki/Unique_key) (like an "id" column).
-- [`TIMESTAMPTZ`](timestamp.html), which we recommend for [timestamp values](https://wikipedia.org/wiki/Timestamp).
-- [`BOOL`](bool.html), which we recommend for columns that will only take one of two possible values.
+- [`UUID`]({% link {{ page.version.version }}/uuid.md %}), which we recommend for columns with [values that uniquely identify rows](https://wikipedia.org/wiki/Unique_key) (like an "id" column).
+- [`TIMESTAMPTZ`]({% link {{ page.version.version }}/timestamp.md %}), which we recommend for [timestamp values](https://wikipedia.org/wiki/Timestamp).
+- [`BOOL`]({% link {{ page.version.version }}/bool.md %}), which we recommend for columns that will only take one of two possible values.
 
 The rest of the columns are `STRING`-typed.
 
-Note that values in the `type` column will likely only be `STRING` values from a fixed list of values. Specifically, the vehicle type can only be one of the vehicle types supported by the MovR platform (e.g., a `bike`, a `scooter`, or a `skateboard`). For values like this, we recommend using a [user-defined, enumerated type](enum.html).
+Note that values in the `type` column will likely only be `STRING` values from a fixed list of values. Specifically, the vehicle type can only be one of the vehicle types supported by the MovR platform (e.g., a `bike`, a `scooter`, or a `skateboard`). For values like this, we recommend using a [user-defined, enumerated type]({% link {{ page.version.version }}/enum.md %}).
 
-To create a user-defined type, use a [`CREATE TYPE`](create-type.html) statement. For example, above the `CREATE TABLE` statement for the `vehicles` table, add the following statements:
+To create a user-defined type, use a [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %}) statement. For example, above the `CREATE TABLE` statement for the `vehicles` table, add the following statements:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -169,7 +169,7 @@ CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 ~~~
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page](create-type.html).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`](enum.html).
+For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page]({% link {{ page.version.version }}/create-type.md %}).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`]({% link {{ page.version.version }}/enum.md %}).
 {{site.data.alerts.end}}
 
 You can then use `movr.max_schema.vtype` as the `type` column's data type:
@@ -193,16 +193,16 @@ The `users` and `vehicles` tables now have syntactically valid column definition
 
 A primary key is a column, or set of columns, whose values uniquely identify rows of data. Every table requires a primary key.
 
-Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [column constraint](constraints.html). The `PRIMARY KEY` constraint requires that all the constrained column(s) contain only unique and non-`NULL` values.
+Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [column constraint]({% link {{ page.version.version }}/constraints.md %}). The `PRIMARY KEY` constraint requires that all the constrained column(s) contain only unique and non-`NULL` values.
 
-When a table is created, CockroachDB creates an index (called the _primary index_ and named `{tbl}_pkey`) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
+When a table is created, CockroachDB creates an index (called the _primary index_ and named `{tbl}_pkey`) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index]({% link {{ page.version.version }}/indexes.md %}) to find rows in a table more efficiently.
 
 To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement.
 
 For examples, see [below](#primary-key-examples).
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `PRIMARY KEY` constraint, including additional examples, see the [`PRIMARY KEY` constraint page](primary-key.html).
+For detailed reference documentation on the `PRIMARY KEY` constraint, including additional examples, see the [`PRIMARY KEY` constraint page]({% link {{ page.version.version }}/primary-key.md %}).
 {{site.data.alerts.end}}
 
 #### Primary key best practices
@@ -211,21 +211,21 @@ Here are some best practices to follow when selecting primary key columns:
 
 - Avoid defining primary keys over a single column of sequential data.
 
-    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`](int.html) column, or a [`TIMESTAMP`](timestamp.html) value) can result in single-range [hot spots](performance-best-practices-overview.html#hot-spots) that negatively affect performance, or cause [transaction contention](performance-best-practices-overview.html#transaction-contention).
+    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`]({% link {{ page.version.version }}/int.md %}) column, or a [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) value) can result in single-range [hot spots]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#hot-spots) that negatively affect performance, or cause [transaction contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
-    If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
+    If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes]({% link {{ page.version.version }}/hash-sharded-indexes.md %}). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
 - Define a primary key for every table.
 
-    If you create a table without defining a primary key, CockroachDB will automatically create a primary key over a hidden, [`INT`](int.html)-typed column named `rowid`. By default, sequential, unique identifiers are generated for each row in the `rowid` column with the [`unique_rowid()` function](functions-and-operators.html#built-in-functions). The sequential nature of the `rowid` values can lead to a poor distribution of the data across a cluster, which can negatively affect performance. Furthermore, because you cannot meaningfully use the `rowid` column to filter table data, the primary key index on `rowid` does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table.
+    If you create a table without defining a primary key, CockroachDB will automatically create a primary key over a hidden, [`INT`]({% link {{ page.version.version }}/int.md %})-typed column named `rowid`. By default, sequential, unique identifiers are generated for each row in the `rowid` column with the [`unique_rowid()` function]({% link {{ page.version.version }}/functions-and-operators.md %}#built-in-functions). The sequential nature of the `rowid` values can lead to a poor distribution of the data across a cluster, which can negatively affect performance. Furthermore, because you cannot meaningfully use the `rowid` column to filter table data, the primary key index on `rowid` does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table.
 
-     To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
+     To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `true`.
 
 - When possible, define primary key constraints over multiple columns (i.e., use [composite primary keys](https://wikipedia.org/wiki/Composite_key)).
 
-    When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries](order-by.html), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [below](#primary-key-examples).
+    When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries]({% link {{ page.version.version }}/order-by.md %}), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [below](#primary-key-examples).
 
-- For single-column primary keys, use [`UUID`](uuid.html)-typed columns with default values randomly-generated, using the `gen_random_uuid()` [SQL function](functions-and-operators.html#id-generation-functions).
+- For single-column primary keys, use [`UUID`]({% link {{ page.version.version }}/uuid.md %})-typed columns with default values randomly-generated, using the `gen_random_uuid()` [SQL function]({% link {{ page.version.version }}/functions-and-operators.md %}#id-generation-functions).
 
     Randomly generating `UUID` values ensures that the primary key values will be unique and well-distributed across a cluster. For an example, see [below](#primary-key-examples).
 
@@ -270,25 +270,25 @@ CREATE TABLE movr.max_schema.vehicles (
   );
 ~~~
 
-Note that, in addition to the `PRIMARY KEY` constraint, the `id` column has a `DEFAULT` constraint. This constraint sets a default value for the column to a value generated by the `gen_random_uuid()` [function](functions-and-operators.html), following [`UUID`](uuid.html) best practices. The values generated by this function are guaranteed to be unique and well-distributed across the cluster. We discuss the `DEFAULT` constraint more [below](#populate-with-default-values).
+Note that, in addition to the `PRIMARY KEY` constraint, the `id` column has a `DEFAULT` constraint. This constraint sets a default value for the column to a value generated by the `gen_random_uuid()` [function]({% link {{ page.version.version }}/functions-and-operators.md %}), following [`UUID`]({% link {{ page.version.version }}/uuid.md %}) best practices. The values generated by this function are guaranteed to be unique and well-distributed across the cluster. We discuss the `DEFAULT` constraint more [below](#populate-with-default-values).
 
 ### Add additional constraints
 
-In addition to the `PRIMARY KEY` constraint, CockroachDB supports a number of other [column-level constraints](constraints.html), including [`CHECK`](check.html), [`DEFAULT`](#populate-with-default-values), [`FOREIGN KEY`](#reference-other-tables), [`UNIQUE`](#prevent-duplicates), and [`NOT NULL`](#prevent-null-values). Using constraints can simplify table queries, improve query performance, and ensure that data remains semantically valid.
+In addition to the `PRIMARY KEY` constraint, CockroachDB supports a number of other [column-level constraints]({% link {{ page.version.version }}/constraints.md %}), including [`CHECK`]({% link {{ page.version.version }}/check.md %}), [`DEFAULT`](#populate-with-default-values), [`FOREIGN KEY`](#reference-other-tables), [`UNIQUE`](#prevent-duplicates), and [`NOT NULL`](#prevent-null-values). Using constraints can simplify table queries, improve query performance, and ensure that data remains semantically valid.
 
 To constrain a single column, add a constraint keyword to the column's definition, as shown in the [single-column `PRIMARY KEY` example above](#primary-key-examples). To constrain more than one column, add the entire constraint's definition after the list of columns in the `CREATE TABLE` statement, also shown in the [composite `PRIMARY KEY` example above](#primary-key-examples).
 
 For guidance and examples for each constraint, see the sections below.
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation for each supported constraint, see [the constraint's syntax page](constraints.html).
+For detailed reference documentation for each supported constraint, see [the constraint's syntax page]({% link {{ page.version.version }}/constraints.md %}).
 {{site.data.alerts.end}}
 
 #### Populate with default values
 
 To set default values on columns, use the `DEFAULT` constraint. Default values enable you to write queries without the need to specify values for every column.
 
-When combined with [supported SQL functions](functions-and-operators.html), default values can save resources in your application's persistence layer by offloading computation onto CockroachDB. For example, rather than using an application library to generate unique `UUID` values, you can set a default value to be an automatically-generated `UUID` value with the `gen_random_uuid()` SQL function. Similarly, you could use a default value to populate a `TIMESTAMP` column with the current time of day, using the `now()` function.
+When combined with [supported SQL functions]({% link {{ page.version.version }}/functions-and-operators.md %}), default values can save resources in your application's persistence layer by offloading computation onto CockroachDB. For example, rather than using an application library to generate unique `UUID` values, you can set a default value to be an automatically-generated `UUID` value with the `gen_random_uuid()` SQL function. Similarly, you could use a default value to populate a `TIMESTAMP` column with the current time of day, using the `now()` function.
 
 For example, in the `vehicles` table definition in `max_init.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. This set the default value to a generated `UUID` value. Now, add a default value to the `creation_time` column:
 
@@ -306,7 +306,7 @@ CREATE TABLE movr.max_schema.vehicles (
 When a row is inserted into the `vehicles` table, CockroachDB generates a random default value for the vehicle `id`, and uses the current timestamp for the vehicle's `creation_time`. Rows inserted into the `vehicles` table do not need to include an explicit value for `id` or `creation_time`.
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `DEFAULT` constraint, including additional examples, see [the `DEFAULT` syntax page](default-value.html).
+For detailed reference documentation on the `DEFAULT` constraint, including additional examples, see [the `DEFAULT` syntax page]({% link {{ page.version.version }}/default-value.md %}).
 {{site.data.alerts.end}}
 
 #### Reference other tables
@@ -333,7 +333,7 @@ The `vehicle_id` column will be identical to the `id` column in the `vehicles` t
 
 Foreign keys cannot reference tables in a different database. They can, however reference tables in a different schema.
 
-Suppose that you want to introduce promotional codes for users on the MovR platform, but you want the user promo code data to be managed by the `abbey` user that you created in [Create a Database](schema-design-database.html).
+Suppose that you want to introduce promotional codes for users on the MovR platform, but you want the user promo code data to be managed by the `abbey` user that you created in [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %}).
 
 Create an empty `.sql` initialization file for `abbey`.
 
@@ -342,7 +342,7 @@ Create an empty `.sql` initialization file for `abbey`.
 $ touch abbey_init.sql
 ~~~
 
-This file will initialize the objects in the `abbey_schema` user-defined schema that you created in [Create a Schema](schema-design-schema.html).
+This file will initialize the objects in the `abbey_schema` user-defined schema that you created in [Create a Schema]({% link {{ page.version.version }}/schema-design-schema.md %}).
 
 In a text editor, open `abbey_init.sql`, and add a `CREATE TABLE` statement for a table called `user_promo_codes`:
 
@@ -363,7 +363,7 @@ Foreign key dependencies can significantly impact query performance, as queries 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `FOREIGN KEY` constraint, including additional examples, see [the `FOREIGN KEY` syntax page](foreign-key.html).
+For detailed reference documentation on the `FOREIGN KEY` constraint, including additional examples, see [the `FOREIGN KEY` syntax page]({% link {{ page.version.version }}/foreign-key.md %}).
 {{site.data.alerts.end}}
 
 #### Prevent duplicates
@@ -391,7 +391,7 @@ Also note that the `UNIQUE` constraint is implied by the `PRIMARY KEY` constrain
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `UNIQUE` constraint, including additional examples, see [the `UNIQUE` syntax page](unique.html).
+For detailed reference documentation on the `UNIQUE` constraint, including additional examples, see [the `UNIQUE` syntax page]({% link {{ page.version.version }}/unique.md %}).
 {{site.data.alerts.end}}
 
 #### Prevent `NULL` values
@@ -415,7 +415,7 @@ Note that the `NOT NULL` constraint is implied by the `PRIMARY KEY` constraint.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `NOT NULL` constraint, including additional examples, see [the `NOT NULL` syntax page](not-null.html).
+For detailed reference documentation on the `NOT NULL` constraint, including additional examples, see [the `NOT NULL` syntax page]({% link {{ page.version.version }}/not-null.md %}).
 {{site.data.alerts.end}}
 
 ### Execute `CREATE TABLE` statements
@@ -426,7 +426,7 @@ After you have defined `CREATE TABLE` statements for your tables, you can execut
 
 Here are some general best practices to follow when executing `CREATE TABLE` statements:
 
-- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](security-reference/authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](security-reference/authorization.html#object-ownership).
+- Do not create tables as the `root` user. Instead, create tables as a [different user]({% link {{ page.version.version }}/schema-design-overview.md %}#control-access-to-objects), with fewer privileges, following [authorization best practices]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-best-practices). The user that creates an object becomes that [object's owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
@@ -478,7 +478,7 @@ $ cockroach sql \
 
 The SQL client will execute any statements in `max_init.sql`, with `movr` as the database and `max` as the user. `max` is now the owner of all objects created by the statements in the `max_init.sql` file.
 
-After the statements have been executed, you can see the tables in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).
+After the statements have been executed, you can see the tables in the [CockroachDB SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}#sql-shell).
 
 Open the SQL shell to your cluster, with `movr` as the database and `max` as the user:
 
@@ -490,7 +490,7 @@ $ cockroach sql \
 --database=movr
 ~~~
 
-To view the tables in the `max_schema` user-defined schema, issue a [`SHOW TABLES`](show-tables.html) statement:
+To view the tables in the `max_schema` user-defined schema, issue a [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -506,7 +506,7 @@ To view the tables in the `max_schema` user-defined schema, issue a [`SHOW TABLE
 (3 rows)
 ~~~
 
-To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CREATE`](show-create.html) statement. For example, to see the `vehicles` `CREATE TABLE` statement:
+To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) statement. For example, to see the `vehicles` `CREATE TABLE` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -550,7 +550,7 @@ $ cockroach sql \
 -f abbey_init.sql
 ~~~
 
-After the statements have been executed, you can see the table in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).
+After the statements have been executed, you can see the table in the [CockroachDB SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}#sql-shell).
 
 Open the SQL shell to your cluster, with `movr` as the database and `abbey` as the user, and view the table:
 
@@ -592,23 +592,23 @@ $ cockroach sql \
 (1 row)
 ~~~
 
-Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see [Secondary Indexes](schema-design-indexes.html).
+Note that none of the tables that you have created thus far have secondary indexes. For guidance on adding secondary indexes, see [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
 
 ## What's next?
 
-- [Secondary Indexes](schema-design-indexes.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [Secondary Indexes]({% link {{ page.version.version }}/schema-design-indexes.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 
 You might also be interested in the following pages:
 
-- [Computed Columns](computed-columns.html)
-- [Column Families](column-families.html)
-- [`CREATE TABLE`](create-table.html)
-- [Data Types](data-types.html)
-- [`PRIMARY KEY`](primary-key.html)
-- [Constraints](constraints.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [Create a User-defined Schema](schema-design-schema.html)
-- [Create a Database](schema-design-database.html)
-- [Schema Design Overview](schema-design-overview.html)
-- [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)
+- [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
+- [Column Families]({% link {{ page.version.version }}/column-families.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [`PRIMARY KEY`]({% link {{ page.version.version }}/primary-key.md %})
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Create a User-defined Schema]({% link {{ page.version.version }}/schema-design-schema.md %})
+- [Create a Database]({% link {{ page.version.version }}/schema-design-database.md %})
+- [Schema Design Overview]({% link {{ page.version.version }}/schema-design-overview.md %})
+- [CockroachDB naming hierarchy]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy)

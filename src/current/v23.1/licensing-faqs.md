@@ -14,7 +14,7 @@ CockroachDB core is free to use.  Most [core features](#feature-licensing) are l
 
 Non-CCL core features from version 19.1 and earlier are licensed under [Apache 2.0](#apache); however, some features remain under third-party licenses. Beginning in version 19.2, these non-CCL features are licensed under the BSL for three years before [converting](#license-conversion-timeline) to the Apache 2.0 license.
 
-CockroachDB [Enterprise features](enterprise-licensing.html) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License.
+CockroachDB [Enterprise features]({% link {{ page.version.version }}/enterprise-licensing.md %}) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License.
 
 {{site.data.alerts.callout_info}}
 You can find any feature's license by checking the code's file header in the [CockroachDB repository](https://github.com/cockroachdb/cockroach).
@@ -54,23 +54,23 @@ The table below shows how certain core and Enterprise features are licensed:
 
 Feature          | BSL | CCL (free)      | CCL (paid)
 -----------------|:-----:|:-----------------:|:---------------:
-**[Import](import.html)** | ✓ | |
-**[Export](export.html)** | ✓ | |
-**[Restore](restore.html)** | | ✓ |
-**[Full backups](take-full-and-incremental-backups.html#full-backups)** | | ✓ |
-**[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
-**[Other advanced backup features](backup.html)** | | | ✓
+**[Import]({% link {{ page.version.version }}/import.md %})** | ✓ | |
+**[Export]({% link {{ page.version.version }}/export.md %})** | ✓ | |
+**[Restore]({% link {{ page.version.version }}/restore.md %})** | | ✓ |
+**[Full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#full-backups)** | | ✓ |
+**[Incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups)** | | | ✓
+**[Other advanced backup features]({% link {{ page.version.version }}/backup.md %})** | | | ✓
 **[Core changefeed](create-and-configure-changefeeds.html?filters=core)** | | ✓ |
-**[{{ site.data.products.enterprise }} changefeed](create-and-configure-changefeeds.html#configure-a-changefeed)** | | | ✓
-**[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
-**[Multi-region capabilities](multiregion-overview.html)** | | | ✓
-**[Follower reads](follower-reads.html)** | | | ✓
-**[Bounded staleness reads](follower-reads.html#bounded-staleness-reads)** | | | ✓
-**[Node map](enable-node-map.html)** | | | ✓
-**[Encryption at rest](security-reference/encryption.html#encryption-at-rest-enterprise)** | | | ✓
-**[Role-based access management](security-reference/authorization.html#roles)** | ✓ | |
-**[Password and certificate authentication](authentication.html)** | ✓ | |
-**[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
+**[{{ site.data.products.enterprise }} changefeed]({% link {{ page.version.version }}/create-and-configure-changefeeds.md %}#configure-a-changefeed)** | | | ✓
+**[Table-level zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-zone-levels)** | ✓ | |
+**[Multi-region capabilities]({% link {{ page.version.version }}/multiregion-overview.md %})** | | | ✓
+**[Follower reads]({% link {{ page.version.version }}/follower-reads.md %})** | | | ✓
+**[Bounded staleness reads]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads)** | | | ✓
+**[Node map]({% link {{ page.version.version }}/enable-node-map.md %})** | | | ✓
+**[Encryption at rest]({% link {{ page.version.version }}/security-reference/encryption.md %}#encryption-at-rest-enterprise)** | | | ✓
+**[Role-based access management]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles)** | ✓ | |
+**[Password and certificate authentication]({% link {{ page.version.version }}/authentication.md %})** | ✓ | |
+**[GSSAPI with Kerberos authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})** | | | ✓
 **[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
 
 {{site.data.alerts.callout_info}}
@@ -78,7 +78,7 @@ Individual feature licensing may change with each release of CockroachDB. You ca
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-See [Enterprise Features](enterprise-licensing.html) for more information.
+See [Enterprise Features]({% link {{ page.version.version }}/enterprise-licensing.md %}) for more information.
 {{site.data.alerts.end}}
 
 ## Obtain a license
@@ -89,7 +89,7 @@ All CockroachDB code is included in the same binary. No license key is required 
 - A **Trial license** enables you to try out CockroachDB Enterprise features for 30 days for free. To obtain a Trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) and receive your trial license via email within a few minutes.
 
 {{site.data.alerts.callout_success}}
-For quick local testing of Enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
+For quick local testing of Enterprise features, you can use the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -102,7 +102,7 @@ Cockroach Labs encourages non-commercial academic research involving CockroachDB
 
 ## Verify a license
 
-To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) command to check the organization name and license key:
+To verify a license, open the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) and use the [`SHOW CLUSTER SETTING`]({% link {{ page.version.version }}/show-cluster-setting.md %}) command to check the organization name and license key:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -138,7 +138,7 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 ## Monitor for license expiry
 
-You can monitor the time until your license expires with [Prometheus](monitor-cockroachdb-with-prometheus.html). The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the Enterprise license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting](monitoring-and-alerting.html).
+You can monitor the time until your license expires with [Prometheus]({% link {{ page.version.version }}/monitor-cockroachdb-with-prometheus.md %}). The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the Enterprise license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}).
 
 ## Renew an expired license
 

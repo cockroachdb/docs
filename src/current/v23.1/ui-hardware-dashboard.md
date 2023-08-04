@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Hardware** dashboard lets you monitor the hardware utilization of your cluster. This includes CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Hardware**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -87,7 +87,7 @@ Metric | Description
 
 The **available** disk capacity equals the amount of empty disk space, up to the value of the maximum store size. The store size is determined as follows:
 
-- If a store size was specified using the [`--store`](cockroach-start.html#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
+- If a store size was specified using the [`--store`]({% link {{ page.version.version }}/cockroach-start.md %}#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
 - If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
 
 The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Available Disk Capacity** graph.
@@ -114,6 +114,6 @@ The disk usage of the Cockroach binary, operating system, and other system files
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

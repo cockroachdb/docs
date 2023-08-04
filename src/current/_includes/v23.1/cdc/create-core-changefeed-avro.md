@@ -1,6 +1,6 @@
 In this example, you'll set up a core changefeed for a single-node cluster that emits Avro records. CockroachDB's Avro binary encoding convention uses the [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/docs/serializer-formatter.html) to store Avro schemas.
 
-1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+1. Use the [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) command to start a single-node cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -21,7 +21,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -32,7 +32,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -19,7 +19,7 @@ This page provides information about compliance with PCI DSS within {{ site.data
 When a {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
 {{site.data.alerts.end}}
 
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), PCI DSS is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
+During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cockroachdb-feature-availability), PCI DSS is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure]({% link cockroachcloud/cockroachdb-dedicated-on-azure.md %}).
 
 ## Overview of PCI DSS
 
@@ -98,7 +98,7 @@ Cockroach Labs takes actions to ensure that the operating procedures and the dep
 - Regularly scanning our environment using tools designated by PCI as [Approved Scanning Vendors (ASVs)](https://www.pcidssguide.com/what-is-a-pci-approved-scanning-vendor-asv/) to ensure our continued compliance with PCI DSS 3.2.1, and correcting issues as quickly as possible.
 - Regularly scanning our environment and software for known security vulnerabilities and applying updates and security patches in a timely manner.
 - Implementing [data loss prevention (DLP)](https://pcidss.com/listing-category/data-loss-protection-dlp).
-- [Logging](cloud-org-audit-logs.html) cluster actions and events, redacting sensitive information in audit logs, and retaining audit logs according to the [PCI DSS logging requirements](https://listings.pcisecuritystandards.org/documents/Effective-Daily-Log-Monitoring-Guidance.pdf).
+- [Logging]({% link cockroachcloud/cloud-org-audit-logs.md %}) cluster actions and events, redacting sensitive information in audit logs, and retaining audit logs according to the [PCI DSS logging requirements](https://listings.pcisecuritystandards.org/documents/Effective-Daily-Log-Monitoring-Guidance.pdf).
 
 A comprehensive list of all actions that Cockroach Labs takes to ensure compliance with PCI DSS 3.2.1 is beyond the scope of this document. For more information, contact your Cockroach Labs account team.
 
@@ -112,31 +112,31 @@ It is the customer’s responsibility to know what is required for your complian
 
 A {{ site.data.products.dedicated }} cluster must have the following features enabled to be used in a PCI DSS compliant manner:
 
-- The cluster must be created as a {{ site.data.products.dedicated }} advanced [private cluster](private-clusters.html). A private cluster's nodes have no public IP addresses, and its egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster. An existing cluster cannot be migrated to be a private cluster.
+- The cluster must be created as a {{ site.data.products.dedicated }} advanced [private cluster]({% link cockroachcloud/private-clusters.md %}). A private cluster's nodes have no public IP addresses, and its egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster. An existing cluster cannot be migrated to be a private cluster.
 - Single Sign-On (SSO) helps you avoid storing user passwords in {{ site.data.products.db }}:
 
-    - [Cloud Organization SSO](configure-cloud-org-sso.html) allows members of your {{ site.data.products.db }} organization to authenticate to {{ site.data.products.db }} using an identity from an identity provider (IdP). This integration can be done using SAML or OIDC.
-    - [Cluster SSO](cloud-sso-sql.html) allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of SSO, and the convenience of being able to choose from a variety of SSO identity providers, including {{ site.data.products.db }}, Google, Azure, GitHub, or your own self-hosted OIDC.
+    - [Cloud Organization SSO]({% link cockroachcloud/configure-cloud-org-sso.md %}) allows members of your {{ site.data.products.db }} organization to authenticate to {{ site.data.products.db }} using an identity from an identity provider (IdP). This integration can be done using SAML or OIDC.
+    - [Cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}) allows users to access the SQL interface of a CockroachDB cluster (whether provisioned on {{ site.data.products.db }} or self-hosted) with the full security of SSO, and the convenience of being able to choose from a variety of SSO identity providers, including {{ site.data.products.db }}, Google, Azure, GitHub, or your own self-hosted OIDC.
 
-- Enable [Customer-Managed Encryption Keys (CMEK)](cmek.html), which allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. It enables file-based encryption of all new or updated data, and provides additional protection on top of the storage-level encryption of cluster disks.
-- Enable [Egress Perimeter Controls](egress-perimeter-controls.html), which ensure that cluster egress operations, such as [customer-managed cluster backups](take-and-restore-customer-owned-backups.html) or [change data capture](/docs/{{site.versions["stable"]}}/change-data-capture-overview.html), are restricted to a list of specified external destinations.
-- [Cluster log exports](export-logs.html) must have the redaction feature enabled to prevent the exposure of sensitive data in logs exported to your instance of AWS CloudWatch or GCP Cloud Logging.
-- [Cloud Organization audit logs](cloud-org-audit-logs.html) automatically capture information when many types of events occur in your {{ site.data.products.db }} organization, such as when a cluster is created or when a member is added to or removed from an organization. You can export your {{ site.data.products.db }} organization's audit logs to analyze usage patterns and investigate security incidents.
+- Enable [Customer-Managed Encryption Keys (CMEK)]({% link cockroachcloud/cmek.md %}), which allow you to protect data at rest in a {{ site.data.products.dedicated }} cluster using a cryptographic key that is entirely within your control, hosted in a supported key-management system (KMS) platform. It enables file-based encryption of all new or updated data, and provides additional protection on top of the storage-level encryption of cluster disks.
+- Enable [Egress Perimeter Controls]({% link cockroachcloud/egress-perimeter-controls.md %}), which ensure that cluster egress operations, such as [customer-managed cluster backups]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) or [change data capture](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/change-data-capture-overview), are restricted to a list of specified external destinations.
+- [Cluster log exports]({% link cockroachcloud/export-logs.md %}) must have the redaction feature enabled to prevent the exposure of sensitive data in logs exported to your instance of AWS CloudWatch or GCP Cloud Logging.
+- [Cloud Organization audit logs]({% link cockroachcloud/cloud-org-audit-logs.md %}) automatically capture information when many types of events occur in your {{ site.data.products.db }} organization, such as when a cluster is created or when a member is added to or removed from an organization. You can export your {{ site.data.products.db }} organization's audit logs to analyze usage patterns and investigate security incidents.
 
 Cockroach Labs cannot provide specific advice about ensuring end-to-end compliance of your overall system with PCI DSS or how to implement a specific requirement across all operating environments. The following are additional guidelines for a cluster to be used in a PCI DSS compliant manner:
 
-- Before you insert cardholder data into the cluster, protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate {{ site.data.products.dedicated }} with Satori](/docs/{{site.versions["stable"]}}/satori-integration.html).
+- Before you insert cardholder data into the cluster, protect it by a combination of encryption, hashing, masking, and truncation. For an example implementation, refer to [Integrate {{ site.data.products.dedicated }} with Satori](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/satori-integration).
 - The cryptographic materials used to protect cardholder data must themselves be protected at rest and in transit, and access to the unencrypted key materials must be strictly limited only to approved individuals.
-- Within the cluster, restrict access to cardholder data on a “need to know basis” basis. Access to tables and views in the cluster that contain cardholder data must be restricted, and you are responsible to regularly test for compliance. Refer to [Authorization](/docs/{{site.versions["stable"]}}/authorization.html).
-- Protect networks that transmit cardholder data from malicious access over the public internet, and regularly test for compliance. For more information about protecting the cluster’s networks, refer to [Network Authorization](network-authorization.html).
+- Within the cluster, restrict access to cardholder data on a “need to know basis” basis. Access to tables and views in the cluster that contain cardholder data must be restricted, and you are responsible to regularly test for compliance. Refer to [Authorization](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/authorization).
+- Protect networks that transmit cardholder data from malicious access over the public internet, and regularly test for compliance. For more information about protecting the cluster’s networks, refer to [Network Authorization]({% link cockroachcloud/network-authorization.md %}).
 - Important security and stability updates are applied regularly and automatically to {{ site.data.products.dedicated }} clusters. These updates include, but are not limited to, the cluster’s CockroachDB runtime, the operating systems of cluster nodes, APIs, and management utilities. Customers are notified about upcoming cluster maintenance before it happens, when it starts, and when it completes.
 - If your cluster is part of a solution that includes external systems and applications that store or process cardholder data, it is your responsibility to ensure that these systems and applications, as well as their dependencies, are compliant with PCI DSS. You are responsible for regularly testing these systems and applications for known vulnerabilities and compliance violations and regularly applying updates and mitigations.
 
 ## See also
 
-- [Authorization](/docs/{{site.versions["stable"]}}/authorization.html)
-- [Integrate {{ site.data.products.dedicated }} with Satori](/docs/{{site.versions["stable"]}}/satori-integration.html)
-- [CockroachDB Releases](/docs/releases/index.html)
-- [{{ site.data.products.db }} Releases](/docs/releases/cloud.html)
-- [Security and Audit Monitoring](/docs/{{site.versions["stable"]}}/logging-use-cases.html#security-and-audit-monitoring)
-- [Network Authorization](network-authorization.html)
+- [Authorization](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/authorization)
+- [Integrate {{ site.data.products.dedicated }} with Satori](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/satori-integration)
+- [CockroachDB Releases](https://www.cockroachlabs.com//docs/releases/index)
+- [{{ site.data.products.db }} Releases](https://www.cockroachlabs.com//docs/releases/cloud)
+- [Security and Audit Monitoring](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/logging-use-cases#security-and-audit-monitoring)
+- [Network Authorization]({% link cockroachcloud/network-authorization.md %})

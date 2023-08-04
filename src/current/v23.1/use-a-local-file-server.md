@@ -6,7 +6,7 @@ key: use-a-local-file-server-for-bulk-operations.html
 docs_area: manage
 ---
 
-If you need a location to store files for the [`IMPORT`](import.html) process, but do not have access to (or cannot use) [cloud storage providers](use-cloud-storage.html), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
+If you need a location to store files for the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) process, but do not have access to (or cannot use) [cloud storage providers]({% link {{ page.version.version }}/use-cloud-storage.md %}), you can run a local file server. You can then use this file server by leveraging support for our [HTTP Export Storage API](#http-export-storage-api).
 
 This is especially useful for:
 
@@ -14,12 +14,12 @@ This is especially useful for:
 - Using on-premises storage
 
 {{site.data.alerts.callout_info}}
-HTTP file servers are not supported as storage for [backups](take-full-and-incremental-backups.html).
+HTTP file servers are not supported as storage for [backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}).
 {{site.data.alerts.end}}
 
 ## HTTP export storage API
 
-A CockroachDB [`IMPORT`](import.html) process that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
+A CockroachDB [`IMPORT`]({% link {{ page.version.version }}/import.md %}) process that requires reading or writing external files can use the HTTP Export Storage API by prefacing the address with `http`, e.g., `http://fileserver/mnt/cockroach-exports`.
 
 This API uses the `GET`, `PUT` and `DELETE` methods. This behaves like you would expect typical HTTP requests to work. After a `PUT` request to some path, a subsequent `GET` request should return the content sent in the `PUT` request body, at least until a `DELETE` request is received for that path.
 
@@ -99,8 +99,8 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 ## See also
 
 - [`IMPORT`][import]
-- [Use Cloud Storage](use-cloud-storage.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
 
 <!-- Reference Links -->
 
-[import]: import.html
+[import]: {% link {{ page.version.version }}/import.md %}

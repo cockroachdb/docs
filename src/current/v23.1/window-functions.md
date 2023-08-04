@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 CockroachDB supports the application of a function over a subset of the rows returned by a [selection query][selection-query]. Such a function is known as a _window function_, and it allows you to compute values by operating on more than one row at a time. The subset of rows a window function operates on is known as a _window frame_.
 
-For a complete list of supported window functions, see [Functions and Operators](functions-and-operators.html#window-functions).
+For a complete list of supported window functions, see [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#window-functions).
 
 {{site.data.alerts.callout_success}}
 All [aggregate functions][aggregate-functions] can also be used as [window functions][window-functions]. For more information, see the [Examples](#examples) below.
@@ -15,7 +15,7 @@ All [aggregate functions][aggregate-functions] can also be used as [window funct
 
 ## Window definitions
 
-Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [`WINDOW` clauses](sql-grammar.html#window_clause).
+Window frames are defined in [`OVER` clauses]({% link {{ page.version.version }}/sql-grammar.md %}#over_clause) or [`WINDOW` clauses]({% link {{ page.version.version }}/sql-grammar.md %}#window_clause).
 
 ### Syntax
 
@@ -39,7 +39,7 @@ Parameter | Description
 `window_name` | The name of the new window frame.
 `opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
 `opt_partition_clause`  | An optional `PARTITION BY` clause.
-`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](order-by.html) for details.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) for details.
 `opt_frame_clause`  | An optional frame clause, which contains a frame boundary and/or an `EXCLUDE` clause.
 
 </div>
@@ -63,7 +63,7 @@ Parameter | Description
 `window_name` | The name of the new window frame.
 `opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
 `opt_partition_clause`  | An optional `PARTITION BY` clause.
-`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](order-by.html) for details.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results]({% link {{ page.version.version }}/order-by.md %}) for details.
 `frame_bound` | An optional frame boundary.<br>Valid start boundaries include `UNBOUNDED PRECEDING`, `<offset> PRECEDING`, and `CURRENT ROW`.<br>Valid end boundaries include `UNBOUNDED FOLLOWING`, `<offset> FOLLOWING`, and `CURRENT ROW`.
 `opt_frame_exclusion` | An optional frame `EXCLUDE` clause.<br>Valid exclusions include `CURRENT ROW`, `GROUP`, `TIES`, and `NO OTHERS`.
 
@@ -74,7 +74,7 @@ Parameter | Description
 At a high level, window functions work by:
 
 1. Creating a "virtual table" using a [selection query][selection-query].
-1. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause](sql-grammar.html#over_clause), directly after the window function, or in a [`WINDOW` clause](sql-grammar.html#window_clause), as a part of the selection query.
+1. Splitting that table into window frames with [window definitions](#window-definitions). You can define window frames in an [`OVER` clause]({% link {{ page.version.version }}/sql-grammar.md %}#over_clause), directly after the window function, or in a [`WINDOW` clause]({% link {{ page.version.version }}/sql-grammar.md %}#window_clause), as a part of the selection query.
 1. Applying the window function to each of the window frames.
 
 For example, consider a query where the window frames are defined for each window function call:
@@ -92,7 +92,7 @@ Its operation can be described as follows (numbered steps listed here correspond
 
 1. The outer `SELECT DISTINCT(city) ... FROM rides` creates a "virtual table" on which the window functions will operate.
 1. The window function `SUM(revenue) OVER ()` operates on a window frame containing all rows of the query output.
-1. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition](partitioning.html) (Amsterdam, Boston, L.A., etc.).
+1. The window function `SUM(revenue) OVER (PARTITION BY city)` operates on several window frames in turn; each frame contains the `revenue` columns for a different city [partition]({% link {{ page.version.version }}/partitioning.md %}) (Amsterdam, Boston, L.A., etc.).
 
 <img src="{{ 'images/v23.1/window-functions.png' | relative_url }}" alt="Window function diagram" style="border:1px solid #eee;max-width:100%" />
 
@@ -386,4 +386,4 @@ To find out the total number of riders and total revenue generated thus far by t
 [demo]: https://www.youtube.com/watch?v=v2QK5VgLx6E
 [simple-select]: select-clause.html
 [selection-query]: selection-queries.html
-[window-functions]: functions-and-operators.html#window-functions
+[window-functions]: {% link {{ page.version.version }}/functions-and-operators.md %}#window-functions

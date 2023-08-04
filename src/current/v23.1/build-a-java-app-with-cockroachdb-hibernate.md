@@ -14,7 +14,7 @@ This tutorial shows you how build a simple Java application with CockroachDB and
 {% include {{page.version.version}}/app/java-version-note.md %}
 
 {{site.data.alerts.callout_success}}
-For a sample app and tutorial that uses Spring Data JPA (Hibernate) and CockroachDB, see [Build a Spring App with CockroachDB and JPA](build-a-spring-app-with-cockroachdb-jpa.html).
+For a sample app and tutorial that uses Spring Data JPA (Hibernate) and CockroachDB, see [Build a Spring App with CockroachDB and JPA]({% link {{ page.version.version }}/build-a-spring-app-with-cockroachdb-jpa.md %}).
 
 For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
@@ -33,7 +33,7 @@ git clone https://github.com/cockroachlabs/example-app-java-hibernate/
 ~~~
 
 {{site.data.alerts.callout_info}}
-The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate]({% link {{ page.version.version }}/install-client-drivers.md %}).
 {{site.data.alerts.end}}
 
 ## Step 3. Run the code
@@ -45,7 +45,7 @@ The sample code in this tutorial ([`Sample.java`](#code-contents)) uses Hibernat
 1. Transfers money from one account to another with the `transferFunds()` method.
 1. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
 
-In addition, the code shows a pattern for automatically handling [transaction retries](transaction-retry-error-example.html) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries]({% link {{ page.version.version }}/transaction-retry-error-example.md %}) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 It does all of the above using the practices we recommend for using Hibernate (and the underlying JDBC connection) with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
 
@@ -128,11 +128,11 @@ APP: getAccountBalance(2) --> 350.00
 
 ### Use `IMPORT` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html). It bypasses the [SQL layer](architecture/sql-layer.html) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}). It bypasses the [SQL layer]({% link {{ page.version.version }}/architecture/sql-layer.md %}) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
 
-For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](migrate-from-postgres.html).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
 
-For more information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+For more information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
 
 ### Use `reWriteBatchedInserts` for increased speed
 
@@ -142,7 +142,7 @@ We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x pe
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`]({% link {{ page.version.version }}/pagination.md %}).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query/#getting-results-based-on-a-cursor) from the PGJDBC documentation.
 

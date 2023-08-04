@@ -8,7 +8,7 @@ docs_area: reference.architecture
 The transaction layer of CockroachDB's architecture implements support for ACID transactions by coordinating concurrent operations.
 
 {{site.data.alerts.callout_info}}
-If you haven't already, we recommend reading the [Architecture Overview](overview.html).
+If you haven't already, we recommend reading the [Architecture Overview]({% link {{ page.version.version }}/architecture/overview.md %}).
 {{site.data.alerts.end}}
 
 ## Overview
@@ -17,7 +17,7 @@ Above all else, CockroachDB believes consistency is the most important feature o
 
 To provide consistency, CockroachDB implements full support for ACID transaction semantics in the transaction layer. However, it's important to realize that *all* statements are handled as transactions, including single statements––this is sometimes referred to as "autocommit mode" because it behaves as if every statement is followed by a `COMMIT`.
 
-For code samples of using transactions in CockroachDB, see our documentation on [transactions](../transactions.html#sql-statements).
+For code samples of using transactions in CockroachDB, see our documentation on [transactions]({% link {{ page.version.version }}/transactions.md %}#sql-statements).
 
 Because CockroachDB enables transactions that can span your entire cluster (including cross-range and cross-table transactions), it achieves correctness using a distributed, atomic commit protocol called [Parallel Commits](#parallel-commits).
 
@@ -29,9 +29,9 @@ When the transaction layer executes write operations, it doesn't directly write 
 
 - **Locks** for all of a transaction’s writes, which represent a provisional, uncommitted state. CockroachDB has several different types of locking:
 
-  - **Unreplicated Locks** are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery. These locks are not replicated via [Raft](replication-layer.html#raft).
+  - **Unreplicated Locks** are stored in an in-memory, per-node lock table by the [concurrency control](#concurrency-control) machinery. These locks are not replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft).
 
-  - **Replicated Locks** (also known as [write intents](#write-intents)) are replicated via [Raft](replication-layer.html#raft), and act as a combination of a provisional value and an exclusive lock. They are essentially the same as standard [multi-version concurrency control (MVCC)](storage-layer.html#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster.
+  - **Replicated Locks** (also known as [write intents](#write-intents)) are replicated via [Raft]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft), and act as a combination of a provisional value and an exclusive lock. They are essentially the same as standard [multi-version concurrency control (MVCC)]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc) values but also contain a pointer to the [transaction record](#transaction-records) stored on the cluster.
 
 - A **transaction record** stored in the range where the first write occurs, which includes the transaction's current state (which is either `PENDING`, `STAGING`, `COMMITTED`, or `ABORTED`).
 
@@ -45,12 +45,12 @@ If the transaction has not been aborted, the transaction layer begins executing 
 
 CockroachDB provides the following types of reads:
 
-- Strongly-consistent (aka "non-stale") reads: These are the default and most common type of read. These reads go through the [leaseholder](replication-layer.html#leases) and see all writes performed by writers that committed before the reading transaction started. They always return data that is correct and up-to-date.
-- Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions that use the [`AS OF SYSTEM TIME`](../as-of-system-time.html) clause. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads](../follower-reads.html).
+- Strongly-consistent (aka "non-stale") reads: These are the default and most common type of read. These reads go through the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) and see all writes performed by writers that committed before the reading transaction started. They always return data that is correct and up-to-date.
+- Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions that use the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) clause. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}).
 
 ### Commits (phase 2)
 
-CockroachDB checks the running transaction's record to see if it's been `ABORTED`; if it has, it [throws a retryable error](../transaction-retry-error-reference.html) to the client.
+CockroachDB checks the running transaction's record to see if it's been `ABORTED`; if it has, it [throws a retryable error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) to the client.
 
 Otherwise, CockroachDB sets the transaction record's state to `STAGING` and checks the transaction's pending write intents to see if they have been successfully replicated across the cluster.
 
@@ -81,7 +81,7 @@ In relationship to other layers in CockroachDB, the transaction layer:
 
 In distributed systems, ordering and causality are difficult problems to solve. While it's possible to rely entirely on Raft consensus to maintain serializability, it would be inefficient for reading data. To optimize performance of reads, CockroachDB implements hybrid-logical clocks (HLC) which are composed of a physical component (always close to local wall time) and a logical component (used to distinguish between events with the same physical component). This means that HLC time is always greater than or equal to the wall time. You can find more detail in the [HLC paper](http://www.cse.buffalo.edu/tech-reports/2014-04.pdf).
 
-In terms of transactions, the gateway node picks a timestamp for the transaction using HLC time. Whenever a transaction's timestamp is mentioned, it's an HLC value. This timestamp is used to both track versions of values (through [multi-version concurrency control](storage-layer.html#mvcc)), as well as provide our transactional isolation guarantees.
+In terms of transactions, the gateway node picks a timestamp for the transaction using HLC time. Whenever a transaction's timestamp is mentioned, it's an HLC value. This timestamp is used to both track versions of values (through [multi-version concurrency control]({% link {{ page.version.version }}/architecture/storage-layer.md %}#mvcc)), as well as provide our transactional isolation guarantees.
 
 When nodes send requests to other nodes, they include the timestamp generated by their local HLCs (which includes both physical and logical components). When nodes receive requests, they inform their local HLC of the timestamp supplied with the event by the sender. This is useful in guaranteeing that all data read/written on a node is at a timestamp less than the next HLC time.
 
@@ -89,39 +89,39 @@ This then lets the node primarily responsible for the range (i.e., the leasehold
 
 #### Max clock offset enforcement
 
-CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the [maximum offset allowed](../cockroach-start.html#flags-max-offset), **it crashes immediately**.
+CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the [maximum offset allowed]({% link {{ page.version.version }}/cockroach-start.md %}#flags-max-offset), **it crashes immediately**.
 
 While [serializable consistency](https://wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. It's therefore important to prevent clocks from drifting too far by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
-For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?](../operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
+For more detail about the risks that large clock offsets can cause, see [What happens when node clocks are not properly synchronized?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-node-clocks-are-not-properly-synchronized)
 
 ### Timestamp cache
 
 As part of providing serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
 
-The timestamp cache is a data structure used to store information about the reads performed by [leaseholders](replication-layer.html#leases). This is used to ensure that once some transaction *t1* reads a row, another transaction *t2* that comes along and tries to write to that row will be ordered after *t1*, thus ensuring a serial order of transactions, aka serializability.
+The timestamp cache is a data structure used to store information about the reads performed by [leaseholders]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases). This is used to ensure that once some transaction *t1* reads a row, another transaction *t2* that comes along and tries to write to that row will be ordered after *t1*, thus ensuring a serial order of transactions, aka serializability.
 
 Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is earlier than the timestamp cache's latest value, CockroachDB will attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart [during the commit time](#commits-phase-2) of the transaction (see [read refreshing](#read-refreshing)).
 
 ### Closed timestamps
 
-Each CockroachDB range tracks a property called its _closed timestamp_, which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a [transaction retry error](../transaction-retry-error-reference.html) (see [read refreshing](#read-refreshing)).
+Each CockroachDB range tracks a property called its _closed timestamp_, which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a [transaction retry error]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}) (see [read refreshing](#read-refreshing)).
 
-In other words, a closed timestamp is a promise by the range's [leaseholder](replication-layer.html#leases) to its follower replicas that it will not accept writes below that timestamp. Generally speaking, the leaseholder continuously closes timestamps a few seconds in the past.
+In other words, a closed timestamp is a promise by the range's [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases) to its follower replicas that it will not accept writes below that timestamp. Generally speaking, the leaseholder continuously closes timestamps a few seconds in the past.
 
-The closed timestamps subsystem works by propagating information from leaseholders to followers by piggybacking closed timestamps onto Raft commands such that the replication stream is synchronized with timestamp closing. This means that a follower replica can start serving reads with timestamps at or below the closed timestamp as soon as it has applied all of the Raft commands up to the position in the [Raft log](replication-layer.html#raft-logs) specified by the leaseholder.
+The closed timestamps subsystem works by propagating information from leaseholders to followers by piggybacking closed timestamps onto Raft commands such that the replication stream is synchronized with timestamp closing. This means that a follower replica can start serving reads with timestamps at or below the closed timestamp as soon as it has applied all of the Raft commands up to the position in the [Raft log]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft-logs) specified by the leaseholder.
 
 Once the follower replica has applied the abovementioned Raft commands, it has all the data necessary to serve reads with timestamps less than or equal to the closed timestamp.
 
-Note that closed timestamps are valid even if the leaseholder changes, since they are preserved across [lease transfers](replication-layer.html#epoch-based-leases-table-data).  Once a lease transfer occurs, the new leaseholder will not break the closed timestamp promise made by the old leaseholder.
+Note that closed timestamps are valid even if the leaseholder changes, since they are preserved across [lease transfers]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data).  Once a lease transfer occurs, the new leaseholder will not break the closed timestamp promise made by the old leaseholder.
 
-Closed timestamps provide the guarantees that are used to provide support for low-latency historical (stale) reads, also known as [Follower Reads](../follower-reads.html). Follower reads can be particularly useful in [multi-region deployments](../multiregion-overview.html).
+Closed timestamps provide the guarantees that are used to provide support for low-latency historical (stale) reads, also known as [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %}). Follower reads can be particularly useful in [multi-region deployments]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
-The timestamp for any transaction, especially a long-running transaction, could be [pushed](#timestamp-cache). An example is when a transaction encounters a key written at a higher timestamp. When this kind of [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp **may** provide some mitigation. Increasing the closed timestamp interval may reduce the likelihood that a long-running transaction's timestamp is pushed and must be retried. Thoroughly test any adjustment to the closed timestamp interval before deploying the change in production, because such an adjustment can have an impact on:
+The timestamp for any transaction, especially a long-running transaction, could be [pushed](#timestamp-cache). An example is when a transaction encounters a key written at a higher timestamp. When this kind of [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#understanding-and-avoiding-transaction-contention) happens between transactions, the closed timestamp **may** provide some mitigation. Increasing the closed timestamp interval may reduce the likelihood that a long-running transaction's timestamp is pushed and must be retried. Thoroughly test any adjustment to the closed timestamp interval before deploying the change in production, because such an adjustment can have an impact on:
 
-- [Follower reads](../follower-reads.html): Latency or throughput may be increased, because reads are served only by the leaseholder.
-- [Change data capture](../change-data-capture-overview.html): Latency of changefeed messages may be increased.
-- [Statistics collection](../cost-based-optimizer.html#table-statistics): Load placed on the leaseholder may increase during collection.
+- [Follower reads]({% link {{ page.version.version }}/follower-reads.md %}): Latency or throughput may be increased, because reads are served only by the leaseholder.
+- [Change data capture]({% link {{ page.version.version }}/change-data-capture-overview.md %}): Latency of changefeed messages may be increased.
+- [Statistics collection]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics): Load placed on the leaseholder may increase during collection.
 
 While increasing the closed timestamp may decrease retryable errors, it may also increase lock latencies. Consider an example where:
 
@@ -131,9 +131,9 @@ While increasing the closed timestamp may decrease retryable errors, it may also
 The following scenarios may occur depending on whether or not the closed timestamp has been increased:
 
 - When the timestamp for `txn 1` is pushed forward by the closed timestamp, its writes are moved to  time `t=2`, and it can try again to read the keys at `t=1` before writing its changes at `t=2`. The likelihood of retryable errors has increased.
-- If the closed timestamp interval is increased, `txn 2` may need to [wait](../performance-recipes.html#waiting-transaction) for `txn 1` to complete or to be pushed into the future before `txn 2` can proceed. The likelihood of lock contention has increased.
+- If the closed timestamp interval is increased, `txn 2` may need to [wait]({% link {{ page.version.version }}/performance-recipes.md %}#waiting-transaction) for `txn 1` to complete or to be pushed into the future before `txn 2` can proceed. The likelihood of lock contention has increased.
 
-Before increasing the closed timestamp intervals, consider other solutions for [minimizing transaction retries](../transaction-retry-error-reference.html#minimize-transaction-retry-errors).
+Before increasing the closed timestamp intervals, consider other solutions for [minimizing transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#minimize-transaction-retry-errors).
 
 For more information about the implementation of closed timestamps and Follower Reads, see our blog post [An Epic Read on Follower Reads](https://www.cockroachlabs.com/blog/follower-reads-stale-data/).
 
@@ -198,7 +198,7 @@ The concurrency manager combines the tasks of a *latch manager* and a *lock tabl
 - The *latch manager* sequences the incoming requests and provides isolation between those requests.
 - The *lock table* provides both locking and sequencing of requests (in concert with the latch manager). It is a per-node, in-memory data structure that holds a collection of locks acquired by in-progress transactions. To ensure compatibility with the existing system of [write intents](#write-intents) (a.k.a. replicated, exclusive locks), it pulls in information about these external locks as necessary when they are discovered in the course of evaluating requests.
 
-The concurrency manager enables support for pessimistic locking via [SQL](sql-layer.html) using the [`SELECT FOR UPDATE`](../select-for-update.html) statement. This statement can be used to increase throughput and decrease tail latency for contended operations.
+The concurrency manager enables support for pessimistic locking via [SQL]({% link {{ page.version.version }}/architecture/sql-layer.md %}) using the [`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) statement. This statement can be used to increase throughput and decrease tail latency for contended operations.
 
 For more details about how the concurrency manager works with the latch manager and lock table, see the sections below:
 
@@ -219,9 +219,9 @@ However, not all locks are stored directly under the manager's control, so not a
 <a name="unreplicated-locks"></a>
 
 {{site.data.alerts.callout_info}}
-The concurrency manager operates on an unreplicated lock table structure. Unreplicated locks are held only on a single replica in a [range](overview.html#architecture-range), which is typically the [leaseholder](replication-layer.html#leases). They are very fast to acquire and release, but provide no guarantee of survivability across [lease transfers or leaseholder crashes](replication-layer.html#how-leases-are-transferred-from-a-dead-node).
+The concurrency manager operates on an unreplicated lock table structure. Unreplicated locks are held only on a single replica in a [range]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range), which is typically the [leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#leases). They are very fast to acquire and release, but provide no guarantee of survivability across [lease transfers or leaseholder crashes]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
-This lack of survivability for unreplicated locks affects SQL statements implemented using them, such as [`SELECT ... FOR UPDATE`](../select-for-update.html#known-limitations).
+This lack of survivability for unreplicated locks affects SQL statements implemented using them, such as [`SELECT ... FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}#known-limitations).
 
 In the future, we intend to pull all locks, including those associated with [write intents](#write-intents), into the concurrency manager directly through a replicated lock table structure.
 {{site.data.alerts.end}}
@@ -317,7 +317,7 @@ If there is a deadlock between transactions (i.e., they're each blocked by each 
 
 Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation.
 
-The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`](../transaction-retry-error-reference.html#readwithinuncertaintyintervalerror) immediately, before continuing). If the refreshing is unsuccessful (also known as *read invalidation*), then the transaction must be retried at the pushed timestamp.
+The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#readwithinuncertaintyintervalerror) immediately, before continuing). If the refreshing is unsuccessful (also known as *read invalidation*), then the transaction must be retried at the pushed timestamp.
 
 ### Transaction pipelining
 
@@ -358,7 +358,7 @@ The transaction coordinator is able to do this while maintaining correctness gua
 For an example showing how Parallel Commits works in more detail, see [Parallel Commits - step by step](#parallel-commits-step-by-step).
 
 {{site.data.alerts.callout_info}}
-The latency until intents are resolved is unchanged by the introduction of Parallel Commits: two rounds of consensus are still required to resolve intents. This means that [contended workloads](../performance-best-practices-overview.html#transaction-contention) are expected to profit less from this feature.
+The latency until intents are resolved is unchanged by the introduction of Parallel Commits: two rounds of consensus are still required to resolve intents. This means that [contended workloads]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) are expected to profit less from this feature.
 {{site.data.alerts.end}}
 
 #### Parallel Commits - step by step
@@ -417,16 +417,16 @@ Additionally, when other transactions encounter a transaction in `STAGING` state
 
 ## Non-blocking transactions
 
-CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
+CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters]({% link {{ page.version.version }}/multiregion-overview.md %}) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
 
 The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
 
-- Non-blocking transactions use a replication scheme over the [ranges](overview.html#architecture-range) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
-- Non-blocking transactions are minimally disruptive to reads over the data they modify, even in the presence of read/write [contention](../performance-best-practices-overview.html#transaction-contention).
+- Non-blocking transactions use a replication scheme over the [ranges]({% link {{ page.version.version }}/architecture/overview.md %}#architecture-range) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
+- Non-blocking transactions are minimally disruptive to reads over the data they modify, even in the presence of read/write [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
-These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments](../multiregion-overview.html). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.
+These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments]({% link {{ page.version.version }}/multiregion-overview.md %}). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.
 
-Most users will not interact with the non-blocking transaction mechanism directly. Instead, they will [set a `GLOBAL` table locality](../table-localities.html#global-tables) using the SQL API.
+Most users will not interact with the non-blocking transaction mechanism directly. Instead, they will [set a `GLOBAL` table locality]({% link {{ page.version.version }}/table-localities.md %}#global-tables) using the SQL API.
 
 ### How non-blocking transactions work
 
@@ -439,7 +439,7 @@ Non-blocking transactions are implemented via _non-blocking ranges_. Every non-b
 - A transaction that writes to this range and commits with a future time commit timestamp needs to wait until the HLC advances past its commit timestamp. This process is known as _"commit-wait"_. Essentially, the HLC waits until it advances past the future timestamp on its own, or it advances due to updates from other timestamps.
 - A transaction that reads a future-time write to this range can have its commit timestamp bumped into the future as well, if the write falls in the read's uncertainty window (this is dictated by the [maximum clock offset](#max-clock-offset-enforcement) configured for the cluster). Such transactions (a.k.a. "conflicting readers") may also need to commit-wait.
 
-As a result of the above properties, all replicas in a non-blocking range are expected to be able to serve transactionally-consistent reads at the present. This means that all follower replicas in a non-blocking range (which includes all [non-voting replicas](replication-layer.html#non-voting-replicas)) implicitly behave as "consistent read replicas", which are exactly what they sound like: read-only replicas that always have a consistent view of the range's current state.
+As a result of the above properties, all replicas in a non-blocking range are expected to be able to serve transactionally-consistent reads at the present. This means that all follower replicas in a non-blocking range (which includes all [non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas)) implicitly behave as "consistent read replicas", which are exactly what they sound like: read-only replicas that always have a consistent view of the range's current state.
 
 ## Technical interactions with other layers
 
@@ -453,9 +453,9 @@ The `TxnCoordSender` sends its KV requests to `DistSender` in the distribution l
 
 ## What's next?
 
-Learn how CockroachDB presents a unified view of your cluster's data in the [distribution layer](distribution-layer.html).
+Learn how CockroachDB presents a unified view of your cluster's data in the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
 <!-- Links -->
 
 [storage]: storage-layer.html
-[sql]: sql-layer.html
+[sql]: {% link {{ page.version.version }}/architecture/sql-layer.md %}

@@ -6,7 +6,7 @@ docs_area: manage
 ---
 
 {{site.data.alerts.callout_info}}
-Encrypted [`BACKUP`](backup.html) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
+Encrypted [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) without an Enterprise license.
 {{site.data.alerts.end}}
 
 This doc provides information about how to take and restore encrypted backups in the following ways:
@@ -20,11 +20,11 @@ This doc provides information about how to take and restore encrypted backups in
 
 ## Use Key Management Service
 
-You can encrypt full or incremental backups with AWS KMS, Google Cloud KMS, or Azure Key Vault by using the [`kms` option](backup.html#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.
+You can encrypt full or incremental backups with AWS KMS, Google Cloud KMS, or Azure Key Vault by using the [`kms` option]({% link {{ page.version.version }}/backup.md %}#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.
 
-On [`RESTORE`](restore.html), CockroachDB reads the `ENCRYPTION_INFO` file and attempts to decrypt the encrypted data key using the KMS URI provided in the `RESTORE` statement. Once CockroachDB successfully obtains the unencrypted data key, the `BACKUP` manifest and data files will be decrypted and the restoration will proceed. Similarly, the same KMS URI is needed to decrypt the file to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html#show-an-encrypted-backup).
+On [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), CockroachDB reads the `ENCRYPTION_INFO` file and attempts to decrypt the encrypted data key using the KMS URI provided in the `RESTORE` statement. Once CockroachDB successfully obtains the unencrypted data key, the `BACKUP` manifest and data files will be decrypted and the restoration will proceed. Similarly, the same KMS URI is needed to decrypt the file to list the contents of the backup when using [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}#show-an-encrypted-backup).
 
-When used with [incremental backups](take-full-and-incremental-backups.html#incremental-backups), the `kms` option is applied to all the [backup file URLs](backup.html#backup-file-urls), which means each incremental must include at least one of the KMS URIs used to take the full backup. It can be any subset of the original URIs, but you cannot include any new KMS URIs. Similarly, when used with [locality-aware backups](take-and-restore-locality-aware-backups.html), the KMS URI provided is applied to files in all localities.
+When used with [incremental backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}#incremental-backups), the `kms` option is applied to all the [backup file URLs]({% link {{ page.version.version }}/backup.md %}#backup-file-urls), which means each incremental must include at least one of the KMS URIs used to take the full backup. It can be any subset of the original URIs, but you cannot include any new KMS URIs. Similarly, when used with [locality-aware backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %}), the KMS URI provided is applied to files in all localities.
 
 For more information about AWS KMS, see the [documentation](https://aws.amazon.com/kms/). For more information about Google Cloud KMS, see the [documentation](https://cloud.google.com/kms/docs).
 
@@ -38,9 +38,9 @@ CockroachDB also supports [kms encryption](#take-a-locality-aware-backup-with-km
 
 #### Add a new KMS key to an existing backup
 
-To add a new KMS key to an existing backup, use the [`ALTER BACKUP`](alter-backup.html) statement. `ALTER BACKUP` allows for new KMS encryption keys to be applied to an existing chain of encrypted backups (full and incremental). Once completed, subsequent `BACKUP`, `RESTORE`, and [`SHOW BACKUP`](show-backup.html) statements can use any of the existing or new KMS URIs to decrypt the backup.
+To add a new KMS key to an existing backup, use the [`ALTER BACKUP`]({% link {{ page.version.version }}/alter-backup.md %}) statement. `ALTER BACKUP` allows for new KMS encryption keys to be applied to an existing chain of encrypted backups (full and incremental). Once completed, subsequent `BACKUP`, `RESTORE`, and [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) statements can use any of the existing or new KMS URIs to decrypt the backup.
 
-For examples on adding a new KMS key to an existing backup, see the [`ALTER BACKUP` examples](alter-backup.html#examples).
+For examples on adding a new KMS key to an existing backup, see the [`ALTER BACKUP` examples]({% link {{ page.version.version }}/alter-backup.md %}#examples).
 
 ### URI formats
 
@@ -58,7 +58,7 @@ The AWS URI **requires** the following:
 ----------------------------+------------------------------------------------------------------------
 `aws:///`                   | The AWS scheme. Note the triple slash (`///`).
 `{key}`                     | The key identifiers used to reference the KMS key that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
-`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication](cloud-storage-authentication.html).
+`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, you must provide access keys in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`). If you use `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/). For details on setting up and using the different authentication types, see [Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 `REGION=<region>`           | The region of the KMS key.
 
 See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html) documentation for guidance on creating an AWS KMS key.
@@ -79,7 +79,7 @@ See AWS's [KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/creat
     azure-kms:///{key}/{key version}?AUTH=implicit&AZURE_VAULT_NAME={key vault name}
     ~~~
 
-    See [Cloud Storage Authentication](cloud-storage-authentication.html?filters=azure#azure-blob-storage-implicit-authentication) for more detail on `implicit` authentication.
+    See [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}?filters=azure#azure-blob-storage-implicit-authentication) for more detail on `implicit` authentication.
 
 The Azure Key Vault URI uses the following parameters:
 
@@ -126,7 +126,7 @@ The Google Cloud URI **requires** the following:
 `locations/{location}`      | The location specified at key creation.
 `keyRings/{key ring}`       | The Google Cloud key ring created to group keys.
 `cryptoKeys/{key name}`     | The name of the key.
-`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, then you must include `&CREDENTIALS=` with your base-64 encoded key. To load credentials from your environment, use `AUTH=implicit`. For details on setting up and using the different authentication types, see [Authentication](cloud-storage-authentication.html).
+`AUTH=<auth_type>`          | The user-specified credentials. If you use `AUTH=specified`, then you must include `&CREDENTIALS=` with your base-64 encoded key. To load credentials from your environment, use `AUTH=implicit`. For details on setting up and using the different authentication types, see [Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 
 See Google Cloud's [customer-managed encryption key](https://cloud.google.com/storage/docs/encryption/using-customer-managed-keys) documentation for guidance on creating a KMS key.
 
@@ -144,7 +144,7 @@ The following examples provide connection strings to Amazon S3 and Google Cloud 
 
 #### Take an encrypted Amazon S3 backup
 
-To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#options):
+To take an encrypted backup with AWS KMS, use the `kms` [option]({% link {{ page.version.version }}/backup.md %}#options):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -220,7 +220,7 @@ RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET
 
 #### Take an encrypted Azure Blob Storage backup
 
-{% include_cached new-in.html version="v23.1" %} To take an encrypted backup with Azure KMS, use the `kms` [option](backup.html#options):
+{% include_cached new-in.html version="v23.1" %} To take an encrypted backup with Azure KMS, use the `kms` [option]({% link {{ page.version.version }}/backup.md %}#options):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -296,7 +296,7 @@ RESTORE FROM LATEST IN 'azure://{container name}?AUTH=specified&AZURE_ACCOUNT_NA
 
 #### Take an encrypted Google Cloud Storage backup
 
-To take an encrypted backup with Google Cloud KMS, use the `kms` [option](backup.html#options):
+To take an encrypted backup with Google Cloud KMS, use the `kms` [option]({% link {{ page.version.version }}/backup.md %}#options):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -378,18 +378,18 @@ RESTORE FROM LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED K
 
 #### Take an encrypted backup using a passphrase
 
-To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
+To take an encrypted backup, use the [`encryption_passphrase` option]({% link {{ page.version.version }}/backup.md %}#with-encryption-passphrase):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 BACKUP INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 
-To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
+To [restore]({% link {{ page.version.version }}/restore.md %}), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
 
 #### Restore from an encrypted backup using a passphrase
 
-To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
+To decrypt an encrypted backup, use the [`encryption_passphrase` option]({% link {{ page.version.version }}/backup.md %}#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
 
 For example, the encrypted backup created in the previous example can be restored with:
 
@@ -398,19 +398,19 @@ For example, the encrypted backup created in the previous example can be restore
 RESTORE FROM LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 
-To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`](restore.html#restore-a-specific-backup).
+To restore from a specific backup, use [`RESTORE FROM {subdirectory} IN ...`]({% link {{ page.version.version }}/restore.md %}#restore-a-specific-backup).
 
 ## See also
 
 - [`BACKUP`][backup]
 - [`RESTORE`][restore]
-- [`ALTER BACKUP`](alter-backup.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
-- [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
-- [`IMPORT`](migration-overview.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [`ALTER BACKUP`]({% link {{ page.version.version }}/alter-backup.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Take and Restore Locality-aware Backups]({% link {{ page.version.version }}/take-and-restore-locality-aware-backups.md %})
+- [Take Backups with Revision History and Restore from a Point-in-time]({% link {{ page.version.version }}/take-backups-with-revision-history-and-restore-from-a-point-in-time.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/migration-overview.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
 <!-- Reference links -->
 

@@ -36,20 +36,20 @@ The **Overview** page displays details about the selected {{ site.data.products.
 - The cluster's **Current activity**
 - Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
 
-For more information, see [Cluster Overview Page](cluster-overview-page.html).
+For more information, see [Cluster Overview Page]({% link cockroachcloud/cluster-overview-page.md %}).
 
 ## Estimate usage cost
 
 {{site.data.alerts.callout_info}}
-This feature is not available if your organization is billed through [Credits](billing-management.html#view-credits-balance).
+This feature is not available if your organization is billed through [Credits]({% link cockroachcloud/billing-management.md %}#view-credits-balance).
 {{site.data.alerts.end}}
 
 The monthly cost estimate is calculated using simple extrapolation that assumes your workload during the selected time frame is an accurate representation of your workload over the month. If you haven't been running a workload for at least the length of the selected time frame, your results will be inaccurate.
 
-1. In the **Usage this month** section of your cluster's [**Overview** page](cluster-overview-page.html), click **Estimate usage cost**.
+1. In the **Usage this month** section of your cluster's [**Overview** page]({% link cockroachcloud/cluster-overview-page.md %}), click **Estimate usage cost**.
 1. Select a time period in which your workload was active.
 
-    Your used [RUs](plan-your-cluster-serverless.html#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrused costs and monthly cost estimate do not account for the [free resources](plan-your-cluster-serverless.html#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
+    Your used [RUs]({% link cockroachcloud/plan-your-cluster-serverless.md %}#request-units), used storage, and accrued costs during the time period will be shown along with a monthly cost estimate. The accrused costs and monthly cost estimate do not account for the [free resources]({% link cockroachcloud/plan-your-cluster-serverless.md %}#free-vs-paid-usage) granted to each non-contract organization, which you would have to use up before being charged.
 
 ## Edit your resource limits
 
@@ -107,9 +107,9 @@ To remove regions from your cluster:
 
 ## Restore data from a backup
 
-Use the [Managed-Service Backups](use-managed-service-backups.html) to restore your cluster from automatic full cluster backups.
+Use the [Managed-Service Backups]({% link cockroachcloud/use-managed-service-backups.md %}) to restore your cluster from automatic full cluster backups.
 
-You can also [back up and restore](take-and-restore-customer-owned-backups.html) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally](take-and-restore-customer-owned-backups.html#back-up-data) to [`userfile`](../{{site.current_cloud_version}}/use-userfile-storage.html) or [back up to cloud storage](take-and-restore-customer-owned-backups.html?filters=cloud#back-up-data).
+You can also [back up and restore]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) your {{ site.data.products.serverless }} cluster manually. You can take [backups locally]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}#back-up-data) to [`userfile`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/use-userfile-storage) or [back up to cloud storage]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}?filters=cloud#back-up-data).
 
 ## Delete cluster
 

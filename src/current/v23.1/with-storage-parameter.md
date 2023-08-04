@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage parameter on a table.
+The `WITH (storage parameter)` [statement]({% link {{ page.version.version }}/sql-statements.md %}) sets a storage parameter on a table.
 
 ## Syntax
 
@@ -42,7 +42,7 @@ The `WITH (storage parameter)` [statement](sql-statements.html) sets a storage p
 
 ## Required privileges
 
-The user must be a member of the [`admin`](security-reference/authorization.html#roles) or [owner](security-reference/authorization.html#object-ownership) roles, or have the [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the table.
+The user must be a member of the [`admin`]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [owner]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) roles, or have the [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the table.
 
 ## Examples
 
@@ -75,14 +75,14 @@ SHOW CREATE TABLE ttl_test;
 (1 row)
 ~~~
 
-In this case, CockroachDB implicitly added the `ttl` and `ttl_job_cron` [TTL storage parameters](row-level-ttl.html#ttl-storage-parameters).
+In this case, CockroachDB implicitly added the `ttl` and `ttl_job_cron` [TTL storage parameters]({% link {{ page.version.version }}/row-level-ttl.md %}#ttl-storage-parameters).
 
 ## See also
 
-- [`CREATE TABLE`](create-table.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`SET` (storage parameter)](alter-table.html#set-storage-parameter)
-- [`RESET` (storage parameter)](alter-table.html#reset-storage-parameter)
-- [Batch Delete Expired Data with Row-Level TTL](row-level-ttl.html)
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`SET` (storage parameter)]({% link {{ page.version.version }}/alter-table.md %}#set-storage-parameter)
+- [`RESET` (storage parameter)]({% link {{ page.version.version }}/alter-table.md %}#reset-storage-parameter)
+- [Batch Delete Expired Data with Row-Level TTL]({% link {{ page.version.version }}/row-level-ttl.md %})

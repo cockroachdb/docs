@@ -5,7 +5,7 @@ A group of interconnected CockroachDB nodes that function as a single distribute
 
 Each cluster has its own authorization hierarchy, meaning that users and roles must be defined on that specific cluster.
 
-A CockroachDB cluster can be run in CockroachDB Cloud, within a customer [Organization](glossary.html#organization), or can be self-hosted.
+A CockroachDB cluster can be run in CockroachDB Cloud, within a customer [Organization]({% link {{ page.version.version }}/architecture/glossary.md %}#organization), or can be self-hosted.
 
 ### Node
 An individual instance of CockroachDB. One or more nodes form a cluster.
@@ -14,11 +14,11 @@ An individual instance of CockroachDB. One or more nodes form a cluster.
 <a name="architecture-range"></a>
 CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a sorted map of key-value pairs. This keyspace is divided into contiguous chunks called _ranges_, such that every key is found in one range.
 
-From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches [the default range size](../configure-replication-zones.html#range-max-bytes), it is [split into two ranges](distribution-layer.html#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
+From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches [the default range size](https://www.cockroachlabs.com/docs/configure-replication-zones#range-max-bytes), it is [split into two ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
 
 ### Replica
 <a name="architecture-replica"></a>
-A copy of a range stored on a node. By default, there are three [replicas](../configure-replication-zones.html#num_replicas) of each range on different nodes.
+A copy of a range stored on a node. By default, there are three [replicas](https://www.cockroachlabs.com/docs/configure-replication-zones#num_replicas) of each range on different nodes.
 
 ### Leaseholder
 <a name="architecture-leaseholder"></a>
@@ -28,7 +28,7 @@ For most types of tables and queries, the leaseholder is the only replica that c
 
 ### Raft protocol
 <a name="architecture-raft"></a>
-The [consensus protocol](replication-layer.html#raft) employed in CockroachDB that ensures that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
+The [consensus protocol]({% link {{ page.version.version }}/architecture/replication-layer.md %}#raft) employed in CockroachDB that ensures that your data is safely stored on multiple nodes and that those nodes agree on the current state even if some of them are temporarily disconnected.
 
 ### Raft leader
 <a name="architecture-raft-leader"></a>

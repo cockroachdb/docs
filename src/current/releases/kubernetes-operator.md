@@ -7,7 +7,7 @@ docs_area: releases
 
 {% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
-The CockroachDB [Kubernetes Operator](/docs/{{site.versions["stable"]}}/kubernetes-overview.html) is the recommended way to configure, deploy, and manage {{ site.data.products.core }} clusters on Kubernetes. The Kubernetes Operator is released on a separate schedule and is versioned independently from CockroachDB.
+The CockroachDB [Kubernetes Operator](https://www.cockroachlabs.com/docs/{{site.versions["stable"]}}/kubernetes-overview) is the recommended way to configure, deploy, and manage {{ site.data.products.core }} clusters on Kubernetes. The Kubernetes Operator is released on a separate schedule and is versioned independently from CockroachDB.
 
 This page announces releases of the Kubernetes Operator and provides links to more information on GitHub. **Version {{ latest_operator_version }} is the latest release**.
 

@@ -6,11 +6,11 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v21.1](../releases/v21.1.html) is available, your [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page guides you through the process.
+Now that [CockroachDB v21.1](https://www.cockroachlabs.com/docs/releases/v21.1) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page guides you through the process.
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to v21.1, you must be running v20.2. If you are not running v20.2, [upgrade to v20.2](upgrade-to-v20.2.html) and then return to this page and continue to Step 2.
+To upgrade to v21.1, you must be running v20.2. If you are not running v20.2, [upgrade to v20.2]({% link cockroachcloud/upgrade-to-v20.2.md %}) and then return to this page and continue to Step 2.
 
 ## Step 2. Select your cluster size
 
@@ -25,7 +25,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 
-In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/v21.1/multi-active-availability) design.
 
 Approximately 72 hours after all nodes are running v21.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v21.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the {{ site.data.products.db }} Console.
 
@@ -40,19 +40,19 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, it's important to complete the following steps.
+Before starting the upgrade, it's important to complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v21.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v21.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.html#v21-1-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v21.1](https://www.cockroachlabs.com/docs/releases/v21.1#v21-1-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ## Step 5. Start the upgrade
 
@@ -80,7 +80,7 @@ Once your cluster is running v21.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
@@ -90,13 +90,13 @@ Use the [DB Console](tools-page.html) or your own tooling to monitor your applic
 
 Most v21.1 features can be used right away, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](../v21.1/multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](../v21.1/architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](../v21.1/architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
+- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](https://www.cockroachlabs.com/docs/v21.1/multiregion-overview), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](https://www.cockroachlabs.com/docs/v21.1/architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](../v21.1/architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
 
-- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes](../v21.1/inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](../v21.1/array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
+- **Empty arrays in GIN indexes:** After finalization, newly created [GIN indexes](https://www.cockroachlabs.com/docs/v21.1/inverted-indexes) will contain rows containing empty arrays in [`ARRAY`](https://www.cockroachlabs.com/docs/v21.1/array) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in GIN indexes.
 
-- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](../v21.1/computed-columns.html).
+- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](https://www.cockroachlabs.com/docs/v21.1/computed-columns).
 
-- **Changefeed support for primary key changes:** After finalization, [changefeeds](../v21.1/stream-data-out-of-cockroachdb-using-changefeeds.html) will detect primary key changes.
+- **Changefeed support for primary key changes:** After finalization, [changefeeds](https://www.cockroachlabs.com/docs/v21.1/stream-data-out-of-cockroachdb-using-changefeeds) will detect primary key changes.
 
 ## Step 7. Finish the upgrade
 
@@ -122,5 +122,5 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 
 ## See also
 
-- [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v21.1 Release Notes](../releases/v21.1.html)
+- [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %})
+- [CockroachDB v21.1 Release Notes](https://www.cockroachlabs.com/docs/releases/v21.1)

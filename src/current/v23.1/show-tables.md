@@ -6,10 +6,10 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW TABLES` [statement](sql-statements.html) lists the schema, table name, table type, owner, and estimated row count for the tables or [views](views.html) in a schema or database.
+The `SHOW TABLES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the schema, table name, table type, owner, and estimated row count for the tables or [views]({% link {{ page.version.version }}/views.md %}) in a schema or database.
 
 {{site.data.alerts.callout_info}}
-While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will list the object with a `(dropped)` suffix.
+While a table or view is being [dropped]({% link {{ page.version.version }}/drop-table.md %}), `SHOW TABLES` will list the object with a `(dropped)` suffix.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -20,7 +20,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 
 ## Required privileges
 
-The `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) on the database of the concerned table is required to list it with SHOW TABLES.
+The `CONNECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database of the concerned table is required to list it with SHOW TABLES.
 
 ## Parameters
 
@@ -29,15 +29,15 @@ Parameter | Description
 `database_name` | The name of the database for which to show tables.
 `schema_name` | The name of the schema for which to show tables.
 
-When a `database_name` and `schema_name` are omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
+When a `database_name` and `schema_name` are omitted, the tables of the [current schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-schema) in the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database) are listed.
 
-`SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution](sql-name-resolution.html).
+`SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution]({% link {{ page.version.version }}/sql-name-resolution.md %}).
 
 ## Performance
 
 To optimize the performance of the `SHOW TABLES` statement, you can do the following:
 
-- Disable table row-count estimation by setting the `sql.show_tables.estimated_row_count.enabled` [cluster setting](cluster-settings.html) to `false` before executing a `SHOW TABLES` statement.
+- Disable table row-count estimation by setting the `sql.show_tables.estimated_row_count.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) to `false` before executing a `SHOW TABLES` statement.
 - Avoid running `SHOW TABLES` on databases with a large number of tables (e.g., more than 10,000 tables).
 
 ## Examples
@@ -46,7 +46,7 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 
 ### Show tables in the current database
 
-`SHOW TABLES` uses the [current schema](sql-name-resolution.html#current-schema) `public` set by default in `search_path`:
+`SHOW TABLES` uses the [current schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-schema) `public` set by default in `search_path`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -65,7 +65,7 @@ To optimize the performance of the `SHOW TABLES` statement, you can do the follo
 (6 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command](cockroach-sql.html#commands):
+Alternatively, within the built-in SQL shell, you can use the `\dt` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -141,7 +141,7 @@ Because `public` is the current schema, these statements return the same output:
 
 ### Show user-defined tables with comments
 
-You can use [`COMMENT ON`](comment-on.html) to add comments on a table.
+You can use [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) to add comments on a table.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -167,7 +167,7 @@ To view a table's comments:
 (6 rows)
 ~~~
 
-You can also view comments on a table with [`SHOW CREATE`](show-create.html):
+You can also view comments on a table with [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -189,7 +189,7 @@ You can also view comments on a table with [`SHOW CREATE`](show-create.html):
 (1 row)
 ~~~
 
-For more information, see [`COMMENT ON`](comment-on.html).
+For more information, see [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}).
 
 ### Show virtual tables with comments
 
@@ -206,18 +206,18 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
      schema_name     |              table_name               | type  | owner | estimated_row_count | locality |                                                              comment
 ---------------------+---------------------------------------+-------+-------+---------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------
   information_schema | administrable_role_authorizations     | table | NULL  |                NULL | NULL     | roles for which the current user has admin option
-                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/information-schema.html#administrable_role_authorizations
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/{% link {{ page.version.version }}/information-schema.md %}#administrable_role_authorizations
                      |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
   information_schema | applicable_roles                      | table | NULL  |                NULL | NULL     | roles available to the current user
-                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/information-schema.html#applicable_roles
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/{% link {{ page.version.version }}/information-schema.md %}#applicable_roles
                      |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
   information_schema | attributes                            | table | NULL  |                NULL | NULL     | attributes was created for compatibility and is currently unimplemented
   information_schema | character_sets                        | table | NULL  |                NULL | NULL     | character sets available in the current database
-                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/information-schema.html#character_sets
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/{% link {{ page.version.version }}/information-schema.md %}#character_sets
                      |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-character-sets.html
   information_schema | check_constraint_routine_usage        | table | NULL  |                NULL | NULL     | check_constraint_routine_usage was created for compatibility and is currently unimplemented
   information_schema | check_constraints                     | table | NULL  |                NULL | NULL     | check constraints
-                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/information-schema.html#check_constraints
+                     |                                       |       |       |                     |          | https://www.cockroachlabs.com/docs/{{ page.version.version }}/{% link {{ page.version.version }}/information-schema.md %}#check_constraints
                      |                                       |       |       |                     |          | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
   ...
 (86 rows)
@@ -225,20 +225,20 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
 
 ### Show locality of tables
 
-For [multi-region](multiregion-overview.html) tables, you can display the locality of each table using the `SHOW TABLES` command.
+For [multi-region]({% link {{ page.version.version }}/multiregion-overview.md %}) tables, you can display the locality of each table using the `SHOW TABLES` command.
 
 {% include enterprise-feature.md %}
 
-1. [Set the primary region](alter-database.html#set-primary-region) on `movr` to `us-east`:
+1. [Set the primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) on `movr` to `us-east`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER DATABASE movr SET PRIMARY REGION "us-east";
     ~~~
 
-    All tables will be [`REGIONAL BY TABLE`](alter-table.html#set-the-table-locality-to-regional-by-table) in the primary region by default.
+    All tables will be [`REGIONAL BY TABLE`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-table) in the primary region by default.
 
-1. Configure the `users` table to be [`REGIONAL BY ROW`](alter-table.html#set-the-table-locality-to-regional-by-row):
+1. Configure the `users` table to be [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#set-the-table-locality-to-regional-by-row):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -263,14 +263,14 @@ For [multi-region](multiregion-overview.html) tables, you can display the locali
     ~~~
 
     {{site.data.alerts.callout_info}}
-    Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`](crdb-internal.html) table.
+    Locality information for tables is also available in the `locality` column within the [`crdb_internal.tables`]({% link {{ page.version.version }}/crdb-internal.md %}) table.
     {{site.data.alerts.end}}
 
 ## See also
 
-- [`SHOW DATABASES`](show-databases.html)
-- [`SHOW SCHEMAS`](show-schemas.html)
-- [`CREATE TABLE`](create-table.html)
-- [`CREATE VIEW`](create-view.html)
-- [`COMMENT ON`](comment-on.html)
-- [Information Schema](information-schema.html)
+- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
+- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
+- [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %})
+- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})

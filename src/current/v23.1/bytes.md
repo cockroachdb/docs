@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `BYTES` [data type](data-types.html) stores binary strings of variable length.
+The `BYTES` [data type]({% link {{ page.version.version }}/data-types.md %}) stores binary strings of variable length.
 
 
 ## Aliases
@@ -18,18 +18,18 @@ In CockroachDB, the following are aliases for `BYTES`:
 ## Syntax
 
 To express a byte array constant, see the section on
-[byte array literals](sql-constants.html#byte-array-literals) for more
+[byte array literals]({% link {{ page.version.version }}/sql-constants.md %}#byte-array-literals) for more
 details. For example, the following three are equivalent literals for the same
 byte array: `b'abc'`, `b'\141\142\143'`, `b'\x61\x62\x63'`.
 
 In addition to this syntax, CockroachDB also supports using
-[string literals](sql-constants.html#string-literals), including the
+[string literals]({% link {{ page.version.version }}/sql-constants.md %}#string-literals), including the
 syntax `'...'`, `e'...'` and `x'....'` in contexts where a byte array
 is otherwise expected.
 
 ## Size
 
-The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure adequate performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.
+The size of a `BYTES` value is variable, but it's recommended to keep values under 1 MB to ensure adequate performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
 
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
@@ -68,10 +68,10 @@ If your application requires large binary input in single queries, you can store
 ## Supported conversions
 
 `BYTES` values can be
-[cast](data-types.html#data-type-conversions-and-casts) explicitly to
-[`STRING`](string.html). This conversion always succeeds. Two
+[cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) explicitly to
+[`STRING`]({% link {{ page.version.version }}/string.md %}). This conversion always succeeds. Two
 conversion modes are supported, controlled by the
-[session variable](set-vars.html#supported-variables) `bytea_output`:
+[session variable]({% link {{ page.version.version }}/set-vars.md %}#supported-variables) `bytea_output`:
 
 - `hex` (default): The output of the conversion starts with the two
   characters `\`, `x` and the rest of the string is composed by the
@@ -121,15 +121,15 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
        3
 ~~~
 
-In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
+In this case, [`LENGTH(string)`]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`]({% link {{ page.version.version }}/functions-and-operators.md %}#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
 #### Translating literals to `STRING` vs. `BYTES`
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 
-+ `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
++ `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes]({% link {{ page.version.version }}/sql-constants.md %}#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
 ## See also
 
-[Data Types](data-types.html)
+[Data Types]({% link {{ page.version.version }}/data-types.md %})

@@ -11,10 +11,10 @@ This page has instructions for making SQL [selection queries][selection] against
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Install a Driver or ORM Framework](install-client-drivers.html).
-- [Connect to the database](connect-to-the-database.html).
-- [Insert data](insert-data.html) that you now want to run queries against.
+- [Create a {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
+- [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
+- [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+- [Insert data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to run queries against.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
@@ -34,7 +34,7 @@ Before reading this page, do the following:
 SELECT id, balance from accounts;
 ~~~
 
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+For more information about how to use the built-in SQL client, see the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) reference docs.
 
 </section>
 
@@ -129,7 +129,7 @@ SELECT * FROM bank ORDER BY balance;
 (5 rows)
 ~~~
 
-For reference documentation and more examples, see the [`ORDER BY`](order-by.html) syntax page.
+For reference documentation and more examples, see the [`ORDER BY`]({% link {{ page.version.version }}/order-by.md %}) syntax page.
 
 ## Limit results
 
@@ -153,7 +153,7 @@ SELECT * FROM bank LIMIT 5;
 (5 rows)
 ~~~
 
-For reference documentation and more examples, see the [`LIMIT`/`OFFSET`](limit-offset.html) syntax page.
+For reference documentation and more examples, see the [`LIMIT`/`OFFSET`]({% link {{ page.version.version }}/limit-offset.md %}) syntax page.
 
 ## Joins
 
@@ -184,21 +184,21 @@ Join performance can be a big factor in your application's performance.  For mor
 Reference information related to this task:
 
 - [Selection queries][selection]
-- [`SELECT`](select-clause.html)
+- [`SELECT`]({% link {{ page.version.version }}/select-clause.md %})
 - [Joins][joins]
 - [Paginate through limited results][paginate]
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
+- [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
 
 Other common tasks:
 
-- [Connect to the Database](connect-to-the-database.html)
-- [Insert Data](insert-data.html)
-- [Update Data](update-data.html)
-- [Delete Data](delete-data.html)
-- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
+- [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
+- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
+- [Update Data]({% link {{ page.version.version }}/update-data.md %})
+- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
+- [Run Multi-Statement Transactions]({% link {{ page.version.version }}/run-multi-statement-transactions.md %})
+- [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Optimize Statement Performance][fast]
-- [Example Apps](example-apps.html)
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 <!-- Reference Links -->
 

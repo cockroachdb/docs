@@ -7,7 +7,7 @@ docs_area: reference.db_console
 
 The **Distributed** dashboard lets you monitor important distribution layer health and performance metrics.
 
-To view this dashboard, [access the DB Console](ui-overview.html#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Distributed**.
+To view this dashboard, [access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** > **Distributed**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -21,7 +21,7 @@ The **Distributed** dashboard displays the following time series graphs:
 
 <img src="{{ 'images/v22.1/ui_batches.png' | relative_url }}" alt="DB Console batches graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Batches** graph displays various details about [`BatchRequest`](architecture/distribution-layer.html#batchrequest) traffic in the [Distribution layer](architecture/distribution-layer.html).
+The **Batches** graph displays various details about [`BatchRequest`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#batchrequest) traffic in the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
 Hovering over the graph displays values for the following metrics:
 
@@ -34,7 +34,7 @@ Partial Batches | The number of partial `BatchRequests` made, as tracked by the 
 
 <img src="{{ 'images/v22.1/ui_rpcs.png' | relative_url }}" alt="DB Console RPCs graph" style="border:1px solid #eee;max-width:100%" />
 
-The **RPCs** graph displays various details about [`RPC`](architecture/distribution-layer.html#grpc) traffic in the [Distribution layer](architecture/distribution-layer.html).
+The **RPCs** graph displays various details about [`RPC`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc) traffic in the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
 Hovering over the graph displays values for the following metrics:
 
@@ -47,7 +47,7 @@ Local Fast-path | The number of local fast-path RPC calls made, as tracked by th
 
 <img src="{{ 'images/v22.1/ui_rpc_errors.png' | relative_url }}" alt="DB Console RPC errors graph" style="border:1px solid #eee;max-width:100%" />
 
-The **RPC Errors** graph displays various details about [`RPC`](architecture/distribution-layer.html#grpc) errors encountered in the [Distribution layer](architecture/distribution-layer.html).
+The **RPC Errors** graph displays various details about [`RPC`]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc) errors encountered in the [Distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
 Hovering over the graph displays values for the following metrics:
 
@@ -60,7 +60,7 @@ Not Leaseholder Errors | The number of `NotLeaseHolderErrors` logged, as tracked
 
 <img src="{{ 'images/v22.1/ui_kv_transactions.png' | relative_url }}" alt="DB Console KV transactions graph" style="border:1px solid #eee;max-width:100%" />
 
-The **KV Transactions** graph displays various details about transactions in the [Transaction layer](architecture/transaction-layer.html).
+The **KV Transactions** graph displays various details about transactions in the [Transaction layer]({% link {{ page.version.version }}/architecture/transaction-layer.md %}).
 
 Hovering over the graph displays values for the following metrics:
 
@@ -98,30 +98,30 @@ Metric | Description
 
 <img src="{{ 'images/v22.1/ui_node_heartbeat_99.png' | relative_url }}" alt="DB Console node heartbeat latency: 99th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Node Heartbeat Latency: 99th percentile** graph displays the 99th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period.
+The **Node Heartbeat Latency: 99th percentile** graph displays the 99th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period.
 
 Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
-`<node>` | The 99th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
+`<node>` | The 99th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
 
 ## Node Heartbeat Latency: 90th percentile
 
 <img src="{{ 'images/v22.1/ui_node_heartbeat_90.png' | relative_url }}" alt="DB Console node heartbeat latency: 90th percentile graph" style="border:1px solid #eee;max-width:100%" />
 
-The **Node Heartbeat Latency: 90th percentile** graph displays the 90th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period.
+The **Node Heartbeat Latency: 90th percentile** graph displays the 90th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period.
 
 Hovering over the graph displays values for the following metrics:
 
 Metric | Description
 --------|----
-`<node>` | The 90th percentile of time elapsed between [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues) heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
+`<node>` | The 90th percentile of time elapsed between [node liveness]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#node-liveness-issues) heartbeats on the cluster over a one-minute period for that node, as calculated from the `liveness.heartbeatlatency` metric.
 
 {% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 
-- [Troubleshooting Overview](troubleshooting-overview.html)
-- [Support Resources](support-resources.html)
-- [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
+- [Support Resources]({% link {{ page.version.version }}/support-resources.md %})
+- [Raw Status Endpoints]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#raw-status-endpoints)

@@ -5,18 +5,18 @@ toc: true
 docs_area: develop
 ---
 
-This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](movr.html).
+This page provides an overview on changing and removing the objects in a database schema, with some simple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR]({% link {{ page.version.version }}/movr.md %}).
 
 ## Before you begin
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster](../cockroachcloud/quickstart.html) or [start a local cluster](../cockroachcloud/quickstart.html?filters=local).
-- [Review the database schema objects](schema-design-overview.html).
-- [Create a database](schema-design-database.html).
-- [Create a user-defined schema](schema-design-schema.html).
-- [Create a table](schema-design-table.html).
-- [Add secondary indexes](schema-design-indexes.html).
+- [Create a {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
+- [Review the database schema objects]({% link {{ page.version.version }}/schema-design-overview.md %}).
+- [Create a database]({% link {{ page.version.version }}/schema-design-database.md %}).
+- [Create a user-defined schema]({% link {{ page.version.version }}/schema-design-schema.md %}).
+- [Create a table]({% link {{ page.version.version }}/schema-design-table.md %}).
+- [Add secondary indexes]({% link {{ page.version.version }}/schema-design-indexes.md %}).
 
 ## Alter database schema objects
 
@@ -38,14 +38,14 @@ For examples, see [below](#altering-objects-examples).
 
 CockroachDB supports the following `ALTER` statements:
 
-- [`ALTER DATABASE`](alter-database.html)
-- [`ALTER SCHEMA`](alter-schema.html)
-- [`ALTER TABLE`](alter-table.html)
-- [`ALTER INDEX`](alter-index.html)
-- [`ALTER VIEW`](alter-view.html)
-- [`ALTER SEQUENCE`](alter-sequence.html)
-- [`ALTER TYPE`](alter-type.html)
-- [`ALTER USER/ROLE`](alter-user.html)
+- [`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %})
+- [`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %})
+- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
+- [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %})
+- [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
+- [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`ALTER USER/ROLE`]({% link {{ page.version.version }}/alter-user.md %})
 
 ### Best practices for altering objects
 
@@ -59,7 +59,7 @@ CockroachDB supports the following `ALTER` statements:
 
 ### Altering objects examples
 
-Suppose you want to make some changes to the `users` table that you created in [Create a Table](schema-design-table.html). In specific, you want to do the following:
+Suppose you want to make some changes to the `users` table that you created in [Create a Table]({% link {{ page.version.version }}/schema-design-table.md %}). In specific, you want to do the following:
 
 - Add a new `username` column.
 - Change the columns in the table's primary key to `username` column and `email`.
@@ -68,10 +68,10 @@ Suppose you want to make some changes to the `users` table that you created in [
 
 The `ALTER TABLE` statement has subcommands for all of these changes:
 
-- To add a new column, use the [`ADD COLUMN` subcommand](alter-table.html#add-column).
-- To change the primary key columns of a table, use the [`ALTER PRIMARY KEY` subcommand](alter-table.html#alter-primary-key).
-- To move a table to a different schema, use the [`SET SCHEMA`](alter-table.html#set-schema) subcommand.
-- To change the owner of a table, use the [`OWNER TO`](alter-table.html#owner-to) subcommand.
+- To add a new column, use the [`ADD COLUMN` subcommand]({% link {{ page.version.version }}/alter-table.md %}#add-column).
+- To change the primary key columns of a table, use the [`ALTER PRIMARY KEY` subcommand]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key).
+- To move a table to a different schema, use the [`SET SCHEMA`]({% link {{ page.version.version }}/alter-table.md %}#set-schema) subcommand.
+- To change the owner of a table, use the [`OWNER TO`]({% link {{ page.version.version }}/alter-table.md %}#owner-to) subcommand.
 
 Create a new `.sql` file for the changes that you plan to make to the table:
 
@@ -94,9 +94,9 @@ Under that first `ALTER TABLE` statement, add another `ALTER TABLE` statement fo
 ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (username, email);
 ~~~
 
-In order to add a column to an existing table's primary key index, the column must have an existing [`NOT NULL` constraint](not-null.html). Neither the `username` nor the `email` columns have `NOT NULL` constraints.
+In order to add a column to an existing table's primary key index, the column must have an existing [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %}). Neither the `username` nor the `email` columns have `NOT NULL` constraints.
 
-Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand](alter-table.html#alter-column) to set the `NOT NULL` constraint on the `email` column:
+Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand]({% link {{ page.version.version }}/alter-table.md %}#alter-column) to set the `NOT NULL` constraint on the `email` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -116,7 +116,7 @@ ALTER TABLE IF EXISTS movr.max_schema.users
 ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (username, email);
 ~~~
 
-The remaining changes that you want to make will require `ALTER TABLE` statements with the `SET SCHEMA` and `OWNER TO` subcommands. An `ALTER TABLE ... SET SCHEMA` statement will change the contents of two schemas, and an `ALTER TABLE ... OWNER TO` statement will change the privileges of two users. To follow [authorization best practices](security-reference/authorization.html#authorization-best-practices), you should execute any statements that change databases, user-defined schemas, or user privileges as a member of the `admin` role (e.g., as `root`).
+The remaining changes that you want to make will require `ALTER TABLE` statements with the `SET SCHEMA` and `OWNER TO` subcommands. An `ALTER TABLE ... SET SCHEMA` statement will change the contents of two schemas, and an `ALTER TABLE ... OWNER TO` statement will change the privileges of two users. To follow [authorization best practices]({% link {{ page.version.version }}/security-reference/authorization.md %}#authorization-best-practices), you should execute any statements that change databases, user-defined schemas, or user privileges as a member of the `admin` role (e.g., as `root`).
 
 Create a new `.sql` file for the remaining `ALTER TABLE` statements, to be executed by `root`:
 
@@ -224,16 +224,16 @@ For examples, see [below](#altering-objects-examples).
 
 CockroachDB supports the following `DROP` statements:
 
-- [`DROP DATABASE`](drop-database.html)
-- [`DROP SCHEMA`](drop-schema.html)
-- [`DROP TABLE`](drop-table.html)
-- [`DROP INDEX`](drop-index.html)
-- [`DROP SEQUENCE`](drop-sequence.html)
-- [`DROP VIEW`](drop-view.html)
-- [`DROP USER/ROLE`](drop-user.html)
+- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
+- [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
+- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
+- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
+- [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %})
+- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
+- [`DROP USER/ROLE`]({% link {{ page.version.version }}/drop-user.md %})
 
 {{site.data.alerts.callout_info}}
-To drop columns and column constraints from a table, use the `DROP COLUMN` and `DROP CONSTRAINT` subcommands of the [`ALTER TABLE`](alter-table.html) statement.
+To drop columns and column constraints from a table, use the `DROP COLUMN` and `DROP CONSTRAINT` subcommands of the [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) statement.
 {{site.data.alerts.end}}
 
 ### Drop best practices
@@ -281,7 +281,7 @@ $ cockroach sql \
 (1 row)
 ~~~
 
-Note that `users_first_name_last_name_key` is a `UNIQUE` index, which means that it implies a dependent, `UNIQUE` constraint. To [drop indexes with dependencies](drop-index.html#remove-an-index-and-dependent-objects-with-cascade), you can use the `CASCADE` keyword.
+Note that `users_first_name_last_name_key` is a `UNIQUE` index, which means that it implies a dependent, `UNIQUE` constraint. To [drop indexes with dependencies]({% link {{ page.version.version }}/drop-index.md %}#remove-an-index-and-dependent-objects-with-cascade), you can use the `CASCADE` keyword.
 
 Create a new file, and add the `DROP` statement:
 
@@ -331,10 +331,10 @@ $ cockroach sql \
 
 ## What's next?
 
-- [Online Schema Changes](online-schema-changes.html)
-- [Write Data](insert-data.html)
-- [Read Data](query-data.html)
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [Write Data]({% link {{ page.version.version }}/insert-data.md %})
+- [Read Data]({% link {{ page.version.version }}/query-data.md %})
 
 You might also be interested in the following pages:
 
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

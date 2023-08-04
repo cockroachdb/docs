@@ -5,18 +5,18 @@ toc: true
 docs_area: develop
 ---
 
-This tutorial presents the common causes for [slow SQL queries](query-behavior-troubleshooting.html#identify-slow-queries) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues in queries against the [`movr` example dataset](cockroach-demo.html#datasets).
+This tutorial presents the common causes for [slow SQL queries]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %}#identify-slow-queries) and describes how to use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to troubleshoot the issues in queries against the [`movr` example dataset]({% link {{ page.version.version }}/cockroach-demo.md %}#datasets).
 
 ## Before you begin
 
-Start the [MovR database](movr.html) on a CockroachDB demo cluster with a larger data set.
+Start the [MovR database]({% link {{ page.version.version }}/movr.md %}) on a CockroachDB demo cluster with a larger data set.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach demo movr --num-users 1250000
 ~~~
 
-This command opens an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+This command opens an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database).
 
 ## Issue: Full table scans
 
@@ -45,7 +45,7 @@ SELECT * FROM users WHERE name = 'Cheyenne Smith';
 Time: 981ms total (execution 981ms / network 0ms)
 ~~~
 
-To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
+To understand why this query performs poorly, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -101,7 +101,7 @@ The query will now return much faster:
 Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
-To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
+To understand why the performance improved, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to see the new query plan:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -126,11 +126,11 @@ To understand why the performance improved, use [`EXPLAIN`](explain.html) to see
 
 This shows you that CockroachDB starts with the secondary index (`users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`/'Cheyenne Smith' - /'Cheyenne Smith'`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
 
-Because the `users` table is under [the maximum range size](configure-replication-zones.html#range-max-bytes), the primary index and all secondary indexes are contained in a single range with a single leaseholder. If the table were bigger, however, the primary index and secondary index could reside in separate ranges, each with its own leaseholder. In this case, if the leaseholders were on different nodes, the query would require more network hops, further increasing latency.
+Because the `users` table is under [the maximum range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), the primary index and all secondary indexes are contained in a single range with a single leaseholder. If the table were bigger, however, the primary index and secondary index could reside in separate ranges, each with its own leaseholder. In this case, if the leaseholders were on different nodes, the query would require more network hops, further increasing latency.
 
 ### Solution: Filter by a secondary index storing additional columns
 
-When you have a query that filters by a specific column but retrieves a subset of the table's total columns, you can improve performance by [storing](indexes.html#storing-columns) those additional columns in the secondary index to prevent the query from needing to scan the primary index as well.
+When you have a query that filters by a specific column but retrieves a subset of the table's total columns, you can improve performance by [storing]({% link {{ page.version.version }}/indexes.md %}#storing-columns) those additional columns in the secondary index to prevent the query from needing to scan the primary index as well.
 
 For example, let's say you frequently retrieve a user's name and credit card number:
 
@@ -238,7 +238,7 @@ To reset the database for following examples, let's drop the index on `name`:
 
 ## Issue: Joining data from different tables
 
-Secondary indexes are crucial when [joining](joins.html) data from different tables as well.
+Secondary indexes are crucial when [joining]({% link {{ page.version.version }}/joins.md %}) data from different tables as well.
 
 For example, let's say you want to count the number of users who started rides on a given day. To do this, you need to use a join to get the relevant rides from the `rides` table and then map the `rider_id` for each of those rides to the corresponding `id` in the `users` table, counting each mapping only once:
 
@@ -256,7 +256,7 @@ SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = 
 Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
-To understand what's happening, use [`EXPLAIN`](explain.html) to see the query plan:
+To understand what's happening, use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to see the query plan:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -327,7 +327,7 @@ SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = 
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-To understand why performance improved, again use [`EXPLAIN`](explain.html) to see the new query plan:
+To understand why performance improved, again use [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) to see the new query plan:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -370,7 +370,7 @@ Notice that CockroachDB now starts by using `rides@rides_start_time_idx` seconda
 
 ## Issue: Inefficient joins
 
-[Hash joins](joins.html#hash-joins) are more expensive and require more memory than [lookup joins](joins.html#lookup-joins). Hence the [cost-based optimizer](cost-based-optimizer.html) uses a lookup join whenever possible.
+[Hash joins]({% link {{ page.version.version }}/joins.md %}#hash-joins) are more expensive and require more memory than [lookup joins]({% link {{ page.version.version }}/joins.md %}#lookup-joins). Hence the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) uses a lookup join whenever possible.
 
 For the following query, the cost-based optimizer can’t perform a lookup join because the query doesn’t have a prefix of the `rides` table’s primary key available and thus has to read the entire table and search for a match, resulting in a slow query:
 
@@ -442,6 +442,6 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 ## See also
 
-- [SQL Best Practices](performance-best-practices-overview.html)
-- [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Indexes](indexes.html)
+- [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Troubleshoot SQL Behavior]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})

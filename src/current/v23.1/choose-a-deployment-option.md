@@ -21,13 +21,13 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications with explicit budget constraints.</li>
       </ul></td>
       <td><ul>
-        <li><a id="serverless"></a><b><a href="../cockroachcloud/quickstart.html">{{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
+        <li><a id="serverless"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart">{{ site.data.products.serverless }}</a></b>: A fully managed, multi-tenant CockroachDB deployment, in a single region and cloud (AWS or GCP). Delivers an instant, autoscaling database and offers a generous free tier and consumption based billing once free limits are exceeded.</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Automatic transactional capacity scaling (up and down) depending on database activity. Ability to scale down to zero and consume zero resources.</li>
         <li><b>Availability</b>: High availability. Data replication in triplicate within a single region. Ensures outage survival by spreading replicas across availability zones.</li>
         <li><b>Operations</b>: Cockroach Labs SRE team manages and maintains every cluster. Backups every three hours.</li>
-        <li><b>Cost</b>: Free for 10 GiB of storage and 50M <a href="../cockroachcloud/serverless-faqs.html#what-is-a-request-unit">Request Units</a>. Consumption based billing and <a href="architecture/glossary.html#resource-limits">resource limits</a> enforce budget requirements.</li>
+        <li><b>Cost</b>: Free for 10 GiB of storage and 50M <a href="https://www.cockroachlabs.com/docs/cockroachcloud/serverless-faqs#what-is-a-request-unit">Request Units</a>. Consumption based billing and <a href="architecture/glossary.html#resource-limits">resource limits</a> enforce budget requirements.</li>
         <li><b>Resource isolation</b>: Shared CockroachDB software and infrastructure. Data is protected and not shared between deployments.</li>
         <li><b>Support</b>: Provided by CockroachDB <a href="https://forum.cockroachlabs.com/">community forum</a> and public <a href="https://cockroachdb.slack.com/">Slack workspace</a>.</li>
       </ul></td>
@@ -40,7 +40,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
       <td><ul>
-        <li><a id="dedicated"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
+        <li><a id="dedicated"></a><b><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart-trial-cluster">{{ site.data.products.dedicated }}</a></b>: A fully managed, single tenant CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).</li>
       </ul></td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
@@ -79,9 +79,9 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
 
 ## See also
 
-- [CockroachDB deployment](architecture/glossary.html#cockroachdb-deployment-terms)
+- [CockroachDB deployment]({% link {{ page.version.version }}/architecture/glossary.md %}#cockroachdb-deployment-terms)
 - [CockroachDB pricing](https://www.cockroachlabs.com/get-started-cockroachdb/)
-- [CockroachDB Cloud FAQs](../cockroachcloud/serverless-faqs.html)
-- [CockroachDB Cloud Architecture](../cockroachcloud/architecture.html)
-- [Manual Deployment](manual-deployment.html)
-- [Kubernetes Deployment](kubernetes-overview.html)
+- [CockroachDB Cloud FAQs]({% link cockroachcloud/serverless-faqs.md %})
+- [CockroachDB Cloud Architecture]({% link cockroachcloud/architecture.md %})
+- [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %})
+- [Kubernetes Deployment]({% link {{ page.version.version }}/kubernetes-overview.md %})

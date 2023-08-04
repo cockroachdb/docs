@@ -6,7 +6,7 @@ docs_area: manage.security
 cloud: true
 ---
 
-SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](cloud-sso-sql.html) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
+SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using public key infrastructure (PKI) security certificates as an alternative to authenticating using a username and password or using [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}) or [Cluster Single Sign-on (SSO) using JSON web tokens (JWT)](../{{site.versions["stable"]}}/sso-sql.html).
 
 {{site.data.alerts.callout_success}}
 Cockroach Labs recommends using single sign on (SSO) for authentication of human users where possible, and JWT or security certificate for authentication of your application users.
@@ -16,7 +16,7 @@ This page describes how to administer [public key infrastructure (PKI)](../{{sit
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
-Refer to [Authenticating to {{ site.data.products.db }}](authentication.html) for an overview of authentication in {{ site.data.products.db }}, both at the level of the organization and at the cluster.
+Refer to [Authenticating to {{ site.data.products.db }}]({% link cockroachcloud/authentication.md %}) for an overview of authentication in {{ site.data.products.db }}, both at the level of the organization and at the cluster.
 
 {{site.data.alerts.callout_info}}
 {% include_cached feature-phases/limited-access.md %}
@@ -169,7 +169,7 @@ Add a CA certificate to your cluster's trust store for client authentication. Cl
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI): The CockroachDB certificate Trust Store](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html#the-cockroachdb-certificate-trust-store)
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -251,7 +251,7 @@ This operation also interrupts existing database connections. End users should b
 This section shows how to replace the CA certificate used by your cluster for certificate-based client authentication.
 
 {{site.data.alerts.callout_success}}
-The [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
+The [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role is required to manage the CA certificate for a {{ site.data.products.dedicated }} cluster.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -330,7 +330,7 @@ After this operation is performed, clients can no longer authenticate with certi
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator](authorization.html#cluster-administrator) or [Org Administrator (legacy)](authorization.html#org-administrator-legacy) Organization role.
+Managing the certificate authority (CA) certificate for a {{ site.data.products.dedicated }} cluster requires the [Cluster Administrator]({% link cockroachcloud/authorization.md %}#cluster-administrator) or [Org Administrator (legacy)]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) Organization role.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

@@ -8,7 +8,7 @@ docs_area: manage
 Cockroach Labs supports different levels of authentication to cloud storage. When running disaster recovery or change data capture operations to and from a storage bucket, authentication setup can vary depending on the cloud provider. Select the tab appropriate to your cloud storage provider to see the available authentication options for your platform.
 
 {{site.data.alerts.callout_info}}
-We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3](cloud-storage-authentication.html#amazon-s3-assume-role) and [Google Cloud Storage](cloud-storage-authentication.html?filters=gcs#google-cloud-storage-assume-role).
+We recommend using IAM roles for users to authenticate to cloud storage resources. For more detail, see the assume role and workload identity sections for [Amazon S3]({% link {{ page.version.version }}/cloud-storage-authentication.md %}#amazon-s3-assume-role) and [Google Cloud Storage](cloud-storage-authentication.html?filters=gcs#google-cloud-storage-assume-role).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -92,7 +92,7 @@ The [following section](#set-up-amazon-s3-assume-role) demonstrates setting up a
 
 For example, to configure a user to assume an IAM role that allows a bulk operation to an Amazon S3 bucket, take the following steps:
 
-1. Create a role that contains a policy to interact with the S3 buckets depending on the operation your user needs to complete. See the [Storage permissions](use-cloud-storage.html#storage-permissions) section for details on the minimum permissions each CockroachDB bulk operation requires. You can create an IAM role in [Amazon's Management console](https://aws.amazon.com/console/), under the **IAM** and then **Roles** menu. Alternately, you can use the [AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-quickstart.html).
+1. Create a role that contains a policy to interact with the S3 buckets depending on the operation your user needs to complete. See the [Storage permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) section for details on the minimum permissions each CockroachDB bulk operation requires. You can create an IAM role in [Amazon's Management console](https://aws.amazon.com/console/), under the **IAM** and then **Roles** menu. Alternately, you can use the [AWS CLI](https://docs.aws.amazon.com/cli/v1/userguide/cli-configure-quickstart.html).
 
 1. <a name="step-2-user"></a> If you do not already have the user that needs to assume the role, [create the user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html). Under **IAM** in the Amazon console, navigate to **Users** and **Add users**. You can then add the necessary permissions by clicking on the **Permissions** tab. Ensure that the IAM user has [`sts:AssumeRole` permissions](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) attached. The following policy will give the user assume role permissions:
 
@@ -150,7 +150,7 @@ For example, to configure a user to assume an IAM role that allows a bulk operat
     BACKUP INTO 's3://{bucket name}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&ASSUME_ROLE={ARN}' WITH kms = 'aws:///{key}?AWS_ACCESS_KEY_ID={user key}&AWS_SECRET_ACCESS_KEY={user secret key}&REGION={region}&ASSUME_ROLE={ARN}';
     ~~~
 
-    For more information on AWS KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+    For more information on AWS KMS URI formats, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
 
 ### Amazon S3 role chaining
 
@@ -193,17 +193,17 @@ Each chained role is listed separated by a `,` character. You can copy the ARN o
 
 ## Amazon S3 workload identity
 
-With a CockroachDB cluster deployed on [Kubernetes](kubernetes-overview.html), you can allow your pods to authenticate as an IAM role that you have associated to a Kubernetes service account. You can then use assume role authentication to allow that IAM role to assume another role that has permissions to perform bulk operations to an S3 bucket.
+With a CockroachDB cluster deployed on [Kubernetes]({% link {{ page.version.version }}/kubernetes-overview.md %}), you can allow your pods to authenticate as an IAM role that you have associated to a Kubernetes service account. You can then use assume role authentication to allow that IAM role to assume another role that has permissions to perform bulk operations to an S3 bucket.
 
 This means that a CockroachDB node will only be able to access credentials for the IAM role associated with the Kubernetes service account.
 
 You can use workload identities with assume role authentication to run the following operations:
 
-- [`BACKUP`](backup.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [`EXPORT`](export.html)
-- [`IMPORT`](import.html) / [`IMPORT INTO`](import-into.html)
-- [`RESTORE`](restore.html)
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) / [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 
 To use assume role authentication, you will need at least two IAM roles:
 
@@ -238,7 +238,7 @@ Construct the ARN for your identity role. You will need this to add into the Tru
 arn:aws:iam::{AWS account ID}:role/crl-dr-store-user-{cluster ID suffix}
 ~~~
 
-You can find the AWS account ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
+You can find the AWS account ID and your cluster's ID using the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -286,7 +286,7 @@ If you already have the role that contains permissions for the operation, ensure
 
     <img src="{{ 'images/v23.1/aws-permission-visual-editor.png' | relative_url }}" alt="Using the visual editor to define S3 service and S3 actions." style="border:1px solid #eee;max-width:100%" />
     
-    Or, use the JSON tab to specify the policy. For the JSON editor, see [Storage Permissions](use-cloud-storage.html#storage-permissions) for an example and detail on the minimum permissions required for each operation to complete. Click **Next**. 
+    Or, use the JSON tab to specify the policy. For the JSON editor, see [Storage Permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) for an example and detail on the minimum permissions required for each operation to complete. Click **Next**. 
 
 3. Finally, give the role a name on the **Name, review, and create** page. The following screenshot shows the selected trust policy and permissions:
 
@@ -408,7 +408,7 @@ For this example, both service accounts have already been created. If you need t
 
 1. First, you'll create a role that contains a policy to interact with the Google Cloud Storage bucket depending on the bulk operation your user needs to complete. This role will be attached to service account B in order that service account A can assume it.
     - In [Google's Cloud console](https://console.cloud.google.com/getting-started), click **IAM & Admin**, **Roles**, and then **Create Role**.
-    - Add a title for the role and then click **Add Permissions**. Filter for the permissions required for the bulk operation. For example, if you want to enable service account B to run a changefeed, your role will include the `storage.objects.create` permission. See the [Storage permissions](use-cloud-storage.html#storage-permissions) section on this page for details on the minimum permissions each CockroachDB bulk operation requires.
+    - Add a title for the role and then click **Add Permissions**. Filter for the permissions required for the bulk operation. For example, if you want to enable service account B to run a changefeed, your role will include the `storage.objects.create` permission. See the [Storage permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) section on this page for details on the minimum permissions each CockroachDB bulk operation requires.
 
     <img src="{{ 'images/v23.1/gcs-assume-add-perms-role.png' | relative_url }}" alt="Adding permissions to a changefeed role when creating a role." style="border:1px solid #eee;max-width:100%" />
 
@@ -443,10 +443,10 @@ For this example, both service accounts have already been created. If you need t
     BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com' WITH kms = 'gs:///projects/{project name}/locations/us-east1/keyRings/{key ring name}/cryptoKeys/{key name}?AUTH=IMPLICIT&ASSUME_ROLE={service account name}@{project name}.iam.gserviceaccount.com';
     ~~~
 
-    For more information on Google Cloud Storage KMS URI formats, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+    For more information on Google Cloud Storage KMS URI formats, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
 
     {{site.data.alerts.callout_info}}
-    CockroachDB supports assume role authentication for changefeeds emitting to Google Cloud Pub/Sub sinks. The process to set up assume role for Pub/Sub works in a similar way, except that you will provide the final service account with the "Pub/Sub Editor" role at the project level. See the [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) page for more detail on the Pub/Sub sink.
+    CockroachDB supports assume role authentication for changefeeds emitting to Google Cloud Pub/Sub sinks. The process to set up assume role for Pub/Sub works in a similar way, except that you will provide the final service account with the "Pub/Sub Editor" role at the project level. See the [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}#google-cloud-pub-sub) page for more detail on the Pub/Sub sink.
     {{site.data.alerts.end}}
 
 ## Google Cloud Storage role chaining
@@ -474,17 +474,17 @@ BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit&ASSUME_
 
 ## Google Cloud Storage workload identity 
 
-With a CockroachDB cluster deployed on [Kubernetes](kubernetes-overview.html), you can allow your pods to authenticate as an IAM service account that you have associated to a Kubernetes service account. You can then use assume role authentication to allow the IAM service account to assume another service account that has permissions to perform bulk operations to a Google Cloud Storage bucket.
+With a CockroachDB cluster deployed on [Kubernetes]({% link {{ page.version.version }}/kubernetes-overview.md %}), you can allow your pods to authenticate as an IAM service account that you have associated to a Kubernetes service account. You can then use assume role authentication to allow the IAM service account to assume another service account that has permissions to perform bulk operations to a Google Cloud Storage bucket.
 
 This means that a CockroachDB node will only be able to access credentials for the IAM service account associated with the Kubernetes service account.
 
 You can use workload identities with assume role authentication to run the following operations:
 
-- [`BACKUP`](backup.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [`EXPORT`](export.html)
-- [`IMPORT`](import.html) / [`IMPORT INTO`](import-into.html)
-- [`RESTORE`](restore.html)
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`EXPORT`]({% link {{ page.version.version }}/export.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %}) / [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
 
 {{site.data.alerts.callout_info}}
 Service accounts in Google and Kubernetes refer to different resources. See [Google's documentation](https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity#terminology) for definitions.
@@ -523,7 +523,7 @@ Construct the service account name for your identity service account. You will n
 crl-dr-store-user-{cluster id suffix}@{project id}.iam.gserviceaccount.com
 ~~~
 
-You can find the GCP project ID and your cluster's ID using the [Cloud API](../cockroachcloud/cloud-api.html):
+You can find the GCP project ID and your cluster's ID using the [Cloud API]({% link cockroachcloud/cloud-api.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~shell
@@ -561,7 +561,7 @@ See [Step 2](#step-2-create-the-operation-service-account) to create an operatio
 
     a. To create a service account, click **Create Service Account** under the **Service Accounts** menu. Enter a name for the service account and click **Create and Continue**.
 
-    b. In the **Grant this service account access to project** section, select the role you require for the bulk operation, e.g., "Storage Object Creator". See [Storage Permissions](use-cloud-storage.html#storage-permissions) for detail on the minimum permissions required for each operation to complete. Click **Continue**. 
+    b. In the **Grant this service account access to project** section, select the role you require for the bulk operation, e.g., "Storage Object Creator". See [Storage Permissions]({% link {{ page.version.version }}/use-cloud-storage.md %}#storage-permissions) for detail on the minimum permissions required for each operation to complete. Click **Continue**. 
 
     <img src="{{ 'images/v23.1/gcs-wi-role-grant.png' | relative_url }}" alt="Adding the workload identity role to the service account users role box" style="border:1px solid #eee;max-width:100%" />
 
@@ -667,7 +667,7 @@ azure://{container name}?AUTH=implicit&AZURE_ACCOUNT_NAME={account name}
 
 When using role-based access control through an [Azure App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application) to Azure Storage, it is necessary to grant the App Registration permission to the container. Use the `Storage Blob Data Contributor` built-in role to grant read, write, and delete access. See Microsoft's [Assign an Azure role for access to blob data](https://learn.microsoft.com/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for instructions.
 
-For details on using `implicit` authentication for an Azure encrypted backup, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+For details on using `implicit` authentication for an Azure encrypted backup, see [Take and Restore Encrypted Backups]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}).
 
 </section>
 
@@ -675,9 +675,9 @@ For details on using `implicit` authentication for an Azure encrypted backup, se
 
 ## HTTP authentication
 
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables](cockroach-commands.html#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` [environment variables]({% link {{ page.version.version }}/cockroach-commands.md %}#environment-variables) when starting CockroachDB. You can create your own HTTP server with [NGINX]({% link {{ page.version.version }}/use-a-local-file-server.md %}). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which will be used when verifying certificates from HTTPS URLs.
 
-If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#flags-external-io-disable-http).
+If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag]({% link {{ page.version.version }}/cockroach-start.md %}#flags-external-io-disable-http).
 
 </section>
 
@@ -687,10 +687,10 @@ If you cannot run a full proxy, you can disable external HTTP(S) access (as well
 
 {% include {{ page.version.version }}/misc/s3-compatible-warning.md %}
 
-A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
+A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), which will be used when verifying certificates from an S3-compatible service.
 
 </section>
 
 ## See also
 
-- [Use Cloud Storage](use-cloud-storage.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})

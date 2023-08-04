@@ -32,7 +32,7 @@ At a high level, online schema changes are accomplished by using a bridging stra
 
 1. You initiate a schema change by executing [`ALTER TABLE`][alter-table], [`CREATE INDEX`][create-index], [`TRUNCATE`][truncate], etc.
 
-1. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job][show-jobs], and can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
+1. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job][show-jobs], and can be [paused]({% link {{ page.version.version }}/pause-job.md %}), [resumed]({% link {{ page.version.version }}/resume-job.md %}), and [canceled]({% link {{ page.version.version }}/cancel-job.md %}).
 
 This approach allows the schema change engine to roll out a new schema while the previous version is still in use. It then backfills or deletes the underlying table data as needed in the background, while the cluster is still running and servicing reads and writes from your application.
 
@@ -46,14 +46,14 @@ The following online schema changes pause if the node executing the schema chang
 
 - Changes that trigger an index backfill (adding data to an index).
 - The following statements:
-  - [`ADD COLUMN`](alter-table.html#add-column) when the statement also features `INDEX` or `UNIQUE`.
-  - [`ALTER PRIMARY KEY`](alter-table.html#alter-primary-key)
-  - [`CREATE INDEX`](create-index.html)
-  - [`CREATE MATERIALIZED VIEW`](views.html#materialized-views)
-  - [`CREATE TABLE AS`](create-table-as.html)
-  - [`REFRESH`](refresh.html)
-  - [`SET LOCALITY`](alter-table.html#set-locality) under one of the following conditions:
-      - The locality changes from [`REGIONAL BY ROW`](alter-table.html#regional-by-row) to something that is not `REGIONAL BY ROW`.
+  - [`ADD COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#add-column) when the statement also features `INDEX` or `UNIQUE`.
+  - [`ALTER PRIMARY KEY`]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key)
+  - [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+  - [`CREATE MATERIALIZED VIEW`]({% link {{ page.version.version }}/views.md %}#materialized-views)
+  - [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %})
+  - [`REFRESH`]({% link {{ page.version.version }}/refresh.md %})
+  - [`SET LOCALITY`]({% link {{ page.version.version }}/alter-table.md %}#set-locality) under one of the following conditions:
+      - The locality changes from [`REGIONAL BY ROW`]({% link {{ page.version.version }}/alter-table.md %}#regional-by-row) to something that is not `REGIONAL BY ROW`.
       - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
 
 {{site.data.alerts.callout_info}}
@@ -68,24 +68,24 @@ For advice about how to avoid running out of space during an online schema chang
 
 ## Declarative schema changer
 
-CockroachDB only guarantees atomicity for schema changes within single statement transactions, either implicit transactions or in an explicit transaction with a single schema change statement. The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes possible. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`](show-jobs.html) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
+CockroachDB only guarantees atomicity for schema changes within single statement transactions, either implicit transactions or in an explicit transaction with a single schema change statement. The declarative schema changer is the next iteration of how schema changes will be performed in CockroachDB. By planning schema change operations in a more principled manner, the declarative schema changer will ultimately make transactional schema changes possible. You can identify jobs that are using the declarative schema changer by running [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) and finding jobs with a `job_type` of `NEW SCHEMA CHANGE`.
 
 The following statements use the declarative schema changer by default:
 
-- [`DROP DATABASE`](drop-database.html)
-- [`DROP SCHEMA`](drop-schema.html)
-- [`DROP TABLE`](drop-table.html)
-- [`DROP TYPE`](drop-type.html)
-- {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`](create-function.html)
-- {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`](drop-function.html)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`](alter-table.html#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`](alter-table.html#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`](alter-table.html#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`](alter-table.html#add-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... VALIDATE CONSTRAINT`](alter-table.html#drop-constraint)
-- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... DROP CONSTRAINT`](alter-table.html#validate-constraint)
+- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
+- [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
+- [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})
+- {% include_cached new-in.html version="v23.1" %} [`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %})
+- {% include_cached new-in.html version="v23.1" %} [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... CHECK ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... ADD CONSTRAINT ... FOREIGN KEY ... NOT VALID`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... VALIDATE CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#drop-constraint)
+- {% include_cached new-in.html version="v23.1" %} [`ALTER TABLE ... DROP CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#validate-constraint)
 
-Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting](cluster-settings.html) and the `use_declarative_schema_changer` [session variable](set-vars.html).
+Until all schema change statements are moved to use the declarative schema changer you can enable and disable the declarative schema changer for supported statements using the `sql.defaults.use_declarative_schema_changer` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) and the `use_declarative_schema_changer` [session variable]({% link {{ page.version.version }}/set-vars.md %}).
 
 {{site.data.alerts.callout_danger}}
 Declarative schema changer statements and legacy schema changer statements operating on the same objects cannot exist within the same transaction. Either split the transaction into multiple transactions, or disable the cluster setting or session variable.
@@ -99,7 +99,7 @@ Declarative schema changer statements and legacy schema changer statements opera
 
 Some schema change operations, like adding or dropping columns or altering primary keys, will temporarily increase a cluster's storage consumption. Specifically, these operations may temporarily require up to three times more storage space  for the range size while the schema change is being applied, and this may cause the cluster to run out of storage space or fail to apply the schema change.
 
-To estimate the size of the indexes in your table, use the [`SHOW RANGES`](show-ranges.html) statement.
+To estimate the size of the indexes in your table, use the [`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) statement.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -112,7 +112,7 @@ In many cases this range size is trivial, but when the range size is many gigaby
 
 #### Example of finding the range size of an index
 
-1. Start a 3 node [`cockroach demo`](cockroach-demo.html) cluster with the MovR dataset.
+1. Start a 3 node [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) cluster with the MovR dataset.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -156,7 +156,7 @@ In many cases this range size is trivial, but when the range size is many gigaby
 
 ### Run schema changes with large backfills during off-peak hours
 
-Online schema changes that result in large backfill operations (for example, [`ALTER TABLE ... ALTER COLUMN`](alter-table.html#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system](admission-control.html) will help keep high-priority operations running, but it's recommended to run backfill-heavy schema changes during times when the cluster is under relatively low loads.
+Online schema changes that result in large backfill operations (for example, [`ALTER TABLE ... ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system]({% link {{ page.version.version }}/admission-control.md %}) will help keep high-priority operations running, but it's recommended to run backfill-heavy schema changes during times when the cluster is under relatively low loads.
 
 ### Schema changes in multi-region clusters
 
@@ -212,7 +212,7 @@ COMMIT
 
 ### Run multiple schema changes in a single `ALTER TABLE` statement
 
-Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](alter-table.html). For a demonstration, see [Add and rename columns atomically](alter-table.html#add-and-rename-columns-atomically).
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}). For a demonstration, see [Add and rename columns atomically]({% link {{ page.version.version }}/alter-table.md %}#add-and-rename-columns-atomically).
 
 ### Show all schema change jobs
 
@@ -234,13 +234,13 @@ You can check on the status of the schema change jobs on your system at any time
 (1 row)
 ~~~
 
-All schema change jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
+All schema change jobs can be [paused]({% link {{ page.version.version }}/pause-job.md %}), [resumed]({% link {{ page.version.version }}/resume-job.md %}), and [canceled]({% link {{ page.version.version }}/cancel-job.md %}).
 
 ## Undoing a schema change
 
-Prior to [garbage collection](architecture/storage-layer.html#garbage-collection), it's possible to recover data that may have been lost prior to schema changes by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) parameter. However, this solution is limited in terms of time, and doesn't work beyond the designated garbage collection window.
+Prior to [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection), it's possible to recover data that may have been lost prior to schema changes by using the [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %}) parameter. However, this solution is limited in terms of time, and doesn't work beyond the designated garbage collection window.
 
-For more long-term recovery solutions, consider taking either a [full or incremental backup](take-full-and-incremental-backups.html) of your cluster.
+For more long-term recovery solutions, consider taking either a [full or incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) of your cluster.
 
 ## Limitations
 
@@ -258,7 +258,7 @@ Schema changes keep your data consistent at all times, but they do not run insid
 
 ### No online schema changes if primary key change in progress
 
-You cannot start an online schema change on a table if a [primary key change](alter-table.html#alter-primary-key) is currently in progress on the same table.
+You cannot start an online schema change on a table if a [primary key change]({% link {{ page.version.version }}/alter-table.md %}#alter-primary-key) is currently in progress on the same table.
 
 ### No online schema changes between executions of prepared statements
 
@@ -266,41 +266,41 @@ You cannot start an online schema change on a table if a [primary key change](al
 
 ### `ALTER TYPE` schema changes cannot be cancelled
 
-You can only [cancel](cancel-job.html) [`ALTER TYPE`](alter-type.html) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
+You can only [cancel]({% link {{ page.version.version }}/cancel-job.md %}) [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
 
 ## See also
 
 + [How online schema changes are possible in CockroachDB][blog]: Blog post with more technical details about how our schema change engine works.
-+ [`ALTER DATABASE`](alter-database.html)
-+ [`ALTER INDEX`](alter-index.html)
-+ [`ALTER RANGE`](alter-range.html)
-+ [`ALTER SEQUENCE`](alter-sequence.html)
++ [`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %})
++ [`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %})
++ [`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %})
++ [`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %})
 + [`ALTER TABLE`][alter-table]
-+ [`ALTER VIEW`](alter-view.html)
-+ [`CREATE DATABASE`](create-database.html)
++ [`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %})
++ [`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %})
 + [`CREATE INDEX`][create-index]
-+ [`CREATE SEQUENCE`](create-sequence.html)
-+ [`CREATE TABLE`](create-table.html)
-+ [`CREATE VIEW`](create-view.html)
-+ [`DROP DATABASE`](drop-database.html)
++ [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %})
++ [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
++ [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
++ [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
 + [`DROP INDEX`][drop-index]
-+ [`DROP SEQUENCE`](drop-sequence.html)
-+ [`DROP TABLE`](drop-table.html)
-+ [`DROP VIEW`](drop-view.html)
++ [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %})
++ [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %})
++ [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
 + [`TRUNCATE`][truncate]
 
 
 
 <!-- Reference Links -->
 
-[alter-table]: alter-table.html
+[alter-table]: {% link {{ page.version.version }}/alter-table.md %}
 [blog]: https://cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/
 [consistent]: frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent
-[create-index]: create-index.html
+[create-index]: {% link {{ page.version.version }}/create-index.md %}
 [drop-index]: drop-index.html
 [create-table]: create-table.html
 [select]: selection-queries.html
-[show-jobs]: show-jobs.html
+[show-jobs]: {% link {{ page.version.version }}/show-jobs.md %}
 [sql-client]: cockroach-sql.html
 [txns]: transactions.html
 [truncate]: truncate.html

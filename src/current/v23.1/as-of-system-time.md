@@ -7,10 +7,10 @@ docs_area: reference.sql
 
 The `AS OF SYSTEM TIME timestamp` clause causes statements to execute using the database contents "as of" a specified time in the past.
 
-You can use this clause to read historical data (also known as "[time travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)") and to improve performance by decreasing transaction conflicts. See [Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
+You can use this clause to read historical data (also known as "[time travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)") and to improve performance by decreasing transaction conflicts. See [Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
 
 {{site.data.alerts.callout_info}}
-Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field in the [replication zone configuration](configure-replication-zones.html).
+Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field in the [replication zone configuration]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -18,11 +18,11 @@ Historical data is available only within the garbage collection window, which is
 The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts,
 including but not limited to:
 
-- In [`SELECT` clauses](select-clause.html), at the very end of the `FROM` sub-clause.
-- In [`BACKUP`](backup.html), after the parameters of the `TO` sub-clause.
-- In [`RESTORE`](restore.html), after the parameters of the `FROM` sub-clause.
-- In [`BEGIN`](begin-transaction.html), after the `BEGIN` keyword.
-- In [`SET`](set-transaction.html), after the `SET TRANSACTION` keyword.
+- In [`SELECT` clauses]({% link {{ page.version.version }}/select-clause.md %}), at the very end of the `FROM` sub-clause.
+- In [`BACKUP`]({% link {{ page.version.version }}/backup.md %}), after the parameters of the `TO` sub-clause.
+- In [`RESTORE`]({% link {{ page.version.version }}/restore.md %}), after the parameters of the `FROM` sub-clause.
+- In [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), after the `BEGIN` keyword.
+- In [`SET`]({% link {{ page.version.version }}/set-transaction.md %}), after the `SET TRANSACTION` keyword.
 
 ## Parameters
 
@@ -30,15 +30,15 @@ The `timestamp` argument supports the following formats:
 
 Format | Notes
 ---|---
-[`INT`](int.html) | Nanoseconds since the Unix epoch.
-negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thus must be negative.
-[`STRING`](string.html) | A [`TIMESTAMP`](timestamp.html), [`INT`](int.html) of nanoseconds, or negative [`INTERVAL`](interval.html).
-`follower_read_timestamp()`| A [function](functions-and-operators.html) that returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s`. Using this function will set the time as close as possible to the present time while remaining safe for [exact staleness follower reads](follower-reads.html#exact-staleness-reads).
-`with_min_timestamp(TIMESTAMPTZ, [nearest_only])` |  The minimum [timestamp](timestamp.html) at which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
-`with_max_staleness(INTERVAL, [nearest_only])` |  The  maximum staleness interval with which to perform the [bounded staleness read](follower-reads.html#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
+[`INT`]({% link {{ page.version.version }}/int.md %}) | Nanoseconds since the Unix epoch.
+negative [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | Added to `statement_timestamp()`, and thus must be negative.
+[`STRING`]({% link {{ page.version.version }}/string.md %}) | A [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}), [`INT`]({% link {{ page.version.version }}/int.md %}) of nanoseconds, or negative [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}).
+`follower_read_timestamp()`| A [function]({% link {{ page.version.version }}/functions-and-operators.md %}) that returns the [`TIMESTAMP`]({% link {{ page.version.version }}/timestamp.md %}) `statement_timestamp() - 4.8s`. Using this function will set the time as close as possible to the present time while remaining safe for [exact staleness follower reads]({% link {{ page.version.version }}/follower-reads.md %}#exact-staleness-reads).
+`with_min_timestamp(TIMESTAMPTZ, [nearest_only])` |  The minimum [timestamp]({% link {{ page.version.version }}/timestamp.md %}) at which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The actual timestamp of the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This is useful to request a read from nearby followers, if possible, while enforcing causality between an operation at some point in time and any dependent reads. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
+`with_max_staleness(INTERVAL, [nearest_only])` |  The  maximum staleness interval with which to perform the [bounded staleness read]({% link {{ page.version.version }}/follower-reads.md %}#bounded-staleness-reads). The timestamp of the read can be at most this stale with respect to the current time. This is useful to request a read from nearby followers, if possible, while placing some limit on how stale results can be. Note that `with_max_staleness(INTERVAL)` is equivalent to `with_min_timestamp(now() - INTERVAL)`. This function accepts an optional `nearest_only` argument that will error if the reads cannot be serviced from a nearby replica.
 
 {{site.data.alerts.callout_success}}
-To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -141,7 +141,7 @@ For example:
 
 To enable time travel, the `AS OF SYSTEM TIME` clause must appear in
 at least the top-level statement. It is not valid to use it only in a
-[subquery](subqueries.html).
+[subquery]({% link {{ page.version.version }}/subqueries.md %}).
 
 For example, the following is invalid:
 
@@ -168,17 +168,17 @@ For example:
 
 ### Use `AS OF SYSTEM TIME` in transactions
 
-You can use the [`BEGIN`](begin-transaction.html) statement to execute the transaction using the database contents "as of" a specified time in the past.
+You can use the [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}) statement to execute the transaction using the database contents "as of" a specified time in the past.
 
 {% include {{ page.version.version }}/sql/begin-transaction-as-of-system-time-example.md %}
 
-Alternatively, you can use the [`SET`](set-transaction.html) statement to execute the transaction using the database contents "as of" a specified time in the past.
+Alternatively, you can use the [`SET`]({% link {{ page.version.version }}/set-transaction.md %}) statement to execute the transaction using the database contents "as of" a specified time in the past.
 
 {% include {{ page.version.version }}/sql/set-transaction-as-of-system-time-example.md %}
 
 ### Use `AS OF SYSTEM TIME` to recover recently lost data
 
-It is possible to recover lost data as a result of an online schema change prior to when [garbage collection](architecture/storage-layer.html#garbage-collection) begins:
+It is possible to recover lost data as a result of an online schema change prior to when [garbage collection]({% link {{ page.version.version }}/architecture/storage-layer.md %}#garbage-collection) begins:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -257,21 +257,21 @@ SQLSTATE: 42P01
 ~~~
 
 {{site.data.alerts.callout_danger}}
-Once garbage collection has occurred, `AS OF SYSTEM TIME` will no longer be able to recover lost data. For more long-term recovery solutions, consider taking either a [full or incremental backup](take-full-and-incremental-backups.html) of your cluster.
+Once garbage collection has occurred, `AS OF SYSTEM TIME` will no longer be able to recover lost data. For more long-term recovery solutions, consider taking either a [full or incremental backup]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %}) of your cluster.
 {{site.data.alerts.end}}
 
 ## See also
 
-- [Select Historical Data](select-clause.html#select-historical-data-time-travel)
+- [Select Historical Data]({% link {{ page.version.version }}/select-clause.md %}#select-historical-data-time-travel)
 - [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)
-- [Follower Reads](follower-reads.html)
-- [Follower Reads Topology Pattern](topology-follower-reads.html)
+- [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})
+- [Follower Reads Topology Pattern]({% link {{ page.version.version }}/topology-follower-reads.md %})
 
 ## Tech note
 
 Although the following format is supported, it is not intended to be used by most users.
 
-HLC timestamps can be specified using a [`DECIMAL`](decimal.html). The
+HLC timestamps can be specified using a [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %}). The
 integer part is the wall time in nanoseconds. The fractional part is
 the logical counter, a 10-digit integer. This is the same format as
 produced by the `cluster_logical_timestamp()` function.

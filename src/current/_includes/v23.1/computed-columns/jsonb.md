@@ -41,7 +41,7 @@ Then, insert a few rows of data:
 
 The primary key `id` is computed as a field from the `profile` column.  Additionally the `age` column is computed from the profile column data as well.
 
-This example shows how add a stored computed column with a [coerced type](scalar-expressions.html#explicit-type-coercions):
+This example shows how add a stored computed column with a [coerced type]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -5,7 +5,7 @@ toc: true
 docs_area: deploy
 ---
 
-Kubernetes provides many useful abstractions for deploying and operating distributed systems, but some of the abstractions come with a performance overhead and an increase in underlying system complexity. This page explains potential bottlenecks to be aware of when [running CockroachDB in Kubernetes](kubernetes-overview.html) and shows you how to optimize your deployment for better performance.
+Kubernetes provides many useful abstractions for deploying and operating distributed systems, but some of the abstractions come with a performance overhead and an increase in underlying system complexity. This page explains potential bottlenecks to be aware of when [running CockroachDB in Kubernetes]({% link {{ page.version.version }}/kubernetes-overview.md %}) and shows you how to optimize your deployment for better performance.
 
 <div id="toc"></div>
 
@@ -13,8 +13,8 @@ Kubernetes provides many useful abstractions for deploying and operating distrib
 
 Before you focus on optimizing a Kubernetes-orchestrated CockroachDB cluster:
 
-1. Before deploying on Kubernetes, ensure that performance is optimized for your workload on identical hardware. You may find that you first need to [modify your workload](performance-best-practices-overview.html) or use [different machine specs](recommended-production-settings.html#hardware) to achieve the performance you need.
-1. Go through the documentation for [deploying CockroachDB in a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
+1. Before deploying on Kubernetes, ensure that performance is optimized for your workload on identical hardware. You may find that you first need to [modify your workload]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) or use [different machine specs]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) to achieve the performance you need.
+1. Go through the documentation for [deploying CockroachDB in a single Kubernetes cluster]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}) to familiarize yourself with the necessary Kubernetes terminology and deployment abstractions.
 
 ## Performance factors
 
@@ -30,15 +30,15 @@ Because CockroachDB is under very active development, there are typically substa
 
 ### Client workload
 
-Your workload is the single most important factor in database performance. Read through our [SQL performance best practices](performance-best-practices-overview.html) to determine whether there are any easy changes that you can make to speed up your application.
+Your workload is the single most important factor in database performance. Read through our [SQL performance best practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}) to determine whether there are any easy changes that you can make to speed up your application.
 
 ### Machine size
 
-The size of the machines you're using isn't a Kubernetes-specific concern, but it's always a good place to start if you want more performance. See our [hardware recommendations](recommended-production-settings.html#hardware) for specific suggestions, but using machines with more CPU will almost always allow for greater throughput. Be aware that because Kubernetes runs a set of processes on every machine in a cluster, you typically will get more bang for your buck by using fewer large machines than more small machines.
+The size of the machines you're using isn't a Kubernetes-specific concern, but it's always a good place to start if you want more performance. See our [hardware recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) for specific suggestions, but using machines with more CPU will almost always allow for greater throughput. Be aware that because Kubernetes runs a set of processes on every machine in a cluster, you typically will get more bang for your buck by using fewer large machines than more small machines.
 
 ### Disk type
 
-CockroachDB makes heavy use of the disks you provide it, so using faster disks is an easy way to improve your cluster's performance. Our provided configuration does not specify what type of disks it wants, so in most environments Kubernetes will auto-provision disks of the default type. In the common cloud environments (AWS, GCP, Azure) this means you'll get slow disks that aren't optimized for database workloads (e.g.,HDDs on GCE, SSDs without provisioned IOPS on AWS). However, we [strongly recommend using SSDs](recommended-production-settings.html#hardware) for the best performance, and Kubernetes makes it relatively easy to use them.
+CockroachDB makes heavy use of the disks you provide it, so using faster disks is an easy way to improve your cluster's performance. Our provided configuration does not specify what type of disks it wants, so in most environments Kubernetes will auto-provision disks of the default type. In the common cloud environments (AWS, GCP, Azure) this means you'll get slow disks that aren't optimized for database workloads (e.g.,HDDs on GCE, SSDs without provisioned IOPS on AWS). However, we [strongly recommend using SSDs]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) for the best performance, and Kubernetes makes it relatively easy to use them.
 
 #### Creating a different disk type
 
@@ -160,7 +160,7 @@ Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/com
 
 Up to this point, we have assumed the use of auto-provisioned, remotely attached disks. However, local disks typically provide better performance than remotely attached disks. For example, SSD Instance Store Volumes outperform EBS Volumes on AWS, and Local SSDs outperform Persistent Disks on GCE. As of v1.14, Kubernetes supports [`local` volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local).
 
-Note that when running with local disks, there is a greater chance of experiencing a disk failure than when using the cloud providers' network-attached disks that are often replicated underneath the covers. Consequently, you may want to [Replication Controls](configure-replication-zones.html) to increase the replication factor of your data to 5 from its default of 3 when using local disks.
+Note that when running with local disks, there is a greater chance of experiencing a disk failure than when using the cloud providers' network-attached disks that are often replicated underneath the covers. Consequently, you may want to [Replication Controls]({% link {{ page.version.version }}/configure-replication-zones.md %}) to increase the replication factor of your data to 5 from its default of 3 when using local disks.
 
 ### Resource requests and limits
 
@@ -168,7 +168,7 @@ When you ask Kubernetes to run a pod, either directly or indirectly through anot
 
 #### Resource requests
 
-Resource requests allow you to reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and will ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is very strongly recommended to ensure good performance, because if you do not set them then CockroachDB could be starved of CPU cycles or [OOM stopped](cluster-setup-troubleshooting.html#out-of-memory-oom-crash) before less important processes.
+Resource requests allow you to reserve a certain amount of CPU or memory for your container. If you add resource requests to your CockroachDB YAML file, Kubernetes will schedule each CockroachDB pod onto a node with sufficient unreserved resources and will ensure the pods are guaranteed the reserved resources using the applicable Linux container primitives. If you are running other workloads in your Kubernetes cluster, setting resource requests is very strongly recommended to ensure good performance, because if you do not set them then CockroachDB could be starved of CPU cycles or [OOM stopped]({% link {{ page.version.version }}/cluster-setup-troubleshooting.md %}#out-of-memory-oom-crash) before less important processes.
 
 To determine how many resources are usable on your Kubernetes nodes, you can run:
 
@@ -415,11 +415,11 @@ This limits Kubernetes's ability to help your cluster recover from failures, and
 
 If your Kubernetes cluster is made up of heterogeneous hardware, it's likely that you'd like to make sure CockroachDB only runs on certain machines. If you want to get as much performance as possible out of a set of machines, you might also want to make sure that only CockroachDB is run on them.
 
-For more information, see [Pod scheduling](schedule-cockroachdb-kubernetes.html).
+For more information, see [Pod scheduling]({% link {{ page.version.version }}/schedule-cockroachdb-kubernetes.md %}).
 
 ## See also
 
-- [Orchestrate CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html)
-- [Production Checklist](recommended-production-settings.html)
-- [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Troubleshooting Performance Issues](query-behavior-troubleshooting.html)
+- [Orchestrate CockroachDB with Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %})
+- [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %})
+- [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %})
+- [Troubleshooting Performance Issues]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})

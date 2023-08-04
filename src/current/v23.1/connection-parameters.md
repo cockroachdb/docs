@@ -6,7 +6,7 @@ docs_area: reference.cli
 ---
 
 Client applications, including [`cockroach` client
-commands](cockroach-commands.html), work by establishing a network
+commands]({% link {{ page.version.version }}/cockroach-commands.md %}), work by establishing a network
 connection to a CockroachDB cluster. The client connection parameters
 determine which CockroachDB cluster they connect to, and how to
 establish this network connection.
@@ -54,11 +54,11 @@ postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
 
 Component | Description | Required
 ----------|-------------|---------
-`<username>` | The [SQL user](create-user.html) that will own the client session. | ✗
-`<password>` | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).<br><br>[Find more detail about how CockroachDB handles passwords.](authentication.html#client-authentication) | ✗
+`<username>` | The [SQL user]({% link {{ page.version.version }}/create-user.md %}) that will own the client session. | ✗
+`<password>` | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).<br><br>[Find more detail about how CockroachDB handles passwords.]({% link {{ page.version.version }}/authentication.md %}#client-authentication) | ✗
 `<host>` | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
 `<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
-`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
+`<database>` | A database name to use as [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database). Defaults to `defaultdb`. | ✗
 `<directory-path>` |  The directory path to the client listening for a socket connection. | Required when specifying a Unix domain socket URI.
 `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | ✗
 
@@ -73,8 +73,8 @@ as described below.
 
 {{site.data.alerts.callout_info}}
 The `<database>` part is not used for [`cockroach`
-commands](cockroach-commands.html) other than [`cockroach
-sql`](cockroach-sql.html). A warning
+commands]({% link {{ page.version.version }}/cockroach-commands.md %}) other than [`cockroach
+sql`]({% link {{ page.version.version }}/cockroach-sql.md %}). A warning
 is currently printed if it is mistakenly specified, and
 future versions of CockroachDB may return an error in that case.
 {{site.data.alerts.end}}
@@ -85,11 +85,11 @@ The following additional parameters can be passed after the `?` character in the
 
 Parameter | Description | Default value
 ----------|-------------|---------------
-`application_name` | An initial value for the [`application_name` session variable](set-vars.html).<br><br>Note: For [Java JDBC](build-a-java-app-with-cockroachdb.html), use `ApplicationName`. | Empty string.
+`application_name` | An initial value for the [`application_name` session variable]({% link {{ page.version.version }}/set-vars.md %}).<br><br>Note: For [Java JDBC]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}), use `ApplicationName`. | Empty string.
 `sslmode` | Which type of secure connection to use: `disable`, `allow`, `prefer`, `require`, `verify-ca` or `verify-full`. See [Secure Connections With URLs](#secure-connections-with-urls) for details. | `disable`
-`sslrootcert` | Path to the [CA certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
-`sslcert` | Path to the [client certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
-`sslkey` | Path to the [client private key](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
+`sslrootcert` | Path to the [CA certificate]({% link {{ page.version.version }}/cockroach-cert.md %}), when `sslmode` is not `disable`. | Empty string.
+`sslcert` | Path to the [client certificate]({% link {{ page.version.version }}/cockroach-cert.md %}), when `sslmode` is not `disable`. | Empty string.
+`sslkey` | Path to the [client private key]({% link {{ page.version.version }}/cockroach-cert.md %}), when `sslmode` is not `disable`. | Empty string.
 `password` | The SQL user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`). | Empty string
 `options` | [Additional options](#supported-options-parameters) to be passed to the server. | Empty string
 
@@ -99,8 +99,8 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](../cockroachcloud/architecture.html#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
-`-c <session_variable>=<value>` |  Sets a [session variable](set-vars.html) for the SQL session.
+`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host]({% link cockroachcloud/architecture.md %}#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
+`-c <session_variable>=<value>` |  Sets a [session variable]({% link {{ page.version.version }}/set-vars.md %}) for the SQL session.
 
 {{site.data.alerts.callout_info}}
 Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/use/#connection-parameters) must specified as `%20`.
@@ -117,7 +117,7 @@ Parameter | Description | Recommended for use
 `sslmode=prefer` | Try to establish a secure connection, but accept an insecure connection if the server does not support secure connections.<br><br>**Not supported in all clients.** |
 `sslmode=require` | Force a secure connection. An error occurs if the secure connection cannot be established. |
 `sslmode=verify-ca` | Force a secure connection and verify that the server certificate is signed by a known CA. |
-`sslmode=verify-full` | Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate. | Use for [secure deployments](secure-a-cluster.html).
+`sslmode=verify-full` | Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate. | Use for [secure deployments]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 {{site.data.alerts.callout_danger}}
 Some client drivers and the `cockroach` commands do not support
@@ -127,7 +127,7 @@ SQL driver to determine whether these options are supported.
 
 ### Convert a URL for different drivers
 
- The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`](cockroach-start.html) or included in the online documentation, to the syntax recognized by various [client drivers](third-party-database-tools.html#drivers). For example:
+ The subcommand `cockroach convert-url` converts a connection URL, such as those printed out by [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) or included in the online documentation, to the syntax recognized by various [client drivers]({% link {{ page.version.version }}/third-party-database-tools.md %}#drivers). For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -178,8 +178,8 @@ This uses the following components:
   - Client key `path/to/client.username.key`
 
 For details about how to create and manage SSL/TLS certificates, see
-[Create Security Certificates](cockroach-cert.html) and
-[Rotate Certificates](rotate-certificates.html).
+[Create Security Certificates]({% link {{ page.version.version }}/cockroach-cert.md %}) and
+[Rotate Certificates]({% link {{ page.version.version }}/rotate-certificates.md %}).
 
 ### Example URI for a Unix domain socket
 
@@ -190,11 +190,11 @@ The following URI is suitable to connect to a CockroachDB cluster listening for 
 postgres://root@?host=/path/to/client&port=26257
 ~~~
 
-This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag](cockroach-start.html#networking)) at `/path/to/client`, and on port 26257.
+This specifies a connection for the `root` user to an insecure cluster listening for a socket connection (e.g., a cluster started with the [`--socket-dir` flag]({% link {{ page.version.version }}/cockroach-start.md %}#networking)) at `/path/to/client`, and on port 26257.
 
 ## Connect using discrete parameters
 
-Most [`cockroach` commands](cockroach-commands.html) accept connection
+Most [`cockroach` commands]({% link {{ page.version.version }}/cockroach-commands.md %}) accept connection
 parameters as separate, discrete command-line flags, in addition (or
 in replacement) to `--url` which [specifies all parameters as a
 URL](#connect-using-a-url).
@@ -264,7 +264,7 @@ The `cockroach start` command prints out the following connection URL, which con
 postgres://root@servername:26257/?sslmode=disable
 ~~~
 
-To specify `mydb` as the current database using [`cockroach sql`](cockroach-sql.html), run the following command:
+To specify `mydb` as the current database using [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}), run the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~
@@ -282,7 +282,7 @@ cockroach sql --url "postgres://root@servername:26257/mydb?sslmode=disable"
 
 ## See also
 
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [Create Security Certificates](cockroach-cert.html)
-- [Secure a Cluster](secure-a-cluster.html)
-- [Create and Manage Users](security-reference/authorization.html#create-and-manage-users)
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Create Security Certificates]({% link {{ page.version.version }}/cockroach-cert.md %})
+- [Secure a Cluster]({% link {{ page.version.version }}/secure-a-cluster.md %})
+- [Create and Manage Users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users)

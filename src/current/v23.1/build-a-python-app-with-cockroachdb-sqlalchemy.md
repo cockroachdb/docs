@@ -164,14 +164,14 @@ In a SQL shell connected to the cluster, you can verify that the rows were inser
 
 ### Use the `run_transaction` function
 
-We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 In addition to the above, using `run_transaction` has the following benefits:
 
 - Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
-- It abstracts away the [client-side transaction retry logic](transaction-retry-error-reference.html#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
+- It abstracts away the [client-side transaction retry logic]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
 
-For more information about how transactions (and retries) work, see [Transactions](transactions.html).
+For more information about how transactions (and retries) work, see [Transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 ### Avoid mutations of session and/or transaction state inside `run_transaction()`
 
@@ -191,7 +191,7 @@ In keeping with the above recommendations from the official docs, we **strongly 
 
 ### Break up large transactions into smaller units of work
 
-If you see an error message like `transaction is too large to complete; try splitting into pieces`, you are trying to commit too much data in a single transaction. As described in our [Cluster Settings](cluster-settings.html) docs, the size limit for transactions is defined by the `kv.transaction.max_intents_bytes` setting, which defaults to 256 KiB. Although this setting can be changed by an admin, we strongly recommend against it in most cases.
+If you see an error message like `transaction is too large to complete; try splitting into pieces`, you are trying to commit too much data in a single transaction. As described in our [Cluster Settings]({% link {{ page.version.version }}/cluster-settings.md %}) docs, the size limit for transactions is defined by the `kv.transaction.max_intents_bytes` setting, which defaults to 256 KiB. Although this setting can be changed by an admin, we strongly recommend against it in most cases.
 
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
@@ -202,27 +202,27 @@ Instead, we recommend breaking your transaction into smaller units of work (or "
 
 ### Use `IMPORT` to read in large data sets
 
-If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/orm/session_api.html?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead. It is much faster and more efficient than making a series of [`INSERT`s]({% link {{ page.version.version }}/insert.md %}) and [`UPDATE`s]({% link {{ page.version.version }}/update.md %}) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/orm/session_api.html?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
 
-For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](migrate-from-postgres.html).
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL]({% link {{ page.version.version }}/migrate-from-postgres.md %}).
 
-For more information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+For more information about importing data from MySQL, see [Migrate from MySQL]({% link {{ page.version.version }}/migrate-from-mysql.md %}).
 
 ### Prefer the query builder
 
 In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Engine.execute()`](https://docs.sqlalchemy.org/core/connections.html?highlight=execute#sqlalchemy.engine.Engine.execute)) in your application over the [Session][session]/ORM APIs if at all possible. That way, you know exactly what SQL is being generated and sent to CockroachDB, which has the following benefits:
 
 - It's easier to debug your SQL queries and make sure they are working as expected.
-- You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices](performance-best-practices-overview.html).
+- You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}).
 
 ### Joins without foreign keys
 
-SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to generate [`JOIN` expressions](joins.html) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
+SQLAlchemy relies on the existence of [foreign keys]({% link {{ page.version.version }}/foreign-key.md %}) to generate [`JOIN` expressions]({% link {{ page.version.version }}/joins.md %}) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
 
 ## See also
 
 - The [SQLAlchemy](https://docs.sqlalchemy.org/) docs
-- [Transactions](transactions.html)
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})
 
 {% include {{page.version.version}}/app/see-also-links.md %}
 

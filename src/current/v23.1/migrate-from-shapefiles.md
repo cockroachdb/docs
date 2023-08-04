@@ -5,9 +5,9 @@ toc: true
 docs_area: migrate
 ---
 
-CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html).
+CockroachDB supports efficiently storing and querying [spatial data]({% link {{ page.version.version }}/export-spatial-data.md %}).
 
-This page has instructions for migrating data from ESRI [Shapefiles](architecture/glossary.html#shapefile) into CockroachDB using [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html) and [`IMPORT`][import].
+This page has instructions for migrating data from ESRI [Shapefiles]({% link {{ page.version.version }}/architecture/glossary.md %}#shapefile) into CockroachDB using [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html) and [`IMPORT`][import].
 
 {{site.data.alerts.callout_success}}
 We are using `shp2pgsql` in the example below, but [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) could also be used, e.g.
@@ -26,7 +26,7 @@ Please refer to the documentation of your GIS software for instructions on expor
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed]({% link {{ page.version.version }}/install-cockroachdb.md %}) and [running]({% link {{ page.version.version }}/start-a-local-cluster.md %})
 - [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.html)
 - [Python 3](https://www.python.org)
 
@@ -64,9 +64,9 @@ shp2pgsql 1950-2018-torn-initpoint.shp > tornado-points.sql &
 
 ## Step 3. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations](import.html#import-file-location).
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations]({% link {{ page.version.version }}/import.md %}#import-file-location).
 
-For local testing, you can [start a local file server](use-a-local-file-server.html). The following command will start a local file server listening on port 3000:
+For local testing, you can [start a local file server]({% link {{ page.version.version }}/use-a-local-file-server.md %}). The following command will start a local file server listening on port 3000:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -90,7 +90,7 @@ USE tornadoes;
 
 ## Step 5. Import the SQL
 
-Since the file is being served from a local server and is formatted as PostgreSQL-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`](import.html#import-a-postgresql-database-dump) statement:
+Since the file is being served from a local server and is formatted as PostgreSQL-compatible SQL, we can import the data using the following [`IMPORT PGDUMP`]({% link {{ page.version.version }}/import.md %}#import-a-postgresql-database-dump) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -107,19 +107,19 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 ## See also
 
 - [`IMPORT`][import]
-- [Export Spatial Data](export-spatial-data.html)
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial indexes](spatial-indexes.html)
-- [Using GeoServer with CockroachDB](geoserver.html)
-- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
-- [Migrate from GeoJSON](migrate-from-geojson.html)
-- [Migrate from GeoPackage](migrate-from-geopackage.html)
-- [Migration Overview](migration-overview.html)
+- [Export Spatial Data]({% link {{ page.version.version }}/export-spatial-data.md %})
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
+- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
+- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
+- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
-- [Back Up and Restore Data](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
 <!-- Reference Links -->
 

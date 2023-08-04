@@ -6,14 +6,14 @@ keywords:
 docs_area: reference.sql
 ---
 
-The `CREATE FUNCTION` [statement](sql-statements.html) creates a [user-defined function](user-defined-functions.html).
+The `CREATE FUNCTION` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To define a function, a user must have [`CREATE` privilege](security-reference/authorization.html#supported-privileges) on the schema of the function.
-- To define a function with a [user-defined type](create-type.html), a user must have `USAGE` privilege on the user-defined type.
+- To define a function, a user must have [`CREATE` privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges) on the schema of the function.
+- To define a function with a [user-defined type]({% link {{ page.version.version }}/create-type.md %}), a user must have `USAGE` privilege on the user-defined type.
 - To resolve a function, a user must have at least the `USAGE` privilege on the schema of the function.
 - To call a function, a user must have `EXECUTE` privilege on the function.
 - At function definition and execution time, a user must have privileges on all the objects referenced in the function body. Privileges on referenced objects can be revoked and later function calls can fail due to lack of permission.
@@ -33,7 +33,7 @@ Parameter | Description
 `func_create_name` | The name of the function.
 `func_param` | A function argument.
 `func_return_type` | The type returned by the function. 
-`opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview](user-defined-functions.html#overview).
+`opt_routine_body` | The body of the function. For allowed contents, see [User-Defined Functions: Overview]({% link {{ page.version.version }}/user-defined-functions.md %}#overview).
 
 ## Example of a simple function
 
@@ -160,8 +160,8 @@ SELECT last_rider();
 
 ## See also
 
-- [User-Defined Functions](user-defined-functions.html)
-- [`ALTER FUNCTION`](alter-function.html)
-- [`DROP FUNCTION`](drop-function.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [User-Defined Functions]({% link {{ page.version.version }}/user-defined-functions.md %})
+- [`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %})
+- [`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

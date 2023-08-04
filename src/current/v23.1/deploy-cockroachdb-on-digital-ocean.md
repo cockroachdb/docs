@@ -31,11 +31,11 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 [Create Droplets](https://www.digitalocean.com/community/tutorials/how-to-create-your-first-digitalocean-droplet) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate Droplet for that workload.
 
-- Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
+- Run at least 3 nodes to [ensure survivability]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 - Use any [droplets](https://www.digitalocean.com/pricing/) except standard droplets with only 1 GB of RAM, which is below our minimum requirement. All Digital Ocean droplets use SSD storage.
 
-For more details, see [Hardware Recommendations](recommended-production-settings.html#hardware) and [Cluster Topology](recommended-production-settings.html#topology).
+For more details, see [Hardware Recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware) and [Cluster Topology]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology).
 
 ## Step 2. Synchronize clocks
 
@@ -53,7 +53,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 
 1. [Create a Digital Ocean Load Balancer](https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-load-balancers). Be sure to:
     - Set forwarding rules to route TCP traffic from the load balancer's port **26257** to port **26257** on the node Droplets.
-    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](monitoring-and-alerting.html#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
 1. Note the provisioned **IP Address** for the load balancer. You'll use this later to test load balancing and to connect your application to the cluster.
 
 {{site.data.alerts.callout_info}}If you would prefer to use HAProxy instead of Digital Ocean's managed load balancing, see the <a href="deploy-cockroachdb-on-premises.html">On-Premises</a> tutorial for guidance.{{site.data.alerts.end}}

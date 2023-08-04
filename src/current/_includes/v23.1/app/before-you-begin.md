@@ -1,5 +1,5 @@
-1. [Install CockroachDB](install-cockroachdb.html).
-1. Start up a [secure](secure-a-cluster.html) or [insecure](start-a-local-cluster.html) local cluster.
+1. [Install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. Start up a [secure]({% link {{ page.version.version }}/secure-a-cluster.md %}) or [insecure]({% link {{ page.version.version }}/start-a-local-cluster.md %}) local cluster.
 1. Choose the instructions that correspond to whether your cluster is secure or insecure:
 
 <div class="filters filters-big clearfix">

@@ -6,7 +6,7 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: develop
 ---
 
-A _trigram index_ is a type of [inverted index](inverted-indexes.html) created on a [`STRING`](string.html) column. Trigram indexes are used to efficiently search for strings in large tables without providing an exact search term.
+A _trigram index_ is a type of [inverted index]({% link {{ page.version.version }}/inverted-indexes.md %}) created on a [`STRING`]({% link {{ page.version.version }}/string.md %}) column. Trigram indexes are used to efficiently search for strings in large tables without providing an exact search term.
 
 This page describes how to create and use trigram indexes on CockroachDB.
 
@@ -18,7 +18,7 @@ Some PostgreSQL syntax and features are currently unsupported. For details, see 
 
 Trigram indexes make [substring and similarity matches](https://www.postgresql.org/docs/current/pgtrgm.html) efficient by indexing the unique trigrams of a string. A trigram is a group of three consecutive characters in a string.
 
-To display the trigrams within a string, use the `show_trgm()` [built-in function](functions-and-operators.html#trigrams-functions):
+To display the trigrams within a string, use the `show_trgm()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#trigrams-functions):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -73,7 +73,7 @@ Fuzzy string matching, as well as `LIKE` and `ILIKE` pattern matching, can be ve
 
 ### Creation
 
-To create a trigram index, use the [`CREATE INDEX`](create-index.html) syntax that defines an [inverted index](inverted-indexes.html), specifying a `STRING` column and the `gin_trgm_ops` or `gist_trgm_ops` opclass. It is necessary to specify an opclass in order to enable [trigram-based comparisons](#comparisons).
+To create a trigram index, use the [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) syntax that defines an [inverted index]({% link {{ page.version.version }}/inverted-indexes.md %}), specifying a `STRING` column and the `gin_trgm_ops` or `gist_trgm_ops` opclass. It is necessary to specify an opclass in order to enable [trigram-based comparisons](#comparisons).
 
 - Using the PostgreSQL-compatible syntax:
 
@@ -99,10 +99,10 @@ To create a trigram index, use the [`CREATE INDEX`](create-index.html) syntax th
 
 Trigram indexes on `STRING` columns support the following comparison operators:
 
-- **equality**: [`=`](functions-and-operators.html#operators). Note that standard [`btree` secondary indexes](create-index.html#parameters) may perform better than trigram indexes for equality searches.
-- **pattern matching (case-sensitive)**: [`LIKE`](functions-and-operators.html#operators)
-- **pattern matching (case-insensitive)**: [`ILIKE`](functions-and-operators.html#operators)
-- **similarity matching**: [`%`](functions-and-operators.html#operators). This operator returns `true` if the strings in the comparison have a similarity that meets or exceeds the threshold set by the `pg_trgm.similarity_threshold` [session variable](show-vars.html#pg_trgm_similarity_threshold).
+- **equality**: [`=`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators). Note that standard [`btree` secondary indexes]({% link {{ page.version.version }}/create-index.md %}#parameters) may perform better than trigram indexes for equality searches.
+- **pattern matching (case-sensitive)**: [`LIKE`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
+- **pattern matching (case-insensitive)**: [`ILIKE`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators)
+- **similarity matching**: [`%`]({% link {{ page.version.version }}/functions-and-operators.md %}#operators). This operator returns `true` if the strings in the comparison have a similarity that meets or exceeds the threshold set by the `pg_trgm.similarity_threshold` [session variable]({% link {{ page.version.version }}/show-vars.md %}#pg_trgm_similarity_threshold).
 
 For usage examples, see [Use a trigram index to speed up fuzzy string matching](#use-a-trigram-index-to-speed-up-fuzzy-string-matching).
 
@@ -172,7 +172,7 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
     INSERT INTO t SELECT 'empty' FROM generate_series(1, 10000);
     ~~~
 
-1. See how trigram matching performs without a trigram index. Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function](functions-and-operators.html#trigrams-functions):
+1. See how trigram matching performs without a trigram index. Retrieve the columns with values similar to `word`, using the `%` operator. Sort the results by the output of the `similarity()` [built-in function]({% link {{ page.version.version }}/functions-and-operators.md %}#trigrams-functions):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -198,7 +198,7 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
     Time: 30ms total (execution 30ms / network 0ms)
     ~~~
 
-    Values are not included in the results if their similarities do not meet the threshold set by [`pg_trgm.similarity_threshold`](show-vars.html#pg_trgm_similarity_threshold), which defaults to `0.3`. For example:
+    Values are not included in the results if their similarities do not meet the threshold set by [`pg_trgm.similarity_threshold`]({% link {{ page.version.version }}/show-vars.md %}#pg_trgm_similarity_threshold), which defaults to `0.3`. For example:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -211,7 +211,7 @@ CREATE INDEX ON t USING GIN ((json_col->>'json_text_field'))
       0.2222222222222222
     ~~~
 
-    Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan, which you can verify using [`EXPLAIN`](explain.html):
+    Notice that the fuzzy search took 30 milliseconds to execute. Without a trigram index, the statement performs a full scan, which you can verify using [`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -351,11 +351,11 @@ The following PostgreSQL syntax and features are currently unsupported. For deta
 
 ## See also
 
-- [`CREATE INDEX`](create-index.html)
-- [`DROP INDEX`](drop-index.html)
-- [`ALTER INDEX ... RENAME TO`](alter-index.html#rename-to)
-- [`SHOW INDEX`](show-index.html)
-- [Inverted indexes](inverted-indexes.html)
-- [Indexes](indexes.html)
+- [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %})
+- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
+- [`ALTER INDEX ... RENAME TO`]({% link {{ page.version.version }}/alter-index.md %}#rename-to)
+- [`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %})
+- [Inverted indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
+- [Indexes]({% link {{ page.version.version }}/indexes.md %})
 - [Use cases for trigram indexes (When not to use Full Text Search)](https://www.cockroachlabs.com/blog/use-cases-trigram-indexes/) (2022 blog post)
-- [SQL Statements](sql-statements.html)
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

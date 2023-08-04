@@ -6,15 +6,15 @@ docs_area: manage
 page_version: v22.2
 ---
 
-Now that [CockroachDB v22.2](../releases/v22.2.html) is available, an [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
+Now that [CockroachDB v22.2](https://www.cockroachlabs.com/docs/releases/v22.2) is available, an [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your {{ site.data.products.dedicated }} cluster from the {{ site.data.products.db }} Console. This page guides you through the process for an Admin.
 
 {{site.data.alerts.callout_success}}
-Upgrading a {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the {{ site.data.products.db }} [upgrade policy](upgrade-policy.html).
+Upgrading a {{ site.data.products.dedicated }} cluster to a new major version is opt-in. Before proceeding, review the {{ site.data.products.db }} [upgrade policy]({% link cockroachcloud/upgrade-policy.md %}).
 {{site.data.alerts.end}}
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to v22.2, you must be running v22.1. If you are not running v22.1, first [upgrade to v22.1](upgrade-to-v22.1.html). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
+To upgrade to v22.2, you must be running v22.1. If you are not running v22.1, first [upgrade to v22.1]({% link cockroachcloud/upgrade-to-v22.1.md %}). Then return to this page and continue to [Step 2](#step-2-select-your-cluster-size).
 
 ## Step 2. Select your cluster size
 
@@ -27,7 +27,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 ## Step 3. Understand the upgrade process
 
-In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. {{ site.data.products.db }} stops one node at a time and restarts it with the new version, waits a few minutes to observe the upgraded node's behavior, then moves on to the next node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](../{{site.current_cloud_version}}/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade does not interrupt the cluster's overall health and availability. {{ site.data.products.db }} stops one node at a time and restarts it with the new version, waits a few minutes to observe the upgraded node's behavior, then moves on to the next node. This "rolling upgrade" takes approximately 4-5 minutes per node and is enabled by CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/multi-active-availability) design.
 
 Approximately 72 hours after all nodes are running v22.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v22.2](#expect-temporary-limitations). Finalization also removes the ability to roll back to v22.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, [roll back the upgrade](#roll-back-the-upgrade) from the {{ site.data.products.db }} Console.
 </section>
@@ -48,7 +48,7 @@ Before starting the upgrade, complete the following steps.
 
 Your cluster will be unavailable while its single node is stopped and restarted with v22.2. Prepare your application for this brief downtime, typically a few minutes.
 
-The [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will also be disabled during this time.
+The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the {{ site.data.products.db }} Console will also be disabled during this time.
 
 </section>
 
@@ -57,7 +57,7 @@ The [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tool
 {% comment %} Be careful with this logic and the page-level variable page_version {% endcomment %}
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.page_version" | first %}
 
-Review the [backward-incompatible changes in {{ page.page_version }}](../releases/{{ page.page_version }}.html{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.page_version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
+Review the [backward-incompatible changes in {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}|(https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 
@@ -87,7 +87,7 @@ If you see unexpected behavior, you can [roll back](#roll-back-the-upgrade) to v
 
 ### Monitor your application
 
-Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [manually trigger finalization](#finalize-the-upgrade).
 
@@ -97,11 +97,11 @@ Use the [DB Console](tools-page.html) or your own tooling to monitor your applic
 
 Most v22.2 features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
-- The [`CREATE FUNCTION`](../v22.2/create-function.html) statement creates [user-defined functions](../v22.2/user-defined-functions.html).
-- [Inverted trigram indexes](../v22.2/trigram-indexes.html) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
-- [Predicates and projections in `CREATE CHANGEFEED` statements](../v22.2/create-changefeed.html). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
+- The [`CREATE FUNCTION`](https://www.cockroachlabs.com/docs/v22.2/create-function) statement creates [user-defined functions](https://www.cockroachlabs.com/docs/v22.2/user-defined-functions).
+- [Inverted trigram indexes](https://www.cockroachlabs.com/docs/v22.2/trigram-indexes) are a type of inverted index used to efficiently search for strings in large tables without providing an exact search term (fuzzy search).
+- [Predicates and projections in `CREATE CHANGEFEED` statements](https://www.cockroachlabs.com/docs/v22.2/create-changefeed). Projections allow users to emit specific columnar data, including computed columns, while predicates (i.e., filters) allow users to restrict the data that emits to only those events that match the filter.
 
-For an expanded list of features included in the v22.2 release, see the [v22.2 release notes](../releases/v22.2.html).
+For an expanded list of features included in the v22.2 release, see the [v22.2 release notes](https://www.cockroachlabs.com/docs/releases/v22.2).
 
 ### Roll back the upgrade
 
@@ -129,9 +129,9 @@ To manually finalize the upgrade, click **Finalize** in the banner at the top of
 
 After finalization, all [temporary limitations](#expect-temporary-limitations) will be lifted, and all v22.2 features are available for use. However, it will no longer be possible to roll back to v22.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/requests/new).
 
-After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](../v22.2/ui-storage-dashboard.html) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+After the upgrade to {{ page.version.version }} is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](https://www.cockroachlabs.com/docs/v22.2/ui-storage-dashboard) in the DB Console or monitor the `storage.marked-for-compaction-files` time-series metric. When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
 
 ## See also
 
-- [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v22.2 Release Notes](../releases/v22.2.html)
+- [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %})
+- [CockroachDB v22.2 Release Notes](https://www.cockroachlabs.com/docs/releases/v22.2)

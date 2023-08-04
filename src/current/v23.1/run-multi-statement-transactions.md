@@ -5,16 +5,16 @@ toc: true
 docs_area: 
 ---
 
-This page has instructions for running [multi-statement transactions](transactions.html#batched-statements) against CockroachDB from various programming languages.
+This page has instructions for running [multi-statement transactions]({% link {{ page.version.version }}/transactions.md %}#batched-statements) against CockroachDB from various programming languages.
 
 ## Before you begin
 
 Make sure you have already:
 
-- Set up a [local cluster](secure-a-cluster.html).
-- [Installed a PostgreSQL client](install-client-drivers.html).
-- [Connected to the database](connect-to-the-database.html).
-- [Inserted data](insert-data.html) that you now want to run queries against.
+- Set up a [local cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
+- [Installed a PostgreSQL client]({% link {{ page.version.version }}/install-client-drivers.md %}).
+- [Connected to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
+- [Inserted data]({% link {{ page.version.version }}/insert-data.md %}) that you now want to run queries against.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
@@ -38,7 +38,7 @@ DELETE orders WHERE customer = 1;
 COMMIT;
 ~~~
 
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+For more information about how to use the built-in SQL client, see the [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) reference docs.
 
 </section>
 
@@ -46,9 +46,9 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 The best way to run a multi-statement transaction from Go code is to use one of the following approaches:
 
-- Use the [`crdb` transaction wrapper](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) which automatically handles transaction retry errors if they occur, as shown in [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
+- Use the [`crdb` transaction wrapper](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) which automatically handles transaction retry errors if they occur, as shown in [Build a Go App with CockroachDB]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb.md %}).
 
-- Write your own retry loop wrapper, as shown in [Build a Go App with CockroachDB and GORM](build-a-go-app-with-cockroachdb-gorm.html)
+- Write your own retry loop wrapper, as shown in [Build a Go App with CockroachDB and GORM]({% link {{ page.version.version }}/build-a-go-app-with-cockroachdb-gorm.md %})
 
 </section>
 
@@ -56,7 +56,7 @@ The best way to run a multi-statement transaction from Go code is to use one of 
 
 The best way to run a multi-statement transaction from Java is to write a wrapper method that automatically handles transaction retry errors.
 
-For complete examples showing how to write and use such wrapper methods, see [Build a Java App with CockroachDB](build-a-java-app-with-cockroachdb.html).
+For complete examples showing how to write and use such wrapper methods, see [Build a Java App with CockroachDB]({% link {{ page.version.version }}/build-a-java-app-with-cockroachdb.md %}).
 
 </section>
 
@@ -64,9 +64,9 @@ For complete examples showing how to write and use such wrapper methods, see [Bu
 
 The best way to run a multi-statement transaction from Python code is to use one of the following approaches:
 
-- Use the [sqlalchemy-cockroachdb](https://github.com/cockroachdb/sqlalchemy-cockroachdb) SQLAlchemy dialect, which automatically handles transaction retry errors if they occur, as shown in [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
+- Use the [sqlalchemy-cockroachdb](https://github.com/cockroachdb/sqlalchemy-cockroachdb) SQLAlchemy dialect, which automatically handles transaction retry errors if they occur, as shown in [Build a Python App with CockroachDB and SQLAlchemy]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-sqlalchemy.md %}).
 
-- Write your own retry loop wrapper, as shown in [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb.html).
+- Write your own retry loop wrapper, as shown in [Build a Python App with CockroachDB]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb.md %}).
 
 </section>
 
@@ -74,23 +74,23 @@ The best way to run a multi-statement transaction from Python code is to use one
 
 Reference information related to this task:
 
-- [Transactions](transactions.html)
-- [Client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling)
-- [Batched statements](transactions.html#batched-statements)
-- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
-- [`BEGIN`](begin-transaction.html)
-- [`COMMIT`](commit-transaction.html)
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})
+- [Client-side transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling)
+- [Batched statements]({% link {{ page.version.version }}/transactions.md %}#batched-statements)
+- [Transaction Contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention)
+- [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})
+- [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})
 
 Other common tasks:
 
-- [Connect to the Database](connect-to-the-database.html)
-- [Insert Data](insert-data.html)
-- [Query Data](query-data.html)
-- [Update Data](update-data.html)
-- [Delete Data](delete-data.html)
+- [Connect to the Database]({% link {{ page.version.version }}/connect-to-the-database.md %})
+- [Insert Data]({% link {{ page.version.version }}/insert-data.md %})
+- [Query Data]({% link {{ page.version.version }}/query-data.md %})
+- [Update Data]({% link {{ page.version.version }}/update-data.md %})
+- [Delete Data]({% link {{ page.version.version }}/delete-data.md %})
 - [Optimize Statement Performance][fast]
-- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
-- [Example Apps](example-apps.html)
+- [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
+- [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
 <!-- Reference Links -->
 

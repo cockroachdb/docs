@@ -5,21 +5,21 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `RESUME JOB` [statement](sql-statements.html) lets you resume the following types of jobs:
+ The `RESUME JOB` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lets you resume the following types of jobs:
 
- - [`IMPORT`](import.html) jobs
- - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
- - [User-created table statistics](create-statistics.html) jobs
- - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
- - [Changefeeds](create-changefeed.html)
- - [Schema change](online-schema-changes.html) jobs
- -  [Scheduled backup](manage-a-backup-schedule.html) jobs
+ - [`IMPORT`]({% link {{ page.version.version }}/import.md %}) jobs
+ - [`BACKUP`]({% link {{ page.version.version }}/backup.md %}) and [`RESTORE`]({% link {{ page.version.version }}/restore.md %}) jobs
+ - [User-created table statistics]({% link {{ page.version.version }}/create-statistics.md %}) jobs
+ - [Automatic table statistics]({% link {{ page.version.version }}/cost-based-optimizer.md %}#table-statistics) jobs
+ - [Changefeeds]({% link {{ page.version.version }}/create-changefeed.md %})
+ - [Schema change]({% link {{ page.version.version }}/online-schema-changes.md %}) jobs
+ -  [Scheduled backup]({% link {{ page.version.version }}/manage-a-backup-schedule.md %}) jobs
 
 ## Required privileges
 
-To resume a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](security-reference/authorization.html#role-options) set. Non-admin users cannot resume admin users' jobs.
+To resume a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`]({% link {{ page.version.version }}/create-user.md %}#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option]({% link {{ page.version.version }}/security-reference/authorization.md %}#role-options) set. Non-admin users cannot resume admin users' jobs.
 
-For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-privileges) privilege on a set of tables can resume changefeed jobs running on those tables.
+For changefeeds, users with the [`CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}#required-privileges) privilege on a set of tables can resume changefeed jobs running on those tables.
 
 ## Synopsis
 
@@ -31,9 +31,9 @@ For changefeeds, users with the [`CHANGEFEED`](create-changefeed.html#required-p
 
 Parameter | Description
 ----------|------------
-`job_id` | The ID of the job you want to resume, which can be found with [`SHOW JOBS`](show-jobs.html).
-`select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to resume.
-`for_schedules_clause` |  The schedule you want to resume jobs for. You can resume jobs for a specific schedule (`FOR SCHEDULE id`) or resume jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#resume-jobs-for-a-schedule) below.
+`job_id` | The ID of the job you want to resume, which can be found with [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}).
+`select_stmt` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `job_id`(s) to resume.
+`for_schedules_clause` |  The schedule you want to resume jobs for. You can resume jobs for a specific schedule (`FOR SCHEDULE id`) or resume jobs for multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#resume-jobs-for-a-schedule) below.
 
 ## Examples
 
@@ -64,7 +64,7 @@ Parameter | Description
 
 ### Resume multiple jobs
 
-To resume multiple jobs, nest a [`SELECT` clause](select-clause.html) that retrieves `job_id`(s) inside the `RESUME JOBS` statement:
+To resume multiple jobs, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `job_id`(s) inside the `RESUME JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -76,7 +76,7 @@ All jobs created by `maxroach` will be resumed.
 
 ### Resume jobs for a schedule
 
- To resume jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+ To resume jobs for a specific [backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}), use the schedule's `id`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -86,7 +86,7 @@ All jobs created by `maxroach` will be resumed.
 RESUME JOBS FOR SCHEDULES 1
 ~~~
 
-You can also resume multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+You can also resume multiple schedules by nesting a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -99,10 +99,10 @@ RESUME JOBS FOR SCHEDULES 2
 
 ## See also
 
-- [`PAUSE JOB`](pause-job.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [`CANCEL JOB`](cancel-job.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`IMPORT`](import.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
+- [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`IMPORT`]({% link {{ page.version.version }}/import.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})

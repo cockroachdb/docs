@@ -8,7 +8,7 @@ docs_area: manage
 [Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The {{ site.data.products.core }} integration with Datadog enables data collection and alerting on selected [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
 {{site.data.alerts.callout_success}}
-This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog](../cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
+This tutorial explores the {{ site.data.products.core }} integration with Datadog. For the {{ site.data.products.dedicated }} integration with Datadog, refer to [Monitor CockroachDB Dedicated with Datadog]({% link cockroachcloud/tools-page.md %}#monitor-cockroachdb-dedicated-with-datadog) instead of this page.
 {{site.data.alerts.end}}
 
 The {{ site.data.products.core }} integration with Datadog is powered by the [Datadog Agent](https://app.datadoghq.com/account/settings#agent), and supported by Datadog directly:
@@ -24,7 +24,7 @@ In this tutorial, you will enable the CockroachDB integration in Datadog, config
 Before you can follow the steps presented in this tutorial, you must have:
 
 - Downloaded and installed the [Datadog Agent](https://app.datadoghq.com/account/settings#agent).
-- Started a [secure CockroachDB Self-Hosted cluster](secure-a-cluster.html).
+- Started a [secure CockroachDB Self-Hosted cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 ## Step 1. Enable CockroachDB integration
 
@@ -48,13 +48,13 @@ Uncomment the following line in `cockroachdb.d/conf.yaml`:
 - prometheus_url: http://localhost:8080/_status/vars
 ~~~
 
-This enables metrics collection via our [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint).
+This enables metrics collection via our [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint).
 
 ### Configure security certificates
 
 Uncomment the lines that begin with `tls_private_key` and `tls_ca_cert`. These should specify the full file paths to your CA key and certificate, respectively.
 
-For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster.html#step-1-generate-certificates), the paths would look something like:
+For example, if you used [`cockroach cert`]({% link {{ page.version.version }}/cockroach-cert.md %}) to [secure your cluster]({% link {{ page.version.version }}/secure-a-cluster.md %}#step-1-generate-certificates), the paths would look something like:
 
 ~~~ yaml
 tls_private_key: /custom/dir/path/client.root.key
@@ -66,7 +66,7 @@ tls_ca_cert: /custom/dir/path/ca.crt
 
 ### Enable log collection
 
-Optionally enable Datadog to collect [CockroachDB logs](logging-overview.html) by adding the following block to `cockroachdb.d/conf.yaml`:
+Optionally enable Datadog to collect [CockroachDB logs]({% link {{ page.version.version }}/logging-overview.md %}) by adding the following block to `cockroachdb.d/conf.yaml`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
@@ -81,10 +81,10 @@ logs:
      pattern: '[A-Z]\d{6}\s\d+\:\d+\:\d+\.\d+'
 ~~~
 
-The `path` value specifies the [default](configure-logs.html#default-logging-configuration) CockroachDB log file and location.
+The `path` value specifies the [default]({% link {{ page.version.version }}/configure-logs.md %}#default-logging-configuration) CockroachDB log file and location.
 
 {{site.data.alerts.callout_info}}
-You can configure both the CockroachDB [logging directory](configure-logs.html#set-file-defaults) and [log files](configure-logs.html#output-to-files).
+You can configure both the CockroachDB [logging directory]({% link {{ page.version.version }}/configure-logs.md %}#set-file-defaults) and [log files]({% link {{ page.version.version }}/configure-logs.md %}#output-to-files).
 {{site.data.alerts.end}}
 
 Log collection is disabled by default in the Datadog Agent. Follow the steps in the [Datadog documentation](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#activate-log-collection) to activate log collection.
@@ -134,7 +134,7 @@ If you wish to customize your CockroachDB dashboard, it's recommended that you c
 
 ## Step 5. Run a sample workload
 
-To test the dashboard functionality, use [`cockroach workload`](cockroach-workload.html) to run a sample workload on the cluster.
+To test the dashboard functionality, use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to run a sample workload on the cluster.
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
@@ -158,13 +158,13 @@ The query metrics will appear on the dashboard:
 
 Follow the steps in the [Datadog documentation](https://docs.datadoghq.com/monitors/monitor_types/) to create a new Monitor.
 
-Select **Threshold Alert** as the detection method. You can use this option to configure an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting](monitoring-and-alerting.html#events-to-alert-on).
+Select **Threshold Alert** as the detection method. You can use this option to configure an alert that is sent when a [supported metric](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) reaches a given threshold. For descriptions of some useful CockroachDB alerts, see [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#events-to-alert-on).
 
-The example alert below will trigger when [a node has less than 15% of storage capacity remaining](monitoring-and-alerting.html#node-is-running-low-on-disk-space):
+The example alert below will trigger when [a node has less than 15% of storage capacity remaining]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#node-is-running-low-on-disk-space):
 
 <img src="{{ 'images/v23.1/datadog-crdb-threshold-alert.png' | relative_url }}" alt="CockroachDB Threshold Alert in Datadog" style="border:1px solid #eee;max-width:100%" />
 
-- `cockroachdb.capacity.available` is divided by `cockroachdb.capacity.total` to determine the fraction of available capacity on the node's [store](architecture/storage-layer.html) (the directory on each node where CockroachDB reads and writes its data).
+- `cockroachdb.capacity.available` is divided by `cockroachdb.capacity.total` to determine the fraction of available capacity on the node's [store]({% link {{ page.version.version }}/architecture/storage-layer.md %}) (the directory on each node where CockroachDB reads and writes its data).
 - The alert threshold is set to `0.15`.
 
 The timeseries graph at the top of the page indicates the configured metric and threshold:
@@ -173,9 +173,9 @@ The timeseries graph at the top of the page indicates the configured metric and 
 
 ## Step 7. Disable DB Console's local storage of metrics (optional)
 
-If you rely on external tools such as Datadog for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics](operational-faqs.html#disable-time-series-storage).
+If you rely on external tools such as Datadog for storing and visualizing your cluster's time-series metrics, Cockroach Labs recommends that you [disable the DB Console's storage of time-series metrics]({% link {{ page.version.version }}/operational-faqs.md %}#disable-time-series-storage).
 
-When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Datadog based on the data it is collecting from your cluster's Prometheus endpoint.
+When storage of time-series metrics is disabled, the cluster continues to expose its metrics via the [Prometheus endpoint]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#prometheus-endpoint). The DB Console stops storing new time-series cluster metrics and eventually deletes historical data. The Metrics dashboards in the DB Console are still available, but their visualizations are blank. This is because the dashboards rely on data that is no longer available. You can create queries, visualizations, and alerts in Datadog based on the data it is collecting from your cluster's Prometheus endpoint.
 
 ## Limitations
 
@@ -183,7 +183,7 @@ When storage of time-series metrics is disabled, the cluster continues to expose
 
 ## See also
 
-- [Monitoring and Alerting](monitoring-and-alerting.html)
-- [DB Console Overview](ui-overview.html)
-- [Logging Overview](logging-overview.html)
-- [Metrics](metrics.html)
+- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
+- [Logging Overview]({% link {{ page.version.version }}/logging-overview.md %})
+- [Metrics]({% link {{ page.version.version }}/metrics.md %})

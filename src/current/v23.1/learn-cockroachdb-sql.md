@@ -7,28 +7,28 @@ docs_area: get_started
 
 This tutorial guides you through some of the most essential CockroachDB SQL statements using an interactive SQL shell connected to a temporary, single-node CockroachDB cluster.
 
-For a complete list of supported SQL statements and related details, see [SQL Statements](sql-statements.html).
+For a complete list of supported SQL statements and related details, see [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %}).
 
 {{site.data.alerts.callout_info}}
-This tutorial is for {{site.data.products.core}} users. If you are working with {{site.data.products.dedicated}} or {{site.data.products.serverless}}, you can run this tutorial against [a cluster running in the cloud](../cockroachcloud/learn-cockroachdb-sql.html).
+This tutorial is for {{site.data.products.core}} users. If you are working with {{site.data.products.dedicated}} or {{site.data.products.serverless}}, you can run this tutorial against [a cluster running in the cloud]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 {{site.data.alerts.end}}
 
 ## Start CockroachDB
 
-If you haven't already, [install CockroachDB](install-cockroachdb.html).
+If you haven't already, [install CockroachDB]({% link {{ page.version.version }}/install-cockroachdb.md %}).
 
-Then run the [`cockroach demo`](cockroach-demo.html) command:
+Then run the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo
 ~~~
 
-This starts a single-node, temporary cluster with the [`movr`](movr.html) dataset pre-loaded.
+This starts a single-node, temporary cluster with the [`movr`]({% link {{ page.version.version }}/movr.md %}) dataset pre-loaded.
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`](show-tables.html) statement or the `\dt` [shell command](cockroach-sql.html#commands):
+To see all tables in the active database, use the [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement or the `\dt` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -49,7 +49,7 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 
 ## Create a table
 
-Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You'll need to add a table for drivers to the `movr` database. To create a table, use [`CREATE TABLE`](create-table.html) followed by a table name, the column names, and the [data type](data-types.html) and [constraint](constraints.html), if any, for each column:
+Suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You'll need to add a table for drivers to the `movr` database. To create a table, use [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) followed by a table name, the column names, and the [data type]({% link {{ page.version.version }}/data-types.md %}) and [constraint]({% link {{ page.version.version }}/constraints.md %}), if any, for each column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -63,7 +63,7 @@ Suppose that you want MovR to offer ride-sharing services, in addition to vehicl
 );
 ~~~
 
-Table and column names must follow [these rules](keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). Also, when you do not explicitly define a [primary key]({% link {{ page.version.version }}/primary-key.md %}), CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -79,7 +79,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](show-columns.html) statement or the `\d <table>` [shell command](cockroach-sql.html#commands):
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`]({% link {{ page.version.version }}/show-columns.md %}) statement or the `\d <table>` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -100,7 +100,7 @@ To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](s
 
 ## Insert rows
 
-To insert a row into a table, use [`INSERT INTO`](insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
+To insert a row into a table, use [`INSERT INTO`]({% link {{ page.version.version }}/insert.md %}) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -125,7 +125,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
     ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', 'JKL-456', '214 W 43rd St');
 ~~~
 
-[Default values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
+[Default values]({% link {{ page.version.version }}/default-value.md %}) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -154,9 +154,9 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 ## Create an index
 
-[Indexes](indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [primary key](primary-key.html) of a table and any columns with a [`UNIQUE` constraint](unique.html).
+[Indexes]({% link {{ page.version.version }}/indexes.md %}) help locate data without having to look through every row of a table. They're automatically created for the [primary key]({% link {{ page.version.version }}/primary-key.md %}) of a table and any columns with a [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %}).
 
-To create an index for non-unique columns, use [`CREATE INDEX`](create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
+To create an index for non-unique columns, use [`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -180,7 +180,7 @@ You can create indexes during table creation as well; just include the `INDEX` k
 
 ## Show indexes
 
-To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followed by the name of the table:
+To show the indexes on a table, use [`SHOW INDEX FROM`]({% link {{ page.version.version }}/show-index.md %}) followed by the name of the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -204,7 +204,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](show-index.html) followe
 
 ## Query a table
 
-To query a table, use [`SELECT`](select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data. You can also use the [`LIMIT`](limit-offset.html) clause to restrict the number of rows retrieved:
+To query a table, use [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data. You can also use the [`LIMIT`]({% link {{ page.version.version }}/limit-offset.md %}) clause to restrict the number of rows retrieved:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -298,7 +298,7 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 
 ## Update rows
 
-To update rows in a table, use [`UPDATE`](update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update rows in a table, use [`UPDATE`]({% link {{ page.version.version }}/update.md %}) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -330,7 +330,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 ## Delete rows
 
-To delete rows from a table, use [`DELETE FROM`](delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
+To delete rows from a table, use [`DELETE FROM`]({% link {{ page.version.version }}/delete.md %}) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -344,7 +344,7 @@ Just as with the `UPDATE` statement, if a table has a primary key, you can use t
 
 ## Remove a table
 
-When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by the table name to remove the table and all its data:
+When you no longer need a table, use [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) followed by the table name to remove the table and all its data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -353,7 +353,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 ## What's next?
 
-- Explore all [SQL Statements](sql-statements.html)
-- [Use the built-in SQL client](cockroach-sql.html) to execute statements from a shell or directly from the command line
-- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](example-apps.html)
-- [Explore core CockroachDB features](demo-replication-and-rebalancing.html) like automatic replication, rebalancing, and fault tolerance
+- Explore all [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Use the built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) to execute statements from a shell or directly from the command line
+- [Install the client driver]({% link {{ page.version.version }}/install-client-drivers.md %}) for your preferred language and [build an app]({% link {{ page.version.version }}/example-apps.md %})
+- [Explore core CockroachDB features]({% link {{ page.version.version }}/demo-replication-and-rebalancing.md %}) like automatic replication, rebalancing, and fault tolerance

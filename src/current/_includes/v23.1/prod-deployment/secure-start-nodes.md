@@ -33,7 +33,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. CockroachDB uses custom-built versions of the [GEOS](architecture/glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+1. CockroachDB uses custom-built versions of the [GEOS]({% link {{ page.version.version }}/architecture/glossary.md %}#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -52,7 +52,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. Run the [`cockroach start`](cockroach-start.html) command:
+1. Run the [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -70,14 +70,14 @@ After completing these steps, nodes will not yet be live. They will complete the
     Flag | Description
     -----|------------
     `--certs-dir` | Specifies the directory where you placed the `ca.crt` file and the `node.crt` and `node.key` files for the node.
-    `--advertise-addr` | Specifies the IP address/hostname and port to tell other nodes to use. The port number can be omitted, in which case it defaults to `26257`.<br><br>This value must route to an IP address the node is listening on (with `--listen-addr` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-addr` and/or `--listen-addr` differently. For more details, see [Networking](recommended-production-settings.html#networking).
+    `--advertise-addr` | Specifies the IP address/hostname and port to tell other nodes to use. The port number can be omitted, in which case it defaults to `26257`.<br><br>This value must route to an IP address the node is listening on (with `--listen-addr` unspecified, the node listens on all IP addresses).<br><br>In some networking scenarios, you may need to use `--advertise-addr` and/or `--listen-addr` differently. For more details, see [Networking]({% link {{ page.version.version }}/recommended-production-settings.md %}#networking).
     `--join` | Identifies the address of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.
-    `--cache`<br>`--max-sql-memory` | Increases the node's cache size to 25% of available system memory to improve read performance. The capacity for in-memory SQL processing defaults to 25% of system memory but can be raised, if necessary, to increase the number of simultaneous client connections allowed by the node as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. For more details, see [Cache and SQL Memory Size](recommended-production-settings.html#cache-and-sql-memory-size).
+    `--cache`<br>`--max-sql-memory` | Increases the node's cache size to 25% of available system memory to improve read performance. The capacity for in-memory SQL processing defaults to 25% of system memory but can be raised, if necessary, to increase the number of simultaneous client connections allowed by the node as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. For more details, see [Cache and SQL Memory Size]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
     `--background` | Starts the node in the background so you gain control of the terminal to issue more commands.
 
-    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features](enterprise-licensing.html). For more details, see [Locality](cockroach-start.html#locality).
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}). For more details, see [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
-	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
+	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 1. Repeat these steps for each additional node that you want in your cluster.
 
@@ -110,7 +110,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     If you get a permissions error, prefix the command with `sudo`.
 
-1. CockroachDB uses custom-built versions of the [GEOS](architecture/glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+1. CockroachDB uses custom-built versions of the [GEOS]({% link {{ page.version.version }}/architecture/glossary.md %}#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -175,9 +175,9 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
-    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features](enterprise-licensing.html). For more details, see [Locality](cockroach-start.html#locality).
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [{{ site.data.products.enterprise }} features]({% link {{ page.version.version }}/enterprise-licensing.md %}). For more details, see [Locality]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
- 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
+ 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node]({% link {{ page.version.version }}/cockroach-start.md %}).
 
 1. Start the CockroachDB cluster:
 

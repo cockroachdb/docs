@@ -8,10 +8,10 @@ docs_area: reference.benchmarking
 
 CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs's extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
 
-For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-large.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design.
+For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-large.md %}). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design.
 
 {{site.data.alerts.callout_success}}
-This document is about CockroachDB performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
+This document is about CockroachDB performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on data location techniques to minimize network latency, see [Topology Patterns]({% link {{ page.version.version }}/topology-patterns.md %}).
 {{site.data.alerts.end}}
 
 ## Scale
@@ -20,7 +20,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used).
 
-CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard.
+CockroachDB achieves this performance in [`SERIALIZABLE` isolation]({% link {{ page.version.version }}/demo-serializable.md %}), the strongest isolation level in the SQL standard.
 
 <img src="{{ 'images/v23.1/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="border:1px solid #eee;max-width:100%" />
 
@@ -67,7 +67,7 @@ For example, when running Sysbench on a 3-node cluster of AWS `c5d.9xlarge` mach
 
 <img src="{{ 'images/v23.1/sysbench-latency.png' | relative_url }}" alt="Sysbench Latency" style="max-width:100%" />
 
-CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes](indexes.html) and various [data topologies](topology-patterns.html) to achieve low latency.
+CockroachDB provides a number of important tuning practices for both single-region and multi-region deployments, including [secondary indexes]({% link {{ page.version.version }}/indexes.md %}) and various [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to achieve low latency.
 
 ## Benchmarks used
 
@@ -77,7 +77,7 @@ Cockroach Labs measures performance through many diverse tests, including the [i
 
 >“…involves a mix of five concurrent transactions of different types and complexity either executed on-line or queued for deferred execution. The database is comprised of nine types of tables with a wide range of record and population sizes. While the benchmark portrays the activity of a wholesale supplier, TPC-C is not limited to the activity of any particular business segment, but, rather represents any industry that must manage, sell, or distribute a product or service.”
 
-As a result, TPC-C includes create, read, update, and delete (e.g., CRUD) queries, basic joins, and other SQL statements used to administer mission-critical transactional workloads. It includes detailed specifications for concurrency and workload [contention](performance-best-practices-overview.html#transaction-contention).
+As a result, TPC-C includes create, read, update, and delete (e.g., CRUD) queries, basic joins, and other SQL statements used to administer mission-critical transactional workloads. It includes detailed specifications for concurrency and workload [contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention).
 
 #### How TPC-C works
 
@@ -99,14 +99,14 @@ CockroachDB has no theoretical limitations to scaling, throughput, latency, or c
 
 - Hardware
 
-    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](recommended-production-settings.html#hardware).
+    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#hardware).
 
     {% include {{ page.version.version }}/prod-deployment/cloud-report.md %}
 
 - Performance tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview](multiregion-overview.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices]({% link {{ page.version.version }}/performance-best-practices-overview.md %}), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview]({% link {{ page.version.version }}/multiregion-overview.md %}).
 
 - TPC-C replication instructions
 
-    For instructions showing how to replicate the TPC-C results described in this page, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-large.html).
+    For instructions showing how to replicate the TPC-C results described in this page, see [Performance Benchmarking with TPC-C]({% link {{ page.version.version }}/performance-benchmarking-with-tpcc-large.md %}).

@@ -5,19 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DATE` [data type](data-types.html) stores a year, month, and day.
+The `DATE` [data type]({% link {{ page.version.version }}/data-types.md %}) stores a year, month, and day.
 
 ## Syntax
 
-You can express a constant value of type `DATE` using an [interpreted literal](sql-constants.html#interpreted-literals), or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `DATE` or [coerced to](scalar-expressions.html#explicit-type-coercions) type `DATE`.
+You can express a constant value of type `DATE` using an [interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals), or a string literal [annotated with]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions) type `DATE` or [coerced to]({% link {{ page.version.version }}/scalar-expressions.md %}#explicit-type-coercions) type `DATE`.
 
-CockroachDB also supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where a `DATE` value is otherwise expected. By default, CockroachDB parses the following string formats for dates:
+CockroachDB also supports using uninterpreted [string literals]({% link {{ page.version.version }}/sql-constants.md %}#string-literals) in contexts where a `DATE` value is otherwise expected. By default, CockroachDB parses the following string formats for dates:
 
 - `YYYY-MM-DD`
 - `MM-DD-YYYY`
 - `MM-DD-YY` (default)/`YY-MM-DD`/`DD-MM-YY`
 
-To change the input format of truncated dates (e.g., `12-16-06`) from `MM-DD-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html).
+To change the input format of truncated dates (e.g., `12-16-06`) from `MM-DD-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable]({% link {{ page.version.version }}/set-vars.md %}) or the `sql.defaults.datestyle ` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 {% include {{page.version.version}}/sql/sql-defaults-cluster-settings-deprecation-notice.md %}
 
@@ -78,7 +78,7 @@ String literal implicitly typed as `DATE`:
 
 ## Supported casting and conversion
 
-`DATE` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+`DATE` values can be [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) to any of the following data types:
 
 Type | Details
 -----|--------
@@ -90,4 +90,4 @@ Type | Details
 
 ## See also
 
-[Data Types](data-types.html)
+[Data Types]({% link {{ page.version.version }}/data-types.md %})

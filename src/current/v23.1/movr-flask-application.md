@@ -5,24 +5,24 @@ toc: true
 docs_area: develop
 ---
 
-This page guides you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application](movr.html#develop-and-deploy-a-global-application) tutorial.
+This page guides you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application) tutorial.
 
 <!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
 
 ## Before you begin
 
-Before you begin this section, complete the previous section of the tutorial, [Set Up a Virtual Environment for Developing Global Applications](movr-flask-setup.html).
+Before you begin this section, complete the previous section of the tutorial, [Set Up a Virtual Environment for Developing Global Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}).
 
 ## Project structure
 
 The application needs to handle requests from clients, namely web browsers. To translate these kinds of requests into database transactions, the application stack consists of the following components:
 
 - A multi-region database schema that defines the tables and indexes for user, vehicle, and ride data.
-    The database schema is covered on a separate page, [Create a Multi-Region Database Schema](movr-flask-database.html).
+    The database schema is covered on a separate page, [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}).
 - A multi-node, geo-distributed CockroachDB cluster, with each node's locality corresponding to cloud provider regions.
     Database deployment is covered on two separate pages:
-      - For instructions on setting up a demo cluster, see [Set Up a Virtual Environment for Developing Multi-Region Applications](movr-flask-setup.html).
-      - For instructions on setting up a multi-region cluster, see [Deploy a Global Application](movr-flask-deployment.html).
+      - For instructions on setting up a demo cluster, see [Set Up a Virtual Environment for Developing Multi-Region Applications]({% link {{ page.version.version }}/movr-flask-setup.md %}).
+      - For instructions on setting up a multi-region cluster, see [Deploy a Global Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 - Python class definitions that map to the tables in our database.
     For details, see [Mappings](#mappings) below.
 - Functions that wrap database transactions.
@@ -79,11 +79,11 @@ movr
 
 Object Relational Mappers (ORMs) map classes to tables, class instances to rows, and class methods to transactions on the rows of a table. The `sqlalchemy` package includes some base classes and methods that you can use to connect to your database's server from a Python application, and then map tables in that database to Python classes.
 
-In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/dialects/). The package includes some functions that help you handle [transactions](transactions.html) in a running CockroachDB cluster.
+In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/orm/extensions/declarative/) extension, which is built on the `mapper()` and `Table` data structures. We also use the [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) Python package, which defines the CockroachDB SQLAlchemy [dialect](https://docs.sqlalchemy.org/dialects/). The package includes some functions that help you handle [transactions]({% link {{ page.version.version }}/transactions.md %}) in a running CockroachDB cluster.
 
 ### Mappings
 
-After completing the [Create a Multi-Region Database Schema](movr-flask-database.html) section, you should be familiar with the `movr` database and each of the tables in the database (`users`, `vehicles`, and `rides`).
+After completing the [Create a Multi-Region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %}) section, you should be familiar with the `movr` database and each of the tables in the database (`users`, `vehicles`, and `rides`).
 
 Open [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/models.py), and look at the first 10 lines of the file:
 
@@ -122,7 +122,7 @@ Next, look at the `Vehicle` class definition:
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/movr/models.py ||# START Vehicle ||# END Vehicle %}
 ~~~
 
-Recall that the `vehicles` table contains more columns and data types than the `users` table. It also contains a [foreign key constraint](foreign-key.html) (on the `users` table), and a default value. These differences are reflected in the `Vehicle` class.
+Recall that the `vehicles` table contains more columns and data types than the `users` table. It also contains a [foreign key constraint]({% link {{ page.version.version }}/foreign-key.md %}) (on the `users` table), and a default value. These differences are reflected in the `Vehicle` class.
 
 #### The `Ride` class
 
@@ -136,13 +136,13 @@ The `rides` table has three foreign key constraints, one on the `users` table an
 
 ### Transactions
 
-After you create a class for each table in the database, you can start defining functions that bundle together common SQL operations as atomic [transactions](transactions.html).
+After you create a class for each table in the database, you can start defining functions that bundle together common SQL operations as atomic [transactions]({% link {{ page.version.version }}/transactions.md %}).
 
 #### The SQLAlchemy CockroachDB dialect
 
 The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/tree/master/cockroachdb) Python library handles transactions in SQLAlchemy with the `run_transaction()` function. This function takes a `transactor`, which can be an [`Engine`](https://docs.sqlalchemy.org/core/connections.html#sqlalchemy.engine.Engine), [`Connection`](https://docs.sqlalchemy.org/core/connections.html#sqlalchemy.engine.Connection), or [`sessionmaker`](https://docs.sqlalchemy.org/orm/session_api.html#sqlalchemy.orm.session.sessionmaker) object, and a callback function. It then uses the `transactor` to connect to the database, and executes the callback as a database transaction. For some examples of `run_transaction()` usage, see [Transaction callback functions](#transaction-callback-functions) below.
 
-`run_transaction()` abstracts the details of [client-side transaction retries](transaction-retry-error-reference.html#client-side-retry-handling) away from your application code. Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#transaction-contention) with other concurrent transactions that cannot be resolved without allowing potential serializable anomalies. As a result, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+`run_transaction()` abstracts the details of [client-side transaction retries]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) away from your application code. Transactions may require retries if they experience deadlock or [read/write contention]({% link {{ page.version.version }}/performance-best-practices-overview.md %}#transaction-contention) with other concurrent transactions that cannot be resolved without allowing potential serializable anomalies. As a result, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 `run_transaction()` has the following additional benefits:
 
@@ -169,7 +169,7 @@ The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroa
 
  - `Session.flush()`
 
-    This will not work as expected with CockroachDB because [CockroachDB does not support nested transactions](savepoint.html), which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to rollback. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following: `sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3)`.
+    This will not work as expected with CockroachDB because [CockroachDB does not support nested transactions]({% link {{ page.version.version }}/savepoint.md %}), which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to rollback. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following: `sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3)`.
 
  In the example application, all calls to `run_transaction()` are found within the methods of the `MovR` class (defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py)), which represents the connection to the running database. Requests to the web application frontend (defined in [`server.py`](https://github.com/cockroachlabs/movr-flask/blob/master/server.py)), are routed to the `MovR` class methods.
 
@@ -197,7 +197,7 @@ A common query that a client might want to run is a read of the `rides` table. T
 
 The `get_rides_txn()` function takes a `Session` object and a `rider_id` string as its inputs, and it outputs a list of dictionaries containing the columns-value pairs of a row in the `rides` table. To retrieve the data from the database bound to a particular `Session` object, we use `Session.query()`, a method of the `Session` class. This method returns a `Query` object, with methods for filtering and ordering query results.
 
-Note that `get_rides_txn()` gets all rides for a specific rider, which might be located across multiple regions. As discussed in [MovR: A Global Application Use-Case](movr-flask-use-case.html#latency-in-global-applications), running queries on data in multiple regions of a multi-region deployment can lead to latency problems. Because this function defines [a read operation](architecture/reads-and-writes-overview.html#read-scenario), it requires fewer trips between replicated nodes than a write operation, but will likely be slower than a read operation on data constrained to a single region.
+Note that `get_rides_txn()` gets all rides for a specific rider, which might be located across multiple regions. As discussed in [MovR: A Global Application Use-Case]({% link {{ page.version.version }}/movr-flask-use-case.md %}#latency-in-global-applications), running queries on data in multiple regions of a multi-region deployment can lead to latency problems. Because this function defines [a read operation]({% link {{ page.version.version }}/architecture/reads-and-writes-overview.md %}#read-scenario), it requires fewer trips between replicated nodes than a write operation, but will likely be slower than a read operation on data constrained to a single region.
 
 Another common query would be to read the registered vehicles in a particular city, to see which vehicles are available for riding. Unlike `get_rides_txn()`, the `get_vehicles_txn()` function takes the `city` string as an input.
 
@@ -205,11 +205,11 @@ Another common query would be to read the registered vehicles in a particular ci
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/movr/transactions.py ||# START get_vehicles_txn ||# END get_vehicles_txn %}
 ~~~
 
-This function filters the query on the `city` column. `vehicle` rows with the same value for `city` are inserted from the same region, making `city` values implicitly correspond to a specific region. Because the `vehicles` table has a `REGIONAL BY ROW` locality, CockroachDB can locality-optimize queries from nodes with a locality matching the [hidden `crdb_region` column](movr-flask-database.html#table-locality). This limits latency, as the query only needs to travel to database deployments in a single region.
+This function filters the query on the `city` column. `vehicle` rows with the same value for `city` are inserted from the same region, making `city` values implicitly correspond to a specific region. Because the `vehicles` table has a `REGIONAL BY ROW` locality, CockroachDB can locality-optimize queries from nodes with a locality matching the [hidden `crdb_region` column]({% link {{ page.version.version }}/movr-flask-database.md %}#table-locality). This limits latency, as the query only needs to travel to database deployments in a single region.
 
 ##### Writing
 
-There are two basic types of write operations: creating new rows and updating existing rows. In SQL terminology, these are [`INSERT`](insert.html)/[`UPSERT`](insert.html) statements and [`UPDATE`](update.html) statements.  All transaction callback functions that update existing rows include a `session.query()` call. All functions adding new rows call `session.add()`. Some functions do both.
+There are two basic types of write operations: creating new rows and updating existing rows. In SQL terminology, these are [`INSERT`]({% link {{ page.version.version }}/insert.md %})/[`UPSERT`]({% link {{ page.version.version }}/insert.md %}) statements and [`UPDATE`]({% link {{ page.version.version }}/update.md %}) statements.  All transaction callback functions that update existing rows include a `session.query()` call. All functions adding new rows call `session.add()`. Some functions do both.
 
 For example, `start_ride_txn()`, which is called when a user starts a ride, adds a new row to the `rides` table, and then updates a row in the `vehicles` table.
 
@@ -269,7 +269,7 @@ We store the Flask configuration settings in [a `Config` class](https://flask.pa
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v2-doc-includes/web/config.py %}
 ~~~
 
-This file imports the `os` library, which is used to read from environment variables. When debugging a local deployment, these environment variables are set by the `.env` file that `Pipenv` reads. In a multi-region deployment, the environment variables are set by the `Dockerfile`, and by the [managed cloud deployment service](movr-flask-deployment.html).
+This file imports the `os` library, which is used to read from environment variables. When debugging a local deployment, these environment variables are set by the `.env` file that `Pipenv` reads. In a multi-region deployment, the environment variables are set by the `Dockerfile`, and by the [managed cloud deployment service]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 
 The application sets a global Flask configuration variable (`DEBUG`), which it checks to determine whether or not to run against a demo cluster, or a real multi-region deployment.
 
@@ -367,7 +367,7 @@ For example, look at the `login()` route:
 
 ### Client Location
 
-To optimize for latency in a global application, when a user arrives at the website, their request needs to be routed to the application deployment closest to the location from which they made the request. This step is handled outside of the application logic, by a [cloud-hosted, global load balancer](https://wikipedia.org/wiki/Cloud_load_balancing). In our [example multi-region deployment](movr-flask-deployment.html), we use a [GCP external load balancer](https://cloud.google.com/load-balancing/docs/https) that distributes traffic based on the location of the request.
+To optimize for latency in a global application, when a user arrives at the website, their request needs to be routed to the application deployment closest to the location from which they made the request. This step is handled outside of the application logic, by a [cloud-hosted, global load balancer](https://wikipedia.org/wiki/Cloud_load_balancing). In our [example multi-region deployment]({% link {{ page.version.version }}/movr-flask-deployment.md %}), we use a [GCP external load balancer](https://cloud.google.com/load-balancing/docs/https) that distributes traffic based on the location of the request.
 
 Note that the application uses a `region` variable to keep track of the region in which the application is deployed. This variable is read in from the `REGION` environment variable, which is set during application deployment. The application uses this `region` variable to limit the cities in which a user can look for vehicles to ride to the supported cities in the region.
 
@@ -375,16 +375,16 @@ Note that the application uses a `region` variable to keep track of the region i
 
 For the example application, we limit the web UI to some static HTML web pages, rendered using Flask's built-in [Jinja-2 engine](https://flask.palletsprojects.com/templating/). We will not spend much time covering the web UI. Just note that the forms take input from the user, and that input is usually passed to the backend where it is translated into and executed as a database transaction.
 
-We've also added some Bootstrap syntax and Google Maps, for UX purposes. As you can see, the Google Maps API requires a key. For debugging, you can define this key in the `.env` file. If you decide to use an embedded service like Google Maps in production, you should restrict your Google Maps API key to a specific hostname or IP address from within the cloud provider's console, as the API key could be publicly visible in the HTML. In [Deploying a Multi-Region Web Application](movr-flask-deployment.html), we use GCP secrets to the store the API keys.
+We've also added some Bootstrap syntax and Google Maps, for UX purposes. As you can see, the Google Maps API requires a key. For debugging, you can define this key in the `.env` file. If you decide to use an embedded service like Google Maps in production, you should restrict your Google Maps API key to a specific hostname or IP address from within the cloud provider's console, as the API key could be publicly visible in the HTML. In [Deploying a Multi-Region Web Application]({% link {{ page.version.version }}/movr-flask-deployment.md %}), we use GCP secrets to the store the API keys.
 
 ## Next Steps
 
-After you finish developing and debugging your application, you can start [deploying the application](movr-flask-deployment.html).
+After you finish developing and debugging your application, you can start [deploying the application]({% link {{ page.version.version }}/movr-flask-deployment.md %}).
 
 ## See also
 
 <!-- [MovR (live demo)](https://movr.cloud)-->
 - [SQLAlchemy documentation](https://docs.sqlalchemy.org/)
-- [Transactions](transactions.html)
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})
 - [Flask documentation](https://flask.palletsprojects.com/)
-- [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html)
+- [Build a Python App with CockroachDB and SQLAlchemy]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-sqlalchemy.md %})

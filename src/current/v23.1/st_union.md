@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-Given a set of shapes (e.g., from a [selection query](selection-queries.html)), `ST_Union` combines that set of shapes into a single shape. The resulting shape can then be passed to functions that operate on a single shape, such as [`ST_ConvexHull`](st_convexhull.html).
+Given a set of shapes (e.g., from a [selection query]({% link {{ page.version.version }}/selection-queries.md %})), `ST_Union` combines that set of shapes into a single shape. The resulting shape can then be passed to functions that operate on a single shape, such as [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %}).
 
 `ST_Union` works on the following data types:
 
-- [`GEOMETRY`](architecture/glossary.html#geometry)
+- [`GEOMETRY`]({% link {{ page.version.version }}/architecture/glossary.md %}#geometry)
 
 {{site.data.alerts.callout_info}}
 The non-aggregate version of `ST_Union` is not yet implemented.  For more information, see [cockroach#49064](https://github.com/cockroachdb/cockroach/issues/49064).
@@ -23,7 +23,7 @@ Unlike `ST_Collect`, which does not change the shapes it operates on and merely 
 
 In this example, we will generate a single geometry from many individual points using `ST_Union`.
 
-1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](architecture/glossary.html#wkt) format:
+1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)]({% link {{ page.version.version }}/architecture/glossary.md %}#wkt) format:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -212,7 +212,7 @@ In this example, we will generate a single geometry from many individual points 
     ('POINT (-73.957583 41.417974999999998)');
     ~~~
 
-1. Run the query below, which gathers the points into a single geometry using `ST_Union`, and converts the geometry to [GeoJSON](architecture/glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
+1. Run the query below, which gathers the points into a single geometry using `ST_Union`, and converts the geometry to [GeoJSON]({% link {{ page.version.version }}/architecture/glossary.md %}#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -248,25 +248,25 @@ In this example, we will generate a single geometry from many individual points 
 ## See also
 
 - [Export Spatial Data](export-spatial-data.html]
-- [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
-- [Spatial indexes](spatial-indexes.html)
-- [Spatial functions](functions-and-operators.html#spatial-functions)
-- [`ST_Covers`](st_covers.html)
-- [`ST_CoveredBy`](st_coveredby.html)
-- [`ST_Contains`](st_contains.html)
-- [`ST_Within`](st_within.html)
-- [`ST_Intersects`](st_intersects.html)
-- [`ST_CoveredBy`](st_coveredby.html)
-- [`ST_Covers`](st_covers.html)
-- [`ST_Disjoint`](st_disjoint.html)
-- [`ST_Equals`](st_equals.html)
-- [`ST_Overlaps`](st_overlaps.html)
-- [`ST_Touches`](st_touches.html)
-- [`ST_ConvexHull`](st_convexhull.html)
-- [Migrate from Shapefiles](migrate-from-shapefiles.html)
-- [Migrate from GeoJSON](migrate-from-geojson.html)
-- [Migrate from GeoPackage](migrate-from-geopackage.html)
-- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
+- [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
+- [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})
+- [Spatial functions]({% link {{ page.version.version }}/functions-and-operators.md %}#spatial-functions)
+- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
+- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
+- [`ST_Contains`]({% link {{ page.version.version }}/st_contains.md %})
+- [`ST_Within`]({% link {{ page.version.version }}/st_within.md %})
+- [`ST_Intersects`]({% link {{ page.version.version }}/st_intersects.md %})
+- [`ST_CoveredBy`]({% link {{ page.version.version }}/st_coveredby.md %})
+- [`ST_Covers`]({% link {{ page.version.version }}/st_covers.md %})
+- [`ST_Disjoint`]({% link {{ page.version.version }}/st_disjoint.md %})
+- [`ST_Equals`]({% link {{ page.version.version }}/st_equals.md %})
+- [`ST_Overlaps`]({% link {{ page.version.version }}/st_overlaps.md %})
+- [`ST_Touches`]({% link {{ page.version.version }}/st_touches.md %})
+- [`ST_ConvexHull`]({% link {{ page.version.version }}/st_convexhull.md %})
+- [Migrate from Shapefiles]({% link {{ page.version.version }}/migrate-from-shapefiles.md %})
+- [Migrate from GeoJSON]({% link {{ page.version.version }}/migrate-from-geojson.md %})
+- [Migrate from GeoPackage]({% link {{ page.version.version }}/migrate-from-geopackage.md %})
+- [Migrate from OpenStreetMap]({% link {{ page.version.version }}/migrate-from-openstreetmap.md %})
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
-- [Using GeoServer with CockroachDB](geoserver.html)
+- [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})

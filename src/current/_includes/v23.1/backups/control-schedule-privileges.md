@@ -1,3 +1,3 @@
-- Members of the [`admin` role](security-reference/authorization.html#default-roles). By default, the `root` user belongs to the `admin` role.
-- Owners of a backup schedule, i.e., the user that [created the backup schedule](create-schedule-for-backup.html).
-- Owners of a changefeed schedule, i.e., the user that [created the changefeed schedule](create-schedule-for-changefeed.html).
+- Members of the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#default-roles). By default, the `root` user belongs to the `admin` role.
+- Owners of a backup schedule, i.e., the user that [created the backup schedule]({% link {{ page.version.version }}/create-schedule-for-backup.md %}).
+- Owners of a changefeed schedule, i.e., the user that [created the changefeed schedule]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}).

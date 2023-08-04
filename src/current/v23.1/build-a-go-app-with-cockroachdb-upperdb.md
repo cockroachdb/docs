@@ -40,7 +40,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 - Inserts two rows into the `accounts` table.
 - Prints the rows in the `accounts` table to the terminal.
 - Deletes the first row in the `accounts` table.
-- Updates the rows in the `accounts` table within an explicit [transaction](transactions.html).
+- Updates the rows in the `accounts` table within an explicit [transaction]({% link {{ page.version.version }}/transactions.md %}).
 - Prints the rows in the `accounts` table to the terminal once more.
 
 {% include_cached copy-clipboard.html %}
@@ -48,7 +48,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 {% include {{ page.version.version }}/app/upperdb-basic-sample/main.go %}
 ~~~
 
-Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](transaction-retry-error-reference.html#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
+Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
 
 To run the code, copy the sample above, or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/upperdb-basic-sample/main.go" download>download it directly</a>.
 
@@ -77,7 +77,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 - Inserts two rows into the `accounts` table.
 - Prints the rows in the `accounts` table to the terminal.
 - Deletes the first row in the `accounts` table.
-- Updates the rows in the `accounts` table within an explicit [transaction](transactions.html).
+- Updates the rows in the `accounts` table within an explicit [transaction]({% link {{ page.version.version }}/transactions.md %}).
 - Prints the rows in the `accounts` table to the terminal once more.
 
 {% include_cached copy-clipboard.html %}
@@ -85,7 +85,7 @@ The sample code shown below uses upper/db to map Go-specific objects to SQL oper
 {% include {{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go %}
 ~~~
 
-Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions](transaction-retry-error-reference.html#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
+Note that the sample code also includes a function that simulates a transaction error (`crdbForceRetry()`). Upper/db's CockroachDB adapter [automatically retries transactions]({% link {{ page.version.version }}/transaction-retry-error-reference.md %}#client-side-retry-handling) when transaction errors are thrown. As a result, this function forces a transaction retry.
 
 Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/upperdb-basic-sample/main.go" download>download it directly</a>.
 

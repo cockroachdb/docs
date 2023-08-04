@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-MOLT Verify checks for data discrepancies between a source and a target database during a [database migration](migration-overview.html).
+MOLT Verify checks for data discrepancies between a source and a target database during a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
 
 The tool performs the following verifications to ensure data integrity during a migration:
 
@@ -37,7 +37,7 @@ The following databases are currently supported:
   - For Linux: `molt.linux.amd64`
 
     Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
-1. Get the connection strings for the source database and [CockroachDB](connect-to-the-database.html).
+1. Get the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
    
 1. Run MOLT Verify: 
@@ -68,10 +68,10 @@ The following databases are currently supported:
 
 1. Review the verification results:
 
-    Running the MOLT Verify tool will show if there are any missing rows or extraneous tables in the target database. If any data is missing, you can [add the missing data](insert.html) to the target database and run `./molt verify` again.
+    Running the MOLT Verify tool will show if there are any missing rows or extraneous tables in the target database. If any data is missing, you can [add the missing data]({% link {{ page.version.version }}/insert.md %}) to the target database and run `./molt verify` again.
 
     {{site.data.alerts.callout_info}} 
-    Be aware of data type differences. For example, if your source MySQL table uses an auto-incrementing ID, MOLT Verify will identify a difference in the table definitions when comparing with CockroachDB's [`UUID`](uuid.html) type. In such cases, you might have to perform extra steps, such as [creating composite types](create-type.html#create-a-composite-data-type) within the target database that use the auto-incrementing ID and other types to maintain referential integrity.
+    Be aware of data type differences. For example, if your source MySQL table uses an auto-incrementing ID, MOLT Verify will identify a difference in the table definitions when comparing with CockroachDB's [`UUID`]({% link {{ page.version.version }}/uuid.md %}) type. In such cases, you might have to perform extra steps, such as [creating composite types]({% link {{ page.version.version }}/create-type.md %}#create-a-composite-data-type) within the target database that use the auto-incrementing ID and other types to maintain referential integrity.
     {{site.data.alerts.end}}
 
 ## Supported flags
@@ -86,11 +86,11 @@ Flag | Description
 
 - While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size int` [flag](#supported-flags).
 - MySQL enums and set types are not supported.
-- When a `STRING` is used as a [primary key](primary-key.html), MOLT Verify may generate additional warnings due to differences in how CockroachDB and other databases handle case sensitivity in strings.
+- When a `STRING` is used as a [primary key]({% link {{ page.version.version }}/primary-key.md %}), MOLT Verify may generate additional warnings due to differences in how CockroachDB and other databases handle case sensitivity in strings.
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be "public").
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - Geospatial types cannot yet be compared.
 
 ## See also
 
-- [Migration Overview](migration-overview.html)
+- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
