@@ -92,7 +92,7 @@ Other common tasks:
 - [Troubleshoot SQL Statements]({% link {{ page.version.version }}/query-behavior-troubleshooting.md %})
 - [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [selection]: selection-queries.html
 [manual]: manual-deployment.html

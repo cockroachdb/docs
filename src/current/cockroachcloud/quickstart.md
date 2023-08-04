@@ -200,7 +200,7 @@ The code sample uses the connection string stored in the environment variable `D
 
 Now that you have a free {{ site.data.products.serverless }} cluster running, try out the following:
 
-- Build a simple CRUD application in [Go](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb), [Java](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb), [Node.js](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb), or [Python](../{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb.html).
+- Build a simple CRUD application in [Go](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-go-app-with-cockroachdb), [Java](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-java-app-with-cockroachdb), [Node.js](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-nodejs-app-with-cockroachdb), or [Python](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/build-a-python-app-with-cockroachdb).
 - [Learn CockroachDB SQL]({% link cockroachcloud/learn-cockroachdb-sql.md %}).
 - [Create and manage SQL users]({% link cockroachcloud/managing-access.md %}).
 - Explore our [example apps](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/example-apps) for examples on how to build applications using your preferred driver or ORM and run it on CockroachDB.
@@ -208,7 +208,7 @@ Now that you have a free {{ site.data.products.serverless }} cluster running, tr
 
 This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
 
-- To create a Self-Hosted cluster, see [Start a Local Cluster](../{{site.versions["stable"]}}/start-a-local-cluster.html).
+- To create a Self-Hosted cluster, see [Start a Local Cluster](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/start-a-local-cluster).
 - To create a {{ site.data.products.dedicated }} cluster, see [Quickstart with {{ site.data.products.dedicated }}]({% link cockroachcloud/quickstart-trial-cluster.md %}).
 - To create a {{ site.data.products.serverless }} cluster with other configurations (e.g., a different cloud provider, region, or monthly budget), see [Create a {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}).
 - To connect to a {{ site.data.products.serverless }} cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/third-party-database-tools)), see [Connect to a {{ site.data.products.serverless }} Cluster]({% link cockroachcloud/connect-to-a-serverless-cluster.md %}).

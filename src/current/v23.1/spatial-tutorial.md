@@ -1838,7 +1838,7 @@ This data is stored in a separate `birds` database due to the fact that it is sp
 - [Troubleshooting overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})
 - [Support resources]({% link {{ page.version.version }}/support-resources.md %})
 
-<!-- Reference links -->
+{% comment %} Reference links {% endcomment %}
 
 [q_01]: #1-where-has-the-common-loon-been-sighted-by-the-nabbs-in-the-years-2000-2019-in-ny-state
 [q_02]: #2-what-is-the-total-area-of-loon-sightings
@@ -1860,4 +1860,4 @@ This data is stored in a separate `birds` database due to the fact that it is sp
 [q_18]: #18-what-are-the-hawks-sighted-in-the-same-region-as-the-common-loon
 [q_19]: #19-what-if-you-also-want-to-look-for-owls-as-well-as-hawks
 
-<!-- EOF -->
+{% comment %} EOF {% endcomment %}

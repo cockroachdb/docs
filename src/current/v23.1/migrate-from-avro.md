@@ -224,7 +224,7 @@ You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [csv]: migrate-from-csv.html
 [postgres]: migrate-from-postgres.html

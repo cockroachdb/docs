@@ -24,7 +24,7 @@ Each major release of CockroachDB goes through the following support cycle:
 - **Assistance Support:** Following the maintenance support period, Cockroach Labs will provide assistance support for at least an additional 180 days. During this period, the following guidelines will apply:
     - New enhancements and error corrections will not be made to the major release.
     - Cockroach Labs will direct customers to existing fixes/patches and workarounds applicable to the reported case.
-    - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/{{site.versions["stable"]}}/upgrade-cockroach-version) to a more current version of the product if a workaround does not exist.
+    - Cockroach Labs may direct customers to [upgrade](https://www.cockroachlabs.com/docs/stable/upgrade-cockroach-version) to a more current version of the product if a workaround does not exist.
     - Cockroach Labs will continue to add critical security fixes to the major release in the form of patch releases.
 
 - **End of Life (EOL):** Following the assistance support period, Cockroach Labs will no longer provide any support for the release.

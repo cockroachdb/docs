@@ -605,6 +605,6 @@ If we do not have a solution here, you can try using our other [support resource
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [Chatting with our developers on Slack](https://cockroachdb.slack.com)
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [db_console]: ui-overview.html

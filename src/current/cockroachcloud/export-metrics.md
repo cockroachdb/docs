@@ -9,7 +9,7 @@ cloud: true
 {{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 {{site.data.alerts.callout_success}}
-{{ site.data.products.dedicated }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](/docs/{{site.versions["dev"]}}/monitoring-and-alerting.html) instead of this page.
+{{ site.data.products.dedicated }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitoring-and-alerting) instead of this page.
 {{site.data.alerts.end}}
 
 Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters.

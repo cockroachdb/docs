@@ -381,7 +381,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 - [Migrate from PostgreSQL][postgres]
 - [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [postgres]: {% link {{ page.version.version }}/migrate-from-postgres.md %}
 [mysql]: {% link {{ page.version.version }}/migrate-from-mysql.md %}

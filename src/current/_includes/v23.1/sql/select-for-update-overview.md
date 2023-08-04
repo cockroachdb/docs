@@ -14,7 +14,7 @@ CockroachDB does not support the `FOR SHARE` or `FOR KEY SHARE` [locking strengt
 By default, CockroachDB uses the `SELECT FOR UPDATE` locking mechanism during the initial row scan performed in [`UPDATE`]({% link {{ page.version.version }}/update.md %}) and [`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) statement execution. To turn off implicit `SELECT FOR UPDATE` locking for `UPDATE` and `UPSERT` statements, set the `enable_implicit_select_for_update` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `false`.
 {{site.data.alerts.end}}
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [retries]: transactions.html#transaction-retries
 [selection]: selection-queries.html

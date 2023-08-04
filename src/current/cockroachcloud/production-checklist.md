@@ -26,7 +26,7 @@ Make sure connection validation and retry logic is used by your application. Val
 
 ## Transaction retries
 
-When several transactions try to modify the same underlying data concurrently, they may experience [contention]({% link {{ site.current_cloud_version }}/performance-best-practices-overview.md %}#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
+When several transactions try to modify the same underlying data concurrently, they may experience [contention](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/performance-best-practices-overview#transaction-contention) that leads to [transaction retries](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transactions#transaction-retries). To avoid failures in production, your application should be engineered to handle transaction retries using [client-side retry handling](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/transaction-retry-error-reference#client-side-retry-handling).
 
 ## Authorize the right network (Dedicated)
 

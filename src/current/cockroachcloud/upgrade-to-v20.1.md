@@ -68,7 +68,7 @@ Make sure there are no [bulk imports](https://www.cockroachlabs.com/docs/{{site.
 To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-jobs-page) in the DB Console.
 
 {{site.data.alerts.callout_info}}
-Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-jobs) and the [**Jobs** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-jobs-page) in the DB Console will show them as running until the upgrade has been finalized. During this time, it will not be possible to manipulate these schema changes via [`PAUSE JOB`](../{{site.current_cloud_version}}/pause-job.html)/[`RESUME JOB`](../{{site.current_cloud_version}}/resume-job.html)/[`CANCEL JOB`](../{{site.current_cloud_version}}/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
+Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/show-jobs) and the [**Jobs** page](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-jobs-page) in the DB Console will show them as running until the upgrade has been finalized. During this time, it will not be possible to manipulate these schema changes via [`PAUSE JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/pause-job)/[`RESUME JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/resume-job)/[`CANCEL JOB`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cancel-job) statements. Once the upgrade has been finalized, these schema changes will run to completion.
 
 Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not apply to other upgrades.
 {{site.data.alerts.end}}
@@ -133,7 +133,7 @@ Also, most v20.1 features can be used right way, but there are some that will be
 
 - **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles](https://www.cockroachlabs.com/docs/v20.1/create-user.html#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
 
-- **Nested transactions:** After finalization, it will be possible to create [nested transactions](https://www.cockroachlabs.com/docs/v20.1/transactions.html#nested-transactions) using [`SAVEPOINT`s](../{{site.current_cloud_version}}/savepoint.html).
+- **Nested transactions:** After finalization, it will be possible to create [nested transactions](https://www.cockroachlabs.com/docs/v20.1/transactions.html#nested-transactions) using [`SAVEPOINT`s](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/savepoint).
 
 - **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](https://www.cockroachlabs.com/docs/v20.1/time.html#timetz) data type to store a time of day with a time zone offset from UTC.
 

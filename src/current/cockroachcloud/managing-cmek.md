@@ -72,7 +72,7 @@ Follow the instructions that correspond to your cluster's deployment environment
 
 Follow the steps in this section to activate CMEK with a call to the cluster's `/cmek` endpoint, using the cloud-specific CMEK configuration manifest you built in [Step 3. Provision IAM and KMS in your Cloud](#step-3-provision-iam-and-kms-resources-in-your-cloud-tenant).
 
-Refer to the [API specification]({% link api/cloud/v1.md %}).
+Refer to the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
 1. Create a new file named `cmek_config.json`. This file will contain a JSON array of `region_spec` objects, each of which includes the name of a {{ site.data.products.db }} region and a `key_spec` that is specific to the target KMS platform and specifies the URI of the CMEK key and the principal that is authorized to encrypt and decrypt using the key.
 
@@ -149,7 +149,7 @@ Refer to the [API specification]({% link api/cloud/v1.md %}).
 
 An API call displays information about your cluster's use of CMEK:
 
-See the [API specification]({% link api/cloud/v1.md %}).
+See the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
 {% include_cached copy-clipboard.html %}
 ```shell
@@ -164,7 +164,7 @@ curl --request GET \
 
 The API to rotate a CMEK key is nearly identical to the API to [activate CMEK on a cluster](#step-4-activate-cmek), with one notable exception. When you activate CMEK, you use a `POST` request that includes a CMEK key for each of the cluster's regions. When you rotate a CMEK key, you use a `PUT` request that includes a CMEK key for each region you intend to rotate.
 
-See the [API specification]({% link api/cloud/v1.md %}).
+See the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
 {{site.data.alerts.callout_danger}}
 Within your KMS, **do not** revoke access to, disable, schedule for destruction, or destroy a CMEK that is in use by one or more clusters. The CMEK is an external resource and is never stored in {{ site.data.products.db }}. If the CMEK for a cluster or region is not available in your KMS, nodes that are configured to use it cannot rejoin the cluster if they are restarted, and the cluster's managed {{ site.data.products.db }} backups will fail. Even if access to the CMEK is restored, affected nodes cannot automatically recover. For assistance in that situation, contact your Cockroach Labs account team.
@@ -360,7 +360,7 @@ Your cluster will continue to operate with the encryption keys it has provisione
 
 1. Update your cluster with the the Cloud API as follows:
 
-    See the [API specification]({% link api/cloud/v1.md %}).
+    See the [API specification](https://www.cockroachlabs.com/docs/api/cloud/v1).
 
     {% include_cached copy-clipboard.html %}
     ```shell

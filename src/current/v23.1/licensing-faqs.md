@@ -71,7 +71,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Role-based access management]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles)** | ✓ | |
 **[Password and certificate authentication]({% link {{ page.version.version }}/authentication.md %})** | ✓ | |
 **[GSSAPI with Kerberos authentication]({% link {{ page.version.version }}/gssapi_authentication.md %})** | | | ✓
-**[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
+**[All other core features](https://www.cockroachlabs.com/compare/)** | ✓ | |
 
 {{site.data.alerts.callout_info}}
 Individual feature licensing may change with each release of CockroachDB. You can use the dropdown menu at the top of the page to view documentation for other versions of CockroachDB.

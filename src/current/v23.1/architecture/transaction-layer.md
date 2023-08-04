@@ -455,7 +455,7 @@ The `TxnCoordSender` sends its KV requests to `DistSender` in the distribution l
 
 Learn how CockroachDB presents a unified view of your cluster's data in the [distribution layer]({% link {{ page.version.version }}/architecture/distribution-layer.md %}).
 
-<!-- Links -->
+{% comment %} Links {% endcomment %}
 
 [storage]: storage-layer.html
 [sql]: {% link {{ page.version.version }}/architecture/sql-layer.md %}

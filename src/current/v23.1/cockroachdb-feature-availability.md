@@ -42,11 +42,11 @@ Command                                     | Description
 
 ### Export logs from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure [log export](https://www.cockroachlabs.com/docs/cockroachcloud/export-logs) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
+{{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [log export](https://www.cockroachlabs.com/docs/cockroachcloud/export-logs) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [GCP Cloud Logging](https://cloud.google.com/logging). Once the export is configured, logs will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud log sink. You can configure log export to redact sensitive log entries, limit log output by severity, and send log entries to specific log group targets by log channel, among others.
 
 ### Export metrics from {{ site.data.products.dedicated }} clusters
 
-{{ site.data.products.dedicated }} users can use the [Cloud API]({% link cockroachcloud/cloud-api.md %}) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+{{ site.data.products.dedicated }} users can use the [Cloud API](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-api) to configure [metrics export](https://www.cockroachlabs.com/docs/cockroachcloud/export-metrics) to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
 ### Keep SQL audit logs
 

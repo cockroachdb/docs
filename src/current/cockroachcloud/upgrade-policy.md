@@ -15,7 +15,7 @@ This page describes the upgrade policy for {{ site.data.products.db }}. For self
 
 ## Patch version upgrades
 
-Patch version [releases](../releases/), or "maintenance" releases, contain stable, backward-compatible improvements to the major versions of CockroachDB (for example, v21.2.0 → v21.2.1).
+Patch version [releases](https://www.cockroachlabs.com/docs/releases), or "maintenance" releases, contain stable, backward-compatible improvements to the major versions of CockroachDB (for example, v21.2.0 → v21.2.1).
 
 For {{ site.data.products.dedicated }} clusters, [Organization Admins]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can [set a weekly 6-hour upgrade window]({% link cockroachcloud/cluster-management.md %}#set-an-upgrade-window) during which available patch upgrades will be applied. During the window, your cluster may experience restarts, degraded performance, and downtime for single-node clusters. Note that upgrades may not always be completed by the end of the window, and other kinds of cluster maintenance can occur outside the window. Patch upgrades can also be [deferred for 60 days]({% link cockroachcloud/cluster-management.md %}#set-an-upgrade-window). If no upgrade window is configured, {{ site.data.products.dedicated }} clusters will be automatically upgraded to the latest supported patch version as soon as it becomes available.
 
@@ -29,7 +29,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 ## Major version upgrades
 
-Major version [releases](../releases/) (for example, v21.1.x → v21.2.x) contain new functionality and potentially backward-incompatible changes to CockroachDB.
+Major version [releases](https://www.cockroachlabs.com/docs/releases) (for example, v21.1.x → v21.2.x) contain new functionality and potentially backward-incompatible changes to CockroachDB.
 
 Major version upgrades are automatic for {{ site.data.products.serverless }} clusters and opt-in for {{ site.data.products.dedicated }} clusters. [Org Administrators]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) must initiate major version upgrades for {{ site.data.products.dedicated }} clusters. When a new major version is available, Admins will be able to [start an upgrade]({% link cockroachcloud/upgrade-to-v21.2.md %}) from the {{ site.data.products.db }} Console for clusters using the paid version of {{ site.data.products.dedicated }}. When a major version upgrade is initiated for a cluster, it will upgrade to the latest patch version as well.
 

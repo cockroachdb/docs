@@ -140,7 +140,7 @@ docs_area:
       <p class="landing-column-title">Releases</p>
       <ul>
         <li><a href="https://www.cockroachlabs.com/docs/releases/{{page.version.version}}">{{page.version.version}} Release</a></li>
-        <li><a href="https://www.cockroachlabs.com/docs/releases/index">All Releases</a></li>
+        <li><a href="https://www.cockroachlabs.com/docs/releases">All Releases</a></li>
         <li><a href="https://www.cockroachlabs.com/docs/releases/release-support-policy">Release Support Policy</a></li>
         <li><a href="known-limitations.html">Known Limitations</a></li>
       </ul>

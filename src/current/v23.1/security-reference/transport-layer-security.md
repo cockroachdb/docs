@@ -22,7 +22,7 @@ This page provides a conceptual overview of Transport Layer Security (TLS) and t
 **Learn more:**
 
 - [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault]({% link {{ page.version.version }}/manage-certs-vault.md %})
-- [Certificate Authentication for SQL Clients in Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %})
+- [Certificate Authentication for SQL Clients in Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated)
 
 ## What is Transport Layer Security (TLS)?
 
@@ -164,7 +164,7 @@ PKI for internode communication within {{ site.data.products.dedicated }} and {{
 
 Certificate authentication for SQL clients is available against {{ site.data.products.dedicated }} clusters.
 
-Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedural information on administering and using client certificate authentication.
+Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedural information on administering and using client certificate authentication.
 
 {{site.data.alerts.callout_info}}
 This feature is in [**limited access**]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %}), and is only available to organizations that choose to opt-in. To enroll your organization, contact your Cockroach Labs account team. These features are subject to change.
@@ -240,7 +240,7 @@ The node must also have a trust store containing the public certificate of at le
 
 ## TLS in CockroachDB SQL client connections
 
-CockroachDB provides a number of SQL clients, including a [CLI]({% link {{ page.version.version }}/cockroach-sql.md %}#start-a-sql-shell), and a number of [drivers and object-relational mapping (ORM) tools]({% link {{ page.version.version }}/install-client-drivers.md %}). Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration]({% link {{ page.version.version }}/authentication.md %}), specifically whether that configuration requires the user to authenticate with username/password combination, certificate or another method.
+CockroachDB provides a number of SQL clients, including a [CLI]({% link {{ page.version.version }}/cockroach-sql.md %}#start-a-sql-shell), and a number of [drivers and object-relational mapping (ORM) tools]({% link {{ page.version.version }}/install-client-drivers.md %}). Regardless of which client you are using, how you are able to authenticate to a CockroachDB cluster depends on that cluster's [authentication configuration]({% link {{ page.version.version }}/security-reference/authentication.md %}), specifically whether that configuration requires the user to authenticate with username/password combination, certificate or another method.
 
 In turn, which authentication methods are available depends on the sort of environment in which a CockroachDB cluster is deployed, as described in the following subsections.
 

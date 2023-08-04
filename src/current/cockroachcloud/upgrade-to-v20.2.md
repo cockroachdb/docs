@@ -89,13 +89,13 @@ Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own toolin
 
 Most v20.2 features can be used right away, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](https://www.cockroachlabs.com/docs/v20.2/spatial-indexes), and [spatial functions](https://www.cockroachlabs.com/docs/v20.2/functions-and-operators#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](https://www.cockroachlabs.com/docs/v20.2/spatial-indexes), and [spatial functions](https://www.cockroachlabs.com/docs/v20.2/functions-and-operators#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](https://www.cockroachlabs.com/docs/v20.2/migrate-from-shapefiles), [GeoJSON](https://www.cockroachlabs.com/docs/v20.2/migrate-from-geojson), [GeoPackages](https://www.cockroachlabs.com/docs/v20.2/migrate-from-geopackage), and [OpenStreetMap](https://www.cockroachlabs.com/docs/v20.2/migrate-from-openstreetmap).
 
 - **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](https://www.cockroachlabs.com/docs/v20.2/enum) consisting of sets of enumerated, static values.
 
 - **Altering column data types:** After finalization, it will be possible to [alter column data types](https://www.cockroachlabs.com/docs/v20.2/alter-column#altering-column-types) where column data must be rewritten.
 
-- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](https://www.cockroachlabs.com/docs/v20.2/create-schema), as well [alter user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/alter-schema), [drop user-defined schemas](../v20.2/drop-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html).
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](https://www.cockroachlabs.com/docs/v20.2/create-schema), as well [alter user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/alter-schema), [drop user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/drop-schema), and [convert databases to user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/convert-to-schema).
 
 - **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](https://www.cockroachlabs.com/docs/v20.2/foreign-key) constraint.
 

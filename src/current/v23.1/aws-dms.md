@@ -44,7 +44,7 @@ Complete the following items before starting this tutorial:
     - If the output of [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) shows any backup schedules, run [`ALTER BACKUP SCHEDULE {schedule_id} SET WITH revision_history = 'false'`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) for each backup schedule.
     - If the output of `SHOW SCHEDULES` does not show backup schedules, [contact Support](https://support.cockroachlabs.com) to disable revision history for cluster backups.
 - Manually create all schema objects in the target CockroachDB cluster. AWS DMS can create a basic schema, but does not create indexes or constraints such as foreign keys and defaults.
-    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**]({% link cockroachcloud/migrations-page.md %}) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
+    - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
     All tables must have an explicitly defined primary key. For more guidance, see [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %}#schema-design-best-practices).
@@ -158,7 +158,7 @@ If your migration failed for some reason, you can check the checkbox next to the
 
 ### AWS PrivateLink
 
-If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with {{ site.data.products.dedicated }}, see [Network Authorization]({% link cockroachcloud/network-authorization.md %}#aws-privatelink).
+If using {{ site.data.products.dedicated }}, you can enable [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. To configure AWS PrivateLink with {{ site.data.products.dedicated }}, see [Network Authorization](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization#aws-privatelink).
 
 ### `BatchApplyEnabled`
 

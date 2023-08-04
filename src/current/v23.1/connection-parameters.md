@@ -99,7 +99,7 @@ CockroachDB supports the following `options` parameters. After the first `option
 
 Parameter | Description
 ----------|-------------
-`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host]({% link cockroachcloud/architecture.md %}#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
+`--cluster=<routing-id>` | Identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture#architecture). For example, `funny-skunk-123`. This option is deprecated. The `host` in the connection string now includes the tenant information.
 `-c <session_variable>=<value>` |  Sets a [session variable]({% link {{ page.version.version }}/set-vars.md %}) for the SQL session.
 
 {{site.data.alerts.callout_info}}

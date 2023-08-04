@@ -184,7 +184,7 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html

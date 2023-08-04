@@ -380,7 +380,7 @@ To find out the total number of riders and total revenue generated thus far by t
 - [Window Functions][window-functions]
 - [CockroachDB 2.0 Demo][demo]
 
-<!-- Links -->
+{% comment %} Links {% endcomment %}
 
 [aggregate-functions]: functions-and-operators.html#aggregate-functions
 [demo]: https://www.youtube.com/watch?v=v2QK5VgLx6E

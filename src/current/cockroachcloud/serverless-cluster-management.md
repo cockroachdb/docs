@@ -53,7 +53,7 @@ The monthly cost estimate is calculated using simple extrapolation that assumes 
 
 ## Edit your resource limits
 
-On the **Overview** page, you can edit your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
+On the **Overview** page, you can edit your [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits). Changes apply to the current and future billing cycles. For more details, refer to [Plan a {{ site.data.products.serverless }} cluster](plan-your-cluster-serverless.html).
 
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon (or **Add resource limits** if you haven't set one before) next to your **Resource limits** in the **Usage this month** section.

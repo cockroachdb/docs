@@ -28,8 +28,8 @@ This page primarily covers the latter, organization level. However, the two leve
 
 For the main pages covering users and roles at the SQL level within a specific database cluster, see:
 
-- [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](../{{site.versions["stable"]}}/security-reference/authorization.html)
-- [Managing Cluster User Authorization](../{{site.versions["dev"]}}/authorization.html)
+- [Overview of Cluster Users/Roles and Privilege Grants in CockroachDB](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/authorization)
+- [Managing Cluster User Authorization](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/authorization)
 
 ## Organization user roles
 

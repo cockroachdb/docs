@@ -12,7 +12,7 @@ of this file, block-level HTML is indented in relation to the other HTML, and bl
 indented in relation to the other Liquid. Please try to keep the indentation consistent. Thank you!
 {% endcomment %}
 
-After downloading your desired release, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/{{site.versions["stable"]}}/install-cockroachdb). Also be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
+After downloading your desired release, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/stable/install-cockroachdb). Also be sure to review Cockroach Labs' [Release Support Policy]({% link releases/release-support-policy.md %}).
 
 The following binaries are not suitable for production environments:
 

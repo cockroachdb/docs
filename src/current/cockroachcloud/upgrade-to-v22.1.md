@@ -57,7 +57,7 @@ The [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-us
 {% comment %} Be careful with this logic and the page-level variable page_version {% endcomment %}
 {% assign rd = site.data.versions | where_exp: "rd", "rd.major_version == page.page_version" | first %}
 
-Review the [backward-incompatible changes in {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}|(https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](../releases/{{ page.page_version }}.html#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
+Review the [backward-incompatible changes in {{ page.page_version }}](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}{% unless rd.release_date == "N/A" or rd.release_date > today %}#{{ page.page_version | replace: ".", "-" }}-0-backward-incompatible-changes{% endunless %}) and [deprecated features](https://www.cockroachlabs.com/docs/releases/{{ page.page_version }}#{% unless rd.release_date == "N/A" or rd.release_date > today %}{{ page.page_version | replace: ".", "-" }}-0-deprecations{% endunless %}). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 

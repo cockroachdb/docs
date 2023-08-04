@@ -70,7 +70,7 @@ Private connectivity is not available for {{ site.data.products.serverless }} cl
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to {{ site.data.products.serverless }}.
-1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client]({% link {{ site.current_cloud_version}}/third-party-database-tools.md %}), see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/stable/connect-to-the-database).
+1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/third-party-database-tools), see [Connect to a CockroachDB Cluster](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/connect-to-the-database).
 
 {% include cockroachcloud/postgresql-special-characters.md %}
 

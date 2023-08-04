@@ -72,7 +72,7 @@ SELECT ST_CoveredBy(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -9
 
 ## See also
 
-- [Export Spatial Data](export-spatial-data.html]
+- [Export Spatial Data](export-spatial-data.html)
 - [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})

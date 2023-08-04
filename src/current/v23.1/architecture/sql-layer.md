@@ -21,7 +21,7 @@ If you haven't already, we recommend reading the [Architecture Overview]({% link
 
 ## Overview
 
-Once CockroachDB has been [deployed]({% link cockroachcloud/quickstart.md %}), developers need only a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) to the cluster, and they can start working with SQL statements.
+Once CockroachDB has been [deployed](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart), developers need only a [connection string]({% link {{ page.version.version }}/connection-parameters.md %}) to the cluster, and they can start working with SQL statements.
 
 <a name="gateway-node"></a>
 
@@ -48,7 +48,7 @@ CockroachDB provides typical relational features like [constraints]({% link {{ p
 
 CockroachDB implements most of the ANSI SQL standard to manifest its relational structure. For a complete list of the SQL features CockroachDB supports, see [SQL Feature Support]({% link {{ page.version.version }}/sql-feature-support.md %}).
 
-Importantly, through the SQL API developers have access to ACID-semantic [transactions]({% link {{ page.version.version }}/transactions.md %}) like they would through any SQL database (using [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), [`COMMIT`](https://www.cockroachlabs.com/docs/commit-transaction), etc.).
+Importantly, through the SQL API developers have access to ACID-semantic [transactions]({% link {{ page.version.version }}/transactions.md %}) like they would through any SQL database (using [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}), etc.).
 
 ### PostgreSQL wire protocol
 

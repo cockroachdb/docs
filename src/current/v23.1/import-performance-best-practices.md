@@ -37,7 +37,7 @@ When importing into a new table, split your dump data into two files:
 1. A SQL file containing the table schema.
 1. A CSV, delimited, or AVRO file containing the table data.
 
-Convert the schema-only file using the [Schema Conversion Tool](../cockroachcloud/migrations-page.html). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
+Convert the schema-only file using the [Schema Conversion Tool](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page). The Schema Conversion Tool automatically creates a new {{ site.data.products.serverless }} database with the converted schema. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
 Then use the [`IMPORT INTO`](import-into.html) statement to import the CSV data into the newly created table:
 
@@ -83,7 +83,7 @@ Splitting the import data into multiple files can have a significant impact on t
 
 For these formats, we recommend splitting your data into at least as many files as there are nodes.
 
-For example, if you have a 3-node cluster, split your data into 3 files, create your table, and [import into that table]({% link {{ page.version.version }}/import-into.md %}):
+For example, if you have a 3-node cluster, split your data into at least 3 files, create your table schema, and [import into that table]({% link {{ page.version.version }}/import-into.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

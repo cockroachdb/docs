@@ -9,7 +9,7 @@ Cluster Single Sign-On (SSO) allows users to access the SQL interface of a Cockr
 
 This page describes the procedure for accessing a {{ site.data.products.db }} cluster using the JWT access tokens provided by a customer-managed IdP. This document applies for both {{ site.data.products.core }} and {{ site.data.products.dedicated }} customers.
 
-You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console]({% link cockroachcloud/cloud-sso-sql.md %}). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
+You might also be looking for: [Cluster Single Sign-on (SSO) using CockroachDB Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/cloud-sso-sql). This is an option for authenticating human users to cloud clusters, but does not work for service accounts or in the context of self-hosted clusters.
 
 {{site.data.alerts.callout_info}}
 Note for {{ site.data.products.dedicated }} customers:
@@ -30,7 +30,7 @@ For more details and examples, refer to [SSO to CockroachDB clusters using JWT](
 
 		See [Enterprise Trial –– Get Started]({% link {{ page.version.version }}/get-started-with-enterprise-trial.md %}) for help enabling your cluster with you enterprise license.
 
-	- **{{ site.data.products.db }}**: You must have access to a [{{ site.data.products.dedicated }}cluster]({% link cockroachcloud/create-your-cluster.md %}).
+	- **{{ site.data.products.db }}**: You must have access to a [{{ site.data.products.dedicated }}cluster](https://www.cockroachlabs.com/docs/cockroachcloud/create-your-cluster).
 
 	- SQL users/credentials:
 

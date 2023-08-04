@@ -97,6 +97,6 @@ If you run into problems, please file an issue on the [DBeaver issue tracker](ht
 + [Third-Party Database Tools]({% link {{ page.version.version }}/third-party-database-tools.md %})
 + [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [dbeaver]: https://dbeaver.io

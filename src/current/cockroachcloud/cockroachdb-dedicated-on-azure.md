@@ -91,7 +91,7 @@ Yes, customers can [take and restore from their own encrypted backups]({% link c
 
 ### Are changefeeds available for dedicated clusters in Azure?
 
-Yes, customers can create and configure [changefeeds](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/changefeed-messages) to send data events in real-time from a {{ site.data.products.dedicated }} cluster to a [downstream sink](https://www.cockroachlabs.com/docs/stable/changefeed-sinks.html) such as Kafka, Azure storage, or Webhook. [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/azure-event-hubs-kafka-overview) provides an Azure-native service that can be used with a Kafka endpoint as a sink.
+Yes, customers can create and configure [changefeeds](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/changefeed-messages) to send data events in real-time from a {{ site.data.products.dedicated }} cluster to a [downstream sink](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/changefeed-sinks.html) such as Kafka, Azure storage, or Webhook. [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/azure-event-hubs-kafka-overview) provides an Azure-native service that can be used with a Kafka endpoint as a sink.
 
 ### Can we export logs and metrics from a dedicated cluster on Azure to Azure Monitor or a third-party observability service?
 
@@ -115,9 +115,9 @@ Yes, [Cloud Organization SSO]({% link cockroachcloud/cloud-org-sso.md %}) is sup
 
 ### Is it possible to use a secure and centralized authentication method for {{ site.data.products.dedicated }} clusters on Azure?
 
-Human users can connect using [Cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}), [client certificates](https://www.cockroachlabs.com/docs/stable/authentication.html#using-digital-certificates-with-cockroachdb), or the [`ccloud` command]({% link cockroachcloud/ccloud-get-started.md %}) or SQL clients.
+Human users can connect using [Cluster SSO]({% link cockroachcloud/cloud-sso-sql.md %}), [client certificates](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/authentication.html#using-digital-certificates-with-cockroachdb), or the [`ccloud` command]({% link cockroachcloud/ccloud-get-started.md %}) or SQL clients.
 
-Application users can connect using [JWT tokens](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sso-sql) or [client certificates](https://www.cockroachlabs.com/docs/stable/authentication.html#using-digital-certificates-with-cockroachdb).
+Application users can connect using [JWT tokens](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/sso-sql) or [client certificates](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/authentication.html#using-digital-certificates-with-cockroachdb).
 
 ### What is the encryption posture for data stored in a {{ site.data.products.dedicated }} cluster on Azure?
 

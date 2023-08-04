@@ -136,7 +136,7 @@ Cockroach Labs cannot provide specific advice about ensuring end-to-end complian
 
 - [Authorization](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/authorization)
 - [Integrate {{ site.data.products.dedicated }} with Satori](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/satori-integration)
-- [CockroachDB Releases](https://www.cockroachlabs.com//docs/releases/index)
-- [{{ site.data.products.db }} Releases](https://www.cockroachlabs.com//docs/releases/cloud)
+- [CockroachDB Releases](https://www.cockroachlabs.com/docs/releases)
+- [{{ site.data.products.db }} Releases](https://www.cockroachlabs.com/docs/releases/cloud)
 - [Security and Audit Monitoring](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/logging-use-cases#security-and-audit-monitoring)
 - [Network Authorization]({% link cockroachcloud/network-authorization.md %})

@@ -186,9 +186,9 @@ Perform the following steps to enable log export from your {{ site.data.products
             ~~~
 
             This configuration:
-            - Enables [redaction](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to AWS CloudWatch.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to AWS CloudWatch.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a AWS CloudWatch log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to an AWS CloudWatch log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other logging channels to the `default` AWS CloudWatch log group.
 
         1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
@@ -326,9 +326,9 @@ Perform the following steps to enable log export from your {{ site.data.products
             ~~~
 
             This configuration:
-            - Enables [redaction](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
-            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
-            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
+            - Enables [redaction](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) globally for all log entries emitted to GCP Cloud Logging.
+            - Sends log entries in the `SQL_SCHEMA` and `SQL_EXEC` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `sql`, and overrides (disables) the global redaction configuration for just these two log channels only.
+            - Sends log entries in the `OPS`, `HEALTH`, and `STORAGE` [logging channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) to a GCP Cloud Logging log group named `devops`, but only for those entries that are of log [severity level](/docs/{{site.current_cloud_version}}/logging.html#logging-levels-severities) `WARNING` or higher.
             - Sends log entries in all other logging channels to the `default` GCP Cloud Logging log group.
 
         1. Once you have determined the configuration you'd like to use, edit the configuration to be a single line, the required form for passing to the configuration command in the next step. To accomplish this easily, use a third party minifier, such as [yaml minifier](https://onlineyamltools.com/minify-yaml). The above configuration becomes the following single line, suitable for the next step's `POST` command:
@@ -412,7 +412,7 @@ Where:
 
 ### Is it possible to configure exported logs to be redacted at source?
 
-Yes, use the `redact: true` log configuration option. See [Redact logs](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/configure-logs#redact-logs) for more information.
+Yes, use the `redact: true` log configuration option. See [Redact logs](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/configure-logs#redact-logs) for more information.
 
 ### Is it possible to send different log channels to different log groups in my cloud log sink?
 
@@ -428,11 +428,11 @@ No, logs for each region in your cluster are exported to the corresponding cloud
 
 ### What log channels are supported?
 
-Currently, the following CockroachDB [log channels](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/logging-overview#logging-channels) are supported for export in this manner: `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
+Currently, the following CockroachDB [log channels](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/logging-overview#logging-channels) are supported for export in this manner: `SESSIONS`, `OPS`, `HEALTH`, `STORAGE`, `SQL_SCHEMA`, `USER_ADMIN`, `PRIVILEGES`, `SENSITIVE_ACCESS`, `SQL_EXEC`, and `SQL_PERF`. Other log channels are not exportable from {{ site.data.products.dedicated }}.
 
 ### Is it possible to include SQL audit logs as part of the log export capability?
 
-Yes, the [SQL Audit Log](https://www.cockroachlabs.com//docs/{{site.current_cloud_version}}/sql-audit-logging) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.current_cloud_version}}/alter-table.html#experimental_audit) statement.
+Yes, the [SQL Audit Log](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/sql-audit-logging) is exported via the `SENSITIVE_ACCESS` log channel by default, as long as you have previously enabled audit logging on desired tables using the [`ALTER TABLE ...EXPERIMENTAL_AUDIT`](/docs/{{site.current_cloud_version}}/alter-table.html#experimental_audit) statement.
 
 ### Can I use an AWS External ID with the log export feature?
 

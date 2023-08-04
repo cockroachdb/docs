@@ -26,7 +26,7 @@ The user must have the `DROP` [privilege]({% link {{ page.version.version }}/sec
 `RESTRICT` | _(Default)_ Do not drop the sequence if any objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) use it.
 `CASCADE` | Not implemented. You can drop a sequence only if nothing depends on it.
 
-<!-- `CASCADE` > Drop all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. -->
+{% comment %} `CASCADE` > Drop all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and tables) that depend on the sequence.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously. {% endcomment %}
 
 ## Examples
 
@@ -67,7 +67,7 @@ In this example, other objects do not depend on the sequence being dropped.
 (0 rows)
 ~~~
 
-<!-- ### Remove a Sequence and Dependent Objects with `CASCADE`
+{% comment %} ### Remove a Sequence and Dependent Objects with `CASCADE`
 
 In this example, a table depends on the sequence that's being dropped. Therefore, it's only possible to drop the sequence while simultaneously dropping the dependent table using `CASCADE`.
 
@@ -78,7 +78,7 @@ In this example, a table depends on the sequence that's being dropped. Therefore
 ~~~
 ~~~
 DROP SEQUENCE
-~~~ -->
+~~~ {% endcomment %}
 
 ## See also
 - [`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %})

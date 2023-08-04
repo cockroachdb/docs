@@ -61,7 +61,7 @@ To view the available backup subdirectories you can restore from, use [`SHOW BAC
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference links -->
+{% comment %} Reference links {% endcomment %}
 
 [backup]:  {% link {{ page.version.version }}/backup.md %}
 [restore]: restore.html

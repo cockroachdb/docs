@@ -20,7 +20,7 @@ To create and connect to a 30-day free {{ site.data.products.dedicated }} cluste
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 {% include cockroachcloud/prefer-sso.md %}
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
-1. If there are multiple [organizations](../{{site.versions["stable"]}}/architecture/glossary.html#organization) in your account, select the correct organization in the top right corner.
+1. If there are multiple [organizations](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 1. Select the **Dedicated standard** or **Dedicated advanced** plan.
 
@@ -178,7 +178,7 @@ If you created a multi-region cluster, it is important to carefully choose:
 
 Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview]({% link {{ site.current_cloud_version}}/multiregion-overview.md %}).
 
-<!--
+{% comment %}
 ### [WIP] Select hardware configuration based on performance requirements
 
 Let's say we want to run a TPC-C workload with 500 warehouses on a {{ site.data.products.db }} cluster.
@@ -190,4 +190,4 @@ With a default replication factor of 3, the total amount of data we need to stor
 So for a workload resembling TPC-C, we want to build out your cluster with `Option 2` nodes, and you'll only use 1/3 of the storage.
 
 <Need numbers from the perf tests>
--->
+{% endcomment %}

@@ -14,11 +14,11 @@ An individual instance of CockroachDB. One or more nodes form a cluster.
 <a name="architecture-range"></a>
 CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a sorted map of key-value pairs. This keyspace is divided into contiguous chunks called _ranges_, such that every key is found in one range.
 
-From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches [the default range size](https://www.cockroachlabs.com/docs/configure-replication-zones#range-max-bytes), it is [split into two ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
+From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the _primary index_ because the table is sorted by the primary key) or a single row in a secondary index. As soon as the size of a range reaches [the default range size]({% link {{ page.version.version }}/configure-replication-zones.md %}#range-max-bytes), it is [split into two ranges]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#range-splits). This process continues for these new ranges as the table and its indexes continue growing.
 
 ### Replica
 <a name="architecture-replica"></a>
-A copy of a range stored on a node. By default, there are three [replicas](https://www.cockroachlabs.com/docs/configure-replication-zones#num_replicas) of each range on different nodes.
+A copy of a range stored on a node. By default, there are three [replicas]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) of each range on different nodes.
 
 ### Leaseholder
 <a name="architecture-leaseholder"></a>

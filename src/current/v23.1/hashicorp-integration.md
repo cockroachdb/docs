@@ -27,10 +27,10 @@ CockroachDB customers can integrate these services, using Vault's KMS secrets en
 
 Resources:
 
-- [CMEK overview]({% link cockroachcloud/cmek.md %})
-- [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated]({% link cockroachcloud/managing-cmek.md %})
-- [Provisioning GCP KMS Keys and Service Accounts for CMEK]({% link cockroachcloud/cmek-ops-gcp.md %})
-- [Provisioning AWS KMS Keys and IAM Roles for CMEK]({% link cockroachcloud/cmek-ops-aws.md %})
+- [CMEK overview](https://www.cockroachlabs.com/docs/cockroachcloud/cmek)
+- [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Dedicated](https://www.cockroachlabs.com/docs/cockroachcloud/managing-cmek)
+- [Provisioning GCP KMS Keys and Service Accounts for CMEK](https://www.cockroachlabs.com/docs/cockroachcloud/cmek-ops-gcp)
+- [Provisioning AWS KMS Keys and IAM Roles for CMEK](https://www.cockroachlabs.com/docs/cockroachcloud/cmek-ops-aws)
 
 ## Use Vault's PKI Secrets Engine to manage a {{ site.data.products.dedicated }} cluster's certificate authority (CA) and client certificates.
 
@@ -40,7 +40,7 @@ By using Vault to manage certificates, you can use only certificates with short 
 
 Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)]({% link {{ page.version.version }}/security-reference/transport-layer-security.md %}) for an overview.
 
-Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedures in involved in adminstering PKI for a {{ site.data.products.dedicated }} cluster.
+Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters](https://www.cockroachlabs.com/docs/cockroachcloud/client-certs-dedicated) for procedures in involved in adminstering PKI for a {{ site.data.products.dedicated }} cluster.
 
 ## Use Vault's PKI Secrets Engine to manage a {{ site.data.products.core }} cluster's certificate authority (CA), server, and client certificates
 

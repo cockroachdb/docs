@@ -15,7 +15,7 @@ The **Transactions** page helps you:
 - View transaction [details](#transaction-details-page).
 
 {{site.data.alerts.callout_success}}
-In contrast to the [**Statements** page](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/statements-page), which displays [SQL statement fingerprints](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/statements-page#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](https://www.cockroachlabs.com/docs/{{ version_prefix }}transactions).
+In contrast to the [**Statements** page]({% link cockroachcloud/statements-page.md %}), which displays [SQL statement fingerprints]({% link cockroachcloud/statements-page.md %}#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](https://www.cockroachlabs.com/docs/{{ version_prefix }}transactions).
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}

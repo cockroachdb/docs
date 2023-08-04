@@ -22,7 +22,7 @@ Refer to: [Overview of the {{ site.data.products.db }} two-level authorization m
 
 	Refer to: [`ccloud` authentication](#ccloud-authentication)
 
-- The {{ site.data.products.db }} API allows [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account) to perform many organization and cluster administration functions.
+- The {{ site.data.products.db }} API allows [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account) to perform many organization and cluster administration functions.
 
 	Refer to: [Cloud API authentication](#cloud-api-authentication)
 
@@ -55,7 +55,7 @@ Refer to: [Log in to CockroachDB Cloud using ccloud auth]({% link cockroachcloud
 
 ## Cloud API authentication
 
-The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by [service accounts](../{{site.versions["stable"]}}/architecture/glossary.html#service-account).
+The [Cloud API]({% link cockroachcloud/cloud-api.md %}) allows automated execution of organization functions. Unlike `ccloud` and the console UI, however, the API can not be authenticated by human users, but by [service accounts](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#service-account).
 
 Service accounts authenticate to the API using API keys, which are provisioned through the console UI.
 
@@ -90,7 +90,7 @@ For information on managing SQL user credentials, including provisioning passwor
 
 SQL clients may authenticate to {{ site.data.products.dedicated }} clusters using PKI security certificates.
 
-Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](../{{site.versions["stable"]}}/security-reference/transport-layer-security.html) for an overview of PKI certificate authentication in general and its use in CockroachDB.
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/security-reference/transport-layer-security) for an overview of PKI certificate authentication in general and its use in CockroachDB.
 
 Refer to [Certificate Authentication for SQL Clients in Dedicated Clusters]({% link cockroachcloud/client-certs-dedicated.md %}) for procedural information on administering and using client certificate authentication.
 

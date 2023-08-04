@@ -63,7 +63,7 @@ The amount of SQL CPU needed to execute this query is about 1.5 milliseconds. Th
 
 Note that this is not exact, as there can be slight variations in multiple parts of the calculation.
 
-You can use the [`EXPLAIN ANALYZE` SQL command](../{{site.versions["stable"]}}/explain-analyze.html) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
+You can use the [`EXPLAIN ANALYZE` SQL command](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/explain-analyze) with your statements to estimate the RU usage of that statement. For example, prepend `EXPLAIN ANALYZE` to the `INSERT` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -109,7 +109,7 @@ You can reduce the RU cost of a query by reducing the work your cluster must do 
 - Use [batched `INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert#bulk-inserts) statements to insert multiple rows in a single statement, rather than sending a separate statement per row.
 - Use range `UPDATE` and `DELETE` statements to affect many rows in a single statement, rather than sending a separate statement per row.
 - Avoid returning columns that your application does not need.
-- Don't disable automatic statistics, as they are needed to power the [optimizer]({% link {{ site.current_cloud_version}}/cost-based-optimizer.md %}).
+- Don't disable automatic statistics, as they are needed to power the [optimizer](https://www.cockroachlabs.com/docs/{{ site.current_cloud_version }}/cost-based-optimizer).
 
 ## Learn more
 

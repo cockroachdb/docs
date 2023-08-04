@@ -121,7 +121,7 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html

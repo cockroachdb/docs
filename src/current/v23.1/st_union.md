@@ -247,7 +247,7 @@ In this example, we will generate a single geometry from many individual points 
 
 ## See also
 
-- [Export Spatial Data](export-spatial-data.html]
+- [Export Spatial Data](export-spatial-data.html)
 - [Spatial tutorial]({% link {{ page.version.version }}/spatial-tutorial.md %})
 - [Spatial and GIS Glossary of Terms]({% link {{ page.version.version }}/architecture/glossary.md %})
 - [Spatial indexes]({% link {{ page.version.version }}/spatial-indexes.md %})

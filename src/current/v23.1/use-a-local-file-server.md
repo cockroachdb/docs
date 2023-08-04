@@ -101,6 +101,6 @@ $ ruby -run -ehttpd . -p3000 # files available at e.g., 'http://localhost:3000/d
 - [`IMPORT`][import]
 - [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [import]: {% link {{ page.version.version }}/import.md %}

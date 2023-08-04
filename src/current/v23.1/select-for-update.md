@@ -113,7 +113,7 @@ COMMIT
 - [Selection Queries]({% link {{ page.version.version }}/selection-queries.md %})
 - [Transaction Contention][transaction_contention]
 
-<!-- Reference links -->
+{% comment %} Reference links {% endcomment %}
 
 [transaction_contention]: performance-best-practices-overview.html#transaction-contention
 [retries]: transaction-retry-error-reference.html#client-side-retry-handling

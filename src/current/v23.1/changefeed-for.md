@@ -60,8 +60,8 @@ Parameter | Description
 `table_name` | The name of the table (or tables in a comma separated list) to create a changefeed for.
 `option` / `value` | For a list of available options and their values, see [Options](#options) below.
 
-<!-- `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
-`name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). -->
+{% comment %} `IF NOT EXISTS` | Create a new changefeed only if a changefeed of the same name does not already exist; if one does exist, do not return an error.
+`name` | The name of the changefeed to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). {% endcomment %}
 
 ### Options
 

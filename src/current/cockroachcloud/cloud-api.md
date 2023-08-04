@@ -10,7 +10,7 @@ The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_
 
 ## API reference
 
-Refer to the [full API reference documentation]({% link api/cloud/v1.md %}) for detailed descriptions of the API endpoints and options.
+Refer to the [full API reference documentation](https://www.cockroachlabs.com/docs/api/cloud/v1) for detailed descriptions of the API endpoints and options.
 
 ## Call the API
 
@@ -340,7 +340,7 @@ Where:
 
 ## Set the maximum resource limits of a Serverless cluster
 
-To set the maximum [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
+To set the maximum [resource limits](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/architecture/glossary#resource-limits) for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{cluster_id}/spend-limit` endpoint.
 
 {{site.data.alerts.callout_success}}
 The service account associated with the secret key must have the Cluster Administrator or Cluster Developer [role]({% link cockroachcloud/authorization.md %}#organization-user-roles), or the `ADMIN` or `READ` [permission]({% link cockroachcloud/authorization.md %}#service-accounts) if it is a legacy service account.

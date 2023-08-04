@@ -145,7 +145,7 @@ The connection lies in a Vault configuration, which will store your CockroachDB 
 
     1. First, tweak the connection string to skip TLS server authentication, as there's no way to provision the Vault server with the cluster CA cert:
         {% include_cached copy-clipboard.html %}
-        <!-- the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  -->
+        {% comment %} the "raw" block prevents the double curly braces of Vault's interpolation syntax from being interpreted by Jekyll  {% endcomment %}
         ~~~shell
         {% raw %}export VAULT_TLS_OPTS="sslmode=require"
         export VAULT_DB_CONNECTION_URL="postgresql://{{username}}:{{password}}@${HOST}:26257/${DB_NAME}?${VAULT_TLS_OPTS}"{% endraw %}

@@ -113,7 +113,7 @@ Learn more:
 
 - Refer to [Take and Restore Customer-Owned Backups on CockroachDB Cloud]({% link cockroachcloud/take-and-restore-customer-owned-backups.md %}) for more information about using customer-managed backups.
 
-- Refer to [Disaster Recovery](../{{site.versions["stable"]}}/disaster-recovery.html) for information about more holistically maintaining a capacity to recover from potential disruptions.
+- Refer to [Disaster Recovery](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/disaster-recovery) for information about more holistically maintaining a capacity to recover from potential disruptions.
 
 - [Contact support](https://support.cockroachlabs.com).
 
@@ -149,7 +149,7 @@ During [limited access](https://www.cockroachlabs.com/docs/{{ site.current_cloud
 
 ### Are enterprise features available to me?
 
-Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of CockroachDB and all [enterprise features]({% link {{ site.current_cloud_version}}/enterprise-licensing.md %}) are available to you.
+Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of CockroachDB and all [enterprise features](https://www.cockroachlabs.com/docs/stable/enterprise-licensing) are available to you.
 
 ### Is there a public API for {{ site.data.products.db }}?
 

@@ -1,4 +1,4 @@
-We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/as-of-system-time). Read our guidance in the [Performance](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#performance) section on the [`BACKUP`](../{{site.current_cloud_version}}/backup.html) page.
+We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/as-of-system-time). Read our guidance in the [Performance](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup#performance) section on the [`BACKUP`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/backup) page.
 
 {{site.data.alerts.callout_info}}
 Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.

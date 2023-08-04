@@ -21,7 +21,7 @@ Such long-running queries can hold intents open for (practically) unlimited dura
 
 Refer to the performance tuning recipe for [identifying and unblocking a waiting transaction]({% link {{ page.version.version }}/performance-recipes.md %}#waiting-transaction).
 
-If you experience this issue on a {{ site.data.products.serverless }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits]({% link cockroachcloud/troubleshooting-page.md %}#hanging-or-stuck-queries).
+If you experience this issue on a {{ site.data.products.serverless }} cluster, your cluster may be throttled or disabled because you've reached your monthly [resource limits](https://www.cockroachlabs.com/docs/cockroachcloud/troubleshooting-page#hanging-or-stuck-queries).
 
 ### Identify slow queries
 
@@ -480,7 +480,7 @@ Or try using our other [support resources]({% link {{ page.version.version }}/su
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Support Portal](https://support.cockroachlabs.com)
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [sql]: architecture/sql-layer.html
 [fast]: {% link {{ page.version.version }}/make-queries-fast.md %}

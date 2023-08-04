@@ -139,7 +139,7 @@ WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, 
 (9 rows)
 ~~~
 
-<!-- WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, lease_holder_locality FROM user_info WHERE lease_holder_locality::STRING ~ "region=us-.+"; -->
+{% comment %} WITH user_info AS (SHOW RANGES FROM TABLE users) SELECT range_id, lease_holder, lease_holder_locality FROM user_info WHERE lease_holder_locality::STRING ~ "region=us-.+"; {% endcomment %}
 
 #### Move the lease for a range to a specified store
 

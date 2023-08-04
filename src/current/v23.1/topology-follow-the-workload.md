@@ -78,9 +78,9 @@ Because this pattern balances the replicas for the table across regions, one ent
 
 <img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads_resiliency.png' | relative_url }}" alt="Follow-the-workload topology region failure" style="max-width:100%" />
 
-<!-- However, if an additional machine holding a replica for the table fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
+{% comment %} However, if an additional machine holding a replica for the table fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
 
-<img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads3.png' | relative_url }}" alt="Follow-the-workload topology" style="max-width:100%" /> -->
+<img src="{{ 'images/v23.1/topology-patterns/topology_follower_reads3.png' | relative_url }}" alt="Follow-the-workload topology" style="max-width:100%" /> {% endcomment %}
 
 ## See also
 

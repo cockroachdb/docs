@@ -72,7 +72,7 @@ It's important to decide which data formats, storage media, and database feature
 
 Data formats that can be imported by CockroachDB include:
 
-- [SQL]({% link {{ page.version.version }}/schema-design-overview.md %}) for the [schema import]({% link cockroachcloud/migrations-page.md %}).
+- [SQL]({% link {{ page.version.version }}/schema-design-overview.md %}) for the [schema import](https://www.cockroachlabs.com/docs/cockroachcloud/migrations-page).
 - [CSV]({% link {{ page.version.version }}/migrate-from-csv.md %}) for table data.
 - [Avro]({% link {{ page.version.version }}/migrate-from-avro.md %}) for table data.
 
@@ -136,4 +136,4 @@ For more information about import performance, see [Import Performance Best Prac
 - [Client connection parameters]({% link {{ page.version.version }}/connection-parameters.md %})
 
 
-<!-- eof -->
+{% comment %} eof {% endcomment %}

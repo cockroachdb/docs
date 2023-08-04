@@ -383,7 +383,7 @@ To take incremental backups, backups with revision history, locality-aware backu
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference links -->
+{% comment %} Reference links {% endcomment %}
 
 [backup]:  {% link {{ page.version.version }}/backup.md %}
 [restore]: {% link {{ page.version.version }}/restore.md %}

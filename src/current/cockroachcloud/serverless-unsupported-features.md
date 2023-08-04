@@ -50,9 +50,9 @@ The Cloud Console provides a subset of observability information from the DB Con
 
 The Cloud Console also does not currently provide the following features available in the DB Console:
 
-- [Statement diagnostic bundles](../{{site.versions["stable"]}}/ui-statements-page.html#diagnostics) on the **Statements** Page
-- [Direct actions to drop unused indexes](../{{site.versions["stable"]}}/ui-databases-page.html#index-recommendations) on the **Insights** and **Databases** pages
-- [Direct actions to create missing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-tab) and [replace existing indexes](../{{site.versions["stable"]}}/ui-insights-page.html#schema-insights-tab) on the **Insights** page
+- [Statement diagnostic bundles](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-statements-page#diagnostics) on the **Statements** Page
+- [Direct actions to drop unused indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-databases-page#index-recommendations) on the **Insights** and **Databases** pages
+- [Direct actions to create missing indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-insights-page#schema-insights-tab) and [replace existing indexes](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/ui-insights-page#schema-insights-tab) on the **Insights** page
 
 {{ site.data.products.serverless }} clusters do not expose [Prometheus endpoints](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/monitor-cockroachdb-with-prometheus).
 

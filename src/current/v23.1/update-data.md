@@ -15,7 +15,7 @@ This page has instructions for updating existing rows of data in CockroachDB, us
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
+- [Create a {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
 - [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 - [Create a database schema]({% link {{ page.version.version }}/schema-design-overview.md %}).
@@ -430,7 +430,7 @@ Other common tasks:
 - [Optimize Statement Performance]({% link {{ page.version.version }}/make-queries-fast.md %})
 - [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [error_handling]: query-behavior-troubleshooting.html
 [manual]: manual-deployment.html

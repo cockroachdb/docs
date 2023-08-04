@@ -60,7 +60,7 @@ The **Request Units** graph displays the CPU and I/O resources being used by que
 
 ### SQL Statements
 
-The **SQL Statements** graph displays an average of the number of [`SELECT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/select-clause), [`INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert), [`UPDATE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/update), and [`DELETE`](../{{site.current_cloud_version}}/delete.html) statements successfully executed per second.
+The **SQL Statements** graph displays an average of the number of [`SELECT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/select-clause), [`INSERT`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/insert), [`UPDATE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/update), and [`DELETE`](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/delete) statements successfully executed per second.
 
 </section>
 

@@ -11,7 +11,7 @@ This page has instructions for deleting rows of data from CockroachDB, using the
 
 Before reading this page, do the following:
 
-- [Create a {{ site.data.products.serverless }} cluster]({% link cockroachcloud/quickstart.md %}) or [start a local cluster]({% link cockroachcloud/quickstart.md %}?filters=local).
+- [Create a {{ site.data.products.serverless }} cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) or [start a local cluster](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=local).
 - [Install a Driver or ORM Framework]({% link {{ page.version.version }}/install-client-drivers.md %}).
 - [Connect to the database]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 - [Create a database schema]({% link {{ page.version.version }}/schema-design-overview.md %}).
@@ -252,7 +252,7 @@ Other common tasks:
 - [Optimize Statement Performance][fast]
 - [Example Apps]({% link {{ page.version.version }}/example-apps.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [selection]: selection-queries.html
 [manual]: manual-deployment.html

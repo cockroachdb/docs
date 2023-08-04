@@ -63,7 +63,7 @@ Continue to [Step 2. Create an AWS endpoint](#step-2-create-an-aws-endpoint).
 1. Use the {{ site.data.products.db }} Console to [create a multi-region {{ site.data.products.serverless }} cluster]({% link cockroachcloud/create-a-serverless-cluster.md %}) on AWS in the same regions as your application.
 
     {{site.data.alerts.callout_info}}
-    **Multi-region for {{ site.data.products.serverless }} is in [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
+    **Multi-region for {{ site.data.products.serverless }} is in [preview](https://www.cockroachlabs.com/docs/{{site.current_cloud_version}}/cockroachdb-feature-availability)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
     {{site.data.alerts.end}}
 
 1. Navigate to the **Networking** page.

@@ -9,7 +9,7 @@ This page give an overview of CockroachDB's security features for authenticating
 
 Instead, you might be looking for:
 
-- [Logging in to the {{ site.data.products.db }} web console]({% link cockroachcloud/authentication.md %}).
+- [Logging in to the {{ site.data.products.db }} web console](https://www.cockroachlabs.com/docs/cockroachcloud/authentication).
 - [Accessing the DB console on {{ site.data.products.core }} clusters]({% link {{ page.version.version }}/ui-overview.md %}).
 
 ## Authentication configuration
@@ -21,7 +21,7 @@ CockroachDB allows fine-grained configuration of which database connection attem
 
 CockroachDB's authentication behavior is configured using a domain-specific language (DSL) called host-based authentication (HBA). HBA syntax is shared with PostgreSQL.
 
-A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), using the [`SET CLUSTER SETTING` statement]({% link {{ page.version.version }}/set-cluster-setting.md %}), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.](https://www.cockroachlabs.com/docs/show-cluster-setting)
+A specific CockroachDB cluster's authentication behavior is configured by setting its `server.host_based_authentication.configuration` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}), using the [`SET CLUSTER SETTING` statement]({% link {{ page.version.version }}/set-cluster-setting.md %}), which accepts a single text field that must be a correctly formatted HBA manifest. Inspect the current setting with [`SHOW CLUSTER SETTING`.]({% link {{ page.version.version }}/show-cluster-setting.md %})
 
 ## Currently supported authentication methods
 
@@ -106,7 +106,7 @@ This is convenient for quick usage and experimentation, but is not suitable for 
 
 {{ site.data.products.dedicated }} clusters enforce IP allow-listing, which must be configured through the CockroachDB Cloud Console.
 
-See [Managing Network Authorization for {{ site.data.products.dedicated }}]({% link cockroachcloud/network-authorization.md %}).
+See [Managing Network Authorization for {{ site.data.products.dedicated }}](https://www.cockroachlabs.com/docs/cockroachcloud/network-authorization).
 
 ### CockroachDB Self-Hosted
 

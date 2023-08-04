@@ -9,7 +9,7 @@ Authorization, generally, is the control over **who** (users/roles) can perform 
 
 This page describes authorization of SQL users on particular [CockroachDB database clusters]({% link {{ page.version.version }}/architecture/glossary.md %}#cluster). This is distinct from authorization of {{ site.data.products.db }} users on {{ site.data.products.db }} organiations.
 
-Learn more: [Overview of the {{ site.data.products.db }} two-level authorization model]({% link cockroachcloud/authorization.md %}#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
+Learn more: [Overview of the {{ site.data.products.db }} two-level authorization model](https://www.cockroachlabs.com/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-two-level-authorization-model)
 
 ## Authorization models
 
@@ -50,7 +50,7 @@ A SQL user can interact with a CockroachDB database using the [built-in SQL shel
 
 ### Create and manage users
 
-Use the [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) and [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) statements to create and remove users, the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement to add or change a user's password and role options, the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) statements to manage the user’s privileges, and the [`SHOW USERS`](https://www.cockroachlabs.com/docs/show-users) statement to list users.
+Use the [`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) and [`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) statements to create and remove users, the [`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) statement to add or change a user's password and role options, the [`GRANT`]({% link {{ page.version.version }}/grant.md %}) and [`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) statements to manage the user’s privileges, and the [`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) statement to list users.
 
 A new user must be granted the required privileges for each database and table that the user needs to access.
 

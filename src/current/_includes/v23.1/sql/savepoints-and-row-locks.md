@@ -7,6 +7,6 @@ This is an architectural difference that may or may not be lifted in a later Coc
 
 The code of client applications that rely on row locks must be reviewed and possibly modified to account for this difference. In particular, if an application is relying on [`ROLLBACK TO SAVEPOINT`][rts] to release row locks and allow a concurrent transaction touching the same rows to proceed, this behavior will not work with CockroachDB.
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [rts]: rollback-transaction.html

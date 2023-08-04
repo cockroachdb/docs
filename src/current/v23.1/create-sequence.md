@@ -41,8 +41,8 @@ The user must have the `CREATE` [privilege]({% link {{ page.version.version }}/s
 `OWNED BY column_name` <a name="owned-by"></a> | Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br>Specifying an owner column with `OWNED BY` replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify `OWNED BY NONE`.<br><br>**Default:** `NONE`
 `opt_temp` | Defines the sequence as a session-scoped temporary sequence. For more information, see [Temporary sequences](#temporary-sequences).
 
-<!-- CYCLE | Not yet implemented. The sequence will wrap around when the sequence value reaches the maximum or minimum value.
--->
+{% comment %} CYCLE | Not yet implemented. The sequence will wrap around when the sequence value reaches the maximum or minimum value.
+{% endcomment %}
 
 ## Sequence functions
 

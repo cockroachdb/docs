@@ -21,7 +21,7 @@ An overview of the workflow involves creating and connecting the following:
 
 You will need the following set up before starting this tutorial:
 
-- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB]({% link cockroachcloud/quickstart.md %}) guide. For {{ site.data.products.core }} clusters, see the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
+- A CockroachDB cluster. You can use a {{ site.data.products.db }} or {{ site.data.products.core }} cluster. If you are using {{ site.data.products.serverless }} or {{ site.data.products.dedicated }}, see the [Quickstart with CockroachDB](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart) guide. For {{ site.data.products.core }} clusters, see the [install]({% link {{ page.version.version }}/install-cockroachdb-mac.md %}) page.
 - A Confluent Cloud account. See Confluent's [Get started](https://www.confluent.io/get-started/) page for details.
 - The Confluent CLI. See [Install Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) to set this up. This tutorial uses v3.3.0 of the Confluent CLI. Note that you can also complete the steps in this tutorial in Confluent's Cloud console.
 

@@ -233,7 +233,7 @@ Example usage:
 - [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [csv]: migrate-from-csv.html
 [mysql]: migrate-from-mysql.html
@@ -243,7 +243,7 @@ Example usage:
 [pgschema]: https://www.postgresql.org/docs/current/static/ddl-schemas.html
 [pgloader]: https://pgloader.io/
 
-<!-- Notes
+{% comment %} Notes
 
 These instructions were prepared with the following versions:
 
@@ -256,4 +256,4 @@ These instructions were prepared with the following versions:
 - /usr/local/bin/mysql Ver 14.14 Distrib 5.7.22, for osx10.12 (x86_64)
   using EditLine wrapper
 
--->
+{% endcomment %}

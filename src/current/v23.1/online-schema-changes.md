@@ -291,7 +291,7 @@ You can only [cancel]({% link {{ page.version.version }}/cancel-job.md %}) [`ALT
 
 
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [alter-table]: {% link {{ page.version.version }}/alter-table.md %}
 [blog]: https://cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/

@@ -226,7 +226,7 @@ SQLAlchemy relies on the existence of [foreign keys]({% link {{ page.version.ver
 
 {% include {{page.version.version}}/app/see-also-links.md %}
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [session.flush]: https://docs.sqlalchemy.org/orm/session_api.html#sqlalchemy.orm.session.Session.flush
 [session]: https://docs.sqlalchemy.org/orm/session.html

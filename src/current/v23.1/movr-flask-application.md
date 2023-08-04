@@ -7,7 +7,7 @@ docs_area: develop
 
 This page guides you through developing a globally-available web application. It is the fourth section of the [Develop and Deploy a Global Application]({% link {{ page.version.version }}/movr.md %}#develop-and-deploy-a-global-application) tutorial.
 
-<!-- {% include {{ page.version.version }}/misc/movr-live-demo.md %} -->
+{% comment %} {% include {{ page.version.version }}/misc/movr-live-demo.md %} {% endcomment %}
 
 ## Before you begin
 
@@ -383,7 +383,7 @@ After you finish developing and debugging your application, you can start [deplo
 
 ## See also
 
-<!-- [MovR (live demo)](https://movr.cloud)-->
+{% comment %} [MovR (live demo)](https://movr.cloud){% endcomment %}
 - [SQLAlchemy documentation](https://docs.sqlalchemy.org/)
 - [Transactions]({% link {{ page.version.version }}/transactions.md %})
 - [Flask documentation](https://flask.palletsprojects.com/)

@@ -19,6 +19,6 @@ The **Databases** page of the {{ site.data.products.db }} Console provides detai
 
 To view this page, select a cluster from the [**Clusters** page]({% link cockroachcloud/cluster-management.md %}#view-clusters-page), and click **Databases** in the **Data** section of the left side navigation.
 
-{% include {{version_prefix}}ui/databases.md %}
+{% include {{site.current_cloud_version}}/ui/databases.md %}
 
-{% include {{version_prefix}}ui/index-details.md %}
+{% include {{site.current_cloud_version}}/ui/index-details.md %}

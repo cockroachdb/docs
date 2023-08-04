@@ -100,7 +100,7 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 - [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 - [Using GeoServer with CockroachDB]({% link {{ page.version.version }}/geoserver.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
