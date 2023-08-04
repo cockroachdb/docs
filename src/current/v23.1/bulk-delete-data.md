@@ -148,23 +148,18 @@ public class App {
     }
 
     public static void main(String[] args) throws SQLException {
-        Connection connection = null;
-        try {
-            // create the datasource for the JDBC driver
-            PGSimpleDataSource ds = new PGSimpleDataSource();
-            ds.setApplicationName("docs_bulk_delete_java");
-            // get the cluster JDBC URL from an environment variable
-            ds.setUrl(Optional.ofNullable(System.getenv("JDBC_DATABASE_URL")).orElseThrow(
-                  () -> new IllegalArgumentException("JDBC_DATABASE_URL is not set.")));
-            connection = ds.getConnection();
+        // create the datasource for the JDBC driver
+        PGSimpleDataSource ds = new PGSimpleDataSource();
+        ds.setApplicationName("docs_bulk_delete_java");
+        // get the cluster JDBC URL from an environment variable
+        ds.setUrl(Optional.ofNullable(System.getenv("JDBC_DATABASE_URL")).orElseThrow(
+              () -> new IllegalArgumentException("JDBC_DATABASE_URL is not set.")));
+        try (Connection connection = ds.getConnection()) {
             // call the method to perform the deletes
             deleteData(connection);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // close the connection
-            if (connection != null) connection.close();
-        }
+        } 
     }
 }
 ~~~
@@ -236,11 +231,9 @@ namespace Cockroach
               // All the rows have been deleted, so break out of the loop
               cont = false;
             }
-            reader.Close();
             Console.WriteLine("Deleted " + reader.RecordsAffected + " rows.");           
           }
         } while (cont);
-        connection.Close();
       }
     }
   }
@@ -438,7 +431,6 @@ static void DeleteRows(string connString)
                         // All the rows have been deleted, so break out of the loop
                         cont = false;
                     }
-                    reader.Close();
                 }
                 while (pkeys.Count > 0) {
                     // get the size of the list of primary keys
