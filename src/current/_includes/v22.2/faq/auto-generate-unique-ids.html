@@ -68,7 +68,7 @@ SELECT * FROM users;
 (3 rows)
 ~~~
 
-In either case, generated IDs will be 128-bit, large enough for there to be virtually no chance of generating non-unique values. Also, once the table grows beyond a single key-value range's [default size](configure-replication-zones.html#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
+In either case, generated IDs will be 128-bit, sufficiently large to generate unique values. Once the table grows beyond a single key-value range's [default size](configure-replication-zones.html#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
 
 This approach has the disadvantage of creating a primary key that may not be useful in a query directly, which can require a join with another table or a secondary index.
 
