@@ -83,7 +83,9 @@ The best practices for generating unique IDs in a distributed database like Cock
 1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
 1. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [change data capture (CDC)](change-data-capture-overview.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher-performance ID strategies outlined in the following sections.
 
-The preceding approaches are likely to create [hot spots](#hot-spots) for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
+The preceding approaches are likely to create [hot spots](#hot-spots) for both reads and writes in CockroachDB. {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
+
+To create unique and non-sequential IDs, we recommend the following approaches (listed in order from best to worst performance):
 
 | Approach                                                                             | Pros                                             | Cons                                                                                    |
 |--------------------------------------------------------------------------------------+--------------------------------------------------+-----------------------------------------------------------------------------------------|

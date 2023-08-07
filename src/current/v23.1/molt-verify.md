@@ -29,30 +29,30 @@ The following databases are currently supported:
 - MySQL
 - CockroachDB
 
-## Use the MOLT Verify tool
+## Install and run MOLT Verify
 
 1. [Download the binary](https://github.com/cockroachdb/molt/releases/) that matches your system:
   - For Mac: `molt.darwin.amd64` for Intel or `molt.darwin.arm64` for ARM
   - For Windows: `molt.amd64.exe`
   - For Linux: `molt.linux.amd64`
-   
-    Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
 
-1. Get the connection strings for the source and target databases you want to compare.
+    Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
+1. Get the connection strings for the source database and [CockroachDB](connect-to-the-database.html).
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
+   
 1. Run MOLT Verify: 
 
-    The `molt verify` command takes two or more SQL connection strings as arguments. 
+    The `molt verify` command takes two or more SQL connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the connection string. The first argument is considered the "source of truth". 
     
     Examples:
 
-    The following example compares a PostgreSQL database with a CockroachDB database. 
+    The following example compares a PostgreSQL database with a CockroachDB database:
     
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./molt verify \
-      --source 'postgres://{username}:{password}@url:{port}/{database}' \
-      --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
+      'pg_truth===postgres://<username>:<password>@url:<port>/<database>' \
+      'crdb_compare===postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
     ~~~
 
     The following example compares a MySQL database with a CockroachDB database (simplified naming for both instances):
@@ -60,8 +60,8 @@ The following databases are currently supported:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./molt verify \
-      --source 'jdbc:mysql://root@tcp({host}:{port})/{database}' \
-      --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
+      'mysql===jdbc:mysql://root@tcp(<host>:<port>)/<database>' \         
+      'postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
     ~~~
 
     You can use optional [supported flags](#supported-flags) to customize the verification results.
@@ -78,17 +78,9 @@ The following databases are currently supported:
 
 Flag | Description
 ----------|------------
-`--source` | (Required) Connection string for the source database.
-`--target` | (Required) Connection string for the target database.
-`--concurrency` | Number of shards to process at a time. <br />**Default:** `16` <br />For faster verification, set this flag to a higher value. <br />Note: Table splitting by shard only works for [`INT`](int.html), [`UUID`](uuid.html), and `FLOAT` data types.
-`--table_splits` | Number of shards to split the table into. <br />**Default:** `16`
-`--row_batch_size` | Number of rows to get from a table at a time. <br />**Default:** `20000`
-{% comment %}
-`--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
-`--table-filter` | tk
-`--schema-filter` | tk
-`--live` | tk. <br />**Default:** `false`
-{% endcomment %}
+`--concurrency int` | Number of shards to process at a time. <br>Default value: 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for `int`, `uuid`, and `float` data types.
+`--table_splits int` | Number of shards to split the table into. <br>Default value: 16
+`--row_batch_size int` | Number of rows to get from a table at a time. <br>Default value: 20000
 
 ## Limitations
 

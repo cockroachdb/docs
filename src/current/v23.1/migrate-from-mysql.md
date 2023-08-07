@@ -32,7 +32,7 @@ Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB](ke
 
 #### `AUTO_INCREMENT` attribute
 
-The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences](create-sequence.html), `UUID` values with [`gen_random_uuid()`](functions-and-operators#id-generation-functions), or unique `INT8` values using [`unique_rowid()`](functions-and-operators.html#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices).
+The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences](create-sequence.html), `UUID` values with [`gen_random_uuid()`](functions-and-operators.html#id-generation-functions), or unique `INT8` values using [`unique_rowid()`](functions-and-operators.html#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices).
 
 {{site.data.alerts.callout_info}}
 Changing a column type during schema conversion will cause [MOLT Verify](molt-verify.html) to identify a type mismatch during [data validation](#step-3-validate-the-migrated-data). This is expected behavior.
@@ -250,7 +250,7 @@ By default, [`IMPORT INTO`](import-into.html) invalidates all [foreign keys](for
 
 1. Use [`IMPORT INTO`](import-into.html) to import each MySQL dump file into the corresponding table in the `world` database.
 
-       The following commands point to a public S3 bucket where the `world` data dump files are hosted for this example. The `nullif='\N'` clause specifies that `\N` values, which are produced by the `mysqldump` command, should be read as [`NULL`](null.html).
+       The following commands point to a public S3 bucket where the `world` data dump files are hosted for this example. The `nullif='\N'` clause specifies that `\N` values, which are produced by the `mysqldump` command, should be read as [`NULL`](null-handling.html).
 
        {{site.data.alerts.callout_success}}
        You can add the `row_limit` [option](import-into.html#import-options) to specify the number of rows to import. For example, `row_limit = '10'` will import the first 10 rows of the table. This option is useful for finding errors quickly before executing a more time- and resource-consuming import.
@@ -369,9 +369,16 @@ Use [MOLT Verify](molt-verify.html) to check that the data on MySQL and Cockroac
        To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `world` database and the **General connection string** option.
        {{site.data.alerts.end}}
 
+       {% comment %}
        {% include_cached copy-clipboard.html %}
        ~~~ shell
        ./molt verify --source 'jdbc:mysql://{user}:{password}@tcp({host}:{port})/world' --target 'postgresql://{user}:{password}@{host}:{port}/world?sslmode=verify-full'
+       ~~~
+       {% endcomment %}
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       ./molt verify 'mysql===jdbc:mysql://{user}:{password}@tcp({host}:{port})/world' 'pg===postgresql://{user}:{password}@{host}:{port}/world?sslmode=verify-full'
        ~~~
 
        You will see the initial output:
@@ -401,7 +408,7 @@ With the schema migrated and the initial data load verified, the next steps in a
 ## See also
 
 - [Migrate Your Database to CockroachDB](migration-overview.html)
-- [Use the Schema Conversion Tool](migrations-page.html)
+- [Use the Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [Use the MOLT Verify tool](molt-verify.html)
 - [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV](migrate-from-csv.html)
