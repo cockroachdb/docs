@@ -363,7 +363,7 @@ Use [MOLT Verify](molt-verify.html) to check that the data on MySQL and Cockroac
 
 1. [Install MOLT Verify.](molt-verify.html)
 
-1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the [JDBC connection string for MySQL](https://dev.mysql.com/doc/connector-j/8.1/en/connector-j-reference-jdbc-url-format.html) with `--source` and the SQL connection string for CockroachDB with `--target`:
+1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the [JDBC connection string for MySQL](https://dev.mysql.com/doc/connector-j/8.1/en/connector-j-reference-jdbc-url-format.html) {% comment %}with `--source`{% endcomment %} and the SQL connection string for CockroachDB{% comment %}with `--target`{% endcomment %}:
 
        {{site.data.alerts.callout_success}}
        To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `world` database and the **General connection string** option.
