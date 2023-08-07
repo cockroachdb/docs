@@ -5,18 +5,8 @@
   [build.environment]
     NODE_VERSION = "18.14.0"
     RUBY_VERSION = "3.2.1"
-  [build.processing]
-    skip_processing = false
-  [build.processing.css]
-    bundle = false
-    minify = false
-  [build.processing.js]
-    bundle = false
-    minify = false
   [build.processing.html]
     pretty_urls = true
-  [build.processing.images]
-    compress = false
 
 #[[plugins]]
 #  package = "@netlify/plugin-lighthouse"
