@@ -81,7 +81,6 @@
 
 - destination: migration-overview.md
   sources: 
-    - migrate-from-mysql.md
     - migrate-from-oracle.md
     - migrate-from-postgres.md
   temporary: true
