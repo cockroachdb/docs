@@ -17,13 +17,26 @@ To start using {{ site.data.products.db }} with Terraform, you must complete the
 ## Capabilities
 
 Terraform configuration files use two kinds of information, "resources" and "data sources".
-The to [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) for detailed information on the resources you can manage using Terraform.
+Refer to the [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) for detailed information on the resources you can manage using Terraform.
+
+## Code examples
+
+The [`terraform-provider-cockroach`](https://github.com/cockroachdb/terraform-provider-cockroach) GitHub repository contains [workflow examples](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows) for the following resources:
+
+- [{{ site.data.products.dedicated }} clusters](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_dedicated_cluster)
+- [{{ site.data.products.serverless }} clusters](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_serverless_cluster)
+- [AWS PrivateLink](https://github.com/cockroachdb/terraform-provider-cockroach/blob/main/examples/workflows/aws_privatelink)
+- [Client CA certificates](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_client_ca_cert)
+- [CMEK](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_cmek) 
+- [Log export configuration](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_log_export_config)
+- [Metrics export configuration](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_metric_export)
+- [User role grants](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_user_role_grants)
 
 ## Tutorials
 
-The following tutorials are available (note that exporting metrics and logs is not available for {{ site.data.products.serverless }} clusters):
+The following detailed tutorials for managing {{ site.data.products.db }} clusters with Terraform are available:
 
 - [Provision a cluster with Terraform](provision-a-cluster-with-terraform.html).
 - [Manage Databases with Terraform](manage-database-terraform.html).
-- [Export Metrics with Terraform](export-metrics-terraform.html).
-- [Export Logs with Terraform](export-logs-terraform.html).
+- [Export Metrics with Terraform](export-metrics-terraform.html) ({{ site.data.products.dedicated }} only).
+- [Export Logs with Terraform](export-logs-terraform.html) ({{ site.data.products.dedicated }} only).
