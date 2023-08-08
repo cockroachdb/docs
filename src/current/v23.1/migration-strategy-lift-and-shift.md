@@ -12,7 +12,7 @@ This page discusses the ["Lift and Shift" strategy](migration-overview.html#lift
 Lift and Shift may not be the right approach if a strong application service continuity during the migration is required. It may be a viable method if application downtime is permitted.
 
 {{site.data.alerts.callout_info}}
-The information on this page assumes you have already reviewed the [Migration Overview](migration-overview.html).
+The information on this page assumes you have already reviewed the [migration overview](migration-overview.html).
 {{site.data.alerts.end}}
 
 ## Pros and Cons

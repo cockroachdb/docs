@@ -17,7 +17,7 @@ docs_area: get_started
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 
-{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.md %}
 
 ## How do I generate unique, slowly increasing sequential numbers in CockroachDB?
 
@@ -129,7 +129,7 @@ require('long').fromString(idString).add(1).toString(); // GOOD: returns '235191
 
 ## Can I use CockroachDB as a key-value store?
 
-{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.md %}
 
 ## Does CockroachDB support full-text search?
 

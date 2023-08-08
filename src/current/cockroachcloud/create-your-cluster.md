@@ -75,7 +75,7 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 ## Step 5. Select the hardware per node
 
-{% capture cap_per_vcpu %}{% include_cached v22.1/prod-deployment/provision-storage.md %}{% endcapture %}
+{% capture cap_per_vcpu %}{% include_cached v23.1/prod-deployment/provision-storage.md %}{% endcapture %}
 
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
 
@@ -104,7 +104,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
     Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
-    For more details about disk performance on a given cloud provider, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/azure/security/fundamentals/encryption-atrest">Azure Data Encryption at Rest</a></li></ul>
+    For more details about disk performance on a given cloud provider, refer to: <ul><li><b>GCP</b>: <a href="https://cloud.google.com/compute/docs/disks/performance">Configure disks to meet performance requirements</a></li><li><b>AWS</b>: <a href="https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types">Amazon EBS volume types</a></li><li><b>Azure</b>: <a href="https://learn.microsoft.com/azure/virtual-machines/disks-performance">Virtual machine and disk performance</a></li></ul>
 
 To change the hardware configuration after the cluster is created, see [Manage a {{ site.data.products.dedicated }} Cluster](cluster-management.html).
 
