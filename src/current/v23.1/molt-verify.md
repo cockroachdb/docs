@@ -1,6 +1,6 @@
 ---
 title: Use the MOLT Verify tool
-summary: Learn how to use the MOLT Verify tool to check for post-migration data discrepancies.
+summary: Learn how to use the MOLT Verify tool to check for data discrepancies during a migration.
 toc: true
 docs_area: migrate
 ---
