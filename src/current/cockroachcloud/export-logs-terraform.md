@@ -225,13 +225,59 @@ Perform the following steps to enable log export from your {{ site.data.products
 
 </section>
 
-## Update your Terraform configuration
+## Create the Terraform configuration file
+
+~~~
+variable "cluster_id" {
+  type = string
+}
+
+variable "auth_principal" {
+  type = string
+}
+
+resource "cockroach_log_export_config" "example" {
+  id             = var.cluster_id
+  auth_principal = var.auth_principal
+  log_name       = "example"
+  type           = "GCP_CLOUD_LOGGING"
+  redact         = true
+  groups = [
+    {
+      log_name : "sql",
+      channels : ["SQL_SCHEMA", "SQL_EXEC"],
+      redact : false
+    },
+    {
+      log_name : "devops",
+      channels : ["OPS", "HEALTH", "STORAGE"]
+      min_level : "WARNING"
+    }
+  ]
+}
+~~~
 
 ## Monitor the status of a log export configuration
 
+To check the status of an existing log export configuration, use the `terraform show` command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+terraform show
+~~~
+
+This will show the following output:
+
+~~~
+~~~
+
 ## Update an existing log export configuration
 
+To update an existing {{ site.data.products.dedicated }} log export configuration, make any necessary changes to your terraform configuration files, then run the `terraform apply` command to apply the updated configuration. Follow the [Monitor the status of a log export configuration](#monitor-the-status-of-a-log-export-configuration) instructions to ensure the update completes successfully.
+
 ## Disable log export
+
+To disable logs export, remove all relevant Terraform configuration information, then run the `terraform apply` command.
 
 ## Learn more
 
