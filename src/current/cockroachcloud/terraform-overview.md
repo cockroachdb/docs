@@ -32,6 +32,8 @@ The [`terraform-provider-cockroach`](https://github.com/cockroachdb/terraform-pr
 - [Metrics export configuration](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_metric_export)
 - [User role grants](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/workflows/cockroach_user_role_grants)
 
+The repository also contains [example code snippets for all available resources](https://github.com/cockroachdb/terraform-provider-cockroach/tree/main/examples/resources).
+
 ## Tutorials
 
 The following detailed tutorials for managing {{ site.data.products.db }} clusters with Terraform are available:
