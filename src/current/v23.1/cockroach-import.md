@@ -37,8 +37,8 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgresql-database)
-- [`mysqldump`](migrate-from-mysql.html#step-1-dump-the-mysql-database)
+- [`pgdump`](migrate-from-postgres.html)
+- [`mysqldump`](migrate-from-mysql.html)
 
 ## Flags
 
