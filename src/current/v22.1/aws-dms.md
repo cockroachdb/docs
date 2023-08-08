@@ -191,6 +191,10 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     To prevent this error, use `COLLATE "C"` on the relevant columns in PostgreSQL or a [collation](collate.html) such as `COLLATE "en_US"` in CockroachDB.
 
+- A migration to a [multi-region cluster](multiregion-overview.html) using AWS DMS will fail if the target database has [regional by row tables](multiregion-overview.html#regional-by-row-tables). This is because the `COPY` statement used by DMS is unable to process the `crdb_region` column in regional by row tables.
+
+    To prevent this error, [set the table localities to `REGIONAL BY TABLE`](set-locality.html#set-the-table-locality-to-regional-by-row) and perform the migration. After the DMS operation is complete, [set the table localities to `REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row).
+
 ## Troubleshooting common issues
 
 - For visibility into migration problems:
