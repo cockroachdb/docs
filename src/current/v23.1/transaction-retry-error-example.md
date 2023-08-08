@@ -1,5 +1,5 @@
 ---
-title: Client side retry handling example
+title: Transaction Retry Error Example
 summary: Client side transaction retry error retry handling example and testing
 toc: true
 docs_area: reference.transaction_retry_error_example

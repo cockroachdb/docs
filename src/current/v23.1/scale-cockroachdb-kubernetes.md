@@ -1,5 +1,5 @@
 ---
-title: Cluster scaling
+title: Cluster Scaling
 summary: How to scale a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true

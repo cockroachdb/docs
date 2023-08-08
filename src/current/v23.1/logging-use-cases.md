@@ -1,5 +1,5 @@
 ---
-title: Logging use cases
+title: Logging Use Cases
 summary: Examples of common logging use cases and possible CockroachDB logging sink configurations.
 toc: true
 docs_area: manage

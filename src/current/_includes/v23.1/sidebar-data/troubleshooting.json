@@ -3,7 +3,7 @@
     "is_top_level": true,
     "items": [
       {
-        "title": "Troubleshooting Overview",
+        "title": "Overview",
         "urls": [
           "/${VERSION}/troubleshooting-overview.html"
         ]
@@ -60,7 +60,7 @@
             ]
           },
           {
-            "title": "Benchmarking Instructions",
+            "title": "Benchmarking with TPC-C",
             "urls": [
               "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
               "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",

@@ -1,5 +1,5 @@
 ---
-title: How to Choose a Deployment Option
+title: Choose a Deployment Option
 summary: Learn how to choose between CockroachDB Serverless, Dedicated, and Self-Hosted deployment option.
 toc: true
 docs_area: deploy

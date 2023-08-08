@@ -1,5 +1,5 @@
 ---
-title: Resource management
+title: Resource Management
 summary: Allocate CPU, memory, and storage resources for a secure 3-node CockroachDB cluster on Kubernetes.
 toc: true
 toc_not_nested: true

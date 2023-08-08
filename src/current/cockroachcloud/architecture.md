@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Cloud Architecture
+title: CockroachDB Cloud Infrastructure
 summary: Learn more about CockroachDB Cloud architecture
 toc: true
 docs_area: reference.architecture

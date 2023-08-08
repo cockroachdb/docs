@@ -1,5 +1,5 @@
 ---
-title: Cluster Single Sign-on (SSO) using CockroachDB Cloud Console
+title: Cluster Single Sign-on (SSO) using the Cloud Console
 summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage

@@ -1,5 +1,5 @@
 ---
-title: Configure logs
+title: Configure Logs
 summary: How to configure CockroachDB logs with the --log or --log-config-file flag and YAML payload.
 toc: true
 docs_area: manage

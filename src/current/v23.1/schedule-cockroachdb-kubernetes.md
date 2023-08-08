@@ -1,5 +1,5 @@
 ---
-title: Pod scheduling
+title: Pod Scheduling
 summary: Schedule CockroachDB pods on Kubernetes using the Operator.
 toc: true
 toc_not_nested: true
