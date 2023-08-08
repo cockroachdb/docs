@@ -6,7 +6,7 @@ keywords: load data infile
 docs_area: migrate
 ---
 
-This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read the [migration overview](migration-overview.html), which describes the broad phases and considerations of migrating a database to CockroachDB. 
+This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migrate Your Database to CockroachDB](migration-overview.html), which describes the broad phases and considerations of migrating a database to CockroachDB. 
 
 The [MySQL migration example](#example-migrate-world-to-cockroachdb) on this page demonstrates how to use [MOLT tooling](migration-overview.html#molt) to update the MySQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration](migration-overview.html#prepare-for-migration).
 
@@ -75,7 +75,7 @@ While MySQL returns 0 when the element is not found, CockroachDB returns `NULL`.
 SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
 ~~~
 
-## Loading MySQL data
+## Load MySQL data
 
 You can use one of the following methods to migrate MySQL data to CockroachDB:
 
@@ -95,7 +95,7 @@ In the context of a full migration, these steps ensure that MySQL data can be pr
 
 ### Before you begin
 
-The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-other.html) and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with those steps:
+The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-other.html) and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with these steps:
 
 1. Download the [`world` data set](https://dev.mysql.com/doc/index-other.html).
 
