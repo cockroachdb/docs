@@ -29,7 +29,7 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 | Subcommand                                                                             | Description                                                                     |
 |----------------------------------------------------------------------------------------+---------------------------------------------------------------------------------|
-| [`CONFIGURE ZONE`](#configure-zone)                                                | [Configure replication zones](configure-replication-zones.html) for a database. |
+| [`CONFIGURE ZONE`](#configure-zone)                                                | [Replication Controls](configure-replication-zones.html) for a database. |
 | [`RELOCATE`](#relocate) | Move a lease or replica between stores in an emergency situation.               |
 
 ### `CONFIGURE ZONE`
@@ -281,7 +281,7 @@ ALTER RANGE RELOCATE NONVOTERS FROM 7 TO 2 FOR SELECT range_id from crdb_interna
 
 ## See also
 
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [Multiregion Capabilities Overview](multiregion-overview.html)
 - [Troubleshoot cluster setup](cluster-setup-troubleshooting.html)
 - [Replication Layer](architecture/replication-layer.html)

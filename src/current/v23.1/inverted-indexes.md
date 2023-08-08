@@ -1,5 +1,5 @@
 ---
-title: Index JSON and Array Data with Generalized Inverted Indexes
+title: Generalized Inverted Indexes
 summary: Generalized inverted indexes (GIN) improve your database's performance and usefulness by helping SQL locate data in JSONB or ARRAY columns.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes

@@ -38,7 +38,7 @@ Cons:
 ## Process design considerations
 
 {{site.data.alerts.callout_info}}
-The high-level considerations in this section only refer to the data-loading portion of your migration. They assume you are following the steps in the overall migration process described in [Migrate your Database to CockroachDB](migration-overview.html).
+The high-level considerations in this section only refer to the data-loading portion of your migration. They assume you are following the steps in the overall migration process described in [Migration Overview](migration-overview.html).
 {{site.data.alerts.end}}
 
 Keep in mind the following considerations when designing a Lift and Shift data migration process.
@@ -120,7 +120,7 @@ For more information about import performance, see [Import Performance Best Prac
 
 ## See also
 
-- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Migration Overview](migration-overview.html)
 - [Use the Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [Migrate with AWS Database Migration Service (DMS)](aws-dms.html)
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)

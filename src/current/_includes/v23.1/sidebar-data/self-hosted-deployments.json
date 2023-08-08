@@ -12,7 +12,7 @@
             "title": "Deploy Locally",
             "items": [
               {
-                "title": "Deploy From Binary",
+                "title": "Deploy from Binary",
                 "urls": [
                   "/${VERSION}/secure-a-cluster.html",
                   "/${VERSION}/start-a-local-cluster.html"
