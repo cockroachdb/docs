@@ -172,7 +172,7 @@ Use the [Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=
        cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full" 
        ~~~
 
-1. To optimize import performance, Cockroach Labs recommends removing indexes prior to [loading data](#step-2-load-the-mysql-data) and recreating them afterward.
+1. For large imports, Cockroach Labs recommends [removing indexes prior to loading data](import-performance-best-practices.html#import-into-a-schema-with-secondary-indexes) and recreating them afterward. This provides increased visibility into the import progress and the ability to retry each step independently.
 
        Show the indexes on the `world` database:
 
