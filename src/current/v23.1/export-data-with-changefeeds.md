@@ -5,15 +5,15 @@ toc: true
 docs_area: stream_data
 ---
 
-When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database. 
+When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database.
 
-{% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence. 
+{% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence.
 
 The benefits of using changefeeds for this use case instead of [export](export.html), include:
 
 - Changefeeds are jobs, which can be [paused](pause-job.html), [resumed](resume-job.html), [cancelled](cancel-job.html), [scheduled](create-schedule-for-changefeed.html), and [altered](alter-changefeed.html).
 - There is observability into a changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs) and the [Changefeeds Dashboard](ui-cdc-dashboard.html) in the DB Console.
-- Changefeed jobs have built-in [checkpointing](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) and [retries](monitor-and-debug-changefeeds.html#changefeed-retry-errors).
+- Changefeed jobs have built-in [checkpointing](how-does-an-enterprise-changefeed-work.html) and [retries](monitor-and-debug-changefeeds.html#changefeed-retry-errors).
 - [Changefeed sinks](changefeed-sinks.html) provide additional endpoints for your data.
 - You can use the [`format=csv`](create-changefeed.html#format) option with `initial_scan= 'only'` to emit messages in CSV format.
 
@@ -33,7 +33,7 @@ CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_par
 Or, use [CDC queries](cdc-queries.html) to filter the data that your changefeed emits:
 
 ~~~ sql
-CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}' 
+CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}'
   WITH initial_scan = 'only', format=csv AS SELECT name, city FROM movr.users;
 ~~~
 

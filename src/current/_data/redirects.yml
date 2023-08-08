@@ -74,32 +74,17 @@
 # https://docs.netlify.com/routing/redirects/redirect-options/#splats
 ############################################################
 
-- destination: v19.1/:splat
-  sources: ['v2.2/*']
-  force: true
-
-- destination: cockroachcloud/:splat
-  sources: ['managed/*']
-  force: true
-
-- destination: releases/index.md
-  sources: ['releases/']
-  force: true
-
 - destination: advisories/index.md
-  sources:
-    - advisories/
-    - advisories/advisories.md
+  sources: ['advisories/advisories.md']
 
 # Pages undergoing maintenance
 
 - destination: migration-overview.md
   sources: 
-    - migrate-from-mysql.md
     - migrate-from-oracle.md
     - migrate-from-postgres.md
   temporary: true
-  versions: ['v21.2', 'v22.1', 'v22.2']
+  versions: ['v21.2', 'v22.1', 'v22.2', 'v23.1']
 
 # Renamed pages
 
@@ -900,6 +885,15 @@
 
 - destination: stable/install-cockroachdb.md
   sources: ['install-cockroachdb.md']
+
+- destination: stable/install-cockroachdb-mac
+  sources: ['stable/install-cockroachdb/install-cockroachdb-mac']
+
+- destination: stable/install-cockroachdb-windows
+  sources: ['stable/install-cockroachdb/install-cockroachdb-windows']
+
+- destination: stable/install-cockroachdb-linux
+  sources: ['stable/install-cockroachdb/install-cockroachdb-linux']
 
 - destination: stable/start-a-local-cluster-in-docker-linux.md
   sources: ['start-a-local-cluster-in-docker.md']

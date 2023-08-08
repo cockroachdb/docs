@@ -311,7 +311,7 @@ We also have other resources on indexes:
 
 ### Create a table with auto-generated unique row IDs
 
-{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.md %}
 
 ### Create a table with a foreign key constraint
 
@@ -478,7 +478,7 @@ In this example, we create the `users` table, but with some column [constraints]
 
 ### Create a table that mirrors key-value storage
 
-{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.md %}
 
 ### Create a table from a `SELECT` statement
 

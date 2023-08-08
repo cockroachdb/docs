@@ -97,7 +97,7 @@
             // This condition makes it possible to use external
             // urls in the sidebar.
             if (!/^https?:/.test(url)) {
-              url = sidebar.baseUrl + url.replace(".html", "");
+              url = sidebar.baseUrl + url.replace("/index.html", "").replace(".html", "");
             }
             return url;
           });
@@ -110,7 +110,10 @@
           else {
             activePathname = location.pathname
           }
-          if (location.pathname.slice(-5) === '.html') {
+          if (location.pathname.includes("/index.html")) {
+            activePathname = activePathname.replace("/index.html", "/")
+          }
+          if (location.pathname.includes(".html")) {
             activePathname = activePathname.replace(".html", "")
           }
           // console.log(urls);
@@ -164,7 +167,7 @@
         // like "v1.0" or "v1.10".
         return {{ site.versions | jsonify }}[d] || /^v\d+.\d+$/.test(d);
       },
-      items: {%- include {{ page.sidebar_data }} -%}
+      items: {%- include_cached {{ include.sidebar_data }} -%}
     };
 
     // implemented in initSidebar.js

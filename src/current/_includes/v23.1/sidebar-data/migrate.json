@@ -91,15 +91,15 @@
       ]
     },
     {
-      "title": "Migration Strategy: Lift and Shift",
+      "title": "Migrate from MySQL",
       "urls": [
-        "/${VERSION}/migration-strategy-lift-and-shift.html"
+        "/${VERSION}/migrate-from-mysql.html"
       ]
     },
     {
-      "title": "Migrate from Serverless to Dedicated",
+      "title": "Migration Strategy: Lift and Shift",
       "urls": [
-        "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+        "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
     }
   ]
