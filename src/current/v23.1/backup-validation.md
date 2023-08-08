@@ -15,6 +15,14 @@ You can validate a backup of a [cluster](backup.html#back-up-a-cluster), [databa
 
 The options that give the most validation coverage will increase the runtime of the check. That is, `verify_backup_table_data` will take a longer time to validate a backup compared to `check_files` or `schema_only` alone. Despite that, each of these validation options provide a quicker way to validate a backup over running a "regular" restore.
 
+## Recommendations
+
+Cockroach Labs recommends implementing the following to test your backups:
+
+1. Frequent [`schema_only`](#validate-a-backup-is-restorable) restores: Checks your credentials, schema issues, and version compatability.  
+1. Regular [`verify_backup_table_data`](#validate-backup-table-data-is-restorable) restores: Tests that all data files are present and uncorrupted. 
+1. Periodic ["regular"](restore.html) restores: Full restores that completely validates a backup.  
+
 {% include {{ page.version.version }}/backups/support-products.md %}
 
 ## Validate backup files
