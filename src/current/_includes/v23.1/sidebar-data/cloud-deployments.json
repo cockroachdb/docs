@@ -215,12 +215,6 @@
                         ]
                     },
                     {
-                        "title": "Network Authorization",
-                        "urls": [
-                            "/cockroachcloud/network-authorization.html"
-                        ]
-                    },
-                    {
                         "title": "Manage Console Access",
                         "urls": [
                             "/cockroachcloud/managing-access.html"
@@ -232,7 +226,7 @@
                 "title": "Network Authorization",
                 "items": [
                     {
-                        "title": "Network Authorization Overview",
+                        "title": "Overview",
                         "urls": [
                             "/cockroachcloud/network-authorization.html"
                         ]
@@ -327,22 +321,27 @@
                     ]
                   },
                   {
-                    "title": "Statements Page",
-                    "urls": [
-                      "/cockroachcloud/statements-page.html"
-                    ]
-                  },
-                  {
-                    "title": "Sessions Page",
-                    "urls": [
-                      "/cockroachcloud/sessions-page.html"
-                    ]
-                  },
-                  {
-                    "title": "Transactions Page",
-                    "urls": [
-                      "/cockroachcloud/transactions-page.html"
-                    ]
+                    "title": "SQL Activity Page",
+                        "items": [
+                            {
+                                "title": "Statements Page",
+                                "urls": [
+                                "/cockroachcloud/statements-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Sessions Page",
+                                "urls": [
+                                "/cockroachcloud/sessions-page.html"
+                                ]
+                            },
+                            {
+                                "title": "Transactions Page",
+                                "urls": [
+                                "/cockroachcloud/transactions-page.html"
+                                ]
+                            }
+                        ]
                   },
                   {
                     "title": "Insights Page",

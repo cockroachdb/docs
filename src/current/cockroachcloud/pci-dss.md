@@ -16,7 +16,7 @@ Responsibility for compliance with PCI DSS is shared among multiple parties, inc
 This page provides information about compliance with PCI DSS within {{ site.data.products.dedicated }} advanced, describes some of the ways that {{ site.data.products.db }} implements and enforces compliance, and illustrates some of the types of changes you may need to implement outside of your {{ site.data.products.dedicated }} clusters.
 
 {{site.data.alerts.callout_success}}
-When a {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets or exceeds the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
+When a {{ site.data.products.dedicated }} advanced cluster is configured appropriately for compliance with PCI DSS, the cluster also meets the requirements of the Health Insurance Portability and Accountability Act of 1996, commonly referred to as _HIPAA_.
 {{site.data.alerts.end}}
 
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), PCI DSS is not supported for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).

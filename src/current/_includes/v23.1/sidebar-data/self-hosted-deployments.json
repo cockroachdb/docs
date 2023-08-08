@@ -518,66 +518,60 @@
                ]
           },
           {
-            "title": "Backups",
+            "title": "Backups and Restores",
             "items": [
               {
-                "title": "Backup and Restore Overview",
+                "title": "Overview",
                 "urls": [
                       "/${VERSION}/backup-and-restore-overview.html"
                     ]
               },
               {
-                "title": "Customer-Owned Backups",
-                "items": [
-                  
-                  {
-                    "title": "Full and Incremental Backups",
-                    "urls": [
-                      "/${VERSION}/take-full-and-incremental-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Backups with Revision History and Point-in-time Restore",
-                    "urls": [
-                      "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
-                    ]
-                  },
-                  {
-                    "title": "Encrypted Backup and Restore",
-                    "urls": [
-                      "/${VERSION}/take-and-restore-encrypted-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Locality-restricted Backup Execution",
-                    "urls": [
-                      "/${VERSION}/take-locality-restricted-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Locality-aware Backup and Restore",
-                    "urls": [
-                      "/${VERSION}/take-and-restore-locality-aware-backups.html"
-                    ]
-                  },
-                  {
-                    "title": "Scheduled Backups",
-                    "urls": [
-                      "/${VERSION}/manage-a-backup-schedule.html"
-                    ]
-                  },
-                  {
-                    "title": "Backup Validation",
-                    "urls": [
-                      "/${VERSION}/backup-validation.html"
-                    ]
-                  },
-                  {
-                    "title": "Backup and Restore Monitoring",
-                    "urls": [
-                      "/${VERSION}/backup-and-restore-monitoring.html"
-                    ]
-                  }
+                "title": "Full and Incremental Backups",
+                "urls": [
+                  "/${VERSION}/take-full-and-incremental-backups.html"
+                ]
+              },
+              {
+                "title": "Backups with Revision History and Point-in-time Restore",
+                "urls": [
+                  "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+                ]
+              },
+              {
+                "title": "Encrypted Backup and Restore",
+                "urls": [
+                  "/${VERSION}/take-and-restore-encrypted-backups.html"
+                ]
+              },
+              {
+                "title": "Locality-restricted Backup Execution",
+                "urls": [
+                  "/${VERSION}/take-locality-restricted-backups.html"
+                ]
+              },
+              {
+                "title": "Locality-aware Backup and Restore",
+                "urls": [
+                  "/${VERSION}/take-and-restore-locality-aware-backups.html"
+                ]
+              },
+              {
+                "title": "Scheduled Backups",
+                "urls": [
+                  "/${VERSION}/manage-a-backup-schedule.html"
+                ]
+              },
+              {
+                "title": "Backup Validation",
+                "urls": [
+                  "/${VERSION}/backup-validation.html"
+                ]
+              },
+              {
+                "title": "Backup and Restore Monitoring",
+                "urls": [
+                  "/${VERSION}/backup-and-restore-monitoring.html"
                 ]
               }
             ]
@@ -665,27 +659,6 @@
                 "title": "Logging Use Cases",
                 "urls": [
                   "/${VERSION}/logging-use-cases.html"
-                ]
-              }
-            ]
-          },
-          {
-            "title": "Benchmarking",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/performance.html"
-                ]
-              },
-              {
-                "title": "Benchmarking Instructions",
-                "urls": [
-                  "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-local-multiregion.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
-                  "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
                 ]
               }
             ]

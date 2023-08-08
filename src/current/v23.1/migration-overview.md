@@ -148,7 +148,7 @@ The [Schema Conversion Tool](../cockroachcloud/migrations-page.html) automatical
 
 - You should define an explicit primary key on every table. For more information, see [Primary key best practices](schema-design-table.html#primary-key-best-practices).
 
-- Do not use a sequence to define a primary key column. Instead, Cockroach Labs recommends that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or [auto-generating unique IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) for primary key columns. For more information, see [`CREATE SEQUENCE`](create-sequence.html#considerations).
+- Do not use a sequence to define a primary key column. Instead, Cockroach Labs recommends that you use [multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) or [auto-generating unique IDs](performance-best-practices-overview.html#use-functions-to-generate-unique-ids) for primary key columns.
 
 - By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For example, [PostgreSQL defaults to 32-bit integers](https://www.postgresql.org/docs/9.6/datatype-numeric.html). For more information, see [Considerations for 64-bit signed integers](int.html#considerations-for-64-bit-signed-integers).
 
@@ -239,6 +239,10 @@ Then import the converted schema to a CockroachDB cluster:
 
 #### Load test data
 
+{{site.data.alerts.callout_success}}
+Before moving data, Cockroach Labs recommends [dropping any indexes](drop-index.html) on the CockroachDB database. The indexes can be [recreated](create-index.html) after the data is loaded. Doing so will optimize performance.
+{{site.data.alerts.end}}
+
 After [converting the schema](#convert-the-schema), load your data into CockroachDB so that you can [test your application queries](#validate-queries). Then use one of the following methods to migrate the data (you may need to use additional tooling to extract and/or convert the data to an appropriate file format):
 
 - {% include {{ page.version.version }}/migration/load-data-import-into.md %} Typically, initial data loading during a database migration will not be running concurrently with application traffic, so the fact that `IMPORT INTO` takes the table offline may not have any observable availability impact.
@@ -290,7 +294,7 @@ Alternatively, [truncate](truncate.html) each table you used for testing to avoi
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-TRUNCATE {table-name};
+TRUNCATE {table-name} CASCADE;
 ~~~
 
 Migrate your data to CockroachDB using the method that is appropriate for your [downtime requirements](#approach-to-downtime) and [cutover strategy](#cutover-strategy).

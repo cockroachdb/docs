@@ -94,7 +94,7 @@ The `transfer_funds` function calls `execute_txn` to perform the actual transfer
         For example:
 
         ~~~
-        postgresql://maxroach:ThisIsNotAGoodPassword@dim-dog-147.6wr.cockroachlabs.cloud:26257/bank?sslmode=require
+        postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/bank?sslmode=require
         ~~~
 
 

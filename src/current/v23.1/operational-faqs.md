@@ -158,7 +158,7 @@ Cockroach Labs collects information about CockroachDB's real-world usage to help
 
 ## How can I tell how well node clocks are synchronized?
 
-{% include {{ page.version.version }}/faq/clock-synchronization-monitoring.html %}
+{% include {{ page.version.version }}/faq/clock-synchronization-monitoring.md %}
 
 You can also see these metrics in [the Clock Offset graph](ui-runtime-dashboard.html#clock-offset) on the DB Console.
 

@@ -3,7 +3,7 @@
 We’ve partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools.
 
 - **Full support** indicates that the vast majority of the tool's features should work without issue with CockroachDB. CockroachDB is regularly tested against the recommended version documented here.
-- **Beta support** indicates that the tool has been tried with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit unexpected behavior.
+- **Partial support** indicates that the tool has been tried with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit unexpected behavior.
 
 If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
 

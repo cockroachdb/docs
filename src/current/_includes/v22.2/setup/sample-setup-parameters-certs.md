@@ -68,7 +68,7 @@ Success! Created SQL user
 Retrieving cluster info: succeeded
 Connection parameters
  Database:  defaultdb
- Host:      dim-dog-147.6wr.cockroachlabs.cloud
+ Host:      blue-dog-147.6wr.cockroachlabs.cloud
  Password:  ThisIsNotAGoodPassword
  Port:      26257
  Username:  maxroach
