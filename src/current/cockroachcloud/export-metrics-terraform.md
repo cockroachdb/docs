@@ -22,6 +22,7 @@ Before you start this tutorial, you must have [the CockroachBDCloud Terraform pr
 
 1. Add the following snippet of code to your `main.tf` file:
 
+    {% include_cached copy-clipboard.html %}
     ~~~
     resource "cockroach_database" "<resource-name>" {
       name       = "<database-name>"
@@ -39,6 +40,7 @@ Before you start this tutorial, you must have [the CockroachBDCloud Terraform pr
 
 To change the name of a database, you can edit the database's `name` variable in your `main.tf` file. The following snippet will rename the database [created](#create-a-new-database) in the previous example:
 
+    {% include_cached copy-clipboard.html %}
     ~~~
     resource "cockroach_database" "<resource-name>" {
       name       = "<database-new-name>"
