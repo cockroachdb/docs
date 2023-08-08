@@ -4610,7 +4610,7 @@
   source: true
   previous_release: v23.1.7
 
-  - release_name: v22.2.13
+- release_name: v22.2.13
   major_version: v22.2
   release_date: '2023-08-08'
   release_type: Production
