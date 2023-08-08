@@ -13,7 +13,11 @@ This page shows you how to manage your databases using the CockroachDB Cloud Ter
 
 Before you start this tutorial, you must have [the CockroachBDCloud Terraform provider](https://learn.hashicorp.com/tutorials/terraform/install-cli) set up. Follow the tutorial to [Provision a Cluster with Terraform](provision-a-cluster-with-terraform.html) to start using Terraform with a new cluster.
 
+You must also have a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud) with `admin` privilege or the Cluster Creator / Cluster Admin role at the organization scope.
+
 ## Create a new database
+
+Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle. For details about the database resource schema, refer to [the Terraform provider documentation](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/database).
 
 1. Add the following variable to your `main.tf` file:
 

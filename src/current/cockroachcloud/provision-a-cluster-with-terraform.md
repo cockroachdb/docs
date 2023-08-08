@@ -24,7 +24,7 @@ Before you start this tutorial, you must
 
 ## Create the Terraform configuration files
 
-Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle.
+Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle. For details about the cluster resource schema, refer to [the Terraform provider documentation](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster).
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 

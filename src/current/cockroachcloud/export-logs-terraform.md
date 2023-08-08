@@ -19,6 +19,8 @@ The {{ site.data.products.dedicated }} log export feature is only available on c
 
 Before you start this tutorial, you must have [the CockroachBDCloud Terraform provider](https://learn.hashicorp.com/tutorials/terraform/install-cli) set up. These instructions apply to an existing {{ site.data.products.dedicated }} cluster that you are managing with Terraform. Follow the tutorial to [Provision a Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated) to start using Terraform with a new cluster.
 
+You must also have a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud) with `admin` privilege or the Cluster Creator / Cluster Admin role at the organization scope.
+
 ## Enable log export
 
 <div class="filters clearfix">
