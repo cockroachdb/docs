@@ -9,7 +9,7 @@ docs_area: migrate
 {% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-MOLT Verify checks for data discrepancies between a source and a target database during a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
+MOLT Verify checks for data discrepancies between a source database and CockroachDB during a [database migration]({% link {{ page.version.version }}/migration-overview.md %}).
 
 The tool performs the following verifications to ensure data integrity during a migration:
 
@@ -26,7 +26,7 @@ For a demo of MOLT Verify, watch the following video:
 The following databases are currently supported:
 
 - PostgreSQL
-- MySQL
+- [MySQL](migrate-from-mysql.html)
 - CockroachDB
 
 ## Install and run MOLT Verify
@@ -39,10 +39,9 @@ The following databases are currently supported:
     Rename the binary to `molt` and add it to your `PATH` so you can execute the `molt verify` command from any shell.
 1. Get the connection strings for the source database and [CockroachDB]({% link {{ page.version.version }}/connect-to-the-database.md %}).
 1. Make sure the SQL user running MOLT Verify has read privileges on the necessary tables.
-   
 1. Run MOLT Verify: 
 
-    The `molt verify` command takes two or more SQL connection strings as arguments. You can append a name for easier readability using `<name>===` in front of the connection string. The first argument is considered the "source of truth". 
+    The `molt verify` command takes two or more SQL connection strings as arguments.
     
     Examples:
 
@@ -51,8 +50,8 @@ The following databases are currently supported:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./molt verify \
-      'pg_truth===postgres://<username>:<password>@url:<port>/<database>' \
-      'crdb_compare===postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
+      --source 'postgres://{username}:{password}@url:{port}/{database}' \
+      --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
     ~~~
 
     The following example compares a MySQL database with a CockroachDB database (simplified naming for both instances):
@@ -60,8 +59,8 @@ The following databases are currently supported:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     ./molt verify \
-      'mysql===jdbc:mysql://root@tcp(<host>:<port>)/<database>' \         
-      'postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full'
+      --source 'jdbc:mysql://root@tcp({host}:{port})/{database}' \
+      --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
     ~~~
 
     You can use optional [supported flags](#supported-flags) to customize the verification results.
@@ -78,19 +77,28 @@ The following databases are currently supported:
 
 Flag | Description
 ----------|------------
-`--concurrency int` | Number of shards to process at a time. <br>Default value: 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for `int`, `uuid`, and `float` data types.
-`--table_splits int` | Number of shards to split the table into. <br>Default value: 16
-`--row_batch_size int` | Number of rows to get from a table at a time. <br>Default value: 20000
+`--source` | (Required) Connection string for the source database.
+`--target` | (Required) Connection string for the target database.
+`--concurrency` | Number of shards to process at a time. <br>**Default:** 16 <br>For faster verification, set this flag to a higher value. <br>Note: Table splitting by shard only works for [`INT`](int.html), [`UUID`](uuid.html), and [`FLOAT`](float.html) data types.
+`--table_splits` | Number of shards to split the table into. <br>**Default:** 16
+`--row_batch_size` | Number of rows to get from a table at a time. <br>**Default:** 20000
+`--table-filter` | Verify tables that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
+`--schema-filter` | Verify schemas that match a specified [regular expression](https://wikipedia.org/wiki/Regular_expression).
+`--continuous` | Verify tables in a continuous loop. <br />**Default:** `false`
+`--live` | Retry verification on rows before emitting warnings or errors. This is useful during live data import, when temporary mismatches can occur. <br />**Default:** `false`
 
 ## Limitations
 
 - While verifying data, MOLT Verify pages 20,000 rows at a time by default, and row values can change in between, which can lead to temporary inconsistencies in data. You can change the row batch size using the `--row_batch_size int` [flag](#supported-flags).
 - MySQL enums and set types are not supported.
-- When a `STRING` is used as a [primary key]({% link {{ page.version.version }}/primary-key.md %}), MOLT Verify may generate additional warnings due to differences in how CockroachDB and other databases handle case sensitivity in strings.
+- When a [`STRING`]({% link {{ page.version.version }}/string.html) is used as a [primary key]({% link {{ page.version.version }}/primary-key.html), validation may fail to differences in how CockroachDB and other databases handle case sensitivity in strings.
 - MOLT Verify only supports comparing one MySQL database to a whole CockroachDB schema (which is assumed to be "public").
 - MOLT Verify might give an error in case of schema changes on either the source or target database.
 - Geospatial types cannot yet be compared.
 
 ## See also
 
-- [Migration Overview]({% link {{ page.version.version }}/migration-overview.md %})
+- [Migrate Your Database to CockroachDB]({% link {{ page.version.version }}migration-overview.html)
+{% comment %}- [Migrate from PostgreSQL]({% link {{ page.version.version }}migrate-from-postgres.html){% endcomment %}
+- [Migrate from MySQL]({% link {{ page.version.version }}migrate-from-mysql.html)
+- [Migrate from CSV]({% link {{ page.version.version }}migrate-from-csv.html)
