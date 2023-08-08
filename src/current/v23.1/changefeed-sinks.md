@@ -419,7 +419,7 @@ Field              | Type                | Description      | Default
 `Flush.Messages`   | [`INT`](int.html)   | The batch is flushed and its messages are sent when it contains this many messages. | `0`
 `Flush.Bytes`      | [`INT`](int.html)   | The batch is flushed when the total byte sizes of all its messages reaches this threshold. | `0`
 `Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
-`Retry.Max`        | [`INT`](int.html) | The maximum number of attempted retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. | `3`
+`Retry.Max`        | [`INT`](int.html) | The maximum number of attempted HTTP retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. This only affects HTTP retries, not other causes of [duplicate messages](changefeed-messages.html#duplicate-messages). Note that setting this field will not prevent the changefeed from retrying indefinitely. | `3`
 `Retry.Backoff`    | [`INTERVAL`](interval.html) | How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then the sink will try at most `4` retries, with `10s`, `20s`, `30s`, and `30s` backoff times.  | `"500ms"`
 
 For example:
