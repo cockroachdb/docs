@@ -1,5 +1,5 @@
 ---
-title: Customer-Managed Encryption Keys (CMEK)
+title: Customer-Managed Encryption Keys (CMEK) Overview
 summary: Use cryptographic keys that you manage to protect data at rest in a {{ site.data.products.dedicated }} cluster.
 toc: true
 docs_area: manage.security
