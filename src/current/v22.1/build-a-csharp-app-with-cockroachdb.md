@@ -9,7 +9,7 @@ docs_area: get_started
 
 This tutorial shows you how build a simple C# application with CockroachDB and the .NET Npgsql driver.
 
-We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **partial** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 ## Step 1. Start CockroachDB
 
@@ -121,7 +121,7 @@ connStringBuilder.TrustServerCertificate = true;
 Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{host-name}` is the name of the {{ site.data.products.db }} host (e.g., `dim-dog-4300.6wr.cockroachlabs.cloud`).
+- `{host-name}` is the name of the {{ site.data.products.db }} host (e.g., `blue-dog-4300.6wr.cockroachlabs.cloud`).
 
 </section>
 

@@ -3,15 +3,16 @@ title: Alerts Page
 summary: The Alerts page allows you to toggle CockroachDB Cloud alerts and view alert history.
 toc: true
 docs_area: manage
+page_version: v23.1
 ---
 
-The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} Organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
+The **Alerts** page allows you to enable email alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
 
 {{site.data.alerts.callout_info}}
-The **Alerts** page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} clusters, all [Org Administrators](authorization.html#org-administrator-legacy) will automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits).
+The **Alerts** page is applicable for {{ site.data.products.dedicated }} clusters in your {{ site.data.products.db }} organization. For {{ site.data.products.serverless }} clusters in your organization, all [Org Administrators](authorization.html#org-administrator-legacy) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](../{{site.versions["stable"]}}/architecture/glossary.html#resource-limits).
 {{site.data.alerts.end}}
 
-If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
+If alerts are enabled, {{ site.data.products.db }} sends alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
 
 **Storage Utilization:**
 
@@ -31,24 +32,26 @@ If alerts are enabled, {{ site.data.products.db }} will send alerts to [specifie
 **CMEK:**
 
 - Cluster node unable to start due to CMEK key access failure.
-- Encrypted backup failed due to CMEK key access failure.
+{% comment %}- Encrypted backup failed due to CMEK key access failure.{% endcomment %}
 
 If you receive an alert repeatedly, you may need to [optimize your workload](../stable/make-queries-fast.html) or [scale your {{ site.data.products.db }} cluster](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
-[Org Administrators](authorization.html#org-administrator-legacy) will also receive email alerts when your cluster undergoes an automatic [patch version upgrade](upgrade-policy.html#patch-version-upgrades).
-
-{{site.data.alerts.callout_success}}
-When scaling your cluster, we recommend first scaling VMs to include more than 2 vCPUs each. If this doesn't sufficiently improve performance, then add more nodes.
-{{site.data.alerts.end}}
+[Org Administrators](authorization.html#org-administrator-legacy) also receive email alerts when your cluster undergoes an automatic [patch version upgrade](upgrade-policy.html#patch-version-upgrades).
 
 ## Configure alerts
 
 To enable alerts:
 
-- Under **Configure {{ site.data.products.db }} alerts**, toggle the **Alerts are on** switch.
-- Under **Add Email Recipients**, add at least one email address and click **Add**.
+1. Under **Configure {{ site.data.products.db }} alerts**, toggle the **Alerts are on** switch.
+1. Under **Add Email Recipients**, add at least one email address and click **Add**.
 
-Note that alerts are enabled for all clusters in your Organization. To filter alerts on specific clusters, you can use an email alias to send alerts to a monitoring tool such as [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) or <a href="https://www.pagerduty.com/" data-proofer-ignore>PagerDuty</a>.
+Alerts are enabled for all {{ site.data.products.dedicated }} clusters in your Organization.
+
+{{site.data.alerts.callout_success}}
+You can use an email alias to send alerts to a monitoring tool such as [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) or [PagerDuty](https://www.pagerduty.com/).
+{{site.data.alerts.end}}
+
+## Send a test alert
 
 To send a test alert:
 

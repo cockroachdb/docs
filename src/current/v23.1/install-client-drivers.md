@@ -8,7 +8,7 @@ docs_area: develop
 CockroachDB supports both native drivers and the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORM frameworks should work with CockroachDB. Choose a language for supported clients, and follow the installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
 
 {{site.data.alerts.callout_info}}
-Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM framework with **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM framework with **partial** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -136,7 +136,7 @@ $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 You can substitute psycopg2 for other alternatives that include the psycopg python package.
 {{site.data.alerts.end}}
 
-For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
+For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/intro.html#installation-guide).
 
 For a simple but complete example app, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
 
@@ -352,7 +352,7 @@ For a simple but complete example app, see [Build a Ruby App with CockroachDB an
 
 ### libpq
 
-**Support level:** Beta
+**Support level:** Partial
 
 Install the C libpq driver as described in the [official documentation](https://www.postgresql.org/docs/current/libpq.html).
 
@@ -364,7 +364,7 @@ Install the C libpq driver as described in the [official documentation](https://
 
 ### Npgsql
 
-**Support level:** Beta
+**Support level:** Partial
 
 1. Create a .NET project:
 
@@ -397,7 +397,7 @@ For a simple but complete example app, see [Build a C# App with CockroachDB and 
 
 ### rust-postgres
 
-**Support level:** Beta
+**Support level:** Partial
 
 Install the Rust-Postgres driver as described in the [official documentation](https://crates.io/crates/postgres).
 

@@ -50,7 +50,7 @@ Example of a Kafka sink URI using `SASL-SCRAM-SHA-256` authentication:
 {% include_cached new-in.html version="v23.1" %} Example of a Kafka sink URI using `OAUTHBEARER` authentication:
 
 ~~~
-'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&SASL_CLIENT_SECRET={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
+'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
 ~~~
 
 {% include {{ page.version.version }}/cdc/oauth-description.md %}
@@ -68,7 +68,7 @@ URI Parameter      | Description
 `client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
 <span class="version-tag">New in v23.1:</span> `sasl_client_id`   | Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
-<span class="version-tag">New in v23.1:</span> `SASL_CLIENT_SECRET` | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
+<span class="version-tag">New in v23.1:</span> `sasl_client_secret` | Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [base64 encode](https://www.base64encode.org/) this value when passing it in as part of a sink URI.
 `sasl_enabled`     | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
 <span class="version-tag">New in v23.1:</span> `sasl_grant_type` | Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`.
 `sasl_mechanism`   | Can be set to [`OAUTHBEARER`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth.html), [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
@@ -76,7 +76,7 @@ URI Parameter      | Description
 <span class="version-tag">New in v23.1:</span> `sasl_token_url` | Client token URL for OAuth authentication from a third-party provider. This parameter is only applicable with `sasl_mechanism=OAUTHBEARER`. **Note:** You must [URL encode](https://www.urlencoder.org/) this value before passing in a URI.
 `sasl_user`        | Your SASL username.
 `sasl_password`    | Your SASL password
-`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
@@ -228,6 +228,10 @@ Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/un
 
 For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 
+{{site.data.alerts.callout_info}}
+You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emulator), which allows you to run Pub/Sub locally for testing. CockroachDB uses the [Google Cloud SDK](https://cloud.google.com/sdk), which means that you can follow Google's instructions for [Setting environment variables](https://cloud.google.com/pubsub/docs/emulator#env) to run the Pub/Sub emulator.
+{{site.data.alerts.end}}
+
 ### Pub/Sub topic naming
 
 When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name.
@@ -271,7 +275,6 @@ Some considerations when using cloud storage sinks:
 - Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
-- {% include {{ page.version.version }}/cdc/cloud-storage-external-connection.md %}
 
 You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](cloud-storage-authentication.html).
 
@@ -313,7 +316,7 @@ URI Parameter      | Storage | Description
 `AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication](cloud-storage-authentication.html) for examples of each of these.
 `AZURE_ACCOUNT_NAME` | Azure Blob Storage | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure Blob Storage | The URL-encoded account key for your Azure account.
-`AZURE_CLIENT_ID` | Azure Blob Storage | Application (client) ID for your [App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application).
+`AZURE_CLIENT_ID` | Azure Blob Storage | Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
 `AZURE_CLIENT_SECRET` | Azure Blob Storage | Client credentials secret generated for your App Registration.
 `AZURE_ENVIRONMENT` | Azure Blob Storage | {% include {{ page.version.version }}/misc/azure-env-param.md %}
 `AZURE_TENANT_ID`| Azure Blob Storage | Directory (tenant) ID for your App Registration.
@@ -395,7 +398,7 @@ URI Parameter      | Description
 `ca_cert`          | The base64-encoded `ca_cert` file. Specify `ca_cert` for a webhook sink. <br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
 `client_cert`      | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.<br><br>{% include {{ page.version.version }}/cdc/client-key-encryption.md %}
-`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+`insecure_tls_skip_verify` | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
@@ -416,7 +419,7 @@ Field              | Type                | Description      | Default
 `Flush.Messages`   | [`INT`](int.html)   | The batch is flushed and its messages are sent when it contains this many messages. | `0`
 `Flush.Bytes`      | [`INT`](int.html)   | The batch is flushed when the total byte sizes of all its messages reaches this threshold. | `0`
 `Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
-`Retry.Max`        | [`INT`](int.html) | The maximum number of attempted retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. | `3`
+`Retry.Max`        | [`INT`](int.html) | The maximum number of attempted HTTP retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. This only affects HTTP retries, not other causes of [duplicate messages](changefeed-messages.html#duplicate-messages). Note that setting this field will not prevent the changefeed from retrying indefinitely. | `3`
 `Retry.Backoff`    | [`INTERVAL`](interval.html) | How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then the sink will try at most `4` retries, with `10s`, `20s`, `30s`, and `30s` backoff times.  | `"500ms"`
 
 For example:

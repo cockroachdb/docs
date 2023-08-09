@@ -17,7 +17,7 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 
 This page has instructions for data domiciling in [multi-region clusters](multiregion-overview.html) using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement. At a high level, this process involves:
 
-1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) clauses.
+1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables) and [`REGIONAL BY TABLE`](table-localities.html#regional-tables) clauses.
 1. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](alter-database.html#placement) statement, which constrains the voting and non-voting replicas for a partition or table to be stored in only the [home regions](multiregion-overview.html#table-localities) associated with those rows or tables.
 
 ## Before you begin
@@ -259,7 +259,7 @@ The steps above are necessary but not sufficient to accomplish a data domiciling
 Using CockroachDB as part of your approach to data domiciling has several limitations:
 
 - When columns are [indexed](indexes.html), a subset of data from the indexed columns may appear in [meta ranges](architecture/distribution-layer.html#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements](multiregion-overview.html), or the low-level [zone configs](configure-replication-zones.html) mechanism.
-- [Zone configs](configure-replication-zones.html) can be used for data placement but these features were historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Configure Replication Zones](configure-replication-zones.html#types-of-constraints).
+- [Zone configs](configure-replication-zones.html) can be used for data placement but these features were historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Replication Controls](configure-replication-zones.html#types-of-constraints).
 - If your [log files](logging-overview.html) are kept in the region where they were generated, there is some cross-region leakage (like the system tables described previously), but the majority of user data that makes it into the logs is going to be homed in that region. If that's not strong enough, you can use the [log redaction functionality](configure-logs.html#redact-logs) to strip all raw data from the logs. You can also limit your log retention entirely.
 - If you start a node with a [`--locality`](cockroach-start.html#locality) flag that says the node is in region _A_, but the node is actually running in some region _B_, data domiciling based on the inferred node placement will not work. A CockroachDB node only knows its locality based on the text supplied to the `--locality` flag; it can not ensure that it is actually running in that physical location.
 
@@ -271,8 +271,8 @@ Using CockroachDB as part of your approach to data domiciling has several limita
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
-- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
 - [`ADD REGION`](alter-database.html#add-region)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [Zone Config Extensions](zone-config-extensions.html)

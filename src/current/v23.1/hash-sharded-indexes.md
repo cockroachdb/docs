@@ -1,5 +1,5 @@
 ---
-title: Hash-sharded Indexes
+title: Index Sequential Keys with Hash-sharded Indexes
 summary: Hash-sharded indexes can eliminate single-range hot spots and improve write performance on sequentially-keyed indexes at a small cost to read performance
 toc: true
 docs_area: develop
@@ -47,7 +47,7 @@ We recommend doing thorough performance testing of your workload with different 
 
 You can create hash-sharded indexes with implicit partitioning under the following scenarios:
 
-- The table is partitioned implicitly with [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables), and the `crdb_region` column is not part of the columns in the hash-sharded index.
+- The table is partitioned implicitly with [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables), and the `crdb_region` column is not part of the columns in the hash-sharded index.
 - The table is partitioned implicitly with `PARTITION ALL BY`, and the partition columns are not part of the columns in the hash-sharded index. Note that `PARTITION ALL BY` is in preview.
 
 However, if an index of a table, whether it be a primary key or secondary index, is explicitly partitioned with `PARTITION BY`, then that index cannot be hash-sharded. Partitioning columns cannot be placed explicitly as key columns of a hash-sharded index as well, including `REGIONAL BY ROW` table's `crdb_region` column.

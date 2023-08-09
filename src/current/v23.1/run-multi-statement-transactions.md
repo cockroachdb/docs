@@ -89,7 +89,7 @@ Other common tasks:
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
 - [Optimize Statement Performance][fast]
-- [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
+- [Troubleshoot SQL Statements](query-behavior-troubleshooting.html)
 - [Example Apps](example-apps.html)
 
 <!-- Reference Links -->

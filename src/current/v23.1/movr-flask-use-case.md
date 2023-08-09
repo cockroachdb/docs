@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page guides you through an example use-case for global application development and deployment. It is the first section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through an example use-case for global application development and deployment. It is the first section of the [Develop and Deploy a Global Application](movr.html#develop-and-deploy-a-global-application) tutorial.
 
 ## Overview
 
@@ -58,6 +58,6 @@ You should now be ready to start [creating a multi-region database schema](movr-
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/glossary.html#cockroachdb-architecture-terms)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [Define Table Partitions](partitioning.html)
 - [Topology Patterns](topology-patterns.html)

@@ -12,9 +12,38 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 ## Before you start
 
 - [Create a {{ site.data.products.serverless }} cluster](create-a-serverless-cluster.html).
-- (Optional) [Create a new SQL user](managing-access.html#create-a-sql-user).
+- [Create a new SQL user](managing-access.html#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters](network-authorization.html)
 
-## Step 1. Select a connection method
+## Authorize your network
+
+On creation, a Serverless cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist.
+
+It is recommended to restrict your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or backup-restore pipelines for disaster recovery. Therefore, if possible you should replace the `0.0.0.0/0` allowlist entry with more specific CIDR ranges for legitimate access.
+
+Removing or adding an authorized network on your {{ site.data.products.serverless }} cluster may take up to 30 seconds to take effect.
+
+{% include cockroachcloud/authorize-your-clusters-networks.md %}
+
+### Establish AWS PrivateLink
+
+{{site.data.alerts.callout_info}}
+AWS PrivateLink for {{ site.data.products.serverless }} is in **[limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+{{site.data.alerts.end}}
+
+Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance.
+
+AWS PrivateLink is available only for multiregion {{ site.data.products.serverless }} clusters deployed on AWS.
+
+To configure PrivateLink, you create the AWS PrivateLink connection in your AWS account, then configure your cluster to allow connections from your private endpoint. For more information and detailed instructions, refer to[Network Authorization: AWS PrivateLink](network-authorization.html#aws-privatelink).
+
+AWS PrivateLink can be configured only after the cluster is created. For detailed instructions, refer to [Managing AWS PrivateLink for a cluster](aws-privatelink.html?filter-content=serverless).
+
+{{site.data.alerts.callout_info}}
+Private connectivity is not available for {{ site.data.products.serverless }} clusters on GCP.
+{{site.data.alerts.end}}
+
+## Select a connection method
 
 1. Select your cluster to navigate to the cluster [**Overview** page](cluster-overview-page.html).
 
@@ -26,7 +55,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
     - Select the SQL user you want to connect with from the **SQL user** dropdown.
     - Select the database you want to connect to from the **Database** dropdown.
 
-## Step 2. Connect to your cluster
+## Connect to your cluster
 
 1. Select a connection method from the **Select option** dropdown (the instructions below will adjust accordingly):
 
@@ -39,6 +68,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to {{ site.data.products.serverless }}.
 1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client](../stable/third-party-database-tools.html), see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html).
 
@@ -60,6 +90,7 @@ For connection examples and code snippets in your language, see the following:
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Select the **Parameters only** option of the **Select option** dropdown.
 
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](../{{site.current_cloud_version}}/third-party-database-tools.html).
@@ -77,7 +108,8 @@ For connection examples and code snippets in your language, see the following:
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
-1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
+1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.

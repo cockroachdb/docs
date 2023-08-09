@@ -1,5 +1,5 @@
 ---
-title: Views
+title: Reusable Views
 summary: Learn about CockroachDB's dematerialized and materialized views.
 toc: true
 docs_area: develop
@@ -421,7 +421,7 @@ DROP VIEW
 
 ## Materialized views
 
-CockroachDB supports [materialized views](https://en.wikipedia.org/wiki/Materialized_view). A _materialized view_ is a view that stores the results of its underlying query.
+CockroachDB supports [materialized views](https://wikipedia.org/wiki/Materialized_view). A _materialized view_ is a view that stores the results of its underlying query.
 
 When you [select](selection-queries.html) from a materialized view, the stored query data that is returned might be out-of-date. This contrasts with a standard (i.e., "dematerialized") view, which runs its underlying query every time it is used, returning the latest results. In order to get the latest results from a materialized view, you must [refresh the view](refresh.html), and then select from it.
 

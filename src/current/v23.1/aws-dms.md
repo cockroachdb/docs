@@ -47,7 +47,7 @@ Complete the following items before starting this tutorial:
     - If you are migrating from PostgreSQL, MySQL, Oracle, or Microsoft SQL Server, [use the **Schema Conversion Tool**](../cockroachcloud/migrations-page.html) to convert and export your schema. Ensure that any schema changes are also reflected on your tables, or add [transformation rules](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Tasks.CustomizingTasks.TableMapping.SelectionTransformation.Transformations.html). If you make substantial schema changes, the AWS DMS migration may fail.
 
     {{site.data.alerts.callout_info}}
-    All tables must have an explicitly defined primary key. For more guidance, see [Migrate Your Database to CockroachDB](migration-overview.html#step-1-convert-your-schema).
+    All tables must have an explicitly defined primary key. For more guidance, see [Migration Overview](migration-overview.html#schema-design-best-practices).
     {{site.data.alerts.end}}
 
 As of publishing, AWS DMS supports migrations from these relational databases (for a more accurate view of what is currently supported, see [Sources for AWS DMS](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.Sources.html)):
@@ -82,7 +82,7 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. Enter the **Server name** and **Port** of your CockroachDB cluster.
 1. Supply a **User name**, **Password**, and **Database name** from your CockroachDB cluster.
     {{site.data.alerts.callout_info}}
-    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{database}`.
+    To connect to a {{ site.data.products.serverless }} cluster, set the **Database name** to `{serverless-hostname}.{database-name}`. For details on how to find these parameters, see [Connect to a CockroachDB Serverless cluster](../cockroachcloud/connect-to-a-serverless-cluster.html?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
     {{site.data.alerts.end}}
     <img src="{{ 'images/v23.1/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. If needed, you can test the connection under **Test endpoint connection (optional)**.
@@ -321,7 +321,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
 ## See Also
 
-- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Migration Overview](migration-overview.html)
 - [Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [`cockroach demo`](cockroach-demo.html)
 - [AWS DMS documentation](https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html)

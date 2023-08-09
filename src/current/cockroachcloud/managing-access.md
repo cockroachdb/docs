@@ -1,5 +1,5 @@
 ---
-title: Managing Access (Authorization) in CockroachDB Cloud
+title: Managing Users, Roles, and Service Accounts in CockroachDB Cloud
 summary: Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles.
 toc: true
 docs_area: manage
@@ -10,11 +10,9 @@ Before proceeding, it is recommended to review the concepts related to the two l
 
 Access management tasks for the organization level are performed in the {{ site.data.products.db }} console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the {{ site.data.products.db }} organization, create service accounts, and manage the access roles granted to both. Users with Cluster Admin role on a cluster can also manage the access role grants on that cluster.
 
-Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`](ccloud-get-started.html#create-a-sql-user-using-ccloud-cluster-user-create) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
 
 See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
-
-{% include_cached cockroachcloud/fgac-transition-callout.md %}
 
 ## Manage your organizations
 
@@ -42,10 +40,14 @@ It is also possible to enable [autoprovisioning](cloud-org-sso.html#autoprovisio
 
 1. On the **Access Management** page, locate the team member's details whose role you want to change. Note that the **Role** column lists current organization roles granted to each user. See: [Organization User Roles](authorization.html#organization-user-roles)
 1. In the row for the target user, click, click the three-dots **Action** button and select **Edit Roles**.
-1. Note that a number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+
+    {{site.data.alerts.callout_info}}
+    When editing roles for a group in the **Groups** tab, the fields for that group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
+    {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-As an [Org Administrator](authorization.html#org-administrator-legacy), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
+As an [Org Administrator (legacy)](authorization.html#org-administrator-legacy) or [Org Administrator](authorization.html#org-administrator), you may revoke that role from your own user; however, you will not be able to re-grant the administrator role to yourself.
 {{site.data.alerts.end}}
 
 ### Remove a team member
@@ -81,15 +83,11 @@ If you are sure you want to delete the organization, proceed with the following 
 
 ## Manage service accounts
 
-{{site.data.alerts.callout_info}}
-The access management model for service accounts is unified with users if the updated model is enabled for your organization. Service accounts created prior to that may still have the following legacy roles:
+The access management model for service accounts is unified with the [user model](#manage-an-organizations-users). This means that service accounts may have all of the same [access roles](authorization.html#organization-user-roles). However, service accounts and users still differ in the actions they can perform: only users can access the console, and only service accounts can access the API. The console and API differ in functionality.
 
-- The `ADMIN` role  allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
-- The `CREATE` role allows the service account to create new clusters within the organization.
-- The `DELETE` role allows the service account to delete clusters within the organization.
-- The `EDIT` role allows the service account to modify clusters within the organization.
-- The `READ` role allows the service account to get details about clusters within the organization.
-{{site.data.alerts.end}}
+Legacy service accounts created prior to the current authorization model may still have the following legacy roles: (ADMIN, CREATE, EDIT, READ, DELETE). Refer to [Service accounts](authorization.html#service-accounts).
+
+It is recommended to update service accounts to roles in the new authorization model, by [editing their roles](#edit-roles-on-a-service-account).
 
 ### Create a service account
 
@@ -107,13 +105,14 @@ Service accounts, like users, are given only the **Org Member** role by default 
 
 1. On the **Access Management** page, select the **Service Accounts** tab.
 1. In the row for the target service account, click, click the three-dots **Action** button and select **Edit Roles**.
-1. Note that a number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](authorization.html#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator or Cluster Developer, giving it the scope of organization means that it applies to all clusters in the organization.
+1. A number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](authorization.html#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Administrator, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
 
+    The fields for a group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
 ### API access
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
 
-We recommend creating service accounts with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster.
+We recommend creating service accounts with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster.
 
 #### Create API keys
 

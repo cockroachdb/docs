@@ -1,5 +1,4 @@
-- Stored procedures
-  - CockroachDB has support for [user-defined functions](user-defined-functions.html).
+- Stored procedures. CockroachDB has support for [user-defined functions](user-defined-functions.html), which can be used for many of the same goals as stored procedures.
 - Triggers.
 - Events.
 - Drop primary key.

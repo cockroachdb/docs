@@ -26,7 +26,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84681)
 
-- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables).
+- CockroachDB does not support [index](indexes.html) recommendations on [`REGIONAL BY ROW` tables](table-localities.html#regional-by-row-tables).
 
     [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/84680)
 
@@ -54,7 +54,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Low estimated Request Units are rounded to zero
 
-The [Request Units](../cockroachcloud/learn-about-request-units.html) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
+The [Request Units](../cockroachcloud/plan-your-cluster-serverless.html#request-units) (RUs) estimate surfaced in [`EXPLAIN ANALYZE`](explain-analyze.html) is displayed as an integer value. Because of this, fractional RU estimates, which represent very inexpensive queries, are rounded down to zero.
 
 [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/100617)
 
@@ -157,7 +157,7 @@ In cases where the partition definition includes a comparison with `NULL` and a 
 
 ### Spatial features disabled for ARM Macs
 
-[Spatial features](spatial-features.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
+[Spatial features](spatial-data-overview.html) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](install-cockroachdb-mac.html#install-binary) or use the [Docker image](install-cockroachdb-mac.html#use-docker) distribution. This is expected to be resolved in an upcoming 22.2 patch release.
 
 [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/93161)
 
@@ -214,7 +214,7 @@ CockroachDB does not allow inverted indexes with a [`STORING` column](create-ind
 
 ### CockroachDB does not properly optimize some left and anti joins with GIN indexes
 
-[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](alter-index.html#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](export-spatial-data.html) columns with a multi-column or [partitioned](alter-index.html#partition-by) [GIN index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
 
 To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
 
@@ -419,7 +419,7 @@ CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON 
 
 ### Spatial support limitations
 
-CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
+CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html), with the following limitations:
 
 - Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported.
 
@@ -437,11 +437,11 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56124)
 
-- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](spatial-glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
+- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](architecture/glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
 
-- CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
+- CockroachDB does not yet support Triangle or [`TIN`](https://wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
 
@@ -449,13 +449,13 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56199)
 
-- CockroachDB does not yet support [k-nearest neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm).
+- CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm).
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 
 - CockroachDB does not support using [schema name prefixes](sql-name-resolution.html#how-name-resolution-works) to refer to [data types](data-types.html) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
-    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
+    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](export-spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 

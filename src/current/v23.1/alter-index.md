@@ -35,7 +35,7 @@ Additional parameters are documented for the respective [subcommands](#subcomman
 
 Subcommand | Description |
 -----------|-------------|
-[`CONFIGURE ZONE`](#configure-zone) | [Configure replication zones](configure-replication-zones.html) for an index. ([Enterprise-only](enterprise-licensing.html).) | 
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls](configure-replication-zones.html) for an index. ([Enterprise-only](enterprise-licensing.html).) | 
 [`PARTITION BY`](#partition-by)  | Partition, re-partition, or un-partition an index. ([Enterprise-only](enterprise-licensing.html).)
 [`RENAME TO`](#rename-to) | Change the name of an index.
 [`SPLIT AT`](#split-at) | Force a [range split](architecture/distribution-layer.html#range-splits) at the specified row in the index.
@@ -44,13 +44,13 @@ Subcommand | Description |
 
 ### `CONFIGURE ZONE`
 
-`ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+`ALTER INDEX ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for an index. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Replication Controls](configure-replication-zones.html).
 
 {% include enterprise-feature.md %}
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
-For examples, see [Configure replication zones](#configure-replication-zones).
+For examples, see [Replication Controls](#configure-replication-zones).
 
 #### Required privileges
 

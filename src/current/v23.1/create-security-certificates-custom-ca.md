@@ -123,7 +123,7 @@ File name | File usage
 
 ## Certificate revocation with OCSP
 
- CockroachDB now supports certificate revocation for custom CA certificate setups running an [OCSP](https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol) server.
+ CockroachDB now supports certificate revocation for custom CA certificate setups running an [OCSP](https://wikipedia.org/wiki/Online_Certificate_Status_Protocol) server.
 
 To enable certificate revocation:
 

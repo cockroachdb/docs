@@ -923,6 +923,9 @@ Field | Type | Description
 <code>statistics -> bytesRead -> [mean&#124;sqDiff]</code> | `NumericStat` | The number of bytes read from disk.
 `statistics -> cnt` | `INT8` | The total number of times this statement was executed since the begin of the aggregation period.
 `statistics -> firstAttemptCnt` | `INT8` | The total number of times a first attempt was executed (either the one time in explicitly committed statements, or the first time in implicitly committed statements with implicit retries).
+<code>statistics -> idleLat -> [mean&#124;sqDiff]</code> | `NumericStat` | The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and [batch your statements](transactions.html#batched-statements).
+`statistics -> indexes` | Array of `String` | The list of indexes used by the statement. Each index has the format `{tableID}@{indexID}`.
+`statistics -> lastErrorCode` | `String` | The [PostgreSQL Error Code](https://www.postgresql.org/docs/current/errcodes-appendix.html) from the last failed execution of the statement fingerprint.
 `statistics -> lastExecAt` | `TIMESTAMP` | The last timestamp the statement was executed.
 `statistics -> maxRetries` | `INT8` | The maximum observed number of automatic retries in the aggregation period.
 `statistics -> nodes` | Array of `INT64` | An ordered list of nodes IDs on which the statement was executed.

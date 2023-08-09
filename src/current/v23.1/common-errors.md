@@ -120,7 +120,7 @@ $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --certs-dir=[path to certs directory]
 ~~~
 
-The zone's replica count is reduced to 1. For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone) and [Configure Replication Zones](configure-replication-zones.html).
+The zone's replica count is reduced to 1. For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone) and [Replication Controls](configure-replication-zones.html).
 
 ### When running a multi-node cluster
 
@@ -174,7 +174,7 @@ only possible for the last statement of a transaction (`COMMIT` or
 
 In general, you should handle ambiguous errors the same way as
 `connection closed` errors. If your transaction is
-[idempotent](https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning),
+[idempotent](https://wikipedia.org/wiki/Idempotence#Computer_science_meaning),
 it is safe to retry it on ambiguous errors. `UPSERT` operations are
 typically idempotent, and other transactions can be written to be
 idempotent by verifying the expected state before performing any

@@ -64,7 +64,7 @@ Metric | Description
 
 - In the cluster view, the graph shows the number of range replicas on each store.
 
-You can [Configure replication zones](configure-replication-zones.html) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [Fault tolerance and recovery](demo-fault-tolerance-and-recovery.html).
+You can [Replication Controls](configure-replication-zones.html) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [Fault tolerance and recovery](demo-fault-tolerance-and-recovery.html).
 
 ## Replica Quiescence
 

@@ -1,5 +1,5 @@
 ---
-title: Start a Cluster in Docker (Insecure)
+title: Deploy a Local Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: true
 docs_area: deploy
@@ -148,7 +148,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
       -p 8082:8082 '
       -v "roach3:/cockroach/cockroach-data" '
       {{page.release_info.docker_image}}:{{page.release_info.version}} start '
-        --advertise-addr=roach3:26358 '
+        --advertise-addr=roach3:26357 '
         --http-addr=roach3:8082 '
         --listen-addr=roach3:26357 '
         --sql-addr=roach3:26259 '
@@ -182,7 +182,7 @@ When SQL and inter-node traffic are separated, some client commands need to be m
 
     ~~~
     CockroachDB node starting at {{ now | date: "%Y-%m-%d %H:%M:%S.%6 +0000 UTC" }}
-    build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.19.4)
+    build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.19.6)
     webui:               http://roach1:8080
     sql:                 postgresql://root@roach1:26357?sslmode=disable
     client flags:        /cockroach/cockroach <client cmd> --host=roach1:26357

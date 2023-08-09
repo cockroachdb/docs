@@ -1,1 +1,1 @@
-{% remote_include  https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/version.txt %}
+{%- capture latest_operator_version -%}{%- remote_include https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/version.txt -%}{%- endcapture -%}{{- latest_operator_version | strip_newlines -}}

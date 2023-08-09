@@ -1,5 +1,5 @@
 ---
-title: Start a Local Cluster (Secure)
+title: Deploy a Local Cluster from Binary (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
 docs_area: deploy

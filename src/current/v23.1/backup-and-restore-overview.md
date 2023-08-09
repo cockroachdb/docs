@@ -18,13 +18,13 @@ For an explanation of how a backup works, see [Backup Architecture](backup-archi
 
 ## CockroachDB backup types
 
-{% include cockroachcloud/backup-types.md %} 
+{% include cockroachcloud/backup-types.md %}
 
 ## Backup and restore product support
 
 This table outlines the level of product support for backup and restore features in CockroachDB. See each of the pages linked in the table for usage examples:
 
-Backup / Restore  | Description  | Product Support 
+Backup / Restore  | Description  | Product Support
 ------------------+--------------+-----------------
 [Full backup](take-full-and-incremental-backups.html) | An un-replicated copy of your cluster, database, or table's data. A full backup is the base for any further backups. | <ul><li>All products (Enterprise license not required)</li><ul>
 [Incremental backup](take-full-and-incremental-backups.html) | A copy of the changes in your data since the specified base backup (either a full backup or a full backup plus an incremental backup). | <ul><li>{{ site.data.products.serverless }} — customer-owned backups</li><li>{{ site.data.products.dedicated }} — managed-service backups and customer-owned backups</li><li>{{ site.data.products.core }} with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html)</li><ul>
@@ -42,9 +42,9 @@ Backup / Restore  | Description  | Product Support
 - [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations)
 - [Exclude a table's data from backups](take-full-and-incremental-backups.html#exclude-a-tables-data-from-backups)
 
-## Backups with locality requirements
+## Backup jobs with locality requirements
 
-CockroachDB supports two types of backup that use a node's locality to determine how a backup job runs or where the backup data is stored:
+CockroachDB supports two backup features that use a node's locality to determine how a backup job runs or where the backup data is stored:
 
 - [Locality-restricted backup execution](take-locality-restricted-backups.html): Specify a set of locality filters for a backup job in order to restrict the nodes that can participate in the backup process to that locality. This ensures that the backup job is executed by nodes that meet certain requirements, such as being located in a specific region or having access to a certain storage bucket.
 - [Locality-aware backup](take-and-restore-locality-aware-backups.html): Partition and store backup data in a way that is optimized for locality. This means that nodes write backup data to the cloud storage bucket that is closest to the node's locality. This is helpful if you want to reduce network costs or have data domiciling needs.
@@ -53,14 +53,14 @@ CockroachDB supports two types of backup that use a node's locality to determine
 
 The following table outlines SQL statements you can use to create, configure, pause, and show backup and restore jobs:
 
- SQL Statement  | Description                                                                                 
+ SQL Statement  | Description
 ----------------|---------------------------------------------------------------------------------------------
 [`BACKUP`](backup.html)       | Create full and incremental backups.
 [`SHOW JOBS`](show-jobs.html)    | Show a list of all running jobs or show the details of a specific job by its `job ID`.
 [`PAUSE JOB`](pause-job.html)    | Pause a backup or restore job with its `job ID`.
-[`RESUME JOB`](resume-job.html)   | Resume a backup or restore job with its `job ID`.  
+[`RESUME JOB`](resume-job.html)   | Resume a backup or restore job with its `job ID`.
 [`CANCEL JOB`](cancel-job.html)   | Cancel a backup or restore job with its `job ID`.
-[`SHOW BACKUP`](show-backup.html)  | Show a backup's details at the [backup collection's](take-full-and-incremental-backups.html#backup-collections) storage location.     
+[`SHOW BACKUP`](show-backup.html)  | Show a backup's details at the [backup collection's](take-full-and-incremental-backups.html#backup-collections) storage location.
 [`RESTORE`](restore.html)      | Restore full and incremental backups.
 [`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup.
 [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups.
@@ -79,8 +79,8 @@ We recommend taking backups to [cloud storage](use-cloud-storage.html) and enabl
 
 For detail on additional cloud storage features CockroachDB supports:
 
-- [Object locking](use-cloud-storage.html#object-locking) to prevent backups from being overwritten or deleted.
-- [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes) to set a specific storage class for your backups.
+- Prevent backups from being overwritten or deleted with [immutable storage buckets](use-cloud-storage.html#immutable-storage).
+- Set a specific storage class for your backups with [Storage Class (AWS S3 only)](use-cloud-storage.html#amazon-s3-storage-classes).
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 

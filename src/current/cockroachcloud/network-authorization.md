@@ -1,45 +1,72 @@
 ---
-title: Network Authorization
-summary: Learn about the network authorization features for {{ site.data.products.db }} clusters.
+title: Network Authorization for CockroachDB Cloud Clusters
+summary: Learn about the network authorization features for CockroachDB Cloud clusters.
 toc: true
 docs_area: manage
 ---
 
-{{ site.data.products.dedicated }} requires  explicit authorization of the networks that can access your cluster. This deny-by-default policy protects the cluster from network attacks including denial-of-service and password brute-forcing.
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, Cockroach Labs recommends restricting your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or disaster recovery pipelines.
 
-You can do this by:
+This page describes these options and how they help to protect {{ site.data.products.dedicated }} and {{ site.data.products.serverless }} clusters.
+
+## Options for controlling network access
+
+You can authorize network access to your cluster by:
 
 - [Adding an authorized range of public IP addresses](#ip-allowlisting).
-- Setting up [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering) or [Amazon Web Service (AWS) PrivateLink](#aws-privatelink) for your cluster.
+- Setting up private connectivity so that inbound connections to your cluster from your cloud tenant are made over the cloud provider's private network rather than over the public internet, for enhanced network security and reduced network latency. If you use IP allowlisting rules together with private connectivity, private networks do not need to be added to that allowlist.
+
+    For {{ site.data.products.dedicated }} clusters deployed on GCP, refer to [Google Cloud Platform (GCP) Virtual Private Cloud (VPC) peering](#vpc-peering). For {{ site.data.products.dedicated }} clusters or multi-region {{ site.data.products.serverless }} clusters deployed on AWS, refer to [Amazon Web Service (AWS) PrivateLink](#aws-privatelink).
 
 **Prerequisite**: {% include cockroachcloud/cluster-operator-prereq.md %}
 
 {{site.data.alerts.callout_success}}
-For additional cluster security, you can learn more about [Private Clusters (Preview)](private-clusters.html). A private cluster's nodes have no public IP addresses.
+Use GCP VPC Peering or AWS PrivateLink if:
 
-You should use PrivateLink or VPC peering if you need to allowlist more than 20 IP addresses, if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
+- You need to allowlist more defined IP address ranges than allowed by the maximum (20 for {{ site.data.products.dedicated }} clusters and 50 for {{ site.data.products.serverless }}). For {{ site.data.products.dedicated }} clusters on AWS, reach out to your Cockroach Labs team or support to increase the limit if needed.
+- Your servers’ IP addresses are not static.
+- You want to avoid exposing your cluster to the public internet.
+
+Learn more about [Private Clusters (Preview)](private-clusters.html), which offer enhanced cluster security. A private cluster's nodes have no public IP addresses.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
+
 During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
 {{site.data.alerts.end}}
 
+## Cluster default network configuration
+
+{{ site.data.products.dedicated }} and Serverless clusters differ in their default network configuration:
+
+- On creation, a Serverless cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist entry.
+- On creation, a Dedicated cluster is "locked down" and has no access until an authorized network is created.
+
+{{ site.data.products.db }} clusters can only accept SQL connections from [allowed IP addresses](#ip-allowlisting).
+
 ## IP allowlisting
 
-Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the {{ site.data.products.dedicated }} cluster's allowlist](connect-to-your-cluster.html#authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorized network access can be managed from the {{ site.data.products.db }} console Network Authorization page at:
 
-- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
-- In a production environment, you need to authorize your application server’s network.
+`https://cockroachlabs.cloud/cluster/{ your cluster UUID}/networking`
+
+Serverless and Dedicated clusters support different maximum numbers of IP allowlist rules:
+
+Cluster Type | IP allowlist rule max
+--------|------------
+Dedicated|20
+Serverless|50
 
 {{site.data.alerts.callout_info}}
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network.
 {{site.data.alerts.end}}
 
-You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
+If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
 
-{{site.data.alerts.callout_success}}
-During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-availability.html), neither Azure Private Link nor private clusters are available for {{ site.data.products.dedicated }} clusters on Azure. Refer to [{{ site.data.products.dedicated }} on Azure](cockroachdb-dedicated-on-azure.html).
-{{site.data.alerts.end}}
+Refer to:
+
+- [Connect to a {{ site.data.products.serverless }} Cluster: Authorize your network](connect-to-a-serverless-cluster.html#authorize-your-network).
+- [Connect to a {{ site.data.products.dedicated }} Cluster: Authorize your network](connect-to-your-cluster.html#authorize-your-network).
 
 ## VPC peering
 
@@ -50,7 +77,7 @@ GKE users should note that we recommend deploying your application to a VPC-nati
 Setting up a VPC peering connection between your {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
 1. [Configure the IP range and size while creating the {{ site.data.products.dedicated }} cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
-1. [Establish a VPC Peering connection after creating the cluster](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink)
+1. [Establish a VPC Peering connection after creating the cluster](connect-to-your-cluster.html#establish-gcp-vpc-peering-or-aws-privatelink)
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](use-managed-service-backups.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
@@ -58,120 +85,66 @@ Self-service VPC peering setup is not supported for {{ site.data.products.dedica
 
 ## AWS PrivateLink
 
-If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
+If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} or multi-region {{ site.data.products.serverless }} clusters using private endpoints. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency.
 
-There are four steps to setting up an AWS PrivateLink connection between your {{ site.data.products.dedicated }} cluster and AWS application:
+Refer to:
+- [Managing AWS PrivateLink for a {{ site.data.products.dedicated }} Cluster](aws-privatelink.html)
+- [Managing AWS PrivateLink for a multi-region {{ site.data.products.serverless }} Cluster](aws-privatelink.html?filters=serverless)
 
-1.  [Set up a cluster](#set-up-a-cluster)
-1.  [Create an AWS endpoint](#create-an-aws-endpoint)
-1.  [Verify the endpoint ID](#verify-the-endpoint-id)
-1.  [Enable private DNS](#enable-private-dns)
+## DB Console
 
-### Set up a cluster
+The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
-1.  Use the {{ site.data.products.db }} Console to [create your {{ site.data.products.dedicated }} cluster](create-your-cluster.html) on AWS in the same region as your application.
+{{site.data.alerts.callout_info}}
+Users must have the Cluster Developer, Cluster Operator, Cluster Admin, or Cluster Creator on a specific cluster role to access its DB Console.
+Refer to [Organization user roles](authorization.html#organization-user-roles)
+{{site.data.alerts.end}}
 
-    {{site.data.alerts.callout_info}}
-    If you have a multi-region cluster, you will have to create a PrivateLink connection for each region you are operating in.
-    {{site.data.alerts.end}}
+For information on functionality, refer to: [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
 
-1.  Navigate to the **Networking** page.
-1.  Select the **PrivateLink** tab.
-1.  Click **Set up a PrivateLink connection** to open the connection modal.
+To access the DB Console, you must first authorize your current IP address:
 
-### Create an AWS endpoint
-
-1. If you have a multi-region cluster, select the region to create a connection in. Skip this step if you have a single-region cluster.
-1. <a name="step-1"></a> Copy the **Service Name** shown in the connection modal.
-1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/), click **Your VPCs** in the sidebar.
-1. Locate the VPC ID of the VPC you want to create your endpoint in.
-
-    This will probably be the same VPC as the VPC your EC2 instances and application are running in. You can also choose a different VPC as long as it is peered to the VPC your application is running in.
-
-1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 4.
-1. Click **Subnets** in the sidebar.
-1. Locate the subnet IDs corresponding to the VPC you chose in Step 4.
-1. Click **Security Groups** in the sidebar.
-1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
-  - In the **Security group name** field, enter a name for the security group.
-  - In the **Description** field, enter a description for the security group.
-  - From the **VPC** dropdown, select the VPC you chose in Step 4.
-  - In the **Inbound rules** section, click **Add rule**. Enter *26257* in the **Port range** field. In the **Source** field, enter the CIDR range from Step 5.
-  - Click **Create security group**.
-
-Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
-
-  <div class="filters clearfix">
-    <button style="width: 15%" class="filter-button" data-scope="aws-console">AWS Console</button>
-    <button style="width: 15%" class="filter-button" data-scope="aws-cli">AWS CLI</button>
-  </div>
-
-<section class="filter-content" markdown="1" data-scope="aws-console">
-
-1.  Click **Endpoints** in the sidebar.
-1.  Click **Create Endpoint**.
-1.  On the **Create Endpoint** page, for the **Service Category** field, select **Find service by name**.
-1.  In the **Service Name** field, enter the **Service Name** copied from the connection modal in [Step 1](#step-1).
-1.  Click **Verify**.
-1.  In the **VPC** field, enter the ID of the VPC you want to create your endpoint in.
-1.  Verify that the subnets are pre-populated.
-1.  In the **Security group** section, select the security group you created in [Step 8](#step-8) and uncheck the box for **default** security group.
-1.  Click **Create Endpoint**.
-
-      The VPC Endpoint ID displays.
-
-1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="aws-cli">
-
-1.  Substitute the values from the previous steps and run the following AWS CLI command:
+1. Visit your Dedicated cluster's IP allowlist page:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws ec2 create-vpc-endpoint --region $REGION \
-    --vpc-id $VPC_ID --subnet-ids $SUBNET_ID1 $SUBNET_ID2 \
-    --vpc-endpoint-type Interface --security-group-ids \
-    $SECURITY_GROUP_ID1 $SECURITY_GROUP_ID2 --service-name \
-    $SERVICE_NAME_PROVIDED_BY_COCKROACH
+    ~~~txt
+    https://cockroachlabs.cloud/cluster/{ your cluster UUID }/networking/allowlist
     ~~~
 
-1.  Locate the VPC Endpoint ID in the CLI output.
+1. Click **Add Network**.
 
-1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
+1. Add your **Current Network**:
 
-  </section>
+    1. Give it a **Name** indicating its use for DB Console access from your current location.
 
-### Verify the endpoint ID
+    1.  Under **Allow this network to access**, select **DB Console to monitor the cluster**.
 
-1.  Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
-1.  Click **Verify**.
-1.  {{ site.data.products.db }} will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
+    1. Click **Apply**.
 
-### Enable private DNS
+{{site.data.alerts.callout_danger}}
+When you have finished your work with the DB Console, it is recommended to remove your authorized network from the allowlist, in the interest of the general best practice of restricting network access as much as possible.
 
-1.  On the Amazon VPC Console **Endpoints** page, select the endpoint you created.
-1.  Click **Actions**.
-1.  Click **Modify Private DNS Names**.
-1.  Check the **Enable Private DNS Name** checkbox.
-1.  Click **Modify Private DNS Name**.
+Remove an authorized network by selecting **Delete** from the **Action** dropdown its row on the allowlist page.
+{{site.data.alerts.end}}
 
-Alternatively, use the AWS CLI to modify the Private DNS Name:
+To access your cluster's DB Console:
 
-1.  After the endpoint status changes to Available, run the following AWS CLI command:
+1. Navigate to your {{ site.data.products.dedicated }} cluster's [**Tools** page](tools-page.html) in the **Monitoring** section of the {{ site.data.products.db }} Console.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws ec2 modify-vpc-endpoint --region $REGION \
-    --private-dns-enabled --vpc-endpoint-id $VPC_ENDPOINT_ID
-    ~~~
+1. Click **Open DB Console**. Your browser will attempt to access the DB console in a new tab.
 
-The endpoint status will change to Pending.
+  You can also access the DB Console by navigating to `https://admin-{cluster-name}crdb.io:8080/#/metrics/overview/cluster`. Replace the `{cluster-name}` placeholder with the name of your cluster.
 
-After a short (less than 5 minute) delay, the status will change to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
+(Optional) To find the IP addresses for your cluster's DB Console, perform DNS lookup on the DB Console URL that opens in the browser. These IP addresses are static for the lifecycle of the cluster.
 
-## See also
+{% include_cached copy-clipboard.html %}
+~~~shell
+dig examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud | grep -A3 'ANSWER SECTION'
+~~~
 
-- [Client Connection Parameters](../{{site.current_cloud_version}}/connection-parameters.html)
-- [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)
+~~~txt
+;; ANSWER SECTION:
+examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 35.245.55.160
+examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 34.129.61.133
+examplary-dedicated-clusterberry-77tq.cockroachlabs.cloud. 300 IN A 34.117.21.266
+~~~

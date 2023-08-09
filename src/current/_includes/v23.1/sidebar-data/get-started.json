@@ -8,6 +8,22 @@
       ]
     },
     {
+      "title": "Deployment Options",
+      "urls": [
+        "/${VERSION}/choose-a-deployment-option.html"
+      ]
+    },
+    {
+      "title": "Install CockroachDB",
+      "urls": [
+        "/${VERSION}/install-cockroachdb.html",
+        "/${VERSION}/install-cockroachdb-mac.html",
+        "/${VERSION}/install-cockroachdb-linux.html",
+        "/${VERSION}/fips.html",
+        "/${VERSION}/install-cockroachdb-windows.html"
+      ]
+    },
+    {
       "title": "Learn CockroachDB SQL",
       "urls": [
         "/cockroachcloud/learn-cockroachdb-sql.html",
@@ -15,8 +31,20 @@
       ]
     },
     {
-      "title": "Build a Sample Application",
+      "title": "Develop with CockroachDB",
       "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/developer-guide-overview.html"
+          ]
+        },
+        {
+          "title": "Developer Basics",
+          "urls": [
+            "/${VERSION}/developer-basics.html"
+          ]
+        },
         {
           "title": "JavaScript/TypeScript",
           "urls": [
@@ -83,7 +111,7 @@
       ]
     },
     {
-      "title": "Build a Serverless Application",
+      "title": "Serverless Examples",
       "items": [
         {
           "title": "AWS Lambda",
@@ -118,61 +146,76 @@
       ]
     },
     {
-      "title": "Glossary",
-      "urls": [
-        "/${VERSION}/architecture/glossary.html"
-      ]
-    },
-    {
-      "title": "FAQs",
+      "title": "Advanced Example Applications",
       "items": [
         {
-          "title": "CockroachDB FAQs",
+          "title": "Overview",
           "urls": [
-            "/${VERSION}/frequently-asked-questions.html"
+            "/${VERSION}/example-apps.html"
           ]
         },
         {
-          "title": "CockroachDB Cloud FAQs",
-          "urls": [
-            "/cockroachcloud/serverless-faqs.html",
-            "/cockroachcloud/frequently-asked-questions.html"
+          "title": "Spring Boot",
+          "items": [
+            {
+              "title": "Spring Boot with JDBC",
+              "urls": [
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc.html"
+              ]
+            },
+            {
+              "title": "Spring Boot with JPA",
+              "urls": [
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa.html"
+              ]
+            }
           ]
         },
         {
-          "title": "SQL FAQs",
-          "urls": [
-            "/${VERSION}/sql-faqs.html"
+          "title": "MovR",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/movr.html"
+              ]
+            },
+            {
+              "title": "Global Application Use Case",
+              "urls": [
+                "/${VERSION}/movr-flask-use-case.html"
+              ]
+            },
+            {
+              "title": "Multi-region Database Schema",
+              "urls": [
+                "/${VERSION}/movr-flask-database.html"
+              ]
+            },
+            {
+              "title": "Set up a Development Environment",
+              "urls": [
+                "/${VERSION}/movr-flask-setup.html"
+              ]
+            },
+            {
+              "title": "Develop a Global Application",
+              "urls": [
+                "/${VERSION}/movr-flask-application.html"
+              ]
+            },
+            {
+              "title": "Deploy a Global Application",
+              "urls": [
+                "/${VERSION}/movr-flask-deployment.html"
+              ]
+            }
           ]
         },
         {
-          "title": "Operational FAQs",
+          "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
           "urls": [
-            "/${VERSION}/operational-faqs.html"
-          ]
-        },
-        {
-          "title": "Availability FAQs",
-          "urls": [
-            "/${VERSION}/multi-active-availability.html"
-          ]
-        },
-        {
-          "title": "Licensing FAQs",
-          "urls": [
-            "/${VERSION}/licensing-faqs.html"
-          ]
-        },
-        {
-          "title": "Enterprise Features",
-          "urls": [
-            "/${VERSION}/enterprise-licensing.html"
-          ]
-        },
-        {
-          "title": "CockroachDB in Comparison",
-          "urls": [
-            "/${VERSION}/cockroachdb-in-comparison.html"
+            "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
           ]
         }
       ]

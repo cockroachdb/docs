@@ -1,11 +1,11 @@
 ---
-title: Migrate from GeoPackages
+title: Migrate from GeoPackage
 summary: Learn how to migrate data from GeoPackages into a CockroachDB cluster.
 toc: true
 docs_area: migrate
 ---
 
- CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
+ CockroachDB supports efficiently storing and querying [spatial data](export-spatial-data.html).
 
 This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
 
@@ -100,7 +100,6 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 
 - [`IMPORT`][import]
 - [Export Spatial Data](export-spatial-data.html)
-- [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)

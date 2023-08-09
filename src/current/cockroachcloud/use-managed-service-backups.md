@@ -7,7 +7,7 @@ docs_area: manage
 
 This page describes how to use [managed-service backups](../{{site.current_cloud_version}}/backup-and-restore-overview.html#cockroachdb-backup-types) from {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters.
 
-To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backups** in the **Data** section of the left side navigation.
+To access your managed-service backups, select a cluster from the [**Clusters** page](cluster-management.html#view-clusters-page), then click **Backup and Restore** in the **Data** section of the left side navigation.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="serverless"><strong>{{ site.data.products.serverless }}</strong></button>
@@ -15,7 +15,7 @@ To access your managed-service backups, select a cluster from the [**Clusters** 
 </div>
 
 
-This page describes the **Backups** page and how to restore your data.
+This page describes the **Backup and Restore** page and how to restore your data.
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 Cockroach Labs runs [full cluster backups](../{{site.current_cloud_version}}/take-full-and-incremental-backups.html#full-backups) hourly for every {{ site.data.products.serverless }} cluster. The full backups are retained for 30 days. Once a cluster is deleted, Cockroach Labs retains the full backups for 30 days.
@@ -32,10 +32,10 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 </section>
 
-## Backups page
+## Backups tab
 
 <div class="filter-content" markdown="1" data-scope="dedicated">
-Your cluster's **Backups** page displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+The **Backups** tab displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
@@ -50,7 +50,7 @@ For each backup, the following details display:
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
-Your cluster's **Backups** page displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+The **Backups** tab displays a list of your full cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
 
 For each backup, the following details display:
 
@@ -66,7 +66,7 @@ For each backup, the following details display:
 
 ### Databases
 
-To view the databases included in the backup, click the number in the **Databases** column on the cluster view of the **Backups** page.
+To view the databases included in the backup, click the number in the **Databases** column on the cluster view of the **Backups** tab.
 
 For each database in the backup, the following details display:
 
@@ -104,7 +104,7 @@ For each table in the database, the following details display:
 
 ### Incomplete Backups
 
-To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backups** page.
+To view any failed or pending backups, click the **Incomplete Backups** tab on your cluster's **Backup and Restore** page.
 
 For each incomplete backup, the following details display:
 
@@ -115,7 +115,7 @@ For each incomplete backup, the following details display:
 
 ## Ways to restore data
 
-[Org Administrators](authorization.html#org-administrator-legacy) can perform the following from the Console:
+Users with the [Org Administrator](authorization.html#org-administrator), [Org Administrator (legacy)](authorization.html#org-administrator-legacy), [Cluster Operator](authorization.html#cluster-operator) or [Cluster Administrator](authorization.html#cluster-administrator) roles can perform the following from the Console:
 
 - [Restore a cluster](#restore-a-cluster)
 - [Restore a database](#restore-a-database)
@@ -129,21 +129,32 @@ Additional ways to restore data:
 ### Restore a cluster
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/limited-access.md %}
+{% include_cached feature-phases/preview.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+The restore completely erases all data in the destination cluster. All cluster data is replaced with the data from the backup. The destination cluster will be unavailable while the job is in progress. 
+
+This operation is disruptive and is to be performed with caution. Use the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege) as a golden rule when to designing your system of privilege grants.
+
 {{site.data.alerts.end}}
 
 To restore a cluster:
 
-1. Find the cluster backup on the **Backups** page.
+1. Find the cluster backup on the **Backups** tab.
 1. Click **Restore** for the cluster you want to restore.
 
     The **Restore cluster** module displays with backup details.
 
+1. Select the cluster to restore to. You can restore to: a) the same cluster or b) a different cluster. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster. 
+
+    {{site.data.alerts.callout_info}}
+    Only active clusters are displayed. You can perform a cross-cluster restore across clusters that belong to the same organization. Incompatible versions cannot be selected and restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
+    {{site.data.alerts.end}}
+
 1. Click **Continue**.
 
-    {{site.data.alerts.callout_danger}}
-    The restore will completely erase all data in the cluster. All cluster data will be replaced with the data from the backup.
-    {{site.data.alerts.end}}
+1. Enter the name of the destination cluster. 
 
 1. Once you have reviewed the restore details, click **Restore**.
 
@@ -256,6 +267,17 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
     RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
 
+## Known limitations
+
+- For [restoring a cluster](#restore-a-cluster):
+    - Restoring a backup taken on cluster running a newer version of CockroachDB into a cluster that is on an earlier version does not work. See [Restoring Backups Across Versions](../{{site.current_cloud_version}}/restoring-backups-across-versions.html).  
+    - Restoring {{ site.data.products.dedicated }} to {{ site.data.products.serverless }} or vice versa does not work. 
+    - Restoring to a different cluster is disabled for [CMEK](cmek.html) clusters.
+    - Restores on AWS that take longer than 36 hours may run into authentication errors due to expired credentials.
+    - You can perform a cross-cluster restore across clusters that belong to the same organization. Cross-organization restores are not supported.   
+
+See [tracking issue](https://github.com/cockroachlabs/managed-service/pull/12211). 
+
 ## Troubleshooting
 
 ### Resolve a database naming conflict
@@ -311,6 +333,10 @@ Or [change the existing table's name](../{{site.current_cloud_version}}/alter-ta
 ## Restore a cluster
 
 Find the cluster backup you want to restore, and click **Restore**.
+
+{{site.data.alerts.callout_info}}
+{{ site.data.products.serverless }} does not support cross-cluster restores through the {{ site.data.products.db }} Console. If you need to restore data into a new or different cluster, use [customer-owned backups](take-and-restore-customer-owned-backups.html) or [contact support](https://support.cockroachlabs.com).
+{{site.data.alerts.end}}
 
 Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup. There are no automatic incremental backups, and no automatic database or table level backups.
 

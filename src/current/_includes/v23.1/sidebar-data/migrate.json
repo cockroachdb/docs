@@ -3,19 +3,48 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Migration Overview",
+      "title": "Overview",
       "urls": [
         "/${VERSION}/migration-overview.html"
       ]
     },
     {
-      "title": "Use the Schema Conversion Tool",
-      "urls": [
-        "/cockroachcloud/migrations-page.html"
+      "title": "Migration Tools",
+      "items": [
+        {
+          "title": "Schema Conversion Tool",
+          "urls": [
+            "/cockroachcloud/migrations-page.html"
+          ]
+        },
+        {
+          "title": "MOLT Verify",
+          "urls": [
+            "/${VERSION}/molt-verify.html"
+          ]
+        },
+        {
+          "title": "AWS DMS",
+          "urls": [
+            "/${VERSION}/aws-dms.html"
+          ]
+        },
+        {
+          "title": "Qlik Replicate",
+          "urls": [
+            "/${VERSION}/qlik.html"
+          ]
+        },
+        {
+          "title": "Striim",
+          "urls": [
+            "/${VERSION}/striim.html"
+          ]
+        }
       ]
     },
     {
-      "title": "Migrate Data to CockroachDB",
+      "title": "Migrate Data Types",
       "items": [
         {
           "title": "Migrate from CSV",
@@ -62,38 +91,15 @@
       ]
     },
     {
-      "title": "Migrate with Third-Party Tooling",
-      "items": [
-        {
-          "title": "AWS DMS",
-          "urls": [
-            "/${VERSION}/aws-dms.html"
-          ]
-        },
-        {
-          "title": "Qlik Replicate",
-          "urls": [
-            "/${VERSION}/qlik.html"
-          ]
-        },
-        {
-          "title": "Striim",
-          "urls": [
-            "/${VERSION}/striim.html"
-          ]
-        }
+      "title": "Migrate from MySQL",
+      "urls": [
+        "/${VERSION}/migrate-from-mysql.html"
       ]
     },
     {
-      "title": "Migrate from Serverless to Dedicated",
+      "title": "Migration Strategy: Lift and Shift",
       "urls": [
-        "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
-      ]
-    },
-    {
-      "title": "Export Spatial Data",
-      "urls": [
-        "/${VERSION}/export-spatial-data.html"
+        "/${VERSION}/migration-strategy-lift-and-shift.html"
       ]
     }
   ]

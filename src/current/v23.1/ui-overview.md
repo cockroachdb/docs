@@ -8,6 +8,12 @@ docs_area: reference.db_console
 
 The DB Console provides details about your cluster and database configuration, and helps you optimize cluster performance.
 
+{{site.data.alerts.callout_info}}
+Authorized {{ site.data.products.dedicated }} cluster users can visit the DB Console at a URL provisioned for the cluster.
+
+Refer to: [Network Authorization for CockroachDB Cloud Clusters&mdash;DB Console](../cockroachcloud/network-authorization.html#db-console)
+{{site.data.alerts.end}}
+
 ## DB Console areas
 
 ### Overview
@@ -105,6 +111,15 @@ DB Console area | Privileged information
 [Statements](ui-statements-page.html) | SQL statements
 [Transactions](ui-transactions-page.html) | Transactions
 [Advanced Debug](ui-debug-pages.html) (some reports) | Stored table data, operational details, internal IP addresses, names, credentials, application data (depending on report)
+
+## DB Console timezone configuration
+
+You can view timestamps in the DB Console in your preferred timezone using the `ui.display_timezone` [cluster setting](cluster-settings.html). Currently supported timezones are Coordinated Universal Time (`etc/utc`, the default) and America/New_York (`america/new_york`):
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SET CLUSTER SETTING ui.display_timezone = 'america/new_york';
+~~~
 
 ## DB Console troubleshooting
 

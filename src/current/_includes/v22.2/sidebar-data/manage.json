@@ -6,12 +6,6 @@
       "title": "Manage CockroachDB Cloud Clusters",
       "items": [
         {
-          "title": "Plan Your Cluster",
-          "urls": [
-            "/cockroachcloud/plan-your-cluster.html"
-          ]
-        },
-        {
           "title": "Manage a CockroachDB Serverless Cluster",
           "urls": [
             "/cockroachcloud/serverless-cluster-management.html"
@@ -223,6 +217,12 @@
               "title": "Create Private Clusters",
               "urls": [
                 "/cockroachcloud/private-clusters.html"
+              ]
+            },
+            {
+              "title": "Managing AWS PrivateLink for a Dedicated Cluster",
+              "urls": [
+                "/cockroachcloud/aws-privatelink.html"
               ]
             },
             {

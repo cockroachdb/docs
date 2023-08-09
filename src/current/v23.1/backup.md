@@ -1,6 +1,6 @@
 ---
 title: BACKUP
-summary: Back up your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
+summary: Back up your CockroachDB cluster to cloud storage services such as AWS S3, Google Cloud Storage, or other NFS.
 toc: true
 docs_area: reference.sql
 ---
@@ -42,7 +42,7 @@ To view the contents of an backup created with the `BACKUP` statement, use [`SHO
 ### Storage considerations
 
 - [HTTP storage](use-a-local-file-server.html) is not supported for `BACKUP` and `RESTORE`.
-- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage.html#object-locking) in your cloud storage bucket.**
+- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](use-cloud-storage.html#immutable-storage) in your cloud storage bucket.**
 - While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](use-cloud-storage.html) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).
 
 ## Required privileges
@@ -143,19 +143,28 @@ The `system.users` table stores your users and their passwords. To restore your 
 
 ## Performance
 
-The `BACKUP` process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data.
+The backup job process minimizes its impact to the cluster's performance with:
 
-`BACKUP`, like any read, cannot export a range if the range contains an [unresolved intent](architecture/transaction-layer.html#resolving-write-intents). While you typically will want bulk, background jobs like `BACKUP` to have as little impact on your foreground traffic as possible, it's more important for backups to actually complete (which maintains your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)). Unlike a normal read transaction that will block until any uncommitted writes it encounters are resolved, `BACKUP` will block only for a configurable duration before invoking priority to ensure it can complete on-time.
+- Distribution of work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes), with no two nodes backing up the same data. Refer to the [Backup Architecture](backup-architecture.html) page for a detailed explanation of how a backup job works.
+- {% include_cached new-in.html version="v23.1" %} Integration with elastic CPU limiter by default, which helps to minimize the impact backups have on foreground traffic. This integration will limit the amount of CPU time used by a backup thereby allowing foreground SQL traffic to continue largely unaffected.
+
+A backup job, like any read, cannot export a range if the range contains an [unresolved intent](architecture/transaction-layer.html#resolving-write-intents). While it is important to minimize the impact of bulk, background jobs like `BACKUP` on your foreground traffic, it is still crucial for backups to finish (in order to maintain your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)).
+
+Unlike a normal [read transaction](architecture/reads-and-writes-overview.html#read-scenario) that will block until any uncommitted writes it encounters are resolved, a backup job's read request will be allotted a fixed amount of CPU time to read the required keys and values. Once the backup's read request has exhausted this time, the backup will resume once it has been allocated more CPU time. This process allows for other requests, such as foreground SQL traffic to continue, almost unaffected, because there is a cap on how much CPU a backup job will take.
+
+You can monitor your cluster's [admission control system](admission-control.html) on the [Overload dashboard](ui-overload-dashboard.html). To monitor your backup jobs, refer to the [Backup and Restore Monitoring](backup-and-restore-monitoring.html) page.
+
+For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory/) blog post.
 
 We recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
 
 ~~~ sql
-> BACKUP...AS OF SYSTEM TIME '-10s';
+BACKUP...AS OF SYSTEM TIME '-10s';
 ~~~
 
-This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, since the backup will take priority and will force still-running transactions to restart after the backup is finished.
+This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because [`AS OF SYSTEM TIME`](as-of-system-time.html) returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, because a backup will eventually push the contending transactions to a higher timestamp, which causes the transactions to retry.
 
-`BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
+A backup job will initially ask individual ranges to back up but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When a backup job has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's read transaction priority is eventually set to `high`. This will result in contending transactions being pushed and retried at a higher timestamp.
 
 {% include {{ page.version.version }}/backups/retry-failure.md %}
 
@@ -347,4 +356,4 @@ To use an external connection URI to back up to cloud storage with an associated
 - [`SHOW BACKUP`](show-backup.html)
 - [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
 - [`RESTORE`](restore.html)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)

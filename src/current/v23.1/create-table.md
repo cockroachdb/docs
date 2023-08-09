@@ -311,7 +311,7 @@ We also have other resources on indexes:
 
 ### Create a table with auto-generated unique row IDs
 
-{% include {{ page.version.version }}/faq/auto-generate-unique-ids.html %}
+{% include {{ page.version.version }}/faq/auto-generate-unique-ids.md %}
 
 ### Create a table with a foreign key constraint
 
@@ -478,7 +478,7 @@ In this example, we create the `users` table, but with some column [constraints]
 
 ### Create a table that mirrors key-value storage
 
-{% include {{ page.version.version }}/faq/simulate-key-value-store.html %}
+{% include {{ page.version.version }}/faq/simulate-key-value-store.md %}
 
 ### Create a table from a `SELECT` statement
 
@@ -642,12 +642,12 @@ To create a table with a specific [table locality](multiregion-overview.html#tab
 {{site.data.alerts.callout_info}}
 In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
 
-By default, all tables in a multi-region database have a [`REGIONAL BY TABLE IN PRIMARY REGION`](multiregion-overview.html#regional-tables) locality.
+By default, all tables in a multi-region database have a [`REGIONAL BY TABLE IN PRIMARY REGION`](table-localities.html#regional-tables) locality.
 {{site.data.alerts.end}}
 
 #### Create a table with a global locality
 
-To create a table with a [`GLOBAL`](multiregion-overview.html#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`GLOBAL`](table-localities.html#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
 
 The `GLOBAL` locality is useful for "read-mostly" tables of reference data that are rarely updated, but need to be read with low latency from all regions.
 
@@ -679,7 +679,7 @@ SELECT * FROM x WHERE table_name='promo_codes';
 
 #### Create a table with a regional-by-table locality
 
-To create a table with a [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) locality, add a `LOCALITY REGIONAL BY TABLE` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`REGIONAL BY TABLE`](table-localities.html#regional-tables) locality, add a `LOCALITY REGIONAL BY TABLE` clause to the end of the `CREATE TABLE` statement.
 
 {{site.data.alerts.callout_info}}
 `REGIONAL BY TABLE IN PRIMARY REGION` is the default locality for all tables created in a multi-region database.
@@ -716,7 +716,7 @@ For example, suppose you want to create a table for your application's end users
 
 #### Create a table with a regional-by-row locality
 
-To create a table with a [`REGIONAL-BY-ROW`](multiregion-overview.html#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`REGIONAL-BY-ROW`](table-localities.html#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
 
 The `REGIONAL BY ROW` locality is useful for tables that require low-latency reads and writes from different regions, where the low-latency region is specified at the row level.
 
@@ -803,7 +803,7 @@ Alternatively, you could update the rows in the `crdb_region` column to compute 
 
 #### Create a table with a regional-by-row locality, using a custom region column
 
-To create a table with a [`REGIONAL-BY-ROW`](multiregion-overview.html#regional-by-row-tables) locality, where the region of each row in a table is based on the value of a specific column that you create, you can add a `LOCALITY REGIONAL BY ROW AS <region>` clause to the end of the `CREATE TABLE` statement.
+To create a table with a [`REGIONAL-BY-ROW`](table-localities.html#regional-by-row-tables) locality, where the region of each row in a table is based on the value of a specific column that you create, you can add a `LOCALITY REGIONAL BY ROW AS <region>` clause to the end of the `CREATE TABLE` statement.
 
 Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to regions based on the value of any custom column of type `crdb_internal_region`.
 

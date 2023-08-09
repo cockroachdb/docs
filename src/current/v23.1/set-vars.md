@@ -402,7 +402,7 @@ When setting a time zone, note the following:
 
 - `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
 
-- Only offsets specified by integers (e.g., `-7`, `7`) use the [ISO 8601 time offset](https://en.wikipedia.org/wiki/ISO_8601#Time_offsets_from_UTC) (i.e., the offset input is parsed as hours *east* of UTC). If you explicitly specify `UTC` or `GMT` for the time zone offset (e.g., `UTC-7`,`GMT+7`), or if the numeric input is colon-delimited (e.g.,  `-7:00`, `GMT+7:00`), CockroachDB uses the [POSIX time offset](https://www.postgresql.org/docs/current/datetime-posix-timezone-specs.html) instead (i.e., hours *west* of the specified time zone). This means that specifying an offset of `-7` (i.e., -7 *east* of UTC) is equivalent to specifying `GMT+7` (i.e., 7 *west* of UTC).
+- Only offsets specified by integers (e.g., `-7`, `7`) use the [ISO 8601 time offset](https://wikipedia.org/wiki/ISO_8601#Time_offsets_from_UTC) (i.e., the offset input is parsed as hours *east* of UTC). If you explicitly specify `UTC` or `GMT` for the time zone offset (e.g., `UTC-7`,`GMT+7`), or if the numeric input is colon-delimited (e.g.,  `-7:00`, `GMT+7:00`), CockroachDB uses the [POSIX time offset](https://www.postgresql.org/docs/current/datetime-posix-timezone-specs.html) instead (i.e., hours *west* of the specified time zone). This means that specifying an offset of `-7` (i.e., -7 *east* of UTC) is equivalent to specifying `GMT+7` (i.e., 7 *west* of UTC).
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 

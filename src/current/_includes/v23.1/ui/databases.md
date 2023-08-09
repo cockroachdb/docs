@@ -4,9 +4,6 @@ The **Databases** page shows:
 
 - Whether [automatic statistics collection]({{ link_prefix }}cost-based-optimizer.html#table-statistics) is enabled for the cluster.
 - A list of the databases on the cluster.
-{% if page.cloud == true %}
-- The **Add database** button, which allows you to [create a new database](serverless-cluster-management.html#create-a-database).
-{% endif %}
 
 The following information is displayed for each database:
 
@@ -21,7 +18,7 @@ The following information is displayed for each database:
 | Range Count   | The number of ranges across all tables in the  database.                                                                |
 | Regions/Nodes | The regions and nodes on which the tables in the database are located. This is not displayed on a single-node cluster.  |
 | Index Recommendations | The number of index recommendations for the database.                                                           |
-{% else %}
+{%- else -%}
 | Regions | The regions where the tables in the database are located.  |
 {% endif -%}
 
@@ -63,12 +60,12 @@ The following information is displayed for each table:
 {% if page.cloud != true -%}
 | Replication Size               | The approximate disk size of all replicas of this table on the cluster.                                  |
 | Ranges                         | The number of ranges in the table.                                                                       |
-{% endif -%}
+{%- endif -%}
 | Columns                        | The number of columns in the table.                                                                      |
 | Indexes                        | The number of indexes in the table.                                                                      |
 {% if page.cloud != true -%}
 | Regions                        | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
-{% else %}
+{% else -%}
 | Regions                        | The regions where the table data is stored.
 {% endif -%}
 | % of Live Data                 | Percent of total uncompressed logical data that has not been modified (updated or deleted).              |

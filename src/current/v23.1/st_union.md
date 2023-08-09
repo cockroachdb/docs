@@ -9,7 +9,7 @@ Given a set of shapes (e.g., from a [selection query](selection-queries.html)), 
 
 `ST_Union` works on the following data types:
 
-- [`GEOMETRY`](spatial-glossary.html#geometry)
+- [`GEOMETRY`](architecture/glossary.html#geometry)
 
 {{site.data.alerts.callout_info}}
 The non-aggregate version of `ST_Union` is not yet implemented.  For more information, see [cockroach#49064](https://github.com/cockroachdb/cockroach/issues/49064).
@@ -23,7 +23,7 @@ Unlike `ST_Collect`, which does not change the shapes it operates on and merely 
 
 In this example, we will generate a single geometry from many individual points using `ST_Union`.
 
-1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](spatial-glossary.html#wkt) format:
+1. Create a temporary table to hold all the points, which will be in [Well Known Text (WKT)](architecture/glossary.html#wkt) format:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -212,7 +212,7 @@ In this example, we will generate a single geometry from many individual points 
     ('POINT (-73.957583 41.417974999999998)');
     ~~~
 
-1. Run the query below, which gathers the points into a single geometry using `ST_Union`, and converts the geometry to [GeoJSON](spatial-glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
+1. Run the query below, which gathers the points into a single geometry using `ST_Union`, and converts the geometry to [GeoJSON](architecture/glossary.html#geojson) so that we can view it with [geojson.io](http://geojson.io):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -247,9 +247,9 @@ In this example, we will generate a single geometry from many individual points 
 
 ## See also
 
-- [Working with Spatial Data](spatial-data.html)
+- [Export Spatial Data](export-spatial-data.html]
 - [Spatial tutorial](spatial-tutorial.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial and GIS Glossary of Terms](architecture/glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [`ST_Covers`](st_covers.html)

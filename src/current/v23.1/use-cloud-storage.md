@@ -35,14 +35,14 @@ The following table provides a list of the parameters supported by each storage 
 Location                                                    | Scheme      | Host                                             | Parameters
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
 Amazon S3 | `s3` | Bucket name | [`AUTH`](cloud-storage-authentication.html#amazon-s3-specified): `implicit` or `specified` (default: `specified`). When using `specified` pass user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.<br><br>[`ASSUME_ROLE`](cloud-storage-authentication.html#amazon-s3-assume-role) (optional): Pass the [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.<br><br>[`AWS_SESSION_TOKEN`](cloud-storage-authentication.html) (optional): For more information, see Amazon's guide on [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html). <br><br>[`S3_STORAGE_CLASS`](#amazon-s3-storage-classes) (optional): Specify the Amazon S3 storage class for created objects. Note that Glacier Flexible Retrieval and Glacier Deep Archive are not compatible with incremental backups. **Default**: `STANDARD`.
-Azure Blob Storage | `azure` | Storage container | `AZURE_ACCOUNT_NAME`: The name of your Azure account.<br><br>`AZURE_ACCOUNT_KEY`: Your Azure account key. You must [url encode](https://en.wikipedia.org/wiki/Percent-encoding) your Azure account key before authenticating to Azure Storage. For more information, see [Authentication - Azure Storage](cloud-storage-authentication.html#azure-blob-storage-specified-authentication).<br><br>`AZURE_ENVIRONMENT`: (optional) {% include {{ page.version.version }}/misc/azure-env-param.md %}<br><br>`AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application).<br><br>`AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.<br><br>`AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
+Azure Blob Storage | `azure` | Storage container | `AZURE_ACCOUNT_NAME`: The name of your Azure account.<br><br>`AZURE_ACCOUNT_KEY`: Your Azure account key. You must [url encode](https://wikipedia.org/wiki/Percent-encoding) your Azure account key before authenticating to Azure Storage. For more information, see [Authentication - Azure Storage](cloud-storage-authentication.html#azure-blob-storage-specified-authentication).<br><br>`AZURE_ENVIRONMENT`: (optional) {% include {{ page.version.version }}/misc/azure-env-param.md %}<br><br>`AZURE_CLIENT_ID`: Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).<br><br>`AZURE_CLIENT_SECRET`: Client credentials secret generated for your App Registration.<br><br>`AZURE_TENANT_ID`: Directory (tenant) ID for your App Registration.
 Google Cloud Storage | `gs` | Bucket name | `AUTH`: `implicit`, or `specified` (default: `specified`); `CREDENTIALS`<br><br>[`ASSUME_ROLE`](cloud-storage-authentication.html#google-cloud-storage-assume-role) (optional): Pass the [service account name](https://cloud.google.com/iam/docs/understanding-service-accounts) of the service account to assume. <br><br>For more information, see [Authentication - Google Cloud Storage](cloud-storage-authentication.html#google-cloud-storage-specified).
 HTTP | `http` | Remote host | N/A <br><br>For more information, see [Authentication - HTTP](cloud-storage-authentication.html#http-authentication).
-NFS/Local&nbsp;[<sup>1</sup>](#considerations) | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
+NFS/Local&nbsp;[<sup>1</sup>](#considerations) | `nodelocal` | `nodeID` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services  | `s3`  | Bucket name | {{site.data.alerts.callout_danger}} While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test S3-compatible services (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3/)).{{site.data.alerts.end}}<br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](cloud-storage-authentication.html#s3-compatible-services-authentication).
 
 {{site.data.alerts.callout_success}}
-The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -53,7 +53,7 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 <sup>1</sup> The file system backup location on the NFS drive is relative to the path specified by the [`--external-io-dir`](cockroach-start.html#flags-external-io-dir) flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
 
-<sup>2</sup>   Using a `nodeID` is required and the data files will be in the `extern` directory of the specified node. In most cases (including single-node clusters), using `nodelocal://1/<path>` is sufficient. Use `self` if you do not want to specify a `nodeID`, and the individual data files will be in the `extern` directories of arbitrary nodes; however, to work correctly, each node must have the [`--external-io-dir`](cockroach-start.html#flags-external-io-dir) flag point to the same NFS mount or other network-backed, shared storage.
+<sup>2</sup>   Using a `nodeID` is required and the data files will be in the `extern` directory of the specified node. In most cases (including single-node clusters), using `nodelocal://1/<path>` is sufficient. If every node has the [`--external-io-dir`](cockroach-start.html#flags-external-io-dir) flag pointed to a common NFS mount, or other form of network-backed, shared, or synchronized storage, you can use the word `self` instead of a node ID to indicate that each node should write individual data files to its own `extern` directory.
 
 <sup>3</sup> The `AWS_REGION` parameter is optional since it is not a required parameter for most S3-compatible services. Specify the parameter only if your S3-compatible service requires it.
 
@@ -69,7 +69,7 @@ Google Cloud Storage | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encode
 NFS/Local | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
-[Cloud storage sinks (for changefeeds)](change-data-capture-overview.html#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files.
+[Cloud storage sinks (for changefeeds)](create-and-configure-changefeeds.html#known-limitations) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
 Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
@@ -88,12 +88,12 @@ HTTP storage can only be used for [`IMPORT`](import.html) and [`CREATE CHANGEFEE
 
 ## Encryption
 
-[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure.
+[Transport Layer Security (TLS)](https://wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure.
 
 For encryption at rest, if your cloud provider offers transparent data encryption, you can use that to ensure that your backups are not stored on disk in cleartext.
 
 * [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)
-* [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-azure-storage-encryption)
+* [Azure Blob Storage](https://docs.microsoft.com/azure/storage/common/storage-service-encryption#about-azure-storage-encryption)
 * [Google Cloud Storage](https://cloud.google.com/storage/docs/encryption)
 
 CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
@@ -227,9 +227,9 @@ For guidance on adding a user to a bucket's policy, see [Add a principal to a bu
 
 ## Additional cloud storage feature support
 
-### Object locking
+### Immutable storage
 
-To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion or modification to the objects once written.
+To complete a backup successfully, `BACKUP` requires [read and write permissions](backup.html#required-privileges) to cloud storage buckets. Delete and overwrite permissions are **not** required. As a result, you can write backups to cloud storage buckets with object locking enabled. This allows you to store backup data using a _write-once-read-many (WORM)_ model, which refers to storage that prevents any kind of deletion, encryption or modification to the objects once written.
 
 {{site.data.alerts.callout_info}}
 We recommend enabling object locking in cloud storage buckets to protect the validity of a backup for restores.
@@ -239,7 +239,7 @@ For specific cloud-storage provider documentation, see the following:
 
 - [AWS S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html)
 - [Retention policies and Bucket Lock in Google Cloud Storage](https://cloud.google.com/storage/docs/bucket-lock)
-- [Immutable storage in Azure Storage](https://docs.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview)
+- [Immutable storage in Azure Storage](https://docs.microsoft.com/azure/storage/blobs/immutable-storage-overview)
 
 ### Amazon S3 storage classes
 
@@ -251,7 +251,7 @@ The following S3 connection URI uses the `INTELLIGENT_TIERING` storage class:
 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
 ~~~
 
-While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes. 
+While Cockroach Labs supports configuring an AWS storage class, we only test against S3 Standard. We recommend implementing your own testing with other storage classes.
 
 {{site.data.alerts.callout_info}}
 [Incremental backups](take-full-and-incremental-backups.html#incremental-backups) are **not** compatible with the S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes. Incremental backups require ad-hoc reading of previous backups, which is not possible with the Glacier Flexible Retrieval or Glacier Deep Archive storage classes as they do not allow immediate access to S3 objects without first restoring the objects. See Amazon's documentation on [Restoring an archived object](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects.html) for more detail.

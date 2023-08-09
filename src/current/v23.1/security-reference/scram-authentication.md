@@ -21,7 +21,7 @@ CockroachDB's support for SCRAM-SHA-256 is PostgreSQL-compatible. PostgreSQL cli
 
 The Simple Authentication and Security Layer [(SASL)](https://www.rfc-editor.org/info/rfc4422) is a framework for authentication and data security in Internet protocols. SASL formalizes the requirements for challenge-and-response authentication protocols designed by the [Internet Engineering Task Force (IETF)](https://www.ietf.org/). It is designed chiefly on the principle of *separation of concerns*: authentication mechanisms must be independent from applications and interact via a structured interface.
 
-[Salted Challenge Response Authentication Mechanism (SCRAM)](https://en.wikipedia.org/wiki/Salted_Challenge_Response_Authentication_Mechanism) is a modern, SASL-compliant, general solution to the security problems posed by the use of plain-text (unencrypted) passwords for authentication.
+[Salted Challenge Response Authentication Mechanism (SCRAM)](https://wikipedia.org/wiki/Salted_Challenge_Response_Authentication_Mechanism) is a modern, SASL-compliant, general solution to the security problems posed by the use of plain-text (unencrypted) passwords for authentication.
 
 [SCRAM-SHA-256](https://datatracker.ietf.org/doc/html/rfc7677) is a cryptographically strong implementation of SCRAM. It includes a configurable parameter, *iteration count*, which is the number of times the hashing function is performed; this allows operators to tune the cryptographic strength of the hashing to their needs by increasing the iteration count.
 
@@ -35,7 +35,7 @@ As of February 2023, the products listed below do not yet support SCRAM authenti
 | [Looker](https://cloud.google.com/looker) or [Google Data Studio](https://datastudio.google.com) | <https://issuetracker.google.com/issues/203573707>                                                          |
 | [Amazon Quicksight](https://aws.amazon.com/quicksight/)                                          | <https://community.amazonquicksight.com/t/my-quicksight-cannot-connect-to-rds-postgresql-db-via-vpc/4696/4> |
 
-If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
+If you use these products with CockroachDB v22.2 or later, you will need to fall back to hashing user passwords with bcrypt following the steps in [Downgrade from SCRAM authentication](../query-behavior-troubleshooting.html#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ### Advantages and tradeoffs
@@ -53,14 +53,14 @@ SCRAM authentication imposes additional computational load on your application s
 
 {% include_cached {{page.version.version}}/scram-authentication-recommendations.md %}
 
-For more details, refer to [Troubleshoot SQL client application problems](../error-handling-and-troubleshooting.html#troubleshoot-sql-client-application-problems)
+For more details, refer to [Troubleshoot SQL client application problems](../query-behavior-troubleshooting.html#troubleshoot-sql-client-application-problems)
 {{site.data.alerts.end}}
 
 #### Defense from replay attacks
 
 Without SCRAM, cleartext passwords can be TLS-encrypted when sent to the server, which offers some protection. However, if clients skip validation of the server's certificate (i.e., fail to use `sslmode=verify-full`), attackers may be able to intercept authentication messages (containing the password), and later reuse them to impersonate the user.
 
-SCRAM offers strong protection against such [replay attacks](https://en.wikipedia.org/wiki/Replay_attack), wherein an attacker records and re-uses authentication messages.
+SCRAM offers strong protection against such [replay attacks](https://wikipedia.org/wiki/Replay_attack), wherein an attacker records and re-uses authentication messages.
 
 #### Separation of concerns
 
@@ -107,7 +107,21 @@ SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical
 ~~~
   username            |                     hashedPassword
 ----------------------+---------------------------------------------------------
-  hypothetical_user   | SCRAM-SHA-256$119680:e0tDGk...
+  hypothetical_user   | \x534352414d2d5348412d3235362431303631303a794478793878564830...
+(1 row)
+~~~
+
+Note that by default, hashed passwords are displayed in hex format. You can escape the hex format by setting the `bytea_output` session variable.
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SET bytea_output = escape;
+SELECT username, "hashedPassword" FROM system.users WHERE username='hypothetical_user';
+~~~
+~~~
+  username            |                     hashedPassword
+----------------------+---------------------------------------------------------
+  hypothetical_user   | SCRAM-SHA-256$10610:nxneWi2Pmoex7o28Mt0kWg==$1nN7UXhK4TnQktMBr5uK...
 (1 row)
 ~~~
 
@@ -154,12 +168,12 @@ It is not possible to automatically convert credentials to SCRAM in bulk, withou
     ~~~
 
 {{site.data.alerts.callout_info}}
-Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion](../error-handling-and-troubleshooting.html#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled](../error-handling-and-troubleshooting.html#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication](../error-handling-and-troubleshooting.html#downgrade-from-scram-authentication).
+Enabling SCRAM authentication can cause [high CPU load or connection pool exhaustion](../query-behavior-troubleshooting.html#scram-client-troubleshooting) for some applications. If you have this issue, you can [follow the mitigation steps required to keep SCRAM enabled](../query-behavior-troubleshooting.html#mitigation-steps-while-keeping-scram-enabled), or [downgrade from SCRAM authentication](../query-behavior-troubleshooting.html#downgrade-from-scram-authentication).
 {{site.data.alerts.end}}
 
 ## Implement strict isolation of cleartext credentials
 
-Cleartext credentials are a valuable asset to malicious agents; known as ["credential stuffing,"](https://en.wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles cleartext credentials becomes a favorable target for malicious attackers with potentially weak points in the system.
+Cleartext credentials are a valuable asset to malicious agents; known as ["credential stuffing,"](https://wikipedia.org/wiki/Credential_stuffing) re-use of stolen passwords is a persistent problem throughout the ecosystem of internet services. Hence, any system that handles cleartext credentials becomes a favorable target for malicious attackers with potentially weak points in the system.
 
 While the measures [described previously](#implement-scram-authentication-in-your-cockroachdb-cluster) allow CockroachDB to avoid transmitting cleartext passwords across the network, the  credentials still have a footprint within CockroachDB: they are transmitted in cleartext from the CockroachDB client to the server, and are hence vulnerable in transit. While the secrets are protected in transit by TLS, CA certificate server authentication is not infallible.
 
@@ -299,12 +313,25 @@ In this way, the server stores the information needed for SCRAM authentication, 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
-SELECT *  FROM system.users WHERE username = "cool_user";
 ~~~
 ~~~
   username  |                                                             hashedPassword
 ------------+------------------------------------------------------------------------------------------------------------------------------------------
-  cool_user | SCRAM-SHA-256$119680:6XN0y7A83hylmX+3uMRPvQ==$mOI18rsucBjSrNMDDqNJ1/q4cROvRDLIUqjC0BzQHEg=:4zPCVFflWWHD53ZEIrcH4q3X1+le86TBIV0Dce6fIuc=
+  cool_user | \x534352414d2d5348412d3235362431303631303a794478793878564830...
+~~~
+
+Note that by default, hashed passwords are displayed in hex format. You can escape the hex format by setting the `bytea_output` session variable.
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+SET bytea_output = escape;
+SELECT username, "hashedPassword" FROM system.users WHERE username='cool_user';
+~~~
+~~~
+  username            |                     hashedPassword
+----------------------+---------------------------------------------------------
+  cool_user   | SCRAM-SHA-256$119680:6XN0y7A83hylmX+3uMRPvQ==$mOI18rsucBjSrNMDDqNJ1/q4cROvRDLIUqjC0BzQHEg=:4zPCVFflWWHD53ZEIrcH4q3X1+le86TBIV0Dce6fIuc=
+(1 row)
 ~~~
 
 ## Appendix: Python SCRAM-hashing script

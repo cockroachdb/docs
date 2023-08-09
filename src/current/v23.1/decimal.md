@@ -31,7 +31,7 @@ A constant value of type `DECIMAL` can be entered as a [numeric literal](sql-con
 For example: `1.414` or `-1234`.
 
 The special IEEE754 values for positive infinity, negative infinity
-and [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN) cannot be
+and [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN) cannot be
 entered using numeric literals directly and must be converted using an
 [interpreted literal](sql-constants.html#interpreted-literals) or an
 [explicit conversion](scalar-expressions.html#explicit-type-coercions)
@@ -43,7 +43,7 @@ The following values are recognized:
 ----------------------------------------|------------------------------------------------
  `inf`, `infinity`, `+inf`, `+infinity` | +&#8734;
  `-inf`, `-infinity`                    | -&#8734;
- `nan`                                  | [NaN (Not-a-Number)](https://en.wikipedia.org/wiki/NaN)
+ `nan`                                  | [NaN (Not-a-Number)](https://wikipedia.org/wiki/NaN)
 
 For example:
 

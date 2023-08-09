@@ -113,8 +113,9 @@ Application Name | The name specified by the [`application_name`]({{ link_prefix
 Rows Processed | The total number of rows read and written.
 Retries | The number of times the statement execution was [retried]({{ link_prefix }}transactions.html#automatic-retries).
 Contention Time | The amount of time the statement execution spent waiting in [contention]({{ link_prefix }}performance-best-practices-overview.html#transaction-contention).
-CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{% if page.cloud != true -%}The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).{% endif -%}{% if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
-{% endif -%}
+CPU Time | The amount of CPU time spent executing the statement. The CPU time represents the time spent and work done within SQL execution operators. <br><br>{%- if page.cloud != true -%}The CPU time includes time spent in the [SQL layer](architecture/sql-layer.html). It does not include time spent in the [storage layer](architecture/storage-layer.html).{%- endif -%}{%- if page.cloud == true -%}The CPU time includes time spent in the [SQL layer](../stable/architecture/sql-layer.html). It does not include time spent in the [storage layer](../stable/architecture/storage-layer.html).
+{%- endif -%}
+<br>
 Full Scan | Whether the execution performed a full scan of the table.
 Transaction Fingerprint ID | The ID of the transaction fingerprint for the statement execution.
 Latest Transaction Execution ID | The ID of the transaction execution for the statement execution.
@@ -234,7 +235,7 @@ To display this view, click **Insights** in the left-hand navigation of the Clou
 
 This view lists the [indexes]({{ link_prefix }}indexes.html) that have not been used and should be dropped, and/or the ones that should be created, altered, or replaced (based on statement execution).
 
-- The drop recommendations are the same as those on the [**Databases**]({{ link_prefix }}ui-databases-page.html) page.
+- The drop recommendations are the same as those on the [**Databases**]({{ link_prefix }}ui-databases-page.html#index-recommendations) page.
 - The create, alter, and replace recommendations are the same as those on the [Explain Plans tab]({{ link_prefix }}ui-statements-page.html#insights) on the Statements page. Whereas the **Explain Plans** tab shows all recommendations, the **Schema Insights** view shows only the latest recommendations for that statement fingerprint. If you execute a statement again after creating or updating an index, the recommendation disappears.
 
 {% if page.cloud != true -%}

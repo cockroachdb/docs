@@ -33,6 +33,10 @@ For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, an
 
 ## Point-in-time restore
 
+{{site.data.alerts.callout_danger}}
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an `AS OF SYSTEM TIME` restore. A restore will not include historical data even if you ran your backup with `revision_history`. This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query.
+{{site.data.alerts.end}}
+
 If the full or incremental backup was taken [with revision history](#create-a-backup-with-revision-history), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause to specify the point-in-time.
 
 Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html).

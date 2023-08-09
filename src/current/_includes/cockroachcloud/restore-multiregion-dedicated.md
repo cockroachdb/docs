@@ -35,7 +35,7 @@
     ALTER DATABASE new_movr ADD region "us-west2";
     ~~~
 
-1. From the Console, go to the **Backups** page:
+1. From the Console, go to the **Backup and Restore** page:
     1. Choose the backup you want to restore.
     1. Click on the number of tables in the database. You will find a list of all the tables contained in the database's backup.
     1. Click **Restore** for each table you want to restore into the new database.

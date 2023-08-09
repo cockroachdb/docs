@@ -13,7 +13,7 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 
 - If the problem doesn't match a common error, try the following pages:
   - [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html) helps you start and scale your cluster.
-  - [Troubleshoot Common Problems](error-handling-and-troubleshooting.html) helps you handle errors and troubleshooting problems that may arise during application development.
+  - [Troubleshoot Common Problems](query-behavior-troubleshooting.html) helps you handle errors and troubleshooting problems that may arise during application development.
   - [Troubleshoot Statement Behavior](query-behavior-troubleshooting.html) helps you with unexpected query results.
 
 - If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](../cockroachcloud/troubleshooting-page.html).
@@ -23,3 +23,9 @@ If you experience an issue when using CockroachDB, try these steps to resolve th
 - If you cannot resolve the issue yourself, the following tools can help you move forward:
   - [Support Resources](support-resources.html) identify ways you can get help with troubleshooting.
   - [File an Issue](file-an-issue.html) provides details on how to file an issue that you're unable to resolve.
+ 
+- In a support escalation, you may be directed to use the following features by the [Cockroach Labs support team](support-resources.html):
+
+  - [`cockroach debug zip`](cockroach-debug-zip.html)
+  - [`cockroach debug tsdump`](cockroach-debug-tsdump.html)
+  - [Automatic CPU Profiler](automatic-cpu-profiler.html)

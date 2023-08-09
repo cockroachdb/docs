@@ -11,8 +11,11 @@ Changefeeds emit messages as changes happen to watched tables. CockroachDB chang
 This page describes the format and behavior of changefeed messages. You will find the following information on this page:
 
 - [Responses](#responses): The general format of changefeed messages.
+- [Message envelopes](#message-envelopes): The structure of the changefeed message.
 - [Ordering guarantees](#ordering-guarantees): CockroachDB's guarantees for a changefeed's message ordering.
 - [Delete messages](#delete-messages): The format of messages when a row is deleted.
+- [Resolved messages](#resolved-messages): The resolved timestamp option and how to configure it.
+- [Duplicate messages](#duplicate-messages): The causes of duplicate messages from a changefeed.
 - [Schema changes](#schema-changes): The effect of schema changes on a changefeed.
 - [Garbage collection](#garbage-collection-and-changefeeds): How protected timestamps and garbage collection interacts with running changefeeds.
 - [Avro](#avro): The limitations and type mapping when creating a changefeed using Avro format.
@@ -23,35 +26,137 @@ This page describes the format and behavior of changefeed messages. You will fin
 
 ## Responses
 
-By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table entries that have changed, with messages composed of the following fields:
+By default, changefeed messages emitted to a [sink](changefeed-sinks.html) contain keys and values of the watched table rows that have changed. The message will contain the following fields depending on the type of emitted change and the [options](create-changefeed.html#options) you specified to create the changefeed:
 
-- **Key**: An array always composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for `JSON` or `{"id":{"long":1}}` for Avro).
+- **Key**: An array composed of the row's `PRIMARY KEY` field(s) (e.g., `[1]` for JSON or `{"id":{"long":1}}` for Avro).
 - **Value**:
     - One of three possible top-level fields:
         - `after`, which contains the state of the row after the update (or `null` for `DELETE`s).
-        - `updated`, which contains the updated timestamp.
-        - `resolved`, which is emitted for records representing resolved timestamps. These records do not include an `after` value since they only function as checkpoints.
+        - `updated`, which contains the [updated](create-changefeed.html#updated-option) timestamp.
+        - `resolved`, which is emitted for records representing [resolved](#resolved-messages) timestamps. These records do not include an `after` value since they only function as checkpoints.
     - For [`INSERT`](insert.html) and [`UPDATE`](update.html), the current state of the row inserted or updated.
     - For [`DELETE`](delete.html), `null`.
 
-For example:
+{{site.data.alerts.callout_info}}
+If you use the `envelope` option to alter the changefeed message fields, your messages may not contain one or more of the values noted in the preceding list. As an example, when emitting to a Kafka sink, you can limit messages to just the changed key value by using the `envelope` option set to [`key_only`](#key_only). For more detail, refer to [Message envelopes](#message-envelopes).
+{{site.data.alerts.end}}
+
+For example, changefeeds emitting to a sink will have the default message format:
 
 Statement                                      | Response
 -----------------------------------------------+-----------------------------------------------------------------------
 `INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
 `DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
 
-To limit messages to just the changed key value, use the [`envelope`](create-changefeed.html#options) option set to `key_only`.
+When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. Refer to [Tables with columns families in changefeeds](changefeeds-on-tables-with-column-families.html#message-format) for guidance.
 
-When a changefeed targets a table with multiple column families, the family name is appended to the table name as part of the topic. See [Tables with columns families in changefeeds](changefeeds-on-tables-with-column-families.html#message-format) for guidance.
-
-For webhook sinks, the response format arrives as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](create-changefeed.html#resolved-option):
+For [webhook sinks](changefeed-sinks.html#webhook-sink), the response format arrives as a batch of changefeed messages with a `payload` and `length`.
 
 ~~~
 {"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
 ~~~
 
-See [changefeed files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+[Webhook message batching](changefeed-sinks.html#webhook-sink-configuration) is subject to the same key [ordering guarantee](#ordering-guarantees) as other sinks. Therefore, as messages are batched, you will not receive two batches at the same time with overlapping keys. You may receive a single batch containing multiple messages about one key, because ordering is maintained for a single key within its batch.
+
+Refer to [changefeed files](create-changefeed.html#files) for more detail on the file naming format for {{ site.data.products.enterprise }} changefeeds.
+
+## Message envelopes
+
+The _envelope_ defines the structure of a changefeed message. You can use the [`envelope`](create-changefeed.html#envelope) option to manipulate the changefeed envelope. The values that the `envelope` option accepts are compatible with different [changefeed sinks](changefeed-sinks.html), and the structure of the message will vary depending on the sink.
+
+{{site.data.alerts.callout_info}}
+Changefeeds created with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) or [`CREATE CHANGEFEED`](create-changefeed.html) with no sink specified (sinkless changefeeds) produce messages without the envelope metadata fields of changefeeds emitting to sinks.
+{{site.data.alerts.end}}
+
+The following sections provide examples of changefeed messages that are emitted when you specify each of the supported `envelope` options. Other [changefeed options](create-changefeed.html#options) can affect the message envelope and what messages are emitted. Therefore, the examples are a guide for what you can expect when only the `envelope` option is specified.
+
+### `wrapped`
+
+`wrapped` is the default envelope structure for changefeed messages. This envelope contains an array of the primary key (or the key as part of the message metadata), a top-level field for the type of message, and the current state of the row (or `null` for [deleted rows](#delete-messages)).
+
+The message envelope contains a primary key array when your changefeed is emitting to a sink that does not have a message key as part of its protocol, (e.g., cloud storage, webhook sinks, or Google Pub/Sub). By default, messages emitted to Kafka sinks do not have the primary key array, because the key is part of the message metadata. If you would like messages emitted to Kafka sinks to contain a primary key array, you can use the [`key_in_value`](create-changefeed.html#key-in-value) option. Refer to the following message outputs for examples of this.
+
+- Cloud storage sink:
+
+    ~~~
+    {"after": {"city": "seattle", "creation_time": "2019-01-02T03:04:05", "current_location": "86359 Jeffrey Ranch", "ext": {"color": "yellow"}, "id": "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8", "owner_id": "570a3d70-a3d7-4c00-8000-000000000011", "status": "in_use", "type": "scooter"}, "key": ["seattle", "68ee1f95-3137-48e2-8ce3-34ac2d18c7c8"]}
+    ~~~
+
+- Kafka sink:
+
+    - Default when `envelope=wrapped` or `envelope` is not specified:
+
+        ~~~
+        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "24315 Elizabeth Mountains", "ext": {"color": "yellow"}, "id": "dadc1c0b-30f0-4c8b-bd16-046c8612bbea", "owner_id": "034075b6-5380-4996-a267-5a129781f4d3", "status": "in_use", "type": "scooter"}}
+        ~~~
+
+    - Kafka sink message with `key_in_value` provided:
+
+        ~~~
+        {"after": {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "46227 Jeremy Haven Suite 92", "ext": {"brand": "Schwinn", "color": "red"}, "id": "298cc7a0-de6b-4659-ae57-eaa2de9d99c3", "owner_id": "beda1202-63f7-41d2-aa35-ee3a835679d1", "status": "in_use", "type": "bike"}, "key": ["washington dc", "298cc7a0-de6b-4659-ae57-eaa2de9d99c3"]}
+        ~~~
+
+### `bare`
+
+`bare` removes the `after` key from the changefeed message and stores any metadata in a `crdb` field. When used with [`avro`](#avro) format, `record` will replace the `after` key.
+
+{% include {{ page.version.version }}/cdc/bare-envelope-cdc-queries.md %}
+
+- Cloud storage sink:
+
+    ~~~
+    {"__crdb__": {"key": ["washington dc", "cd48e501-e86d-4019-9923-2fc9a964b264"]}, "city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "87247 Diane Park", "ext": {"brand": "Fuji", "color": "yellow"}, "id": "cd48e501-e86d-4019-9923-2fc9a964b264", "owner_id": "a616ce61-ade4-43d2-9aab-0e3b24a9aa9a", "status": "available", "type": "bike"}
+    ~~~
+
+- In CDC queries:
+
+    - A changefeed containing a `SELECT` clause without any additional options:
+
+        ~~~sql
+        CREATE CHANGEFEED INTO 'external://kafka' AS SELECT city, type FROM movr.vehicles;
+        ~~~
+        ~~~
+        {"city": "los angeles", "type": "skateboard"}
+        ~~~
+
+    - A changefeed containing a `SELECT` clause with the [`topic_in_value`](create-changefeed.html#topic-in-value) option specified:
+
+        ~~~sql
+        CREATE CHANGEFEED INTO 'external://kafka' WITH topic_in_value AS SELECT city, type FROM movr.vehicles;
+        ~~~
+        ~~~
+        {"__crdb__": {"topic": "vehicles"}, "city": "los angeles", "type": "skateboard"}
+        ~~~
+
+### `key_only`
+
+`key_only` emits only the key and no value, which is faster if you only need to know the key of the changed row. This envelope option is only supported for [Kafka sinks](changefeed-sinks.html#kafka) or sinkless changefeeds.
+
+- Kafka sink:
+
+    ~~~
+    ["boston", "22222222-2222-4200-8000-000000000002"]
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    It is necessary to set up a [Kafka consumer](https://docs.confluent.io/platform/current/clients/consumer.html) to display the key because the key is part of the metadata in Kafka messages, rather than in its own field. When you start a Kafka consumer, you can use `--property print.key=true` to have the key print in the changefeed message.
+    {{site.data.alerts.end}}
+
+- Sinkless changefeeds:
+
+    ~~~
+    {"key":"[\"seattle\", \"fff726cc-13b3-475f-ad92-a21cafee5d3f\"]","table":"users","value":""}
+    ~~~
+
+### `row`
+
+`row` emits the row without any additional metadata fields in the message. This envelope option is only supported for [Kafka sinks](changefeed-sinks.html#kafka) or sinkless changefeeds. `row` does not support [`avro`](#avro) format—if you are using `avro`, refer to the [`bare`](#bare) envelope option.
+
+- Kafka sink:
+
+    ~~~
+    {"city": "washington dc", "creation_time": "2019-01-02T03:04:05", "current_location": "85551 Moore Mountains Apt. 47", "ext": {"color": "red"}, "id": "d3b37607-1e9f-4e25-b772-efb9374b08e3", "owner_id": "4f26b516-f13f-4136-83e1-2ea1ae151c20", "status": "available", "type": "skateboard"}
+    ~~~
 
 ## Ordering guarantees
 
@@ -112,7 +217,7 @@ See [changefeed files](create-changefeed.html#files) for more detail on the file
 
 - With duplicates removed, an individual row is emitted in the same order as the transactions that updated it. However, this is not true for updates to two different rows, even two rows in the same table.
 
-    To compare two different rows for [happens-before](https://en.wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
+    To compare two different rows for [happens-before](https://wikipedia.org/wiki/Happened-before), compare the "updated" timestamp. This works across anything in the same cluster (e.g., tables, nodes, etc.).
 
     Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
 
@@ -134,7 +239,7 @@ In some unusual situations you may receive a delete message for a row without fi
 
 When you create a changefeed with the [`resolved` option](create-changefeed.html#resolved-option), the changefeed will emit resolved timestamp messages in a format dependent on the connected [sink](changefeed-sinks.html). The resolved timestamp is the high-water mark that guarantees that no previously unseen rows with an [earlier update timestamp](#ordering-guarantees) will be emitted to the sink. That is, resolved timestamp messages do not emit until all [ranges](architecture/overview.html#range) in the changefeed have progressed to a specific point in time.
 
-When you specify the `resolved` option at changefeed creation, the [job's coordinating node](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
+When you specify the `resolved` option at changefeed creation, the [job's coordinating node](how-does-an-enterprise-changefeed-work.html) will send the resolved timestamp to each endpoint at the sink. For example, each [Kafka](changefeed-sinks.html#kafka) partition will receive a resolved timestamp message, or a [cloud storage sink](changefeed-sinks.html#cloud-storage-sink) will receive a resolved timestamp file.
 
 There are three different ways to configure resolved timestamp messages:
 
@@ -146,7 +251,46 @@ There are three different ways to configure resolved timestamp messages:
 If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](create-changefeed.html#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
 {{site.data.alerts.end}}
 
+## Duplicate messages
+
+Under some circumstances, changefeeds will emit duplicate messages to ensure the sink is receiving each message at least once. The following can cause or increase duplicate messages:
+
+- The changefeed job [encounters an error](#changefeed-encounters-an-error) and pauses, or is manually paused.
+- A node in the cluster [restarts](#node-restarts) or fails.
+- The changefeed job has the [`min_checkpoint_frequency` option set](#min_checkpoint_frequency-option), which can potentially increase duplicate messages.
+- A target table undergoes a schema change. Schema changes may also cause the changefeed to emit the whole target table. Refer to [Schema changes](#schema-changes) for detail on duplicates in this case.
+
+A changefeed job cannot confirm that a message has been received by the sink unless the changefeed has reached a checkpoint. As a changefeed job runs, each node will send checkpoint progress to the job's coordinator node. These progress reports allow the coordinator to update the high-water mark timestamp confirming that all changes before (or at) the timestamp have been emitted.
+
+When a changefeed must pause and then it resumes, it will return to the last checkpoint (**A**), which is the last point at which the coordinator confirmed all changes for the given timestamp. As a result, when the changefeed resumes, it will re-emit the messages that had sent after the last checkpoint, but were not confirmed in the next checkpoint.
+
+<img src="{{ 'images/v23.1/changefeed-duplicate-messages-emit.png' | relative_url }}" alt="How checkpoints will re-emit messages when a changefeed pauses. The changefeed returns to the last checkpoint and potentially sends duplicate messages." style="border:0px solid #eee;max-width:100%" />
+
+### Changefeed encounters an error
+
+By default, changefeeds treat errors as [retryable except for some specific terminal errors](monitor-and-debug-changefeeds.html#changefeed-retry-errors). When a changefeed encounters a retryable or non-retryable error, the job will pause until a successful retry or you resume the job once the error is solved. This can cause duplicate messages at the sink as the changefeed returns to the last checkpoint.
+
+We recommend monitoring for changefeed retry errors and failures. Refer to the [Monitor and Debug Changefeeds](monitor-and-debug-changefeeds.html#recommended-changefeed-metrics-to-track) page.
+
+{{site.data.alerts.callout_info}}
+A sink's batching behavior can increase the number of duplicate messages. For example, if Kafka receives a batch of `N` messages and successfully saves `N-1` of them, the changefeed job only knows that the batch failed, not which message failed to commit. As a result, the changefeed job will resend the full batch of messages, which means all but one of the messages are duplicates. For Kafka sinks, reducing the batch size with [`kafka_sink_config`](changefeed-sinks.html#kafka-sink-configuration) may help to reduce the number of duplicate messages at the sink.
+
+Refer to the [Changefeed Sinks](changefeed-sinks.html) page for details on sink batching configuration.
+{{site.data.alerts.end}}
+
+### Node restarts
+
+When a node restarts, the changefeed will emit duplicates since the last checkpoint. During a rolling restart of nodes, a changefeed can fall behind as it tries to catch up during each node restart. For example, as part of a rolling upgrade or cluster maintenance, a node may [drain](node-shutdown.html) every 5 minutes and the changefeed job checkpoints every 5 minutes.
+
+To prevent the changefeed from falling too far behind, [pause](create-and-configure-changefeeds.html#configuring-all-changefeeds) changefeed jobs before performing rolling node restarts.
+
+### `min_checkpoint_frequency` option
+
+The `min_checkpoint_frequency` option controls how often nodes flush their progress to the coordinating changefeed node. Therefore, changefeeds will wait for at least the `min_checkpoint_frequency` duration before flushing to the sink. If a changefeed pauses and then resumes, the `min_checkpoint_frequency` duration is the amount of time that the changefeed will need to catch up since its previous checkpoint. During this catch-up time, you could receive duplicate messages.
+
 ## Schema Changes
+
+In v22.1, CockroachDB introduced the [declarative schema changer](online-schema-changes.html#declarative-schema-changer). When schema changes happen that use the declarative schema changer by default, changefeeds will **not** emit duplicate records for the table that is being altered. It will only emit a copy of the table using the new schema. Refer to [Schema changes with column backfill](#schema-changes-with-column-backfill) for examples of this.
 
 ### Avro schema changes
 
@@ -156,9 +300,33 @@ Note that the original CockroachDB column definition is also included in the sch
 
 ### Schema changes with column backfill
 
-When schema changes with column backfill (e.g., adding a column with a default, adding a computed column, adding a `NOT NULL` column, dropping a column) are made to watched rows, the changefeed will emit some duplicates during the backfill. When it finishes, CockroachDB outputs all watched rows using the new schema. When using Avro, rows that have been backfilled by a schema change are always re-emitted.
+When schema changes with column backfill (e.g., adding a column with a default, adding a [stored computed column](computed-columns.html), adding a `NOT NULL` column, dropping a column) are made to watched rows, CockroachDB emits a copy of the table using the new schema.
 
-For an example of a schema change with column backfill, start with the changefeed created in this [Kafka example](changefeed-examples.html#create-a-changefeed-connected-to-kafka):
+{{site.data.alerts.callout_info}}
+Schema changes that do **not** use the declarative schema changer by default will trigger a changefeed to emit a copy of the table being altered as well as a copy of the table using the new schema. For a list of supported schema changes, refer to the [Declarative schema changer](online-schema-changes.html#declarative-schema-changer) section.
+{{site.data.alerts.end}}
+
+The following example demonstrates the messages you will receive after creating a changefeed and then applying a schema change to the watched table:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE TABLE office_dogs (
+     id INT PRIMARY KEY,
+     name STRING);
+~~~
+{% include_cached copy-clipboard.html %}
+~~~sql
+INSERT INTO office_dogs VALUES
+   (1, 'Petee H'),
+   (2, 'Carl'),
+   (3, 'Ernie');
+~~~
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE office_dogs INTO 'external://cloud';
+~~~
+
+You receive each of the rows at the sink:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -166,14 +334,25 @@ For an example of a schema change with column backfill, start with the changefee
 [3]	{"id": 3, "name": "Ernie"}
 ~~~
 
-Add a column to the watched table:
+For example, add a column to the watched table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
+ALTER TABLE office_dogs ADD COLUMN likes_treats BOOL DEFAULT TRUE;
 ~~~
 
-The changefeed emits duplicate records 1, 2, and 3 before outputting the records using the new schema:
+After the schema change, the changefeed will emit a copy of the table with the new schema:
+
+~~~json
+[1]	{"id": 1, "name": "Petee H"}
+[2]	{"id": 2, "name": "Carl"}
+[3]	{"id": 3, "name": "Ernie"}
+[1]	{"id": 1, "likes_treats": true, "name": "Petee H"}
+[2]	{"id": 2, "likes_treats": true, "name": "Carl"}
+[3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
+~~~
+
+If the schema change does **not** use the declarative schema change by default, the changefeed will emit a copy of the altered table and a copy of the table using the new schema:
 
 ~~~json
 [1]	{"id": 1, "name": "Petee H"}
@@ -187,7 +366,9 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
-When using the [`schema_change_policy = nobackfill` option](create-changefeed.html#schema-policy), the changefeed will still emit duplicate records for the table that is being altered. In the preceding output, the records marked as `# Duplicate` will still emit with this option, but not the new schema records.
+To prevent the changefeed from emitting a copy of the table with the new schema, use the `schema_change_policy = nobackfill` option. In the preceding two output blocks, the new schema messages that include the `"likes_treats"` column will not emit.
+
+Refer to the [`CREATE CHANGEFEED` option table](create-changefeed.html#schema-events) for detail on the `schema_change_policy` option. You can also use the `schema_change_events` option to define the type of schema change event that triggers the behavior specified in `schema_change_policy`.
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/cdc/virtual-computed-column-cdc.md %}
@@ -195,12 +376,12 @@ When using the [`schema_change_policy = nobackfill` option](create-changefeed.ht
 
 ## Garbage collection and changefeeds
 
-By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](change-data-capture-overview.html#how-does-an-enterprise-changefeed-work).
+By default, [protected timestamps](architecture/storage-layer.html#protected-timestamps) will protect changefeed data from [garbage collection](architecture/storage-layer.html#garbage-collection) up to the time of the [_checkpoint_](how-does-an-enterprise-changefeed-work.html).
 
 Protected timestamps will protect changefeed data from garbage collection in the following scenarios:
 
 - The downstream [changefeed sink](changefeed-sinks.html) is unavailable. Protected timestamps will protect changes until you either [cancel](cancel-job.html) the changefeed or the sink becomes available once again.
-- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
+- You [pause](pause-job.html) a changefeed with the [`protect_data_from_gc_on_pause`](create-changefeed.html#protect-pause) option enabled. Or, a changefeed with `protect_data_from_gc_on_pause` pauses from a [retryable error](monitor-and-debug-changefeeds.html#changefeed-retry-errors). Protected timestamps will protect changes until you [resume](resume-job.html) the changefeed.
 
 However, if the changefeed lags too far behind, the protected changes could lead to an accumulation of garbage. This could result in increased disk usage and degraded performance for some workloads. To release the protected timestamps and allow garbage collection to resume, you can:
 

@@ -1,5 +1,5 @@
 ---
-title: Cluster Single Sign-on (SSO) using CockroachDB Cloud Console
+title: Cluster Single Sign-on (SSO) using the Cloud Console
 summary: Overview of Cluster Single Sign-on (SSO) for {{ site.data.products.db }}, review of authenticating users, configuring required cluster settings.
 toc: true
 docs_area: manage
@@ -19,13 +19,11 @@ Note that the topic of this page is SQL access to a specific CockroachDB Cluster
 
 ## Before you begin
 
+For more details and examples, refer to [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
+
 - You must be a member of a {{ site.data.products.db }} organization, and you must have access to an existing cluster or the permission to create a new cluster. For help setting up an organization and cluster, refer to [Quickstart with CockroachDB](quickstart.html).
-- To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually. 
+- To authenticate to a specific cluster using SSO, a {{ site.data.products.db }} user must have a corresponding SQL user already [created](../{{site.versions["stable"]}}/create-user.html#create-a-user) on that cluster. {{ site.data.products.db }} generates a SSO SQL username for each console, corresponding to the user's email by the convention `sso_{email_name}`, where `email_name` is everything up to the `@` in an email address, for example the SQL user `sso_docs` would result from `docs@cockroachlabs.com`. `ccloud` will prompt you to make this user if it does not already exist, in which case an admin must create it manually.
 - [`ccloud`, the {{ site.data.products.db }} CLI](ccloud-get-started.html) must be installed on your local system.
-
-## Learn more
-
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
 ## Sign in with Cluster SSO
 
@@ -63,5 +61,8 @@ You can [create a user](ccloud-get-started.html#create-a-sql-user-using-ccloud-c
  ~~~shell
  `ccloud cluster user create {cluster name} {SSO SQL username}`
  ~~~
- 
 
+## What's Next?
+
+- Read about [SSO to CockroachDB clusters using JWT](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) in the CockroachDB blog.
+- Learn more about [{{ site.data.products.db }} Organization SSO](cloud-org-sso.html).

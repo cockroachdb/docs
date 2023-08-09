@@ -5,7 +5,7 @@ toc: true
 docs_area: develop
 ---
 
-This page guides you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial.
+This page guides you through creating a database schema for an example global application. It is the second section of the [Develop and Deploy a Global Application](movr.html#develop-and-deploy-a-global-application) tutorial.
 
 ## Before you begin
 
@@ -64,9 +64,9 @@ Note that `movr` has the following [database regions](multiregion-overview.html#
 
 After you have added regions to a database, you can control where the data in each table in the database is stored, using [table localities](multiregion-overview.html#table-locality).
 
-By default, CockroachDB uses the table locality setting [`REGIONAL BY TABLE IN PRIMARY REGION`](multiregion-overview.html#regional-tables) for all new tables added to a multi-region database. The `REGIONAL BY TABLE` table locality optimizes read and write access to the data in a table from a single region (in this case, the primary region `gcp-us-east1`).
+By default, CockroachDB uses the table locality setting [`REGIONAL BY TABLE IN PRIMARY REGION`](table-localities.html#regional-tables) for all new tables added to a multi-region database. The `REGIONAL BY TABLE` table locality optimizes read and write access to the data in a table from a single region (in this case, the primary region `gcp-us-east1`).
 
-The `movr` database contains tables with rows of data that need to be accessed by users in more than one region. As a result, none of the tables benefit from using a `REGIONAL BY TABLE` locality. Instead, all three tables in the `movr` database schema should use a [`REGIONAL BY ROW` locality](multiregion-overview.html#regional-by-row-tables). For `REGIONAL BY ROW` tables, CockroachDB automatically assigns each row to a region based on the locality of the node from which the row is inserted. It then optimizes subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
+The `movr` database contains tables with rows of data that need to be accessed by users in more than one region. As a result, none of the tables benefit from using a `REGIONAL BY TABLE` locality. Instead, all three tables in the `movr` database schema should use a [`REGIONAL BY ROW` locality](table-localities.html#regional-by-row-tables). For `REGIONAL BY ROW` tables, CockroachDB automatically assigns each row to a region based on the locality of the node from which the row is inserted. It then optimizes subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
 
 {{site.data.alerts.callout_info}}
 As shown in the `CREATE TABLE` statements below, the `REGIONAL BY ROW` clauses do not identify a column to track the region for each row. To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](alter-table.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. The values of `crdb_region` are populated using the regional locality of the node from which the query creating the row originates.
@@ -107,7 +107,7 @@ Now that you are familiar with the `movr` schema, you can [set up a development 
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/glossary.html#cockroachdb-architecture-terms)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](alter-table.html#configure-zone)
 - [Define Table Partitions](partitioning.html)
 - [`ALTER TABLE ... PARTITION BY`](alter-table.html#partition-by)

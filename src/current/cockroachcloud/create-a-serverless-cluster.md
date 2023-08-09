@@ -33,15 +33,19 @@ You do not need an account with the cloud provider you choose in order to create
 
 ## Step 3. Select the regions
 
-In the **Regions** section, select a region for the cluster. Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.serverless-plan }} clusters can be deployed.
+In the **Regions** section, select a region for the cluster. Refer to [{{ site.data.products.db }} Regions](regions.html) for the regions where {{ site.data.products.serverless }} clusters can be deployed.
+
+For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For multi-region clusters, CockroachDB will optimize access to data from the [**Primary region**](../{{site.versions["stable"]}}/multiregion-overview.html). Refer to [Plan a {{ site.data.products.serverless }} Cluster](plan-your-cluster-serverless.html#multi-region-clusters) to learn more. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
 
 To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
 
-For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For example, if your client application is deployed in GCP's `us-east1` region, select GCP as your deployment environment and select `us-east1` as your cluster's region. For multi-region clusters, CockroachDB will optimize access to data from the **Primary region**. See [Multi-Region Capabilities Overview](../{{site.versions["stable"]}}/multiregion-overview.html) to learn more. If you want to create a cluster in an unavailable region, [contact Support](https://support.cockroachlabs.com) or your Cockroach Labs account team.
-
 {{site.data.alerts.callout_info}}
-**Multi-region for {{ site.data.products.serverless }} is in [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+**Multi-region for {{ site.data.products.serverless }} is in [preview](../{{site.versions["stable"]}}/cockroachdb-feature-availability.html)** and subject to change. You cannot currently add or remove regions once a cluster has been created. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
+
+After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)](network-authorization.html#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
+
+Private connectivity is not available for {{ site.data.products.serverless-plan }} clusters on GCP.
 
 ## Step 4. Set resource limits
 
@@ -66,8 +70,6 @@ All {{ site.data.products.db }} organizations get 50M RUs and 10 GiB of storage 
 
 1. Click **Create cluster**.
 
-Your cluster will be created in a few seconds.
-
 </section>
 
 <section class="filter-content" markdown="1" data-scope="paid">
@@ -90,9 +92,9 @@ Your cluster will be created in a few seconds.
 
 1. Click **Create cluster**.
 
-Your cluster will be created in a few seconds.
-
 </section>
+
+Your cluster will be created in a few seconds.
 
 ## What's next
 

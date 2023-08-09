@@ -55,6 +55,8 @@ Parameter | Description
 
 ### Sink URI
 
+This section provides example URIs for each of the sinks that CockroachDB changefeeds support. For more comprehensive detail of using and configuring each sink, refer to the [Changefeed Sinks](changefeed-sinks.html) page.
+
 The sink URI follows the basic format of:
 
 ~~~
@@ -67,8 +69,6 @@ URI Component      | Description
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
-
-See [Changefeed Sinks](changefeed-sinks.html) for considerations when using each sink and detail on configuration.
 
 #### Kafka
 
@@ -92,7 +92,7 @@ Example of a Google Cloud Pub/Sub sink URI:
 'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
 ~~~
 
-[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. See [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
+[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks](changefeed-sinks.html#google-cloud-pub-sub) for further consideration.
 
 #### Cloud Storage
 
@@ -105,7 +105,7 @@ Azure Blob Storage | `'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOU
 Google Cloud | `'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY'`
 HTTP         | `'http://localhost:8080/{PATH}'`
 
-[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. See [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
+[Use Cloud Storage](use-cloud-storage.html) explains the requirements for authentication and encryption for each supported cloud storage sink. Refer to [Changefeed Sinks](changefeed-sinks.html#cloud-storage-sink) for considerations when using cloud storage.
 
 #### Webhook
 
@@ -119,7 +119,7 @@ Example of a webhook URI:
 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
 ~~~
 
-See [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
+Refer to [Changefeed Sinks](changefeed-sinks.html#webhook-sink) for specifics on webhook sink configuration.
 
 ### Query parameters
 
@@ -167,7 +167,7 @@ Option | Value | Description
 <a name="protect-pause"></a>`protect_data_from_gc_on_pause` | N/A |  When a [changefeed is paused](pause-job.html), ensure that the data needed to [resume the changefeed](resume-job.html) is not garbage collected. If `protect_data_from_gc_on_pause` is **unset**, pausing the changefeed will release the existing protected timestamp records. It is also important to note that pausing and adding `protect_data_from_gc_on_pause` to a changefeed will not protect data if the [garbage collection](configure-replication-zones.html#gc-ttlseconds) window has already passed. <br><br>Use with [`on-error=pause`](#on-error) to protect changes from garbage collection when encountering non-retryable errors. <br><br>See [Garbage collection and changefeeds](changefeed-messages.html#garbage-collection-and-changefeeds) for more detail on protecting changefeed data.<br><br>**Note:** If you use this option, changefeeds that are left paused for long periods of time can prevent garbage collection.
 <a name="resolved-option"></a>`resolved` | [Duration string](https://pkg.go.dev/time#ParseDuration) | Emits [resolved timestamp](changefeed-messages.html#resolved-def) events per changefeed in a format dependent on the connected sink. Resolved timestamp events do not emit until all ranges in the changefeed have progressed to a specific point in time. <br><br>Set an optional minimal duration between emitting resolved timestamps. Example: `resolved='10s'`. This option will **only** emit a resolved timestamp event if the timestamp has advanced and at least the optional duration has elapsed. If unspecified, all resolved timestamps are emitted as the high-water mark advances.<br><br>**Note:** If you require `resolved` message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](#min-checkpoint-frequency) option to at least the desired `resolved` frequency. This is because `resolved` messages will not be emitted more frequently than `min_checkpoint_frequency`, but may be emitted less frequently.
 <a name="schema-events"></a>`schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`](alter-table.html#add-column) events for columns that have a non-`NULL` [`DEFAULT` value](default-value.html) or are [computed](computed-columns.html), and all [`DROP COLUMN`](alter-table.html#drop-column) events.</li><li>`column_changes`: Include all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
-<a name="schema-policy"></a>`schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), perform no logical backfills. The changefeed will still emit any duplicate records for the table being altered, but will not emit the new schema records. </li><li>`stop`: [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
+<a name="schema-policy"></a>`schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), perform no logical backfills. The changefeed will not emit any messages about the schema change. </li><li>`stop`: For [schema changes with column backfill](changefeed-messages.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 <a name="split-column-families"></a>`split_column_families` | N/A | Use this option to create a changefeed on a table with multiple [column families](column-families.html). The changefeed will emit messages for each of the table's column families. See [Changefeeds on tables with column families](changefeeds-on-tables-with-column-families.html) for more usage detail.
 `topic_in_value` | [`BOOL`](bool.html) |  Set to include the topic in each emitted row update. Note this is automatically set for [webhook sinks](changefeed-sinks.html#webhook-sink).
 <a name="updated-option"></a>`updated` | N/A | Include updated timestamps with each row.<br><br>If a `cursor` is provided, the "updated" timestamps will match the [MVCC](architecture/storage-layer.html#mvcc) timestamps of the emitted rows, and there is no initial scan. If a `cursor` is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a [backfill is performed for a schema change](changefeed-messages.html#schema-changes-with-column-backfill), the "updated" timestamp is set to the first timestamp for when the new schema is valid.

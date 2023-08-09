@@ -35,9 +35,9 @@ This page discusses:
 CockroachDB will no longer provide the [Follow-the-Workload](topology-follow-the-workload.html) pattern's behavior for a database if you use the [multi-region SQL statements](multiregion-overview.html) with that database. In other words, the multi-region SQL statements do not provide a behavior that is analogous to Follow-the-Workload.
 {{site.data.alerts.end}}
 
-For more information about how to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about how to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals).
 
-For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to `Use` `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html).
+For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to `Use` `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables).
 
 ## How to migrate a database to the multi-region SQL abstractions
 
@@ -110,7 +110,7 @@ If you applied the [geo-partitioned replicas][../v20.2/topology-geo-partitioned-
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
 
-The latency and resiliency benefits of the geo-partitioned replicas pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+The latency and resiliency benefits of the geo-partitioned replicas pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-survival-goals.html#survive-zone-failures).
 
 {{site.data.alerts.callout_info}}
 The multi-region SQL abstractions use a hidden [`crdb_region`](alter-table.html#crdb_region) column to represent the row's home region. You may need to modify your existing schema to take this into account. For example, if you already have a column you are using to denote each row's home region, you can use that name instead of `crdb_region` by following the instructions on the [`ALTER TABLE ... SET LOCALITY`](alter-table.html#rename-crdb_region) page.
@@ -134,7 +134,7 @@ If you applied the [geo-partitioned leaseholders][../v20.2/topology-geo-partitio
     ALTER INDEX users_last_name_index PARTITION BY NOTHING;
     ~~~
 
-The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures).
+The latency and resiliency benefits of the geo-partitioned leaseholders pattern can be replaced by making `users` a [`REGIONAL BY ROW` table](regional-tables.html#regional-by-row-tables) with a [`ZONE` survival goal](multiregion-survival-goals.html#survive-zone-failures).
 
 ### Step 2. Add a primary region to your database
 
@@ -160,8 +160,8 @@ ALTER DATABASE foo ADD REGION "us-central1";
 
 Depending on your desired database [survival goal](multiregion-overview.html#survival-goals), you can choose from the following settings:
 
-- [`ZONE` survival](multiregion-overview.html#surviving-zone-failures) (Default): the database will remain fully available for reads and writes if one zone in a region goes down. More than one zone going down concurrently may affect availability.
-- [`REGION` survival](multiregion-overview.html#surviving-region-failures): the database will remain fully available for reads and writes if one region goes down. More than one region going down concurrently may affect availability.
+- [`ZONE` survival](multiregion-survival-goals.html#survive-zone-failures) (Default): the database will remain fully available for reads and writes if one zone in a region goes down. More than one zone going down concurrently may affect availability.
+- [`REGION` survival](multiregion-survival-goals.html#survive-region-failures): the database will remain fully available for reads and writes if one region goes down. More than one region going down concurrently may affect availability.
 
 For example, to set a region survival goal, issue the following SQL statement:
 
@@ -170,7 +170,7 @@ For example, to set a region survival goal, issue the following SQL statement:
 ALTER DATABASE foo SURVIVE REGION FAILURE;
 ~~~
 
-For more information about when to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html).
+For more information about when to use `ZONE` vs. `REGION` survival goals, see [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals).
 
 ### Step 5. Configure table localities
 
@@ -187,7 +187,7 @@ For example, to configure the `postal_codes` table from the [duplicate indexes e
 ALTER TABLE postal_codes SET LOCALITY GLOBAL;
 ~~~
 
-For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html).
+For more information about when to use `GLOBAL` vs. `REGIONAL` tables, see [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables).
 
 ### Step 6. (Optional) View the updated zone configurations
 
@@ -197,7 +197,7 @@ For example, given a multi-region demo cluster set up using the instructions in 
 
 #### Regional by row tables
 
-A [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) table differs from the default by setting the following zone configuration settings:
+A [`REGIONAL BY ROW`](table-localities.html#regional-by-row-tables) table differs from the default by setting the following zone configuration settings:
 
 - [`num_replicas`](configure-replication-zones.html#num_replicas)
 - [`num_voters`](configure-replication-zones.html#num_voters)
@@ -302,12 +302,12 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 
 - [Scale to Multiple Regions](multiregion-scale-application.html)
 - [Multi-Region Capabilities Overview](multiregion-overview.html)
-- [When to Use `REGIONAL` vs. `GLOBAL` Tables](when-to-use-regional-vs-global-tables.html)
-- [When to Use `ZONE` vs. `REGION` Survival Goals](when-to-use-zone-vs-region-survival-goals.html)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](table-localities.html#when-to-use-regional-vs-global-tables)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](multiregion-survival-goals.html#when-to-use-zone-vs-region-survival-goals)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)

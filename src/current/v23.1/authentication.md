@@ -1,5 +1,5 @@
 ---
-title: Authenticating to CockroachDB Self-Hosted Clusters
+title: Authenticate to CockroachDB Self-Hosted Clusters
 summary: Learn about the authentication features for secure CockroachDB clusters.
 toc: true
 docs_area: manage
@@ -36,7 +36,7 @@ Based on your security setup, you can use the [`cockroach cert` commands](cockro
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
-- Node authentication using [TLS 1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
+- Node authentication using [TLS 1.3](https://wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication](gssapi_authentication.html) (for Enterprise users).
 
 ### Node authentication
@@ -112,7 +112,7 @@ You can use the [`cockroach cert` commands](cockroach-cert.html) or [`openssl` c
 Note that the node certificate created using `cockroach cert` or`openssl` is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. Thus all nodes must have the following:
 
 - `CN=node` for the special user `node` when the node acts as a client.
-- All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name` field for when the node acts as a server. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate).
+- All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name` field for when the node acts as a server. CockroachDB also supports [wildcard notation in DNS names](https://wikipedia.org/wiki/Wildcard_certificate).
 
 **Node key and certificates**
 
@@ -121,7 +121,7 @@ A node must have the following files with file names as specified in the table:
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
+`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key created using the `cockroach cert` command.
 
 **Client key and certificates**
@@ -156,7 +156,7 @@ A node must have the following files with file names as specified in the table:
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate issued by the public CA or your organizational CA.
-`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
+`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key corresponding to `node.crt`.
 `client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`. <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.node.key` | Client key corresponding to `client.node.crt`.
@@ -188,7 +188,7 @@ A node must have the following files with file names as specified in the table:
 File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
-`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
+`node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key created using the `cockroach cert` command.
 `ui.crt` | UI certificate signed by the public CA. `ui.crt` must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name`.
 `ui.key` | UI key corresponding to `ui.crt`.
@@ -221,7 +221,7 @@ File name | File usage
 -------------|------------
 `ca.crt`     | CA certificate to verify node certificates.
 `ca-client.crt` | CA certificate to verify client certificates.
-`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br> Must be signed by the CA represented by `ca.crt`.
+`node.crt`   | Node certificate for when node acts as server. <br><br>All IP addresses and DNS names for the node must be listed in the `Subject Alternative Name`. CockroachDB also supports [wildcard notation in DNS names](https://wikipedia.org/wiki/Wildcard_certificate). <br><br> Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key corresponding to `node.crt`.
 `client.node.crt` | Node certificate for when node acts as client. This certificate must be signed by the CA represented by `ca-client.crt`.  <br><br>Must have `CN=node`.
 `client.node.key` | Client key corresponding to `client.node.crt`.
@@ -255,7 +255,9 @@ For details about when and how to change security certificates without restartin
 
 ## Background on public key cryptography and digital certificates
 
-As mentioned above, CockroachDB supports the [TLS 1.3 and TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
+CockroachDB supports the [TLS 1.3 and TLS 1.2](https://wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric and asymmetric encryption to encrypt data in flight.
+
+{% include common/tls-bad-cipher-warning.md %}
 
 Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 

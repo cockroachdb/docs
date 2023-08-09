@@ -1,12 +1,12 @@
 ---
-title: Use the Cloud API
+title: Use the CockroachDB Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
 docs_area: manage
 cloud: true
 ---
 
-The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
+The Cloud API is a [REST interface](https://wikipedia.org/wiki/Representational_state_transfer) that allows you programmatic access to manage the lifecycle of clusters within your organization.
 
 ## API reference
 
@@ -628,7 +628,7 @@ The service account associated with the secret key must have the Cluster Adminis
 
 {{site.data.alerts.callout_danger}}
 By default, a new SQL user created using the UI or Cloud API is granted the SQL `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges.
-When possible, it is best practice to [limit each user's privileges](managing-access.html#use-sql-roles-to-manage-access) to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+When possible, it is best practice to [limit each user's privileges](managing-access.html#use-sql-roles-to-manage-access) to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}

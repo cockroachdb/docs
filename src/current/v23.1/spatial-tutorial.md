@@ -6,7 +6,7 @@ toc_not_nested: true
 docs_area: deploy
 ---
 
-In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities](spatial-features.html):
+In this tutorial, you will plan a vacation from New York City to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State to do some birdwatching while visiting local independent bookstores. In the process, you will explore several of CockroachDB's [spatial capabilities](spatial-data-overview.html):
 
 + Importing spatial data from SQL files (including how to build spatial geometries from data in CSV files).
 + Putting together separate spatial data sets to ask and answer potentially interesting questions.
@@ -448,7 +448,7 @@ To answer this question:
 1. Join the results of the above CTE and a query against the `birds` database that lists the names and observation totals (sums) of birds whose habitats are within 10 miles of the location of the bookstore.
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](query-spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -716,7 +716,7 @@ To answer this question:
 1. Join the results of the above CTE with a query against [the `birds` database](#the-birds-database) that checks whether the distance between the route geometry and the location of the bird observation (`birds.routes.geom`) bookstore's location is less than the desired length of 10 miles. Note that because the call to `ST_Distance` is operating on shapes cast to `GEOGRAPHY` data type, the results are in meters, which then have to be converted to miles by dividing the result by 1609 (the number of meters in a mile).
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](query-spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -899,7 +899,7 @@ To answer this question:
 1. Finally, query the results of the `nearby_roads` subquery to get a list of 10 distinct road names that you can plan to visit.
 
 {{site.data.alerts.callout_info}}
-The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
+The query below can also be written using an explicit `ST_DWithin`, which is an [index-accelerated function](query-spatial-data.html#performance). CockroachDB optimizes `ST_Distance(...) < $some_value` to use `ST_DWithin` (see this query's [`EXPLAIN`](explain.html) output for details).
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
@@ -1645,7 +1645,7 @@ ORDER BY
 
 Now that you are familiar with writing and tuning spatial queries, you are ready for the following steps:
 
-- Learn more details about the [spatial features](spatial-features.html) supported by CockroachDB.
+- Learn more details about the [spatial features](spatial-data-overview.html) supported by CockroachDB.
 
 - Learn how to migrate spatial data from [shapefiles](migrate-from-shapefiles.html), [GeoPackages](migrate-from-geopackage.html), [GeoJSON](migrate-from-geojson.html), or [OpenStreetMap](migrate-from-openstreetmap.html) into CockroachDB.
 
@@ -1657,7 +1657,7 @@ Now that you are familiar with writing and tuning spatial queries, you are ready
 
 The queries are presented above in a "narrative order" that corresponds roughly to the order in which you might ask questions about bookstores and loon habitat as you plan for your vacation.
 
-However, you may just want to see what queries are exercising a specific [spatial feature](spatial-features.html) supported by CockroachDB. The table below provides a mapping from a feature (such as 'spatial indexing' or 'spatial joins') to the queries that use that feature.
+However, you may just want to see what queries are exercising a specific [spatial feature](spatial-data-overview.html) supported by CockroachDB. The table below provides a mapping from a feature (such as 'spatial indexing' or 'spatial joins') to the queries that use that feature.
 
 | Feature                      | Queries                                                                                                                                                | Description(s)                                                                                                                                                            |
 |------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1691,7 +1691,7 @@ Below is an entity-relationship diagram showing the `bookstores` and `bookstore_
 
 <img src="{{ 'images/v23.1/geospatial/tutorial/er-bookstores.png' | relative_url }}" alt="tutorial.bookstores and tutorial.bookstore_routes ER diagrams" style="max-width:100%" />
 
-As mentioned above, the `bookstores` table was created by scraping web data from the [American Booksellers Association website's member directory](https://bookweb.org/member_directory/search/ABAmember). In addition, the `geom` column was constructed by doing some [address geocoding](https://en.wikipedia.org/wiki/Address_geocoding) that converted each bookstore's address to a lon/lat pair and converted to a spatial object using `ST_MakePoint`. For each bookstore, the script did a bit of parsing and geocoding and ran essentially the following query:
+As mentioned above, the `bookstores` table was created by scraping web data from the [American Booksellers Association website's member directory](https://bookweb.org/member_directory/search/ABAmember). In addition, the `geom` column was constructed by doing some [address geocoding](https://wikipedia.org/wiki/Address_geocoding) that converted each bookstore's address to a lon/lat pair and converted to a spatial object using `ST_MakePoint`. For each bookstore, the script did a bit of parsing and geocoding and ran essentially the following query:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -1804,11 +1804,10 @@ This data is stored in a separate `birds` database due to the fact that it is sp
 ## See also
 
 - [Install CockroachDB](install-cockroachdb.html)
-- [Working with Spatial Data](spatial-data.html)
-- [Spatial Features](spatial-features.html)
+- [Export Spatial Data](export-spatial-data.html)
+- [Spatial Data Overview](spatial-data-overview.html)
 - [Spatial indexes](spatial-indexes.html)
-- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
-- [Working with Spatial Data](spatial-data.html)
+- [Spatial & GIS Glossary of Terms](architecture/glossary.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
