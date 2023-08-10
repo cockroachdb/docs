@@ -458,6 +458,12 @@
                     ]
               },
               {
+                "title": "SQL Shell",
+                "urls": [
+                  "/cockroachcloud/sql-shell.html"
+                ]
+              },
+              {
                 "title": "CockroachDB Cloud API",
                 "urls": [
                   "/cockroachcloud/cloud-api.html"
