@@ -1,5 +1,5 @@
 ---
-title: Managing AWS PrivateLink for CockroachDB Cloud
+title: Manage AWS PrivateLink
 summary: Instructions for establishing AWS PrivateLink network access for a cluster in CockroachDB Cloud.
 toc: true
 docs_area: manage

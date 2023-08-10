@@ -40,7 +40,7 @@ For more details and examples, refer to [SSO to CockroachDB clusters using JWT](
 
 ## Learn more
 
-This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
+This [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/sso-to-clusters-with-jwt/) covers and provides further resources for a variety of auth token-issuing use cases, including using Okta and Google Cloud Platform to issue tokens.
 
 ## Provision a service account
 

@@ -1,5 +1,5 @@
 ---
-title: Hash-sharded Indexes
+title: Index Sequential Keys with Hash-sharded Indexes
 summary: Hash-sharded indexes can eliminate single-range hot spots and improve write performance on sequentially-keyed indexes at a small cost to read performance
 toc: true
 docs_area: develop

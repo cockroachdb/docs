@@ -1,5 +1,5 @@
 ---
-title: Managing Users, Roles, and Service Accounts in CockroachDB Cloud
+title: Manage Users, Roles, and Service Accounts
 summary: Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles.
 toc: true
 docs_area: manage

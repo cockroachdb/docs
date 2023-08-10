@@ -1,5 +1,5 @@
 ---
-title: Migrate from GeoPackages
+title: Migrate from GeoPackage
 summary: Learn how to migrate data from GeoPackages into a CockroachDB cluster.
 toc: true
 docs_area: migrate

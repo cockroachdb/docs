@@ -307,7 +307,7 @@ SHOW ZONE CONFIGURATION FROM TABLE promo_codes;
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas)
 - [Secondary regions](multiregion-overview.html#secondary-regions)
 - [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)

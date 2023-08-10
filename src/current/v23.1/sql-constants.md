@@ -1,5 +1,5 @@
 ---
-title: Constant Values
+title: Constants
 summary: SQL Constants represent a simple value that doesn't change.
 toc: true
 docs_area: reference.sql

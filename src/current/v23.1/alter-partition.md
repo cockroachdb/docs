@@ -7,7 +7,7 @@ docs_area: reference.sql
 
 `ALTER PARTITION` is used to add, modify, reset, or remove replication zones for [partitioning](partitioning.html). It is combined with the `CONFIGURE ZONE` subcommand.
 
-To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Replication Controls](configure-replication-zones.html).
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 

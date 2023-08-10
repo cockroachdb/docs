@@ -93,4 +93,4 @@ Flag | Description
 
 ## See also
 
-- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Migration Overview](migration-overview.html)

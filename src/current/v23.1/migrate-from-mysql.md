@@ -6,7 +6,7 @@ keywords: load data infile
 docs_area: migrate
 ---
 
-This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migrate Your Database to CockroachDB](migration-overview.html), which describes the broad phases and considerations of migrating a database to CockroachDB. 
+This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview](migration-overview.html), which describes the broad phases and considerations of migrating a database to CockroachDB. 
 
 The [MySQL migration example](#example-migrate-world-to-cockroachdb) on this page demonstrates how to use [MOLT tooling](migration-overview.html#molt) to update the MySQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration](migration-overview.html#prepare-for-migration).
 
@@ -403,11 +403,11 @@ Use [MOLT Verify](molt-verify.html) to check that the data on MySQL and Cockroac
        <nil> INF verification complete
        ~~~
 
-With the schema migrated and the initial data load verified, the next steps in a real-world migration are to [validate application queries](migration-overview.html#validate-queries) and [perform a dry run](migration-overview.html#perform-a-dry-run) before [conducting the full migration](migration-overview.html#conduct-the-migration). To learn more, see [Migrate Your Database to CockroachDB](migration-overview.html).
+With the schema migrated and the initial data load verified, the next steps in a real-world migration are to [validate application queries](migration-overview.html#validate-queries) and [perform a dry run](migration-overview.html#perform-a-dry-run) before [conducting the full migration](migration-overview.html#conduct-the-migration). To learn more, see [Migration Overview](migration-overview.html).
 
 ## See also
 
-- [Migrate Your Database to CockroachDB](migration-overview.html)
+- [Migration Overview](migration-overview.html)
 - [Use the Schema Conversion Tool](../cockroachcloud/migrations-page.html)
 - [Use the MOLT Verify tool](molt-verify.html)
 - [Import Performance Best Practices](import-performance-best-practices.html)

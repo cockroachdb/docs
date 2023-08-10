@@ -1,5 +1,5 @@
 ---
-title: Partial Indexes
+title: Index a Subset of Rows with Partial Indexes
 summary: Partial indexes allow you to specify a subset of rows and columns to add to an index.
 toc: true
 keywords: gin, gin index, gin indexes, inverted index, inverted indexes, accelerated index, accelerated indexes
