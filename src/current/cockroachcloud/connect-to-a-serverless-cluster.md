@@ -68,6 +68,7 @@ Private connectivity is not available for {{ site.data.products.serverless }} cl
   <section class="filter-content" markdown="1" data-scope="connection-string">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to {{ site.data.products.serverless }}.
 1. Add your copied connection string to your application code. For information about connecting to {{ site.data.products.serverless }} with a [supported client](../stable/third-party-database-tools.html), see [Connect to a CockroachDB Cluster](../stable/connect-to-the-database.html).
 
@@ -89,6 +90,7 @@ For connection examples and code snippets in your language, see the following:
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
 1. Select the **Parameters only** option of the **Select option** dropdown.
 
 1. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](../{{site.current_cloud_version}}/third-party-database-tools.html).
@@ -106,7 +108,8 @@ For connection examples and code snippets in your language, see the following:
 
 1. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
 1. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install CockroachDB.
-1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
+1. If you [established a private connection using AWS PrivateLink](#establish-aws-privatelink), change **Connection type** from **Public connection** to **Private connection** to connect privately.
+1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.current_cloud_version}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.

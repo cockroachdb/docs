@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Cloud Security
+title: CockroachDB Cloud Security Overview
 summary: Learn about the authentication, encryption, authorization, and audit log features for CockroachDB Cloud clusters.
 toc: false
 docs_area: manage

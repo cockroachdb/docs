@@ -14,7 +14,7 @@ Click the links in the tables below to see simple but complete example applicati
 If you are looking to do a specific task such as connect to the database, insert data, or run multi-statement transactions, see [this list of tasks](#tasks).
 
 {{site.data.alerts.callout_info}}
-Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **partial** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 Note that tools with [**community-level** support](community-tooling.html) have been tested or developed by the CockroachDB community, but are not officially supported by Cockroach Labs. If you encounter problems with using these tools, please contact the maintainer of the tool with details.
 {{site.data.alerts.end}}
@@ -65,13 +65,13 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 
 | Driver/ORM Framework                                      | Support level  | Example apps                                           |
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [Npgsql](https://www.npgsql.org/)                         | Beta           | [Simple CRUD](build-a-csharp-app-with-cockroachdb.html)
+| [Npgsql](https://www.npgsql.org/)                         | Partial           | [Simple CRUD](build-a-csharp-app-with-cockroachdb.html)
 
 ## Rust
 
 | Driver/ORM Framework                           | Support level  | Example apps                                           |
 |------------------------------------------------+----------------+--------------------------------------------------------|
-| [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Beta      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
+| [Rust-Postgres](https://github.com/sfackler/rust-postgres) | Partial      | [Simple CRUD](build-a-rust-app-with-cockroachdb.html)
 
 
 ## See also

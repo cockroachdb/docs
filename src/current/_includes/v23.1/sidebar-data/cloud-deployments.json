@@ -24,7 +24,7 @@
                 ]
             },
             {
-                "title": "Create a CockroachDB Serverless Cluster",
+                "title": "Create a Serverless Cluster",
                 "urls": [
                     "/cockroachcloud/create-a-serverless-cluster.html"
                 ]
@@ -54,7 +54,7 @@
                 ]
             },
             {
-                "title": "Optimize Your CockroachDB Serverless Workload",
+                "title": "Optimize Your Serverless Workload",
                 "urls": [
                     "/cockroachcloud/optimize-serverless-workload.html"
                 ]
@@ -118,41 +118,41 @@
         "title": "Security",
         "items": [
             {
-                "title": "CockroachDB Cloud Security Overview",
+                "title": "Overview",
                 "urls": [
                 "/cockroachcloud/security-overview.html"
                 ]
             },
 
             {
-            "title": "Manage AWS PrivateLink for a Dedicated Cluster",
+            "title": "Manage AWS PrivateLink",
             "urls": [
                 "/cockroachcloud/aws-privatelink.html"
             ]
             },
             {
-            "title": "CMEK for Dedicated",
+            "title": "Customer-Managed Encryption Keys (CMEK)",
             "items": [
                 {
-                "title": "Manage Customer-Managed Encryption Keys (CMEK) for Dedicated",
+                "title": "Manage CMEK for Dedicated",
                 "urls": [
                     "/cockroachcloud/managing-cmek.html"
                 ]
                 },
                 {
-                "title": "Provision AWS KMS Keys and IAM Roles for CMEK",
+                "title": "Provision AWS for CMEK",
                 "urls": [
                     "/cockroachcloud/cmek-ops-aws.html"
                 ]
                 },
                 {
-                "title": "Provision GCP KMS Keys and Service Accounts for CMEK",
+                "title": "Provision GCP for CMEK",
                 "urls": [
                     "/cockroachcloud/cmek-ops-gcp.html"
                 ]
                 },
                 {
-                "title": "Customer-Managed Encryption Keys (CMEK)",
+                "title": "Customer-Managed Encryption Keys (CMEK) Overview",
                 "urls": [
                     "/cockroachcloud/cmek.html"
                 ]
@@ -163,13 +163,13 @@
             "title": "Compliance",
             "items": [
                 {
-                    "title": "CockroachDB Dedicated Compliance Overview",
+                    "title": "Compliance in Dedicated",
                     "urls": [
                       "/cockroachcloud/compliance.html"
                     ]
                   },
                 {
-                "title": "Payment Card Industry Data Security Standard (PCI DSS)",
+                "title": "PCI DSS",
                 "urls": [
                     "/cockroachcloud/pci-dss.html"
                 ]
@@ -180,13 +180,13 @@
             "title": "Authentication",
                 "items": [
                     {
-                        "title": "Authentication Overview",
+                        "title": "Overview",
                         "urls": [
                             "/cockroachcloud/authentication.html"
                         ]
                     },
                     {
-                        "title": "Single Sign-On (SSO) for CockroachDB Cloud Organizations",
+                        "title": "SSO for Cloud Organizations",
                         "urls": [
                             "/cockroachcloud/cloud-org-sso.html"
                         ]
@@ -204,13 +204,13 @@
                         ]
                     },
                     {
-                        "title": "Cluster Single Sign-On (SSO) using CockroachDB Cloud Console",
+                        "title": "Cluster SSO using the Cloud Console",
                         "urls": [
                         "/cockroachcloud/cloud-sso-sql.html"
                         ]
                     },
                     {
-                        "title": "Certificate Authentication for SQL Clients in CockroachDB Dedicated Clusters",
+                        "title": "SQL Client Certificate Authentication for Dedicated Clusters",
                         "urls": [
                         "/cockroachcloud/client-certs-dedicated.html"
                         ]
@@ -221,13 +221,13 @@
                 "title": "Authorization",
                 "items": [
                     {
-                        "title": "Authorization Overview",
+                        "title": "Overview",
                         "urls": [
                             "/cockroachcloud/authorization.html"
                         ]
                     },
                     {
-                        "title": "Manage Console Access",
+                        "title": "Manage Users, Roles, and Service Accounts",
                         "urls": [
                             "/cockroachcloud/managing-access.html"
                         ]
@@ -273,7 +273,7 @@
                         ]
                     },
                     {
-                        "title": "Export Logs From {{ site.data.products.dedicated }}",
+                        "title": "Export Logs From Dedicated",
                         "urls": [
                         "/cockroachcloud/export-logs.html"
                         ]
@@ -284,7 +284,7 @@
                 "title": "Security Tutorials",
                 "items": [
                     {
-                        "title": "Configure SQL Authentication for Hardened Serverless Cluster Security",
+                        "title": "Configure SQL Authentication",
                         "urls": [
                             "/${VERSION}/security-reference/config-secure-hba.html"
                         ]
@@ -321,7 +321,7 @@
                     ]
                   },
                   {
-                    "title": "Monitoring Page",
+                    "title": "Tools Page",
                     "urls": [
                       "/cockroachcloud/tools-page.html"
                     ]
@@ -374,7 +374,7 @@
                     ]
                   },
                   {
-                    "title": "Export Metrics From a {{ site.data.products.dedicated }} Cluster",
+                    "title": "Export Metrics From a Dedicated Cluster",
                     "urls": [
                       "/cockroachcloud/export-metrics.html"
                     ]
@@ -399,7 +399,7 @@
                 ]
               },
               {
-                "title": "CockroachDB Cloud Billing",
+                "title": "Billing Management",
                 "urls": [
                    "/cockroachcloud/billing-management.html"
                 ]

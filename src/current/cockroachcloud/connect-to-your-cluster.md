@@ -52,12 +52,12 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
 1. Navigate to your cluster's **Networking > VPC Peering** tab.
 1. Click **Set up a VPC peering connection**.
-1. On the **Request a VPC peering connection** modal, enter your [GCP Project ID](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+1. On the **Request a VPC peering connection** dialog, enter your [GCP Project ID](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
 1. Enter your [GCP VPC network name](https://cloud.google.com/vpc/docs/using-vpc#viewing-networks).
 1. In the **Connection name** field, enter a descriptive name for the VPC connection.
 1. Click **Request Connection**.
 1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
-1. On the **Networking** page, verify the connection status is **Active**.
+1. On the **Networking** page, verify the connection status is **Available**.
 
 ## Select a connection method
 
@@ -113,6 +113,8 @@ To connect to your cluster with the [built-in SQL client](../{{site.current_clou
 
     {% include cockroachcloud/download-the-cert.md %}
 
+1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
+
 1. Copy the [`cockroach sql`](../{{site.current_cloud_version}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
 
     {% include cockroachcloud/sql-connection-string.md %}
@@ -146,6 +148,8 @@ To connect to your cluster with your application, use the connection string prov
 1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 
     {% include cockroachcloud/download-the-cert.md %}
+
+1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
 
 1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}:
 
@@ -194,6 +198,11 @@ For examples, see the following:
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
 To connect to your cluster with a [CockroachDB-compatible tool](../{{site.current_cloud_version}}/third-party-database-tools.html), use the connection parameters provided in the Console.
+
+1. From the cluster's **Details** page, click **Connect**.
+1. If you [established a private connection using VPC Peering or AWS PrivateLink](#establish-gcp-vpc-peering-or-aws-privatelink), click **VPC Peering** or **PrivateLink** to connect privately.
+1. Copy the connection string and provide it to the CockroachDB-compatible tool.
+
   </section>
 
 ## What's next

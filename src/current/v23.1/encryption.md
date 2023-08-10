@@ -1,5 +1,5 @@
 ---
-title: Managing Encryption for CockroachDB Self-Hosted
+title: Manage Encryption for CockroachDB Self-Hosted
 summary: Learn about the encryption features for secure CockroachDB clusters.
 toc: true
 docs_area: manage

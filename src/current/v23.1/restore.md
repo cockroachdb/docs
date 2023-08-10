@@ -599,7 +599,7 @@ For more detail on using this option with `BACKUP`, see [Incremental backups wit
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
 - [Manage a Backup Schedule](manage-a-backup-schedule.html)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [`ENUM`](enum.html)
 - [`CREATE TYPE`](create-type.html)
 - [`DROP TYPE`](drop-type.html)

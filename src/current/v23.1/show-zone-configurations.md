@@ -88,7 +88,7 @@ CONFIGURE ZONE 1
 
 ## See also
 
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [`ALTER DATABASE ... CONFIGURE ZONE`](alter-database.html#configure-zone)
 - [`ALTER INDEX ... CONFIGURE ZONE`](alter-index.html#configure-zone)
 - [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone)

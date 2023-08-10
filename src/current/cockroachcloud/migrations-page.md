@@ -48,7 +48,7 @@ The steps to convert your schema depend on your source dialect.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql oracle mssql">
-<li><b>Casing of Identifiers:</b> Select <b>Keep case sensitivity</b> to enclose identifiers in double-quotes, and <b>Make case insensitive</b> to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="../{{version_prefix}}keywords-and-identifiers.html#identifiers">Identifiers</a>.</li>
+<li><b>Casing of Identifiers:</b> Select <b>Keep case sensitivity</b> to enclose identifiers in double quotes, and <b>Make case insensitive</b> to convert identifiers to lowercase. For details on how CockroachDB handles identifiers, see <a href="../{{version_prefix}}keywords-and-identifiers.html#identifiers">Identifiers</a>.</li>
 </section>
 
 <section class="filter-content" markdown="1" data-scope="mysql">

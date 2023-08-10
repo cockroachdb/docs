@@ -120,7 +120,7 @@ $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas
 $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=1;" --certs-dir=[path to certs directory]
 ~~~
 
-The zone's replica count is reduced to 1. For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone) and [Configure Replication Zones](configure-replication-zones.html).
+The zone's replica count is reduced to 1. For more information, see [`ALTER RANGE ... CONFIGURE ZONE`](alter-range.html#configure-zone) and [Replication Controls](configure-replication-zones.html).
 
 ### When running a multi-node cluster
 

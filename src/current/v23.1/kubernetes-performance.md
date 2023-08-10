@@ -160,7 +160,7 @@ Since [GCE disk IOPS scale linearly with disk size](https://cloud.google.com/com
 
 Up to this point, we have assumed the use of auto-provisioned, remotely attached disks. However, local disks typically provide better performance than remotely attached disks. For example, SSD Instance Store Volumes outperform EBS Volumes on AWS, and Local SSDs outperform Persistent Disks on GCE. As of v1.14, Kubernetes supports [`local` volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local).
 
-Note that when running with local disks, there is a greater chance of experiencing a disk failure than when using the cloud providers' network-attached disks that are often replicated underneath the covers. Consequently, you may want to [configure replication zones](configure-replication-zones.html) to increase the replication factor of your data to 5 from its default of 3 when using local disks.
+Note that when running with local disks, there is a greater chance of experiencing a disk failure than when using the cloud providers' network-attached disks that are often replicated underneath the covers. Consequently, you may want to [Replication Controls](configure-replication-zones.html) to increase the replication factor of your data to 5 from its default of 3 when using local disks.
 
 ### Resource requests and limits
 
