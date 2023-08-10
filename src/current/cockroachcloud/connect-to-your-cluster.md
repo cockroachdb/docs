@@ -87,7 +87,7 @@ During [limited access](/docs/{{site.versions["stable"]}}/cockroachdb-feature-av
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="command-line">Command line</button>
-        <button class="filter-button page-level" data-scope="connection-string">Connection string</button>
+        <button class="filter-button page-level" data-scope="connection-string">General connection string</button>
         <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
     </div>
 
