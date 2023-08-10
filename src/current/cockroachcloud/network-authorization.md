@@ -52,10 +52,13 @@ Authorized network access can be managed from the {{ site.data.products.db }} co
 
 Serverless and Dedicated clusters support different maximum numbers of IP allowlist rules:
 
-Cluster Type | IP allowlist rule max
---------|------------
-Dedicated|20
-Serverless|50
+Cluster Type                | IP allowlist rule max
+----------------------------|------------
+Dedicated (AWS)             | 7
+Dedicated (GCP and Azure)   | 20
+Serverless                  | 50
+
+If you need to add more than the maximum number of allowlist rules, [contact Support](https://support.cockroachlabs.com).
 
 {{site.data.alerts.callout_info}}
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network.
