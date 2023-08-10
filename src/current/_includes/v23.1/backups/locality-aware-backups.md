@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-`SHOW BACKUP` cannot display metadata for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
+{% include_cached new-in.html version="v23.1" %} `SHOW BACKUP` is able to display metadata using `check_files` for locality-aware backups taken with the [`incremental_location`](show-backup.html#show-a-backup-taken-with-the-incremental-location-option) option.
 {{site.data.alerts.end}}
 
 To view a list of [locality-aware backups](take-and-restore-locality-aware-backups.html), pass the endpoint [collection URI](backup.html#backup-file-urls) that is set as the `default` location with `COCKROACH_LOCALITY=default`: 

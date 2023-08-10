@@ -6,27 +6,51 @@ keywords: load data infile
 docs_area: migrate
 ---
 
-{{site.data.alerts.callout_danger}}
-The instructions on this page require updates. We currently recommend [using AWS Database Migration Service (DMS) to migrate data](aws-dms.html) from MySQL to CockroachDB. You can also [migrate from CSV](migrate-from-csv.html).
+This page describes basic considerations and provides a basic [example](#example-migrate-world-to-cockroachdb) of migrating data from MySQL to CockroachDB. The information on this page assumes that you have read [Migration Overview](migration-overview.html), which describes the broad phases and considerations of migrating a database to CockroachDB. 
+
+The [MySQL migration example](#example-migrate-world-to-cockroachdb) on this page demonstrates how to use [MOLT tooling](migration-overview.html#molt) to update the MySQL schema, perform an initial load of data, and validate the data. These steps are essential when [preparing for a full migration](migration-overview.html#prepare-for-migration).
+
+{{site.data.alerts.callout_success}}
+If you need help migrating to CockroachDB, contact our <a href="mailto:sales@cockroachlabs.com">sales team</a>.
 {{site.data.alerts.end}}
 
-This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
+## Syntax differences
 
-The examples use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
+You will likely need to make application changes due to differences in syntax between MySQL and CockroachDB. Along with the [general considerations in the migration overview](migration-overview.html#application-changes), also consider the following MySQL-specific information as you develop your migration plan.
 
-{% include {{ page.version.version }}/misc/import-perf.md %}
+When [using the Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema), MySQL syntax that cannot automatically be converted will be displayed in the [**Summary Report**](../cockroachcloud/migrations-page.html?filters=mysql#summary-report). These may include the following.
 
-## Considerations
+#### String case sensitivity
 
-In addition to the general considerations listed in the [Migration Overview](migration-overview.html), there is also the following MySQL-specific information to consider as you prepare your migration.
+Strings are case-insensitive in MySQL and case-sensitive in CockroachDB. You may need to edit your MySQL data to get the results you expect from CockroachDB. For example, you may have been doing string comparisons in MySQL that will need to be changed to work with CockroachDB.
 
-### String case sensitivity
+For more information about the case sensitivity of strings in MySQL, see [Case Sensitivity in String Searches](https://dev.mysql.com/doc/refman/8.0/en/case-sensitivity.html) from the MySQL documentation. For more information about CockroachDB strings, see [`STRING`](string.html).
 
-MySQL strings are case-insensitive by default, but strings in CockroachDB are case-sensitive.  This means that you may need to edit your MySQL dump file to get the results you expect from CockroachDB.  For example, you may have been doing string comparisons in MySQL that will need to be changed to work with CockroachDB.
+#### Identifier case sensitivity
 
-For more information about the case sensitivity of strings in MySQL, see [Case Sensitivity in String Searches](https://dev.mysql.com/doc/refman/8.0/en/case-sensitivity.html) from the MySQL documentation.  For more information about CockroachDB strings, see [`STRING`](string.html).
+Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB](keywords-and-identifiers.html#identifiers). When [using the Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema), you can either keep case sensitivity by enclosing identifiers in double quotes, or make identifiers case-insensitive by converting them to lowercase.
 
-### `FIELD` function
+#### `AUTO_INCREMENT` attribute
+
+The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment.html) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences](create-sequence.html), `UUID` values with [`gen_random_uuid()`](functions-and-operators.html#id-generation-functions), or unique `INT8` values using [`unique_rowid()`](functions-and-operators.html#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, see [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices).
+
+{{site.data.alerts.callout_info}}
+Changing a column type during schema conversion will cause [MOLT Verify](molt-verify.html) to identify a type mismatch during [data validation](#step-3-validate-the-migrated-data). This is expected behavior.
+{{site.data.alerts.end}}
+
+#### `ENUM` type
+
+MySQL `ENUM` types are defined in table columns. On CockroachDB, [`ENUM`](enum.html) is a standalone type. When [using the Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema), you can either deduplicate the `ENUM` definitions or create a separate type for each column.
+
+#### `TINYINT` type
+
+`TINYINT` data types are not supported in CockroachDB. The [Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql) automatically converts `TINYINT` columns to [`INT2`](int.html) (`SMALLINT`).
+
+#### Geospatial types
+
+MySQL geometry types are not converted to CockroachDB [geospatial types](spatial-data-overview.html#spatial-objects) by the [Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql). They should be manually converted to the corresponding types in CockroachDB.
+
+#### `FIELD` function
 
 The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use the [`array_position`](functions-and-operators.html#array-functions) function, which returns the index of the first occurrence of element in the array.
 
@@ -34,7 +58,7 @@ Example usage:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT array_position(ARRAY[4,1,3,2],1);
+SELECT array_position(ARRAY[4,1,3,2],1);
 ~~~
 
 ~~~
@@ -44,173 +68,349 @@ Example usage:
 (1 row)
 ~~~
 
-While MYSQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
+While MySQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
+SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
 ~~~
 
-## Step 1. Dump the MySQL database
+## Load MySQL data
 
-There are several ways to dump data from MySQL to be imported into CockroachDB:
+You can use one of the following methods to migrate MySQL data to CockroachDB:
 
-- [Dump the entire database](#dump-the-entire-database)
-- [Dump one table at a time](#dump-one-table-at-a-time)
+- {% include {{ page.version.version }}/migration/load-data-import-into.md %} 
 
-### Dump the entire database
+       {% include {{ page.version.version }}/misc/import-perf.md %}
 
-Most users will want to import their entire MySQL database all at once, as shown below in [Import a full database dump](#import-a-full-database-dump).  To dump the entire database, run the [`mysqldump`][mysqldump] command shown below:
+- {% include {{ page.version.version }}/migration/load-data-third-party.md %}
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ mysqldump -uroot employees > /tmp/employees-full.sql
-~~~
+The [following example](#example-migrate-world-to-cockroachdb) uses `IMPORT INTO` to perform the initial data load.
 
-If you only want to import one table from a database dump, see [Import a table from a full database dump](#import-a-table-from-a-full-database-dump) below.
+## Example: Migrate `world` to CockroachDB
 
-### Dump one table at a time
+The following steps demonstrate [converting a schema](migration-overview.html#convert-the-schema), performing an [initial load of data](migration-overview.html#load-test-data), and [validating data consistency](migration-overview.html#validate-queries) during a migration.
 
-To dump the `employees` table from a MySQL database also named `employees`, run the [`mysqldump`][mysqldump] command shown below.  You can import this table using the instructions in [Import a table from a table dump](#import-a-table-from-a-table-dump) below.
+In the context of a full migration, these steps ensure that MySQL data can be properly migrated to CockroachDB and your application queries tested against the cluster. For details, see [Migrate Your Databse to CockroachDB](migration-overview.html#prepare-for-migration).
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ mysqldump -uroot employees employees > employees.sql
-~~~
+### Before you begin
 
-## Step 2. Host the files where the cluster can access them
+The example uses the [MySQL `world` data set](https://dev.mysql.com/doc/index-other.html) and demonstrates how to migrate the schema and data to a {{ site.data.products.serverless }} cluster. To follow along with these steps:
 
-Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`][import] can pull from,  see the following:
+1. Download the [`world` data set](https://dev.mysql.com/doc/index-other.html).
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Use a Local File Server](use-a-local-file-server.html)
+1. Create the `world` database on your MySQL instance, specifying the path of the downloaded file:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       mysqlsh -uroot --sql --file {path}/world-db/world.sql
+       ~~~
+
+1. Create a free [{{ site.data.products.db }} account](../cockroachcloud/create-an-account.html), which is used to access the [Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql) and create the {{ site.data.products.serverless }} cluster.
 
 {{site.data.alerts.callout_success}}
-We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
+{% include cockroachcloud/migration/sct-self-hosted.md %}
 {{site.data.alerts.end}}
 
-## Step 3. Import the MySQL dump file
+### Step 1. Convert the MySQL schema
 
-You can choose from several variants of the [`IMPORT`][import] statement, depending on whether you want to import an entire database or just one table:
+Use the [Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql) to convert the `world` schema for compatibility with CockroachDB. The schema has three tables: `city`, `country`, and `countrylanguage`.
 
-- [Import a full database dump](#import-a-full-database-dump)
-- [Import a table from a full database dump](#import-a-table-from-a-full-database-dump)
-- [Import a table from a table dump](#import-a-table-from-a-table-dump)
+1. Dump the MySQL `world` schema with the following [`mysqldump`](https://dev.mysql.com/doc/refman/8.0/en/mysqldump-sql-format.html) command:
 
-All of the [`IMPORT`][import] statements in this section pull real data from [Amazon S3](https://aws.amazon.com/s3/) and will kick off background import jobs that you can monitor with [`SHOW JOBS`](show-jobs.html).
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       mysqldump -uroot --no-data world > world_schema.sql
+       ~~~
 
-### Import a full database dump
+1. Open the [Schema Conversion Tool](../cockroachcloud/migrations-page.html?filters=mysql) in the {{ site.data.products.db }} Console and start the process to [add a new MySQL schema](../cockroachcloud/migrations-page.html?filters=mysql#convert-a-schema).
 
-This example assumes you [dumped the entire database](#dump-the-entire-database).
+       For **AUTO_INCREMENT Conversion Option**, select the [`unique_rowid()`](functions-and-operators.html#id-generation-functions) option. This will convert the `ID` column in the `city` table, which has MySQL type `int` and `AUTO_INCREMENT`, to a CockroachDB [`INT8`](int.html) type with default values generated by [`unique_rowid()`](functions-and-operators.html#id-generation-functions). For context on this option, see [`AUTO_INCREMENT` attribute](#auto_increment-attribute).
 
-The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements (including `CREATE TABLE` and [foreign key constraints](foreign-key.html)) from the full database dump.
+       The `UUID` and `unique_rowid()` options are each preferred for [different use cases](sql-faqs.html#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For this example, selecting the `unique_rowid()` option makes [loading the data](#step-2-load-the-mysql-data) more straightforward in a later step, since both the source and target columns will have integer types.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS employees;
-> USE employees;
-> IMPORT MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees-full.sql.gz';
-~~~
+1. [Upload `world_schema.sql`](../cockroachcloud/migrations-page.html?filters=mysql#upload-file) to the Schema Conversion Tool.
 
-~~~
-       job_id       |  status   | fraction_completed |  rows   | index_entries | system_records |   bytes
---------------------+-----------+--------------------+---------+---------------+----------------+-----------
- 382716507639906305 | succeeded |                  1 | 3919015 |        331636 |              0 | 110104816
-(1 row)
-~~~
+       After conversion is complete, [review the results](../cockroachcloud/migrations-page.html?filters=mysql#review-the-schema). The [**Summary Report**](../cockroachcloud/migrations-page.html?filters=mysql#summary-report) shows that there are no errors. This means that the schema is ready to migrate to CockroachDB. 
 
-### Import a table from a full database dump
+       {{site.data.alerts.callout_success}}
+       You can also [add your MySQL database credentials](../cockroachcloud/migrations-page.html?filters=mysql#use-credentials) to have the Schema Conversion Tool obtain the schema directly from the MySQL database.
+       {{site.data.alerts.end}}
 
-This example assumes you [dumped the entire database](#dump-the-entire-database).
+       This example migrates directly to {{ site.data.products.serverless }}. {% include cockroachcloud/migration/sct-self-hosted.md %}
 
-[`IMPORT`][import] can import one table's data from a full database dump. It reads the data and applies any `CREATE TABLE` statements from the dump file.
+1. Before you migrate the converted schema, click the **Statements** tab to view the [Statements list](../cockroachcloud/migrations-page.html?filters=mysql#statements-list). Scroll down to the `CREATE TABLE countrylanguage` statement and edit the statement to add a [collation](collate.html) (`COLLATE en_US`) on the `language` column:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS employees;
-> USE employees;
-> IMPORT TABLE employees FROM MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
-~~~
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       CREATE TABLE countrylanguage (
+              countrycode VARCHAR(3) DEFAULT '' NOT NULL,
+              language VARCHAR(30) COLLATE en_US DEFAULT '' NOT NULL,
+              isofficial countrylanguage_isofficial_enum
+              DEFAULT 'F'
+              NOT NULL,
+              percentage DECIMAL(4,1) DEFAULT '0.0' NOT NULL,
+              PRIMARY KEY (countrycode, language),
+              INDEX countrycode (countrycode),
+              CONSTRAINT countrylanguage_ibfk_1
+                     FOREIGN KEY (countrycode) REFERENCES country (code)
+       )
+       ~~~
 
-~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
---------------------+-----------+--------------------+--------+---------------+----------------+----------
- 383839294913871873 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
-(1 row)
-~~~
+       Click **Save**.
 
-### Import a table from a table dump
+       This is an optional workaround to reduce warnings during [data validation](#step-3-validate-the-migrated-data), due to a difference in how MySQL and CockroachDB handle case sensitivity in strings. For more details, see the [MOLT Verify](molt-verify.html#limitations) documentation.
 
-The following examples assume you [dumped one table](#dump-one-table-at-a-time).
+1. Click [**Migrate Schema**](../cockroachcloud/migrations-page.html?filters=mysql#migrate-the-schema) to create a new {{ site.data.products.serverless }} cluster with the converted schema. Name the database `world`.
 
-The simplest way to import a table dump is to run [`IMPORT`][import].  It reads the table data and any `CREATE TABLE` statements from the file:
+       You can view this database on the [**Databases** page](../cockroachcloud/databases-page.html) of the {{ site.data.products.db }} Console.
+       
+1. Open a SQL shell to the CockroachDB `world` cluster. To find the command, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `world` database and **CockroachDB Client** option. It will look like:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE IF NOT EXISTS employees;
-> USE employees;
-> IMPORT TABLE employees FROM MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
-~~~
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full" 
+       ~~~
 
-~~~
-       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
---------------------+-----------+--------------------+--------+---------------+----------------+----------
- 383855569817436161 | succeeded |                  1 | 300024 |             0 |              0 | 11534293
-(1 row)
-~~~
+1. For large imports, Cockroach Labs recommends [removing indexes prior to loading data](import-performance-best-practices.html#import-into-a-schema-with-secondary-indexes) and recreating them afterward. This provides increased visibility into the import progress and the ability to retry each step independently.
 
-## Configuration Options
+       Show the indexes on the `world` database:
 
-The following options are available to `IMPORT ... MYSQLDUMP`:
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SHOW INDEXES FROM DATABASE world;
+       ~~~
 
-- [Row limit](#row-limit)
-- [Skip foreign keys](#skip-foreign-keys)
+       The `countrycode` [foreign key](foreign-key.html) indexes on the `city` and `countrylanguage` tables can be removed for now:
 
-### Row limit
+       ~~~
+                   table_name           |                   index_name                    | index_schema | non_unique | seq_in_index |   column_name   |   definition    | direction | storing | implicit | visible
+       ---------------------------------+-------------------------------------------------+--------------+------------+--------------+-----------------+-----------------+-----------+---------+----------+----------
+       ...
+         city                           | countrycode                                     | public       |     t      |            2 | id              | id              | ASC       |    f    |    t     |    t
+         city                           | countrycode                                     | public       |     t      |            1 | countrycode     | countrycode     | ASC       |    f    |    f     |    t
+       ...
+         countrylanguage                | countrycode                                     | public       |     t      |            1 | countrycode     | countrycode     | ASC       |    f    |    f     |    t
+         countrylanguage                | countrycode                                     | public       |     t      |            2 | language        | language        | ASC       |    f    |    t     |    t
+       ...
+       ~~~
 
- The `row_limit` option determines the number of rows to import. If you are importing one table, setting `row_limit = 'n'` will import the first *n* rows of the table. If you are importing an entire database, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
+1. Drop the `countrycode` indexes:
 
-Example usage:
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       DROP INDEX city@countrycode;
+       ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
-~~~
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       DROP INDEX countrylanguage@countrycode;
+       ~~~
 
-### Skip foreign keys
+       You will recreate the indexes after [loading the data](#step-2-load-the-mysql-data).
 
-By default, [`IMPORT ... MYSQLDUMP`][import] supports foreign keys.  **Default: false**.  Add the `skip_foreign_keys` option to speed up data import by ignoring foreign key constraints in the dump file's DDL.  It will also enable you to import individual tables that would otherwise fail due to dependencies on other tables.
+### Step 2. Load the MySQL data
+
+Load the `world` data into CockroachDB using [`IMPORT INTO`](import-into.html) with CSV-formatted data. {% include {{ page.version.version }}/sql/export-csv-tsv.md %}
 
 {{site.data.alerts.callout_info}}
-The most common dependency issues are caused by unsatisfied foreign key relationships. You can avoid these issues by adding the `skip_foreign_keys` option to your `IMPORT` statement as needed. For more information, see the list of [import options](import.html#import-options).
+When MySQL dumps data, the tables are not ordered by [foreign key](foreign-key.html) constraints, and foreign keys are not placed in the correct dependency order. It is best to disable foreign key checks when loading data into CockroachDB, and revalidate foreign keys on each table after the data is loaded.
 
-For example, if you get the error message `pq: there is no unique constraint matching given keys for referenced table tablename`, use `IMPORT ... WITH skip_foreign_keys`.
+By default, [`IMPORT INTO`](import-into.html) invalidates all [foreign keys](foreign-key.html) on the target table.
 {{site.data.alerts.end}}
 
-Example usage:
+1. Dump the MySQL `world` data with the following [`mysqldump` command](https://dev.mysql.com/doc/refman/8.0/en/mysqldump-delimited-text.html):
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH skip_foreign_keys;
-~~~
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       mysqldump -uroot -T /{path}/world-data --fields-terminated-by ',' --fields-enclosed-by '"' --fields-escaped-by '\' --no-create-info world
+       ~~~
 
-[Foreign key constraints](foreign-key.html) can be added by using [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) commands after importing the data.
+       This dumps each table in your database to the path `/{path}/world-data` as a `.txt` file in CSV format.
+       - `--fields-terminated-by` specifies that values are separated by commas instead of tabs.
+       - `--fields-enclosed-by` and `--fields-escaped-by` specify the characters that enclose and escape column values, respectively.
+       - `--no-create-info` dumps only the [data manipulation language (DML)](sql-statements.html#data-manipulation-statements).
+
+1. Host the files where the CockroachDB cluster can access them.
+
+       Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`](import-into.html) can pull from, see the following:
+       - [Use Cloud Storage](use-cloud-storage.html)
+       - [Use a Local File Server](use-a-local-file-server.html)
+
+       Cloud storage such as Amazon S3 or Google Cloud is highly recommended for hosting the data files you want to import. 
+
+       The dump files generated in the preceding step are already hosted on a public S3 bucket created for this example.
+
+1. Open a SQL shell to the CockroachDB `world` cluster, using the same command as before:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       cockroach sql --url "postgresql://{username}@{hostname}:{port}/world?sslmode=verify-full" 
+       ~~~
+
+1. Use [`IMPORT INTO`](import-into.html) to import each MySQL dump file into the corresponding table in the `world` database.
+
+       The following commands point to a public S3 bucket where the `world` data dump files are hosted for this example. The `nullif='\N'` clause specifies that `\N` values, which are produced by the `mysqldump` command, should be read as [`NULL`](null-handling.html).
+
+       {{site.data.alerts.callout_success}}
+       You can add the `row_limit` [option](import-into.html#import-options) to specify the number of rows to import. For example, `row_limit = '10'` will import the first 10 rows of the table. This option is useful for finding errors quickly before executing a more time- and resource-consuming import.
+       {{site.data.alerts.end}}
+
+       ~~~ sql
+       IMPORT INTO countrylanguage
+         CSV DATA (
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world-data/countrylanguage.txt'
+         )
+         WITH
+           nullif='\N';
+       ~~~
+
+       ~~~
+               job_id       |  status   | fraction_completed | rows | index_entries | bytes
+       ---------------------+-----------+--------------------+------+---------------+---------
+         887782070812344321 | succeeded |                  1 |  984 |           984 | 171555
+       ~~~
+
+       ~~~ sql
+       IMPORT INTO country
+         CSV DATA (
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world-data/country.txt'
+         )
+         WITH
+           nullif='\N';
+       ~~~
+
+       ~~~
+               job_id       |  status   | fraction_completed | rows | index_entries | bytes
+       ---------------------+-----------+--------------------+------+---------------+--------
+         887782114360819713 | succeeded |                  1 |  239 |             0 | 33173
+       ~~~
+
+       ~~~ sql
+       IMPORT INTO city
+         CSV DATA (
+           'https://cockroachdb-migration-examples.s3.us-east-1.amazonaws.com/mysql/world-data/city.txt'
+         )
+         WITH
+           nullif='\N';
+       ~~~
+
+       ~~~
+               job_id       |  status   | fraction_completed | rows | index_entries | bytes
+       ---------------------+-----------+--------------------+------+---------------+---------
+         887782154421567489 | succeeded |                  1 | 4079 |          4079 | 288140
+       ~~~
+
+       {{site.data.alerts.callout_info}}
+       After [converting the schema](#step-1-convert-the-mysql-schema) to work with CockroachDB, the `id` column in `city` is an [`INT8`](int.html) with default values generated by [`unique_rowid()`](functions-and-operators.html#id-generation-functions). However, `unique_rowid()` values are only generated when new rows are [inserted](insert.html) without an `id` value. The MySQL data dump still includes the sequential `id` values generated by the MySQL [`AUTO_INCREMENT` attribute](#auto_increment-attribute), and these are imported with the `IMPORT INTO` command. 
+
+       In an actual migration, you can either update the primary key into a [multi-column key](performance-best-practices-overview.html#use-multi-column-primary-keys) or add a new primary key column that [generates unique IDs](performance-best-practices-overview.html#unique-id-best-practices).
+       {{site.data.alerts.end}}
+
+1. Recreate the indexes that you deleted before importing the data:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       CREATE INDEX countrycode ON city (countrycode, id);
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       CREATE INDEX countrycode ON countrylanguage (countrycode, language);
+       ~~~
+
+1. Recall that `IMPORT INTO` invalidates all [foreign key](foreign-key.html) constraints on the target table. View the constraints that are defined on `city` and `countrylanguage`:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SHOW CONSTRAINTS FROM city;
+       ~~~
+
+       ~~~
+         table_name | constraint_name | constraint_type |                           details                            | validated
+       -------------+-----------------+-----------------+--------------------------------------------------------------+------------
+         city       | city_ibfk_1     | FOREIGN KEY     | FOREIGN KEY (countrycode) REFERENCES country(code) NOT VALID |     f
+         city       | city_pkey       | PRIMARY KEY     | PRIMARY KEY (id ASC)                                         |     t
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SHOW CONSTRAINTS FROM countrylanguage;
+       ~~~
+
+       ~~~
+           table_name    |    constraint_name     | constraint_type |                           details                            | validated
+       ------------------+------------------------+-----------------+--------------------------------------------------------------+------------
+         countrylanguage | countrylanguage_ibfk_1 | FOREIGN KEY     | FOREIGN KEY (countrycode) REFERENCES country(code) NOT VALID |     f
+         countrylanguage | countrylanguage_pkey   | PRIMARY KEY     | PRIMARY KEY (countrycode ASC, language ASC)                  |     t
+       ~~~
+
+1. To validate the foreign keys, issue an [`ALTER TABLE ... VALIDATE CONSTRAINT`](alter-table.html#validate-constraint) statement for each table:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       ALTER TABLE city VALIDATE CONSTRAINT city_ibfk_1;
+       ~~~
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       ALTER TABLE countrylanguage VALIDATE CONSTRAINT countrylanguage_ibfk_1;
+       ~~~
+
+### Step 3. Validate the migrated data
+
+Use [MOLT Verify](molt-verify.html) to check that the data on MySQL and CockroachDB are consistent.
+
+1. [Install MOLT Verify.](molt-verify.html)
+
+1. In the directory where you installed MOLT Verify, use the following command to compare the two databases, specifying the [JDBC connection string for MySQL](https://dev.mysql.com/doc/connector-j/8.1/en/connector-j-reference-jdbc-url-format.html) {% comment %}with `--source`{% endcomment %} and the SQL connection string for CockroachDB{% comment %}with `--target`{% endcomment %}:
+
+       {{site.data.alerts.callout_success}}
+       To find the CockroachDB connection string, open the **Connect** dialog in the {{ site.data.products.db }} Console and select the `world` database and the **General connection string** option.
+       {{site.data.alerts.end}}
+
+       {% comment %}
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       ./molt verify --source 'jdbc:mysql://{user}:{password}@tcp({host}:{port})/world' --target 'postgresql://{user}:{password}@{host}:{port}/world?sslmode=verify-full'
+       ~~~
+       {% endcomment %}
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ shell
+       ./molt verify 'mysql===jdbc:mysql://{user}:{password}@tcp({host}:{port})/world' 'pg===postgresql://{user}:{password}@{host}:{port}/world?sslmode=verify-full'
+       ~~~
+
+       You will see the initial output:
+
+       ~~~
+       <nil> INF verification in progress
+       ~~~
+
+       The following warnings indicate that the MySQL and CockroachDB columns have different types. This is an expected result, since some columns were [changed to `ENUM` types](#enum-type) when you [converted the schema](#step-1-convert-the-mysql-schema):
+
+       ~~~
+       <nil> WRN mismatching table definition mismatch_info="column type mismatch on continent: text vs country_continent_enum" table_name=country table_schema=public
+       <nil> WRN mismatching table definition mismatch_info="column type mismatch on isofficial: text vs countrylanguage_isofficial_enum" table_name=countrylanguage table_schema=public
+       ~~~
+
+       The following output indicates that MOLT Verify has completed verification:
+
+       ~~~
+       <nil> INF finished row verification on public.country (shard 1/1): truth rows seen: 239, success: 239, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF finished row verification on public.countrylanguage (shard 1/1): truth rows seen: 984, success: 984, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF finished row verification on public.city (shard 1/1): truth rows seen: 4079, success: 4079, missing: 0, mismatch: 0, extraneous: 0, live_retry: 0
+       <nil> INF verification complete
+       ~~~
+
+With the schema migrated and the initial data load verified, the next steps in a real-world migration are to [validate application queries](migration-overview.html#validate-queries) and [perform a dry run](migration-overview.html#perform-a-dry-run) before [conducting the full migration](migration-overview.html#conduct-the-migration). To learn more, see [Migration Overview](migration-overview.html).
 
 ## See also
 
-- [`IMPORT`](import.html)
+- [Migration Overview](migration-overview.html)
+- [Use the Schema Conversion Tool](../cockroachcloud/migrations-page.html)
+- [Use the MOLT Verify tool](molt-verify.html)
 - [Import Performance Best Practices](import-performance-best-practices.html)
-- [Migrate from CSV][csv]
-- [Migrate from PostgreSQL][postgres]
+- [Migrate from CSV](migrate-from-csv.html)
+{% comment %}- [Migrate from PostgreSQL][postgres]{% endcomment %}
 - [Can a PostgreSQL or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
-- [Back up Data](take-full-and-incremental-backups.html)
-- [Restore Data](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-
-<!-- Reference Links -->
-
-[postgres]: migrate-from-postgres.html
-[csv]: migrate-from-csv.html
-[import]: import.html
-[mysqldump]: https://dev.mysql.com/doc/refman/8.0/en/mysqldump-sql-format.html

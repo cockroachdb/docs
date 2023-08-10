@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.cli
 ---
 
- The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
-
-{{site.data.alerts.callout_info}}
-We recommend using `cockroach import` for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](import.html) statement.
+{{site.data.alerts.callout_danger}}
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`](import-into.html) or [`COPY FROM`](copy-from.html).
 {{site.data.alerts.end}}
+
+The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
 
 ## Required privileges
 
@@ -37,8 +37,8 @@ $ cockroach import --help
 
 ## Supported Formats
 
-- [`pgdump`](migrate-from-postgres.html#step-1-dump-the-postgresql-database)
-- [`mysqldump`](migrate-from-mysql.html#step-1-dump-the-mysql-database)
+- [`pgdump`](migrate-from-postgres.html)
+- [`mysqldump`](migrate-from-mysql.html)
 
 ## Flags
 

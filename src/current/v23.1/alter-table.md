@@ -49,7 +49,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`ADD CONSTRAINT`](#add-constraint) | Add constraints to columns. | Yes
 [`ALTER COLUMN`](#alter-column) | Change an existing column. | Yes
 [`ALTER PRIMARY KEY`](#alter-primary-key) | Change the [primary key](primary-key.html) of a table. | Yes
-[`CONFIGURE ZONE`](#configure-zone) | [Configure replication zones](configure-replication-zones.html) for a table. | No
+[`CONFIGURE ZONE`](#configure-zone) | [Replication Controls](configure-replication-zones.html) for a table. | No
 [`DROP COLUMN`](#drop-column) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](#drop-constraint) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](#experimental_audit) | Enable per-table audit logs, for security purposes. | Yes
@@ -227,11 +227,11 @@ For usage, see [Synopsis](#synopsis).
 
 ### `CONFIGURE ZONE`
 
-`ALTER TABLE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a table. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Configure Replication Zones](configure-replication-zones.html).
+`ALTER TABLE ... CONFIGURE ZONE` is used to add, modify, reset, or remove replication zones for a table. To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html). For more information about replication zones, see [Replication Controls](configure-replication-zones.html).
 
 You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
-For examples, see [Configure replication zones](#configure-replication-zones).
+For examples, see [Replication Controls](#configure-replication-zones).
 
 #### Required privileges
 
@@ -1816,7 +1816,7 @@ Suppose that you are storing the data for users of your application in a table c
 );
 ~~~
 
-The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices](performance-best-practices-overview.html#use-uuid-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
+The primary key of this table is on the `name` column. This is a poor choice, as some users likely have the same name, and all primary keys enforce a `UNIQUE` constraint on row values of the primary key column. Per our [best practices](performance-best-practices-overview.html#use-functions-to-generate-unique-ids), you should instead use a `UUID` for single-column primary keys, and populate the rows of the table with generated, unique values.
 
 You can add a column and change the primary key with a couple of `ALTER TABLE` statements:
 
@@ -3062,7 +3062,7 @@ If present in a [`CREATE TABLE`](create-table.html) statement, the table is cons
 - [Online Schema Changes](online-schema-changes.html)
 - [Constraints](constraints.html)
 - [Foreign Key Constraint](foreign-key.html)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [SQL Audit Logging](sql-audit-logging.html)
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE INDEX`](create-index.html)

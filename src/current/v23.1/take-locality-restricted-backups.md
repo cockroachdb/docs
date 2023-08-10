@@ -74,7 +74,7 @@ This diagram shows a CockroachDB cluster in four regions. The node used to run t
 For details, refer to:
 
 - The [`--locality`](cockroach-start.html#locality) flag to specify the locality tiers that describe the location of a node.
-- The `num_voters` and `voter_constraints` variables on the [Configure Replication Zones](configure-replication-zones.html#num_voters) page to configure non-voting replicas via zone configurations.
+- The `num_voters` and `voter_constraints` variables on the [Replication Controls](configure-replication-zones.html#num_voters) page to configure non-voting replicas via zone configurations.
 
 After configuring the nodes in a specific region to use non-voting replicas, you can create the backup job and define its locality requirement for the nodes:
 

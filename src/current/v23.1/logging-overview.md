@@ -1,5 +1,5 @@
 ---
-title: Logging
+title: Logging Overview
 summary: Overview of the logging system and logging channels.
 toc: true
 docs_area: manage
