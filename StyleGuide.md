@@ -568,15 +568,19 @@ Link capitalization should match our [capitalization rules](#capitalization-rule
 
 To link to a page within the same folder (e.g., a page in `v23.1` to another page in `v23.1`), use the [Jekyll link syntax](https://jekyllrb.com/docs/liquid/tags/#links).
 
-**Example:** `[Foreign Key Constraint]({% link v23.1/foreign-key.md %})`
+If the page is a versioned doc, use `{{ page.version.version }}` instead of the hardcoded version. Otherwise, use the regular path (e.g., `cockroachcloud`).
+
+**Example:** `[Foreign Key Constraint]({% link {{ page.version.version }}/foreign-key.md %})`
+
+**Example:** `[Foreign Key Constraint]({% link cockroachcloud/quickstart.md %})`
 
 To include a subsection, place it outside of the Liquid tag.
 
-**Example:** `[Rules for creating foreign keys]({% link v23.1/foreign-key.md %}#rules-for-creating-foreign-keys)`
+**Example:** `[Rules for creating foreign keys]({% link {{ page.version.version }}/foreign-key.md %}#rules-for-creating-foreign-keys)`
 
 This also applies to files within a subfolder of the same folder (e.g., a link from `v23.1/abc.md` to `v23.1/architecture/xyz.md` or from `v23.1/architecture/xyz.md` to `v23.1/abc.md`).
 
-**Example:** `[Multi-active availability]({% link v23.1/architecture/glossary.md %}#multi-active-availability)`
+**Example:** `[Multi-active availability]({% link {{ page.version.version }}/architecture/glossary.md %}#multi-active-availability)`
 
 #### Links to CockroachDB docs pages outside of the current folder
 
