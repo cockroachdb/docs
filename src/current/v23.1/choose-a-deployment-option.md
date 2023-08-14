@@ -49,7 +49,23 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li><b>Cost</b>: Pricing based on disk size and storage. A single, predictable price packages hardware costs with SRE resources and support.</li>
         <li><b>Resource isolation</b>: Dedicated, single-tenant instance of CockroachDB software and infrastructure.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
-        <li><b>Advanced features</b>: Yes. See <a href="enterprise-licensing.html">Enterprise Features</a>.</li>
+        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled.</li>
+      </ul></td>
+  </tr>
+  <tr>
+      <td><ul>
+        <li>Applications that require PCI-readiness.</li>
+      </ul></td>
+      <td>
+      <a id="dedicated-advanced"></a><b><a href="../cockroachcloud/quickstart-trial-cluster.html">{{ site.data.products.dedicated-advanced }}</a></b>: A fully managed, single tenant, <a href="../cockroachcloud/pci-dss.html">PCI-ready</a> CockroachDB deployment in a single region or multi-region cloud (AWS or GCP).
+      </td>
+      <td><ul>
+        <li><b>All CockroachDB Dedicated features.</b></li>
+        <li><b><a href="../cockroachcloud/export-logs.html">Audit log</a></b>: Configurable cluster and organization log export to AWS CloudWatch or GCP Cloud Logging using the Cloud API.</li>
+        <li><b><a href="../cockroachcloud/cmek.html">Customer-Managed Encryption Keys (CMEK)</a></b>: Data protection at rest using a cryptographic key hosted in a supported cloud provider key-management system (KMS).</li>
+        <li><b><a href="../cockroachcloud/egress-perimeter-controls.html">Egress Perimeter Controls</a></b>: Allowlist configuration to ensure that the data is sent to a secure location.</li>
+        <li><b><a href="../cockroachcloud/cloud-org-sso.html">Single Sign-On (SSO)</a></b>: Authentication enforcement using a centralized identity managed by an IdP for clusters and organizations.</li>
+        <li><b><a href="../cockroachcloud/network-authorization.html">Network security</a></b>: VPC peering or AWS PrivateLink for enhanced network security and lower network latency.</li>
       </ul></td>
   </tr>
   <tr>
@@ -62,9 +78,9 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li>Applications that need to run in a cloud not supported by Dedicated services.</li>
         <li>Applications that require real-time integration with other systems.</li>
       </ul></td>
-      <td><ul>
-        <li><a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB Self-Hosted</a></b>: A full featured, self-managed CockroachDB deployment.</li>
-      </ul></td>
+      <td>
+      <a id="self-hosted"></a><b><a href="start-a-local-cluster.html">CockroachDB Self-Hosted</a></b>: A full featured, self-managed CockroachDB deployment.
+      </td>
       <td><ul>
         <li><b>Scale</b>: Node-based; self-service add and remove nodes.</li>
         <li><b>Availability</b>: Completely configurable for each deployment. Manual controls for replication of data within or across regions.</li>
@@ -72,7 +88,7 @@ Cockroach Labs offers three ways to deploy CockroachDB: two managed services&mda
         <li><b>Cost</b>: Per hardware and infrastructure type.</li>
         <li><b>Resource isolation</b>: Dedicated, single-tenant instance of CockroachDB software.</li>
         <li><b>Support</b>: Enterprise grade <a href="https://support.cockroachlabs.com/">support</a> provided by Cockroach Labs.</li>
-        <li><b>Advanced features</b>: Yes. See <a href="enterprise-licensing.html">Enterprise Features</a>.</li>
+        <li><b><a href="enterprise-licensing.html">Enterprise Features</a></b>: Enabled.</li>
       </ul></td>
   </tr>
 </table>
