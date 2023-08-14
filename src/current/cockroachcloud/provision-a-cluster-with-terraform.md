@@ -24,7 +24,7 @@ Before you start this tutorial, you must
 
 ## Create the Terraform configuration files
 
-Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle.
+Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle. For details about the cluster resource schema, refer to [the Terraform provider documentation](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/cluster).
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
@@ -94,6 +94,8 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cluster_node_count = {number of nodes}
     storage_gib = {storage in GiB}
     machine_type = "{cloud provider machine type}"
+    database = "{database name}"
+    os = "{operating system}"
     allow_list_name = "{allow list name}"
     cidr_ip = "{allow list CIDR IP}"
     cidr_mask = {allow list CIDR mask}
@@ -108,6 +110,8 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
        - `{number of nodes}` is the number of nodes in each region. Cockroach Labs recommends at least 3 nodes per region, and the same number of nodes in each region for multi-region clusters.
        - `{storage in GiB}` is the amount of storage specified in GiB.
        - `{cloud provider machine type}` is the machine type for the cloud infrastructure provider.
+       - `{database name}` is the name of the database you want to create.
+       - `{os}` is the operating system your computer is using. Possible values are `mac`, `windows`, or `linux`.
        - `{allow list name}` is the name for the [IP allow list](network-authorization.html#ip-allowlisting). Use a descriptive name to identify the IP allow list.
        - `{allow list CIDR IP}` is the Classless Inter-Domain Routing (CIDR) IP address base.
        - `{allow list CIDR mask}` is the CIDR mask.
@@ -123,13 +127,15 @@ In this tutorial, you will create a {{ site.data.products.dedicated }} cluster
     cloud_provider_regions = ["us-west2"]
     cluster_node_count = 3
     storage_gib = 15
-    machine_type = "n1-standard-2"
+    machine_type = "n2-standard-2"
+    database = "test-db"
+    os = "mac"
     allow_list_name = "Max's home network"
     cidr_ip = "1.2.3.4"
     cidr_mask = 32
     ~~~
 
-1. Create an environment variable named `COCKROACH_API_KEY`. Copy the [API key](managing-access.html#api-access) from the CockroachDB Cloud console and create the `COCKROACH_API_KEY` environment variable:
+1. Use the [API key](managing-access.html#api-access) you created in the {{ site.data.products.db }} console to create an environment variable named `COCKROACH_API_KEY`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -232,8 +238,8 @@ Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 <section class="filter-content" markdown="1" data-scope="dedicated">
 
 ~~~
-Terraform used the selected providers to generate the following execution
-plan. Resource actions are indicated with the following symbols:
+Terraform used the selected providers to generate the following execution plan.
+Resource actions are indicated with the following symbols:
   + create
  <= read (data resources)
 
@@ -246,24 +252,33 @@ Terraform will perform the following actions:
       + cloud_provider    = (known after apply)
       + cockroach_version = (known after apply)
       + creator_id        = (known after apply)
-      + dedicated         = {
-          + disk_iops        = (known after apply)
-          + machine_type     = (known after apply)
-          + memory_gib       = (known after apply)
-          + num_virtual_cpus = (known after apply)
-          + storage_gib      = (known after apply)
-        } -> (known after apply)
+      + dedicated         = (known after apply)
       + id                = (known after apply)
       + name              = (known after apply)
       + operation_status  = (known after apply)
       + plan              = (known after apply)
-      + regions           = [
-        ] -> (known after apply)
-      + serverless        = {
-          + routing_id  = (known after apply)
-          + spend_limit = (known after apply)
-        } -> (known after apply)
+      + regions           = (known after apply)
+      + serverless        = (known after apply)
       + state             = (known after apply)
+      + upgrade_status    = (known after apply)
+    }
+
+  # data.cockroach_cluster_cert.example will be read during apply
+  # (config refers to values not yet known)
+ <= data "cockroach_cluster_cert" "example" {
+      + cert = (known after apply)
+      + id   = (known after apply)
+    }
+
+  # data.cockroach_connection_string.example will be read during apply
+  # (config refers to values not yet known)
+ <= data "cockroach_connection_string" "example" {
+      + connection_params = (known after apply)
+      + connection_string = (known after apply)
+      + database          = "test-db"
+      + id                = (known after apply)
+      + os                = "mac"
+      + sql_user          = "maxroach"
     }
 
   # cockroach_allow_list.example will be created
@@ -281,14 +296,15 @@ Terraform will perform the following actions:
   + resource "cockroach_cluster" "example" {
       + account_id        = (known after apply)
       + cloud_provider    = "GCP"
-      + cockroach_version = "v22.2"
+      + cockroach_version = (known after apply)
       + creator_id        = (known after apply)
       + dedicated         = {
-          + disk_iops        = (known after apply)
-          + machine_type     = "n1-standard-2"
-          + memory_gib       = (known after apply)
-          + num_virtual_cpus = (known after apply)
-          + storage_gib      = 15
+          + disk_iops                  = (known after apply)
+          + machine_type               = "n2-standard-2"
+          + memory_gib                 = (known after apply)
+          + num_virtual_cpus           = (known after apply)
+          + private_network_visibility = (known after apply)
+          + storage_gib                = 15
         }
       + id                = (known after apply)
       + name              = "blue-dog"
@@ -298,11 +314,21 @@ Terraform will perform the following actions:
           + {
               + name       = "us-west2"
               + node_count = 3
+              + primary    = (known after apply)
               + sql_dns    = (known after apply)
               + ui_dns     = (known after apply)
             },
         ]
       + state             = (known after apply)
+      + upgrade_status    = (known after apply)
+    }
+
+  # cockroach_database.example will be created
+  + resource "cockroach_database" "example" {
+      + cluster_id  = (known after apply)
+      + id          = (known after apply)
+      + name        = "test-db"
+      + table_count = (known after apply)
     }
 
   # cockroach_sql_user.example will be created
@@ -313,23 +339,12 @@ Terraform will perform the following actions:
       + password   = (sensitive value)
     }
 
-Plan: 3 to add, 0 to change, 0 to destroy.
+Plan: 4 to add, 0 to change, 0 to destroy.
 
 Changes to Outputs:
-  + cluster = {
-      + account_id        = (known after apply)
-      + cloud_provider    = (known after apply)
-      + cockroach_version = (known after apply)
-      + creator_id        = (known after apply)
-      + dedicated         = (known after apply)
-      + id                = (known after apply)
-      + name              = (known after apply)
-      + operation_status  = (known after apply)
-      + plan              = (known after apply)
-      + regions           = (known after apply)
-      + serverless        = (known after apply)
-      + state             = (known after apply)
-    }
+  + cert              = (known after apply)
+  + cluster_status    = (known after apply)
+  + connection_string = (known after apply)
 
 Do you want to perform these actions?
   Terraform will perform the actions described above.
@@ -355,7 +370,7 @@ Outputs:
 cluster = {
   "account_id" = tostring(null)
   "cloud_provider" = "GCP"
-  "cockroach_version" = "v22.2.0"
+  "cockroach_version" = "v23.1.0"
   "creator_id" = tostring(null)
   "dedicated" = {
     "disk_iops" = 450
@@ -445,11 +460,11 @@ resource "cockroach_allow_list" "example" {
 resource "cockroach_cluster" "example" {
     account_id        = "crl-prod-gwq"
     cloud_provider    = "GCP"
-    cockroach_version = "v22.2"
+    cockroach_version = "v23.1"
     creator_id        = "98e75f0a-072b-44dc-95d2-cc36cd425cab"
     dedicated         = {
         disk_iops        = 450
-        machine_type     = "n1-standard-2"
+        machine_type     = "n2-standard-2"
         memory_gib       = 7.5
         num_virtual_cpus = 2
         storage_gib      = 15
@@ -475,7 +490,7 @@ resource "cockroach_sql_user" "example" {
 # data.cockroach_cluster.example:
 data "cockroach_cluster" "example" {
     cloud_provider    = "GCP"
-    cockroach_version = "v22.2.0"
+    cockroach_version = "v23.1.0"
     dedicated         = {
         disk_iops        = 450
         machine_type     = "n1-standard-2"
@@ -499,7 +514,7 @@ Outputs:
 cluster = {
     account_id        = null
     cloud_provider    = "GCP"
-    cockroach_version = "v22.2.0"
+    cockroach_version = "v23.1.0"
     creator_id        = null
     dedicated         = {
         disk_iops        = 450
@@ -614,4 +629,7 @@ Destroy complete! Resources: 3 destroyed.
 
 ## Next steps
 
-The [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) provide detailed information on the resources you can manage using Terraform.
+- Refer to [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) for detailed information on the resources you can manage using Terraform.
+- [Manage Databases with Terraform](manage-database-terraform.html).
+- [Export Metrics with Terraform](export-metrics-terraform.html).
+- [Export Logs with Terraform](export-logs-terraform.html).

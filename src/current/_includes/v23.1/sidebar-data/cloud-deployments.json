@@ -42,12 +42,6 @@
                     ]
             },
             {
-                "title": "Provision a Serverless Cluster with Terraform",
-                "urls": [
-                    "/cockroachcloud/provision-a-cluster-with-terraform.html"
-                ]
-            },
-            {
                 "title": "Serverless Performance Benchmarking",
                 "urls": [
                     "/cockroachcloud/serverless-benchmarking.html"
@@ -92,12 +86,6 @@
             "title": "Move into Production",
             "urls": [
                 "/cockroachcloud/production-checklist.html"
-            ]
-            },
-            {
-            "title": "Provision a Dedicated Cluster with Terraform",
-            "urls": [
-                "/cockroachcloud/provision-a-cluster-with-terraform.html?filters=dedicated"
             ]
             },
             {
@@ -455,13 +443,42 @@
                             "/cockroachcloud/upgrade-to-v20.1.html"
                         ]
                     }
-                    ]
+                  ]
               },
               {
                 "title": "CockroachDB Cloud API",
                 "urls": [
                   "/cockroachcloud/cloud-api.html"
                 ]
+              },
+              {
+                "title": "CockroachDB Cloud Terraform Provider",
+                "items": [
+                    {
+                        "title": "Provision a Cluster with Terraform",
+                        "urls": [
+                            "/cockroachcloud/provision-a-cluster-with-terraform.html"
+                        ]
+                    },
+                    {
+                        "title": "Manage Databases with Terraform",
+                        "urls": [
+                            "/cockroachcloud/manage-database-terraform.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Logs with Terraform",
+                        "urls": [
+                            "/cockroachcloud/export-logs-terraform.html"
+                        ]
+                    },
+                    {
+                        "title": "Export Metrics with Terraform",
+                        "urls": [
+                            "/cockroachcloud/export-metrics-terraform.html"
+                        ]
+                    }
+                  ]
               },
               {
                 "title": "<code>ccloud</code> CLI",

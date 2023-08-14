@@ -1,45 +1,24 @@
 ---
-title: Export Metrics From a CockroachDB Dedicated Cluster
-summary: Export Metrics From a CockroachDB Dedicated Cluster
+title: Export Metrics with Terraform
+summary: Learn how to use the CockroachDB Cloud Terraform provider to export metrics.
 toc: true
 docs_area: manage
 cloud: true
 ---
 
-{{ site.data.products.dedicated }} users can use the [Cloud API](cloud-api.html) or the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
+[Terraform](https://terraform.io) is an infrastructure-as-code provisioning tool that uses configuration files to define application and network resources. You can use the [CockroachDB Cloud Terraform provider](https://registry.terraform.io/providers/cockroachdb/cockroach) to configure metrics export to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/) or [Datadog](https://www.datadoghq.com/). Once the export is configured, metrics will flow from all nodes in all regions of your {{ site.data.products.dedicated }} cluster to your chosen cloud metrics sink.
 
-{{site.data.alerts.callout_success}}
-{{ site.data.products.dedicated }} clusters use Cloud Console instead of DB Console, and DB Console is disabled. To export metrics from a {{ site.data.products.core }} cluster, refer to [Monitoring and Alerting](/docs/{{site.versions["dev"]}}/monitoring-and-alerting.html) instead of this page.
-{{site.data.alerts.end}}
-
-Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters.
+Exporting metrics to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS, and were created after August 11, 2022. Metrics export to Datadog is supported on all {{ site.data.products.dedicated }} clusters regardless of creation date.
 
 {{site.data.alerts.callout_info}}
-{% include_cached feature-phases/preview.md %}
+{% include feature-phases/preview.md %}
 {{site.data.alerts.end}}
 
-<a id="the-metricexport-endpoint"></a>
+## Before you begin
 
-## `metricexport` endpoint
+Before you start this tutorial, you must have [the CockroachBDCloud Terraform provider](https://learn.hashicorp.com/tutorials/terraform/install-cli) set up. These instructions apply to an existing {{ site.data.products.dedicated }} cluster that you are managing with Terraform. Follow the tutorial to [Provision a Cluster with Terraform](provision-a-cluster-with-terraform.html?filters=dedicated) to start using Terraform with a new cluster.
 
-To configure and manage metrics export for your {{ site.data.products.dedicated }} cluster, use the `metricexport` endpoint appropriate for your desired cloud metrics sink:
-
-Cloud metrics sink | Metrics export endpoint
------------------- | ----------------------------------------------------
-AWS Cloudwatch     | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/cloudwatch`
-Datadog            | `https://cockroachlabs.cloud/api/v1/clusters/{your_cluster_id}/metricexport/datadog`
-
-Access to the `metricexport` endpoints requires a valid {{ site.data.products.db }} [service account](managing-access.html#manage-service-accounts) with the appropriate permissions (`admin` privilege or Cluster Admin role).
-
-The following methods are available for use with the `metricexport` endpoints, and require the listed service account permissions:
-
-Method | Required permissions | Description
---- | --- | ---
-`GET` | `ADMIN`, `EDIT`, or `READ` | Returns the current status of the metrics export configuration.
-`POST` | `ADMIN` or `EDIT` | Enables metrics export, or updates an existing metrics export configuration.
-`DELETE` | `ADMIN` | Disables metrics export, halting all metrics export to AWS CloudWatch or Datadog.
-
-See [Service accounts](managing-access.html#manage-service-accounts) for instructions on configuring a service account with these required permissions.
+You must also have a [service account](managing-access.html#manage-service-accounts) and [API key](managing-access.html#api-access) in the [CockroachDB Cloud Console](https://cockroachlabs.cloud) with `admin` privilege or the Cluster Creator / Cluster Admin role at the organization scope.
 
 ## Enable metrics export
 
@@ -164,10 +143,7 @@ Perform the following steps to enable metrics export from your {{ site.data.prod
 
 <section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
 
-To enable metrics export for your {{ site.data.products.dedicated }} cluster to Datadog, you can either enable the Datadog integration in your {{ site.data.products.dedicated }} Cloud Console, or on the command line via the [Cloud API](cloud-api.html):
-
-- To enable metrics export to Datadog using the Cloud Console, follow the [Monitor {{ site.data.products.dedicated }} with Datadog](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog) instructions.
-- To enable metrics export to Datadog using the [Cloud API](cloud-api.html), follow the steps below.
+To enable metrics export for your {{ site.data.products.dedicated }} cluster to Datadog, you can either [enable the Datadog integration in the {{ site.data.products.db }} Cloud Console](https://www.cockroachlabs.com/docs/cockroachcloud/tools-page.html#monitor-cockroachdb-dedicated-with-datadog), [enable the Datadog integraiton from the command line using the Cloud API](export-metrics.html), or use the Terraform provider following the instructions below:
 
 1. Find your {{ site.data.products.dedicated }} cluster ID:
 
@@ -208,107 +184,63 @@ To enable metrics export for your {{ site.data.products.dedicated }} cluster to 
 
 </section>
 
+## Update your Terraform configurations
+
+Terraform uses a infrastructure-as-code approach to managing resources. Terraform configuration files allow you to define resources declaratively and let Terraform manage their lifecycle. For details about the log export resource schema, refer to [the Terraform provider documentation](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs/resources/log-export-config).
+
+~~~
+variable "cluster_id" {
+  type = string
+}
+
+variable "datadog_site" {
+  type     = string
+  nullable = false
+}
+
+variable "datadog_api_key" {
+  type      = string
+  nullable  = false
+  sensitive = true
+}
+
+resource "cockroach_metric_export_datadog_config" "example" {
+  id      = var.cluster_id
+  site    = var.datadog_site
+  api_key = var.datadog_api_key
+}
+~~~
+
 ## Monitor the status of a metrics export configuration
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
-  <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="aws-metrics-export">
-
-To check the status of an existing AWS Cloudwatch metrics export configuration, use the following Cloud API command:
+To check the status of an existing metrics export configuration, use the `terraform show` command:
 
 {% include_cached copy-clipboard.html %}
-~~~shell
-curl --request GET \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
-  --header "Authorization: Bearer {secret_key}"
+~~~ shell
+terraform show
 ~~~
 
-Where:
+This will show the following output:
 
-- `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
-
-To check the status of an existing Datadog metrics export configuration, use the following Cloud API command:
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request GET \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
-  --header "Authorization: Bearer {secret_key}"
 ~~~
-
-Where:
-
-- `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
-
-</section>
+~~~
 
 ## Update an existing metrics export configuration
 
-To update an existing {{ site.data.products.dedicated }} metrics export configuration, make any necessary changes to your cloud provider configuration (e.g., AWS CloudWatch or Datadog), then issue the same `POST` Cloud API command as shown in the [Enable metrics export](#enable-metrics-export) instructions for your cloud provider with the desired updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
-
+To update an existing {{ site.data.products.dedicated }} metrics export configuration, make any necessary changes to your terraform configuration files, then run the `terraform apply` command to apply the updated configuration. Follow the [Monitor the status of a metrics export configuration](#monitor-the-status-of-a-metrics-export-configuration) instructions to ensure the update completes successfully.
+    
 ## Disable metrics export
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="aws-metrics-export">AWS CloudWatch</button>
-  <button class="filter-button" data-scope="datadog-metrics-export">Datadog</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="aws-metrics-export">
-
-To disable an existing AWS Cloudwatch metrics export configuration, and stop sending metrics to Cloudwatch, use the following Cloud API command:
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request DELETE \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/cloudwatch \
-  --header "Authorization: Bearer {secret_key}"
-~~~
-
-Where:
-
-- `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="datadog-metrics-export">
-
-To disable an existing Datadog metrics export configuration, and stop sending metrics to Datadog, use the following Cloud API command:
-
-{% include_cached copy-clipboard.html %}
-~~~shell
-curl --request DELETE \
-  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/metricexport/datadog \
-  --header "Authorization: Bearer {secret_key}"
-~~~
-
-Where:
-
-- `{cluster_id}` is your {{ site.data.products.dedicated }} cluster's cluster ID, which can be found in the URL of your [Cloud Console](https://cockroachlabs.cloud/clusters/) for the specific cluster you wish to configure, resembling `f78b7feb-b6cf-4396-9d7f-494982d7d81e`.
-- `{secret_key}` is your {{ site.data.products.dedicated }} API key. See [API Access](managing-access.html) for instructions on generating this key.
-
-</section>
+To disable metrics export, remove all relevant Terraform configuration information, then run the `terraform apply` command.
 
 ## Limitations
 
-- Metrics export to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+- Metrics export to AWS CloudWatch is only available on {{ site.data.products.dedicated }} clusters which are hosted on AWS. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics-terraform.html?filters=datadog-metrics-export) instead.
 - AWS CloudWatch does not currently support histograms. Any histogram-type metrics emitted from your {{ site.data.products.dedicated }} cluster are dropped by CloudWatch. See [Prometheus metric type conversion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-metrics-conversion.html) for more information, and [Logging dropped Prometheus metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights-Prometheus-troubleshooting-EKS.html#ContainerInsights-Prometheus-troubleshooting-droppedmetrics) for instructions on tracking dropped histogram metrics in CloudWatch.
+    
+## Learn more
 
-## Troubleshooting
-
-### AWS CloudWatch
-
-Be sure you are providing **your own** AWS Account ID as shown on the AWS [IAM page](https://console.aws.amazon.com/iam/) to step 6, **not** the AWS cloud provider account ID as returned from step 3.
-
-If you are using an existing AWS role, or are otherwise using a role name different from the example name used in this tutorial, be sure to use your own role name in step 8 in place of `CockroachCloudMetricsExportRole`.
-
-Your {{ site.data.products.dedicated }} cluster must be running on AWS (not GCP) to make use of metrics export to AWS CloudWatch. If your {{ site.data.products.dedicated }} cluster is hosted on GCP, you can [export metrics to Datadog](export-metrics.html?filters=datadog-metrics-export) instead.
+- See the [CockroachDB Cloud Terraform provider reference docs](https://registry.terraform.io/providers/cockroachdb/cockroach/latest/docs) for detailed information on the resources you can manage using Terraform.
+- Read about how to [provision a cluster with Terraform](provision-a-cluster-with-terraform.html).
+- Read about how to [manage databases with Terraform](manage-database-terraform.html).
+- Read about how to [export logs with Terraform](export-logs-terraform.html)
