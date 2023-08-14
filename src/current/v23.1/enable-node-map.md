@@ -21,7 +21,7 @@ This page guides you through the process of setting up and enabling the Node Map
 
 ## Set up and enable the Node Map
 
-To enable the Node Map, you need to start the cluster with the correct [`--locality`](cockroach-start.html#locality) flags and assign the latitude and longitude for each locality.
+To enable the Node Map, you need to start the cluster with the correct [`--locality`]({% link {{ page.version.version }}/cockroach-start.md %}#locality) flags and assign the latitude and longitude for each locality.
 
 {{site.data.alerts.callout_info}}
 The Node Map will not be displayed until *all* nodes are started with the correct `--locality` flags and all localities are assigned the corresponding latitude and longitude.
@@ -92,14 +92,14 @@ To start a new cluster with the correct `--locality` flags:
     --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
     ~~~
 
-1. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster:
+1. Use the [`cockroach init`]({% link {{ page.version.version }}/cockroach-init.md %}) command to perform a one-time initialization of the cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach init --insecure --host=<address of any node>
     ~~~
 
-1. [Access the DB Console](ui-overview.html#db-console-access).
+1. [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 
 1. If the node list displays, click the selector <img src="{{ 'images/v23.1/node-map.png' | relative_url }}" alt="Node map selector" /> and select **Node Map**.
 
@@ -109,7 +109,7 @@ The following page is displayed:
 
 ### Step 2. Set the Enterprise license and refresh the DB Console
 
-After [setting the Enterprise license](enterprise-licensing.html), the Node Map should now be displaying the highest-level localities you defined:
+After [setting the Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}), the Node Map should now be displaying the highest-level localities you defined:
 
 <img src="{{ 'images/v23.1/ui-node-map-after-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -148,11 +148,11 @@ Refresh the DB Console to see the updated Node Map:
 
 To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
 
-1. Click the map component marked as **region=us-east-1** on the Node Map. The [locality component](ui-cluster-overview-page.html#locality-component) for the datacenter is displayed.
+1. Click the map component marked as **region=us-east-1** on the Node Map. The [locality component]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#locality-component) for the datacenter is displayed.
 
      <img src="{{ 'images/v23.1/ui-node-map-navigation1.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-1. Click the datacenter component marked as **datacenter=us-east-1a**. The individual [node components](ui-cluster-overview-page.html#node-component) are displayed.
+1. Click the datacenter component marked as **datacenter=us-east-1a**. The individual [node components]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-component) are displayed.
 
      <img src="{{ 'images/v23.1/ui-node-map-navigation2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -162,11 +162,11 @@ To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` re
 
 ### Node Map not displayed
 
-- The Node Map requires an [Enterprise license](enterprise-licensing.html).
-- All nodes in the cluster must be assigned [localities](cockroach-start.html#locality).
+- The Node Map requires an [Enterprise license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+- All nodes in the cluster must be assigned [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 - Localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 
-To verify all requirements, navigate to the [**Localities**](ui-debug-pages.html#configuration) debug page in the DB Console.
+To verify all requirements, navigate to the [**Localities**]({% link {{ page.version.version }}/ui-debug-pages.md %}#configuration) debug page in the DB Console.
 
 <img src="{{ 'images/v23.1/ui-localities-debug.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 

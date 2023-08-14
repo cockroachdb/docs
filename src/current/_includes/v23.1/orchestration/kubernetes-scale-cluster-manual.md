@@ -1,4 +1,4 @@
-Before scaling up CockroachDB, note the following [topology recommendations](recommended-production-settings.html#topology):
+Before scaling up CockroachDB, note the following [topology recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#topology):
 
 - Each CockroachDB node (running in its own pod) should run on a separate Kubernetes worker node.
 - Each availability zone should have the same number of CockroachDB nodes.
@@ -48,4 +48,4 @@ If your cluster has 3 CockroachDB nodes distributed across 3 availability zones 
     ...
     ~~~
 
-1. You can also open the [**Node List**](ui-cluster-overview-page.html#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
+1. You can also open the [**Node List**]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.

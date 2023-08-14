@@ -7,82 +7,82 @@ docs_area: reference.sql
 
 CockroachDB supports the following SQL statements.
 
-In the [`cockroach` SQL shell](cockroach-sql.html#help), use `\h [statement]` to get inline help about a statement.
+In the [`cockroach` SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}#help), use `\h [statement]` to get inline help about a statement.
 
 ## Data definition statements
 
 Statement | Usage
 ----------|------------
-[`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
-[`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) | Change the default [privileges](security-reference/authorization.html#privileges) for objects created by specific roles/users in the current database.
-[`ALTER FUNCTION`](alter-function.html) | Modify a [user-defined function](user-defined-functions.html).
-[`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
-[`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. [Partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
-[`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
-[`ALTER SCHEMA`](alter-schema.html) | Alter a user-defined schema.
-[`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
-[`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER TYPE`](alter-type.html) | Modify a user-defined, [enumerated data type](enum.html).
-[`ALTER USER`](alter-user.html) | Add, change, or remove a user's password and to change the login privileges for a role.
-[`ALTER ROLE`](alter-role.html) | Add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
-[`ALTER VIEW`](alter-view.html) | Apply a schema change to a view.
-[`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
-[`CREATE DATABASE`](create-database.html) | Create a new database.
-[`CREATE FUNCTION`](create-function.html) | Create a [user-defined function](user-defined-functions.html).
-[`CREATE INDEX`](create-index.html) | Create an index for a table.
-[`CREATE SCHEMA`](create-schema.html) | Create a user-defined schema.
-[`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
-[`CREATE TABLE`](create-table.html) | Create a new table in a database.
-[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
-[`CREATE TYPE`](create-type.html) | Create a user-defined, [enumerated data type](enum.html).
-[`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
-[`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
-[`DROP FUNCTION`](drop-function.html) | Remove a [user-defined function](user-defined-functions.html) from a database.
-[`DROP INDEX`](drop-index.html) | Remove an index for a table.
-[`DROP OWNED BY`](drop-owned-by.html) | Drop all objects owned by and any [grants](grant.html) on objects not owned by a [role](security-reference/authorization.html#roles).
-[`DROP SCHEMA`](drop-schema.html) | Drop a user-defined schema.
-[`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
-[`DROP TABLE`](drop-table.html) | Remove a table.
-[`DROP TYPE`](drop-type.html) | Remove a user-defined, [enumerated data type](enum.html).
-[`DROP VIEW`](drop-view.html)| Remove a view.
-[`REFRESH`](refresh.html) | Refresh the stored query results of a [materialized view](views.html#materialized-views).
-[`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
-[`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
-[`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a database, function, sequence, table, or view.
-[`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
-[`SHOW ENUMS`](show-enums.html) | List user-defined, [enumerated data types](enum.html) in a database.
-[`SHOW FULL TABLE SCANS`](show-full-table-scans.html) | List recent queries that used a full table scan.
-[`SHOW INDEX`](show-index.html) | View index information for a table or database.
-[`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
-[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. [Partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
-[`SHOW REGIONS`](show-regions.html) | List the [cluster regions](multiregion-overview.html#cluster-regions) or [database regions](multiregion-overview.html#database-regions) in a [multi-region cluster](multiregion-overview.html).
-[`SHOW SUPER REGIONS`](show-super-regions.html) | List the [super regions](multiregion-overview.html#super-regions) associated with a database in a [multi-region cluster](multiregion-overview.html).
-[`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
-[`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
-[`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
-[`SHOW TYPES`](show-types.html) | List user-defined [data types](data-types.html) in a database.
-[`SHOW RANGES`](show-ranges.html) | Show range information for all data in a table or index.
-[`SHOW RANGE FOR ROW`](show-range-for-row.html) | Show range information for a single row in a table or index.
-[`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
+[`ALTER DATABASE`]({% link {{ page.version.version }}/alter-database.md %}) | Apply a schema change to a database.
+[`ALTER DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/alter-default-privileges.md %}) | Change the default [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#privileges) for objects created by specific roles/users in the current database.
+[`ALTER FUNCTION`]({% link {{ page.version.version }}/alter-function.md %}) | Modify a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
+[`ALTER INDEX`]({% link {{ page.version.version }}/alter-index.md %}) | Apply a schema change to an index.
+[`ALTER PARTITION`]({% link {{ page.version.version }}/alter-partition.md %}) | Configure the replication zone for a partition. [Partitioning]({% link {{ page.version.version }}/partitioning.md %}) requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`ALTER RANGE`]({% link {{ page.version.version }}/alter-range.md %}) | Configure the replication zone for a system range.
+[`ALTER SCHEMA`]({% link {{ page.version.version }}/alter-schema.md %}) | Alter a user-defined schema.
+[`ALTER SEQUENCE`]({% link {{ page.version.version }}/alter-sequence.md %}) | Apply a schema change to a sequence.
+[`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %}) | Apply a schema change to a table.
+[`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %}) | Modify a user-defined, [enumerated data type]({% link {{ page.version.version }}/enum.md %}).
+[`ALTER USER`]({% link {{ page.version.version }}/alter-user.md %}) | Add, change, or remove a user's password and to change the login privileges for a role.
+[`ALTER ROLE`]({% link {{ page.version.version }}/alter-role.md %}) | Add, change, or remove a [role's]({% link {{ page.version.version }}/create-role.md %}) password and to change the login privileges for a role.
+[`ALTER VIEW`]({% link {{ page.version.version }}/alter-view.md %}) | Apply a schema change to a view.
+[`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) | Associate a comment to a database, table, or column.
+[`CREATE DATABASE`]({% link {{ page.version.version }}/create-database.md %}) | Create a new database.
+[`CREATE FUNCTION`]({% link {{ page.version.version }}/create-function.md %}) | Create a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
+[`CREATE INDEX`]({% link {{ page.version.version }}/create-index.md %}) | Create an index for a table.
+[`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %}) | Create a user-defined schema.
+[`CREATE SEQUENCE`]({% link {{ page.version.version }}/create-sequence.md %}) | Create a new sequence.
+[`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) | Create a new table in a database.
+[`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
+[`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %}) | Create a user-defined, [enumerated data type]({% link {{ page.version.version }}/enum.md %}).
+[`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %}) | Create a new [view]({% link {{ page.version.version }}/views.md %}) in a database.
+[`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %}) | Remove a database and all its objects.
+[`DROP FUNCTION`]({% link {{ page.version.version }}/drop-function.md %}) | Remove a [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}) from a database.
+[`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %}) | Remove an index for a table.
+[`DROP OWNED BY`]({% link {{ page.version.version }}/drop-owned-by.md %}) | Drop all objects owned by and any [grants]({% link {{ page.version.version }}/grant.md %}) on objects not owned by a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles).
+[`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %}) | Drop a user-defined schema.
+[`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) | Remove a sequence.
+[`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}) | Remove a table.
+[`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %}) | Remove a user-defined, [enumerated data type]({% link {{ page.version.version }}/enum.md %}).
+[`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})| Remove a view.
+[`REFRESH`]({% link {{ page.version.version }}/refresh.md %}) | Refresh the stored query results of a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
+[`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}) | View details about columns in a table.
+[`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %}) | List constraints on a table.
+[`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) | View the `CREATE` statement for a database, function, sequence, table, or view.
+[`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %}) | List databases in the cluster.
+[`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}) | List user-defined, [enumerated data types]({% link {{ page.version.version }}/enum.md %}) in a database.
+[`SHOW FULL TABLE SCANS`]({% link {{ page.version.version }}/show-full-table-scans.md %}) | List recent queries that used a full table scan.
+[`SHOW INDEX`]({% link {{ page.version.version }}/show-index.md %}) | View index information for a table or database.
+[`SHOW LOCALITY`]({% link {{ page.version.version }}/show-locality.md %}) | View the locality of the current node.
+[`SHOW PARTITIONS`]({% link {{ page.version.version }}/show-partitions.md %}) | List partitions in a database. [Partitioning]({% link {{ page.version.version }}/partitioning.md %}) requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`SHOW REGIONS`]({% link {{ page.version.version }}/show-regions.md %}) | List the [cluster regions]({% link {{ page.version.version }}/multiregion-overview.md %}#cluster-regions) or [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) in a [multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}).
+[`SHOW SUPER REGIONS`]({% link {{ page.version.version }}/show-super-regions.md %}) | List the [super regions]({% link {{ page.version.version }}/multiregion-overview.md %}#super-regions) associated with a database in a [multi-region cluster]({% link {{ page.version.version }}/multiregion-overview.md %}).
+[`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %}) | List the schemas in a database.
+[`SHOW SEQUENCES`]({% link {{ page.version.version }}/show-sequences.md %}) | List the sequences in a database.
+[`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) | List tables or views in a database or virtual schema.
+[`SHOW TYPES`]({% link {{ page.version.version }}/show-types.md %}) | List user-defined [data types]({% link {{ page.version.version }}/data-types.md %}) in a database.
+[`SHOW RANGES`]({% link {{ page.version.version }}/show-ranges.md %}) | Show range information for all data in a table or index.
+[`SHOW RANGE FOR ROW`]({% link {{ page.version.version }}/show-range-for-row.md %}) | Show range information for a single row in a table or index.
+[`SHOW ZONE CONFIGURATIONS`]({% link {{ page.version.version }}/show-zone-configurations.md %}) | List details about existing [replication zones]({% link {{ page.version.version }}/configure-replication-zones.md %}).
 
 ## Data manipulation statements
 
 Statement | Usage
 ----------|------------
-[`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
-[`COPY FROM`](copy-from.html) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued only from third-party clients; you cannot issue `COPY FROM` statements from the [`cockroach` SQL shell](cockroach-sql.html). To import data from files, use an [`IMPORT`](import.html) statement instead.
-[`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files.
-[`IMPORT`](import.html) | Bulk-insert CSV data into a new table.
-[`IMPORT INTO`](import-into.html) | Bulk-insert CSV data into an existing table.
-[`INSERT`](insert.html) | Insert rows into a table.
-[`SELECT`](select-clause.html) | Select specific rows and columns from a table and optionally compute derived values.
-[`SELECT FOR UPDATE`](select-for-update.html) | Order transactions by controlling concurrent access to one or more rows of a table.
-[`TABLE`](selection-queries.html#table-clause) | Select all rows and columns from a table.
-[`TRUNCATE`](truncate.html) | Delete all rows from specified tables.
-[`UPDATE`](update.html) | Update rows in a table.
-[`UPSERT`](upsert.html) | Insert rows that do not violate uniqueness constraints; update rows that do.
-[`VALUES`](selection-queries.html#values-clause) | Return rows containing specific values.
+[`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) | Create a new table in a database using the results from a [selection query]({% link {{ page.version.version }}/selection-queries.md %}).
+[`COPY FROM`]({% link {{ page.version.version }}/copy-from.md %}) | Copy data from a third-party client to a CockroachDB cluster.<br>For compatibility with PostgreSQL drivers and ORMs, CockroachDB supports `COPY FROM` statements issued only from third-party clients; you cannot issue `COPY FROM` statements from the [`cockroach` SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}). To import data from files, use an [`IMPORT`]({% link {{ page.version.version }}/import.md %}) statement instead.
+[`DELETE`]({% link {{ page.version.version }}/delete.md %}) | Delete specific rows from a table.
+[`EXPORT`]({% link {{ page.version.version }}/export.md %}) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files.
+[`IMPORT`]({% link {{ page.version.version }}/import.md %}) | Bulk-insert CSV data into a new table.
+[`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) | Bulk-insert CSV data into an existing table.
+[`INSERT`]({% link {{ page.version.version }}/insert.md %}) | Insert rows into a table.
+[`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) | Select specific rows and columns from a table and optionally compute derived values.
+[`SELECT FOR UPDATE`]({% link {{ page.version.version }}/select-for-update.md %}) | Order transactions by controlling concurrent access to one or more rows of a table.
+[`TABLE`]({% link {{ page.version.version }}/selection-queries.md %}#table-clause) | Select all rows and columns from a table.
+[`TRUNCATE`]({% link {{ page.version.version }}/truncate.md %}) | Delete all rows from specified tables.
+[`UPDATE`]({% link {{ page.version.version }}/update.md %}) | Update rows in a table.
+[`UPSERT`]({% link {{ page.version.version }}/upsert.md %}) | Insert rows that do not violate uniqueness constraints; update rows that do.
+[`VALUES`]({% link {{ page.version.version }}/selection-queries.md %}#values-clause) | Return rows containing specific values.
 
 <a id="access-management-statements"></a>
 
@@ -90,17 +90,17 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`CREATE ROLE`](create-role.html) | Create SQL [roles](security-reference/authorization.html#users-and-roles), which are groups containing any number of roles and users as members.
-[`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](security-reference/authorization.html#managing-privileges) on your databases and tables.
-[`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](security-reference/authorization.html#users-and-roles).
-[`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT`](grant.html) | Grant privileges to [users and roles](security-reference/authorization.html#users-and-roles), or add a [role](security-reference/authorization.html#users-and-roles) or [user](security-reference/authorization.html#create-and-manage-users) as a member to a role.
-[`REASSIGN OWNED`](reassign-owned.html) | Change the [ownership](security-reference/authorization.html#object-ownership) of all database objects in the current database that are currently owned by a specific [role](security-reference/authorization.html#roles) or [user](security-reference/authorization.html#sql-users).
-[`REVOKE`](revoke.html) | Revoke privileges from [users](security-reference/authorization.html#create-and-manage-users) or [roles](security-reference/authorization.html#users-and-roles), or revoke a [role](security-reference/authorization.html#users-and-roles) or [user's](security-reference/authorization.html#create-and-manage-users) membership to a role.
-[`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
-[`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
-[`SHOW USERS`](show-users.html) | Lists the users for all databases.
-[`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) | Show the default privileges for objects created by specific roles/users in the current database.
+[`CREATE ROLE`]({% link {{ page.version.version }}/create-role.md %}) | Create SQL [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles), which are groups containing any number of roles and users as members.
+[`CREATE USER`]({% link {{ page.version.version }}/create-user.md %}) | Create SQL users, which lets you control [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on your databases and tables.
+[`DROP ROLE`]({% link {{ page.version.version }}/drop-role.md %}) | Remove one or more SQL [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles).
+[`DROP USER`]({% link {{ page.version.version }}/drop-user.md %}) | Remove one or more SQL users.
+[`GRANT`]({% link {{ page.version.version }}/grant.md %}) | Grant privileges to [users and roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles), or add a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) or [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) as a member to a role.
+[`REASSIGN OWNED`]({% link {{ page.version.version }}/reassign-owned.md %}) | Change the [ownership]({% link {{ page.version.version }}/security-reference/authorization.md %}#object-ownership) of all database objects in the current database that are currently owned by a specific [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles) or [user]({% link {{ page.version.version }}/security-reference/authorization.md %}#sql-users).
+[`REVOKE`]({% link {{ page.version.version }}/revoke.md %}) | Revoke privileges from [users]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) or [roles]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles), or revoke a [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#users-and-roles) or [user's]({% link {{ page.version.version }}/security-reference/authorization.md %}#create-and-manage-users) membership to a role.
+[`SHOW GRANTS`]({% link {{ page.version.version }}/show-grants.md %}) | View privileges granted to users.
+[`SHOW ROLES`]({% link {{ page.version.version }}/show-roles.md %}) | Lists the roles for all databases.
+[`SHOW USERS`]({% link {{ page.version.version }}/show-users.md %}) | Lists the users for all databases.
+[`SHOW DEFAULT PRIVILEGES`]({% link {{ page.version.version }}/show-default-privileges.md %}) | Show the default privileges for objects created by specific roles/users in the current database.
 
 <a id="transaction-management-statements"></a>
 
@@ -108,51 +108,51 @@ Statement | Usage
 
 Statement | Usage
 ----------|------------
-[`BEGIN`](begin-transaction.html)| Initiate a [transaction](transactions.html).
-[`COMMIT`](commit-transaction.html) | Commit the current [transaction](transactions.html).
-[`SAVEPOINT`](savepoint.html) | Start a [nested transaction](transactions.html#nested-transactions).
-[`RELEASE SAVEPOINT`](release-savepoint.html) | Commit a [nested transaction](transactions.html#nested-transactions).
-[`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction) | Roll back and restart the [nested transaction](transactions.html#nested-transactions) started at the corresponding `SAVEPOINT` statement.
-[`ROLLBACK`](rollback-transaction.html) | Roll back the current [transaction](transactions.html) and all of its [nested transaction](transactions.html#nested-transactions), discarding all transactional updates made by statements inside the transaction.
-[`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
-[`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
-[`SHOW TRANSACTIONS`](show-transactions.html) | View all currently active transactions across the cluster or on the local node.
+[`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})| Initiate a [transaction]({% link {{ page.version.version }}/transactions.md %}).
+[`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) | Commit the current [transaction]({% link {{ page.version.version }}/transactions.md %}).
+[`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %}) | Start a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions).
+[`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) | Commit a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions).
+[`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}#rollback-a-nested-transaction) | Roll back and restart the [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions) started at the corresponding `SAVEPOINT` statement.
+[`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %}) | Roll back the current [transaction]({% link {{ page.version.version }}/transactions.md %}) and all of its [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions), discarding all transactional updates made by statements inside the transaction.
+[`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %}) | Set the priority for the session or for an individual [transaction]({% link {{ page.version.version }}/transactions.md %}).
+[`SHOW`]({% link {{ page.version.version }}/show-vars.md %}) | View the current [transaction settings]({% link {{ page.version.version }}/transactions.md %}).
+[`SHOW TRANSACTIONS`]({% link {{ page.version.version }}/show-transactions.md %}) | View all currently active transactions across the cluster or on the local node.
 
 ## Session management statements
 
 Statement | Usage
 ----------|------------
-[`RESET {session variable}`](reset-vars.html) | Reset a session variable to its default value.
-[`SET {session variable}`](set-vars.html) | Set a current session variable.
-[`SET TRANSACTION`](set-transaction.html) | Set the priority for an individual [transaction](transactions.html).
-[`SHOW TRACE FOR SESSION`](show-trace.html) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
-[`SHOW {session variable}`](show-vars.html) | List the current session or transaction settings.
+[`RESET {session variable}`]({% link {{ page.version.version }}/reset-vars.md %}) | Reset a session variable to its default value.
+[`SET {session variable}`]({% link {{ page.version.version }}/set-vars.md %}) | Set a current session variable.
+[`SET TRANSACTION`]({% link {{ page.version.version }}/set-transaction.md %}) | Set the priority for an individual [transaction]({% link {{ page.version.version }}/transactions.md %}).
+[`SHOW TRACE FOR SESSION`]({% link {{ page.version.version }}/show-trace.md %}) | Return details about how CockroachDB executed a statement or series of statements recorded during a session.
+[`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %}) | List the current session or transaction settings.
 
 ## Cluster management statements
 
 Statement | Usage
 ----------|------------
-[`RESET CLUSTER SETTING`](reset-cluster-setting.html) | Reset a cluster setting to its default value.
-[`SET CLUSTER SETTING`](set-cluster-setting.html) | Set a cluster-wide setting.
-[`SHOW ALL CLUSTER SETTINGS`](show-cluster-setting.html) | List the current cluster-wide settings.
-[`SHOW SESSIONS`](show-sessions.html) | List details about currently active sessions.
-[`CANCEL SESSION`](cancel-session.html) | Cancel a long-running session.
+[`RESET CLUSTER SETTING`]({% link {{ page.version.version }}/reset-cluster-setting.md %}) | Reset a cluster setting to its default value.
+[`SET CLUSTER SETTING`]({% link {{ page.version.version }}/set-cluster-setting.md %}) | Set a cluster-wide setting.
+[`SHOW ALL CLUSTER SETTINGS`]({% link {{ page.version.version }}/show-cluster-setting.md %}) | List the current cluster-wide settings.
+[`SHOW SESSIONS`]({% link {{ page.version.version }}/show-sessions.md %}) | List details about currently active sessions.
+[`CANCEL SESSION`]({% link {{ page.version.version }}/cancel-session.md %}) | Cancel a long-running session.
 
 ## Query management statements
 
 Statement | Usage
 ----------|------------
-[`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
-[`SHOW STATEMENTS`/`SHOW QUERIES`](show-statements.html) | List details about current active SQL queries.
+[`CANCEL QUERY`]({% link {{ page.version.version }}/cancel-query.md %}) | Cancel a running SQL query.
+[`SHOW STATEMENTS`/`SHOW QUERIES`]({% link {{ page.version.version }}/show-statements.md %}) | List details about current active SQL queries.
 
 ## Query planning statements
 
 Statement | Usage
 ----------|------------
-[`CREATE STATISTICS`](create-statistics.html) | Create table statistics for the [cost-based optimizer](cost-based-optimizer.html) to use.
-[`EXPLAIN`](explain.html) | View debugging and analysis details for a statement that operates over tabular data.
-[`EXPLAIN ANALYZE`](explain-analyze.html) | Execute the query and generate a physical query plan with execution statistics.
-[`SHOW STATISTICS`](show-statistics.html) | List table statistics used by the [cost-based optimizer](cost-based-optimizer.html).
+[`CREATE STATISTICS`]({% link {{ page.version.version }}/create-statistics.md %}) | Create table statistics for the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}) to use.
+[`EXPLAIN`]({% link {{ page.version.version }}/explain.md %}) | View debugging and analysis details for a statement that operates over tabular data.
+[`EXPLAIN ANALYZE`]({% link {{ page.version.version }}/explain-analyze.md %}) | Execute the query and generate a physical query plan with execution statistics.
+[`SHOW STATISTICS`]({% link {{ page.version.version }}/show-statistics.md %}) | List table statistics used by the [cost-based optimizer]({% link {{ page.version.version }}/cost-based-optimizer.md %}).
 
 ## Job management statements
 
@@ -160,41 +160,41 @@ Jobs in CockroachDB represent tasks that might not complete immediately, such as
 
 Statement | Usage
 ----------|------------
-[`CANCEL JOB`](cancel-job.html) | Cancel a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
-[`PAUSE JOB`](pause-job.html) | Pause a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
-[`RESUME JOB`](resume-job.html) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
-[`SHOW JOBS`](show-jobs.html) | View information on jobs.
+[`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %}) | Cancel a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %}) | Pause a `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`RESUME JOB`]({% link {{ page.version.version }}/resume-job.md %}) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
+[`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}) | View information on jobs.
 
 ## Backup and restore statements
 
 Statement | Usage
 ----------|------------
-[`BACKUP`](backup.html) | Create disaster recovery backups of clusters, databases, and tables.
-[`RESTORE`](restore.html) | Restore clusters, databases, and tables using your backups.
-[`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
-[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | Create a schedule for periodic backups. Core users can only use backup scheduling for full backups of clusters, databases, or tables. To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
-[`ALTER BACKUP SCHEDULE`](alter-backup-schedule.html) | Modify an existing backup schedule.
-[`SHOW SCHEDULES`](show-schedules.html) | View information on backup schedules.
-[`PAUSE SCHEDULES`](pause-schedules.html) | Pause backup schedules.
-[`RESUME SCHEDULES`](resume-schedules.html) | Resume paused backup schedules.
-[`DROP SCHEDULES`](drop-schedules.html) | Drop backup schedules.
-[`ALTER BACKUP`](alter-backup.html) | Add a new [KMS encryption key](take-and-restore-encrypted-backups.html#use-key-management-service) to an encrypted backup. Adding new KMS encryption keys requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+[`BACKUP`]({% link {{ page.version.version }}/backup.md %}) | Create disaster recovery backups of clusters, databases, and tables.
+[`RESTORE`]({% link {{ page.version.version }}/restore.md %}) | Restore clusters, databases, and tables using your backups.
+[`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %}) | List the contents of a backup.
+[`CREATE SCHEDULE FOR BACKUP`]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) | Create a schedule for periodic backups. Core users can only use backup scheduling for full backups of clusters, databases, or tables. To use the other backup features, you need an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
+[`ALTER BACKUP SCHEDULE`]({% link {{ page.version.version }}/alter-backup-schedule.md %}) | Modify an existing backup schedule.
+[`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}) | View information on backup schedules.
+[`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %}) | Pause backup schedules.
+[`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %}) | Resume paused backup schedules.
+[`DROP SCHEDULES`]({% link {{ page.version.version }}/drop-schedules.md %}) | Drop backup schedules.
+[`ALTER BACKUP`]({% link {{ page.version.version }}/alter-backup.md %}) | Add a new [KMS encryption key]({% link {{ page.version.version }}/take-and-restore-encrypted-backups.md %}#use-key-management-service) to an encrypted backup. Adding new KMS encryption keys requires an [{{ site.data.products.enterprise }} license]({% link {{ page.version.version }}/enterprise-licensing.md %}).
 
 ## Changefeed statements
 
-[Change data capture](change-data-capture-overview.html) (CDC) provides an {{ site.data.products.enterprise }} and core version of row-level change subscriptions for downstream processing.
+[Change data capture]({% link {{ page.version.version }}/change-data-capture-overview.md %}) (CDC) provides an {{ site.data.products.enterprise }} and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`](create-changefeed.html) | [({{ site.data.products.enterprise }})](enterprise-licensing.html) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (e.g, [Kafka](changefeed-sinks.html#kafka), [cloud storage](changefeed-sinks.html#cloud-storage-sink)).
-[`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html) | [({{ site.data.products.enterprise }})](enterprise-licensing.html) Create a scheduled changefeed to export data out of CockroachDB using an initial scan. to a configurable sink (e.g, [Kafka](changefeed-sinks.html#kafka), [cloud storage](changefeed-sinks.html#cloud-storage-sink)).
-[`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | (Core) Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
-[`ALTER CHANGEFEED`](alter-changefeed.html) | [({{ site.data.products.enterprise }})](enterprise-licensing.html) Modify an existing changefeed.
+[`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) | [({{ site.data.products.enterprise }})]({% link {{ page.version.version }}/enterprise-licensing.md %}) Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (e.g, [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)).
+[`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}) | [({{ site.data.products.enterprise }})]({% link {{ page.version.version }}/enterprise-licensing.md %}) Create a scheduled changefeed to export data out of CockroachDB using an initial scan. to a configurable sink (e.g, [Kafka]({% link {{ page.version.version }}/changefeed-sinks.md %}#kafka), [cloud storage]({% link {{ page.version.version }}/changefeed-sinks.md %}#cloud-storage-sink)).
+[`EXPERIMENTAL CHANGEFEED FOR`]({% link {{ page.version.version }}/changefeed-for.md %}) | (Core) Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+[`ALTER CHANGEFEED`]({% link {{ page.version.version }}/alter-changefeed.md %}) | [({{ site.data.products.enterprise }})]({% link {{ page.version.version }}/enterprise-licensing.md %}) Modify an existing changefeed.
 
 ## External resource statements
 
 Statement | Usage
 ----------+----------
-[`CREATE EXTERNAL CONNECTION`](create-external-connection.html) | Create an external connection, which represents a provider-specific URI, to interact with resources that are external from CockroachDB.
-[`SHOW CREATE EXTERNAL CONNECTION`](show-create-external-connection.html) | Display the connection name and the creation statements for active external connections.
-[`DROP EXTERNAL CONNECTION`](drop-external-connection.html) | Drop an external connection.
+[`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %}) | Create an external connection, which represents a provider-specific URI, to interact with resources that are external from CockroachDB.
+[`SHOW CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/show-create-external-connection.md %}) | Display the connection name and the creation statements for active external connections.
+[`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %}) | Drop an external connection.

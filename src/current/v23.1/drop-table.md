@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DROP TABLE` [statement](sql-statements.html) removes a table and all its indexes from a database.
+The `DROP TABLE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) removes a table and all its indexes from a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -13,7 +13,7 @@ The `DROP TABLE` [statement](sql-statements.html) removes a table and all its in
 
 ## Required privileges
 
-The user must have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
+The user must have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the specified table(s). If `CASCADE` is used, the user must have the privileges required to drop each dependent object as well.
 
 ## Synopsis
 
@@ -24,9 +24,9 @@ The user must have the `DROP` [privilege](security-reference/authorization.html#
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the table if it exists; if it does not exist, do not return an error.
-`table_name_list`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`](show-tables.html).
-`CASCADE` | Drop all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on the table.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
-`RESTRICT`    | _(Default)_ Do not drop the table if any objects (such as [constraints](constraints.html) and [views](views.html)) depend on it.
+`table_name_list`  | A comma-separated list of table names. To find table names, use [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}).
+`CASCADE` | Drop all objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and [views]({% link {{ page.version.version }}/views.md %})) that depend on the table.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
+`RESTRICT`    | _(Default)_ Do not drop the table if any objects (such as [constraints]({% link {{ page.version.version }}/constraints.md %}) and [views]({% link {{ page.version.version }}/views.md %})) depend on it.
 
 ## Viewing schema changes
 
@@ -84,7 +84,7 @@ DROP TABLE
 
 ### Remove a table and dependent objects with `CASCADE`
 
-In this example, a [foreign key](foreign-key.html) from a different table references the table being dropped. Therefore, it's only possible to drop the table while simultaneously dropping the dependent foreign key constraint using `CASCADE`.
+In this example, a [foreign key]({% link {{ page.version.version }}/foreign-key.md %}) from a different table references the table being dropped. Therefore, it's only possible to drop the table while simultaneously dropping the dependent foreign key constraint using `CASCADE`.
 
 {{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
 
@@ -113,7 +113,7 @@ In this example, a [foreign key](foreign-key.html) from a different table refere
 pq: "users" is referenced by foreign key from table "vehicles"
 ~~~
 
-To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`](show-create.html) statement. `SHOW CREATE` shows how the columns in a table are created, including data types, default values, indexes, and constraints.
+To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) statement. `SHOW CREATE` shows how the columns in a table are created, including data types, default values, indexes, and constraints.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -193,15 +193,15 @@ Use a `SHOW CREATE TABLE` statement to verify that the foreign key constraint ha
 
 ## See also
 
-- [`ALTER TABLE`](alter-table.html)
-- [`CREATE TABLE`](create-table.html)
-- [`INSERT`](insert.html)
-- [`ALTER TABLE ... RENAME TO`](alter-table.html#rename-to)
-- [`SHOW COLUMNS`](show-columns.html)
-- [`SHOW TABLES`](show-tables.html)
-- [`UPDATE`](update.html)
-- [`DELETE`](delete.html)
-- [`DROP INDEX`](drop-index.html)
-- [`DROP VIEW`](drop-view.html)
-- [`SHOW JOBS`](show-jobs.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`ALTER TABLE`]({% link {{ page.version.version }}/alter-table.md %})
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`INSERT`]({% link {{ page.version.version }}/insert.md %})
+- [`ALTER TABLE ... RENAME TO`]({% link {{ page.version.version }}/alter-table.md %}#rename-to)
+- [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %})
+- [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %})
+- [`UPDATE`]({% link {{ page.version.version }}/update.md %})
+- [`DELETE`]({% link {{ page.version.version }}/delete.md %})
+- [`DROP INDEX`]({% link {{ page.version.version }}/drop-index.md %})
+- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

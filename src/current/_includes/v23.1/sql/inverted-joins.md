@@ -38,7 +38,7 @@ EXPLAIN SELECT * FROM vehicles@vehicles_pkey AS v2 INNER INVERTED JOIN vehicles@
 (16 rows)
 ~~~
 
-You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@>` join condition in a `WHERE` clause and using an [index hint](table-expressions.html#force-index-selection) for the GIN index.
+You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@>` join condition in a `WHERE` clause and using an [index hint]({% link {{ page.version.version }}/table-expressions.md %}#force-index-selection) for the GIN index.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -5,11 +5,11 @@ toc: true
 docs_area: manage
 ---
 
-Now that [CockroachDB v20.2](../releases/v20.2.html#v20-2-0) is available, your [Org Administrator](authorization.html#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
+Now that [CockroachDB v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0) is available, your [Org Administrator]({% link cockroachcloud/authorization.md %}#org-administrator-legacy) can upgrade your cluster directly from the {{ site.data.products.db }} Console. This page walks through the process.
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to v20.2, you must be running v20.1. If you are not running v20.1, [upgrade to v20.1](upgrade-to-v20.1.html) and then return to this page and continue to Step 2.
+To upgrade to v20.2, you must be running v20.1. If you are not running v20.1, [upgrade to v20.1]({% link cockroachcloud/upgrade-to-v20.1.md %}) and then return to this page and continue to Step 2.
 
 ## Step 2. Select your cluster size
 
@@ -24,7 +24,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 
-In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../v20.2/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](https://www.cockroachlabs.com/docs/v20.2/multi-active-availability) design.
 
 Approximately 72 hours after all nodes are running v20.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the {{ site.data.products.db }} Console.
 
@@ -39,19 +39,19 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ## Step 4. Prepare to upgrade
 
- Before starting the upgrade, it's important to complete the following steps.
+Before starting the upgrade, it's important to complete the following steps.
 
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.2, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](managing-access.html#create-a-sql-user) and [**Tools**](tools-page.html) tabs in the {{ site.data.products.db }} Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.2, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**]({% link cockroachcloud/managing-access.md %}#create-a-sql-user) and [**Tools**]({% link cockroachcloud/tools-page.md %}) tabs in the {{ site.data.products.db }} Console will be disabled.
 
 </section>
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.2](../releases/v20.2.html#v20-2-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.2](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0-backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ## Step 5. Start the upgrade
 
@@ -79,7 +79,7 @@ Once your cluster is running v20.2, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [DB Console](tools-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console]({% link cockroachcloud/tools-page.md %}) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
@@ -89,19 +89,19 @@ Use the [DB Console](tools-page.html) or your own tooling to monitor your applic
 
 Most v20.2 features can be used right away, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](https://www.cockroachlabs.com/docs/v20.2/spatial-indexes), and [spatial functions](https://www.cockroachlabs.com/docs/v20.2/functions-and-operators#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](https://www.cockroachlabs.com/docs/v20.2/migrate-from-shapefiles), [GeoJSON](https://www.cockroachlabs.com/docs/v20.2/migrate-from-geojson), [GeoPackages](https://www.cockroachlabs.com/docs/v20.2/migrate-from-geopackage), and [OpenStreetMap](https://www.cockroachlabs.com/docs/v20.2/migrate-from-openstreetmap).
 
-- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
+- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](https://www.cockroachlabs.com/docs/v20.2/enum) consisting of sets of enumerated, static values.
 
-- **Altering column data types:** After finalization, it will be possible to [alter column data types](../v20.2/alter-column.html#altering-column-types) where column data must be rewritten.
+- **Altering column data types:** After finalization, it will be possible to [alter column data types](https://www.cockroachlabs.com/docs/v20.2/alter-column#altering-column-types) where column data must be rewritten.
 
-- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../v20.2/create-schema.html), as well [alter user-defined schemas](../v20.2/alter-schema.html), [drop user-defined schemas](../v20.2/drop-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html).
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](https://www.cockroachlabs.com/docs/v20.2/create-schema), as well [alter user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/alter-schema), [drop user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/drop-schema), and [convert databases to user-defined schemas](https://www.cockroachlabs.com/docs/v20.2/convert-to-schema).
 
-- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foreign-key.html) constraint.
+- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](https://www.cockroachlabs.com/docs/v20.2/foreign-key) constraint.
 
-- **Minimum password length:** After finalization, the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) will be respected as the minimum length for passwords.
+- **Minimum password length:** After finalization, the `server.user_login.min_password_length` [cluster setting](https://www.cockroachlabs.com/docs/v20.2/cluster-settings) will be respected as the minimum length for passwords.
 
-- **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
+- **Materialized views:** After finalization, it will be possible to create [materialized views](https://www.cockroachlabs.com/docs/v20.2/views#materialized-views), or views that store their selection query results on-disk.
 
 - **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
 
@@ -129,5 +129,5 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 
 ## See also
 
-- [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v20.2 Release Notes](../releases/v20.2.html#v20-2-0)
+- [Upgrade Policy]({% link cockroachcloud/upgrade-policy.md %})
+- [CockroachDB v20.2 Release Notes](https://www.cockroachlabs.com/docs/releases/v20.2#v20-2-0)

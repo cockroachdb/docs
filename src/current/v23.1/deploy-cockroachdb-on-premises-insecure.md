@@ -77,7 +77,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 
   If you get a permissions error, prefix the command with `sudo`.
 
-1. Run the [`cockroach gen haproxy`](cockroach-gen.html) command, specifying the address of any CockroachDB node:
+1. Run the [`cockroach gen haproxy`]({% link {{ page.version.version }}/cockroach-gen.md %}) command, specifying the address of any CockroachDB node:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

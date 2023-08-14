@@ -75,7 +75,7 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
     Docker adds a DNS entry that resolves the hostname `roach-single` to the container's IP address in Docker's default network. The following examples use this hostname.
 
-1. After the cluster is initialized, the cluster node prints helpful [startup details](cockroach-start.html#standard-output) to its log, including the DB Console URL and the SQL connection string. To retrieve `roach-single`'s startup details:
+1. After the cluster is initialized, the cluster node prints helpful [startup details]({% link {{ page.version.version }}/cockroach-start.md %}#standard-output) to its log, including the DB Console URL and the SQL connection string. To retrieve `roach-single`'s startup details:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -121,7 +121,7 @@ The `cockroach` process listens on `127.0.0.1:26257` and `localhost:26257`, and 
 
 ### Step 4. Stop the cluster
 
-1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes](node-shutdown.html#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
+1. Use the `docker stop` and `docker rm` commands to stop and remove the container (and therefore the single-node cluster). By default, `docker stop` sends a `SIGTERM` signal, waits for 10 seconds, and then sends a `SIGKILL` signal. Cockroach Labs recommends that you [allow between 5 and 10 minutes]({% link {{ page.version.version }}/node-shutdown.md %}#termination-grace-period) before forcibly stopping the `cockroach` process, so this example sets the grace period to 5 minutes. If you do not plan to restart the cluster, you can omit `-t`.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

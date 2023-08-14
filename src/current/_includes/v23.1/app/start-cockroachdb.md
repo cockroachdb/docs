@@ -31,8 +31,8 @@ The **Connection info** dialog shows information about how to connect to your cl
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach demo`](cockroach-demo.html) command:
+1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. Run the [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

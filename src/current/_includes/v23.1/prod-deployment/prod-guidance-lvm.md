@@ -1,1 +1,1 @@
-Do not use LVM in the I/O path. Dynamically resizing CockroachDB store volumes can result in significant performance degradation. Using LVM snapshots in lieu of CockroachDB [backup and restore](take-full-and-incremental-backups.html) is also not supported.
+Do not use LVM in the I/O path. Dynamically resizing CockroachDB store volumes can result in significant performance degradation. Using LVM snapshots in lieu of CockroachDB <a href="{% link {{ page.version.version }}/take-full-and-incremental-backups.md %}">backup and restore</a> is also not supported.

@@ -5,11 +5,11 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW SAVEPOINT STATUS` [statement](sql-statements.html) lists the active [savepoints](savepoint.html) in the current [transaction](transactions.html).
+The `SHOW SAVEPOINT STATUS` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists the active [savepoints]({% link {{ page.version.version }}/savepoint.md %}) in the current [transaction]({% link {{ page.version.version }}/transactions.md %}).
 
 ## Required privileges
 
-No [privileges](security-reference/authorization.html#managing-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
+No [privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
 
 ## Synopsis
 
@@ -28,7 +28,7 @@ Field | Description
 
 ## Example
 
-1. Open a [transaction](transactions.html) using [`BEGIN`](begin-transaction.html), and create a [nested transaction](transactions.html#nested-transactions) using a [savepoint](savepoint.html):
+1. Open a [transaction]({% link {{ page.version.version }}/transactions.md %}) using [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %}), and create a [nested transaction]({% link {{ page.version.version }}/transactions.md %}#nested-transactions) using a [savepoint]({% link {{ page.version.version }}/savepoint.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -52,7 +52,7 @@ Field | Description
 
     Currently, there is only one savepoint.
 
-1. Commit this nested transaction by issuing the [`RELEASE SAVEPOINT`](release-savepoint.html) statement, then clear the connection for the next transaction by issuing a [`COMMIT`](commit-transaction.html) statement:
+1. Commit this nested transaction by issuing the [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %}) statement, then clear the connection for the next transaction by issuing a [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %}) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -60,13 +60,13 @@ Field | Description
     COMMIT;
     ~~~
 
-    If we did not want to commit this nested transaction, but restart it instead, we would have issued a [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction).
+    If we did not want to commit this nested transaction, but restart it instead, we would have issued a [`ROLLBACK TO SAVEPOINT`]({% link {{ page.version.version }}/rollback-transaction.md %}#rollback-a-nested-transaction).
 
 ## See also
 
-- [`SAVEPOINT`](savepoint.html)
-- [`RELEASE SAVEPOINT`](release-savepoint.html)
-- [`ROLLBACK`](rollback-transaction.html)
-- [`BEGIN`](begin-transaction.html)
-- [`COMMIT`](commit-transaction.html)
-- [Transactions](transactions.html)
+- [`SAVEPOINT`]({% link {{ page.version.version }}/savepoint.md %})
+- [`RELEASE SAVEPOINT`]({% link {{ page.version.version }}/release-savepoint.md %})
+- [`ROLLBACK`]({% link {{ page.version.version }}/rollback-transaction.md %})
+- [`BEGIN`]({% link {{ page.version.version }}/begin-transaction.md %})
+- [`COMMIT`]({% link {{ page.version.version }}/commit-transaction.md %})
+- [Transactions]({% link {{ page.version.version }}/transactions.md %})

@@ -14,9 +14,9 @@ CockroachDB supports the following sinks:
 - [Cloud Storage](#cloud-storage-sink) / HTTP
 - [Webhook](#webhook-sink)
 
-The [`CREATE CHANGEFEED`](create-changefeed.html) page provides detail on using the SQL statement and a complete list of the [query parameters](create-changefeed.html#query-parameters) and options available when setting up a changefeed.
+The [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) page provides detail on using the SQL statement and a complete list of the [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters) and options available when setting up a changefeed.
 
-For a step-by-step example connecting a changefeed to a sink, see the [Changefeed Examples](changefeed-examples.html) page.
+For a step-by-step example connecting a changefeed to a sink, see the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page.
 
 ## Sink URI
 
@@ -31,11 +31,11 @@ URI Component      | Description
 `scheme`           | The type of sink: [`kafka`](#kafka), [`gcpubsub`](#google-cloud-pub-sub), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
-`query_parameters` | The sink's [query parameters](create-changefeed.html#query-parameters).
+`query_parameters` | The sink's [query parameters]({% link {{ page.version.version }}/create-changefeed.md %}#query-parameters).
 
 {% include {{ page.version.version }}/cdc/sink-URI-external-connection.md %}
 
-To set a different sink URI to an existing changefeed, use the [`sink` option](alter-changefeed.html#sink-example) with `ALTER CHANGEFEED`.
+To set a different sink URI to an existing changefeed, use the [`sink` option]({% link {{ page.version.version }}/alter-changefeed.md %}#sink-example) with `ALTER CHANGEFEED`.
 
 {% include {{ page.version.version }}/misc/note-egress-perimeter-cdc-backup.md %}
 
@@ -55,7 +55,7 @@ Example of a Kafka sink URI using `SASL-SCRAM-SHA-256` authentication:
 
 {% include {{ page.version.version }}/cdc/oauth-description.md %}
 
-To authenticate to Kafka with OAuth using Okta, see the [Connect to a Changefeed Kafka sink with OAuth Using Okta](connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.html) tutorial.
+To authenticate to Kafka with OAuth using Okta, see the [Connect to a Changefeed Kafka sink with OAuth Using Okta]({% link {{ page.version.version }}/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta.md %}) tutorial.
 
 <a name ="kafka-parameters"></a>The following table lists the available parameters for Kafka URIs:
 
@@ -84,7 +84,7 @@ URI Parameter      | Description
 
 By default, a Kafka topic has the same name as the table on which a changefeed was created. If you create a changefeed on multiple tables, the changefeed will write to multiple topics corresponding to those table names. When you run `CREATE CHANGEFEED` to a Kafka sink, the output will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
-To modify the default topic naming, you can specify a [topic prefix](create-changefeed.html#topic-prefix-param), [an arbitrary topic name](create-changefeed.html#topic-name-param), or use the [`full_table_name` option](create-changefeed.html#full-table-option). Using the [`topic_name`](create-changefeed.html#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+To modify the default topic naming, you can specify a [topic prefix]({% link {{ page.version.version }}/create-changefeed.md %}#topic-prefix-param), [an arbitrary topic name]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param), or use the [`full_table_name` option]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option). Using the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
@@ -119,17 +119,17 @@ The configurable fields are as follows:
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
-`Flush.MaxMessages` | [`INT`](int.html)  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1000`
-`Flush.Messages`   | [`INT`](int.html)   | Configure the number of messages the changefeed should batch before flushing. | `0`
-`Flush.Bytes`      | [`INT`](int.html)   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
+`Flush.MaxMessages` | [`INT`]({% link {{ page.version.version }}/int.md %})  | Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. | `1000`
+`Flush.Messages`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | Configure the number of messages the changefeed should batch before flushing. | `0`
+`Flush.Bytes`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
 `Flush.Frequency`  | [Duration string](https://pkg.go.dev/time#ParseDuration) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
-`"Version"`        | [`STRING`](string.html) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
-<a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`](string.html) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](changefeed-messages.html#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. {% include {{ page.version.version }}/cdc/kafka-acks.md %} | `"ONE"`
-<a name="kafka-compression"></a>`"Compression"` | [`STRING`](string.html) | Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"NONE"`, `"GZIP"`, `"SNAPPY"`, `"LZ4"`, `"ZSTD"`. | `"NONE"`
+`"Version"`        | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). | `"1.0.0.0"`
+<a name="kafka-required-acks"></a>`"RequiredAcks"`  | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages]({% link {{ page.version.version }}/changefeed-messages.md %}#ordering-guarantees) — this value defines the **delivery**. The possible values are: <br><br>`"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.<br><br>`"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.<br><br>`"ALL"`: a quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. {% include {{ page.version.version }}/cdc/kafka-acks.md %} | `"ONE"`
+<a name="kafka-compression"></a>`"Compression"` | [`STRING`]({% link {{ page.version.version }}/string.md %}) | Sets a compression protocol that the changefeed should use when emitting events. The possible values are: `"NONE"`, `"GZIP"`, `"SNAPPY"`, `"LZ4"`, `"ZSTD"`. | `"NONE"`
 
 ### Kafka sink messages
 
-The following shows the [Avro](changefeed-messages.html#avro) messages for a changefeed emitting to Kafka:
+The following shows the [Avro]({% link {{ page.version.version }}/changefeed-messages.md %}#avro) messages for a changefeed emitting to Kafka:
 
 ~~~
 {
@@ -182,7 +182,7 @@ The following shows the [Avro](changefeed-messages.html#avro) messages for a cha
  }
 ~~~
 
-See the [Changefeed Examples](changefeed-examples.html) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster](stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.html) tutorial for examples to set up a Kafka sink.
+See the [Changefeed Examples]({% link {{ page.version.version }}/changefeed-examples.md %}) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster]({% link {{ page.version.version }}/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster.md %}) tutorial for examples to set up a Kafka sink.
 
 {% include {{ page.version.version }}/cdc/note-changefeed-message-page.md %}
 
@@ -207,9 +207,9 @@ A Pub/Sub sink URI follows this example:
 URI Parameter      | Description
 -------------------+------------------------------------------------------------------
 `PROJECT NAME`     | The [Google Cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) name.
-`REGION`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`](create-changefeed.html#unordered) option.
+`REGION`           | (Optional) The single region to which all output will be sent. If you do not include `region`, then you must create your changefeed with the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option.
 `topic_name`       | (Optional) The topic name to which messages will be sent. See the following section on [Topic Naming](#topic-naming) for detail on how topics are created.
-`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) for examples of each of these.
+`AUTH`             | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
 `CREDENTIALS`      | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
 `ASSUME_ROLE` | The service account of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
 
@@ -217,8 +217,8 @@ URI Parameter      | Description
 
 When using Pub/Sub as your downstream sink, consider the following:
 
-- Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
-- Use the [`unordered`](create-changefeed.html#unordered) option for multi-region Pub/Sub. Google Cloud's multi-region Pub/Sub will have lower latency when emitting from multiple regions, but Google Cloud Pub/Sub does not support message ordering for multi-region topics.
+- Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
+- Use the [`unordered`]({% link {{ page.version.version }}/create-changefeed.md %}#unordered) option for multi-region Pub/Sub. Google Cloud's multi-region Pub/Sub will have lower latency when emitting from multiple regions, but Google Cloud Pub/Sub does not support message ordering for multi-region topics.
 - Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
 
 Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
@@ -226,7 +226,7 @@ Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/un
 - To create topics on changefeed creation, you must use the Pub/Sub Editor role, which contains the permissions to create a topic.
 - If the topic the changefeed is writing to already exists, then you can use the more limited Pub/Sub Publisher role, which can only write to existing topics.
 
-For more information, read about compatible changefeed [options](create-changefeed.html#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
+For more information, read about compatible changefeed [options]({% link {{ page.version.version }}/create-changefeed.md %}#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
 
 {{site.data.alerts.callout_info}}
 You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emulator), which allows you to run Pub/Sub locally for testing. CockroachDB uses the [Google Cloud SDK](https://cloud.google.com/sdk), which means that you can follow Google's instructions for [Setting environment variables](https://cloud.google.com/pubsub/docs/emulator#env) to run the Pub/Sub emulator.
@@ -234,17 +234,17 @@ You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emu
 
 ### Pub/Sub topic naming
 
-When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](create-changefeed.html#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`](create-changefeed.html#full-table-option) option to create a topic using the fully qualified table name.
+When running a `CREATE CHANGEFEED` statement to Pub/Sub, it will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`]({% link {{ page.version.version }}/create-changefeed.md %}#topic-name-param) parameter, the changefeed will use the table name to create the topic name. If the topic already exists in your Pub/Sub sink, the changefeed will write to it. You can also use the [`full_table_name`]({% link {{ page.version.version }}/create-changefeed.md %}#full-table-option) option to create a topic using the fully qualified table name.
 
 The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) that the changefeed will emit to.
 
-You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, see Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. See the [Creating a changefeed to Google Cloud Pub/Sub]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, see Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
 
-For a list of compatible parameters and options, see [Parameters](create-changefeed.html#parameters) on the `CREATE CHANGEFEED` page.
+For a list of compatible parameters and options, see [Parameters]({% link {{ page.version.version }}/create-changefeed.md %}#parameters) on the `CREATE CHANGEFEED` page.
 
 ### Pub/Sub sink messages
 
-The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink](changefeed-examples.html#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
+The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
 
 ~~~
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬──────────────────┬─────────────────────────────────────────────────────────┬────────────┬──────────────────┐
@@ -271,12 +271,12 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 
 Some considerations when using cloud storage sinks:
 
-- Cloud storage sinks work with `JSON` and emit newline-delimited `JSON` files. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
-- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format](create-changefeed.html#general-file-format) examples.
+- Cloud storage sinks work with `JSON` and emit newline-delimited `JSON` files. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format]({% link {{ page.version.version }}/create-changefeed.md %}#general-file-format) examples.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
-You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](cloud-storage-authentication.html).
+You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}).
 
 Examples of supported cloud storage sink URIs:
 
@@ -313,7 +313,7 @@ URI Parameter      | Storage | Description
 `AWS_ACCESS_KEY_ID` | AWS | The access key ID to your AWS account.
 `AWS_SECRET_ACCESS_KEY` | AWS | The secret access key to your AWS account.
 `ASSUME_ROLE`      | AWS S3, GCS | The [ARN](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html) (AWS) or [service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) (GCS) of the role to assume. Use in combination with `AUTH=implicit` or `specified`.
-`AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication](cloud-storage-authentication.html) for examples of each of these.
+`AUTH`             | AWS S3, Azure Blob Storage, GCS | The authentication parameter can define either `specified` (default) or `implicit` authentication. To use `specified` authentication, pass your account credentials with the URI. To use `implicit` authentication, configure these credentials via an environment variable. See [Cloud Storage Authentication]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) for examples of each of these.
 `AZURE_ACCOUNT_NAME` | Azure Blob Storage | The name of your Azure account.
 `AZURE_ACCOUNT_KEY` | Azure Blob Storage | The URL-encoded account key for your Azure account.
 `AZURE_CLIENT_ID` | Azure Blob Storage | Application (client) ID for your [App Registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application).
@@ -321,14 +321,14 @@ URI Parameter      | Storage | Description
 `AZURE_ENVIRONMENT` | Azure Blob Storage | {% include {{ page.version.version }}/misc/azure-env-param.md %}
 `AZURE_TENANT_ID`| Azure Blob Storage | Directory (tenant) ID for your App Registration.
 `CREDENTIALS`      | GCS | (Required with `AUTH=specified`) The base64-encoded credentials of your Google [Service Account](https://cloud.google.com/iam/docs/understanding-service-accounts) credentials.
-`file_size`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](create-changefeed.html#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
-<a name ="partition-format"></a>`partition_format` | All | Specify how changefeed [file paths](create-changefeed.html#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
-`S3_STORAGE_CLASS` | AWS S3 | Specify the S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class](create-changefeed.html#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
+`file_size`        | All | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option]({% link {{ page.version.version }}/create-changefeed.md %}#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
+<a name ="partition-format"></a>`partition_format` | All | Specify how changefeed [file paths]({% link {{ page.version.version }}/create-changefeed.md %}#general-file-format) are partitioned in cloud storage sinks. Use `partition_format` with the following values: <br><br><ul><li>`daily` is the default behavior that organizes directories by dates (`2022-05-18/`, `2022-05-19/`, etc.).</li><li>`hourly` will further organize directories by hour within each date directory (`2022-05-18/06`, `2022-05-18/07`, etc.).</li><li>`flat` will not partition the files at all.</ul><br>For example: `CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&partition_format=hourly'` <br><br> **Default:** `daily`
+`S3_STORAGE_CLASS` | AWS S3 | Specify the S3 storage class for files created by the changefeed. See [Create a changefeed with an S3 storage class]({% link {{ page.version.version }}/create-changefeed.md %}#create-a-changefeed-with-an-s3-storage-class) for the available classes and an example. <br><br>**Default:** `STANDARD`
 `topic_prefix`     | All | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 
 {% include {{ page.version.version }}/cdc/options-table-note.md %}
 
-[Use Cloud Storage for Bulk Operations](cloud-storage-authentication.html) provides more detail on authentication to cloud storage sinks.
+[Use Cloud Storage for Bulk Operations]({% link {{ page.version.version }}/cloud-storage-authentication.md %}) provides more detail on authentication to cloud storage sinks.
 
 ### Cloud storage sink messages
 
@@ -404,8 +404,8 @@ URI Parameter      | Description
 
 The following are considerations when using the webhook sink:
 
-* Only supports HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
-* Supports JSON output format. You can use the [`format=csv`](create-changefeed.html#format) option in combination with [`initial_scan='only'`](create-changefeed.html#initial-scan) for CSV-formatted messages.
+* Only supports HTTPS. Use the [`insecure_tls_skip_verify`]({% link {{ page.version.version }}/create-changefeed.md %}#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+* Supports JSON output format. You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option in combination with [`initial_scan='only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) for CSV-formatted messages.
 * There is no concurrency configurability.
 
 ### Webhook sink configuration
@@ -416,11 +416,11 @@ The following details the configurable fields:
 
 Field              | Type                | Description      | Default
 -------------------+---------------------+------------------+-------------------
-`Flush.Messages`   | [`INT`](int.html)   | The batch is flushed and its messages are sent when it contains this many messages. | `0`
-`Flush.Bytes`      | [`INT`](int.html)   | The batch is flushed when the total byte sizes of all its messages reaches this threshold. | `0`
-`Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
-`Retry.Max`        | [`INT`](int.html) | The maximum number of attempted HTTP retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. This only affects HTTP retries, not other causes of [duplicate messages](changefeed-messages.html#duplicate-messages). Note that setting this field will not prevent the changefeed from retrying indefinitely. | `3`
-`Retry.Backoff`    | [`INTERVAL`](interval.html) | How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then the sink will try at most `4` retries, with `10s`, `20s`, `30s`, and `30s` backoff times.  | `"500ms"`
+`Flush.Messages`   | [`INT`]({% link {{ page.version.version }}/int.md %})   | The batch is flushed and its messages are sent when it contains this many messages. | `0`
+`Flush.Bytes`      | [`INT`]({% link {{ page.version.version }}/int.md %})   | The batch is flushed when the total byte sizes of all its messages reaches this threshold. | `0`
+`Flush.Frequency`  | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+`Retry.Max`        | [`INT`]({% link {{ page.version.version }}/int.md %}) | The maximum number of attempted HTTP retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string `inf` to retry indefinitely. This only affects HTTP retries, not other causes of [duplicate messages]({% link {{ page.version.version }}/changefeed-messages.md %}#duplicate-messages). Note that setting this field will not prevent the changefeed from retrying indefinitely. | `3`
+`Retry.Backoff`    | [`INTERVAL`]({% link {{ page.version.version }}/interval.md %}) | How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br><br>For example, if `Retry.Max = 4` and `Retry.Backoff = 10s`, then the sink will try at most `4` retries, with `10s`, `20s`, `30s`, and `30s` backoff times.  | `"500ms"`
 
 For example:
 
@@ -459,7 +459,7 @@ Some complexities to consider when setting `Flush` fields for batching:
 
 ### Webhook sink messages
 
-The following shows the default JSON messages for a changefeed emitting to a webhook sink. These changefeed messages were emitted as part of the [Create a changefeed connected to a Webhook sink](changefeed-examples.html#create-a-changefeed-connected-to-a-webhook-sink) example:
+The following shows the default JSON messages for a changefeed emitting to a webhook sink. These changefeed messages were emitted as part of the [Create a changefeed connected to a Webhook sink]({% link {{ page.version.version }}/changefeed-examples.md %}#create-a-changefeed-connected-to-a-webhook-sink) example:
 
 ~~~
 "2021/08/24 14":"00":21
@@ -522,5 +522,5 @@ The following shows the default JSON messages for a changefeed emitting to a web
 
 ## See also
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})

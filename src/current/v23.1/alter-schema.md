@@ -5,7 +5,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
+The `ALTER SCHEMA` [statement]({% link {{ page.version.version }}/sql-statements.md %}) modifies a user-defined [schema]({% link {{ page.version.version }}/sql-name-resolution.md %}#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -20,13 +20,13 @@ The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [sch
 Parameter | Description
 ----------|------------
 `name`<br>`name.name` | The name of the schema to alter, or the name of the database containing the schema and the schema name, separated by a "`.`".
-`schema_new_name` | The name of the new schema. The new schema name must be unique within the database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`schema_new_name` | The name of the new schema. The new schema name must be unique within the database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).
 `role_spec` |  The role to set as the owner of the schema.
 
 ## Required privileges
 
 - To rename a schema, the user must be the owner of the schema.
-- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](security-reference/authorization.html#roles). The new owner role must also have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the database to which the schema belongs.
+- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role]({% link {{ page.version.version }}/security-reference/authorization.md %}#roles). The new owner role must also have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database to which the schema belongs.
 
 ## Examples
 
@@ -35,10 +35,10 @@ Parameter | Description
 ### Rename a schema
 
 {{site.data.alerts.callout_info}}
-You cannot rename a schema if a [table](create-table.html) in the schema is used by a [view](create-view.html) or [user-defined function](user-defined-functions.html).
+You cannot rename a schema if a [table]({% link {{ page.version.version }}/create-table.md %}) in the schema is used by a [view]({% link {{ page.version.version }}/create-view.md %}) or [user-defined function]({% link {{ page.version.version }}/user-defined-functions.md %}).
 {{site.data.alerts.end}}
 
-Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and [create a new user](create-user.html) `max` and [a schema](create-schema.html) `org_one` with `max` as the owner:
+Suppose that you access the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) as user `root`, and [create a new user]({% link {{ page.version.version }}/create-user.md %}) `max` and [a schema]({% link {{ page.version.version }}/create-schema.md %}) `org_one` with `max` as the owner:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -81,7 +81,7 @@ SQLSTATE: 42501
 
 Because you are executing the `ALTER SCHEMA` command as a non-owner of the schema (i.e., `root`), CockroachDB returns an error.
 
-[Drop the schema](drop-schema.html) and create it again, this time with `root` as the owner.
+[Drop the schema]({% link {{ page.version.version }}/drop-schema.md %}) and create it again, this time with `root` as the owner.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,7 +139,7 @@ SHOW SCHEMAS;
 
 ### Change the owner of a schema
 
-Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and [create a new schema](create-schema.html) named `org_one`:
+Suppose that you access the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) as user `root`, and [create a new schema]({% link {{ page.version.version }}/create-schema.md %}) named `org_one`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -202,7 +202,7 @@ WHERE
 
 ## See also
 
-- [`CREATE SCHEMA`](create-schema.html)
-- [`SHOW SCHEMAS`](show-schemas.html)
-- [`DROP SCHEMA`](drop-schema.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [`CREATE SCHEMA`]({% link {{ page.version.version }}/create-schema.md %})
+- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
+- [`DROP SCHEMA`]({% link {{ page.version.version }}/drop-schema.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

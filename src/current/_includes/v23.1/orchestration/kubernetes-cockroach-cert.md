@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication](authentication.html#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
+The below steps use [`cockroach cert` commands]({% link {{ page.version.version }}/cockroach-cert.md %}) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication]({% link {{ page.version.version }}/authentication.md %}#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
 {{site.data.alerts.end}}
 
 1. Create two directories:

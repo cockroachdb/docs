@@ -5,19 +5,19 @@ toc: true
 docs_area: develop
 ---
 
- CockroachDB supports session-scoped temporary tables (also called "temp tables"). Unlike [persistent tables](create-table.html), temp tables can only be accessed from the session in which they were created, and they are dropped at the end of the session.
+ CockroachDB supports session-scoped temporary tables (also called "temp tables"). Unlike [persistent tables]({% link {{ page.version.version }}/create-table.md %}), temp tables can only be accessed from the session in which they were created, and they are dropped at the end of the session.
 
-To create a temp table, add `TEMP`/`TEMPORARY` to a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement. For full syntax details, see the [`CREATE TABLE`](create-table.html#synopsis) and [`CREATE TABLE AS`](create-table-as.html#synopsis) pages. For example usage, see [Examples](#examples).
+To create a temp table, add `TEMP`/`TEMPORARY` to a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) or [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}) statement. For full syntax details, see the [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}#synopsis) and [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %}#synopsis) pages. For example usage, see [Examples](#examples).
 
 {{site.data.alerts.callout_info}}
 {% include feature-phases/preview.md %} For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-By default, temp tables are disabled in CockroachDB. To enable temp tables, set the `experimental_enable_temp_tables` [session variable](set-vars.html) to `on`.
+By default, temp tables are disabled in CockroachDB. To enable temp tables, set the `experimental_enable_temp_tables` [session variable]({% link {{ page.version.version }}/set-vars.md %}) to `on`.
 {{site.data.alerts.end}}
 
-CockroachDB also supports [temporary views](views.html#temporary-views) and [temporary sequences](create-sequence.html#temporary-sequences).
+CockroachDB also supports [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views) and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences).
 
 ## Details
 
@@ -28,14 +28,14 @@ CockroachDB also supports [temporary views](views.html#temporary-views) and [tem
 - Temp tables cannot be converted to persistent tables.
 - For [PostgreSQL compatibility](https://www.postgresql.org/docs/current/sql-createtable.html), CockroachDB supports the clause `ON COMMIT PRESERVE ROWS` at the end of `CREATE TEMP TABLE` statements. CockroachDB only supports session-scoped temp tables, and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temp tables in PostgreSQL.
 
-By default, every 30 minutes CockroachDB cleans up all temporary objects that are not tied to an active session. You can change how often the cleanup job runs with the `sql.temp_object_cleaner.cleanup_interval` [cluster setting](cluster-settings.html).
+By default, every 30 minutes CockroachDB cleans up all temporary objects that are not tied to an active session. You can change how often the cleanup job runs with the `sql.temp_object_cleaner.cleanup_interval` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 ## Temporary schemas
 
-Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
+Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views), and [temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
 
 {{site.data.alerts.callout_info}}
-Because the [`SHOW TABLES`](show-tables.html) statement defaults to the `public` schema (which doesn't include temp tables), using `SHOW TABLES` without specifying a schema will not return any temp tables.
+Because the [`SHOW TABLES`]({% link {{ page.version.version }}/show-tables.md %}) statement defaults to the `public` schema (which doesn't include temp tables), using `SHOW TABLES` without specifying a schema will not return any temp tables.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -60,7 +60,7 @@ To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
 );
 ~~~
 
-You can use [`SHOW CREATE`](show-create.html) to view temp tables:
+You can use [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %}) to view temp tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -81,7 +81,7 @@ You can use [`SHOW CREATE`](show-create.html) to view temp tables:
 (1 row)
 ~~~
 
-To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`](show-schemas.html):
+To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -160,9 +160,9 @@ You can also use the full name of the temporary schema in the `SHOW` statement (
 
 ### Show temp tables in `information_schema`
 
-Although temp tables are not included in the `public` schema, metadata for temp tables is included in the [`information_schema`](information-schema.html) and `pg_catalog` schemas.
+Although temp tables are not included in the `public` schema, metadata for temp tables is included in the [`information_schema`]({% link {{ page.version.version }}/information-schema.md %}) and `pg_catalog` schemas.
 
-For example, the [`information_schema.tables`](information-schema.html#tables) table includes information about all tables in all schemas in all databases, including temp tables:
+For example, the [`information_schema.tables`]({% link {{ page.version.version }}/information-schema.md %}#tables) table includes information about all tables in all schemas in all databases, including temp tables:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -216,8 +216,8 @@ SQLSTATE: 42P01
 
 ## See also
 
-- [`CREATE TABLE`](create-table.html)
-- [`CREATE TABLE AS`](create-table-as.html)
-- [`SHOW CREATE TABLE`](show-create.html)
-- [Temporary views](views.html#temporary-views)
-- [Temporary sequences](create-sequence.html#temporary-sequences).
+- [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %})
+- [`CREATE TABLE AS`]({% link {{ page.version.version }}/create-table-as.md %})
+- [`SHOW CREATE TABLE`]({% link {{ page.version.version }}/show-create.md %})
+- [Temporary views]({% link {{ page.version.version }}/views.md %}#temporary-views)
+- [Temporary sequences]({% link {{ page.version.version }}/create-sequence.md %}#temporary-sequences).
