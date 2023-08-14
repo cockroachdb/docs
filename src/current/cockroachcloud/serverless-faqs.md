@@ -25,7 +25,7 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 ### What are the usage limits of {{ site.data.products.serverless }}?
 
-All {{ site.data.products.db }} organizations are given 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+All non-contract {{ site.data.products.db }} organizations are given 50M RUs and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 [Setting higher resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) will allow your cluster to scale to meet your application's needs and maintain a high level of performance. If you reach your storage limit, your cluster will be throttled and you will only be able to delete data or increase your storage limit. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you increase your RU limit.
 

@@ -29,7 +29,7 @@ Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of c
 
 ## Free vs. paid usage
 
-{{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract {{ site.data.products.db }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
+{{ site.data.products.serverless }} clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each non-contract {{ site.data.products.db }} organization is given 50 million [Request Units](#request-units) and 10 GiB of storage for free each month. Free resources do not apply to contract customers. Free resources can be spent across all {{ site.data.products.serverless }} clusters in an organization and will appear as a deduction on your monthly invoice.
 
 Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must [set resource limits]({% link cockroachcloud/serverless-cluster-management.md %}#edit-your-resource-limits) if you've already created one free {{ site.data.products.serverless }} cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
   
