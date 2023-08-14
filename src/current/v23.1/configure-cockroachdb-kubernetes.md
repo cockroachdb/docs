@@ -7,6 +7,8 @@ secure: true
 docs_area: deploy
 ---
 
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
+
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
 
 These settings override the defaults used when [deploying CockroachDB on Kubernetes]({% link {{ page.version.version }}/deploy-cockroachdb-with-kubernetes.md %}).
