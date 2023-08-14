@@ -382,6 +382,7 @@ To take incremental backups, backups with revision history, locality-aware backu
 - [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [`cockroach` Commands Overview](cockroach-commands.html)
+- [Expire Past Backups](expire-past-backups.html)
 
 <!-- Reference links -->
 
