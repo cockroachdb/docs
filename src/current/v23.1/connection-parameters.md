@@ -31,7 +31,6 @@ parameters (the URL) between different tools: the output of `cockroach
 start`, other `cockroach` commands, GUI database visualizer,
 programming tools, etc.
 
-
 Discrete parameters may be more convenient in automation, where the
 components of the configuration are filled in separately from
 different variables in a script or a service manager.
@@ -58,12 +57,12 @@ Component | Description | Required
 `<password>` | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).<br><br>[Find more detail about how CockroachDB handles passwords.](authentication.html#client-authentication) | ✗
 `<host>` | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
 `<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
-`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
+`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb` when using `cockroach` client commands. Drivers and ORMs may have different defaults. | ✗
 `<directory-path>` |  The directory path to the client listening for a socket connection. | Required when specifying a Unix domain socket URI.
 `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | ✗
 
 {{site.data.alerts.callout_info}}
-For cockroach commands that accept a URL, you can specify the URL with the command-line flag `--url`.
+For `cockroach` commands that accept a URL, you can specify the URL with the command-line flag `--url`.
 If `--url` is not specified but
 the environment variable `COCKROACH_URL` is defined, the environment
 variable is used. Otherwise, the `cockroach` command will use
