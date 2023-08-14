@@ -1,4 +1,4 @@
-This example assumes you are running a [local unsecured cluster](start-a-local-cluster.html).
+This example assumes you are running a [local unsecured cluster]({% link {{ page.version.version }}/start-a-local-cluster.md %}).
 
 First, connect to the running cluster (call this Terminal 1):
 
@@ -15,7 +15,7 @@ CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 ~~~
 
-Next, we'll start a [transaction](transactions.html) and lock the row we want to operate on:
+Next, we'll start a [transaction]({% link {{ page.version.version }}/transactions.md %}) and lock the row we want to operate on:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -23,7 +23,7 @@ BEGIN;
 SELECT * FROM kv WHERE k = 1 FOR UPDATE;
 ~~~
 
-Press **Enter** twice in the [SQL client](cockroach-sql.html) to send the statements to be evaluated.  This will result in the following output:
+Press **Enter** twice in the [SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}) to send the statements to be evaluated.  This will result in the following output:
 
 ~~~
   k | v

@@ -38,7 +38,7 @@ Then, insert a few rows of data:
 (3 rows)
 ~~~
 
-The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view](views.html). You can view the column details with the [`SHOW COLUMNS`](show-columns.html) statement:
+The `full_name` column is computed from the `first_name` and `last_name` columns without the need to define a [view]({% link {{ page.version.version }}/views.md %}). You can view the column details with the [`SHOW COLUMNS`]({% link {{ page.version.version }}/show-columns.md %}) statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

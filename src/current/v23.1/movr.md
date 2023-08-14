@@ -11,7 +11,7 @@ MovR is a fictional vehicle-sharing company created to demonstrate CockroachDB's
 
 The MovR example consists of the following:
 
-- The `movr` dataset, which contains rows of data that populate tables in the `movr` database. The `movr` dataset is built into [`cockroach demo`](cockroach-demo.html) and [`cockroach workload`](cockroach-workload.html).
+- The `movr` dataset, which contains rows of data that populate tables in the `movr` database. The `movr` dataset is built into [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) and [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}).
 - The MovR application, a fully-functional vehicle-sharing application, written in Python. All of MovR application source code is open-source, and available on the [movr](https://github.com/cockroachdb/movr) GitHub repository.
 
 ## The `movr` database
@@ -22,16 +22,16 @@ The MovR example consists of the following:
 
 You can use the `cockroach demo` and `cockroach workload` commands to load the `movr` database and dataset into a CockroachDB cluster.
 
-[`cockroach demo`](cockroach-demo.html) opens a SQL shell to a temporary, in-memory cluster. To open a SQL shell to a demo cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database), use the following command:
+[`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) opens a SQL shell to a temporary, in-memory cluster. To open a SQL shell to a demo cluster with the `movr` database preloaded and set as the [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database), use the following command:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo movr
 ~~~
 
-[`cockroach workload`](cockroach-workload.html) loads sample datasets and workloads into running clusters. To load the `movr` database and some sample data into a running cluster, do the following:
+[`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) loads sample datasets and workloads into running clusters. To load the `movr` database and some sample data into a running cluster, do the following:
 
-1. Start a [secure](secure-a-cluster.html) or [insecure](start-a-local-cluster.html) local cluster.
+1. Start a [secure]({% link {{ page.version.version }}/secure-a-cluster.md %}) or [insecure]({% link {{ page.version.version }}/start-a-local-cluster.md %}) local cluster.
 1. Use `cockroach workload` to load the `movr` dataset:
 
     <div class="filters filters-big clearfix">
@@ -57,7 +57,7 @@ $ cockroach demo movr
 
     </section>
 
-1. Use [`cockroach sql`](cockroach-sql.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
+1. Use [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) to open an interactive SQL shell and set `movr` as the  [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database):
 
     <section class="filter-content" markdown="1" data-scope="secure">
 
@@ -93,20 +93,20 @@ $ cockroach demo movr
 
 ## Extended examples
 
-For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies](topology-patterns.html) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment](demo-low-latency-multi-region-deployment.html).
+For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies]({% link {{ page.version.version }}/topology-patterns.md %}) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment]({% link {{ page.version.version }}/demo-low-latency-multi-region-deployment.md %}).
 
 ### Develop and deploy a global application
 
 For a tutorial on developing and deploying a globally-available web application for MovR, use the following docs:
 
-1. [MovR: A Global Application Use-case](movr-flask-use-case.html)
-1. [Create a Multi-region Database Schema](movr-flask-database.html)
-1. [Set up a Virtual Environment for Developing Global Applications](movr-flask-setup.html)
-1. [Develop a Global Application](movr-flask-application.html)
-1. [Deploy a Global Application](movr-flask-deployment.html)
+1. [MovR: A Global Application Use-case]({% link {{ page.version.version }}/movr-flask-use-case.md %})
+1. [Create a Multi-region Database Schema]({% link {{ page.version.version }}/movr-flask-database.md %})
+1. [Set up a Virtual Environment for Developing Global Applications]({% link {{ page.version.version }}/movr-flask-setup.md %})
+1. [Develop a Global Application]({% link {{ page.version.version }}/movr-flask-application.md %})
+1. [Deploy a Global Application]({% link {{ page.version.version }}/movr-flask-deployment.md %})
 
 ## See also
 
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Build an App with CockroachDB](example-apps.html)
-- [Features in Preview](cockroachdb-feature-availability.html)
+- [Learn CockroachDB SQL]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %})
+- [Build an App with CockroachDB]({% link {{ page.version.version }}/example-apps.md %})
+- [Features in Preview]({% link {{ page.version.version }}/cockroachdb-feature-availability.md %})

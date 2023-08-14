@@ -1,4 +1,4 @@
-CockroachDB requires moderate levels of [clock synchronization](recommended-production-settings.html#clock-synchronization) to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), it spontaneously shuts down. This avoids the risk of consistency anomalies, but it's best to prevent clocks from drifting too far in the first place by running clock synchronization software on each node.
+CockroachDB requires moderate levels of [clock synchronization]({% link {{ page.version.version }}/recommended-production-settings.md %}#clock-synchronization) to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), it spontaneously shuts down. This avoids the risk of consistency anomalies, but it's best to prevent clocks from drifting too far in the first place by running clock synchronization software on each node.
 
 {% if page.title contains "Digital Ocean" or page.title contains "On-Premises" %}
 
@@ -61,7 +61,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
     ~~~
 
     {{site.data.alerts.callout_info}}
-    We recommend Google's NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, be sure to configure client-side smearing in the same way on each machine. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
+    We recommend Google's NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, be sure to configure client-side smearing in the same way on each machine. See the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#considerations) for details.
     {{site.data.alerts.end}}
 
 1. Verify that the machine is using a Google NTP server:
@@ -80,7 +80,7 @@ CockroachDB requires moderate levels of [clock synchronization](recommended-prod
 Compute Engine instances are preconfigured to use [NTP](http://www.ntp.org/), which should keep offsets in the single-digit milliseconds. However, Google can’t predict how external NTP services, such as `pool.ntp.org`, will handle the leap second. Therefore, you should:
 
 - [Configure each GCE instance to use Google's internal NTP service](https://cloud.google.com/compute/docs/instances/configure-ntp#configure_ntp_for_your_instances).
-- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, note that all of the nodes must be synced to the same time source, or to different sources that implement leap second smearing in the same way. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
+- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, note that all of the nodes must be synced to the same time source, or to different sources that implement leap second smearing in the same way. See the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#considerations) for details.
 
 {% elsif page.title contains "AWS" %}
 
@@ -89,7 +89,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
 - [Configure each AWS instance to use the internal Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html#configure-amazon-time-service).
     - Per the above instructions, ensure that `etc/chrony.conf` on the instance contains the line `server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4` and that other `server` or `pool` lines are commented out.
     - To verify that Amazon Time Sync Service is being used, run `chronyc sources -v` and check for a line containing `* 169.254.169.123`. The `*` denotes the preferred time server.
-- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, note that all of the nodes must be synced to the same time source, or to different sources that implement leap second smearing in the same way. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
+- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, note that all of the nodes must be synced to the same time source, or to different sources that implement leap second smearing in the same way. See the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#considerations) for details.
 
 {% elsif page.title contains "Azure" %}
 
@@ -162,7 +162,7 @@ Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2
     ~~~
 
     {{site.data.alerts.callout_info}}
-    We recommend Google's NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, be sure to configure client-side smearing in the same way on each machine. See the [Production Checklist](recommended-production-settings.html#considerations) for details.
+    We recommend Google's NTP service because it handles ["smearing" the leap second](https://developers.google.com/time/smear). If you use a different NTP service that doesn't smear the leap second, be sure to configure client-side smearing in the same way on each machine. See the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#considerations) for details.
     {{site.data.alerts.end}}
 
 1. Verify that the machine is using a Google NTP server:

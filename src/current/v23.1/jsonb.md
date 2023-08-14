@@ -6,9 +6,9 @@ keywords: gin, gin index, gin indexes, inverted index, inverted indexes, acceler
 docs_area: reference.sql
 ---
 
-The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes](inverted-indexes.html).
+The `JSONB` [data type]({% link {{ page.version.version }}/data-types.md %}) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes]({% link {{ page.version.version }}/inverted-indexes.md %}).
 
-{{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="{% link {{ page.version.version }}/demo-json-support.md %}">JSON tutorial</a>.{{site.data.alerts.end}}
 
 ## Alias
 
@@ -19,14 +19,14 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 ### Syntax
 
-The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](sql-constants.html#interpreted-literals) or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `JSONB`.
+The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal]({% link {{ page.version.version }}/sql-constants.md %}#interpreted-literals) or a string literal [annotated with]({% link {{ page.version.version }}/scalar-expressions.md %}#explicitly-typed-expressions) type `JSONB`.
 
 There are six types of `JSONB` values:
 
 - `null`
 - Boolean
 - String
-- Number (i.e., [`decimal`](decimal.html), **not** the standard `int64`)
+- Number (i.e., [`decimal`]({% link {{ page.version.version }}/decimal.md %}), **not** the standard `int64`)
 - Array (i.e., an ordered sequence of `JSONB` values)
 - Object (i.e., a mapping from strings to `JSONB` values)
 
@@ -41,7 +41,7 @@ Examples:
 
 ## Size
 
-The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](architecture/storage-layer.html#write-amplification) and other considerations may cause significant performance degradation.
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#write-amplification) and other considerations may cause significant performance degradation.
 
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/sql/add-size-limits-to-indexed-columns.md %}
@@ -60,9 +60,9 @@ Operator | Description | Example Query and Output |
 `?` | Does the key or element string exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?'bar');`<br><br>`true`
 `?&` | Do all the key or element strings exist within the JSONB value? | `SELECT('{"foo":1, "bar":2}'::JSONB?&array['foo','bar']);`<br><br>`true`
 <code>?&#124;</code> | Do any of the key or element strings exist within the JSONB value?  | <code>SELECT('{"foo":1, "bar":2}'::JSONB?&#124;array['bar']);</code><br><br><code>true</code>
-`[` ... `]` | Access a `JSONB` key, returning a `JSONB` value or object. For details, see [Subscripted expressions](scalar-expressions.html#subscripted-expressions). | `SELECT('{"foo": {"bar":1}}'::JSONB)['foo']['bar'];`<br><br>`1`
+`[` ... `]` | Access a `JSONB` key, returning a `JSONB` value or object. For details, see [Subscripted expressions]({% link {{ page.version.version }}/scalar-expressions.md %}#subscripted-expressions). | `SELECT('{"foo": {"bar":1}}'::JSONB)['foo']['bar'];`<br><br>`1`
 
-For the full list of supported `JSONB` operators, see [Operators](functions-and-operators.html#operators).
+For the full list of supported `JSONB` operators, see [Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators).
 
 ## Functions
 
@@ -75,29 +75,29 @@ Function | Description
 `jsonb_pretty(<jsonb>)` | Returns the given `JSONB` value as a `STRING` indented and with newlines. See [Retrieve formatted `JSONB` data](#retrieve-formatted-jsonb-data).
 `jsonb_set(val: jsonb, path: string[], to: jsonb)` | Returns the JSON value pointed to by the variadic arguments. See [Update an array element](#update-an-array-element).
 
-For the full list of supported `JSONB` functions, see [JSONB functions](functions-and-operators.html#jsonb-functions).
+For the full list of supported `JSONB` functions, see [JSONB functions]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions).
 
 # Index `JSONB` data
 
-To [index](indexes.html) a `JSONB` column you can use a [GIN index](inverted-indexes.html#examples) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
+To [index]({% link {{ page.version.version }}/indexes.md %}) a `JSONB` column you can use a [GIN index]({% link {{ page.version.version }}/inverted-indexes.md %}#examples) or [index an expression on the column]({% link {{ page.version.version }}/expression-indexes.md %}#use-an-expression-to-index-a-field-in-a-jsonb-column).
 
 ## Known limitations
 
-- You cannot use [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) on `JSONB` values.
+- You cannot use [primary key]({% link {{ page.version.version }}/primary-key.md %}), [foreign key]({% link {{ page.version.version }}/foreign-key.md %}), and [unique]({% link {{ page.version.version }}/unique.md %}) [constraints]({% link {{ page.version.version }}/constraints.md %}) on `JSONB` values.
 
 - {% include {{page.version.version}}/sql/jsonb-comparison.md %}
 
-- You cannot [order](order-by.html) queries using `JSONB` and `JSON`-typed columns.
+- You cannot [order]({% link {{ page.version.version }}/order-by.md %}) queries using `JSONB` and `JSON`-typed columns.
 
     [Tracking issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
-- If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
+- If the execution of a [join]({% link {{ page.version.version }}/joins.md %}) query exceeds the limit set for [memory-buffering operations]({% link {{ page.version.version }}/vectorized-execution.md %}#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %})), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
     [Tracking issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
 ## Examples
 
-This section shows how to create tables with `JSONB` columns and use operators and functions to access and update `JSONB` data. For the full list of operators and functions, see [Operators](functions-and-operators.html#operators) and [JSONB functions](functions-and-operators.html#jsonb-functions).
+This section shows how to create tables with `JSONB` columns and use operators and functions to access and update `JSONB` data. For the full list of operators and functions, see [Operators]({% link {{ page.version.version }}/functions-and-operators.md %}#operators) and [JSONB functions]({% link {{ page.version.version }}/functions-and-operators.md %}#jsonb-functions).
 
 ### Create a table with a `JSONB` column
 
@@ -187,7 +187,7 @@ SELECT user_profile->'first_name',user_profile->'location' FROM users;
   "Lola"   | "NYC"
 ~~~
 
-You can also use a [subscripted expression](scalar-expressions.html#subscripted-expressions) for an equivalent result:
+You can also use a [subscripted expression]({% link {{ page.version.version }}/scalar-expressions.md %}#subscripted-expressions) for an equivalent result:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -412,15 +412,15 @@ SELECT * FROM commodity;
 
 This section describes how to cast and convert `JSONB` values.
 
-You can [cast](data-types.html#data-type-conversions-and-casts) all `JSONB` values to the following data type:
+You can [cast]({% link {{ page.version.version }}/data-types.md %}#data-type-conversions-and-casts) all `JSONB` values to the following data type:
 
-- [`STRING`](string.html)
+- [`STRING`]({% link {{ page.version.version }}/string.md %})
 
 You can cast numeric `JSONB` values to the following numeric data types:
 
-- [`DECIMAL`](decimal.html)
-- [`FLOAT`](float.html)
-- [`INT`](int.html)
+- [`DECIMAL`]({% link {{ page.version.version }}/decimal.md %})
+- [`FLOAT`]({% link {{ page.version.version }}/float.md %})
+- [`INT`]({% link {{ page.version.version }}/int.md %})
 
 For example:
 
@@ -460,7 +460,7 @@ SELECT '100.50'::JSONB::DECIMAL;
 (1 row)
 ~~~
 
-You can use the [`parse_timestamp` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
+You can use the [`parse_timestamp` function]({% link {{ page.version.version }}/functions-and-operators.md %}) to parse strings in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -499,9 +499,9 @@ INSERT 1
 
 ## See also
 
-- [JSON tutorial](demo-json-support.html)
-- [GIN Indexes](inverted-indexes.html)
-- [Use an expression to index a field in a JSONB column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column)
-- [Computed Columns](computed-columns.html)
-- [Data Types](data-types.html)
-- [Functions and Operators](functions-and-operators.html)
+- [JSON tutorial]({% link {{ page.version.version }}/demo-json-support.md %})
+- [GIN Indexes]({% link {{ page.version.version }}/inverted-indexes.md %})
+- [Use an expression to index a field in a JSONB column]({% link {{ page.version.version }}/expression-indexes.md %}#use-an-expression-to-index-a-field-in-a-jsonb-column)
+- [Computed Columns]({% link {{ page.version.version }}/computed-columns.md %})
+- [Data Types]({% link {{ page.version.version }}/data-types.md %})
+- [Functions and Operators]({% link {{ page.version.version }}/functions-and-operators.md %})

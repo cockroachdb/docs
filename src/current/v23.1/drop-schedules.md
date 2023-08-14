@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `DROP SCHEDULES` [statement](sql-statements.html) can be used to remove [backup schedules](create-schedule-for-backup.html) or [changefeed schedules](create-schedule-for-changefeed.html).
+ The `DROP SCHEDULES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) can be used to remove [backup schedules]({% link {{ page.version.version }}/create-schedule-for-backup.md %}) or [changefeed schedules]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}).
 
 {{site.data.alerts.callout_danger}}
-`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](cancel-job.html) first, as you will not be able to look up the job ID once the schedule is dropped.
+`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs]({% link {{ page.version.version }}/cancel-job.md %}) first, as you will not be able to look up the job ID once the schedule is dropped.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -27,8 +27,8 @@ The following users can drop a schedule:
 
  Parameter     | Description
 ---------------+------------
-`selectclause` | A [selection query](selection-queries.html) that returns `id`(s) to drop.
-`scheduleID`   | The `id` of the schedule you want to drop, which can be found with [`SHOW SCHEDULES`](show-schedules.html).
+`selectclause` | A [selection query]({% link {{ page.version.version }}/selection-queries.md %}) that returns `id`(s) to drop.
+`scheduleID`   | The `id` of the schedule you want to drop, which can be found with [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %}).
 
 ## Examples
 
@@ -45,7 +45,7 @@ DROP SCHEDULES 1
 
 ### Drop multiple schedules
 
-To drop multiple schedules, nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
+To drop multiple schedules, nest a [`SELECT` clause]({% link {{ page.version.version }}/select-clause.md %}) that retrieves `id`(s) inside the `DROP SCHEDULES` statement:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -60,18 +60,18 @@ In this example, all schedules with the label `schedule_database` are dropped.
 
 ## See also
 
-- [Manage a Backup Schedule](manage-a-backup-schedule.html)
-- [`BACKUP`](backup.html)
-- [`RESTORE`](restore.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html)
-- [`SHOW BACKUP`](show-backup.html)
-- [`SHOW SCHEDULES`](show-schedules.html)
-- [`PAUSE SCHEDULES`](pause-schedules.html)
-- [`RESUME SCHEDULES`](resume-schedules.html)
-- [`PAUSE JOB`](pause-job.html)
-- [`RESUME JOB`](pause-job.html)
-- [`CANCEL JOB`](cancel-job.html)
-- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Manage a Backup Schedule]({% link {{ page.version.version }}/manage-a-backup-schedule.md %})
+- [`BACKUP`]({% link {{ page.version.version }}/backup.md %})
+- [`RESTORE`]({% link {{ page.version.version }}/restore.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %})
+- [`SHOW BACKUP`]({% link {{ page.version.version }}/show-backup.md %})
+- [`SHOW SCHEDULES`]({% link {{ page.version.version }}/show-schedules.md %})
+- [`PAUSE SCHEDULES`]({% link {{ page.version.version }}/pause-schedules.md %})
+- [`RESUME SCHEDULES`]({% link {{ page.version.version }}/resume-schedules.md %})
+- [`PAUSE JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`RESUME JOB`]({% link {{ page.version.version }}/pause-job.md %})
+- [`CANCEL JOB`]({% link {{ page.version.version }}/cancel-job.md %})
+- [Take Full and Incremental Backups]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})

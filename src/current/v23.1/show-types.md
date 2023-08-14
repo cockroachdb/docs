@@ -5,10 +5,10 @@ toc: true
 docs_area: reference.sql
 ---
 
- The `SHOW TYPES` statement lists the user-defined [data types](data-types.html) in the current database.
+ The `SHOW TYPES` statement lists the user-defined [data types]({% link {{ page.version.version }}/data-types.md %}) in the current database.
 
 {{site.data.alerts.callout_info}}
-CockroachDB currently only supports [enumerated user-defined types](enum.html). As a result, [`SHOW ENUMS`](show-enums.html) and `SHOW TYPES` return the same results.
+CockroachDB currently only supports [enumerated user-defined types]({% link {{ page.version.version }}/enum.md %}). As a result, [`SHOW ENUMS`]({% link {{ page.version.version }}/show-enums.md %}) and `SHOW TYPES` return the same results.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -19,11 +19,11 @@ SHOW TYPES
 
 ## Required privileges
 
-The `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) on the database is required to list any user-defined types in the database.
+The `CONNECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the database is required to list any user-defined types in the database.
 
 ## Examples
 
-The following example creates a [user-defined type](create-type.html).
+The following example creates a [user-defined type]({% link {{ page.version.version }}/create-type.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -51,8 +51,8 @@ The following example creates a [user-defined type](create-type.html).
 
 ## See also
 
-- [`ENUM`](enum.html)
-- [Data types](data-types.html)
-- [`CREATE TYPE`](create-type.html)
-- [`ALTER TYPE`](alter-type.html)
-- [`DROP TYPE`](drop-type.html)
+- [`ENUM`]({% link {{ page.version.version }}/enum.md %})
+- [Data types]({% link {{ page.version.version }}/data-types.md %})
+- [`CREATE TYPE`]({% link {{ page.version.version }}/create-type.md %})
+- [`ALTER TYPE`]({% link {{ page.version.version }}/alter-type.md %})
+- [`DROP TYPE`]({% link {{ page.version.version }}/drop-type.md %})

@@ -5,14 +5,14 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).
+The `ALTER VIEW` [statement]({% link {{ page.version.version }}/sql-statements.md %}) applies a schema change to a [view]({% link {{ page.version.version }}/views.md %}).
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-- To alter a view, the user must have the `CREATE` [privilege](security-reference/authorization.html#managing-privileges) on the parent database.
-- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the name of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege](security-reference/authorization.html#managing-privileges) on the view.
+- To alter a view, the user must have the `CREATE` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the parent database.
+- To change the schema of a view with `ALTER VIEW ... SET SCHEMA`, or to change the name of a view with `ALTER VIEW ... RENAME TO`, the user must also have the `DROP` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) on the view.
 
 ## Syntax
 
@@ -24,10 +24,10 @@ The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [
 
 Parameter | Description
 ----------|------------
-`MATERIALIZED` |  Rename a [materialized view](views.html#materialized-views).
+`MATERIALIZED` |  Rename a [materialized view]({% link {{ page.version.version }}/views.md %}#materialized-views).
 `IF EXISTS` | Rename the view only if a view of `view_name` exists; if one does not exist, do not return an error.
 `view_name` | The name of the view to rename. To find existing view names, use:<br><br>`SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';`
-`view_new_name` | The new name of the view. The name of the view must be unique to its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). Name changes do not propagate to the table(s) using the view.
+`view_new_name` | The new name of the view. The name of the view must be unique to its database and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers). Name changes do not propagate to the table(s) using the view.
 `schema_name` | The name of the new schema.
 `role_spec` |  The role to set as the owner of the view.
 
@@ -35,7 +35,7 @@ Parameter | Description
 
 CockroachDB does not currently support:
 
-- Changing the [`SELECT`](select-clause.html) statement executed by a view. Instead, you must drop the existing view and create a new view.
+- Changing the [`SELECT`]({% link {{ page.version.version }}/select-clause.md %}) statement executed by a view. Instead, you must drop the existing view and create a new view.
 - Renaming a view that other views depend on. This feature may be added in the future (see [tracking issue](https://github.com/cockroachdb/cockroach/issues/10083)).
 
 ## Examples
@@ -87,7 +87,7 @@ Note that `RENAME TO` can be used to move a view from one database to another, b
 
 Suppose you want to add the `expensive_rides` view to a schema called `cockroach_labs`:
 
-By default, [unqualified views](sql-name-resolution.html#lookup-with-unqualified-names) created in the database belong to the `public` schema:
+By default, [unqualified views]({% link {{ page.version.version }}/sql-name-resolution.md %}#lookup-with-unqualified-names) created in the database belong to the `public` schema:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -101,7 +101,7 @@ SHOW CREATE public.expensive_rides;
 (1 row)
 ~~~
 
-If the new schema does not already exist, [create it](create-schema.html):
+If the new schema does not already exist, [create it]({% link {{ page.version.version }}/create-schema.md %}):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -139,8 +139,8 @@ SHOW CREATE cockroach_labs.expensive_rides;
 
 ## See also
 
-- [Views](views.html)
-- [`CREATE VIEW`](create-view.html)
-- [`SHOW CREATE`](show-create.html)
-- [`DROP VIEW`](drop-view.html)
-- [Online Schema Changes](online-schema-changes.html)
+- [Views]({% link {{ page.version.version }}/views.md %})
+- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})

@@ -6,7 +6,7 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the CockroachDB cluster.
+The `SHOW DATABASES` [statement]({% link {{ page.version.version }}/sql-statements.md %}) lists all databases in the CockroachDB cluster.
 
 ## Synopsis
 
@@ -16,7 +16,7 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the
 
 ## Required privileges
 
-The user must be granted the `CONNECT` [privilege](security-reference/authorization.html#managing-privileges) to specific databases in order to list those databases in the CockroachDB cluster.
+The user must be granted the `CONNECT` [privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#managing-privileges) to specific databases in order to list those databases in the CockroachDB cluster.
 
 ## Example
 
@@ -37,7 +37,7 @@ The user must be granted the `CONNECT` [privilege](security-reference/authorizat
 (4 rows)
 ~~~
 
-Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](cockroach-sql.html#commands) to list all databases:
+Alternatively, within the built-in SQL shell, you can use the `\l` [shell command]({% link {{ page.version.version }}/cockroach-sql.md %}#commands) to list all databases:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -56,7 +56,7 @@ Alternatively, within the built-in SQL shell, you can use the `\l` [shell comman
 
 ### Show databases with comments
 
-You can use [`COMMENT ON`](comment-on.html) to add comments on a database.
+You can use [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}) to add comments on a database.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -80,7 +80,7 @@ To view a database's comments:
 (4 rows)
 ~~~
 
-For more information, see [`COMMENT ON`](comment-on.html).
+For more information, see [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %}).
 
 ## Preloaded databases
 
@@ -88,7 +88,7 @@ For more information, see [`COMMENT ON`](comment-on.html).
 
 ## See also
 
-- [`COMMENT ON`](comment-on.html)
-- [`SHOW SCHEMAS`](show-schemas.html)
-- [Information Schema](information-schema.html)
-- [SQL Statements](sql-statements.html)
+- [`COMMENT ON`]({% link {{ page.version.version }}/comment-on.md %})
+- [`SHOW SCHEMAS`]({% link {{ page.version.version }}/show-schemas.md %})
+- [Information Schema]({% link {{ page.version.version }}/information-schema.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})

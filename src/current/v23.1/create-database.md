@@ -5,13 +5,13 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `CREATE DATABASE` [statement](sql-statements.html) creates a new CockroachDB database.
+The `CREATE DATABASE` [statement]({% link {{ page.version.version }}/sql-statements.md %}) creates a new CockroachDB database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
-To create a database, the user must be a member of the `admin` role or must have the [`CREATEDB`](create-role.html#create-a-role-that-can-create-and-rename-databases) parameter set.
+To create a database, the user must be a member of the `admin` role or must have the [`CREATEDB`]({% link {{ page.version.version }}/create-role.md %}#create-a-role-that-can-create-and-rename-databases) parameter set.
 
 ## Synopsis
 
@@ -24,12 +24,12 @@ To create a database, the user must be a member of the `admin` role or must have
 Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error.
-`name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br /><br />Cockroach Labs recommends against starting your database name with the string `cluster:`. If your database name begins with this string, you must append the following to the URI connection string to [connect to the cluster](connect-to-the-database.html): `&options=-ccluster=system`
+`name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules]({% link {{ page.version.version }}/keywords-and-identifiers.md %}#identifiers).<br /><br />Cockroach Labs recommends against starting your database name with the string `cluster:`. If your database name begins with this string, you must append the following to the URI connection string to [connect to the cluster]({% link {{ page.version.version }}/connect-to-the-database.md %}): `&options=-ccluster=system`
 `encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case-insensitive.<br><br>Example: `CREATE DATABASE bank ENCODING = 'UTF-8'`.
 `CONNECTION LIMIT` |  Supported for compatibility with PostgreSQL. A value of `-1` indicates no connection limit. Values other than `-1` are currently not supported. By default, `CONNECTION LIMIT = -1`. ([*](#connlimit-note))
-`PRIMARY REGION region_name` |  Create a [multi-region database](multiregion-overview.html) with `region_name` as [the primary region](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
-`REGIONS region_name_list` |  Create a [multi-region database](multiregion-overview.html) with `region_name_list` as [database regions](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).<br>To set database regions at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.
-`SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` |  Create a [multi-region database](multiregion-overview.html) with regional failure or zone failure [survival goals](multiregion-overview.html#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions](multiregion-overview.html#database-regions).<br>Surviving zone failures is the default setting for multi-region databases.
+`PRIMARY REGION region_name` |  Create a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) with `region_name` as [the primary region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`]({% link {{ page.version.version }}/show-regions.md %}).
+`REGIONS region_name_list` |  Create a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) with `region_name_list` as [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`]({% link {{ page.version.version }}/show-regions.md %}).<br>To set database regions at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.
+`SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` |  Create a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) with regional failure or zone failure [survival goals]({% link {{ page.version.version }}/multiregion-overview.md %}#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions).<br>Surviving zone failures is the default setting for multi-region databases.
 
 <a name="connlimit-note">*</a>
 {% include {{page.version.version}}/sql/server-side-connection-limit.md %} This setting may be useful until the `CONNECTION LIMIT` syntax is fully supported.
@@ -104,9 +104,9 @@ SQL does not generate an error, but instead responds `CREATE DATABASE` even thou
 
 {% include enterprise-feature.md %}
 
-Suppose you start a cluster with region and zone [localities specified at startup](cockroach-start.html#locality).
+Suppose you start a cluster with region and zone [localities specified at startup]({% link {{ page.version.version }}/cockroach-start.md %}#locality).
 
-For this example, let's use a [demo cluster](cockroach-demo.html), with the [`--demo-locality` flag](cockroach-demo.html#general) to simulate a multi-region cluster:
+For this example, let's use a [demo cluster]({% link {{ page.version.version }}/cockroach-demo.md %}), with the [`--demo-locality` flag]({% link {{ page.version.version }}/cockroach-demo.md %}#general) to simulate a multi-region cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -169,7 +169,7 @@ Use the following command to specify regions and survival goals at database crea
 
 {% include enterprise-feature.md %}
 
-You can add a [secondary region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html) for failover purposes. If the [primary region](alter-database.html#set-primary-region) fails, the secondary region becomes the new primary region.
+You can add a [secondary region]({% link {{ page.version.version }}/multiregion-overview.md %}#database-regions) to a [multi-region database]({% link {{ page.version.version }}/multiregion-overview.md %}) for failover purposes. If the [primary region]({% link {{ page.version.version }}/alter-database.md %}#set-primary-region) fails, the secondary region becomes the new primary region.
 
 To add a secondary region during database creation, use the following steps:
 
@@ -186,18 +186,18 @@ CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1"
 CREATE DATABASE
 ~~~
 
-For more information about secondary regions, see [Secondary regions](multiregion-overview.html#secondary-regions).
+For more information about secondary regions, see [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions).
 
 ## See also
 
-- [`SHOW DATABASES`](show-databases.html)
-- [`SHOW CREATE DATABASE`](show-create.html)
-- [`ALTER DATABASE ... RENAME TO`](alter-database.html#rename-to)
-- [`SET DATABASE`](set-vars.html)
-- [`DROP DATABASE`](drop-database.html)
-- [SQL Statements](sql-statements.html)
-- [Online Schema Changes](online-schema-changes.html)
-- [Multiregion overview](multiregion-overview.html)
-- [Secondary regions](multiregion-overview.html#secondary-regions).
-- [`SET SECONDARY REGION`](alter-database.html#set-secondary-region)
-- [`DROP SECONDARY REGION`](alter-database.html#drop-secondary-region)
+- [`SHOW DATABASES`]({% link {{ page.version.version }}/show-databases.md %})
+- [`SHOW CREATE DATABASE`]({% link {{ page.version.version }}/show-create.md %})
+- [`ALTER DATABASE ... RENAME TO`]({% link {{ page.version.version }}/alter-database.md %}#rename-to)
+- [`SET DATABASE`]({% link {{ page.version.version }}/set-vars.md %})
+- [`DROP DATABASE`]({% link {{ page.version.version }}/drop-database.md %})
+- [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
+- [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
+- [Multiregion overview]({% link {{ page.version.version }}/multiregion-overview.md %})
+- [Secondary regions]({% link {{ page.version.version }}/multiregion-overview.md %}#secondary-regions).
+- [`SET SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#set-secondary-region)
+- [`DROP SECONDARY REGION`]({% link {{ page.version.version }}/alter-database.md %}#drop-secondary-region)

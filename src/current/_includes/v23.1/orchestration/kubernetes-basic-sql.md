@@ -1,4 +1,4 @@
-1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Run some basic [CockroachDB SQL statements]({% link {{ page.version.version }}/learn-cockroachdb-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -27,7 +27,7 @@
     (1 row)
     ~~~
 
-1. [Create a user with a password](create-user.html#create-a-user-with-a-password):
+1. [Create a user with a password]({% link {{ page.version.version }}/create-user.md %}#create-a-user-with-a-password):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -5,7 +5,7 @@ toc: true
 docs_area: migrate
 ---
 
-This page has instructions for migrating data from CSV files into CockroachDB using [`IMPORT INTO`](import-into.html).
+This page has instructions for migrating data from CSV files into CockroachDB using [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}).
 
 The examples on this page use the [employees data set](https://github.com/datacharmer/test_db) that is also used in the [MySQL docs](https://dev.mysql.com/doc/employee/en/).
 
@@ -21,7 +21,7 @@ Please refer to the documentation of your database for instructions on exporting
 
 You will need to export one CSV file per table, with the following requirements:
 
-- Files must be in [valid CSV format](https://tools.ietf.org/html/rfc4180), with the caveat that the delimiter must be a single character. To use a character other than comma (such as a tab), set a custom delimiter using the [`delimiter` option](import-into.html#import-options).
+- Files must be in [valid CSV format](https://tools.ietf.org/html/rfc4180), with the caveat that the delimiter must be a single character. To use a character other than comma (such as a tab), set a custom delimiter using the [`delimiter` option]({% link {{ page.version.version }}/import-into.md %}#import-options).
 - Files must be UTF-8 encoded.
 - If one of the following characters appears in a field, the field must be enclosed by double quotes:
     - delimiter (`,` by default)
@@ -29,15 +29,15 @@ You will need to export one CSV file per table, with the following requirements:
     - newline (`\n`)
     - carriage return (`\r`)
 - If double quotes are used to enclose fields, then a double quote appearing inside a field must be escaped by preceding it with another double quote. For example: `"aaa","b""bb","ccc"`.
-- If a column is of type [`BYTES`](bytes.html), it can either be a valid UTF-8 string or a [hex-encoded byte literal](sql-constants.html#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+- If a column is of type [`BYTES`]({% link {{ page.version.version }}/bytes.md %}), it can either be a valid UTF-8 string or a [hex-encoded byte literal]({% link {{ page.version.version }}/sql-constants.md %}#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
 
 ## Step 2. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`](import-into.html) can pull from, see the following:
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}) can pull from, see the following:
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Use `userfile` Storage](use-userfile-storage.html)
-- [Use a Local File Server](use-a-local-file-server.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Use `userfile` Storage]({% link {{ page.version.version }}/use-userfile-storage.md %})
+- [Use a Local File Server]({% link {{ page.version.version }}/use-a-local-file-server.md %})
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
@@ -45,7 +45,7 @@ We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to h
 
 ## Step 3. Import the CSV
 
-You will need to write a [`CREATE TABLE`](create-table.html) statement that matches the schema of the table data you're importing.
+You will need to write a [`CREATE TABLE`]({% link {{ page.version.version }}/create-table.md %}) statement that matches the schema of the table data you're importing.
 
 For example, to import the data from `employees.csv` into an `employees` table, issue the following statement to create the table:
 
@@ -83,7 +83,7 @@ Repeat this process for each CSV file you want to import.
 Before importing CSV data, consider the following:
 
 - The column order in your schema must match the column order in the file being imported.
-- You will need to run [`ALTER TABLE ... ADD CONSTRAINT`](alter-table.html#add-constraint) to add any foreign key relationships.
+- You will need to run [`ALTER TABLE ... ADD CONSTRAINT`]({% link {{ page.version.version }}/alter-table.md %}#add-constraint) to add any foreign key relationships.
 
 ## Configuration Options
 
@@ -142,7 +142,7 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 The `nullif` option specifies a column value that should be converted to `NULL`. 
 
 {{site.data.alerts.callout_info}}
-To match the `nullif` setting, a CSV input value must be unquoted. For details, see [`IMPORT INTO`](import-into.html#import-options).
+To match the `nullif` setting, a CSV input value must be unquoted. For details, see [`IMPORT INTO`]({% link {{ page.version.version }}/import-into.md %}#import-options).
 {{site.data.alerts.end}}
 
 Example usage:
@@ -177,14 +177,14 @@ IMPORT INTO employees (emp_no, birth_date, first_name, last_name, gender, hire_d
 ## See also
 
 - [`IMPORT`][import]
-- [Import Performance Best Practices](import-performance-best-practices.html)
+- [Import Performance Best Practices]({% link {{ page.version.version }}/import-performance-best-practices.md %})
 - [Migrate from MySQL][mysql]
 - [Migrate from PostgreSQL][postgres]
-- [Back Up and Restore Data](take-full-and-incremental-backups.html)
-- [Use the Built-in SQL Client](cockroach-sql.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
+- [Back Up and Restore Data]({% link {{ page.version.version }}/take-full-and-incremental-backups.md %})
+- [Use the Built-in SQL Client]({% link {{ page.version.version }}/cockroach-sql.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html

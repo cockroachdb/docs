@@ -5,17 +5,17 @@ toc: true
 docs_area: stream_data
 ---
 
-When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`](create-changefeed.html#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export](export.html) data out of your database.
+When you create an {{ site.data.products.enterprise }} changefeed, you can include the [`initial_scan = 'only'`]({% link {{ page.version.version }}/create-changefeed.md %}#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [export]({% link {{ page.version.version }}/export.md %}) data out of your database.
 
 {% include_cached new-in.html version="v23.1" %} You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) to use a changefeed initial scan for exporting data on a regular cadence.
 
-The benefits of using changefeeds for this use case instead of [export](export.html), include:
+The benefits of using changefeeds for this use case instead of [export]({% link {{ page.version.version }}/export.md %}), include:
 
-- Changefeeds are jobs, which can be [paused](pause-job.html), [resumed](resume-job.html), [cancelled](cancel-job.html), [scheduled](create-schedule-for-changefeed.html), and [altered](alter-changefeed.html).
-- There is observability into a changefeed job using [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs) and the [Changefeeds Dashboard](ui-cdc-dashboard.html) in the DB Console.
-- Changefeed jobs have built-in [checkpointing](how-does-an-enterprise-changefeed-work.html) and [retries](monitor-and-debug-changefeeds.html#changefeed-retry-errors).
-- [Changefeed sinks](changefeed-sinks.html) provide additional endpoints for your data.
-- You can use the [`format=csv`](create-changefeed.html#format) option with `initial_scan= 'only'` to emit messages in CSV format.
+- Changefeeds are jobs, which can be [paused]({% link {{ page.version.version }}/pause-job.md %}), [resumed]({% link {{ page.version.version }}/resume-job.md %}), [cancelled]({% link {{ page.version.version }}/cancel-job.md %}), [scheduled]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %}), and [altered]({% link {{ page.version.version }}/alter-changefeed.md %}).
+- There is observability into a changefeed job using [`SHOW CHANGEFEED JOBS`]({% link {{ page.version.version }}/show-jobs.md %}#show-changefeed-jobs) and the [Changefeeds Dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %}) in the DB Console.
+- Changefeed jobs have built-in [checkpointing]({% link {{ page.version.version }}/how-does-an-enterprise-changefeed-work.md %}) and [retries]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %}#changefeed-retry-errors).
+- [Changefeed sinks]({% link {{ page.version.version }}/changefeed-sinks.md %}) provide additional endpoints for your data.
+- You can use the [`format=csv`]({% link {{ page.version.version }}/create-changefeed.md %}#format) option with `initial_scan= 'only'` to emit messages in CSV format.
 
 {% include {{ page.version.version }}/cdc/csv-changefeed-format.md %}
 
@@ -30,7 +30,7 @@ To create a changefeed that will only complete an initial scan of a table(s), ru
 CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_parameters}' WITH initial_scan = 'only', format=csv;
 ~~~
 
-Or, use [CDC queries](cdc-queries.html) to filter the data that your changefeed emits:
+Or, use [CDC queries]({% link {{ page.version.version }}/cdc-queries.md %}) to filter the data that your changefeed emits:
 
 ~~~ sql
 CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}'
@@ -52,6 +52,6 @@ When the scan has completed you will find the output shows `succeeded` in the `s
 
 ## See also
 
-- [Changefeed Messages](changefeed-messages.html)
-- [`CREATE CHANGEFEED`](create-changefeed.html)
-- [`CREATE SCHEDULE FOR CHANGEFEED`](create-schedule-for-changefeed.html)
+- [Changefeed Messages]({% link {{ page.version.version }}/changefeed-messages.md %})
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %})
+- [`CREATE SCHEDULE FOR CHANGEFEED`]({% link {{ page.version.version }}/create-schedule-for-changefeed.md %})

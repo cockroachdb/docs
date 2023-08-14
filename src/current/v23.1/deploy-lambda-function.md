@@ -257,7 +257,7 @@ This step is optional, as you do not need to create a new deployment package to 
 
 ## See also
 
-- [Build a Simple Django App with CockroachDB](build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Global, Serverless Application](movr-flask-deployment.html)
+- [Build a Simple Django App with CockroachDB]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-django.md %})
+- [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %})
 
 {% include {{page.version.version}}/app/see-also-links.md %}

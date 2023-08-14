@@ -54,23 +54,23 @@ If the `cockroach` process had exit status `132 (SIGILL)`, it attempted to use a
 
 #### Default ports already in use
 
-Other services may be running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags](cockroach-start.html#networking).
+Other services may be running on port 26257 or 8080 (CockroachDB's default `--listen-addr` port and `--http-addr` port respectively). You can either stop those services or start your node with different ports, specified in the [`--listen-addr` and `--http-addr` flags]({% link {{ page.version.version }}/cockroach-start.md %}#networking).
 
   If you change the port, you will need to include the `--port=<specified port>` flag in each subsequent cockroach command or change the `COCKROACH_PORT` environment variable.
 
 #### Single-node networking issues
 
-Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag](cockroach-start.html#networking).
+Networking issues might prevent the node from communicating with itself on its hostname. You can control the hostname CockroachDB uses with the [`--listen-addr` flag]({% link {{ page.version.version }}/cockroach-start.md %}#networking).
 
   If you change the host, you will need to include `--host=<specified host>` in each subsequent cockroach command.
 
 #### CockroachDB process hangs when trying to start a node in the background
 
-See [Why is my process hanging when I try to start it in the background?](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-nodes-with-the-background-flag)
+See [Why is my process hanging when I try to start it in the background?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-my-process-hanging-when-i-try-to-start-nodes-with-the-background-flag)
 
 ## Cannot run SQL statements using built-in SQL client
 
-If the CockroachDB node appeared to [start successfully](start-a-local-cluster.html), in a separate terminal run:
+If the CockroachDB node appeared to [start successfully]({% link {{ page.version.version }}/start-a-local-cluster.md %}), in a separate terminal run:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -90,13 +90,13 @@ You should see a list of the built-in databases:
 
 If you’re not seeing the output above, check for the following:
 
-- `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here](common-errors.html#connection-refused).
-- The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue](file-an-issue.html), including the [logs from your node](configure-logs.html#logging-directory) and any errors you received.
+- `connection refused` error, which indicates you have not included some flag that you used to start the node. We have additional troubleshooting steps for this error [here]({% link {{ page.version.version }}/common-errors.md %}#connection-refused).
+- The node crashed. To ascertain if the node crashed, run `ps | grep cockroach` to look for the `cockroach` process. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}), including the [logs from your node]({% link {{ page.version.version }}/configure-logs.md %}#logging-directory) and any errors you received.
 
 ## Cannot run a multi-node CockroachDB cluster on the same machine
 
 {{site.data.alerts.callout_info}}
-Running multiple nodes on a single host is useful for testing CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment](manual-deployment.html) or [Kubernetes Overview](kubernetes-overview.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+Running multiple nodes on a single host is useful for testing CockroachDB, but it's not recommended for production deployments. To run a physically distributed cluster in production, see [Manual Deployment]({% link {{ page.version.version }}/manual-deployment.md %}) or [Kubernetes Overview]({% link {{ page.version.version }}/kubernetes-overview.md %}). Also be sure to review the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}).
 {{site.data.alerts.end}}
 
 If you are trying to run all nodes on the same machine, you might get the following errors:
@@ -170,17 +170,17 @@ W180817 17:01:56.510430 914 vendor/google.golang.org/grpc/clientconn.go:1293 grp
 
 ###### Excessive snapshot rebalance and recovery rates
 
-The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings](cluster-settings.html) set the rate limits at which [snapshots](architecture/replication-layer.html#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
+The `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` [cluster settings]({% link {{ page.version.version }}/cluster-settings.md %}) set the rate limits at which [snapshots]({% link {{ page.version.version }}/architecture/replication-layer.md %}#snapshots) are sent to nodes. These settings can be temporarily increased to expedite replication during an outage or when scaling a cluster up or down.
 
-However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values](cluster-settings.html) without explicit approval from Cockroach Labs.
+However, if the settings are too high when nodes are added to the cluster, this can cause degraded performance and node crashes. We recommend **not** increasing these values by more than 2 times their [default values]({% link {{ page.version.version }}/cluster-settings.md %}) without explicit approval from Cockroach Labs.
 
-**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than compactions can keep up, and result in an [inverted LSM](architecture/storage-layer.html#inverted-lsms).
+**Explanation:** If `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` are set too high for the cluster during scaling, this can cause nodes to experience ingestions faster than compactions can keep up, and result in an [inverted LSM]({% link {{ page.version.version }}/architecture/storage-layer.md %}#inverted-lsms).
 
-**Solution:** [Check LSM health](common-issues-to-monitor.html#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
+**Solution:** [Check LSM health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health). {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
 
-After compaction has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS](common-issues-to-monitor.html#disk-iops) and [CPU](common-issues-to-monitor.html#cpu).
+After compaction has completed, lower `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}). As you add nodes to the cluster, slowly increase both cluster settings, if desired. This will control the rate of new ingestions for newly added nodes. Meanwhile, monitor the cluster for unhealthy increases in [IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops) and [CPU]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu).
 
-Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values](cluster-settings.html).
+Outside of performing cluster maintenance, return `kv.snapshot_rebalance.max_rate` and `kv.snapshot_recovery.max_rate` to their [default values]({% link {{ page.version.version }}/cluster-settings.md %}).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -201,7 +201,7 @@ If a client cannot connect to the cluster, check basic network connectivity (`pi
 Most networking-related issues are caused by one of two issues:
 
 -   Firewall rules, which require your network administrator to investigate
--   Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`](cockroach-start.html#networking)
+-   Inaccessible hostnames on your nodes, which can be controlled with the `--listen-addr` and `--advertise-addr` flags on [`cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#networking)
 
 
 **Solution:**
@@ -230,18 +230,18 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 #### Network partition
 
-If the DB Console lists any dead nodes on the [**Cluster Overview** page](ui-cluster-overview-page.html), then you might have a network partition.
+If the DB Console lists any dead nodes on the [**Cluster Overview** page]({% link {{ page.version.version }}/ui-cluster-overview-page.md %}), then you might have a network partition.
 
 **Explanation:** A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
 
-The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities](cockroach-start.html#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
+The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) are defined. If localities are not defined, a partition that cuts off at least (n-1)/2 nodes will cause data unavailability.
 
 **Solution:**
 
 To identify a network partition:
 
-1.  Access the [Network Latency](ui-network-latency-page.html) page of the DB Console.
-1.  In the **Latencies** table, check for nodes with [no connections](ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
+1.  Access the [Network Latency]({% link {{ page.version.version }}/ui-network-latency-page.md %}) page of the DB Console.
+1.  In the **Latencies** table, check for nodes with [no connections]({% link {{ page.version.version }}/ui-network-latency-page.md %}#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
 
 ## Authentication issues
 
@@ -270,7 +270,7 @@ If you’re running a secure cluster, be sure to monitor your certificate expira
 
 To check the certificate expiration date:
 
-1. [Access the DB Console](ui-overview.html#db-console-access).
+1. [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 1. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 1. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
 
@@ -289,16 +289,16 @@ Failed running "sql"
 
 When a node [dies abruptly and/or loses its network connection to the cluster](#node-liveness-issues), the following behavior can occur:
 
-1. For a period of up to 40 seconds, clients trying to connect with [username and password authentication](authentication.html#client-authentication) cannot create new connections to any of the remaining nodes in the cluster.
+1. For a period of up to 40 seconds, clients trying to connect with [username and password authentication]({% link {{ page.version.version }}/authentication.md %}#client-authentication) cannot create new connections to any of the remaining nodes in the cluster.
 1. Applications start timing out when trying to connect to the cluster during this window.
 
 The reason this happens is as follows:
 
 - Username and password information is stored in a system range.
-- Since all system ranges are located [near the beginning of the keyspace](architecture/distribution-layer.html#monolithic-sorted-map-structure), the system range containing the username/password info can sometimes be colocated with another system range that is used to determine [node liveness](#node-liveness-issues).
-- If the username/password info and the node liveness record are stored together as described above, it can take extra time for the lease on this range to be transferred to another node. Normally, [lease transfers take a few seconds](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node), but in this case it may require multiple rounds of consensus to determine that the node in question is actually dead (the node liveness record check may be retried several times before failing).
+- Since all system ranges are located [near the beginning of the keyspace]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#monolithic-sorted-map-structure), the system range containing the username/password info can sometimes be colocated with another system range that is used to determine [node liveness](#node-liveness-issues).
+- If the username/password info and the node liveness record are stored together as described above, it can take extra time for the lease on this range to be transferred to another node. Normally, [lease transfers take a few seconds]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node), but in this case it may require multiple rounds of consensus to determine that the node in question is actually dead (the node liveness record check may be retried several times before failing).
 
-For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node).
+For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node).
 
 The solution is to add connection retry logic to your application.
 
@@ -308,8 +308,8 @@ The solution is to add connection retry logic to your application.
 
 See the following FAQs:
 
-- [What happens when node clocks are not properly synchronized](operational-faqs.html#what-happens-when-node-clocks-are-not-properly-synchronized)
-- [How can I tell how well node clocks are synchronized](operational-faqs.html#how-can-i-tell-how-well-node-clocks-are-synchronized)
+- [What happens when node clocks are not properly synchronized]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-node-clocks-are-not-properly-synchronized)
+- [How can I tell how well node clocks are synchronized]({% link {{ page.version.version }}/operational-faqs.md %}#how-can-i-tell-how-well-node-clocks-are-synchronized)
 
 ## Capacity planning issues
 
@@ -318,10 +318,10 @@ You may encounter the following issues when your cluster nears 100% resource cap
 -   Running CPU at close to 100% utilization with high run queue will result in poor performance.
 -   Running RAM at close to 100% utilization triggers Linux [OOM](#out-of-memory-oom-crash) and/or swapping that will result in poor performance or stability issues.
 -   Running storage at 100% capacity causes writes to fail, which in turn can cause various processes to stop.
--   Running storage at 100% utilization read/write causes poor service time and [node shutdown](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space).
+-   Running storage at 100% utilization read/write causes poor service time and [node shutdown]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space).
 -   Running network at 100% utilization causes response between databases and client to be poor.
 
-**Solution:** [Access the DB Console](ui-overview.html#db-console-access) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
+**Solution:** [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
 
 Check that adequate capacity was available for the incident:
 
@@ -334,7 +334,7 @@ Disk I/O | Disk Ops In Progress | Zero or occasional single-digit values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Any non-zero value
 
 {{site.data.alerts.callout_info}}
-For minimum provisioning guidelines, see [Basic hardware recommendations](recommended-production-settings.html#basic-hardware-recommendations).
+For minimum provisioning guidelines, see [Basic hardware recommendations]({% link {{ page.version.version }}/recommended-production-settings.md %}#basic-hardware-recommendations).
 {{site.data.alerts.end}}
 
 Check for resources that are running out of capacity:
@@ -343,7 +343,7 @@ Type | Time Series | What to look for
 --------|--------|--------|
 RAM capacity | Memory Usage | Consistently more than 80%
 CPU capacity | CPU Percent | Consistently less than 20% in idle (i.e., 80% busy)
-Disk capacity | Available Disk Capacity | Consistently less than 20% of the [store](cockroach-start.html#store) size
+Disk capacity | Available Disk Capacity | Consistently less than 20% of the [store]({% link {{ page.version.version }}/cockroach-start.md %}#store) size
 Disk I/O | Disk Ops In Progress | Consistent double-digit values
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently more than 50% capacity for both
 
@@ -353,16 +353,16 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GiBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
-- [What happens when a node runs out of disk space?](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space)
-- [Why is memory usage increasing despite lack of traffic?](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
-- [Why is disk usage increasing despite lack of writes?](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
-- [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [What happens when a node runs out of disk space?]({% link {{ page.version.version }}/operational-faqs.md %}#what-happens-when-a-node-runs-out-of-disk-space)
+- [Why is memory usage increasing despite lack of traffic?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic)
+- [Why is disk usage increasing despite lack of writes?]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-disk-usage-increasing-despite-lack-of-writes)
+- [Can I reduce or disable the storage of timeseries data?]({% link {{ page.version.version }}/operational-faqs.md %}#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
 ###### Automatic ballast files
 
- CockroachDB automatically creates an emergency ballast file at [node startup](cockroach-start.html). This feature is **on** by default. Note that the [`cockroach debug ballast`](cockroach-debug-ballast.html) command is still available but deprecated.
+ CockroachDB automatically creates an emergency ballast file at [node startup]({% link {{ page.version.version }}/cockroach-start.md %}). This feature is **on** by default. Note that the [`cockroach debug ballast`]({% link {{ page.version.version }}/cockroach-debug-ballast.md %}) command is still available but deprecated.
 
-The ballast file defaults to 1% of total disk capacity or 1 GiB, whichever is smaller. The size of the ballast file may be configured using [the `--store` flag to `cockroach start`](cockroach-start.html#flags-store) with a [`ballast-size` field](cockroach-start.html#fields-ballast-size); this field accepts the same value formats as the `size` field.
+The ballast file defaults to 1% of total disk capacity or 1 GiB, whichever is smaller. The size of the ballast file may be configured using [the `--store` flag to `cockroach start`]({% link {{ page.version.version }}/cockroach-start.md %}#flags-store) with a [`ballast-size` field]({% link {{ page.version.version }}/cockroach-start.md %}#fields-ballast-size); this field accepts the same value formats as the `size` field.
 
 In order for the ballast file to be automatically created, the following conditions must be met:
 
@@ -384,12 +384,12 @@ cockroach-data
 Removing the ballast file will give you a chance to remedy the disk space exhaustion; it will automatically be recreated when there is sufficient disk space.
 
 {{site.data.alerts.callout_info}}
-Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem. For a list of supported filesystems, see the [Production Checklist](recommended-production-settings.html#storage).
+Different filesystems may treat the ballast file differently. Make sure to test that the file exists, and that space for the file is actually being reserved by the filesystem. For a list of supported filesystems, see the [Production Checklist]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage).
 {{site.data.alerts.end}}
 
 #### Disk stalls
 
-A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 60 seconds). The mitigation in almost all cases is to [restart the node](cockroach-start.html) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 60 seconds. At that point the node should be restarted by your [orchestration system](recommended-production-settings.html#orchestration-kubernetes).
+A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 60 seconds). The mitigation in almost all cases is to [restart the node]({% link {{ page.version.version }}/cockroach-start.md %}) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 60 seconds. At that point the node should be restarted by your [orchestration system]({% link {{ page.version.version }}/recommended-production-settings.md %}#orchestration-kubernetes).
 
 Symptoms of disk stalls include:
 
@@ -399,39 +399,39 @@ Symptoms of disk stalls include:
 
 Causes of disk stalls include:
 
-- Disk operations have slowed due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage](recommended-production-settings.html#storage) and [monitoring disk IOPS](common-issues-to-monitor.html#disk-iops).
+- Disk operations have slowed due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage]({% link {{ page.version.version }}/recommended-production-settings.md %}#storage) and [monitoring disk IOPS]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#disk-iops).
 - Actual hardware-level storage issues that result in slow `fsync` performance.
 - In rare cases, operating-system-level configuration of subsystems such as SELinux can slow down system calls such as `fsync` enough to affect storage engine performance.
 
 CockroachDB's built-in disk stall detection works as follows:
 
-- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
+- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel]({% link {{ page.version.version }}/logging.md %}#storage). If this state continues for 20 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is terminated.
 
-- Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
+- Every time the storage engine writes to the main [`cockroach.log` file]({% link {{ page.version.version }}/logging.md %}#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is terminated and the following message is written to `stderr` / `cockroach.log`, providing details regarding the type, size, and duration of the ongoing write:
 
     - `file write stall detected: %s`
 
-- During [node liveness heartbeats](#node-liveness-issues), the [storage engine](architecture/storage-layer.html) writes to disk as part of the node liveness heartbeat process.
+- During [node liveness heartbeats](#node-liveness-issues), the [storage engine]({% link {{ page.version.version }}/architecture/storage-layer.md %}) writes to disk as part of the node liveness heartbeat process.
 
 ## CPU issues
 
 #### CPU is insufficient for the workload
 
-Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time](common-issues-to-monitor.html#service-latency). This is the most common symptom of CPU starvation.
+Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload. If the concurrency of your workload significantly exceeds your provisioned CPU, you will encounter a [degradation in SQL response time]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#service-latency). This is the most common symptom of CPU starvation.
 
-Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to [read amplification](architecture/storage-layer.html#read-amplification) and inversion of the log-structured merge (LSM) trees on the [storage layer](architecture/storage-layer.html).
+Because compaction requires significant CPU to run concurrent worker threads, a lack of CPU resources will eventually cause compaction to fall behind. This leads to [read amplification]({% link {{ page.version.version }}/architecture/storage-layer.md %}#read-amplification) and inversion of the log-structured merge (LSM) trees on the [storage layer]({% link {{ page.version.version }}/architecture/storage-layer.md %}).
 
 If these issues remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
 
 **Solution:** To diagnose and resolve an excessive workload concurrency issue:
 
-- [Check for high CPU usage.](common-issues-to-monitor.html#cpu-usage)
+- [Check for high CPU usage.]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#cpu-usage)
 
-- [Check your workload concurrency](common-issues-to-monitor.html#workload-concurrency) and compare it to your provisioned CPU.
+- [Check your workload concurrency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#workload-concurrency) and compare it to your provisioned CPU.
 
   - {% include {{ page.version.version }}/prod-deployment/resolution-excessive-concurrency.md %}
 
-- [Check LSM health](common-issues-to-monitor.html#lsm-health), which can be affected over time by CPU starvation.
+- [Check LSM health]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#lsm-health), which can be affected over time by CPU starvation.
 
   - {% include {{ page.version.version }}/prod-deployment/resolution-inverted-lsm.md %}
 
@@ -439,17 +439,17 @@ If these issues remain unresolved, affected nodes will miss their liveness heart
 
 #### Suspected memory leak
 
-A CockroachDB node will grow to consume all of the memory allocated for its `--cache`, [even if your cluster is idle](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic). The default cache size is 25% of physical memory, which can be substantial, depending on your machine configuration. For more information, see [Cache and SQL memory size](recommended-production-settings.html#cache-and-sql-memory-size).
+A CockroachDB node will grow to consume all of the memory allocated for its `--cache`, [even if your cluster is idle]({% link {{ page.version.version }}/operational-faqs.md %}#why-is-memory-usage-increasing-despite-lack-of-traffic). The default cache size is 25% of physical memory, which can be substantial, depending on your machine configuration. For more information, see [Cache and SQL memory size]({% link {{ page.version.version }}/recommended-production-settings.md %}#cache-and-sql-memory-size).
 
 CockroachDB memory usage has the following components:
 
 - **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB.
-- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the allocation specified with `--cache`. The size of CGo allocated memory is usually very close to the configured `--cache` size.
+- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine]({% link {{ page.version.version }}/cockroach-start.md %}#storage-engine)). This is the allocation specified with `--cache`. The size of CGo allocated memory is usually very close to the configured `--cache` size.
 - **Overhead**: The RSS (resident set size) minus Go/CGo allocated memory.
 
 **Solution:** To determine Go and CGo allocated memory:
 
-1. [Access the DB Console](ui-overview.html#db-console-access).
+1. [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 
 1. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
 
@@ -465,7 +465,7 @@ CockroachDB memory usage has the following components:
 
     {% include {{ page.version.version }}/prod-deployment/healthy-crdb-memory.md %}
 
-    If you observe any of the following, [file an issue](file-an-issue.html):
+    If you observe any of the following, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}):
       - CGo Allocated is larger than the configured `--cache` size.
       - RSS minus Go Total and CGo Total is larger than 100 MiB.
       - Go Total or CGo Total fluctuates or grows steadily over time.
@@ -476,20 +476,20 @@ When a node exits without logging an error message, the operating system has lik
 
 CockroachDB attempts to restart nodes after they crash. Nodes that frequently restart following an abrupt process exit may point to an underlying memory issue.
 
-**Solution:** If you [observe nodes restarting after sudden crashes](common-issues-to-monitor.html#node-process-restarts):
+**Solution:** If you [observe nodes restarting after sudden crashes]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#node-process-restarts):
 
-- [Confirm that the node restarts are caused by OOM crashes.](common-issues-to-monitor.html#verify-oom-errors)
+- [Confirm that the node restarts are caused by OOM crashes.]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#verify-oom-errors)
 
   - {% include {{ page.version.version }}/prod-deployment/resolution-oom-crash.md %}
 
-- [Check whether SQL queries may be responsible.](common-issues-to-monitor.html#sql-memory-usage)
+- [Check whether SQL queries may be responsible.]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#sql-memory-usage)
 
 
 ## Decommissioning issues
 
 #### Decommissioning process hangs indefinitely
 
-If the [decommissioning process](node-shutdown.html?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
+If the [decommissioning process]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#remove-nodes) appears to be hung on a node, a message like the following will print to `stderr`:
 
 ~~~
 possible decommission stall detected
@@ -500,7 +500,7 @@ n3 still has replica id 3 for range r4
 n3 still has replica id 2 for range r5
 ~~~
 
-**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely. For more information, see [Node Shutdown](node-shutdown.html?filters=decommission#size-and-replication-factor).
+**Explanation:** Before decommissioning a node, you need to make sure other nodes are available to take over the range replicas from the node. If no other nodes are available, the decommission process will hang indefinitely. For more information, see [Node Shutdown]({% link {{ page.version.version }}/node-shutdown.md %}?filters=decommission#size-and-replication-factor).
 
 **Solution:** Confirm that there are enough nodes with sufficient storage space to take over the replicas from the node you want to remove.
 
@@ -512,7 +512,7 @@ When a CockroachDB node dies (or is partitioned) the under-replicated range coun
 
 **Explanation:** CockroachDB uses consensus replication and requires a quorum of the replicas to be available in order to allow both writes and reads to the range. The number of failures that can be tolerated is equal to (Replication factor - 1)/2. Thus CockroachDB requires (n-1)/2 nodes to achieve quorum. For example, with 3x replication, one failure can be tolerated; with 5x replication, two failures, and so on.
 
--   Under-replicated Ranges: When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor](configure-replication-zones.html#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas](architecture/replication-layer.html#non-voting-replicas), if configured, are not counted when calculating replication status.
+-   Under-replicated Ranges: When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor]({% link {{ page.version.version }}/configure-replication-zones.md %}#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas]({% link {{ page.version.version }}/architecture/replication-layer.md %}#non-voting-replicas), if configured, are not counted when calculating replication status.
 
 -   Unavailable Ranges: If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
 
@@ -520,11 +520,11 @@ When a CockroachDB node dies (or is partitioned) the under-replicated range coun
 
 To identify under-replicated/unavailable ranges:
 
-1.  [Access the DB Console](ui-overview.html#db-console-access).
+1.  [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access).
 
 1.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
-1. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue](file-an-issue.html).
+1. Check for a network partition: Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page. On the Advanced Debugging page, click **Network Latency**. In the **Latencies** table, check if any cells are marked as "X". If yes, it indicates that the nodes cannot communicate with those nodes, and might indicate a network partition. If there's no partition, and there's still no upreplication after 5 mins, then [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}).
 
 **Add nodes to the cluster:**
 
@@ -532,12 +532,12 @@ On the DB Console’s Cluster Overview page, check if any nodes are down. If the
 
 If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
-1.  [Access the DB Console](ui-overview.html#db-console-access)
+1.  [Access the DB Console]({% link {{ page.version.version }}/ui-overview.md %}#db-console-access)
 1.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 1.  Click **Problem Ranges**.
 1.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
 1.  To view the **Range Report** for a range, click on the range number in the **Under-replicated (or slow)** table or **Unavailable** table.
-1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue](file-an-issue.html). Please be sure to include the full Range Report and error message when you submit the issue.
+1. On the Range Report page, scroll down to the **Simulated Allocator Output** section. The table contains an error message which explains the reason for the under-replicated range. Follow the guidance in the message to resolve the issue. If you need help understanding the error or the guidance, [file an issue]({% link {{ page.version.version }}/file-an-issue.md %}). Please be sure to include the full Range Report and error message when you submit the issue.
 
 ## Node liveness issues
 
@@ -552,59 +552,59 @@ Common reasons for node liveness issues include:
 
 The [DB Console][db_console] provides several ways to check for node liveness issues in your cluster:
 
-- [Check node heartbeat latency](common-issues-to-monitor.html#node-heartbeat-latency)
-- [Check command commit latency](common-issues-to-monitor.html#command-commit-latency)
+- [Check node heartbeat latency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#node-heartbeat-latency)
+- [Check command commit latency]({% link {{ page.version.version }}/common-issues-to-monitor.md %}#command-commit-latency)
 
 {{site.data.alerts.callout_info}}
-For more information about how node liveness works, see [Replication Layer](architecture/replication-layer.html#epoch-based-leases-table-data).
+For more information about how node liveness works, see [Replication Layer]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data).
 {{site.data.alerts.end}}
 
 #### Impact of node failure is greater than 10 seconds
 
-When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than a few seconds for liveness expiration plus the cost of several network roundtrips.
+When the cluster needs to access a range on a leaseholder node that is dead, that range's [lease must be transferred to a healthy node]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). In theory, this process should take no more than a few seconds for liveness expiration plus the cost of several network roundtrips.
 
 In production, lease transfer upon node failure can take longer than expected. In {{ page.version.version }}, this is observed in the following scenarios:
 
-- **The leaseholder node for the liveness range fails.** The liveness range is a system range that [stores the liveness record](architecture/replication-layer.html#epoch-based-leases-table-data) for each node on the cluster. If a node fails and is also the leaseholder for the liveness range, operations cannot proceed until the liveness range is [transferred to a new leaseholder](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node) and the liveness record is made available to other nodes. This can cause momentary cluster unavailability.
+- **The leaseholder node for the liveness range fails.** The liveness range is a system range that [stores the liveness record]({% link {{ page.version.version }}/architecture/replication-layer.md %}#epoch-based-leases-table-data) for each node on the cluster. If a node fails and is also the leaseholder for the liveness range, operations cannot proceed until the liveness range is [transferred to a new leaseholder]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node) and the liveness record is made available to other nodes. This can cause momentary cluster unavailability.
 
-- **Network or DNS issues cause connection issues between nodes.** If there is no live server for the IP address or DNS lookup, connection attempts to a node will not return an immediate error, but will hang [until timing out](architecture/distribution-layer.html#grpc). This can cause unavailability and prevent a speedy movement of leases and recovery. CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations, and the connection issue should generally resolve in 10-30 seconds. However, an attempt to contact an unresponsive node could still occur in other scenarios that are not yet addressed.
+- **Network or DNS issues cause connection issues between nodes.** If there is no live server for the IP address or DNS lookup, connection attempts to a node will not return an immediate error, but will hang [until timing out]({% link {{ page.version.version }}/architecture/distribution-layer.md %}#grpc). This can cause unavailability and prevent a speedy movement of leases and recovery. CockroachDB avoids contacting unresponsive nodes or DNS during certain performance-critical operations, and the connection issue should generally resolve in 10-30 seconds. However, an attempt to contact an unresponsive node could still occur in other scenarios that are not yet addressed.
 
-- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely, also causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 20 seconds, but there are gaps in its detection. In v22.1.2+ and v22.2+, each lease acquisition attempt on an unresponsive node [times out after a few seconds](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node). However, CockroachDB can still appear to stall as these timeouts are occurring.
+- **A node's disk stalls.** A [disk stall](#disk-stalls) on a node can cause write operations to stall indefinitely, also causes the node's heartbeats to fail since the storage engine cannot write to disk as part of the heartbeat, and may cause read requests to fail if they are waiting for a conflicting write to complete. Lease acquisition from this node can stall indefinitely until the node is shut down or recovered. Pebble detects most stalls and will terminate the `cockroach` process after 20 seconds, but there are gaps in its detection. In v22.1.2+ and v22.2+, each lease acquisition attempt on an unresponsive node [times out after a few seconds]({% link {{ page.version.version }}/architecture/replication-layer.md %}#how-leases-are-transferred-from-a-dead-node). However, CockroachDB can still appear to stall as these timeouts are occurring.
 
 - **Otherwise unresponsive nodes.** Internal deadlock due to faulty code, resource exhaustion, OS/hardware issues, and other arbitrary failures can make a node unresponsive. This can cause leases to become stuck in certain cases, such as when a response from the previous leaseholder is needed in order to move the lease.
 
-**Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes](node-shutdown.html) temporarily so that nodes phasing in and out do not cause disruption.
+**Solution:** If you are experiencing intermittent network or connectivity issues, first [shut down the affected nodes]({% link {{ page.version.version }}/node-shutdown.md %}) temporarily so that nodes phasing in and out do not cause disruption.
 
-If a node has become unresponsive without returning an error, [shut down the node](node-shutdown.html) so that network requests immediately become hard errors rather than stalling.
+If a node has become unresponsive without returning an error, [shut down the node]({% link {{ page.version.version }}/node-shutdown.md %}) so that network requests immediately become hard errors rather than stalling.
 
 If you are running a version of CockroachDB that is affected by an issue described here, upgrade to a version that contains the fix for the issue, as described in the preceding list.
 
 ## Partial availability issues
 
-If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events](eventlog.html) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting](cluster-settings.html) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
+If your cluster is in a partially-available state due to a recent node or network failure, the internal logging table `system.eventlog` might be unavailable. This can cause the logging of [notable events]({% link {{ page.version.version }}/eventlog.md %}) (e.g., the execution of SQL statements) to the `system.eventlog` table to fail to complete, contributing to cluster unavailability. If this occurs, you can set the [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}) `server.eventlog.enabled` to `false` to disable writing notable log events to this table, which may help to recover your cluster.
 
-Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks](configure-logs.html#configure-log-sinks) as usual.
+Even with `server.eventlog.enabled` set to `false`, notable log events are still sent to configured [log sinks]({% link {{ page.version.version }}/configure-logs.md %}#configure-log-sinks) as usual.
 
 ## Check for under-replicated or unavailable data
 
-To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports](query-replication-reports.html).
+To see if any data is under-replicated or unavailable in your cluster, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
 
 ## Check for replication zone constraint violations
 
-To see if any of your cluster's [data placement constraints](configure-replication-zones.html#replication-constraints) are being violated, follow the steps described in [Replication Reports](query-replication-reports.html).
+To see if any of your cluster's [data placement constraints]({% link {{ page.version.version }}/configure-replication-zones.md %}#replication-constraints) are being violated, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}).
 
 ## Check for critical localities
 
-To see which of your [localities](cockroach-start.html#locality) (if any) are critical, follow the steps described in [Replication Reports](query-replication-reports.html). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
+To see which of your [localities]({% link {{ page.version.version }}/cockroach-start.md %}#locality) (if any) are critical, follow the steps described in [Replication Reports]({% link {{ page.version.version }}/query-replication-reports.md %}). A locality is "critical" for a range if all of the nodes in that locality becoming [unreachable](#node-liveness-issues) would cause the range to become unavailable. In other words, the locality contains a majority of the range's replicas.
 
 ## Something else?
 
-If we do not have a solution here, you can try using our other [support resources](support-resources.html), including:
+If we do not have a solution here, you can try using our other [support resources]({% link {{ page.version.version }}/support-resources.md %}), including:
 
 - [StackOverflow](http://stackoverflow.com/questions/tagged/cockroachdb)
 - [CockroachDB Community Forum](https://forum.cockroachlabs.com)
 - [Chatting with our developers on Slack](https://cockroachdb.slack.com)
 
-<!-- Reference Links -->
+{% comment %} Reference Links {% endcomment %}
 
 [db_console]: ui-overview.html

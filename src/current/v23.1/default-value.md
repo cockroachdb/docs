@@ -5,19 +5,19 @@ toc: true
 docs_area: reference.sql
 ---
 
-The `DEFAULT` value [constraint](constraints.html) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
+The `DEFAULT` value [constraint]({% link {{ page.version.version }}/constraints.md %}) specifies a value to write into the constrained column if one is not defined in an `INSERT` statement. The value may be either a hard-coded literal or an expression that is evaluated at the time the row is created.
 
 ## Details
 
-- The [data type](data-types.html) of the Default Value must be the same as the data type of the column.
-- The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`](insert.html) statement. You can still insert a `NULL` into an optional (nullable) column by explicitly inserting `NULL`. For example, `INSERT INTO foo VALUES (1, NULL);`.
+- The [data type]({% link {{ page.version.version }}/data-types.md %}) of the Default Value must be the same as the data type of the column.
+- The `DEFAULT` value constraint only applies if the column does not have a value specified in the [`INSERT`]({% link {{ page.version.version }}/insert.md %}) statement. You can still insert a `NULL` into an optional (nullable) column by explicitly inserting `NULL`. For example, `INSERT INTO foo VALUES (1, NULL);`.
 
 ## Syntax
 
 You can only apply the `DEFAULT` value constraint to individual columns.
 
 {{site.data.alerts.callout_info}}
-You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](alter-table.html#set-or-change-a-default-value).
+You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#set-or-change-a-default-value).
 {{site.data.alerts.end}}
 
 <div>
@@ -28,11 +28,11 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
 -----------|-------------
  `table_name` | The name of the table you're creating.
  `column_name` | The name of the constrained column.
- `column_type` | The constrained column's [data type](data-types.html).
- `default_value` | The value you want to insert by default, which must evaluate to the same [data type](data-types.html) as the `column_type`.
- `column_constraints` | Any other column-level [constraints](constraints.html) you want to apply to this column.
+ `column_type` | The constrained column's [data type]({% link {{ page.version.version }}/data-types.md %}).
+ `default_value` | The value you want to insert by default, which must evaluate to the same [data type]({% link {{ page.version.version }}/data-types.md %}) as the `column_type`.
+ `column_constraints` | Any other column-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply to this column.
  `column_def` | Definitions for any other columns in the table.
- `table_constraints` | Any table-level [constraints](constraints.html) you want to apply.
+ `table_constraints` | Any table-level [constraints]({% link {{ page.version.version }}/constraints.md %}) you want to apply.
 
 ## Example
 
@@ -73,11 +73,11 @@ If the `DEFAULT` value constraint is not specified and an explicit value is not 
 
 ## See also
 
-- [Constraints](constraints.html)
-- [`ALTER COLUMN`](alter-table.html#alter-column)
-- [`CHECK` constraint](check.html)
-- [`REFERENCES` constraint (Foreign Key)](foreign-key.html)
-- [`NOT NULL` constraint](not-null.html)
-- [`PRIMARY KEY` constraint](primary-key.html)
-- [`UNIQUE` constraint](unique.html)
-- [`SHOW CONSTRAINTS`](show-constraints.html)
+- [Constraints]({% link {{ page.version.version }}/constraints.md %})
+- [`ALTER COLUMN`]({% link {{ page.version.version }}/alter-table.md %}#alter-column)
+- [`CHECK` constraint]({% link {{ page.version.version }}/check.md %})
+- [`REFERENCES` constraint (Foreign Key)]({% link {{ page.version.version }}/foreign-key.md %})
+- [`NOT NULL` constraint]({% link {{ page.version.version }}/not-null.md %})
+- [`PRIMARY KEY` constraint]({% link {{ page.version.version }}/primary-key.md %})
+- [`UNIQUE` constraint]({% link {{ page.version.version }}/unique.md %})
+- [`SHOW CONSTRAINTS`]({% link {{ page.version.version }}/show-constraints.md %})

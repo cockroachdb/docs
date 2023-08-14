@@ -5,7 +5,7 @@ toc: true
 docs_area: manage
 ---
 
-[DBmarlin](https://www.dbmarlin.com/home) is a monitoring platform for databases. The CockroachDB integration with DBmarlin enables DBmarlin to view CockroachDB metrics stored in the [`crdb_internal` system catalog](monitoring-and-alerting.html#crdb_internal-system-catalog).
+[DBmarlin](https://www.dbmarlin.com/home) is a monitoring platform for databases. The CockroachDB integration with DBmarlin enables DBmarlin to view CockroachDB metrics stored in the [`crdb_internal` system catalog]({% link {{ page.version.version }}/monitoring-and-alerting.md %}#crdb_internal-system-catalog).
 
 In this tutorial, you will enable the CockroachDB integration in DBmarlin, run a workload on CockroachDB, and visualize data.
 
@@ -28,7 +28,7 @@ Follow the steps in [CockroachDB](https://docs.dbmarlin.com/docs/Monitored-Techn
 
 ## Step 2. Run a sample workload
 
-To test the dashboard functionality, use [`cockroach workload`](cockroach-workload.html) to run a sample workload on the cluster.
+To test the dashboard functionality, use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to run a sample workload on the cluster.
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
@@ -54,6 +54,6 @@ When you open the dashboard you'll see :
 
 ## See also
 
-- [Monitoring and Alerting](monitoring-and-alerting.html)
-- [DB Console Overview](ui-overview.html)
-- [Logging Overview](logging-overview.html)
+- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
+- [Logging Overview]({% link {{ page.version.version }}/logging-overview.md %})

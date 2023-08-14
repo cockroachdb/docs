@@ -150,7 +150,7 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 
 - On the **Diagnostics** tab for a statement fingerprint, click the **All statement diagnostics** link.
 {% if page.cloud != true %}
-- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
+- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History]({% link {{ page.version.version }}/ui-debug-pages.md %}#reports).
 {% endif %}
 
 Click <img src="{{ 'images/v23.1/ui-download-button.png' | relative_url }}" alt="Down arrow" /> **Bundle (.zip)** to download any diagnostics bundle.

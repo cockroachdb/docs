@@ -6,7 +6,7 @@ key: debug-encryption-active-key.html
 docs_area: reference.cli
 ---
 
-The `cockroach debug encryption-active-key` [command](cockroach-commands.html) displays the encryption algorithm and store key for an encrypted store.
+The `cockroach debug encryption-active-key` [command]({% link {{ page.version.version }}/cockroach-commands.md %}) displays the encryption algorithm and store key for an encrypted store.
 
 ## Synopsis
 
@@ -40,6 +40,6 @@ AES128_CTR:be235c29239aa84a48e5e1874d76aebf7fb3c1bdc438cec2eb98de82f06a57a0
 
 ## See also
 
-- [File an Issue](file-an-issue.html)
-- [`cockroach` Commands Overview](cockroach-commands.html)
-- [Troubleshooting Overview](troubleshooting-overview.html)
+- [File an Issue]({% link {{ page.version.version }}/file-an-issue.md %})
+- [`cockroach` Commands Overview]({% link {{ page.version.version }}/cockroach-commands.md %})
+- [Troubleshooting Overview]({% link {{ page.version.version }}/troubleshooting-overview.md %})

@@ -13,14 +13,14 @@ You can use external connections to specify and interact with resources that are
 
 You can also use the following SQL statements to work with external connections:
 
-- [`CREATE EXTERNAL CONNECTION`](create-external-connection.html)
-- [`DROP EXTERNAL CONNECTION`](drop-external-connection.html)
+- [`CREATE EXTERNAL CONNECTION`]({% link {{ page.version.version }}/create-external-connection.md %})
+- [`DROP EXTERNAL CONNECTION`]({% link {{ page.version.version }}/drop-external-connection.md %})
 
 ## Required privileges
 
 Without the `admin` role, users can only view the external connections that they own. Users own external connections that they have created with `CREATE EXTERNAL CONNECTION`.
 
-Users with the [`admin` role](security-reference/authorization.html#admin-role) can view all external connections with `SHOW CREATE EXTERNAL CONNECTION`.
+Users with the [`admin` role]({% link {{ page.version.version }}/security-reference/authorization.md %}#admin-role) can view all external connections with `SHOW CREATE EXTERNAL CONNECTION`.
 
 ## Synopsis
 
@@ -70,5 +70,5 @@ backup_bucket_1   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket_n
 
 ## See also
 
-- [Use Cloud Storage](use-cloud-storage.html)
-- [Changefeed Sinks](changefeed-sinks.html)
+- [Use Cloud Storage]({% link {{ page.version.version }}/use-cloud-storage.md %})
+- [Changefeed Sinks]({% link {{ page.version.version }}/changefeed-sinks.md %})

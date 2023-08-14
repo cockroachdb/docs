@@ -10,7 +10,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     --background
     ~~~
 
-1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+1. As the `root` user, open the [built-in SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -23,7 +23,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
     {% include {{ page.version.version }}/cdc/core-csv.md %}
 
-1. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+1. Enable the `kv.rangefeed.enabled` [cluster setting]({% link {{ page.version.version }}/cluster-settings.md %}):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

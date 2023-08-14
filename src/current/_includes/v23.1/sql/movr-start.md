@@ -1,4 +1,4 @@
-- Run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` dataset preloaded:
+- Run [`cockroach demo`]({% link {{ page.version.version }}/cockroach-demo.md %}) to start a temporary, in-memory cluster with the `movr` dataset preloaded:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -6,8 +6,8 @@
     ~~~
 
 - Load the `movr` dataset into a persistent local cluster and open an interactive SQL shell:
-    1. Start a [secure](secure-a-cluster.html) or [insecure](start-a-local-cluster.html) local cluster.
-    1. Use [`cockroach workload`](cockroach-workload.html) to load the `movr` dataset:
+    1. Start a [secure]({% link {{ page.version.version }}/secure-a-cluster.md %}) or [insecure]({% link {{ page.version.version }}/start-a-local-cluster.md %}) local cluster.
+    1. Use [`cockroach workload`]({% link {{ page.version.version }}/cockroach-workload.md %}) to load the `movr` dataset:
 
         <div class="filters filters-big clearfix">
           <button class="filter-button" data-scope="secure">Secure</button>
@@ -31,7 +31,7 @@
         ~~~
 
         </section>
-    1. Use [`cockroach sql`](cockroach-sql.html) to open an interactive SQL shell and set `movr` as the  [current database](sql-name-resolution.html#current-database):
+    1. Use [`cockroach sql`]({% link {{ page.version.version }}/cockroach-sql.md %}) to open an interactive SQL shell and set `movr` as the  [current database]({% link {{ page.version.version }}/sql-name-resolution.md %}#current-database):
 
         <section class="filter-content" markdown="1" data-scope="secure">
 

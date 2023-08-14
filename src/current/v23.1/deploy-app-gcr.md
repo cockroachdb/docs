@@ -28,8 +28,8 @@ Before starting the tutorial, do the following:
 
 ## Step 3. Create a database
 
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the {{ site.data.products.db }} Console earlier:
+1. If you haven't already, [download the CockroachDB binary]({% link {{ page.version.version }}/install-cockroachdb.md %}).
+1. Start the [built-in SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) using the connection string you got from the {{ site.data.products.db }} Console earlier:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -169,7 +169,7 @@ Before starting the tutorial, do the following:
     [{"id": "bb7d6c4d-efb3-45f8-b790-9911aae7d8b2", "name": "Carl"}]
     ~~~
 
-    You can also query the table directly in the [SQL shell](cockroach-sql.html) to see the changes:
+    You can also query the table directly in the [SQL shell]({% link {{ page.version.version }}/cockroach-sql.md %}) to see the changes:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -335,7 +335,7 @@ After testing, we recommend that you update the [`ALLOWED_HOSTS` property in `se
 
 ## See also
 
-- [Build a Simple Django App with CockroachDB](build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Global, Serverless Application](movr-flask-deployment.html)
+- [Build a Simple Django App with CockroachDB]({% link {{ page.version.version }}/build-a-python-app-with-cockroachdb-django.md %})
+- [Deploy a Global, Serverless Application]({% link {{ page.version.version }}/movr-flask-deployment.md %})
 
 {% include {{page.version.version}}/app/see-also-links.md %}
