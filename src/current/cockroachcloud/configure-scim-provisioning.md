@@ -35,6 +35,8 @@ When a user is directly or indirectly unassigned, their {{ site.data.products.db
 Okta disables deprovisioned users and does not support deleting them.
 {{site.data.alerts.end}}
 
+To reprovision a user that has been deprovisioned and deleted, you must manually [re-invite them]({% link cockroachcloud/managing-access.md%}#invite-team-members-to-an-organization) to the organization.
+
 <a id="scim-group-push"></a>
 
 ### SCIM Group Push with Okta
@@ -144,6 +146,8 @@ To remove a user's access to {{ site.data.products.db }}, unassign the user from
 
 To learn more, refer to [Deprovision a user](https://help.okta.com/en-us/Content/Topics/Provisioning/lcm/lcm-deprovision-user.htm) in the Okta documentation.
 
+To reprovision a user that has been deprovisioned and deleted, you must manually [re-invite them]({% link cockroachcloud/managing-access.md%}#invite-team-members-to-an-organization) to the organization.
+
 A linked group that is unassigned from the app integration continues to appear in {{ site.data.products.db }} unless it is unlinked. Refer to [Automate Group Management](#automate-group-management).
 
 <a id="automate-group-management"></a>
@@ -222,6 +226,10 @@ To manage a group's roles, you can use the [Role Assignment API](https://www.coc
 ### Assigned user is not provisioned in {{ site.data.products.db }}
 
 When using Okta, if an assigned user, or all members of an assigned group, are not automatically provisioned, the failed operation is not automatically retried. To view the status of operations and retry failed operations, go to **Dashboard > Tasks** in the Okta admin dashboard. For further assistance, [contact Support](https://support.cockroachlabs.com/).
+
+### Reprovisioning a previously-deleted user fails
+
+To reprovision a user that has been deprovisioned and deleted, you must manually [re-invite them]({% link cockroachcloud/managing-access.md%}#invite-team-members-to-an-organization) to the organization.
 
 ### Group Push is enabled, but group is not provisioned in {{ site.data.products.db }}
 
