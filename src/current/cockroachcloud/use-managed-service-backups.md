@@ -45,8 +45,6 @@ For each backup, the following details display:
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
 - [**Databases**](#databases): The number of databases included in the backup.
 
-<img src="{{ 'images/cockroachcloud/backups-dedicated.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
-
 </div>
 
 <div class="filter-content" markdown="1" data-scope="serverless">
@@ -57,8 +55,6 @@ For each backup, the following details display:
 - **Data From**: The date and time the backup was taken.
 - **Status**: Whether the backup is `In Progress` or `Complete`.
 - **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
-
-<img src="{{ 'images/cockroachcloud/backups-serverless.png' | relative_url }}" alt="Backups Page" style="border:1px solid #eee;max-width:100%" />
 
 </div>
 
