@@ -1377,14 +1377,14 @@ This sentence is visible!
 {% comment %}
 This sentence is not visible!
 {% endcomment %}
-This sentence is also {% comment %}not {% endcomment %}visible.
+This sentence is visible except for a single commented word: {% comment %}CockroachDB{% endcomment %}
 ```
 
 Final page HTML:
 
 ```
 <p>This sentence is visible!</p>
-<p>This setence is also visible.</p>
+<p>This sentence is visible except for a single commented word: </p>
 ```
 
 Do not use HTML comments (`<!-- -->`), because HTML comments are visible in the page's HTML source code in production. Additionally, any HTML comment content must be processed by the Liquid parser, so any Liquid within an HTML comment is still processed and can produce errors, such as a broken include or broken link.
@@ -1407,7 +1407,7 @@ FIXME: Update example SQL commands
 {% endcomment %}
 ```
 
-Many popular code editors feature extensions that can highlight `TODO`s across the repository. One such extension is [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree).
+Many popular code editors feature extensions that can highlight `TODO`s across the repository. One such extension is [Todo Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight).
 
 ## Terminology and word usage
 
