@@ -109,6 +109,7 @@ Included in this guide:
     - [Technical limitations of include files](#technical-limitations-of-include-files)
   - [Tabs](#tabs)
     - [Linking into tabbed content](#linking-into-tabbed-content)
+  - [Comments](#comments)
 - [Terminology and word usage](#terminology-and-word-usage)
 
 ## Style and tone
@@ -1364,6 +1365,49 @@ Considerations:
 
 - If you intend to link to a header present on two or more tabsets on the same page, the header targets must be uniquely named. If you require identical header names, use explicit, unique HTML anchor names for each (in form `<a name="uniquename"></a>` as shown under [Links](#links).
 - For the first-defined tab, specifying its `filter` value in a link is functionally the same as omitting it. For all other tabs, the explicit filter name is required. You can think of this first tab as the "default" tab in this context: if not otherwise specificed, Jekyll will always open with the first tab's contents displayed.
+
+### Comments
+
+There may be situations that require adding an explanation below a piece of content or to temporarily suppress content within a page. In those situations, use [Liquid comments](https://shopify.github.io/liquid/tags/template/#comment).
+
+Page source:
+
+```
+This sentence is visible!
+{% comment %}
+This sentence is not visible!
+{% endcomment %}
+This sentence is also {% comment %}not {% endcomment %}visible.
+```
+
+Final page HTML:
+
+```
+<p>This sentence is visible!</p>
+<p>This setence is also visible.</p>
+```
+
+Do not use HTML comments (`<!-- -->`), as the content will still be made available in the page source in production. Additionally, any HTML comment content is subject to the Liquid parser, so any Liquid inside of an HTML comment is still processed and can produce errors (e.g., an include or a link is broken).
+
+#### TODOS
+
+If you have future work to do in a particular file, simply add `TODO` or a `FIXME` inside of a comment. A colon after `TODO` or `FIXME` is optional.
+
+Examples:
+
+```
+{% comment %}
+TODO clean up SQL diagrams 
+{% endcomment %}
+```
+
+```
+{% comment %}
+FIXME: Update example SQL commands
+{% endcomment %}
+```
+
+Many popular code editors feature extensions that can highlight `TODO`s across the repository. One such extension is [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree).
 
 ## Terminology and word usage
 
