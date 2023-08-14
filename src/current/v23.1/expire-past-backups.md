@@ -11,7 +11,7 @@ The process for expiring past backups from cloud storage will vary depending on 
 
 ## Step 1. Determine your retention policy
 
-Before you can expire past backups, first determine your backup retention policy. With incremental backups in the /incrementals directory, you can apply different lifecycle/retention policies from cloud storage providers to the /incrementals directory as needed.
+Before you can expire past backups, first determine your backup retention policy. With incremental backups in the `/incrementals` directory, you can apply different lifecycle/retention policies from cloud storage providers as needed.
 
 For example: Retain [full backups](take-full-and-incremental-backups.html#full-backups) for 30 days and retain [incremental backups](take-full-and-incremental-backups.html#incremental-backups) for 7 days. 
 
@@ -47,7 +47,7 @@ Deleting past backups completely erases all data from these backups. These backu
 
 ## Step 5. Monitor your cloud storage
 
-After you have deleted or archived the past backups, monitor your cloud storage to ensure that the remaining backups are available and accessible. For more information about using monitoring integrations for jobs, see [Backup and Restore Monitoring](backup-and-restore-monitoring.html).  
+After you have deleted or archived the past backups, monitor your cloud storage to ensure the past backups no longer exist and the remaining backups are available and accessible. For more information about using monitoring integrations for jobs, see [Backup and Restore Monitoring](backup-and-restore-monitoring.html).  
 
 ## See also
 
