@@ -1,11 +1,13 @@
 ---
-title: Resource management
+title: Resource Management
 summary: Allocate CPU, memory, and storage resources for a secure 3-node CockroachDB cluster on Kubernetes.
 toc: true
 toc_not_nested: true
 secure: true
 docs_area: deploy
 ---
+
+{% capture latest_operator_version %}{% include_cached latest_operator_version.md %}{% endcapture %}
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
 

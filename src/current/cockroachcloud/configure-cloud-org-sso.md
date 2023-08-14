@@ -1,5 +1,5 @@
 ---
-title: Configure Cloud Organization Single Sign-On (SSO)
+title: Configure Cloud Organization SSO
 summary: Learn how to configure single Cloud Organization Single Sign-On (SSO) for your CockroachDB Cloud organization.
 toc: true
 docs_area: manage

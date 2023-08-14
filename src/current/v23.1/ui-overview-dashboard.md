@@ -47,7 +47,7 @@ Ranges are subsets of your data, which are replicated to ensure survivability. R
 
 - In the cluster view, the graph shows the number of range replicas on each node in the cluster.
 
-For details about how to control the number and location of replicas, see [Configure Replication Zones](configure-replication-zones.html).
+For details about how to control the number and location of replicas, see [Replication Controls](configure-replication-zones.html).
 
 ## Capacity
 

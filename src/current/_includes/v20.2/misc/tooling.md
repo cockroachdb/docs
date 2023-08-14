@@ -3,7 +3,7 @@
 Cockroach Labs has partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools:
 
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the latest version documented in the table below.
-- **Beta support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
+- **Partial support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
 
 {{site.data.alerts.callout_info}}
 Unless explicitly stated, support for a [driver](#drivers) or [data access framework](#data-access-frameworks-e-g-orms) does not include [automatic, client-side transaction retry handling](transactions.html#client-side-intervention). For client-side transaction retry handling samples, see [Example Apps](example-apps.html).

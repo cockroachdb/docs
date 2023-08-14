@@ -16,7 +16,7 @@ Note that the sections that follow were written for the purposes of orienting ap
 
 ### How transactions work in CockroachDB
 
-CockroachDB is designed to make your data scalable and consistent. All stored records are replicated across a distributed deployment of database instances, and all database transactions committed in CockroachDB satisfy [ACID properties](https://en.wikipedia.org/wiki/ACID) and the [CAP theorem](https://wikipedia.org/wiki/CAP_theorem). This means that when you store data in CockroachDB, the data will be valid and anomaly-free, even in the event of a system error or power failure.
+CockroachDB is designed to make your data scalable and consistent. All stored records are replicated across a distributed deployment of database instances, and all database transactions committed in CockroachDB satisfy [ACID properties](https://en.wikipedia.org/wiki/ACID).
 
 To guarantee that database operations are [atomic](https://wikipedia.org/wiki/Atomicity_(database_systems)) (the "A" of the [ACID properties](https://en.wikipedia.org/wiki/ACID)), CockroachDB executes all statements in the context of an atomic [database transaction](https://wikipedia.org/wiki/Database_transaction). If a transaction succeeds, all data mutations are applied together simultaneously from the perspective of operations outside of the transaction. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged.
 

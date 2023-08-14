@@ -107,7 +107,7 @@ Now that you are familiar with the `movr` schema, you can [set up a development 
 
 - [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/glossary.html#cockroachdb-architecture-terms)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](alter-table.html#configure-zone)
 - [Define Table Partitions](partitioning.html)
 - [`ALTER TABLE ... PARTITION BY`](alter-table.html#partition-by)

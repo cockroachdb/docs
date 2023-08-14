@@ -3,7 +3,7 @@
   "is_top_level": true,
   "items": [
     {
-      "title": "Migration Overview",
+      "title": "Overview",
       "urls": [
         "/${VERSION}/migration-overview.html"
       ]
@@ -88,6 +88,12 @@
             "/${VERSION}/import-performance-best-practices.html"
           ]
         }
+      ]
+    },
+    {
+      "title": "Migrate from MySQL",
+      "urls": [
+        "/${VERSION}/migrate-from-mysql.html"
       ]
     },
     {

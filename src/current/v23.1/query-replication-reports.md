@@ -91,7 +91,7 @@ The `system.replication_critical_localities` report contains which of your local
 
 That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
 
-As described in [Configure Replication Zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes), localities are key-value pairs defined at [node startup time](cockroach-start.html#locality), and are ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`).
+As described in [Replication Controls](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes), localities are key-value pairs defined at [node startup time](cockroach-start.html#locality), and are ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`).
 
 For an example using this table, see [Find out which databases and tables have ranges in critical localities](#find-out-which-databases-and-tables-have-ranges-in-critical-localities).
 
@@ -515,7 +515,7 @@ To give another example, let's say your cluster were similar to the one shown ab
 
 ## See also
 
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)
 - [Partitioning](partitioning.html)
 - [`PARTITION BY`](partitioning.html)
 - [`CONFIGURE ZONE`](alter-table.html#configure-zone)

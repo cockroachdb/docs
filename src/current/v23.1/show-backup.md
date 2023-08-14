@@ -57,6 +57,7 @@ Option        | Value | Description
 `check_files` |  N/A  | Validate that all files belonging to a backup are in the expected location in storage. See [Validate a backup's files](#validate-a-backups-files) for an example.
 `debug_ids` |  N/A  |  [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) that the `BACKUP` statement generates (the data files and its manifest, containing the backup's metadata).
+`kms`                                                            | [`STRING`](string.html) |  The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to [take and restore encrypted backups](take-and-restore-encrypted-backups.html#examples). Refer to [URI Formats](take-and-restore-encrypted-backups.html#uri-formats). 
 `incremental_location` | [`STRING`](string.html) | [List the details of an incremental backup](#show-a-backup-taken-with-the-incremental-location-option) taken with the [`incremental_location` option](backup.html#incr-location).
 `privileges`  | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 

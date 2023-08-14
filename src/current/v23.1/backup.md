@@ -356,4 +356,4 @@ To use an external connection URI to back up to cloud storage with an associated
 - [`SHOW BACKUP`](show-backup.html)
 - [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html)
 - [`RESTORE`](restore.html)
-- [Configure Replication Zones](configure-replication-zones.html)
+- [Replication Controls](configure-replication-zones.html)

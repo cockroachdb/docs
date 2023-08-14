@@ -1,5 +1,5 @@
 ---
-title: Authenticating to CockroachDB Cloud
+title: Authentication on CockroachDB Cloud
 summary: Learn about the authentication features for CockroachDB Cloud clusters.
 toc: true
 docs_area: manage

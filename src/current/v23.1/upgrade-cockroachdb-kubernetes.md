@@ -1,5 +1,5 @@
 ---
-title: Cluster upgrades
+title: Cluster Upgrades
 summary: How to upgrade a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true

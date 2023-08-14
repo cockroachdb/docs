@@ -1,5 +1,5 @@
 ---
-title: Certificate management
+title: Certificate Management
 summary: How to authenticate a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
